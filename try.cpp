@@ -3,6 +3,6 @@ using namespace std;
 
 int main() {
 
-    cout << abs(-5) << endl;
+    cout << log2(4) << endl;
 
 }
