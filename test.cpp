@@ -3,51 +3,28 @@ using namespace std;
 #define rep(i, N) for (int i=0; i<(int)(N); i++)
 #define rep2(i, A, B) for (int i=(int)(A); i < (int)(B); i++)
 
-pair<bool, int> num_coins(int r, int &A, int &B, int &C) {
-    pair<bool, int> p;
-    if (r == 0) {
-        p = {true, 0};
-        return p;
-    }
-
-    if (r >= C){
-        p = num_coins(r-C, A, B, C);
-        if (p.first) {
-            p.second += 1;
-            return p;
-        }
-    }
-    if (r >= B){
-        p = num_coins(r-B, A, B, C);
-        if (p.first) {
-            p.second += 1;
-            return p;
-        }
-    }
-    if (r >= A){
-        p = num_coins(r-A, A, B, C);
-        if (p.first) {
-            p.second += 1;
-            return p;
-        }
-    }
-
-    p = {false, 0};
-    return p;
-}
+#define PI 3.141592653589793
 
 int main() {
-    int N; cin >> N;
-    int A, B, C; cin >> A >> B >> C;
+    double T, L, X, Y; cin >> T >> L >> X >> Y;
+    int Q; cin >> Q;
 
-    int a, b, c;
-    c = max(max(A, B), C);
-    a = min(min(A, B), C);
-    b = (A+B+C) - (a+c);
-    A = a; B = b; C = c;
+    vector<double> E(Q);
+    rep (i, Q) {
+        cin >> E.at(i);
+    }
 
-    pair<bool, int> p;
-    p = num_coins(N, A, B, C);
-    cout << p.second << endl;
+    rep (i, Q) {
+        double y, z, theta;
+        y = -L/2 * sin(2*PI*E.at(i)/T);
+        z = L/2 * (1 - cos(2*PI*E.at(i)/T));
+
+        double a;
+        a = sqrt(X*X + (Y-y)*(Y-y));
+        theta = abs(atan(z/a) * 180.0 / PI);
+
+        cout << fixed << setprecision(15) << theta << endl;
+
+    }
 
 }
