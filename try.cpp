@@ -6,10 +6,11 @@ using namespace std;
 
 int main() {
 
+    string a = "bbcdf";
+    string b = "bbcdef";
 
-    x.assign(5, -1);
-    y.resize(5, -2);
+    int c = a.compare(b);
 
-    cout << log2(4) << endl;
+    cout << c << endl;
 
 }
