@@ -3,52 +3,22 @@ using namespace std;
 #define rep(i, N) for (int i=0; i<(int)(N); i++)
 #define rep2(i, A, B) for (int i=(int)(A); i < (int)(B); i++)
 
-int INF = 1 << 30;
-int N;
-vector<vector<int>> A;
+#define EPS 0.1
+
+int64_t gcd(int64_t a, int64_t b) {
+    if (b == 0) return a;
+    return gcd(b, a%b);
+}
 
 
 int main() {
-    cin >> N;
+    int64_t A, B; cin >> A >> B;
 
-    A.resize(N, vector<int>(N));
-    rep (i, N) {
-        rep (j, N) {
-            cin >> A.at(i).at(j);
-        }
-    }
+    int64_t _gcd = gcd(A, B);
 
-    vector<vector<bool>> edge(N, vector<bool>(N, true));
-    int M; cin >> M;
-    rep (i, M) {
-        // decrement
-        int x, y; cin >> x >> y; x--; y--;
-        edge.at(x).at(y) = false;
-        edge.at(y).at(x) = false;
-    }
-
-    vector<int> perm;
-    rep(i, N) perm.push_back(i);
-
-    int _min = INF;
-    do {
-        bool kenaku = false;
-        rep (i, N-1) {
-            if (edge.at(perm.at(i)).at(perm.at(i+1)) == false){
-                kenaku = true;
-                break;
-            }
-        }
-        if (!kenaku) {
-            int sum = 0;
-            rep (i, N) sum += A.at(perm.at(i)).at(i);
-            if (sum < _min) {
-                _min = sum;
-            }
-        }
-    } while (next_permutation(perm.begin(), perm.end()));
-
-    if (_min == INF) cout << "-1" << endl;
-    else cout << _min << endl;
+    double ans = (double)(A / _gcd) * (double)B;
+    ans = floor(ans+0.3);
+    if (ans > floor(pow(10, 18)+0.3)) cout << "Large" << endl;
+    else cout << (A / _gcd) * B << endl;
 
 }
