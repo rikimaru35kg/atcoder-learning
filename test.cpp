@@ -3,54 +3,52 @@ using namespace std;
 #define rep(i, N) for (int i=0; i<(int)(N); i++)
 #define rep2(i, A, B) for (int i=(int)(A); i < (int)(B); i++)
 
+int INF = 1 << 30;
+int N;
+vector<vector<int>> A;
+
+
 int main() {
-    int N; cin >> N;
+    cin >> N;
 
-    vector<vector<int>> papers(N, vector<int>(4));
+    A.resize(N, vector<int>(N));
     rep (i, N) {
-        int lx, ly, rx, ry;
-        cin >> lx >> ly >> rx >> ry;
-
-        papers.at(i).at(0) = lx;
-        papers.at(i).at(1) = ly;
-        papers.at(i).at(2) = rx;
-        papers.at(i).at(3) = ry;
-    }
-
-    vector<vector<int>> area(1010, vector<int>(1010, 0));
-
-    for (auto x: papers) {
-        area.at(x.at(1)).at(x.at(0))++;
-        area.at(x.at(3)).at(x.at(0))--;
-        area.at(x.at(1)).at(x.at(2))--;
-        area.at(x.at(3)).at(x.at(2))++;
-    }
-
-    // x direction
-    rep (i, 1005) {
-        rep (j, 1005) {
-            area.at(i).at(j+1) += area.at(i).at(j);
-        }
-    }
-    // y direction
-    rep (i, 1005) {
-        rep (j, 1005) {
-            area.at(i+1).at(j) += area.at(i).at(j);
+        rep (j, N) {
+            cin >> A.at(i).at(j);
         }
     }
 
-    map<int, int> ans;
-    rep (i, 1000) {
-        rep (j, 1000) {
-            if (ans.count(area.at(i).at(j)) == 0) ans[area.at(i).at(j)] = 1;
-            else ans[area.at(i).at(j)] ++;
-        }
+    vector<vector<bool>> edge(N, vector<bool>(N, true));
+    int M; cin >> M;
+    rep (i, M) {
+        // decrement
+        int x, y; cin >> x >> y; x--; y--;
+        edge.at(x).at(y) = false;
+        edge.at(y).at(x) = false;
     }
 
-    rep(i, N){
-        if (ans.count(i+1) == 0) cout << "0" << endl;
-        else cout << ans[i+1] << endl;
-    }
- 
+    vector<int> perm;
+    rep(i, N) perm.push_back(i);
+
+    int _min = INF;
+    do {
+        bool kenaku = false;
+        rep (i, N-1) {
+            if (edge.at(perm.at(i)).at(perm.at(i+1)) == false){
+                kenaku = true;
+                break;
+            }
+        }
+        if (!kenaku) {
+            int sum = 0;
+            rep (i, N) sum += A.at(perm.at(i)).at(i);
+            if (sum < _min) {
+                _min = sum;
+            }
+        }
+    } while (next_permutation(perm.begin(), perm.end()));
+
+    if (_min == INF) cout << "-1" << endl;
+    else cout << _min << endl;
 
 }
