@@ -3,22 +3,46 @@ using namespace std;
 #define rep(i, N) for (int i=0; i<(int)(N); i++)
 #define rep2(i, A, B) for (int i=(int)(A); i < (int)(B); i++)
 
-#define EPS 0.1
+int64_t nCr(int64_t n, int64_t r) {
+    int64_t num = 1, den = 1;
+    rep (i, r) {
+        num *= (n - i);
+        den *= (r - i);
+        int gc = gcd(num, den);
+        num /= gc;
+        den /= gc;
+    }
 
-int64_t gcd(int64_t a, int64_t b) {
-    if (b == 0) return a;
-    return gcd(b, a%b);
+    return num/den;
 }
 
-
 int main() {
-    int64_t A, B; cin >> A >> B;
+    int64_t K; cin >> K;
+    vector<int64_t> a_k(1000000, 0);
 
-    int64_t _gcd = gcd(A, B);
+    const int64_t p = 1000000007;
 
-    double ans = (double)(A / _gcd) * (double)B;
-    ans = floor(ans+0.3);
-    if (ans > floor(pow(10, 18)+0.3)) cout << "Large" << endl;
-    else cout << (A / _gcd) * B << endl;
+    if (K % 9 != 0) {
+        cout << "0" << endl;
+        return 0;
+    }
 
+    a_k.at(0) = 0;
+    rep (i, K+1) {
+        if (i == 0) {a_k.at(i) = 1; continue;}
+        if (i == 1) {a_k.at(i) = 1; continue;}
+        if (i == 2) {a_k.at(i) = 2;continue;}
+        if (i == 3) {a_k.at(i) = 4;continue;}
+        if (i == 4) {a_k.at(i) = 8;continue;}
+        if (i == 5) {a_k.at(i) = 16;continue;}
+        if (i == 6) {a_k.at(i) = 32;continue;}
+        if (i == 7) {a_k.at(i) = 64;continue;}
+        if (i == 8) {a_k.at(i) = 128;continue;}
+        rep (j, 9) {
+            a_k.at(i) += a_k.at(i-j-1);
+            if (a_k.at(i) >= p) a_k.at(i) -= p;
+        }
+    }
+
+    cout << a_k.at(K) << endl;
 }

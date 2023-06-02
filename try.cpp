@@ -2,5 +2,5 @@
 using namespace std;
 
 int main() {
-    cout << pow(10, 5) << endl;
+    cout << gcd(12, 18) << endl;
 }
