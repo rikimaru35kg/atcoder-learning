@@ -16,60 +16,64 @@ typedef long long ll;
 #define repr(i, n) for (int i = (int)(n) - 1; i >= 0; i--)
 #define repk(i, k, n) for (int i = k; i < (int)(n); i++)
 
-ll str2eight(string str_in) {
-    ll _tmp = 0;
-    ll _pow = str_in.size() - 1;
-    for (char x: str_in) {
-        ll _tmp2 = int(x) - int('0');
-        rep (i, _pow) _tmp2 *= 8;
-        _pow--;
-        _tmp += _tmp2;
-    }
-    return _tmp;
+ll modpower(ll a, ll b, ll mod) {
+    // Calculate mod(a^b, mod)
+    // a >= 0, b >= 0, mod > 0;
+	ll ans = 1;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
 }
 
-string eight2str(ll num_in) {
-    string _tmp = "";
-    while (num_in > 0) {
-        string _tmp2 = to_string(num_in % 8);
-        _tmp = _tmp2 + _tmp;
-        num_in /= 8;
+vl lto2(ll x) {
+    vl y;
+
+    if (x == 0) {
+        y.push_back(0);
+        return y;
     }
 
-    if (_tmp == "") return "0";
-    else return _tmp;
-}
-
-ll ch9(ll x) {
-    stack<ll> q_num;
     while (x > 0) {
-        ll _tmp;
-        _tmp = x % 9;
-        x /= 9;
-        if (_tmp == 8) _tmp = 5;
-        q_num.push(_tmp);
+        if ((x & 1) == 0) y.push_back(0);
+        else y.push_back(1);
+        x = (x >> 1);
     }
-
-    ll num = 0;
-    while(!q_num.empty()) {
-        ll _tmp;
-        _tmp = q_num.top();
-        q_num.pop();
-
-        num *= 8;
-        num += _tmp;
-    }
-    return num;
+    return y;
 }
 
 int main() {
-    string N; cin >> N;
-    ll K; cin >> K;
+    ll N, K; cin >> N >> K;
+    const ll MOD = 1000000007;
 
-    ll N2 = str2eight(N);
-    ll ans = N2;
+    if (N == 1) {
+        cout << K << endl;
+        return 0;
+    }
+    if (N == 2) {
+        cout << K * (K-1) << endl;
+        return 0;
+    }
 
-    rep (i, K) ans = ch9(ans);
+    ll M = N - 2;
+    vl Mque = lto2(M);
+    ll _tmp = (K-2) % MOD;
+    vl _mods;
+    rep (i, Mque.size()) {
+        _mods.push_back(_tmp);
+        _tmp = _tmp * _tmp % MOD;
+    }
 
-    cout << eight2str(ans) << endl;
+    ll ans = 1;
+    rep (i, Mque.size()){
+        if (Mque.at(i) == 0) continue;
+        ans = ans * Mque.at(i) % MOD * _mods.at(i) % MOD;
+    }
+    ans = modpower(K-2, N-2, MOD) * K % MOD * (K-1) % MOD;
+
+    cout << ans << endl;
 }
