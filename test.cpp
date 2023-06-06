@@ -17,28 +17,19 @@ typedef long long ll;
 #define repk(i, k, n) for (int i = k; i < (int)(n); i++)
 
 int main() {
-    ll N, K; cin >> N >> K;
-    vl A(N), B(N);
+    ll N, L; cin >> N >> L;
+    vl dp(N+L+10, 0);
+    const ll INF = 1000000007;
+
+    dp.at(0) = 1;
     rep (i, N) {
-        ll a, b; cin >> a >> b;
-        A.at(i) = a;
-        B.at(i) = b;
+        dp.at(i+L) += dp.at(i);
+        if (dp.at(i+L) >= INF) dp.at(i+L) -= INF;
+        dp.at(i+1) += dp.at(i);
+        if (dp.at(i+1) >= INF) dp.at(i+1) -= INF;
     }
 
-    vl C(N);
-    rep (i, N) C.at(i) = A.at(i) - B.at(i);
+    cout << dp.at(N) << endl;
 
-    vl D(2*N);
-    rep (i, N) {
-        D.at(i) = B.at(i);
-        D.at(i+N) = C.at(i);
-    }
-
-    sort(D.begin(), D.end(), greater<ll>());
-
-    ll sum = 0;
-    rep (i, K) sum += D.at(i);
-
-    cout << sum << endl;
 
 }
