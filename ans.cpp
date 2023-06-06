@@ -1,49 +1,48 @@
-#include <deque>
 #include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
 using namespace std;
-const int inf = 1012345678;
-const int dx[4] = { 1, 0, -1, 0 };
-const int dy[4] = { 0, 1, 0, -1 };
-int H, W, sx, sy, gx, gy, dist[1009][1009][4]; char S[1009][1009];
-struct state {
-	int x, y, dir;
-};
+
+int H, W;
+int P[19][10009];
+
+int maximum_same(vector<int> R) {
+	map<int, int> Map; int ret = 0;
+	for (int i = 0; i < R.size(); i++) {
+		Map[R[i]] += 1;
+		ret = max(ret, Map[R[i]]);
+	}
+	return ret;
+}
+
 int main() {
-	cin.tie(0);
-	ios_base::sync_with_stdio(false);
-	cin >> H >> W >> sx >> sy >> gx >> gy;
-	--sx, --sy, --gx, --gy;
-	for (int i = 0; i < H; ++i) {
-		cin >> S[i];
+	// Step #1. ����
+	cin >> H >> W;
+	for (int i = 0; i < H; i++) {
+		for (int j = 0; j < W; j++) cin >> P[i][j];
 	}
-	for (int i = 0; i < H; ++i) {
-		for (int j = 0; j < W; ++j) {
-			dist[i][j][0] = inf;
-			dist[i][j][1] = inf;
-			dist[i][j][2] = inf;
-			dist[i][j][3] = inf;
-		}
-	}
-	deque<state> deq;
-	for (int i = 0; i < 4; ++i) {
-		dist[sx][sy][i] = 0;
-		deq.push_back({ sx, sy, i });
-	}
-	while (!deq.empty()) {
-		state u = deq.front(); deq.pop_front();
-		for (int i = 0; i < 4; ++i) {
-			int tx = u.x + dx[i], ty = u.y + dy[i], cost = dist[u.x][u.y][u.dir] + (u.dir != i ? 1 : 0);
-			if (0 <= tx && tx < H && 0 <= ty && ty < W && S[tx][ty] == '.' && dist[tx][ty][i] > cost) {
-				dist[tx][ty][i] = cost;
-				if (u.dir != i) deq.push_back({ tx, ty, i });
-				else deq.push_front({ tx, ty, i });
+
+	// Step #2. �S�T��
+	int Answer = 0;
+	for (int i = 1; i < (1 << H); i++) {
+		vector<int> R;
+		for (int j = 0; j < W; j++) {
+			int idx = -1; bool flag = false;
+			for (int k = 0; k < H; k++) {
+				if ((i & (1 << k)) == 0) continue;
+				if (idx == -1) idx = P[k][j];
+				else if (idx != P[k][j]) flag = true;
 			}
+			if (flag == false) R.push_back(idx);
 		}
+
+		int cntH = 0, cntW = maximum_same(R);
+		for (int j = 0; j < H; j++) {
+			if ((i & (1 << j)) != 0) cntH += 1;
+		}
+		Answer = max(Answer, cntH * cntW);
 	}
-	int answer = inf;
-	for (int i = 0; i < 4; ++i) {
-		answer = min(answer, dist[gx][gy][i]);
-	}
-	cout << answer << endl;
+	cout << Answer << endl;
 	return 0;
 }

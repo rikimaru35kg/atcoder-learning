@@ -16,20 +16,60 @@ typedef long long ll;
 #define repr(i, n) for (int i = (int)(n) - 1; i >= 0; i--)
 #define repk(i, k, n) for (int i = k; i < (int)(n); i++)
 
-int main() {
-    ll N, L; cin >> N >> L;
-    vl dp(N+L+10, 0);
-    const ll INF = 1000000007;
+ll str2eight(string str_in) {
+    ll _tmp = 0;
+    ll _pow = str_in.size() - 1;
+    for (char x: str_in) {
+        ll _tmp2 = int(x) - int('0');
+        rep (i, _pow) _tmp2 *= 8;
+        _pow--;
+        _tmp += _tmp2;
+    }
+    return _tmp;
+}
 
-    dp.at(0) = 1;
-    rep (i, N) {
-        dp.at(i+L) += dp.at(i);
-        if (dp.at(i+L) >= INF) dp.at(i+L) -= INF;
-        dp.at(i+1) += dp.at(i);
-        if (dp.at(i+1) >= INF) dp.at(i+1) -= INF;
+string eight2str(ll num_in) {
+    string _tmp = "";
+    while (num_in > 0) {
+        string _tmp2 = to_string(num_in % 8);
+        _tmp = _tmp2 + _tmp;
+        num_in /= 8;
     }
 
-    cout << dp.at(N) << endl;
+    if (_tmp == "") return "0";
+    else return _tmp;
+}
 
+ll ch9(ll x) {
+    stack<ll> q_num;
+    while (x > 0) {
+        ll _tmp;
+        _tmp = x % 9;
+        x /= 9;
+        if (_tmp == 8) _tmp = 5;
+        q_num.push(_tmp);
+    }
 
+    ll num = 0;
+    while(!q_num.empty()) {
+        ll _tmp;
+        _tmp = q_num.top();
+        q_num.pop();
+
+        num *= 8;
+        num += _tmp;
+    }
+    return num;
+}
+
+int main() {
+    string N; cin >> N;
+    ll K; cin >> K;
+
+    ll N2 = str2eight(N);
+    ll ans = N2;
+
+    rep (i, K) ans = ch9(ans);
+
+    cout << eight2str(ans) << endl;
 }
