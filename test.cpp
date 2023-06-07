@@ -30,50 +30,65 @@ ll modpower(ll a, ll b, ll mod) {
 	return ans;
 }
 
-vl lto2(ll x) {
-    vl y;
+struct State {
+    ll r, c, dist;
+    vvb visited;
 
-    if (x == 0) {
-        y.push_back(0);
-        return y;
+    State(ll H, ll W) {
+        visited.resize(H, vb(W, false));
     }
 
-    while (x > 0) {
-        if ((x & 1) == 0) y.push_back(0);
-        else y.push_back(1);
-        x = (x >> 1);
+};
+
+bool movable(ll r, ll c, vvc &tmap) {
+    if (r >= tmap.size() || r < 0) return false;
+    if (c >= tmap.at(0).size() || c < 0) return false;
+    if (tmap.at(r).at(c) == '#') return false;
+
+    return true;
+}
+
+vl dr = {-1, 0, 1, 0};
+vl dc = {0, 1, 0, -1};
+
+vvl used;
+
+ll dfs(ll r0, ll c0, ll r1, ll c1, vvc &tmap) {
+    if (r0 == r1 && c0 == c1) {
+        if (used.at(r0).at(c0)) return 0;
     }
-    return y;
+
+    used.at(r1).at(c1) = true;
+    ll dist_max = -1;
+    rep (i, 4) {
+        ll r2 = r1 + dr.at(i);
+        ll c2 = c1 + dc.at(i);
+        if (movable(r2, c2, tmap) || (r0 == r2 && c0 == c2)) {
+            if (used.at(r2).at(c2) && (r0 != r2 || c0 != c2)) continue;
+            ll v = dfs(r0, c0, r2, c2, tmap);
+            if (v >= 0) dist_max = max(dist_max, v + 1);
+        }
+    }
+
+    used.at(r1).at(c1) = false;
+    return dist_max;
 }
 
 int main() {
-    ll N, K; cin >> N >> K;
-    const ll MOD = 1000000007;
+    ll H, W; cin >> H >> W;
+    vvc c(H, vc(W));
+    rep (i, H) rep (j, W) cin >> c.at(i).at(j);
 
-    if (N == 1) {
-        cout << K << endl;
-        return 0;
-    }
-    if (N == 2) {
-        cout << K * (K-1) << endl;
-        return 0;
-    }
+    used.resize(H, vl(W, false));
 
-    ll M = N - 2;
-    vl Mque = lto2(M);
-    ll _tmp = (K-2) % MOD;
-    vl _mods;
-    rep (i, Mque.size()) {
-        _mods.push_back(_tmp);
-        _tmp = _tmp * _tmp % MOD;
+    ll dist_max = -1;
+    rep (i, H) {
+        rep (j, W) {
+            if (c.at(i).at(j) == '#') continue;
+            dist_max = max(dist_max, dfs(i, j, i, j, c));
+        }
     }
 
-    ll ans = 1;
-    rep (i, Mque.size()){
-        if (Mque.at(i) == 0) continue;
-        ans = ans * Mque.at(i) % MOD * _mods.at(i) % MOD;
-    }
-    ans = modpower(K-2, N-2, MOD) * K % MOD * (K-1) % MOD;
-
-    cout << ans << endl;
+    if (dist_max > 0) cout << dist_max << endl;
+    else cout << "-1" << endl;
 }
