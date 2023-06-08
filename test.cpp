@@ -17,61 +17,34 @@ typedef unsigned long long ull;
 #define repr(i, n) for (int i = (int)(n) - 1; i >= 0; i--)
 #define repk(i, k, n) for (int i = k; i < (int)(n); i++)
 
-ll modpow(ll a, ll b, ll mod) {
-    // Calculate mod(a^b, mod)
-    // a >= 0, b >= 0, mod > 0;
-	ll ans = 1;
-	while (b > 0) {
-		if ((b & 1) == 1) {
-			ans = ans * a % mod;
-		}
-		a = a * a % mod;
-		b = (b >> 1);
-	}
-	return ans;
-}
 
-ll digits(ll x) {
-    ll ret = 0;
-    if (x == 0) return 1;
-    while (x > 0) {
-        x /= 10;
-        ret++;
+int main () {
+    ll N; cin >> N;
+    string S; cin >> S;
+
+    if (N == 1) {
+        cout << "0" << endl;
+        return 0;
     }
-    return ret;
-}
 
-const ll MOD = 1000000007;
-
-int main() {
-    ll L, R; cin >> L >> R;
-
-    ll d_start = digits(L);
-    ll d_end = digits(R);
-
+    ll p = 1, p0 = 0;
     ll cnt = 0;
-    repk (i, d_start, d_end + 1) {
-        ll a0, an;
-        if (i == d_start) {
-            a0 = L;
+    char c_init = S.at(p0);
+    rep (i, N) {
+        while (S.at(p) == c_init && p < N - 1) {
+            p++;
         }
-        else {
-            a0 = 1;
-            rep (j, i - 1) a0 *= 10;
-        }
-        if (i == d_end) {
-            an = R;
-        }
-        else {
-            an = 1;
-            rep (j, i) an *= 10;
-            an--;
-        }
-        ll x = i * (a0%MOD + an%MOD) % MOD * ((an - a0)%MOD + 1) % MOD;
-        x = x * modpow(2, MOD-2, MOD) % MOD;
-        cnt = (cnt + x) % MOD;
+        if (p == N-1 && S.at(p) == c_init) break;
+
+        cnt += (N-p)*(p-i);
+
+        c_init = S.at(p);
+        p0 = p;
+        p = p + 1;
+        i = p0 - 1;
+
+        if (p >= N) break;
     }
 
     cout << cnt << endl;
-
 }
