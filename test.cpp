@@ -20,27 +20,39 @@ typedef unsigned long long ull;
 
 
 int main () {
-    string S; cin >> S;
+    ll A, B, C, X, Y; cin >> A >> B >> C >> X >> Y;
 
-    ll length = 0;
-    rep (i, S.size()) {
-        repk (j, i, S.size()) {
-            if (j == 6) {
-                cout << "";
-            }
-            string S_sub = S.substr(i, j-i+1);
-            // repk (k, i, j+1) S_sub += S.at(k);
-            bool acgt = false;
-            // for (char x: S_sub) {
-            //     if (x != 'A' && x != 'C' && x != 'G' && x != 'T') acgt = false;
-            // }
-            if (regex_match(S_sub, regex("[ACGT]+"))) acgt = true;
-            if (acgt) {
-                length = max(length, j-i+1);
-            }
+    ll cost;
+    if (2 * C <= A && 2 * C <= B) {
+        cost = 2 * max(X, Y) * C;
+    }
+    else if (2 * C <= A) {
+        if (X >= Y) {
+            cost = 2 * X * C;
+        }
+        else{
+            cost = 2 * X * C + (Y - X) * B;
         }
     }
+    else if (2 * C <= B) {
+        if (X <= Y) {
+            cost = 2 * Y * C;
+        }
+        else{
+            cost = 2 * Y * C + (X - Y) * A;
+        }
+    }
+    else if (2 * C <= (A + B)) {
+        if (X >= Y) {
+            cost = 2 * Y * C + (X - Y) * A;
+        }
+        else {
+            cost = 2 * X * C + (Y - X) * B;
+        }
+    }
+    else {
+        cost = X * A + Y * B;
+    }
 
-    cout << length << endl;
-
+    cout << cost << endl;
 }
