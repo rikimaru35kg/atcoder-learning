@@ -2,5 +2,6 @@
 using namespace std;
 
 int main() {
-    cout << gcd(12, 18) << endl;
+    bitset<12> pattern(7);
+    cout << endl;
 }

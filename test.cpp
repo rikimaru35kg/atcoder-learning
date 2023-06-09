@@ -20,39 +20,29 @@ typedef unsigned long long ull;
 
 
 int main () {
-    ll A, B, C, X, Y; cin >> A >> B >> C >> X >> Y;
+    ll N, K; cin >> N >> K;
+    vl a(N);
+    rep (i, N) cin >> a.at(i);
 
-    ll cost;
-    if (2 * C <= A && 2 * C <= B) {
-        cost = 2 * max(X, Y) * C;
-    }
-    else if (2 * C <= A) {
-        if (X >= Y) {
-            cost = 2 * X * C;
+    ll min_cost = 1LL<<62;
+    for (ll i = 1; i < (1<<N); i+=2) {
+        bitset<15> p(i);
+        if (p.count() != K) continue;
+        ll cost = 0;
+        ll height = a.at(0);
+        repk (j, 1, N) {
+            if (p.test(j) == false) {
+                height = max(height, a.at(j));
+            }
+            else {
+                cost += max(height - a.at(j) + 1, 0LL);
+                height = max(a.at(j), height + 1);
+            }
         }
-        else{
-            cost = 2 * X * C + (Y - X) * B;
-        }
-    }
-    else if (2 * C <= B) {
-        if (X <= Y) {
-            cost = 2 * Y * C;
-        }
-        else{
-            cost = 2 * Y * C + (X - Y) * A;
-        }
-    }
-    else if (2 * C <= (A + B)) {
-        if (X >= Y) {
-            cost = 2 * Y * C + (X - Y) * A;
-        }
-        else {
-            cost = 2 * X * C + (Y - X) * B;
-        }
-    }
-    else {
-        cost = X * A + Y * B;
+        min_cost = min(min_cost, cost);
     }
 
-    cout << cost << endl;
+    cout << min_cost << endl;
 }
+
+
