@@ -2,6 +2,6 @@
 using namespace std;
 
 int main() {
-    bitset<12> pattern(7);
-    cout << endl;
+    cout << (-3)/5 << endl;
+    cout << (-7)/5 << endl;
 }

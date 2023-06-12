@@ -1,48 +1,58 @@
-#include <iostream>
-#include <vector>
-#include <map>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define vi vector<int>
+#define vs vector<string>
+#define vc vector<char>
+#define vl vector<ll>
+#define vb vector<bool>
+#define vvi vector<vector<int>>
+#define vvc vector<vector<char>>
+#define vvl vector<vector<ll>>
+#define vvb vector<vector<bool>>
+#define vvvi vector<vector<vector<int>>>
+#define vvvl vector<vector<vector<ll>>>
+#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
+#define repr(i, n) for (ll i = (ll)(n) - 1; i >= 0; i--)
+#define repk(i, k, n) for (ll i = k; i < (ll)(n); i++)
+#define all(v) (v).begin(), (v).end()
 
-int H, W;
-int P[19][10009];
 
-int maximum_same(vector<int> R) {
-	map<int, int> Map; int ret = 0;
-	for (int i = 0; i < R.size(); i++) {
-		Map[R[i]] += 1;
-		ret = max(ret, Map[R[i]]);
+bool is_ok(ll x, vl &H, vl &S) {
+	vl l;
+	ll N = H.size();
+	rep (i, N) {
+		l.push_back((x-H.at(i))/S.at(i));
 	}
-	return ret;
+    sort(all(l));
+	rep(j, N) {
+		if (l.at(j) < j) {
+			return false;
+		}
+	}
+    return true;
+}
+
+ll meguru_bisect(ll ng, ll ok, vl &H, vl &S) {
+    while (abs(ok - ng) > 1) {
+        ll mid = (ok + ng) / 2;
+        if (is_ok(mid, H, S)) {
+            ok = mid;
+		}
+        else{
+            ng = mid;
+		}
+	}
+    return ok;
 }
 
 int main() {
-	// Step #1. ����
-	cin >> H >> W;
-	for (int i = 0; i < H; i++) {
-		for (int j = 0; j < W; j++) cin >> P[i][j];
-	}
+    ll N; cin >> N;
+    vl H(N), S(N);
+    rep (i, N) cin >> H.at(i) >> S.at(i);
 
-	// Step #2. �S�T��
-	int Answer = 0;
-	for (int i = 1; i < (1 << H); i++) {
-		vector<int> R;
-		for (int j = 0; j < W; j++) {
-			int idx = -1; bool flag = false;
-			for (int k = 0; k < H; k++) {
-				if ((i & (1 << k)) == 0) continue;
-				if (idx == -1) idx = P[k][j];
-				else if (idx != P[k][j]) flag = true;
-			}
-			if (flag == false) R.push_back(idx);
-		}
-
-		int cntH = 0, cntW = maximum_same(R);
-		for (int j = 0; j < H; j++) {
-			if ((i & (1 << j)) != 0) cntH += 1;
-		}
-		Answer = max(Answer, cntH * cntW);
-	}
-	cout << Answer << endl;
-	return 0;
+	ll tmp = meguru_bisect(0, 1e18, H, S); 
+	cout << tmp << endl;
 }
+

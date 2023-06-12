@@ -16,33 +16,38 @@ typedef unsigned long long ull;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
 #define repr(i, n) for (ll i = (ll)(n) - 1; i >= 0; i--)
 #define repk(i, k, n) for (ll i = k; i < (ll)(n); i++)
+#define all(v) (v).begin(), (v).end()
 
-
-
-int main () {
-    ll N, K; cin >> N >> K;
-    vl a(N);
-    rep (i, N) cin >> a.at(i);
-
-    ll min_cost = 1LL<<62;
-    for (ll i = 1; i < (1<<N); i+=2) {
-        bitset<15> p(i);
-        if (p.count() != K) continue;
-        ll cost = 0;
-        ll height = a.at(0);
-        repk (j, 1, N) {
-            if (p.test(j) == false) {
-                height = max(height, a.at(j));
-            }
-            else {
-                cost += max(height - a.at(j) + 1, 0LL);
-                height = max(a.at(j), height + 1);
-            }
-        }
-        min_cost = min(min_cost, cost);
+bool gettable(ll point, vl &H, vl &S) {
+    vl limit(H.size());
+    rep (i, H.size()) {
+        // if (point - H.at(i) < 0) return false;
+        limit.at(i) = (point - H.at(i)) / S.at(i);
     }
-
-    cout << min_cost << endl;
+    sort(limit.begin(), limit.end());
+    rep (i, H.size()) {
+        if (limit.at(i) < i) {
+            return false;
+        }
+    }
+    return true;
 }
 
+int main () {
+    ll N; cin >> N;
+    vl H(N), S(N);
+    rep (i, N) cin >> H.at(i) >> S.at(i);
 
+    ll left = 0, right = 1e18;
+    while (abs(right - left) > 1) {
+        ll mid = (left+right) / 2;
+        if (gettable(mid, H, S)) {
+            right = mid;
+        }
+        else {
+            left = mid;
+        }
+    }
+
+    cout << right << endl;
+}
