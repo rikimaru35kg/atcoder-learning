@@ -1,58 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef unsigned long long ull;
-#define vi vector<int>
-#define vs vector<string>
-#define vc vector<char>
-#define vl vector<ll>
-#define vb vector<bool>
-#define vvi vector<vector<int>>
-#define vvc vector<vector<char>>
-#define vvl vector<vector<ll>>
-#define vvb vector<vector<bool>>
-#define vvvi vector<vector<vector<int>>>
-#define vvvl vector<vector<vector<ll>>>
-#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
-#define repr(i, n) for (ll i = (ll)(n) - 1; i >= 0; i--)
-#define repk(i, k, n) for (ll i = k; i < (ll)(n); i++)
-#define all(v) (v).begin(), (v).end()
+using Grid = vector<vector<char>>;
 
-
-bool is_ok(ll x, vl &H, vl &S) {
-	vl l;
-	ll N = H.size();
-	rep (i, N) {
-		l.push_back((x-H.at(i))/S.at(i));
-	}
-    sort(all(l));
-	rep(j, N) {
-		if (l.at(j) < j) {
-			return false;
-		}
-	}
-    return true;
+int bfs(int H, int W, const Grid &grid, const pair<int, int> &start,
+        const pair<int, int> goal)
+{
+    vector<vector<int>> dist(H, vector<int>(W, -1));
+    queue<pair<int, int>> que;
+    dist.at(start.first).at(start.second) = 0;
+    que.push(start);
+    int dx[] = {1, 0, -1, 0};
+    int dy[] = {0, 1, 0, -1};
+    bool arrived = false;
+    while (!arrived && !que.empty()) {
+        int x = que.front().first;
+        int y = que.front().second;
+        que.pop();
+        int dist_xy = dist.at(x).at(y);
+        for (int i = 0; i < 4; ++i) {
+            int x2 = x + dx[i];
+            int y2 = y + dy[i];
+            if (x2 < 0 || H <= x2 || y2 < 0 || W <= y2)
+                continue;
+            if (grid.at(x2).at(y2) == 'X')
+                continue;
+            if (dist.at(x2).at(y2) != -1)
+                continue;
+            dist.at(x2).at(y2) = dist_xy + 1;
+            que.push({x2, y2});
+            if (x2 == goal.first && y2 == goal.second) {
+                arrived = true;
+                break;
+            }
+        }
+    }
+    return dist.at(goal.first).at(goal.second);
 }
 
-ll meguru_bisect(ll ng, ll ok, vl &H, vl &S) {
-    while (abs(ok - ng) > 1) {
-        ll mid = (ok + ng) / 2;
-        if (is_ok(mid, H, S)) {
-            ok = mid;
-		}
-        else{
-            ng = mid;
-		}
-	}
-    return ok;
+int main()
+{
+    int H, W, N;
+    cin >> H >> W >> N;
+    Grid grid(H, vector<char>(W));
+    vector<pair<int, int>> route(N + 1);
+    for (int i = 0; i < H; ++i) {
+        for (int j = 0; j < W; ++j) {
+            char c;
+            cin >> c;
+            grid.at(i).at(j) = c;
+            if (c == 'S')
+                route.at(0) = {i, j};
+            int k = c - '0';
+            if (1 <= k && k <= N)
+                route.at(k) = {i, j};
+        }
+    }
+    int sum_dist = 0;
+    for (int i = 0; i < N; ++i)
+        sum_dist += bfs(H, W, grid, route.at(i), route.at(i + 1));
+    cout << sum_dist << endl;
 }
-
-int main() {
-    ll N; cin >> N;
-    vl H(N), S(N);
-    rep (i, N) cin >> H.at(i) >> S.at(i);
-
-	ll tmp = meguru_bisect(0, 1e18, H, S); 
-	cout << tmp << endl;
-}
-
