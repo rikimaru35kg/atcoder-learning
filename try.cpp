@@ -19,12 +19,9 @@ typedef unsigned long long ull;
 #define all(v) (v).begin(), (v).end()
 
 int main() {
-    char c = 'S';
-    string s{c};
+    vl A = {1, 2, 3};
 
-    cout << c << endl;
-    cout << s << endl;
-
-    cout << (c == 'S') << endl;
-    cout << (s == "S") << endl;
+    cout << A.at(2) << endl;
+    cout << A[2] << endl;
+    cout << A[3] << endl;
 }
