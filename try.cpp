@@ -21,7 +21,6 @@ typedef unsigned long long ull;
 int main() {
     vl A = {1, 2, 3};
 
-    cout << A.at(2) << endl;
-    cout << A[2] << endl;
-    cout << A[3] << endl;
+    cout << lower_bound(all(A), 3) - A.begin() << endl;
+    cout << lower_bound(all(A), 4) - A.begin() << endl;
 }
