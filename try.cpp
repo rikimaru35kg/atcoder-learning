@@ -19,8 +19,11 @@ typedef unsigned long long ull;
 #define all(v) (v).begin(), (v).end()
 
 int main() {
-    vl A = {1, 2, 3};
+    vl A = {10, 8, 7, 6, 6, 5};
 
-    cout << lower_bound(all(A), 3) - A.begin() << endl;
-    cout << lower_bound(all(A), 4) - A.begin() << endl;
+    cout << upper_bound(all(A), 6, greater<ll>()) - A.begin() << endl;
+    cout << lower_bound(all(A), 6, greater<ll>()) - A.begin() << endl;
+    cout << lower_bound(all(A), 9, greater<ll>()) - A.begin() << endl;
+    cout << lower_bound(all(A), 5, greater<ll>()) - A.begin() << endl;
+    cout << upper_bound(all(A), 5, greater<ll>()) - A.begin() << endl;
 }
