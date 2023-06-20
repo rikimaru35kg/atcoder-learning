@@ -22,32 +22,60 @@ typedef pair<ll, ll> Pair;
 const ll INF = 1e18;
 
 
+struct UnionFind {
+    vl p;
+    ll num_union ;
+    UnionFind(ll n) {
+        p.resize(n, -1);
+        num_union = n;
+    }
+
+    ll find (ll x) {
+        if (p.at(x) == -1) return x;
+        return p.at(x) = find(p.at(x));
+    }
+
+    void unite(ll x, ll y) {
+        x = find(x);
+        y = find(y);
+        if (x == y) return;
+        p.at(x) = y;
+        num_union--;
+    }
+
+    bool same(ll x, ll y) {
+        if (find(x) == find(y)) return true;
+        return false;
+    }
+};
+
+struct Edge {
+    ll a, b, cost;
+    bool operator < (const Edge &e) {
+        return cost < e.cost;
+    }
+};
+
 int main () {
-    ll N; cin >> N;
-    vvl A(N, vl(N)), B(N, vl(N));
-    rep (i, N) rep (j, N) cin >> A.at(i).at(j);
+    ll N, M, K; cin >> N >> M >> K;
+    vector<Edge> edges;
+    rep (i, M) {
+        ll a, b, c; cin >> a >> b >> c;
+        a--; b--;
+        Edge e;
+        e.a = a; e.b = b; e.cost = c;
+        edges.push_back(e);
+    }
+    sort(all(edges));
 
-    B = A;
-
-    rep (k, N) rep (i, N) rep (j, N) {
-        B.at(i).at(j) = min(B.at(i).at(j), B.at(i).at(k) + B.at(k).at(j));
+    UnionFind uf(N);
+    ll cost = 0;
+    for (auto x: edges) {
+        if (uf.num_union == K) break;
+        if (uf.same(x.a, x.b)) continue;
+        uf.unite(x.a, x.b);
+        cost += x.cost;
     }
 
-    if (A != B) {
-        cout << "-1" << endl;
-        return 0;
-    }
-
-    ll road = 0;
-    rep (i, N) rep (j, N) {
-        if (i == j) continue;
-        ll _min = INF;
-        rep (k, N) {
-            if (i == k || k == j) continue;
-            _min = min(_min, B.at(i).at(k) + B.at(k).at(j));
-        }
-        if (_min > B.at(i).at(j)) road += B.at(i).at(j);
-    }
-
-    cout << road/2 << endl;
+    cout << cost << endl;
 }
