@@ -18,12 +18,22 @@ typedef unsigned long long ull;
 #define repk(i, k, n) for (ll i = k; i < (ll)(n); i++)
 #define all(v) (v).begin(), (v).end()
 
-int main() {
-    vl A = {10, 8, 7, 6, 6, 5};
+long long modpow(long long a, long long b, long long mod) {
+	long long ans = 1;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
+}
 
-    cout << upper_bound(all(A), 6, greater<ll>()) - A.begin() << endl;
-    cout << lower_bound(all(A), 6, greater<ll>()) - A.begin() << endl;
-    cout << lower_bound(all(A), 9, greater<ll>()) - A.begin() << endl;
-    cout << lower_bound(all(A), 5, greater<ll>()) - A.begin() << endl;
-    cout << upper_bound(all(A), 5, greater<ll>()) - A.begin() << endl;
+int main() {
+
+    cout << (true ^ true) << endl;
+    cout << (true ^ false) << endl;
+    cout << (false ^ true) << endl;
+    cout << (false ^ false) << endl;
 }
