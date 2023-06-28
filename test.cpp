@@ -25,21 +25,30 @@ const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 const ll MOD = 1e9 + 7;
 
+
 int main () {
     ll N; cin >> N;
-    vl A(N);
-    rep (i, N) cin >> A.at(i);
-
-    vl b(N, 0);
-    ll mul = 1;
+    vl S(2*N), T(2*N);
     rep (i, N) {
-        ll base = 3;
-        if (A.at(i) != 0) base = b.at(A.at(i)-1);
-        ll sub = b.at(A.at(i));
-        mul *= (base - sub);
-        mul %= MOD;
-        b.at(A.at(i))++;
+        cin >> S.at(i);
+        S.at(i+N) = S.at(i);
+    }
+    rep (i, N) {
+        cin >> T.at(i);
+        T.at(i+N) = T.at(i);
     }
 
-    cout << mul << endl;
+    vl times(2*N);
+    rep (i, 2*N) {
+        times.at(i) = T.at(i);
+    }
+
+    repk (i, 1, 2*N) {
+        times.at(i) = min(times.at(i), times.at(i-1) + S.at(i-1));
+    }
+
+    rep (i, N) {
+        cout << min(times.at(i), times.at(i+N)) << endl;
+    }
+
 }

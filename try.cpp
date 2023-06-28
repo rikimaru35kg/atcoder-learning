@@ -31,9 +31,9 @@ long long modpow(long long a, long long b, long long mod) {
 }
 
 int main() {
+	vl a = {1, 5, 6, 6, 5};
 
-    cout << (true ^ true) << endl;
-    cout << (true ^ false) << endl;
-    cout << (false ^ true) << endl;
-    cout << (false ^ false) << endl;
+	a.erase(unique(all(a)), a.end());
+
+    cout << endl;
 }
