@@ -25,30 +25,48 @@ const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 const ll MOD = 1e9 + 7;
 
+struct UnionFind {
+    vl p, num;
+    UnionFind (ll n) {
+        p.resize(n, -1);
+        num.resize(n, 1);
+    }
+
+    ll find (ll x) {
+        if (p.at(x) == -1) return x;
+        return p.at(x) = find(p.at(x));
+    }
+
+    void unite (ll x, ll y) {
+        x = find(x); y = find(y);
+        if (x == y) return;
+        p.at(x) = y;
+        num.at(y) += num.at(x);
+    }
+
+    ll size_i (ll x) {
+        x = find(x);
+        return num.at(x);
+    }
+};
+
 
 int main () {
     ll N; cin >> N;
-    vl S(2*N), T(2*N);
-    rep (i, N) {
-        cin >> S.at(i);
-        S.at(i+N) = S.at(i);
-    }
-    rep (i, N) {
-        cin >> T.at(i);
-        T.at(i+N) = T.at(i);
+    vector<tuple<ll,ll,ll>> edges;
+    rep (i, N-1) {
+        ll u, v, w; cin >> u >> v >> w;
+        u--; v--;
+        edges.emplace_back(w, u, v);
     }
 
-    vl times(2*N);
-    rep (i, 2*N) {
-        times.at(i) = T.at(i);
+    ll total = 0;
+    UnionFind uf(N);
+    sort(all(edges));
+    for (auto [w, x, y]: edges) {
+        total += w * uf.size_i(x) * uf.size_i(y);
+        uf.unite(x, y);
     }
 
-    repk (i, 1, 2*N) {
-        times.at(i) = min(times.at(i), times.at(i-1) + S.at(i-1));
-    }
-
-    rep (i, N) {
-        cout << min(times.at(i), times.at(i+N)) << endl;
-    }
-
+    cout << total << endl;
 }
