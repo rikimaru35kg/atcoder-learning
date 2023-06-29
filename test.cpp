@@ -24,41 +24,61 @@ typedef pair<ll, ll> Pair;
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 const ll MOD = 1e9 + 7;
+const ll MOD2 = 998244353;
+
+ll N;
+
+vvvl dp;
+
+vl convert(string s) {
+    vl ret;
+    rep (i, s.size()) {
+        ret.push_back(s.at(i) - 'A');
+    }
+    return ret;
+}
 
 int main () {
-    ll N, M; cin >> N >> M;
-    vl A(N);
-    rep (i, N) cin >> A.at(i);
+    cin >> N;
+    string S; cin >> S;
+    dp.resize(N+1, vvl(1<<10, vl(10, 0)));
+    vl Sint = convert(S);
 
-    vb divs(100010, false);
+    // dp.at(0).at(1<<Sint.at(0)).at(Sint.at(0)) = 1;
     rep (i, N) {
-        divs.at(A.at(i)) = true;
-    }
-    repk (i, 2, 100010) {
-        for (ll k = 2; i*k < 100010; k++) {
-            if (divs.at(i*k)) {
-                divs.at(i) = true;
-                break;
+        // no selection
+        rep (bit, 1<<10) {
+            rep (n, 10) {
+                dp.at(i+1).at(bit).at(n) += dp.at(i).at(bit).at(n);
+                dp.at(i+1).at(bit).at(n) %= MOD2;
             }
         }
-    }
-
-    vb no_prime(M+1, false);
-    repk (i, 2, 100010) {
-        if (!divs.at(i)) continue;
-        for (ll k = 1; i*k <= M; k++) {
-            no_prime.at(i*k) = true;
+        // selection
+        ll s = Sint.at(i);
+        rep (bit, 1<<10) {
+            rep (n, 10) {
+                if ((bit & (1<<s)) != 0 && n == s) { // bitが立っていて（履歴あり）　かつ　最後がs
+                    dp.at(i+1).at(bit).at(s) += dp.at(i).at(bit).at(s);
+                    dp.at(i+1).at(bit).at(s) %= MOD2;
+                }
+                if ((bit & (1<<s)) == 0 && n != s) { // bitが立っていない（履歴無し）かつ最後がs以外
+                    ll bit_new = bit^(1<<s);
+                    dp.at(i+1).at(bit_new).at(s) += dp.at(i).at(bit).at(n);
+                    dp.at(i+1).at(bit_new).at(s) %= MOD2;
+                }
+            }
         }
+        dp.at(i+1).at(1<<s).at(s) += 1;
     }
 
     ll cnt = 0;
-    repk (i, 1, M+1) {
-        if (!no_prime.at(i)) cnt++;
+    rep (bit, 1<<10) {
+        rep (n, 10) {
+            cnt += dp.at(N).at(bit).at(n);
+            cnt %= MOD2;
+        }
     }
+    
 
     cout << cnt << endl;
-    repk (i, 1, M+1) {
-        if (!no_prime.at(i)) cout << i << endl;
-    }
-
 }
