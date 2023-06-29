@@ -25,48 +25,40 @@ const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 const ll MOD = 1e9 + 7;
 
-struct UnionFind {
-    vl p, num;
-    UnionFind (ll n) {
-        p.resize(n, -1);
-        num.resize(n, 1);
-    }
-
-    ll find (ll x) {
-        if (p.at(x) == -1) return x;
-        return p.at(x) = find(p.at(x));
-    }
-
-    void unite (ll x, ll y) {
-        x = find(x); y = find(y);
-        if (x == y) return;
-        p.at(x) = y;
-        num.at(y) += num.at(x);
-    }
-
-    ll size_i (ll x) {
-        x = find(x);
-        return num.at(x);
-    }
-};
-
-
 int main () {
-    ll N; cin >> N;
-    vector<tuple<ll,ll,ll>> edges;
-    rep (i, N-1) {
-        ll u, v, w; cin >> u >> v >> w;
-        u--; v--;
-        edges.emplace_back(w, u, v);
+    ll N, M; cin >> N >> M;
+    vl A(N);
+    rep (i, N) cin >> A.at(i);
+
+    vb divs(100010, false);
+    rep (i, N) {
+        divs.at(A.at(i)) = true;
+    }
+    repk (i, 2, 100010) {
+        for (ll k = 2; i*k < 100010; k++) {
+            if (divs.at(i*k)) {
+                divs.at(i) = true;
+                break;
+            }
+        }
     }
 
-    ll total = 0;
-    UnionFind uf(N);
-    sort(all(edges));
-    for (auto [w, x, y]: edges) {
-        total += w * uf.size_i(x) * uf.size_i(y);
-        uf.unite(x, y);
+    vb no_prime(M+1, false);
+    repk (i, 2, 100010) {
+        if (!divs.at(i)) continue;
+        for (ll k = 1; i*k <= M; k++) {
+            no_prime.at(i*k) = true;
+        }
     }
 
-    cout << total << endl;
+    ll cnt = 0;
+    repk (i, 1, M+1) {
+        if (!no_prime.at(i)) cnt++;
+    }
+
+    cout << cnt << endl;
+    repk (i, 1, M+1) {
+        if (!no_prime.at(i)) cout << i << endl;
+    }
+
 }
