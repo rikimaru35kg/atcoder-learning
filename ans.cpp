@@ -1,62 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
-using Grid = vector<vector<char>>;
-
-int bfs(int H, int W, const Grid &grid, const pair<int, int> &start,
-        const pair<int, int> goal)
-{
-    vector<vector<int>> dist(H, vector<int>(W, -1));
-    queue<pair<int, int>> que;
-    dist.at(start.first).at(start.second) = 0;
-    que.push(start);
-    int dx[] = {1, 0, -1, 0};
-    int dy[] = {0, 1, 0, -1};
-    bool arrived = false;
-    while (!arrived && !que.empty()) {
-        int x = que.front().first;
-        int y = que.front().second;
-        que.pop();
-        int dist_xy = dist.at(x).at(y);
-        for (int i = 0; i < 4; ++i) {
-            int x2 = x + dx[i];
-            int y2 = y + dy[i];
-            if (x2 < 0 || H <= x2 || y2 < 0 || W <= y2)
-                continue;
-            if (grid.at(x2).at(y2) == 'X')
-                continue;
-            if (dist.at(x2).at(y2) != -1)
-                continue;
-            dist.at(x2).at(y2) = dist_xy + 1;
-            que.push({x2, y2});
-            if (x2 == goal.first && y2 == goal.second) {
-                arrived = true;
-                break;
-            }
-        }
-    }
-    return dist.at(goal.first).at(goal.second);
-}
-
-int main()
-{
-    int H, W, N;
-    cin >> H >> W >> N;
-    Grid grid(H, vector<char>(W));
-    vector<pair<int, int>> route(N + 1);
-    for (int i = 0; i < H; ++i) {
-        for (int j = 0; j < W; ++j) {
-            char c;
-            cin >> c;
-            grid.at(i).at(j) = c;
-            if (c == 'S')
-                route.at(0) = {i, j};
-            int k = c - '0';
-            if (1 <= k && k <= N)
-                route.at(k) = {i, j};
-        }
-    }
-    int sum_dist = 0;
-    for (int i = 0; i < N; ++i)
-        sum_dist += bfs(H, W, grid, route.at(i), route.at(i + 1));
-    cout << sum_dist << endl;
+#define rep(i,n) for (int i = 0; i < (n); ++i)
+using ll = long long;
+ 
+int main() {
+  int n, k;
+  cin >> n >> k;
+  vector<int> a(n);
+  rep(i,n) cin >> a[i];
+  ll wa = -1, ac = 2e9;
+  auto f = [&](ll x) {
+    ll res = 0;
+    rep(i,n) res += max(0ll, a[i]-x);
+    return res;
+  };
+  while (wa+1<ac) {
+    int wj = (wa+ac)/2;
+    if (f(wj) <= k) ac = wj; else wa = wj;
+  }
+  ll ans = 0;
+  auto asum = [&](ll l, ll r) {
+    return (l+r)*(r-l+1)/2;
+  };
+  rep(i,n) {
+    if (a[i] <= ac) continue;
+    ans += asum(ac+1, a[i]);
+  }
+  ans += ac*(k-f(ac));
+  cout << ans << endl;
+  return 0;
 }
