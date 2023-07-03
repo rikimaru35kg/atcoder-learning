@@ -32,23 +32,41 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 const ll MOD = 1e9 + 7;
 const ll MOD2 = 998244353;
 
-int main () {
-    ll L, Q; cin >> L >> Q;
-    vl c(Q), x(Q);
-    rep (i, Q) cin >> c.at(i) >> x.at(i);
 
-    set<ll> set_cut;
-    set_cut.insert(0);
-    set_cut.insert(L);
-    rep (i, Q) {
-        if (c.at(i) == 1) set_cut.insert(x.at(i));
-        else {
-            auto itr = set_cut.lower_bound(x.at(i));
-            ll r = *itr;
-            ll l = *(--itr);
-            cout << r-l << endl;
+int main () {
+    ll N; cin >> N;
+    vl x(N), y(N);
+    rep (i, N) cin >> x.at(i) >> y.at(i);
+    set<Pair> dct;
+
+    vl ver, hor;
+    map<ll,ll> dct_v, dct_h;
+    rep (i, N) {
+        if(dct_v[x.at(i)] == 1) ver.push_back(x.at(i));
+        if(dct_h[y.at(i)] == 1) hor.push_back(y.at(i));
+        dct_v[x.at(i)]++;
+        dct_h[y.at(i)]++;
+        dct.insert(Pair(x.at(i), y.at(i)));
+    }
+
+    ll cnt = 0;
+    rep (v1, ver.size()) {
+        repk (v2, v1+1, ver.size()) {
+            rep (h1, hor.size()) {
+                repk (h2, h1+1, hor.size()) {
+                    if (v1==2 && v2==3 && h1==1 && h2==2) {
+                        cout << "";
+                    }
+                    if (dct.count(Pair(ver.at(v1), hor.at(h1))) &&
+                        dct.count(Pair(ver.at(v1), hor.at(h2))) &&
+                        dct.count(Pair(ver.at(v2), hor.at(h1))) &&
+                        dct.count(Pair(ver.at(v2), hor.at(h2)))) {
+                        ++cnt;
+                    }
+                }
+            }
         }
     }
 
-
+    cout << cnt << endl;
 }
