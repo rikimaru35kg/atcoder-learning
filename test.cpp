@@ -30,72 +30,48 @@ template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, tr
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
-const ll MOD = 998244353;
-
-vp edges;
-vl edge_cnt;
-vvl from;
-map<Pair,ll> dct_edge;
-
-bool dfs(ll goal, ll x, ll org=-1){
-    if (x == goal) return true;
-
-    for (auto y: from[x]) {
-        if (y == org) continue;
-        if (dfs(goal, y, x)) {
-            ll _x = min(x, y), _y = max(x, y);
-            ll edge_num = dct_edge[Pair(_x, _y)]; 
-            ++edge_cnt[edge_num];
-            return true;
-        }
-    }
-    return false;
-}
 
 int main () {
-    ll N, M, K; cin >> N >> M >> K;
-    vl A(M); rep (i, M) {ll a; cin >> a; A[i]=--a;}
-    edge_cnt.resize(N-1);
-    from.resize(N);
-    rep (i, N-1) {
-        ll u, v; cin >> u >> v; --u; --v;
+    ll N = 9;
+    ll M; cin >> M;
+    vvl from(N);
+    rep (i, M) {
+        ll u, v; cin >> u >> v;
+        --u; --v;
         from[u].push_back(v);
         from[v].push_back(u);
-        ll _u = min(u, v), _v = max(u, v);
-        edges.push_back(Pair(_u, _v));
-        dct_edge[Pair(_u, _v)] = i;
+    }
+    vl piece(N, -1);
+    rep(i, 8) {
+        int x; cin >> x; --x;
+        piece[x] = i;
     }
 
-    rep (i, M-1) {
-        dfs(A[i+1], A[i]);
-    }
+    vl target = {0, 1, 2, 3, 4, 5, 6, 7, -1};
+    map<vl, int> dist;
+    dist[piece] = 0;
+    queue<vl> que;
+    que.push(piece);
+    while(que.size()) {
+        vl state = que.front();
+        que.pop();
 
-    const ll DP_MAX = N*M;
-    vl dp(2*DP_MAX+1, 0);
-    dp[DP_MAX] = 1;
-    vb visited(2*DP_MAX+1, false);
-    visited[DP_MAX] = true;
-    rep (i, N-1) {
-        vl p(2*DP_MAX+1, 0);
-        swap(p, dp);
-        rep (j, 2*DP_MAX+1) {
-            if (visited[j]) {
-                ll pl = j + edge_cnt[i];
-                ll mn = j - edge_cnt[i];
-                if (pl < 2*DP_MAX+1) {
-                    dp[pl] += p[j];
-                    dp[pl] %= MOD;
-                    visited[pl] = true;
-                }
-                if (mn >= 0) {
-                    dp[mn] += p[j];
-                    dp[mn] %= MOD;
-                    visited[mn] = true;
-                }
+        int x;
+        rep (i, N) {
+            if (state[i] == -1) {
+                x = i;
             }
+        }
+        for (auto y: from[x]) {
+            vl nstate = state;
+            swap(nstate[y], nstate[x]);
+            if (dist.count(nstate)) continue;
+            que.push(nstate);
+            dist[nstate] = dist[state] + 1;
         }
     }
 
-    if (0 <= K+DP_MAX && K+DP_MAX < 2*DP_MAX+1) cout << dp[K+DP_MAX] << endl;
-    else cout << "0" << endl;
+    if (!dist.count(target)) cout << -1 << endl;
+    else cout << dist[target] << endl;
+
 }
