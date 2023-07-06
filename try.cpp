@@ -41,8 +41,7 @@ const ll MOD2 = 998244353;
 
 int main() {
 	vl a = {1, 5, 6, 6, 5};
-	debug(a);
 
 
-    cout << endl;
+    cout << a[7] << endl;
 }
