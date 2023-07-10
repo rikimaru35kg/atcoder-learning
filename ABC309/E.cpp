@@ -35,21 +35,33 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    int N; cin >> N;
-    vl S(N);
-    rep (i, N) cin >> S[i];
-
-    ll cnt = 0;
-    rep (i, N) {
-        bool ok = false;
-        rep1 (a, 200) rep1 (b, 200) {
-            ll area = 4*a*b + 3*a + 3*b;
-            if (area == S[i]) ok = true;
-            // if (area >= S[i]) break;
-        }
-        if (ok) ++cnt;
+    ll N, M; cin >> N >> M;
+    vvl from(N);
+    repk (i, 1, N) {
+        ll p; cin >> p; --p;
+        from[p].push_back(i);
+    }
+    vl gens(N, -INF);
+    rep (i, M) {
+        ll x, y; cin >> x >> y; --x;
+        chmax(gens[x], y);
     }
 
-    cout << (N-cnt) << endl;
+    ll ans = 0;
+    queue<ll> que;
+    que.push(0);
+    if (gens[0] >= 0) ++ans;
+    while(que.size()) {
+        ll person = que.front(); que.pop();
+        ll gen = gens[person];
+        if (gen <= 0) gen = -INF;
+        for (auto np: from[person]) {
+            chmax(gens[np], gen - 1);
+            if (gens[np] >= 0) ++ans;
+            que.push(np);
+        }
+    }
+
+    cout << ans << endl;
 
 }

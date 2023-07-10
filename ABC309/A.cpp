@@ -33,23 +33,13 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 
-
 int main () {
-    int N; cin >> N;
-    vl S(N);
-    rep (i, N) cin >> S[i];
-
-    ll cnt = 0;
-    rep (i, N) {
-        bool ok = false;
-        rep1 (a, 200) rep1 (b, 200) {
-            ll area = 4*a*b + 3*a + 3*b;
-            if (area == S[i]) ok = true;
-            // if (area >= S[i]) break;
+    int A, B; cin >> A >> B;
+    if (A == 1 || A == 2 || A == 4 || A == 5 || A == 7 || A == 8) {
+        if (B == A+1) {
+            cout << "Yes" << endl;
+            return 0;
         }
-        if (ok) ++cnt;
     }
-
-    cout << (N-cnt) << endl;
-
+    cout << "No" << endl;
 }

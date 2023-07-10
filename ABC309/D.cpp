@@ -33,23 +33,41 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 
+vvl from;
 
-int main () {
-    int N; cin >> N;
-    vl S(N);
-    rep (i, N) cin >> S[i];
+ll bfs(ll start, ll n) {
+    ll dist_max = 0;
+    vl dist(n, -1);
 
-    ll cnt = 0;
-    rep (i, N) {
-        bool ok = false;
-        rep1 (a, 200) rep1 (b, 200) {
-            ll area = 4*a*b + 3*a + 3*b;
-            if (area == S[i]) ok = true;
-            // if (area >= S[i]) break;
+    queue<ll> que;
+    que.push(start);
+    dist[start] = 0;
+    while(que.size()) {
+        ll v = que.front(); que.pop();
+
+        for (auto x: from[v]) {
+            if (dist[x] != -1) continue;
+            dist[x] = dist[v] + 1;
+            chmax(dist_max, dist[x]);
+            que.push(x);
         }
-        if (ok) ++cnt;
     }
 
-    cout << (N-cnt) << endl;
+    return dist_max;
+}
+
+int main () {
+    ll N1, N2, M; cin >> N1 >> N2 >> M;
+    from.resize(N1+N2);
+    rep (i, M) {
+        ll a, b; cin >> a >> b; --a; --b;
+        from[a].push_back(b);
+        from[b].push_back(a);
+    }
+
+    ll dist1 = bfs(0, N1);
+    ll dist2 = bfs(N1+N2-1, N1+N2);
+
+    cout << dist1 + dist2 + 1 << endl;
 
 }

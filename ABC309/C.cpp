@@ -33,23 +33,40 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 
-
 int main () {
-    int N; cin >> N;
-    vl S(N);
-    rep (i, N) cin >> S[i];
-
-    ll cnt = 0;
+    ll N, K; cin >> N >> K;
+    vl a(N), b(N);
+    ll max_day = 0;
     rep (i, N) {
-        bool ok = false;
-        rep1 (a, 200) rep1 (b, 200) {
-            ll area = 4*a*b + 3*a + 3*b;
-            if (area == S[i]) ok = true;
-            // if (area >= S[i]) break;
-        }
-        if (ok) ++cnt;
+        cin >> a[i] >> b[i];
+        chmax(max_day, a[i]);
     }
 
-    cout << (N-cnt) << endl;
+    set<ll> comp(all(a));
+    comp.insert(0);
+    map<ll,ll> dct;
+    ll idx = 0;
+    for (auto x: comp) {
+        dct[x] = idx;
+        ++idx;
+    }
+    vl comp_vec(all(comp));
+
+    vl imos(SIZE(comp)+1);
+    rep (i, N) {
+        ll x = dct[a[i]];
+        imos[0] += b[i];
+        imos[x] += -b[i];
+    }
+
+    rep (i, SIZE(imos)-1) {
+        imos[i+1] += imos[i];
+    }
+    rep (i, SIZE(imos)) {
+        if (imos[i] <= K) {
+            cout << comp_vec[i]+1 << endl;
+            return 0;
+        }
+    }
 
 }

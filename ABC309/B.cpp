@@ -33,23 +33,40 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 
-
 int main () {
-    int N; cin >> N;
-    vl S(N);
-    rep (i, N) cin >> S[i];
+    ll N; cin >> N;
+    vvc A(N, vc(N));
+    rep (i, N) rep (j, N) cin >> A[i][j];
 
-    ll cnt = 0;
-    rep (i, N) {
-        bool ok = false;
-        rep1 (a, 200) rep1 (b, 200) {
-            ll area = 4*a*b + 3*a + 3*b;
-            if (area == S[i]) ok = true;
-            // if (area >= S[i]) break;
+    vvc B(N, vc(N, 'a'));
+    rep (i, N) rep (j, N) {
+        if (i != 0 && i != N-1 && j != 0 && j != N-1) {
+            B[i][j] = A[i][j];
+            continue;
         }
-        if (ok) ++cnt;
+        if (i == 0 && j != 0) {
+            B[i][j] = A[i][j-1];
+            continue;
+        }
+        if (j == N-1 && i != 0) {
+            B[i][j] = A[i-1][j];
+            continue;
+        }
+        if (i == N-1 && j != N-1) {
+            B[i][j] = A[i][j+1];
+            continue;
+        }
+        if (j == 0 && i != N-1) {
+            B[i][j] = A[i+1][j];
+            continue;
+        }
     }
 
-    cout << (N-cnt) << endl;
+    rep(i, N) {
+        rep (j, N) {
+            cout << B[i][j];
+        }
+        cout << endl;
+    }
 
 }

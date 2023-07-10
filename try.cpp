@@ -40,10 +40,8 @@ const ll MOD2 = 998244353;
 
 
 int main() {
-    map<ll, ll> dct;
-
-    cout << (dct.find(5) == dct.end()) << endl;
-    cout << dct.count(5) << endl;
-    cout << dct[5] << endl;
-    cout << (dct.find(5) == dct.end()) << endl;
+    cout << gcd(8, 12) << endl;
+    cout << gcd(-8, 12) << endl;
+    cout << gcd(8, -12) << endl;
+    cout << gcd(-8, -12) << endl;
 }
