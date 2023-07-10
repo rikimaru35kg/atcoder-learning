@@ -2,6 +2,7 @@
 // a >= 0, b >= 0, mod > 0;
 long long modpow(long long a, long long b, long long mod) {
 	long long ans = 1;
+	a %= mod;
 	while (b > 0) {
 		if ((b & 1) == 1) {
 			ans = ans * a % mod;

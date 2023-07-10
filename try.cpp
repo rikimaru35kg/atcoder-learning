@@ -35,13 +35,31 @@ template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, tr
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
-const ll MOD = 1e9 + 7;
-const ll MOD2 = 998244353;
 
+long long modpow(long long a, long long b, long long mod) {
+	long long ans = 1;
+    a %= mod;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
+}
+
+ll powmod(ll x, ll t, ll mod) {
+    if (!t) return 1;
+    x %= mod;
+    ll r = powmod(x, t/2, mod);
+    (r *= r) %= mod;
+    if (t%2) (r *= x) %= mod;
+    return r;
+}
 
 int main() {
-    cout << gcd(8, 12) << endl;
-    cout << gcd(-8, 12) << endl;
-    cout << gcd(8, -12) << endl;
-    cout << gcd(-8, -12) << endl;
+    ll MOD = 998244353;
+    cout << modpow(1e10, 1e9, MOD) << endl;
+    cout << powmod(1e10, 1e9, MOD) << endl;
 }

@@ -33,23 +33,37 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 
+long long modpow(long long a, long long b, long long mod) {
+	long long ans = 1;
+    a %= mod;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
+}
+
+ll powmod(ll x, ll t, ll mod) {
+    if (!t) return 1;
+    x %= mod;
+    ll r = powmod(x, t/2, mod);
+    (r *= r) %= mod;
+    if (t%2) (r *= x) %= mod;
+    return r;
+}
 
 int main () {
-    int N; cin >> N;
-    vl S(N);
-    rep (i, N) cin >> S[i];
+    ll MOD = 998244353;
+    ll N, K, M; cin >> N >> K >> M;
 
-    ll cnt = 0;
-    rep (i, N) {
-        bool ok = false;
-        rep1 (a, 200) rep1 (b, 200) {
-            ll area = 4*a*b + 3*a + 3*b;
-            if (area == S[i]) ok = true;
-            // if (area >= S[i]) break;
-        }
-        if (ok) ++cnt;
+    if (M % MOD == 0) {
+        cout << 0 << endl;
+        return 0;
     }
-
-    cout << (N-cnt) << endl;
-
+    ll z = modpow(K, N, MOD-1);
+    ll w = modpow(M, z, MOD);
+    cout << w << endl;
 }
