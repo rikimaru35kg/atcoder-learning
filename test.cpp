@@ -27,31 +27,64 @@ typedef pair<ll, ll> Pair;
 #define repk(i, k, n) for (ll i = k; i < (ll)(n); i++)
 #define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
 #define all(v) (v).begin(), (v).end()
+#define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 1e18;
-const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
+const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
+
+template <typename T>
+struct UnionFind {
+    vector<T> p;
+    UnionFind(T n) : p(n, -1) {}
+
+    T find (T x) {
+        if (p[x] == -1) return x;
+        return p[x] = find(p[x]);
+    }
+    void unite (T x, T y) {
+        x = find(x); y = find(y);
+        if (x == y) return;
+        p[x] = y;
+    }
+    bool same (T x, T y) {
+        return find(x) == find(y);
+    }
+};
 
 int main () {
-    string S; cin >> S;
-    ll K; cin >> K;
-    ll N = SIZE(S);
-    vl Sb(N, 0);
-    rep (i, N) Sb[i] = (S[i] == '.');
-
-    ll right = 0;
-    ll cnt = 0, ans = 0;
-    rep (left, N) {
-        while (right < N) {
-            if (cnt + Sb[right] > K) break;
-            cnt += Sb[right];
-            ++right;
-        }
-        chmax(ans, right-left);
-        cnt -= Sb[left];
+    ll N, M; cin >> N >> M;
+    vvl from(N);
+    vp edges(M);
+    rep (i, M) {
+        ll a, b; cin >> a >> b; --a; --b;
+        from[a].push_back(b);
+        from[b].push_back(a);
+        edges[i] = {a, b};
     }
 
-    cout << ans << endl;
+    vl deg(N, 0);
+    UnionFind<ll> uf(N);
+    for (auto [a, b] : edges) {
+        ++deg[a]; ++deg[b];
+        if (uf.same(a, b)) {
+            cout << "No" << endl;
+            return 0;
+        }
+        uf.unite(a, b);
+    }
+    ll mx = 0;
+    rep (i, N) {
+        chmax(mx, deg[i]);
+    }
+    if (mx > 2) {
+        cout << "No" << endl;
+        return 0;
+    }
+
+
+    cout << "Yes" << endl;
     return 0;
 }
+
