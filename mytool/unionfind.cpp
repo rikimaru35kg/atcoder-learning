@@ -3,8 +3,7 @@ using namespace std;
 
 template <typename T>
 struct UnionFind {
-    vector<T> p;
-    vector<T> num;
+    vector<T> p, num;
     UnionFind(T n) : p(n, -1), num(n, 1) {}
 
     T find (T x) {
