@@ -35,56 +35,85 @@ const ll INF = 1e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 template <typename T>
-struct UnionFind {
-    vector<T> p;
-    UnionFind(T n) : p(n, -1) {}
-
-    T find (T x) {
-        if (p[x] == -1) return x;
-        return p[x] = find(p[x]);
+struct BIT {
+    int n;             // 要素数
+    vector<T> bit[2];  // データの格納先
+    BIT(int n_) { init(n_); }
+    void init(int n_) {
+        n = n_ + 1;
+        for (int p = 0; p < 2; p++) bit[p].assign(n, 0);
     }
-    void unite (T x, T y) {
-        x = find(x); y = find(y);
-        if (x == y) return;
-        p[x] = y;
+    void add_sub(int p, int i, T x) {
+        for (int idx = i; idx < n; idx += (idx & -idx)) {
+            bit[p][idx] += x;
+        }
     }
-    bool same (T x, T y) {
-        return find(x) == find(y);
+    void add(int l, int r, T x) {  // [l,r) に加算
+        if (l < 0 || l > n || r < 0 || r > n) {
+            cout << "index used for BIT.add() is out of range" << endl;
+            return;
+        }
+        ++l; ++r;  // 0-indexed --> 1-indexed
+        add_sub(0, l, -x * (l - 1));
+        add_sub(0, r, x * (r - 1));
+        add_sub(1, l, x);
+        add_sub(1, r, -x);
+    }
+    void add1(int i, T x) {  // 要素iにxを加算
+        if (i < 0 || i > n) {
+            cout << "index used for BIT.add1() is out of range" << endl;
+            return;
+        }
+        add(i, i+1, x);
+    }
+    T sum_sub(int p, int i) {
+        T s(0);
+        for (int idx = i; idx > 0; idx -= (idx & -idx)) {
+            s += bit[p][idx];
+        }
+        return s;
+    }
+    T sum(int i) {
+        if (i < 0 || i > n) {
+            cout << "index used for BIT.sum() is out of range" << endl;
+        }
+        ++i;  // 0-indexed --> 1-indexed
+        return sum_sub(0, i) + sum_sub(1, i) * i;
     }
 };
 
+
 int main () {
-    ll N, M; cin >> N >> M;
-    vvl from(N);
-    vp edges(M);
-    rep (i, M) {
-        ll a, b; cin >> a >> b; --a; --b;
-        from[a].push_back(b);
-        from[b].push_back(a);
-        edges[i] = {a, b};
-    }
-
-    vl deg(N, 0);
-    UnionFind<ll> uf(N);
-    for (auto [a, b] : edges) {
-        ++deg[a]; ++deg[b];
-        if (uf.same(a, b)) {
-            cout << "No" << endl;
-            return 0;
-        }
-        uf.unite(a, b);
-    }
-    ll mx = 0;
+    ll N; cin >> N;
+    vl A(N), B(N);
+    rep (i, N) cin >> A[i];
+    rep (i, N) cin >> B[i];
+    rep (i, N) B[i] *= -1;
+    map<ll, vl> AB;
     rep (i, N) {
-        chmax(mx, deg[i]);
+        AB[A[i]].push_back(B[i]);
     }
-    if (mx > 2) {
-        cout << "No" << endl;
-        return 0;
+    map<ll,ll> cc;
+    rep (i, N) {
+        cc[B[i]] = 0;
+    }
+    ll i = 0;
+    for (auto [k, v] : cc) {
+        cc[k] = i++;
     }
 
+    BIT<ll> bit(N);
+    ll cnt = 0;
+    for (auto [a, b_vec]: AB) {
+        for (auto b: b_vec) {
+            bit.add1(cc[b], 1);
+        }
+        for (auto b: b_vec) {
+            cnt += bit.sum(cc[b]);
+        }
+    }
 
-    cout << "Yes" << endl;
-    return 0;
+    cout << cnt << endl;
+
 }
 

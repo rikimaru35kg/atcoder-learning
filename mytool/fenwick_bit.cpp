@@ -24,6 +24,10 @@ struct BIT {
         }
     }
     void add(int l, int r, T x) {  // [l,r) に加算
+        if (l < 0 || l > n || r < 0 || r > n) {
+            cout << "index used for BIT.add() is out of range" << endl;
+            return;
+        }
         ++l; ++r;  // 0-indexed --> 1-indexed
         add_sub(0, l, -x * (l - 1));
         add_sub(0, r, x * (r - 1));
@@ -31,6 +35,10 @@ struct BIT {
         add_sub(1, r, -x);
     }
     void add1(int i, T x) {  // 要素iにxを加算
+        if (i < 0 || i > n) {
+            cout << "index used for BIT.add1() is out of range" << endl;
+            return;
+        }
         add(i, i+1, x);
     }
     T sum_sub(int p, int i) {
@@ -41,6 +49,9 @@ struct BIT {
         return s;
     }
     T sum(int i) {
+        if (i < 0 || i > n) {
+            cout << "index used for BIT.sum() is out of range" << endl;
+        }
         ++i;  // 0-indexed --> 1-indexed
         return sum_sub(0, i) + sum_sub(1, i) * i;
     }
