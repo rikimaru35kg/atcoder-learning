@@ -36,31 +36,22 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, Q; cin >> N >> Q;
-    vvl from(N+1);
-    rep (i, Q) {
-        ll l, r; cin >> l >> r;
-        --l; --r;
-        from[l].push_back(r+1);
-        from[r+1].push_back(l);
+    ll N; cin >> N;
+    vs S(N);
+    rep (i, N) cin >> S[i];
+
+    unordered_set<string> st1, st2;
+    ll ans = 0;
+    rep (i, N) {
+        string rev = S[i];
+        reverse(all(rev));
+        bool b1, b2;
+        b1 = st1.insert(S[i]).second;
+        b2 = st1.insert(rev).second;
+        if (b1 || b2) {
+            ++ans;
+        }
     }
 
-    vl visited(N+1);
-
-    auto dfs = [&] (auto dfs, ll x, ll org=-1) {
-        if (x == 0) return true;
-        visited[x] = true;
-
-        bool ret = false;
-        for (auto y: from[x]) {
-            if (y == org) continue;
-            if (visited[y]) continue;
-            // visited[y] = true;
-            if (dfs(dfs, y, x)) ret = true;
-        }
-        // visited[x] = false;
-        return ret;
-    };
-
-    cout << (dfs(dfs, N) ? "Yes": "No") << endl;
+    cout << ans << endl;
 }

@@ -36,31 +36,48 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, Q; cin >> N >> Q;
-    vvl from(N+1);
-    rep (i, Q) {
-        ll l, r; cin >> l >> r;
-        --l; --r;
-        from[l].push_back(r+1);
-        from[r+1].push_back(l);
+    ll N, T, M; cin >> N >> T >> M;
+    vl A(M), B(M);
+    rep (i, M) {
+        ll a, b; cin >> a >> b; --a; --b;
+        A[i] = a; B[i] = b;
     }
 
-    vl visited(N+1);
-
-    auto dfs = [&] (auto dfs, ll x, ll org=-1) {
-        if (x == 0) return true;
-        visited[x] = true;
-
-        bool ret = false;
-        for (auto y: from[x]) {
-            if (y == org) continue;
-            if (visited[y]) continue;
-            // visited[y] = true;
-            if (dfs(dfs, y, x)) ret = true;
+    vector<vector<unordered_set<ll>>> stock;
+    auto dfs = [&] (auto dfs, ll idx, vector<unordered_set<ll>> st, ll sp) -> void {
+        if (idx == N-1) {
+            stock.push_back(st);
+            return;
         }
-        // visited[x] = false;
-        return ret;
+        rep (t, T) {
+            if (t > sp) break;
+            vector<unordered_set<ll>> nst = st;
+            nst[t].insert(idx);
+            ll nsp = sp;            
+            if (t == sp) ++nsp;
+            dfs(dfs, idx+1, nst, nsp);
+        }
     };
 
-    cout << (dfs(dfs, N) ? "Yes": "No") << endl;
+    vector<unordered_set<ll>> ist(T);
+    dfs(dfs, 0, ist, 0);
+
+    ll ans = 0;
+    rep (i, SIZE(stock)) {
+        vl team(T);
+        rep (t, T) {
+            for (auto x: stock[i][t]) {
+                team[x] = t;
+            }
+        }
+        bool ok = true;
+        rep (m, M) {
+            if (team[A[m]] == team[B[m]]) {
+                ok = false; break;
+            }
+        }
+        if (ok) ++ans;
+    }
+
+    cout << "";
 }

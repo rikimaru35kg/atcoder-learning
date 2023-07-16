@@ -36,31 +36,33 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, Q; cin >> N >> Q;
-    vvl from(N+1);
-    rep (i, Q) {
-        ll l, r; cin >> l >> r;
-        --l; --r;
-        from[l].push_back(r+1);
-        from[r+1].push_back(l);
+    ll N, M; cin >> N >> M;
+    vl P(N);
+    vector<unordered_set<ll>> F(N);
+    rep (i, N) {
+        cin >> P[i];
+        ll c; cin >> c;
+        rep (j, c) {
+            ll f; cin >> f;
+            F[i].insert(f);
+        }
     }
 
-    vl visited(N+1);
-
-    auto dfs = [&] (auto dfs, ll x, ll org=-1) {
-        if (x == 0) return true;
-        visited[x] = true;
-
-        bool ret = false;
-        for (auto y: from[x]) {
-            if (y == org) continue;
-            if (visited[y]) continue;
-            // visited[y] = true;
-            if (dfs(dfs, y, x)) ret = true;
+    bool ans = false;
+    rep (i, N) rep (j, N) {
+        if (P[i] < P[j]) continue;
+        bool non_exist = false;
+        for (auto f: F[i]) {
+            if (!F[j].count(f)) {
+                non_exist = true;
+            }
         }
-        // visited[x] = false;
-        return ret;
-    };
+        if (non_exist) continue;
+        if (P[i] > P[j] || SIZE(F[j]) > SIZE(F[i])) {
+            ans = true;
+        }
+    }
 
-    cout << (dfs(dfs, N) ? "Yes": "No") << endl;
+    if (ans) cout << "Yes" << endl;
+    else cout << "No" << endl;
 }
