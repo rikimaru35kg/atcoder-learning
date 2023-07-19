@@ -37,27 +37,41 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, X; cin >> N >> X;
-    vl a(N), b(N);
-    rep (i, N) {
-        cin >> a[i] >> b[i];
-    }
+    ll N; cin >> N;
+    vs S(N);
+    rep (i, N) cin >> S[i];
+    ll js = 6;
 
-    vl dp(X+1);
-    dp[0] = 1;
-    rep (i, N) {
-        vl p(X+1);
-        swap(dp, p);
-        rep (nx, X+1) {
-            if (nx + a[i] <= X) {
-                dp[nx + a[i]] |= p[nx];
-            }
-            if (nx + b[i] <= X) {
-                dp[nx + b[i]] |= p[nx];
-            }
+    auto judge4 = [&](string str) -> bool {
+        ll cnt = 0;
+        rep (i, js) {
+            if (str[i] == '#') ++cnt;
         }
+        if (cnt >= 4) return true;
+        else return false;
+    };
+
+    bool ok = false;
+    rep (i, N-js+1) rep (j, N-js+1) {
+        string str_tmp = "";
+        rep (k, js) str_tmp += S[i+k][j+k];
+        if (judge4(str_tmp)) ok = true;
+
+        str_tmp = "";
+        rep (k, js) str_tmp += S[i+k][j+js-1-k];
+        if (judge4(str_tmp)) ok = true;
     }
 
-    cout << (dp[X] ? "Yes": "No") << endl;
+    rep (i, N) rep (j, N-js+1) {
+        string str_tmp = S[i].substr(j, js);
+        if (judge4(str_tmp)) ok = true;
+    }
+    rep (i, N-js+1) rep (j, N) {
+        string str_tmp = "";
+        rep (k, js) str_tmp += S[i+k][j];
+        if (judge4(str_tmp)) ok = true;
+    }
 
+    if (ok) cout << "Yes" << endl;
+    else cout << "No" << endl;
 }
