@@ -36,5 +36,25 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
+    ll N; cin >> N;
+    string s; cin >> s;
+    vl A(N);
+    rep (i, N) {
+        A[i] = (s[i]-'0');
+    } 
 
+    vl dp(2);
+    ll ans = 0;
+    rep (i, N) {
+        if (A[i] == 0) {
+            dp[1] = dp[0] + dp[1];
+            dp[0] = 0;
+        }
+        else {
+            swap(dp[0], dp[1]);
+        }
+        dp[A[i]]++;
+        ans += dp[1];
+    }
+    cout << ans << endl;
 }

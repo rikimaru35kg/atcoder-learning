@@ -23,11 +23,11 @@ typedef pair<ll, ll> Pair;
 #define pqla priority_queue<ll,vl,greater<ll>>
 #define mll map<ll, ll>
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
-#define repr(i, n) for (ll i = (ll)(n) - 1; i >= 0; i--)
-#define repk(i, k, n) for (ll i = k; i < (ll)(n); i++)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
 #define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
 #define all(v) (v).begin(), (v).end()
-#define allr(v) (v).rbegin(), (v).rend()
+#define allr(v) (v).rbegin(), (v).rend()push
 #define SIZE(v) (ll)((v).size())
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
@@ -35,32 +35,29 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 
+
 int main () {
-    ll N, Q; cin >> N >> Q;
-    vvl from(N+1);
-    rep (i, Q) {
-        ll l, r; cin >> l >> r;
-        --l; --r;
-        from[l].push_back(r+1);
-        from[r+1].push_back(l);
+    ll N, X; cin >> N >> X;
+    vl a(N), b(N);
+    rep (i, N) {
+        cin >> a[i] >> b[i];
     }
 
-    vl visited(N+1);
-
-    auto dfs = [&] (auto dfs, ll x, ll org=-1) {
-        if (x == 0) return true;
-        visited[x] = true;
-
-        bool ret = false;
-        for (auto y: from[x]) {
-            if (y == org) continue;
-            if (visited[y]) continue;
-            // visited[y] = true;
-            if (dfs(dfs, y, x)) ret = true;
+    vl dp(X+1);
+    dp[0] = 1;
+    rep (i, N) {
+        vl p(X+1);
+        swap(dp, p);
+        rep (nx, X+1) {
+            if (nx + a[i] <= X) {
+                dp[nx + a[i]] |= p[nx];
+            }
+            if (nx + b[i] <= X) {
+                dp[nx + b[i]] |= p[nx];
+            }
         }
-        // visited[x] = false;
-        return ret;
-    };
+    }
 
-    cout << (dfs(dfs, N) ? "Yes": "No") << endl;
+    cout << (dp[X] ? "Yes": "No") << endl;
+
 }

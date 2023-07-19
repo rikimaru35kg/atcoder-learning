@@ -38,46 +38,40 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ll N, T, M; cin >> N >> T >> M;
     vl A(M), B(M);
+    vvl hate(N);
     rep (i, M) {
         ll a, b; cin >> a >> b; --a; --b;
         A[i] = a; B[i] = b;
+        hate[a].push_back(b);
+        hate[b].push_back(a);
     }
-
-    vector<vector<unordered_set<ll>>> stock;
-    auto dfs = [&] (auto dfs, ll idx, vector<unordered_set<ll>> st, ll sp) -> void {
-        if (idx == N-1) {
-            stock.push_back(st);
-            return;
-        }
-        rep (t, T) {
-            if (t > sp) break;
-            vector<unordered_set<ll>> nst = st;
-            nst[t].insert(idx);
-            ll nsp = sp;            
-            if (t == sp) ++nsp;
-            dfs(dfs, idx+1, nst, nsp);
-        }
-    };
-
-    vector<unordered_set<ll>> ist(T);
-    dfs(dfs, 0, ist, 0);
 
     ll ans = 0;
-    rep (i, SIZE(stock)) {
-        vl team(T);
-        rep (t, T) {
-            for (auto x: stock[i][t]) {
-                team[x] = t;
+    auto dfs = [&] (auto dfs, ll idx, vvl st) -> void {
+        if (idx == N) {
+            if (SIZE(st) == T) ++ans;
+            return;
+        }
+        rep (t, SIZE(st)) {
+            vvl nst = st;
+            bool flg_hate = false;
+            if (idx == 5) {
+                cout << "";
+            }
+            rep (pi, SIZE(st[t])) rep (pj, SIZE(hate[idx])) {
+                if (st[t][pi] == hate[idx][pj]) flg_hate = true;
+            }
+            if (!flg_hate) {
+                nst[t].push_back(idx);
+                dfs(dfs, idx+1, nst);
             }
         }
-        bool ok = true;
-        rep (m, M) {
-            if (team[A[m]] == team[B[m]]) {
-                ok = false; break;
-            }
-        }
-        if (ok) ++ans;
-    }
+        st.push_back(vl(1, idx));
+        dfs(dfs, idx+1, st);
+    };
 
-    cout << "";
+    vvl emp;
+    dfs(dfs, 0, emp);
+
+    cout << ans << endl;
 }
