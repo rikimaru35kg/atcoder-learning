@@ -37,41 +37,31 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N; cin >> N;
-    vs S(N);
-    rep (i, N) cin >> S[i];
-    ll js = 6;
+    string S; cin >> S;
+    // ll N = SIZE(S);
+    ll Q; cin >> Q;
+    vl t(Q), k(Q);
+    rep (i, Q) {cin >> t[i] >> k[i]; --k[i];}
 
-    auto judge4 = [&](string str) -> bool {
-        ll cnt = 0;
-        rep (i, js) {
-            if (str[i] == '#') ++cnt;
+    rep (i, Q) {
+        ll ti = t[i], ki = k[i];
+        ll step = 0;
+        if (ti <= 60) {
+            ll b = 1ll<<ti;
+            step = ki/b;
+            ki %= b;
+            // step = ki / (1LL<<ti);
+            // ki %= (1LL<<ti);
         }
-        if (cnt >= 4) return true;
-        else return false;
-    };
+        // ll s = S[step] - 'A';
 
-    bool ok = false;
-    rep (i, N-js+1) rep (j, N-js+1) {
-        string str_tmp = "";
-        rep (k, js) str_tmp += S[i+k][j+k];
-        if (judge4(str_tmp)) ok = true;
-
-        str_tmp = "";
-        rep (k, js) str_tmp += S[i+k][j+js-1-k];
-        if (judge4(str_tmp)) ok = true;
+        // ll r = __builtin_popcountll(ki);
+        ll r = __popcnt8(ki);
+        ll l = ti - r;
+        ll x = l + r*2 + (S[step]-'A');
+        // s = (s + r + ti) % 3;
+        char ans = 'A' + (x%3);
+        // cout << (char)(x%3 + 'A') << endl;
+        cout << ans << endl;
     }
-
-    rep (i, N) rep (j, N-js+1) {
-        string str_tmp = S[i].substr(j, js);
-        if (judge4(str_tmp)) ok = true;
-    }
-    rep (i, N-js+1) rep (j, N) {
-        string str_tmp = "";
-        rep (k, js) str_tmp += S[i+k][j];
-        if (judge4(str_tmp)) ok = true;
-    }
-
-    if (ok) cout << "Yes" << endl;
-    else cout << "No" << endl;
 }
