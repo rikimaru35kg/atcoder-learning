@@ -35,33 +35,47 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 
-
 int main () {
-    string S; cin >> S;
-    // ll N = SIZE(S);
-    ll Q; cin >> Q;
-    vl t(Q), k(Q);
-    rep (i, Q) {cin >> t[i] >> k[i]; --k[i];}
-
-    rep (i, Q) {
-        ll ti = t[i], ki = k[i];
-        ll step = 0;
-        if (ti <= 60) {
-            ll b = 1ll<<ti;
-            step = ki/b;
-            ki %= b;
-            // step = ki / (1LL<<ti);
-            // ki %= (1LL<<ti);
-        }
-        // ll s = S[step] - 'A';
-
-        // ll r = __builtin_popcountll(ki);
-        ll r = __popcnt8(ki);
-        ll l = ti - r;
-        ll x = l + r*2 + (S[step]-'A');
-        // s = (s + r + ti) % 3;
-        char ans = 'A' + (x%3);
-        // cout << (char)(x%3 + 'A') << endl;
-        cout << ans << endl;
+    ll N, M; cin>>N>>M;
+    vvl from(N);
+    rep (i, M) {
+        ll u, v; cin>>u>>v; --u;--v;
+        from[u].push_back(v);
     }
+
+    vl state(N, -1);
+    vb used(N);
+
+    auto dfs = [&](auto f, ll x) -> void {
+        if (used[x]) {
+            state[x] = 1;
+            return;
+        }
+        used[x] = true;
+        for (auto y: from[x]) {
+            if (state[y] == 0) continue;
+            if (state[y] == 1) {
+                state[x] = 1;
+                break;
+            }
+            f(f, y);
+            if (state[y] == 1) state[x] = 1;
+        }
+        if (state[x] != 1) state[x] = 0;
+        used[x] = false;
+    };
+
+    rep (i, N) {
+        if (state[i] != -1) continue;
+        dfs(dfs, i);
+    }
+
+    ll ans = 0;
+    rep (i, N) {
+        if (state[i] == 1) ++ans;
+    }
+
+    cout << ans << endl;
+
+
 }
