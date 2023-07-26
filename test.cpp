@@ -36,80 +36,33 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 
-vl make_vec(Pair p1, Pair p2) {
-    auto [x1, y1] = p1;
-    auto [x2, y2] = p2;
-    ll gcd12 = gcd(abs(x2-x1), abs(y2-y1));
-    vl vec12(2);
-    if (x2-x1>=0) {
-        vec12[0] = (x2-x1)/gcd12;
-        vec12[1] = (y2-y1)/gcd12;
-    } else {
-        vec12[0] = -(x2-x1)/gcd12;
-        vec12[1] = -(y2-y1)/gcd12;
-    }
-    return vec12;
-}
-
-bool is_line(Pair p1, Pair p2, Pair p3) {
-    vl vec12 = make_vec(p1, p2);
-    vl vec13 = make_vec(p1, p3);
-    return(vec12 == vec13);
-}
-
-ll sign(ll x) {
-    if (x > 0) return 1;
-    if (x == 0) return 0;
-    else return -1;
-}
-
-vl line_abc(Pair p1, Pair p2) {
-    auto [x1, y1] = p1;
-    auto [x2, y2] = p2;
-    ll a, b, c;
-    if (y1 != y2) {
-        a = (y2 - y1) * sign(y2 - y1);
-        b = -(x2 - x1) * sign(y2 - y1);
-        c = -x1*y2 + x2*y1 * sign(y2 - y1);
-    } else {
-        a = 0;
-        b = -(x2 - x1) * sign(x2 - x1) * (-1);
-        c = -x1*y2 + x2*y1 * sign(x2 - x1) * (-1);
-    }
-    ll g = gcd(gcd(abs(a), abs(b)), abs(c));
-    a /= g; b /= g; c /= g;
-    vl v;
-    v.push_back(a);
-    v.push_back(b);
-    v.push_back(c);
-    return v;
-}
-
 int main () {
-    ll N, K; cin >> N >> K;
-    vl X(N), Y(N);
-    rep (i, N) cin >> X[i] >> Y[i];
-
-    if (K <= 1) {
-        cout << "Infinity" << endl;
-        return 0;
+    ll N; cin >> N;
+    vl primes;
+    for (ll p = 2; 2*p*p*p <= N; ++p) {
+        bool div = false;
+        for (ll m = 2; m*m <= p; ++m) {
+            if (p % m == 0) {
+                div = true;
+                break;
+            }
+        }
+        if (!div) primes.push_back(p);
     }
 
-    set<vl> st;
-    rep (i, N) rep (j, i) {
-        ll cnt = 0;
-        Pair p1 = make_pair(X[i], Y[i]);
-        Pair p2 = make_pair(X[j], Y[j]);
-        rep (k, N) {
-            if (k == i || k == j) continue;
-            Pair p3 = make_pair(X[k], Y[k]);
-            if (is_line(p1, p2, p3)) ++cnt;
+    ll ans = 0;
+    rep (i, SIZE(primes)) {
+        ll l = -1, r = SIZE(primes);
+        while(r - l > 1) {
+            ll m = (l + r) / 2;
+            ll p = primes[i];
+            ll q = primes[m];
+            if (p <= N/q/q/q) l = m;
+            else r = m;
         }
-        if (cnt >= K - 2) {
-            vl vec = line_abc(p1, p2);
-            st.insert(vec);
-        }
+        ans += max(l - i, 0LL);
     }
 
-    cout << SIZE(st) << endl;
+    cout << ans << endl;
+
 }
