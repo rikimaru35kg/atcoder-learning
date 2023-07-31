@@ -35,52 +35,33 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-long long get_rand_range( long long min_val, long long max_val ) {
-    // 乱数生成器（メルセンヌツイスタ）
-    static std::mt19937_64 mt64(0);
-
-    // [min_val, max_val] の一様分布整数 (int) の分布生成器
-    std::uniform_int_distribution<long long> get_rand_uni_int( min_val, max_val );
-
-    // 乱数を生成
-    return get_rand_uni_int(mt64);
-}
-
 
 int main () {
-    ll N; cin >> N;
-    vl a(N), b(N);
-    rep (i, N) cin >> a[i];
-    rep (i, N) cin >> b[i];
-    ll Q; cin >> Q;
-    vl x(Q), y(Q);
-    rep (i, Q) cin >> x[i] >> y[i];
+    ll N; cin >>N;
+    vl A(N); rep (i, N) cin >> A[i];
 
-    unordered_set<ll> stA;
-    unordered_set<ll> stB;
-    map<ll,ll> hash;
-    rep (i, N) {
-        hash[a[i]] = get_rand_range(0, INF);
-        hash[b[i]] = get_rand_range(0, INF);
+    vvl dp(2, vl(2));
+    dp[0][0] = A[0];
+    dp[1][0] = INF;
+    dp[0][1] = INF;
+    repk (i, 1, N) {
+        vvl p(2, vl(2));
+        swap (dp, p);
+        rep (j, 2) {
+            dp[j][0] = min(p[j][0], p[j][1]) + A[i];
+            dp[j][1] = p[j][0];
+        }
+        // rep(k, 2) rep(m, 2) {
+        //     cout << dp[k][m] << " ";
+        // }
+        // cout << endl;
     }
 
-    stA.insert(a[0]);
-    stB.insert(b[0]);
-    vl hsh_A, hsh_B;
-    hsh_A.push_back(hash[a[0]]);
-    hsh_B.push_back(hash[b[0]]);
-    rep (i, N) {
-        if (i == 0) continue;
-        if (stA.insert(a[i]).second) hsh_A.push_back(hsh_A.back() ^ hash[a[i]]);
-        else hsh_A.push_back(hsh_A.back());
-        if (stB.insert(b[i]).second) hsh_B.push_back(hsh_B.back() ^ hash[b[i]]);
-        else hsh_B.push_back(hsh_B.back());
-    }
-    
-
-    rep (i, Q) {
-        if (hsh_A[x[i]-1] == hsh_B[y[i]-1]) puts("Yes");
-        else puts("No");
+    ll ans = INF;
+    rep (i, 2) rep(j, 2) {
+        if (i==1 && j ==1) continue;
+        chmin(ans, dp[i][j]);
     }
 
+    cout << ans << endl;
 }
