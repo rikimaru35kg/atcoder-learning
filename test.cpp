@@ -35,34 +35,52 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
+long long get_rand_range( long long min_val, long long max_val ) {
+    // 乱数生成器（メルセンヌツイスタ）
+    static std::mt19937_64 mt64(0);
+
+    // [min_val, max_val] の一様分布整数 (int) の分布生成器
+    std::uniform_int_distribution<long long> get_rand_uni_int( min_val, max_val );
+
+    // 乱数を生成
+    return get_rand_uni_int(mt64);
+}
+
 
 int main () {
     ll N; cin >> N;
-    vl primes;
-    for (ll p = 2; 2*p*p*p <= N; ++p) {
-        bool div = false;
-        for (ll m = 2; m*m <= p; ++m) {
-            if (p % m == 0) {
-                div = true;
-                break;
-            }
-        }
-        if (!div) primes.push_back(p);
+    vl a(N), b(N);
+    rep (i, N) cin >> a[i];
+    rep (i, N) cin >> b[i];
+    ll Q; cin >> Q;
+    vl x(Q), y(Q);
+    rep (i, Q) cin >> x[i] >> y[i];
+
+    unordered_set<ll> stA;
+    unordered_set<ll> stB;
+    map<ll,ll> hash;
+    rep (i, N) {
+        hash[a[i]] = get_rand_range(0, INF);
+        hash[b[i]] = get_rand_range(0, INF);
     }
 
-    ll ans = 0;
-    rep (i, SIZE(primes)) {
-        ll l = -1, r = SIZE(primes);
-        while(r - l > 1) {
-            ll m = (l + r) / 2;
-            ll p = primes[i];
-            ll q = primes[m];
-            if (p <= N/q/q/q) l = m;
-            else r = m;
-        }
-        ans += max(l - i, 0LL);
+    stA.insert(a[0]);
+    stB.insert(b[0]);
+    vl hsh_A, hsh_B;
+    hsh_A.push_back(hash[a[0]]);
+    hsh_B.push_back(hash[b[0]]);
+    rep (i, N) {
+        if (i == 0) continue;
+        if (stA.insert(a[i]).second) hsh_A.push_back(hsh_A.back() ^ hash[a[i]]);
+        else hsh_A.push_back(hsh_A.back());
+        if (stB.insert(b[i]).second) hsh_B.push_back(hsh_B.back() ^ hash[b[i]]);
+        else hsh_B.push_back(hsh_B.back());
     }
+    
 
-    cout << ans << endl;
+    rep (i, Q) {
+        if (hsh_A[x[i]-1] == hsh_B[y[i]-1]) puts("Yes");
+        else puts("No");
+    }
 
 }

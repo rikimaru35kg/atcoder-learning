@@ -38,8 +38,9 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main() {
-    cout << gcd(0, 0) << endl;
-    cout << gcd(-8, -12) << endl;
-    cout << gcd(8, -12) << endl;
-    cout << gcd(8, 12) << endl;
+    mt19937_64 mt64;
+    cout << mt64() << endl;
+    cout << mt64() << endl;
+    cout << mt64() << endl;
+    cout << mt64() << endl;
 }
