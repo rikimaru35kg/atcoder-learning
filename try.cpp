@@ -38,9 +38,8 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main() {
-    mt19937_64 mt64;
-    cout << mt64() << endl;
-    cout << mt64() << endl;
-    cout << mt64() << endl;
-    cout << mt64() << endl;
+    cout << (int)'z' << endl;
+    cout << (int)'0' << endl;
+    cout << (int)'9' << endl;
+    cout << (int)'!' << endl;
 }

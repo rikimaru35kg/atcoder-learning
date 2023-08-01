@@ -37,31 +37,35 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N; cin >>N;
-    vl A(N); rep (i, N) cin >> A[i];
+    ll N, M; cin >>N >> M;
+    vector<vector<tuple<ll,ll,ll>>> from(N);
+    rep (i, M) {
+        ll a, b, c; cin >> a >> b >> c;
+        --a; --b;
+        from[a].emplace_back(b, i, c);
+        from[b].emplace_back(a, i, c);
+    }
 
-    vvl dp(2, vl(2));
-    dp[0][0] = A[0];
-    dp[1][0] = INF;
-    dp[0][1] = INF;
-    repk (i, 1, N) {
-        vvl p(2, vl(2));
-        swap (dp, p);
-        rep (j, 2) {
-            dp[j][0] = min(p[j][0], p[j][1]) + A[i];
-            dp[j][1] = p[j][0];
+    vl dist(N, INF);
+    dist[0] = 0;
+    vl edges;
+    priority_queue<tuple<ll,ll,ll>, vector<tuple<ll,ll,ll>>, greater<tuple<ll,ll,ll>>> pque;
+    pque.emplace(0, 0, -1); //{dist, vertex, edge_num}
+    while(pque.size()) {
+        auto [_d, _v, _n] = pque.top(); pque.pop();
+        ll d = _d, v = _v, n = _n;
+        if (dist[v] != d) continue;
+        if (n != -1) edges.push_back(n);
+
+        for (auto [nv, m, c]: from[v]) {
+            if (dist[nv] > d + c) {
+                dist[nv] = d + c;
+                pque.emplace(dist[nv], nv, m);
+            }
         }
-        // rep(k, 2) rep(m, 2) {
-        //     cout << dp[k][m] << " ";
-        // }
-        // cout << endl;
     }
 
-    ll ans = INF;
-    rep (i, 2) rep(j, 2) {
-        if (i==1 && j ==1) continue;
-        chmin(ans, dp[i][j]);
-    }
+    rep (i, SIZE(edges)) cout << edges[i]+1 << " ";
+    cout << endl;
 
-    cout << ans << endl;
 }
