@@ -35,37 +35,20 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-
 int main () {
-    ll N, M; cin >>N >> M;
-    vector<vector<tuple<ll,ll,ll>>> from(N);
-    rep (i, M) {
-        ll a, b, c; cin >> a >> b >> c;
-        --a; --b;
-        from[a].emplace_back(b, i, c);
-        from[b].emplace_back(a, i, c);
-    }
-
-    vl dist(N, INF);
-    dist[0] = 0;
-    vl edges;
-    priority_queue<tuple<ll,ll,ll>, vector<tuple<ll,ll,ll>>, greater<tuple<ll,ll,ll>>> pque;
-    pque.emplace(0, 0, -1); //{dist, vertex, edge_num}
-    while(pque.size()) {
-        auto [_d, _v, _n] = pque.top(); pque.pop();
-        ll d = _d, v = _v, n = _n;
-        if (dist[v] != d) continue;
-        if (n != -1) edges.push_back(n);
-
-        for (auto [nv, m, c]: from[v]) {
-            if (dist[nv] > d + c) {
-                dist[nv] = d + c;
-                pque.emplace(dist[nv], nv, m);
-            }
+    ll N; cin >> N;
+    map<ll,ll> mp;
+    rep1 (i, N) {
+        ll x = i;
+        for (ll m=2; m*m<=i; ++m) {
+            while(x % (m*m) == 0) x /= (m*m);
         }
+        mp[x]++;
     }
 
-    rep (i, SIZE(edges)) cout << edges[i]+1 << " ";
-    cout << endl;
-
+    ll ans = 0;
+    for (auto [_, v]: mp) {
+        ans += v*v;
+    }
+    cout << ans << endl;
 }
