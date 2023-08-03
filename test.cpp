@@ -36,44 +36,24 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 int main () {
-    ll N, M; cin >> N >> M;
-    vvl from(N);
-    rep (i, M) {
-        ll a, b; cin >> a >> b; --a; --b;
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    ll Q; cin >> Q;
-    vl x(Q), k(Q);
-    rep (i, Q) {
-        ll _x, _k; cin >> _x >> _k; --_x;
-        x[i] = _x; k[i] = _k;
+    vl h(3), w(3);
+    rep (i, 3) cin >> h[i];
+    rep (i, 3) cin >> w[i];
+
+    ll M = 28;
+    ll ans = 0;
+    rep1 (i, M) rep1 (j, M) rep1 (k, M) rep1 (l, M) {
+        vvl A(3, vl(3));
+        A[0][0] = i; A[0][1] = j; A[1][0] = k; A[1][1] = l;
+        A[0][2] = h[0] - A[0][0] - A[0][1]; if (A[0][2] < 1) continue;
+        A[1][2] = h[1] - A[1][0] - A[1][1]; if (A[1][2] < 1) continue;
+        A[2][0] = w[0] - A[0][0] - A[1][0]; if (A[2][0] < 1) continue;
+        A[2][1] = w[1] - A[0][1] - A[1][1]; if (A[2][1] < 1) continue;
+        A[2][2] = h[2] - A[2][0] - A[2][1]; if (A[2][2] < 1) continue;
+        // ll h_q = 0; rep (m, 3) h_q += A[2][m];
+        ll w_q = 0; rep (m, 3) w_q += A[m][2];
+        if (w_q == w[2]) ++ans;
     }
 
-    auto bfs = [&](ll _x, ll _k) -> ll {
-        ll ret = _x + 1;
-        unordered_set<ll> visited;
-        visited.insert(_x);
-        queue<Pair> que;
-        que.emplace(_x, 0);
-        while(que.size()) {
-            auto [v, d] = que.front(); que.pop();
-            if (d >= _k) continue;
-
-            for (auto nv: from[v]) {
-                if (visited.count(nv)) continue;
-                ret += nv + 1;
-                visited.insert(nv);
-                if (d+1 >= _k) continue;
-                que.emplace(nv, d+1);
-            }
-        }
-        return ret;
-    };
-
-    rep (i, Q) {
-        ll _x = x[i], _k = k[i];
-        ll ans = bfs(_x, _k);
-        cout << ans << "\n";
-    }
+    cout << ans << endl;
 }
