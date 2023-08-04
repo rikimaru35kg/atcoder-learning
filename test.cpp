@@ -34,26 +34,84 @@ template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, tr
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
+struct SCC {
+    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
+
+    void add_edge (long long a, long long b) {
+        from[a].push_back(b);
+        ifrom[b].push_back(a);
+    }
+
+    vector<vector<long long>> scc () {
+        vector<vector<long long>> group;
+        back_num.assign(n, -1);
+        selected.assign(n, false);
+        bn = 0;
+        for (long long i=0; i < n; ++i) {
+            if (!selected[i]) dfs1(i);
+        }
+        reverse(back_num.begin(), back_num.end());
+        selected.assign(n, false);
+        for (long long i=0; i < n; ++i) {
+            long long x = back_num[i];
+            if (selected[x]) continue;
+            vector<long long> emp;
+            dfs2(x, emp);
+            group.push_back(emp);
+        }
+        return group;
+    }
+
+private:
+    long long n, bn;
+    vector<vector<long long>> from, ifrom;
+    vector<long long> back_num;
+    vector<bool> selected;
+
+    void dfs1 (long long x) {
+        selected[x] = true;
+        for (auto y: from[x]) {
+            if (selected[y]) continue;
+            dfs1(y);
+        }
+        back_num[bn] = x;
+        ++bn;
+    }
+
+    void dfs2 (long long x, vector<long long> &vec) {
+        selected[x] = true;
+        vec.push_back(x);
+        for (auto y: ifrom[x]) {
+            if (selected[y]) continue;
+            dfs2(y, vec);
+        }
+    }
+};
+
 
 int main () {
-    vl h(3), w(3);
-    rep (i, 3) cin >> h[i];
-    rep (i, 3) cin >> w[i];
+    ll N; cin >> N;
+    SCC scc(N);
+    rep (i, N) {
+        ll x; cin >> x; --x;
+        scc.add_edge(i, x);
+    }
+    vl C(N);
+    rep (i, N) cin >> C[i];
 
-    ll M = 28;
+    vvl group = scc.scc();
+
     ll ans = 0;
-    rep1 (i, M) rep1 (j, M) rep1 (k, M) rep1 (l, M) {
-        vvl A(3, vl(3));
-        A[0][0] = i; A[0][1] = j; A[1][0] = k; A[1][1] = l;
-        A[0][2] = h[0] - A[0][0] - A[0][1]; if (A[0][2] < 1) continue;
-        A[1][2] = h[1] - A[1][0] - A[1][1]; if (A[1][2] < 1) continue;
-        A[2][0] = w[0] - A[0][0] - A[1][0]; if (A[2][0] < 1) continue;
-        A[2][1] = w[1] - A[0][1] - A[1][1]; if (A[2][1] < 1) continue;
-        A[2][2] = h[2] - A[2][0] - A[2][1]; if (A[2][2] < 1) continue;
-        // ll h_q = 0; rep (m, 3) h_q += A[2][m];
-        ll w_q = 0; rep (m, 3) w_q += A[m][2];
-        if (w_q == w[2]) ++ans;
+    rep (i, SIZE(group)) {
+        vl gr = group[i];
+        if (SIZE(gr) == 1) continue;
+        ll tmp = INF;
+        for (auto x: gr) {
+            chmin(tmp, C[x]);
+        }
+        ans += tmp;
     }
 
     cout << ans << endl;
+
 }

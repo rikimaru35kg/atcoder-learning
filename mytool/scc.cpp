@@ -2,11 +2,6 @@
 using namespace std;
 
 struct SCC {
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num, rback_num;
-    vector<vector<long long>> group;
-    vector<bool> selected;
     SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
 
     void add_edge (long long a, long long b) {
@@ -14,15 +9,39 @@ struct SCC {
         ifrom[b].push_back(a);
     }
 
-    void dfs1 (long long x, long long &bn) {
+    vector<vector<long long>> scc () {
+        vector<vector<long long>> group;
+        back_num.assign(n, -1);
+        selected.assign(n, false);
+        bn = 0;
+        for (long long i=0; i < n; ++i) {
+            if (!selected[i]) dfs1(i);
+        }
+        reverse(back_num.begin(), back_num.end());
+        selected.assign(n, false);
+        for (long long i=0; i < n; ++i) {
+            long long x = back_num[i];
+            if (selected[x]) continue;
+            vector<long long> emp;
+            dfs2(x, emp);
+            group.push_back(emp);
+        }
+        return group;
+    }
+
+private:
+    long long n, bn;
+    vector<vector<long long>> from, ifrom;
+    vector<long long> back_num;
+    vector<bool> selected;
+
+    void dfs1 (long long x) {
         selected[x] = true;
         for (auto y: from[x]) {
-            if (back_num[y] != -1) continue;
             if (selected[y]) continue;
-            dfs1(y, bn);
+            dfs1(y);
         }
-        back_num[x] = bn;
-        rback_num[bn] = x;
+        back_num[bn] = x;
         ++bn;
     }
 
@@ -34,28 +53,5 @@ struct SCC {
             dfs2(y, vec);
         }
     }
-
-    vector<vector<long long>> scc () {
-        back_num.assign(n, -1);
-        rback_num.assign(n, -1);
-        selected.assign(n, false);
-        long long bn = 0;
-        for (long long i=0; i < n; ++i) {
-            if (back_num[i] == -1) dfs1(i, bn);
-        }
-        sort(rback_num.begin(), rback_num.end());
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            long long x = rback_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            group.push_back(emp);
-            dfs2(x, group.back());
-        }
-        return group;
-    }
 };
 
-int main () {
-
-}
