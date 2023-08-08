@@ -37,64 +37,28 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, Q, X; cin >> N >> Q >> X;
-    vl W(2*N);
+    ll N, M; cin >> N >> M;
+    vl A(M), B(M);
+    rep (i, M) cin >> A[i] >> B[i];
+    rep (i, M) {--A[i]; --B[i];}
+
+    vl indeg(N), outdeg(N);
+    rep (i, M) {
+        ++indeg[B[i]];
+        ++outdeg[A[i]];
+    }
+
+    ll vict = -2;
     rep (i, N) {
-        cin >> W[i];
-        W[i+N] = W[i];
+        if (!(indeg[i] == 0 && outdeg[i] >= 1)) continue;
+        bool ok = true;
+        rep (j, N) {
+            if (i == j) continue;
+            if (indeg[j] == 0) ok = false;
+        }
+        if (ok) vict = i;
     }
 
-    ll Wtotal = 0;
-    rep (i, N) Wtotal += W[i];
-    ll rem = X % Wtotal;
-    ll q = X / Wtotal;
-
-    ll r = 0;
-    vl nxt(N), ans(N);
-    ll sum = 0;
-    rep (l, N) {
-        while (r < 2*N && sum < rem) {
-            sum += W[r];
-            ++r;
-        }
-        nxt[l] = r;
-        ans[l] = q * N + r - l;
-        
-        if (l == r) ++r;
-        else sum -= W[l];
-    }
-    rep (i, N) nxt[i] %= N;
-
-    ll spos = 0;
-    vl cnt; ll idx = 0;
-    cnt.push_back(0);
-    vb seen(N);
-    rep (i, N) {
-        seen[idx] = true;
-        ll ni = nxt[idx];
-        if (seen[ni]) {
-            rep (j, SIZE(cnt)) {
-                if (cnt[j] == ni) break;
-                ++spos;
-            }
-            break;
-        }
-        cnt.push_back(ni);
-        idx = ni;
-    }
-    ll csize = SIZE(cnt) - spos;
-
-    rep (i, Q) {
-        ll k; cin >> k; --k;
-        ll num;
-        if (k <= spos) {
-            num = k;
-        }
-        else {
-            num = spos + (k - spos) % csize;
-        }
-        cout << ans[cnt[num]] << endl;
-    }
-
+    cout << vict+1 << endl;
 
 }

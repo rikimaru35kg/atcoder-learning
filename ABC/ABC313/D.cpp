@@ -37,64 +37,48 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, Q, X; cin >> N >> Q >> X;
-    vl W(2*N);
-    rep (i, N) {
-        cin >> W[i];
-        W[i+N] = W[i];
+    ll N, K; cin >> N >> K;
+    vl A(N);
+
+    auto ques = [&](vl vec) -> ll {
+        cout << "?" << " ";
+        rep (i, K) cout << vec[i] << " ";
+        cout << endl;
+        ll res; cin >> res;
+        return res;
+    };
+
+    vl res;
+    ll total = 0;
+    rep1(i, K+1) {
+        vl x;
+        rep1 (j, K+1) {
+            if (i==j) continue;
+            x.push_back(j);
+        }
+        ll r = ques(x);
+        res.push_back(r);
+        total ^= r;
+    }
+    rep (i, K+1) {
+        A[i] = total ^ res[i];
     }
 
-    ll Wtotal = 0;
-    rep (i, N) Wtotal += W[i];
-    ll rem = X % Wtotal;
-    ll q = X / Wtotal;
-
-    ll r = 0;
-    vl nxt(N), ans(N);
-    ll sum = 0;
-    rep (l, N) {
-        while (r < 2*N && sum < rem) {
-            sum += W[r];
-            ++r;
-        }
-        nxt[l] = r;
-        ans[l] = q * N + r - l;
-        
-        if (l == r) ++r;
-        else sum -= W[l];
+    ll Km1 = 0;
+    vl q;
+    rep1 (i, K-1) {
+        q.push_back(i);
+        Km1 ^= A[i-1];
     }
-    rep (i, N) nxt[i] %= N;
-
-    ll spos = 0;
-    vl cnt; ll idx = 0;
-    cnt.push_back(0);
-    vb seen(N);
-    rep (i, N) {
-        seen[idx] = true;
-        ll ni = nxt[idx];
-        if (seen[ni]) {
-            rep (j, SIZE(cnt)) {
-                if (cnt[j] == ni) break;
-                ++spos;
-            }
-            break;
-        }
-        cnt.push_back(ni);
-        idx = ni;
-    }
-    ll csize = SIZE(cnt) - spos;
-
-    rep (i, Q) {
-        ll k; cin >> k; --k;
-        ll num;
-        if (k <= spos) {
-            num = k;
-        }
-        else {
-            num = spos + (k - spos) % csize;
-        }
-        cout << ans[cnt[num]] << endl;
+    repk (i, K+2, N+1) {
+        q.push_back(i);
+        ll r = ques(q);
+        A[i-1] = r ^ Km1;
+        q.pop_back();
     }
 
+    cout << "! ";
+    rep (i, N) cout << A[i] << ' ';
+    cout << endl;
 
 }

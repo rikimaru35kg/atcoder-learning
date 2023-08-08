@@ -37,64 +37,27 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N, Q, X; cin >> N >> Q >> X;
-    vl W(2*N);
+    ll N; cin >> N;
+    vl A(N);
+    ll avg = 0;
     rep (i, N) {
-        cin >> W[i];
-        W[i+N] = W[i];
+        ll x; cin >> x;
+        A[i] = x;
+        avg += x;
     }
-
-    ll Wtotal = 0;
-    rep (i, N) Wtotal += W[i];
-    ll rem = X % Wtotal;
-    ll q = X / Wtotal;
-
-    ll r = 0;
-    vl nxt(N), ans(N);
-    ll sum = 0;
-    rep (l, N) {
-        while (r < 2*N && sum < rem) {
-            sum += W[r];
-            ++r;
-        }
-        nxt[l] = r;
-        ans[l] = q * N + r - l;
-        
-        if (l == r) ++r;
-        else sum -= W[l];
-    }
-    rep (i, N) nxt[i] %= N;
-
-    ll spos = 0;
-    vl cnt; ll idx = 0;
-    cnt.push_back(0);
-    vb seen(N);
+    avg /= N;
+    ll pcnt = 0;
+    ll mcnt = 0;
     rep (i, N) {
-        seen[idx] = true;
-        ll ni = nxt[idx];
-        if (seen[ni]) {
-            rep (j, SIZE(cnt)) {
-                if (cnt[j] == ni) break;
-                ++spos;
-            }
-            break;
+        if (A[i] < avg) {
+            pcnt += avg - A[i];
+            continue;
         }
-        cnt.push_back(ni);
-        idx = ni;
+        if (A[i] > avg + 1) {
+            mcnt += A[i] - (avg + 1);
+            continue;
+        }
     }
-    ll csize = SIZE(cnt) - spos;
-
-    rep (i, Q) {
-        ll k; cin >> k; --k;
-        ll num;
-        if (k <= spos) {
-            num = k;
-        }
-        else {
-            num = spos + (k - spos) % csize;
-        }
-        cout << ans[cnt[num]] << endl;
-    }
-
-
+    ll cnt = max(pcnt, mcnt);
+    cout << cnt << endl;
 }
