@@ -35,35 +35,32 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-
 int main () {
     ll N, M; cin >> N >> M;
-    vl X(N);
-    rep (i, N) cin >> X[i];
-    vl C(M), Y(M);
-    rep (i, M) cin >> C[i] >> Y[i];
-    map<ll,ll> bonus;
-    rep (i, M) bonus[C[i]] = Y[i];
+    string SS; cin >> SS;
+    vl C(N);
+    rep (i, N) {cin >> C[i]; --C[i];}
 
-    vl dp(N+1);
-    dp[1] = X[0];
-    dp[1] += bonus[1];
-    repk (i, 1, N) {
-        vl p(N+1);
-        swap (p, dp);
-        rep (cnt, N) {
-            if (p[cnt] > 0) {
-                dp[cnt+1] += p[cnt] + X[i];
-                dp[cnt+1] += bonus[cnt+1];
-            }
-        }
-        rep1 (cnt, N)
-        chmax(dp[0], p[cnt]);
+    vs S(M);
+    rep (i, N) {
+        S[C[i]].push_back(SS[i]);
+    }
+    vl ind(M);
+    rep (i, M) {
+        ind[i] = SIZE(S[i]) - 1;
     }
 
-    ll ans = -1;
-    rep (i, N+1) {
-        chmax(ans, dp[i]);
+    auto f = [&](ll x, ll n) -> ll {
+        return (x+1) % n;
+    };
+
+    string ans = "";
+    rep (i, N) {
+        char tmp = S[C[i]][ind[C[i]]];
+        ans.push_back(tmp);
+        ind[C[i]] = f(ind[C[i]], SIZE(S[C[i]]));
     }
+
     cout << ans << endl;
+    
 }

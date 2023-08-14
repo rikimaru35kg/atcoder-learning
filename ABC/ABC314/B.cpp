@@ -35,35 +35,39 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-
 int main () {
-    ll N, M; cin >> N >> M;
-    vl X(N);
-    rep (i, N) cin >> X[i];
-    vl C(M), Y(M);
-    rep (i, M) cin >> C[i] >> Y[i];
-    map<ll,ll> bonus;
-    rep (i, M) bonus[C[i]] = Y[i];
+    ll N; cin >> N;
+    vvl A(N); vl C(N);
+    rep (i, N) {
+        cin >> C[i];
+        rep (j, C[i]) {
+            ll a; cin >> a;
+            A[i].push_back(a);
+        }
+    }
+    ll X; cin >> X;
 
-    vl dp(N+1);
-    dp[1] = X[0];
-    dp[1] += bonus[1];
-    repk (i, 1, N) {
-        vl p(N+1);
-        swap (p, dp);
-        rep (cnt, N) {
-            if (p[cnt] > 0) {
-                dp[cnt+1] += p[cnt] + X[i];
-                dp[cnt+1] += bonus[cnt+1];
+    vb ok(N);
+    ll c_min = INF;
+    rep (i, N) {
+        rep (j, C[i]) {
+            if (X == A[i][j]) {
+                ok[i] = true;
+                chmin(c_min, C[i]);
+                break;
             }
         }
-        rep1 (cnt, N)
-        chmax(dp[0], p[cnt]);
     }
 
-    ll ans = -1;
-    rep (i, N+1) {
-        chmax(ans, dp[i]);
+    ll cnt = 0;
+    rep (i, N) {
+        if (ok[i] && C[i] == c_min) ++cnt;
     }
-    cout << ans << endl;
+    cout << cnt << endl;
+    if (cnt == 0) return 0;
+    rep (i, N) {
+        if (ok[i] && C[i] == c_min) cout << i+1 << " ";
+    }
+    cout << endl;
+
 }

@@ -35,35 +35,59 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-
 int main () {
-    ll N, M; cin >> N >> M;
-    vl X(N);
-    rep (i, N) cin >> X[i];
-    vl C(M), Y(M);
-    rep (i, M) cin >> C[i] >> Y[i];
-    map<ll,ll> bonus;
-    rep (i, M) bonus[C[i]] = Y[i];
-
-    vl dp(N+1);
-    dp[1] = X[0];
-    dp[1] += bonus[1];
-    repk (i, 1, N) {
-        vl p(N+1);
-        swap (p, dp);
-        rep (cnt, N) {
-            if (p[cnt] > 0) {
-                dp[cnt+1] += p[cnt] + X[i];
-                dp[cnt+1] += bonus[cnt+1];
-            }
+    ll N; cin >> N;
+    string S; cin >> S;
+    // rep (i, N) {
+    //     if (S[i] >= 'a' && S[i] << 'z') {
+    //         st.insert(i);
+    //     }
+    //     else st.insert(i);
+    // }
+    ll Q; cin >> Q;
+    ll base = -1;
+    set<ll> st;
+    rep (i, Q) {
+        ll t, x; cin >> t >> x; --x;
+        char c; cin >> c;
+        if (t == 1) {
+            S[x] = c;
+            st.insert(x);
+            continue;
         }
-        rep1 (cnt, N)
-        chmax(dp[0], p[cnt]);
+        if (t == 2) {
+            base = 0;
+            st.clear();
+            continue;
+        }
+        base = 1;
+        st.clear();
     }
 
-    ll ans = -1;
-    rep (i, N+1) {
-        chmax(ans, dp[i]);
+    auto sml = [&](char c) -> char {
+        if (c >= 'a' && c <= 'z') return c;
+        return c + ('a' - 'A');
+    };
+    auto lrg = [&](char c) -> char {
+        if (c >= 'A' && c <= 'Z') return c;
+        return c - ('a' - 'A');
+    };
+
+
+    if (base == -1) {
+        cout << S << endl;
+        return 0;
     }
-    cout << ans << endl;
+    rep (i, N) {
+        if (st.count(i)) {
+            printf("%c", S[i]);
+        }
+        else if (base == 0) {
+            printf("%c", sml(S[i]));
+        }
+        else if (base == 1) {
+            printf("%c", lrg(S[i]));
+        }
+    }
+    cout << endl;
 }

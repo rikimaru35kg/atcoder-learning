@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+import os
+import sys
+
+
+filehead = """#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
@@ -35,35 +39,14 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-
 int main () {
-    ll N, M; cin >> N >> M;
-    vl X(N);
-    rep (i, N) cin >> X[i];
-    vl C(M), Y(M);
-    rep (i, M) cin >> C[i] >> Y[i];
-    map<ll,ll> bonus;
-    rep (i, M) bonus[C[i]] = Y[i];
-
-    vl dp(N+1);
-    dp[1] = X[0];
-    dp[1] += bonus[1];
-    repk (i, 1, N) {
-        vl p(N+1);
-        swap (p, dp);
-        rep (cnt, N) {
-            if (p[cnt] > 0) {
-                dp[cnt+1] += p[cnt] + X[i];
-                dp[cnt+1] += bonus[cnt+1];
-            }
-        }
-        rep1 (cnt, N)
-        chmax(dp[0], p[cnt]);
-    }
-
-    ll ans = -1;
-    rep (i, N+1) {
-        chmax(ans, dp[i]);
-    }
-    cout << ans << endl;
+    
 }
+"""
+
+# cpath = os.path.curdir
+
+filename = f'{sys.argv[1]}.cpp' 
+
+with open(filename, 'w', encoding='utf-8') as f:
+    f.writelines(filehead)
