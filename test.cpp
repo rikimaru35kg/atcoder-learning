@@ -36,34 +36,62 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 
-int main () {
-    ll N, M; cin >> N >> M;
-    vl X(N);
-    rep (i, N) cin >> X[i];
-    vl C(M), Y(M);
-    rep (i, M) cin >> C[i] >> Y[i];
-    map<ll,ll> bonus;
-    rep (i, M) bonus[C[i]] = Y[i];
+struct BIT {
+    ll n;
+    vl bit;
+    BIT (ll _n): n(_n+1), bit(_n+1) {}
 
-    vl dp(N+1);
-    dp[1] = X[0];
-    dp[1] += bonus[1];
-    repk (i, 1, N) {
-        vl p(N+1);
-        swap (p, dp);
-        rep (cnt, N) {
-            if (p[cnt] > 0) {
-                dp[cnt+1] += p[cnt] + X[i];
-                dp[cnt+1] += bonus[cnt+1];
-            }
+    void add (ll i, ll x) {
+        for (ll idx = i; idx < n; idx += (idx & (~idx+1))) {
+            bit[idx] += x;
         }
-        rep1 (cnt, N)
-        chmax(dp[0], p[cnt]);
+    }
+    ll sum (ll i) {
+        ll ret = 0;
+        for (ll idx = i; idx > 0; idx -= (idx & (~idx+1))) {
+            ret += bit[idx];
+        }
+        return ret;
+    }
+};
+
+ll flip_num(vl vec) {
+    ll ret = 0;
+    ll size = vec.size();
+    map<ll,ll> cc;
+    rep(i, size) cc[vec[i]] = 0;
+    ll idx = 1;
+    for (auto [k, v]: cc) {
+        cc[k] = idx;
+        idx++;
+    }
+    ll size2 = cc.size();
+    BIT bit(size2);
+    rep (i, size) {
+        ret += (bit.sum(size2) - bit.sum(cc[vec[i]]));
+        bit.add(cc[vec[i]], 1);
     }
 
-    ll ans = -1;
-    rep (i, N+1) {
-        chmax(ans, dp[i]);
+    return ret;
+}
+
+int main () {
+    ll N; cin >> N;
+    vl C(N), X(N);
+    rep (i, N) cin >> C[i];
+    rep (i, N) cin >> X[i];
+
+    map<ll,vl> mp;
+    rep (i, N) {
+        mp[C[i]].push_back(X[i]);
     }
+    ll ans = 0;
+    ans = flip_num(X);
+    for (auto [k, v]: mp) {
+        ans -= flip_num(v);
+    }
+
     cout << ans << endl;
+
+    
 }
