@@ -35,81 +35,29 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-template <typename T>
-struct UnionFind {
-    vector<T> p, num;
-    vector<bool> con;
-    UnionFind(T n) : p(n, -1), num(n, 1), con(n, false) {}
-
-    void connect(T x) {
-        con[x] = true;
-    }
-
-    T find (T x) {
-        if (p[x] == -1) return x;
-        return p[x] = find(p[x]);
-    }
-    void unite (T x, T y) {
-        x = find(x); y = find(y);
-        if (x == y) return;
-        p[x] = y;
-        num[y] += num[x];
-        if (con[x] | con[y]) con[y] = true;
-    }
-    bool same (T x, T y) {
-        return find(x) == find(y);
-    }
-    T size (T x) {
-        return num[find(x)];
-    }
-    bool conjudge (T x) {
-        return con[find(x)];
-    }
-};
-
 
 int main () {
-    ll N, M, E; cin >> N >> M >> E;
-    vp edges(E);
-    rep (i, E) cin >> edges[i].first >> edges[i].second;
-    rep (i, E) {--edges[i].first; --edges[i].second;}
-    ll Q; cin >> Q;
-    unordered_set<int> X;
-    vl Xv(Q);
-    rep (i, Q) {
-        int x; cin >> x; --x;
-        X.insert(x);
-        Xv[i] = x;
-    }
+    ll N, P, Q, R; cin >>N>>P>>Q>>R;
+    vl A(N);
+    rep (i, N) cin >> A[i];
+    vl S(N+1);
+    rep (i, N) S[i+1] = S[i] + A[i];
 
-    // vb connected(N+M);
-    UnionFind<ll> uf(N+M);
-    repk (i, N, N+M) uf.connect(i);
+    unordered_set<ll> st;
+    rep (i, N+1) st.insert(S[i]);
 
-    ll cnt = 0;
-    rep (i, E) {
-        auto [a, b] = edges[i];
-        if (!X.count(i)) {
-            if (uf.conjudge(a) || uf.conjudge(b)) {
-                if (!uf.conjudge(a)) cnt += uf.size(a);
-                if (!uf.conjudge(b)) cnt += uf.size(b);
-            }
-            uf.unite(a, b);
+    rep (i, N+1) {
+        ll sx = S[i];
+        ll sy = sx + P;
+        ll sz = sy + Q;
+        ll sw = sz + R;
+        if (st.count(sy) && st.count(sz) && st.count(sw)) {
+            puts("Yes");
+            return 0;
         }
     }
 
-    vl ansvec(Q);
-    repr (xi, Q) {
-        ansvec[xi] = cnt;
-        auto [a, b] = edges[Xv[xi]];
-        if (uf.conjudge(a) || uf.conjudge(b)) {
-            if (!uf.conjudge(a)) cnt += uf.size(a);
-            if (!uf.conjudge(b)) cnt += uf.size(b);
-        }
-        uf.unite(a, b);
-    }
-
-    rep (i, Q) cout << ansvec[i] << endl;
- 
-
+    puts("No");
+    return 0;
+    
 }
