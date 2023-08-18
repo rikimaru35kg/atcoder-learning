@@ -35,63 +35,81 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
+template <typename T>
+struct UnionFind {
+    vector<T> p, num;
+    vector<bool> con;
+    UnionFind(T n) : p(n, -1), num(n, 1), con(n, false) {}
 
-struct BIT {
-    ll n;
-    vl bit;
-    BIT (ll _n): n(_n+1), bit(_n+1) {}
-
-    void add (ll i, ll x) {
-        for (ll idx = i; idx < n; idx += (idx & (~idx+1))) {
-            bit[idx] += x;
-        }
+    void connect(T x) {
+        con[x] = true;
     }
-    ll sum (ll i) {
-        ll ret = 0;
-        for (ll idx = i; idx > 0; idx -= (idx & (~idx+1))) {
-            ret += bit[idx];
-        }
-        return ret;
+
+    T find (T x) {
+        if (p[x] == -1) return x;
+        return p[x] = find(p[x]);
+    }
+    void unite (T x, T y) {
+        x = find(x); y = find(y);
+        if (x == y) return;
+        p[x] = y;
+        num[y] += num[x];
+        if (con[x] | con[y]) con[y] = true;
+    }
+    bool same (T x, T y) {
+        return find(x) == find(y);
+    }
+    T size (T x) {
+        return num[find(x)];
+    }
+    bool conjudge (T x) {
+        return con[find(x)];
     }
 };
 
-ll flip_num(vl vec) {
-    ll ret = 0;
-    ll size = vec.size();
-    map<ll,ll> cc;
-    rep(i, size) cc[vec[i]] = 0;
-    ll idx = 1;
-    for (auto [k, v]: cc) {
-        cc[k] = idx;
-        idx++;
-    }
-    ll size2 = cc.size();
-    BIT bit(size2);
-    rep (i, size) {
-        ret += (bit.sum(size2) - bit.sum(cc[vec[i]]));
-        bit.add(cc[vec[i]], 1);
-    }
-
-    return ret;
-}
 
 int main () {
-    ll N; cin >> N;
-    vl C(N), X(N);
-    rep (i, N) cin >> C[i];
-    rep (i, N) cin >> X[i];
-
-    map<ll,vl> mp;
-    rep (i, N) {
-        mp[C[i]].push_back(X[i]);
-    }
-    ll ans = 0;
-    ans = flip_num(X);
-    for (auto [k, v]: mp) {
-        ans -= flip_num(v);
+    ll N, M, E; cin >> N >> M >> E;
+    vp edges(E);
+    rep (i, E) cin >> edges[i].first >> edges[i].second;
+    rep (i, E) {--edges[i].first; --edges[i].second;}
+    ll Q; cin >> Q;
+    unordered_set<int> X;
+    vl Xv(Q);
+    rep (i, Q) {
+        int x; cin >> x; --x;
+        X.insert(x);
+        Xv[i] = x;
     }
 
-    cout << ans << endl;
+    // vb connected(N+M);
+    UnionFind<ll> uf(N+M);
+    repk (i, N, N+M) uf.connect(i);
 
-    
+    ll cnt = 0;
+    rep (i, E) {
+        auto [a, b] = edges[i];
+        if (!X.count(i)) {
+            if (uf.conjudge(a) || uf.conjudge(b)) {
+                if (!uf.conjudge(a)) cnt += uf.size(a);
+                if (!uf.conjudge(b)) cnt += uf.size(b);
+            }
+            uf.unite(a, b);
+        }
+    }
+
+    vl ansvec(Q);
+    repr (xi, Q) {
+        ansvec[xi] = cnt;
+        auto [a, b] = edges[Xv[xi]];
+        if (uf.conjudge(a) || uf.conjudge(b)) {
+            if (!uf.conjudge(a)) cnt += uf.size(a);
+            if (!uf.conjudge(b)) cnt += uf.size(b);
+        }
+        uf.unite(a, b);
+    }
+
+    rep (i, Q) cout << ansvec[i] << endl;
+ 
+
 }
