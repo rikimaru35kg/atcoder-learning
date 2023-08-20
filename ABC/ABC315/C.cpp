@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = """#include <bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
@@ -39,11 +36,36 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 int main () {
-    
+    ll N; cin >> N;
+    vvl FS(N);
+    rep (i, N) {
+        ll f, s; cin >> f >> s; --f;
+        FS[f].push_back(s);
+    }
+
+    rep (i, N) {
+        sort(allr(FS[i]));
+    }
+    ll ans = 0;
+    rep (i, N) {
+        if (SIZE(FS[i]) >= 2) {
+            ll x = FS[i][0];
+            ll y = FS[i][1];
+            ll s = max(x, y) + min(x, y)/2;
+            chmax(ans, s);
+        }
+    }
+    vl diffs;
+    rep (i, N) {
+        if (SIZE(FS[i]) >= 1) {
+            diffs.push_back(FS[i][0]);
+        }
+    }
+    sort(allr(diffs));
+    if (SIZE(diffs) >= 2) {
+        ll x = diffs[0];
+        ll y = diffs[1];
+        chmax(ans, x + y);
+    }
+    cout << ans << endl;
 }
-"""
-
-filename = f'{sys.argv[1]}.cpp' 
-
-with open(filename, 'w', encoding='utf-8') as f:
-    f.writelines(filehead)

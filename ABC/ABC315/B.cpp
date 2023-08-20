@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = """#include <bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
@@ -39,11 +36,23 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 int main () {
-    
+    ll M; cin >> M;
+    vl D(M);
+    rep (i, M) cin >> D[i];
+
+    ll sum = 0;
+    rep (i, M) sum += D[i];
+    ll md = sum / 2 + 1;
+
+    ll cum = 0;
+    rep (i, M) {
+        if (cum + D[i] >= md) {
+            cout << i+1 << " ";
+            cout << md - (cum) <<  endl;
+            return 0;
+        }
+        cum += D[i];
+    }
+
+
 }
-"""
-
-filename = f'{sys.argv[1]}.cpp' 
-
-with open(filename, 'w', encoding='utf-8') as f:
-    f.writelines(filehead)

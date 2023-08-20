@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = """#include <bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
@@ -39,11 +36,54 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 int main () {
-    
+    ll N; cin >> N;
+    vvl from(N);
+    vl indeg(N);
+    rep (i, N) {
+        ll c; cin >> c;
+        rep (j, c) {
+            ll p; cin >> p; --p;
+            from[i].push_back(p);
+            // ++indeg[p];
+        }
+    }
+
+    vb visited(N);
+    auto dfs = [&](auto f, ll v) -> void {
+        for (auto nv: from[v]) {
+            ++indeg[nv];
+            if (visited[nv]) continue;
+            f(f, nv);
+        }
+        visited[v] = true;
+    };
+
+    vb used(N);
+    auto bfs = [&](ll x) -> vl {
+        vl ret;
+        queue<ll> que;
+        que.push(x);
+        // used[x] = true;
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            ret.push_back(v);
+            for (auto nv: from[v]) {
+                --indeg[nv];
+                // if (used[nv]) continue;
+                if (indeg[nv] >= 1) continue;
+                que.push(nv);
+                // used[nv] = true;
+            }
+        }
+        reverse(all(ret));
+        return ret;
+    };
+
+    dfs(dfs, 0);
+
+    vl ans = bfs(0);
+    rep (i, SIZE(ans) - 1) {
+        cout << ans[i]+1 << " ";
+    }
+    cout << endl;
 }
-"""
-
-filename = f'{sys.argv[1]}.cpp' 
-
-with open(filename, 'w', encoding='utf-8') as f:
-    f.writelines(filehead)

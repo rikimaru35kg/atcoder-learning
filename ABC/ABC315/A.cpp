@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = """#include <bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
@@ -39,11 +36,11 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 int main () {
-    
+    string S; cin >> S;
+    for (auto c: S) {
+        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') continue;
+        cout << c;
+    }
+    cout << endl;
+
 }
-"""
-
-filename = f'{sys.argv[1]}.cpp' 
-
-with open(filename, 'w', encoding='utf-8') as f:
-    f.writelines(filehead)
