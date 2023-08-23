@@ -124,8 +124,11 @@
 
 # 二分探索法
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
+- 最小値の最大化を二分探索で求められる事が多いのは、最大値=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 ### 例題
+- [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
+- [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 
 
