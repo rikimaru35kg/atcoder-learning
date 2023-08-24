@@ -36,70 +36,10 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 int main () {
-    ll N, M; cin >> N >> M;
-    vl A(N);
-    rep (i, N) {
-        ll a; cin >> a;
-        A[i] = a;
+    ll N; cin >> N;
+
+    rep (a, N) rep (b, a) {
+        if ((a&N) < (b&N)) cout << "Fal" << endl;
     }
-    vvl from(N);
-    vp edges(M);
-    rep (i, M) {
-        ll u, v; cin >> u >> v; --u; --v;
-        from[u].push_back(v);
-        from[v].push_back(u);
-        edges[i] = {u, v};
-    }
-
-    vl cost(N);
-    rep (i, M) {
-        auto [u, v] = edges[i];
-        cost[u] += A[v];
-        cost[v] += A[u];
-    }
-
-    auto delcost = [&](ll x, vl &co) -> void {
-        for (auto y: from[x]) {
-            co[y] -= A[x];
-        }
-    };
-
-    auto ok = [&](ll x) -> bool {
-        vl _cost = cost;
-        vb deleted(N);
-        queue<ll> que;
-        ll num = 0;
-        rep (v, N) {
-            if (_cost[v] <= x) {
-                que.push(v);
-                deleted[v] = true;
-                ++num;
-            }
-        }
-        while(!que.empty()) {
-            ll v = que.front(); que.pop();
-            delcost(v, _cost);
-            // deleted[v] = true;
-            for (auto nv: from[v]) {
-                if (deleted[nv]) continue;
-                if (_cost[nv] > x) continue;
-                que.push(nv);
-                deleted[nv] = true;
-                ++num;
-            }
-        }
-        if (num == N) return true;
-        else return false;
-    };
-
-    ll left = -1, right = INF;
-    while (right - left > 1) {
-        ll mid = (right + left) / 2;
-        bool tmp = ok(mid);
-        if (tmp) right = mid;
-        else left = mid;
-    }
-
-    cout << right << endl;
 
 }
