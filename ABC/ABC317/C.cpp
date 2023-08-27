@@ -35,33 +35,27 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-struct Edge {
-    ll a, b, c;
-    Edge (ll _a, ll _b, ll _c): a(_a), b(_b), c(_c) {}
-};
-
 int main () {
-    ll N, M, K; cin >> N >> M >> K;
-    vector<Edge> edges;
-    rep (i, M) {
-        ll a, b, c; cin >> a >> b >> c;
-        --a; --b;
-        edges.emplace_back(a, b, c);
-    }
-    vl lngth(N, INF);
-    lngth[0] = 0;
-    rep (i, K) {
-        ll e; cin >> e; --e;
-        auto [a, b, c] = edges[e];
+    ll N; cin >> N;
+    vl X(N), Y(N), Z(N);
+    rep (i, N) cin >> X[i] >> Y[i] >> Z[i];
 
-        chmin(lngth[b], lngth[a] + c);
+    ll tot = 0;
+    rep (i, N) tot += Z[i];
+    tot = tot / 2 + 1;
+
+    vl dp(tot+1, INF);
+    dp[tot] = 0;
+    rep (i, N) {
+        vl p = dp;
+        rep1 (z, tot) {
+            ll rem = max(z - Z[i], 0LL);
+            ll kura = max((X[i] + Y[i]) / 2 + 1 - X[i], 0LL);
+            chmin(dp[rem], p[z] + kura);
+        }
     }
 
-    if (lngth[N-1] == INF) {
-        puts("-1"); return 0;
-    }
-
-    cout << lngth[N-1] << endl;
+    cout << dp[0] << endl;
 
 
 }

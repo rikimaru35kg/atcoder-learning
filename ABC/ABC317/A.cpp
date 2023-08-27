@@ -35,33 +35,19 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-struct Edge {
-    ll a, b, c;
-    Edge (ll _a, ll _b, ll _c): a(_a), b(_b), c(_c) {}
-};
-
 int main () {
-    ll N, M, K; cin >> N >> M >> K;
-    vector<Edge> edges;
-    rep (i, M) {
-        ll a, b, c; cin >> a >> b >> c;
-        --a; --b;
-        edges.emplace_back(a, b, c);
+    ll N; cin >> N;
+    vl A(N);
+    rep (i, N) cin >> A[i];
+    sort(all(A));
+
+    ll a0 = A[0];
+    repk (i, 1, N) {
+        if (A[i] - a0 >= 2) {
+            cout << a0 + 1 << endl;
+            return 0;
+        }
+        a0 = A[i];
     }
-    vl lngth(N, INF);
-    lngth[0] = 0;
-    rep (i, K) {
-        ll e; cin >> e; --e;
-        auto [a, b, c] = edges[e];
-
-        chmin(lngth[b], lngth[a] + c);
-    }
-
-    if (lngth[N-1] == INF) {
-        puts("-1"); return 0;
-    }
-
-    cout << lngth[N-1] << endl;
-
 
 }
