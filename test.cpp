@@ -35,33 +35,63 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-struct Edge {
-    ll a, b, c;
-    Edge (ll _a, ll _b, ll _c): a(_a), b(_b), c(_c) {}
-};
+ll n_left (set<ll> &st, ll x) {
+    if (SIZE(st) == 0) return -INF;
+    auto itr = st.upper_bound(x);
+    if (itr != st.begin()) return *(--itr);
+    return -INF;
+}
+ll n_right (set<ll> &st, ll x) {
+    if (SIZE(st) == 0) return INF;
+    auto itr = st.upper_bound(x);
+    if (itr != st.end()) return *itr;
+    return INF;
+}
 
 int main () {
-    ll N, M, K; cin >> N >> M >> K;
-    vector<Edge> edges;
-    rep (i, M) {
-        ll a, b, c; cin >> a >> b >> c;
-        --a; --b;
-        edges.emplace_back(a, b, c);
+    ll H, W; cin >> H >> W;
+    ll rs, cs; cin >> rs >> cs; --rs; --cs;
+    ll N; cin >> N;
+    map<ll,set<ll>> obj_r, obj_c;
+    rep (i, N) {
+        ll r, c; cin >> r >> c; --r; --c;
+        obj_r[r].insert(c);
+        obj_c[c].insert(r);
     }
-    vl lngth(N, INF);
-    lngth[0] = 0;
-    rep (i, K) {
-        ll e; cin >> e; --e;
-        auto [a, b, c] = edges[e];
+    ll Q; cin >> Q;
+    vc d(Q);
+    vl l(Q);
+    rep (i, Q) cin >> d[i] >> l[i];
 
-        chmin(lngth[b], lngth[a] + c);
+    rep (i, Q) {
+        char _d = d[i];
+        ll _l = l[i];
+        if (_d == 'U') {
+            ll nx = n_left(obj_c[cs], rs);
+            if (nx < 0) nx = 0;
+            else ++nx;
+            rs = max(nx, rs - _l);
+        }
+        if (_d == 'L') {
+            ll nx = n_left(obj_r[rs], cs);
+            if (nx < 0) nx = 0;
+            else ++nx;
+            cs = max(nx, cs - _l);
+        }
+        if (_d == 'D') {
+            ll nx = n_right(obj_c[cs], rs);
+            if (nx == INF) nx = H - 1;
+            else --nx;
+            rs = min(nx, rs + _l);
+        }
+        if (_d == 'R') {
+            ll nx = n_right(obj_r[rs], cs);
+            if (nx == INF) nx = W - 1;
+            else --nx;
+            cs = min(nx, cs + _l);
+        }
+
+        printf("%lld %lld\n", rs+1, cs+1);
     }
-
-    if (lngth[N-1] == INF) {
-        puts("-1"); return 0;
-    }
-
-    cout << lngth[N-1] << endl;
-
 
 }
