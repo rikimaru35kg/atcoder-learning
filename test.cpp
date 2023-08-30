@@ -3,6 +3,7 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<ll, ll> Pair;
+typedef pair<double, double> Paird;
 #define vi vector<int>
 #define vs vector<string>
 #define vc vector<char>
@@ -10,6 +11,7 @@ typedef pair<ll, ll> Pair;
 #define vb vector<bool>
 #define vd vector<double>
 #define vp vector<Pair>
+#define vpd vector<Paird>
 #define vvi vector<vector<int>>
 #define vvc vector<vector<char>>
 #define vvl vector<vector<ll>>
@@ -18,6 +20,7 @@ typedef pair<ll, ll> Pair;
 #define vvvi vector<vector<vector<int>>>
 #define vvvl vector<vector<vector<ll>>>
 #define vvvb vector<vector<vector<bool>>>
+#define vvvd vector<vector<vector<double>>>
 #define ql queue<ll>
 #define dql deque<ll>
 #define pql priority_queue<ll>
@@ -35,63 +38,37 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-ll n_left (set<ll> &st, ll x) {
-    if (SIZE(st) == 0) return -INF;
-    auto itr = st.upper_bound(x);
-    if (itr != st.begin()) return *(--itr);
-    return -INF;
-}
-ll n_right (set<ll> &st, ll x) {
-    if (SIZE(st) == 0) return INF;
-    auto itr = st.upper_bound(x);
-    if (itr != st.end()) return *itr;
-    return INF;
-}
 
 int main () {
-    ll H, W; cin >> H >> W;
-    ll rs, cs; cin >> rs >> cs; --rs; --cs;
     ll N; cin >> N;
-    map<ll,set<ll>> obj_r, obj_c;
+    vl stck(N);
     rep (i, N) {
-        ll r, c; cin >> r >> c; --r; --c;
-        obj_r[r].insert(c);
-        obj_c[c].insert(r);
+        cin >> stck[i];
     }
+    ll base = 0;
+    set<ll> d_cnt;
+    rep (i, N) d_cnt.insert(i);
     ll Q; cin >> Q;
-    vc d(Q);
-    vl l(Q);
-    rep (i, Q) cin >> d[i] >> l[i];
-
+    vvl query(Q);
     rep (i, Q) {
-        char _d = d[i];
-        ll _l = l[i];
-        if (_d == 'U') {
-            ll nx = n_left(obj_c[cs], rs);
-            if (nx < 0) nx = 0;
-            else ++nx;
-            rs = max(nx, rs - _l);
+        ll t; cin >> t;
+        if (t == 1) {
+            ll x; cin >> x;
+            base = x;
+            d_cnt.clear();
+        } else if (t == 2) {
+            ll i, x; cin >> i >> x;
+            --i;
+            if (d_cnt.count(i)) stck[i] += x;
+            else {
+                d_cnt.insert(i);
+                stck[i] = x;
+            }
+        } else {
+            ll i; cin >> i;
+            --i;
+            if (d_cnt.count(i)) printf("%lld\n", stck[i] + base);
+            else printf("%lld\n", base);
         }
-        if (_d == 'L') {
-            ll nx = n_left(obj_r[rs], cs);
-            if (nx < 0) nx = 0;
-            else ++nx;
-            cs = max(nx, cs - _l);
-        }
-        if (_d == 'D') {
-            ll nx = n_right(obj_c[cs], rs);
-            if (nx == INF) nx = H - 1;
-            else --nx;
-            rs = min(nx, rs + _l);
-        }
-        if (_d == 'R') {
-            ll nx = n_right(obj_r[rs], cs);
-            if (nx == INF) nx = W - 1;
-            else --nx;
-            cs = min(nx, cs + _l);
-        }
-
-        printf("%lld %lld\n", rs+1, cs+1);
     }
-
 }
