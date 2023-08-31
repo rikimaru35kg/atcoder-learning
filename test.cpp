@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
+using namespace atcoder;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<ll, ll> Pair;
@@ -38,67 +40,25 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-
-vector<pair<long long, long long>> prime_factrization (long long n) {
-    // eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
-    // primes = {(1,1), (2,3), (3,2), (5,1)}
-    // NOTE: 1^1 is always included!!
-    vector<pair<long long, long long>> primes;
-    primes.emplace_back(1, 1);
-    long long rem = n;
-    for (long long k=2; k*k<=n; ++k) {
-        long long num = 0;
-        while(rem % k == 0) {
-            ++num;
-            rem /= k;
-        }
-        if (num > 0) primes.emplace_back(k, num);
-    }
-    if (rem != 1) primes.emplace_back(rem, 1);
-    return primes;
-}
-// Calculate a^b
-// a >= 0, b >= 0
-long long spow(long long a, long long b) {
-	long long ans = 1;
-	while (b > 0) {
-		if ((b & 1) == 1) {
-			ans = ans * a;
-		}
-		a = a * a;
-		b = (b >> 1);
-	}
-	return ans;
-}
+using mint = modint998244353;
 
 int main () {
-    ll K; cin >> K;
+    ll N, P; cin >> N >> P;
 
-    vector<Pair> primes = prime_factrization(K);    
+    vb end(N+1);
+    vector<mint> mem(N+1);
+    auto f = [&](auto f, ll n) -> mint {
+        if (n == 1) return 1;
+        if (n <= 0) return 0;
+        if (end[n]) return mem[n];
 
-    auto g = [&](ll n, ll k) -> ll {
-        ll ret = 0;
-        for (ll ki=k; ki<=n; ki*=k) {
-            ret += n/ki;
-        }
-        return ret;
+        mint ret = 0;
+        ret += (1+f(f, n-2)) * P / 100;
+        ret += (1+f(f, n-1)) * (100-P) / 100;
+
+        end[n] = true;
+        return mem[n] = ret;
     };
 
-    auto f = [&](ll k, ll v) -> ll {
-        ll l = 0, r = spow(k, v);
-        while (r - l > 1) {
-            ll m = (r + l) / 2;
-            if (g(m, k) >= v) r = m;
-            else l = m;
-        }
-        return r;
-    };
-
-    ll ans = 1;
-    for (auto [k, v]: primes) {
-        // if (k == 1) continue;
-        ll nkai = f(k, v);
-        chmax(ans, nkai);
-    }
-    cout << ans << endl;
+    cout << f(f, N).val() << endl;
 }

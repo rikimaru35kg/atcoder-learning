@@ -2,10 +2,13 @@ import sys
 
 
 filehead = """#include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
+using namespace atcoder;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<ll, ll> Pair;
+typedef pair<double, double> Paird;
 #define vi vector<int>
 #define vs vector<string>
 #define vc vector<char>
@@ -13,6 +16,7 @@ typedef pair<ll, ll> Pair;
 #define vb vector<bool>
 #define vd vector<double>
 #define vp vector<Pair>
+#define vpd vector<Paird>
 #define vvi vector<vector<int>>
 #define vvc vector<vector<char>>
 #define vvl vector<vector<ll>>
@@ -21,6 +25,7 @@ typedef pair<ll, ll> Pair;
 #define vvvi vector<vector<vector<int>>>
 #define vvvl vector<vector<vector<ll>>>
 #define vvvb vector<vector<vector<bool>>>
+#define vvvd vector<vector<vector<double>>>
 #define ql queue<ll>
 #define dql deque<ll>
 #define pql priority_queue<ll>
@@ -37,6 +42,8 @@ template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, tr
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
+
+using mint = modint998244353;
 
 int main () {
     
