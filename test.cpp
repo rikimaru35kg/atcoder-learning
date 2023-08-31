@@ -41,34 +41,38 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 int main () {
     ll N; cin >> N;
-    vl stck(N);
-    rep (i, N) {
-        cin >> stck[i];
-    }
-    ll base = 0;
-    set<ll> d_cnt;
-    rep (i, N) d_cnt.insert(i);
-    ll Q; cin >> Q;
-    vvl query(Q);
-    rep (i, Q) {
-        ll t; cin >> t;
-        if (t == 1) {
-            ll x; cin >> x;
-            base = x;
-            d_cnt.clear();
-        } else if (t == 2) {
-            ll i, x; cin >> i >> x;
-            --i;
-            if (d_cnt.count(i)) stck[i] += x;
-            else {
-                d_cnt.insert(i);
-                stck[i] = x;
-            }
-        } else {
-            ll i; cin >> i;
-            --i;
-            if (d_cnt.count(i)) printf("%lld\n", stck[i] + base);
-            else printf("%lld\n", base);
+    vs S(N);
+    rep (i, N) cin >> S[i];
+    ll n2 = 1<<N;
+
+    vvl from(N);
+    rep (i, N) rep (j, N) {
+        if (i == j) continue;
+        if (S[i].back() == S[j][0]) {
+            from[i].push_back(j);
         }
+   }
+
+    vvl mem(n2, vl(N, -1));
+    auto dfs = [&](auto f, ll s, ll v) -> bool {
+        if (mem[s][v] != -1) return mem[s][v];
+        bool ret = false;
+        bool nxt = false;
+        for (auto nv: from[v]) {
+            if (s>>nv&1) continue;
+            nxt = true;
+            ll ns = s | 1<<nv;
+            ret |= !f(f, ns, nv);
+        }
+        if (!nxt) return (mem[s][v] = 1);
+        if (ret) return (mem[s][v] = 1);
+        return (mem[s][v] = 0);
+    };
+
+    bool ans = false;
+    rep (i, N) {
+        ans |= dfs(dfs, 1<<i, i);
     }
+    if (ans) puts("First");
+    else puts("Second");
 }
