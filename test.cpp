@@ -39,40 +39,66 @@ const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
 
+vector<pair<long long, long long>> prime_factrization (long long n) {
+    // eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
+    // primes = {(1,1), (2,3), (3,2), (5,1)}
+    // NOTE: 1^1 is always included!!
+    vector<pair<long long, long long>> primes;
+    primes.emplace_back(1, 1);
+    long long rem = n;
+    for (long long k=2; k*k<=n; ++k) {
+        long long num = 0;
+        while(rem % k == 0) {
+            ++num;
+            rem /= k;
+        }
+        if (num > 0) primes.emplace_back(k, num);
+    }
+    if (rem != 1) primes.emplace_back(rem, 1);
+    return primes;
+}
+// Calculate a^b
+// a >= 0, b >= 0
+long long spow(long long a, long long b) {
+	long long ans = 1;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a;
+		}
+		a = a * a;
+		b = (b >> 1);
+	}
+	return ans;
+}
+
 int main () {
-    ll N; cin >> N;
-    vs S(N);
-    rep (i, N) cin >> S[i];
-    ll n2 = 1<<N;
+    ll K; cin >> K;
 
-    vvl from(N);
-    rep (i, N) rep (j, N) {
-        if (i == j) continue;
-        if (S[i].back() == S[j][0]) {
-            from[i].push_back(j);
-        }
-   }
+    vector<Pair> primes = prime_factrization(K);    
 
-    vvl mem(n2, vl(N, -1));
-    auto dfs = [&](auto f, ll s, ll v) -> bool {
-        if (mem[s][v] != -1) return mem[s][v];
-        bool ret = false;
-        bool nxt = false;
-        for (auto nv: from[v]) {
-            if (s>>nv&1) continue;
-            nxt = true;
-            ll ns = s | 1<<nv;
-            ret |= !f(f, ns, nv);
+    auto g = [&](ll n, ll k) -> ll {
+        ll ret = 0;
+        for (ll ki=k; ki<=n; ki*=k) {
+            ret += n/ki;
         }
-        if (!nxt) return (mem[s][v] = 1);
-        if (ret) return (mem[s][v] = 1);
-        return (mem[s][v] = 0);
+        return ret;
     };
 
-    bool ans = false;
-    rep (i, N) {
-        ans |= dfs(dfs, 1<<i, i);
+    auto f = [&](ll k, ll v) -> ll {
+        ll l = 0, r = spow(k, v);
+        while (r - l > 1) {
+            ll m = (r + l) / 2;
+            if (g(m, k) >= v) r = m;
+            else l = m;
+        }
+        return r;
+    };
+
+    ll ans = 1;
+    for (auto [k, v]: primes) {
+        // if (k == 1) continue;
+        ll nkai = f(k, v);
+        chmax(ans, nkai);
     }
-    if (ans) puts("First");
-    else puts("Second");
+    cout << ans << endl;
 }

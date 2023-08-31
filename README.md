@@ -59,6 +59,17 @@
 - 次に、この配列2の倍数の位置を全て調べ、trueがあったら2は約数という事で2のところをtrueにする
 - 続けて3, 4と調べていく。計算量は約数最大値をMとすると、O(M logM)になる（M/2 + M/3 + M/4 + ... + M/M回調べる為）
 
+## 素数判定
+- sqrt(N)まで試して割れなければ素数である
+- 素数関連では最も簡単（素因数分解や素数全列挙と比較して）
+
+## 素因数分解
+- 2からsqrt(N)まで試して、割り切れる回数が指数となる
+- sqrt(N)まで試して、割り切った数が1でない場合は、その数も素数であるので忘れないように
+- ライブラリprime_factorizationとして保存した
+### 例題
+- [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
+
 ## 素数全列挙
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
 - 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
@@ -134,6 +145,12 @@
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 
+# 三分探索法
+- 狭義に下に凸の区間における最小値を求めるときに使える。
+- 幅が2になるまでwhileループさせる
+- 最後はleftからrightまでの最小値を求めれば良い
+### 例題
+- [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
 
 # 尺取り法
 - 単調性があるときに使用可能
