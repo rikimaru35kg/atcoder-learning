@@ -28,6 +28,7 @@ typedef pair<double, double> Paird;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
+#define printvec(v) for (auto x: v) {if (x != v.back()) cout << x << ' '; else cout << x << endl;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
@@ -37,58 +38,40 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-
-vector<int> z_algo(string s) {
-    int n = s.size();
-    vector<int> a(n);
-    int from = -1, last = -1;
-
-    for (int i = 1; i < n; ++i) {
-        int same = 0;
-        if (from != -1) {
-            same = min(a[i-from], last - i);
-            same = max(same, 0);
-        }
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;
-
-    return a;
-}
-
 int main () {
     ll N; cin >> N;
-    string T; cin >> T;
-
-    string t1 = T.substr(0, N);
-    string t2 = T.substr(N, N);
-    reverse(all(t2));
-
-    string s1 = t1 + t2;
-    string s2 = t2 + t1;
-
-    vi z1 = z_algo(s1);
-    vi z2 = z_algo(s2);
-
-    rep (i, N+1) {
-        bool ok = true;
-        if (i != 0 && z1[2*N-i] != i) {
-            ok = false;
-        }
-        if (i != N && z2[2*N-(N-i)] != (N-i)) {
-            ok = false;
-        }
-        if (ok) {
-            cout << T.substr(0, i) + T.substr(2*N-(N-i), N-i) << endl;
-            cout << i << endl;
-            return 0;
+    vvl D(N, vl(N, INF));
+    rep (i, N) {
+        repk (j, i+1, N) {
+            cin >> D[i][j];
+            D[j][i] = D[i][j];
         }
     }
-    puts("-1");
+
+    ll N2 = 1<<N;
+    vl dp(N2, -INF);
+    dp[0] = 0;
+
+    queue<ll> que;
+    que.push(0);
+    ll ans = -INF;
+    while (!que.empty()) {
+        ll s = que.front(); que.pop();
+        rep (i, N) rep (j, i) {
+            if (((s>>i)&1) || ((s>>j)&1)) continue;
+            ll ns = s | 1<<i;
+            ns |= 1<<j;
+            ll val = dp[s] + D[i][j];
+            if (dp[ns] < val) {
+                dp[ns] = val;
+                chmax(ans, dp[ns]);
+                que.push(ns);
+            }
+        }
+    }
+
+    cout << ans << endl;
+
+
 
 }

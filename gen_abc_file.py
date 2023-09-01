@@ -31,6 +31,7 @@ typedef pair<double, double> Paird;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
+#define printvec(v) for (auto x: v) {if (x != v.back()) cout << x << ' '; else cout << x << endl;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;

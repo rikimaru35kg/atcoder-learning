@@ -28,6 +28,7 @@ typedef pair<double, double> Paird;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
+#define printvec(v) for (auto x: v) {if (x != v.back()) cout << x << ' '; else cout << x << endl;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
@@ -37,58 +38,29 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-
-vector<int> z_algo(string s) {
-    int n = s.size();
-    vector<int> a(n);
-    int from = -1, last = -1;
-
-    for (int i = 1; i < n; ++i) {
-        int same = 0;
-        if (from != -1) {
-            same = min(a[i-from], last - i);
-            same = max(same, 0);
-        }
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;
-
-    return a;
-}
-
 int main () {
     ll N; cin >> N;
-    string T; cin >> T;
+    vl A(N);
+    rep (i, N) cin >> A[i];
+    rep (i, N) --A[i];
 
-    string t1 = T.substr(0, N);
-    string t2 = T.substr(N, N);
-    reverse(all(t2));
+    vl idx(N, -1);
+    vl last(N);
+    vl cnt(N);
+    ll ans = 0;
 
-    string s1 = t1 + t2;
-    string s2 = t2 + t1;
-
-    vi z1 = z_algo(s1);
-    vi z2 = z_algo(s2);
-
-    rep (i, N+1) {
-        bool ok = true;
-        if (i != 0 && z1[2*N-i] != i) {
-            ok = false;
+    rep (i, N) {
+        ll a = A[i];
+        if (idx[a] == -1) {
+            idx[a] = i;
+            continue;
         }
-        if (i != N && z2[2*N-(N-i)] != (N-i)) {
-            ok = false;
-        }
-        if (ok) {
-            cout << T.substr(0, i) + T.substr(2*N-(N-i), N-i) << endl;
-            cout << i << endl;
-            return 0;
-        }
+        ll num = last[a] + (cnt[a]+1) * (i - idx[a] - 1);
+        ans += num;
+        last[a] = num;
+        idx[a] = i;
+        ++cnt[a];
     }
-    puts("-1");
 
+    cout << ans << endl;
 }

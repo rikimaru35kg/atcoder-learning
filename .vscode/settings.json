@@ -17,6 +17,7 @@
         "regex": "cpp",
         "valarray": "cpp",
         "limits": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "all": "cpp"
     }
 }
