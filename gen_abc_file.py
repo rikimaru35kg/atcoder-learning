@@ -20,6 +20,7 @@ typedef pair<double, double> Paird;
 #define vvl vector<vector<ll>>
 #define vvb vector<vector<bool>>
 #define vvd vector<vector<double>>
+#define vvs vector<vector<string>>
 #define vvvi vector<vector<vector<int>>>
 #define vvvl vector<vector<vector<ll>>>
 #define vvvb vector<vector<vector<bool>>>
@@ -31,7 +32,9 @@ typedef pair<double, double> Paird;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
-#define printvec(v) for (auto x: v) {if (x != v.back()) cout << x << ' '; else cout << x << endl;}
+#define PYes {puts("Yes"); return 0;}
+#define PNo {puts("No"); return 0;}
+#define Pdame {puts("-1"); return 0;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
@@ -40,6 +43,7 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
+
 
 int main () {
     

@@ -17,6 +17,7 @@ typedef pair<double, double> Paird;
 #define vvl vector<vector<ll>>
 #define vvb vector<vector<bool>>
 #define vvd vector<vector<double>>
+#define vvs vector<vector<string>>
 #define vvvi vector<vector<vector<int>>>
 #define vvvl vector<vector<vector<ll>>>
 #define vvvb vector<vector<vector<bool>>>
@@ -28,6 +29,9 @@ typedef pair<double, double> Paird;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
+#define PYes {puts("Yes"); return 0;}
+#define PNo {puts("No"); return 0;}
+#define Pdame {puts("-1"); return 0;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
@@ -40,46 +44,35 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 int main () {
     ll N; cin >> N;
-    vs S(N), T(N);
-    rep (i, N) cin >> S[i] >> T[i];
+    vl A(N); rep (i, N) cin >> A[i];
+    vs S(N); rep (i, N) cin >> S[i];
 
-    map<string,ll> mp;
-    rep (i, N) mp[S[i]] = 0;
-    rep (i, N) mp[T[i]] = 0;
-    ll idx = 0;
-    for (auto [k, v]: mp) {
-        mp[k] = idx;
-        ++idx;
-    }
-    ll M = SIZE(mp);
-    vl to(M, -1);
-    rep (i, N) {
-        ll u = mp[S[i]];
-        ll v = mp[T[i]];
-        to[u] = v;
+    ll Q; cin >> Q;
+    vp paths(Q);
+    rep (i, Q) {
+        ll u, v; cin >> u >> v;
+        --u; --v;
+        paths[i] = {u, v};
     }
 
-    vb used(M);
-    vb finished(M);
-    auto judge_cycle = [&](auto f, ll x) -> bool {
-        used[x] = true;
-        if (to[x] != -1) {
-            if (!finished[to[x]]) {
-                if (used[to[x]]) return true;
-                if (f(f, to[x])) return true;
-            }
-        }
-        finished[x] = true;
-        return false;
-    };
-
-    rep (i, M) {
-        if (used[i]) continue;
-        if (judge_cycle(judge_cycle, i)) {
-            puts("No");
-            return 0;
-        }
+    vvl dist(N, vl(N, INF));
+    rep (i, N) rep (j, N) {
+        if (i == j) dist[i][j] = 0;
+        if (S[i][j] == 'Y') dist[i][j] = (ll)1e15 - A[j];
     }
 
-    puts("Yes");
+    rep (k, N) rep (i, N) rep (j, N) {
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
+    }
+
+    rep (i, Q) {
+        auto [u, v] = paths[i];
+        ll d = dist[u][v];
+        ll n = d / (ll)1e15;
+        ll val = (-d % (ll)1e15 + (ll)1e15) + A[u];
+        if (d == INF) puts("Impossible");
+        else printf("%lld %lld\n", n+1, val);
+    }
+
+
 }
