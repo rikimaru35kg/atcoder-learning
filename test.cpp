@@ -38,57 +38,48 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using mint = modint998244353;
 
 
-vector<int> z_algo(string s) {
-    int n = s.size();
-    vector<int> a(n);
-    int from = -1, last = -1;
-
-    for (int i = 1; i < n; ++i) {
-        int same = 0;
-        if (from != -1) {
-            same = min(a[i-from], last - i);
-            same = max(same, 0);
-        }
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;
-
-    return a;
-}
-
 int main () {
     ll N; cin >> N;
-    string T; cin >> T;
+    vs S(N), T(N);
+    rep (i, N) cin >> S[i] >> T[i];
 
-    string t1 = T.substr(0, N);
-    string t2 = T.substr(N, N);
-    reverse(all(t2));
+    map<string,ll> mp;
+    rep (i, N) mp[S[i]] = 0;
+    rep (i, N) mp[T[i]] = 0;
+    ll idx = 0;
+    for (auto [k, v]: mp) {
+        mp[k] = idx;
+        ++idx;
+    }
+    ll M = SIZE(mp);
+    vl to(M, -1);
+    rep (i, N) {
+        ll u = mp[S[i]];
+        ll v = mp[T[i]];
+        to[u] = v;
+    }
 
-    string s1 = t1 + t2;
-    string s2 = t2 + t1;
-
-    vi z1 = z_algo(s1);
-    vi z2 = z_algo(s2);
-
-    rep (i, N+1) {
-        bool ok = true;
-        if (i != 0 && z1[2*N-i] != i) {
-            ok = false;
+    vb used(M);
+    vb finished(M);
+    auto judge_cycle = [&](auto f, ll x) -> bool {
+        used[x] = true;
+        if (to[x] != -1) {
+            if (!finished[to[x]]) {
+                if (used[to[x]]) return true;
+                if (f(f, to[x])) return true;
+            }
         }
-        if (i != N && z2[2*N-(N-i)] != (N-i)) {
-            ok = false;
-        }
-        if (ok) {
-            cout << T.substr(0, i) + T.substr(2*N-(N-i), N-i) << endl;
-            cout << i << endl;
+        finished[x] = true;
+        return false;
+    };
+
+    rep (i, M) {
+        if (used[i]) continue;
+        if (judge_cycle(judge_cycle, i)) {
+            puts("No");
             return 0;
         }
     }
-    puts("-1");
 
+    puts("Yes");
 }
