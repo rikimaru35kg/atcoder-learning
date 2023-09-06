@@ -3,28 +3,28 @@ import sys
 
 filehead = """#include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef unsigned long long ull;
-typedef pair<ll, ll> Pair;
-typedef pair<double, double> Paird;
-#define vi vector<int>
-#define vs vector<string>
-#define vc vector<char>
-#define vl vector<ll>
-#define vb vector<bool>
-#define vd vector<double>
-#define vp vector<Pair>
-#define vpd vector<Paird>
-#define vvi vector<vector<int>>
-#define vvc vector<vector<char>>
-#define vvl vector<vector<ll>>
-#define vvb vector<vector<bool>>
-#define vvd vector<vector<double>>
-#define vvs vector<vector<string>>
-#define vvvi vector<vector<vector<int>>>
-#define vvvl vector<vector<vector<ll>>>
-#define vvvb vector<vector<vector<bool>>>
-#define vvvd vector<vector<vector<double>>>
+using ll = long long;
+using ull = unsigned long long;
+using Pair = pair<ll, ll>;
+using Paird = pair<double, double>;
+using vi = vector<int>;
+using vs = vector<string>;
+using vc = vector<char>;
+using vl = vector<ll>;
+using vb = vector<bool>;
+using vd = vector<double>;
+using vp = vector<Pair>;
+using vpd = vector<Paird>;
+using vvi = vector<vector<int>>;
+using vvc = vector<vector<char>>;
+using vvl = vector<vector<ll>>;
+using vvb = vector<vector<bool>>;
+using vvd = vector<vector<double>>;
+using vvs = vector<vector<string>>;
+using vvvi = vector<vector<vector<int>>>;
+using vvvl = vector<vector<vector<ll>>>;
+using vvvb = vector<vector<vector<bool>>>;
+using vvvd = vector<vector<vector<double>>>;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
 #define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
 #define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
@@ -35,6 +35,7 @@ typedef pair<double, double> Paird;
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
+#define Out(x) cout << (x) << endl;
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
