@@ -94,6 +94,12 @@
 ### 例題
 - [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
+## MEX（Minimum Excluded value）
+- K個の数のMEXは必ずK以下
+- 長さKの配列を持ち、順番に数が存在するか見ていけば良い
+### 例題
+- [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
+
 # 確率と期待値
 
 ## 期待値

@@ -43,41 +43,27 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-int solve() {
-    ll N, M; cin >> N >> M;
-    vi C(N);
-    rep (i, N) cin >> C[i];
-    vvi from(N);
-    rep (i, M) {
-        ll u, v; cin >> u >> v;
-        --u; --v;
-        from[u].push_back(v);
-        from[v].push_back(u);
-    }
-
-    vvl dist(N, vl(N, INF));
-    dist[0][N-1] = 0;
-    queue<Pair> que;
-    que.emplace(0, N-1);
-    while (!que.empty()) {
-        auto [t, a] = que.front(); que.pop();
-        for (auto nt: from[t]) for (auto na: from[a]) {
-            if (C[nt] == C[na]) continue;
-            if (dist[nt][na] != INF) continue;
-            dist[nt][na] = dist[t][a] + 1;
-            que.emplace(nt, na);
-        }
-    }
-
-    if (dist[N-1][0] == INF) Pdame
-    Out(dist[N-1][0]);
-    return 0;
-}
-
-
 int main () {
-    ll T; cin >> T;
-    rep (i, T) {
-        solve();
+    ll N, K; cin >> N >> K;
+    set<ll> A;
+    rep (i, N) {
+        ll a; cin >> a;
+        A.insert(a);
     }
+
+    ll idx = 0;
+    vb exist(K);
+    for (auto a: A) {
+        if (idx < K && a < K) exist[a] = true;
+        else break;
+    }
+
+    ll ans = 0;
+    rep (i, K) {
+        if (exist[i]) ++ans;
+        else break;
+    }
+
+    Out(ans)
+
 }
