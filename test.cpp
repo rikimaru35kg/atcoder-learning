@@ -39,31 +39,43 @@ template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, tr
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+
+long long modpow(long long a, long long b, long long mod) {
+	long long ans = 1;
+	a %= mod;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
+}
+
 
 int main () {
-    ll N, K; cin >> N >> K;
-    set<ll> A;
-    rep (i, N) {
-        ll a; cin >> a;
-        A.insert(a);
+    ll A,X,M; cin >> A >> X >> M;
+    if (A == 1) {
+        ll ans = X % M;
+        Out(ans)
+        return 0;
     }
 
-    ll idx = 0;
-    vb exist(K);
-    for (auto a: A) {
-        if (idx < K && a < K) exist[a] = true;
-        else break;
-    }
+    auto f = [&](auto f, ll x) -> ll {
+        if (x == 1) return 1 % M;
+        ll ret;
+        ll r;
+        if (x % 2 == 0) {
+            r = f(f, x/2);
+            ret = (r + modpow(A, x/2, M) * r % M) % M;
+        } else {
+            r = f(f, x/2);
+            ret = (A * (r + modpow(A, x/2, M) * r % M) % M + 1 ) % M;
+        }
+        return ret;
+    };
 
-    ll ans = 0;
-    rep (i, K) {
-        if (exist[i]) ++ans;
-        else break;
-    }
-
-    Out(ans)
+    Out(f(f, X))
 
 }

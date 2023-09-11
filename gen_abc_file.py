@@ -1,7 +1,8 @@
 import sys
 
 
-filehead = """#include <bits/stdc++.h>
+filehead = """
+#include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
@@ -36,6 +37,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) cout << (x) << endl;
+#define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 const ll INF = 3e18;
@@ -49,9 +51,14 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     
 }
+
 """
 
-filename = f'{sys.argv[1]}.cpp' 
+filename = f'{sys.argv[1]}.cpp'
+str_header_footer = f'// ### {filename} ###'
 
 with open(filename, 'w', encoding='utf-8') as f:
+    f.write(str_header_footer)
     f.writelines(filehead)
+    f.write(str_header_footer)
+    f.write('\n')
