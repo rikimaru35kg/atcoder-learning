@@ -207,10 +207,12 @@
 - [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 ## 連続部分列問題
+- キーワード：連続部分列は累積和！
 - 和がKとなる連続部分列が存在するかどうかは、累積和をsetに入れておけば判定可能。S[i]+KとなるS[j]が存在するのであれば、[i,j)の和はKという事
 - 連続部分列の和がある値Kとなる個数を求めるには、Sr-Sl=Kとなれば良いので、Slをmap[Sl]=（Slとなる個数）としておけば高速に求められる
 - 数列の連続部分列[L,R]の中で値がKに一致する個数を求める場合、事前にK毎にvectorを用意しておき、そのvectorにKとなる要素番号を格納しておく。後は[L,R]となる個数をupper_boundで調べれば良い
 ### 例題
+- [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
 - [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 
 # グラフ
