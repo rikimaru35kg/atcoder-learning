@@ -44,23 +44,76 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
+struct SCC {
+    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
+
+    void add_edge (long long a, long long b) {
+        from[a].push_back(b);
+        ifrom[b].push_back(a);
+    }
+
+    vector<vector<long long>> scc () {
+        vector<vector<long long>> group;
+        back_num.clear();
+        selected.assign(n, false);
+        for (long long i=0; i < n; ++i) {
+            if (!selected[i]) dfs1(i);
+        }
+        selected.assign(n, false);
+        for (long long i=n-1; i >= 0; --i) {
+            long long x = back_num[i];
+            if (selected[x]) continue;
+            vector<long long> emp;
+            dfs2(x, emp);
+            group.push_back(emp);
+        }
+        return group;
+    }
+
+private:
+    long long n;
+    vector<vector<long long>> from, ifrom;
+    vector<long long> back_num;
+    vector<bool> selected;
+
+    void dfs1 (long long x) {
+        selected[x] = true;
+        for (auto y: from[x]) {
+            if (selected[y]) continue;
+            dfs1(y);
+        }
+        back_num.push_back(x);
+    }
+
+    void dfs2 (long long x, vector<long long> &vec) {
+        selected[x] = true;
+        vec.push_back(x);
+        for (auto y: ifrom[x]) {
+            if (selected[y]) continue;
+            dfs2(y, vec);
+        }
+    }
+};
+
 
 int main () {
-    string S; cin >> S;
-    ll N = SIZE(S);
+    ll N; cin >> N;
+    vl A(N);
+    vl indeg(N);
+    rep (i, N) cin >> A[i];
+    rep (i, N) --A[i];
 
-    map<ll,ll> mp;
-    mp[0] = 1;
-    ll x = 0;
+    SCC scc(N);
+    rep (i, N) scc.add_edge(i, A[i]);
+    vvl groups = scc.scc();
     ll ans = 0;
-    rep (i, N) {
-        ll c = S[i] - '0';
-        x ^= 1<<c;
-        //judge
-        ans += mp[x];
-        mp[x]++;
+    rep (i, SIZE(groups)) {
+        vl gr = groups[i];
+        if (SIZE(gr) >= 2) ans += SIZE(gr);
+        if (SIZE(gr) == 1 && gr[0] == A[gr[0]]) ++ans;
     }
     Out(ans)
+
 }
 
 // ### test.cpp ###

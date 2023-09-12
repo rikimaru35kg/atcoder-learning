@@ -69,6 +69,12 @@
 ### 例題
 - [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
 
+## 積分解（約数類似系）
+- M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
+- a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
+### 例題
+- [D - M<=ab](https://atcoder.jp/contests/abc296/submissions/me)
+
 ## 素数判定
 - sqrt(N)まで試して割れなければ素数である
 - 素数関連では最も簡単（素因数分解や素数全列挙と比較して）
@@ -244,8 +250,11 @@
 - 例えば、1->2->3で、2から探索すると2と3がseenとなる。次に1から探索すると2のseenに辿り付きサイクル検出してしまう
 - 従って現在探索中がseen、完全終了がfinishedにしておく
 - 再帰関数をリターンして良いのはサイクル検出した時のみ（検出の瞬間と次頂点がサイクル検出した時）。finishedを見つけてもreturnではなくcontinue（スルー）
+- サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいる場合、自己ループがある場合は要注意
+- サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
 ### 例題
 - 単純なfunctional graphだが、サイクル検出の難しさを考えさせられる良問 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
+- これもfunctional graphだが、自己ループあり[E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
@@ -276,12 +285,13 @@
 
 ## Functional graph
 - 全頂点からの出次数が1のグラフをfunctional graphと呼ぶ
-- functional graphは必ずなもり木の形となる
+- functional graphは必ずなもり木の形となる（というよりどこから辿ってもサイクルに流入するグラフ）
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 
 ## 強連結成分分解（SCC[Strongly Connected Components]分解）
 - 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
 - 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
+- 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
 ### 例題
 - [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 

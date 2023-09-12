@@ -11,15 +11,13 @@ struct SCC {
 
     vector<vector<long long>> scc () {
         vector<vector<long long>> group;
-        back_num.assign(n, -1);
+        back_num.clear();
         selected.assign(n, false);
-        bn = 0;
         for (long long i=0; i < n; ++i) {
             if (!selected[i]) dfs1(i);
         }
-        reverse(back_num.begin(), back_num.end());
         selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
+        for (long long i=n-1; i >= 0; --i) {
             long long x = back_num[i];
             if (selected[x]) continue;
             vector<long long> emp;
@@ -30,7 +28,7 @@ struct SCC {
     }
 
 private:
-    long long n, bn;
+    long long n;
     vector<vector<long long>> from, ifrom;
     vector<long long> back_num;
     vector<bool> selected;
@@ -41,8 +39,7 @@ private:
             if (selected[y]) continue;
             dfs1(y);
         }
-        back_num[bn] = x;
-        ++bn;
+        back_num.push_back(x);
     }
 
     void dfs2 (long long x, vector<long long> &vec) {
@@ -54,4 +51,5 @@ private:
         }
     }
 };
+
 
