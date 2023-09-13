@@ -35,9 +35,17 @@ using vvvd = vector<vector<vector<double>>>;
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) cout << (x) << endl;
 #define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
+#define INT(...) int long __VA_ARGS__; in(__VA_ARGS__)
+#define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
+#define LONG(...) long long __VA_ARGS__; in(__VA_ARGS__)
+#define LONGM(...) long long __VA_ARGS__; inm(__VA_ARGS__)
+#define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
+inline void mi(void) {return;}
+template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
+template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
@@ -47,40 +55,13 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    ll N; in(N);
-    vl r(N), c(N), x(N);
-    rep (i, N) in(r[i], c[i], x[i]);
-
-    map<ll,ll> cols, rows;
-    map<ll,vl> cs;
-    map<Pair,ll> a;
-    rep (i, N) {
-        rows[r[i]] += x[i];
-        cols[c[i]] += x[i];
-        cs[r[i]].push_back(c[i]);
-        a[{r[i], c[i]}] += x[i];
+    LONG(N, M);
+    vvl from(N);
+    rep (i, M) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    multiset<ll> ts;
-    for (auto [k, v]: cols) ts.insert(v);
-    ts.insert(-1);
-
-    ll ans = 0;
-    for (auto [k, v]: rows) {
-        for (auto col: cs[k]) {
-            ts.erase(ts.find(cols[col]));
-            chmax(ans, v + cols[col] - a[{k, col}]);
-        }
-        ll tmax = *ts.rbegin();
-        chmax(ans, v + tmax);
-        for (auto col: cs[k]) {
-            ts.insert(cols[col]);
-        }
-    }
-
-    Out(ans)
-
-
-
 }
 
 // ### test.cpp ###
