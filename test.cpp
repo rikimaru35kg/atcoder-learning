@@ -37,6 +37,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
+template<class... T> void in(T&... x) {(cin >> ... >> x);}
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
@@ -44,75 +45,41 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
-
 
 int main () {
-    ll N; cin >> N;
-    vl A(N);
-    vl indeg(N);
-    rep (i, N) cin >> A[i];
-    rep (i, N) --A[i];
+    ll N; in(N);
+    vl r(N), c(N), x(N);
+    rep (i, N) in(r[i], c[i], x[i]);
 
-    SCC scc(N);
-    rep (i, N) scc.add_edge(i, A[i]);
-    vvl groups = scc.scc();
-    ll ans = 0;
-    rep (i, SIZE(groups)) {
-        vl gr = groups[i];
-        if (SIZE(gr) >= 2) ans += SIZE(gr);
-        if (SIZE(gr) == 1 && gr[0] == A[gr[0]]) ++ans;
+    map<ll,ll> cols, rows;
+    map<ll,vl> cs;
+    map<Pair,ll> a;
+    rep (i, N) {
+        rows[r[i]] += x[i];
+        cols[c[i]] += x[i];
+        cs[r[i]].push_back(c[i]);
+        a[{r[i], c[i]}] += x[i];
     }
+    multiset<ll> ts;
+    for (auto [k, v]: cols) ts.insert(v);
+    ts.insert(-1);
+
+    ll ans = 0;
+    for (auto [k, v]: rows) {
+        for (auto col: cs[k]) {
+            ts.erase(ts.find(cols[col]));
+            chmax(ans, v + cols[col] - a[{k, col}]);
+        }
+        ll tmax = *ts.rbegin();
+        chmax(ans, v + tmax);
+        for (auto col: cs[k]) {
+            ts.insert(cols[col]);
+        }
+    }
+
     Out(ans)
+
+
 
 }
 

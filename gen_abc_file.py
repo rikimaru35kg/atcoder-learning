@@ -40,6 +40,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
+template<class... T> void in(T&... x) {(cin >> ... >> x);}
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
