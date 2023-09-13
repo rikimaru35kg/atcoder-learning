@@ -35,17 +35,23 @@ using vvvd = vector<vector<vector<double>>>;
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) cout << (x) << endl;
 #define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
-#define INT(...) int long __VA_ARGS__; in(__VA_ARGS__)
+#define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
-#define LONG(...) long long __VA_ARGS__; in(__VA_ARGS__)
-#define LONGM(...) long long __VA_ARGS__; inm(__VA_ARGS__)
+#define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
+#define LONGM(...) ll __VA_ARGS__; inm(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
+#define VL(lvec, n) vl lvec; input_lvec(lvec, n)
+#define VS(svec, n) vs svec; input_svec(svec, n)
+#define VVC(cvec, h, w) vvc cvec(h, vc(w)); input_cvec(cvec, h, w)
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
 template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
+inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
+inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
+inline void input_cvec(vvc &cvec, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec[i][j] = c;}}
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
@@ -55,13 +61,9 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    LONG(N, M);
-    vvl from(N);
-    rep (i, M) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
-    }
+    LONG(N);
+    
+
 }
 
 // ### test.cpp ###
