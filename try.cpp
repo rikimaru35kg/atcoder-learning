@@ -38,8 +38,7 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main() {
-    cout << (int)'z' << endl;
-    cout << (int)'0' << endl;
-    cout << (int)'9' << endl;
-    cout << (int)'!' << endl;
+    for (int i = 10; i < 5; ++i) {
+        printf("%d\n", i);
+    }
 }

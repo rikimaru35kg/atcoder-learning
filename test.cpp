@@ -61,9 +61,24 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    LONG(N);
-    
-
+    LONG (N, M, D);
+    VL(A, N); VL(B, M);
+    sort(all(A));
+    sort(all(B));
+    ll ia = 0, ib = 0;
+    ll ans = -1;
+    while (ia < N) {
+        cout << "";
+        while (ib < M && B[ib] - A[ia] < -D) ++ib;
+        // if (ib == M || B[ib] - A[ia] > D) {++ia; continue;}
+        while (ib < M && B[ib] - A[ia] <= D) {
+            chmax(ans, A[ia] + B[ib]);
+            ++ib;
+        }
+        if (ib>0) --ib;
+        ++ia;
+    }
+    Out(ans)
 }
 
 // ### test.cpp ###

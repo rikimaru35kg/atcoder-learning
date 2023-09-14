@@ -190,7 +190,11 @@
 - 単調性があるときに使用可能
 - 区間の長さ1（left=right）の時にOK、NGの両方ありうる場合は半開区間で考える（[l,r)）というか基本は半開区間
 - rightをNGになるまでwhile分で進める際、NGになった瞬間のrightでwhile分の中を計算しないこと！
+- 尺取り法は半開区間なので、rを進めた後にA[r]を参照する事はもうないという事に注意
+- もしA[r]を参照したいなら、rを進めた後にr>0なら--rする（例えば例題のImpartial Gift）
 - 尺の中にある要素をmapやsetで持つのが典型（！？）
+### 例題
+- [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 
 # 区間和
 
@@ -503,6 +507,8 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- for(auto [k,v]:map)のループ中にmp.erase(k)すると壊れるので、vl esに消したいkをプッシュバックしておいて後で消す
+- _GLIBCXX_DEBUGオプションはlower_boundを遅くする（ソート済みかの事前チェック）。ループ内にあると酷い事になりうる
 - vec.resize(K)で先頭K要素だけ取り出す事が可能
 - __builtin_popcountll()と末尾にllを付けないとオーバーフローする可能性あり
 - lower_boundで.end()となってしまうのが面倒なので、番兵としてN+1番目の要素に何か入れておくと場合分けが不要となる
