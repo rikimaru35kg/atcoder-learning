@@ -143,6 +143,7 @@
 - 全探索するとO(N^2)だが、BIT木を使えばO(NlogN)で可能。
 ### 例題
 - [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
+- [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
@@ -370,11 +371,13 @@
 - [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 
 ## 円環系DP
+- 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
 - 最後の決め方に最初の決め方が依存してしまう場合、最初の選び方を追加次元（dp[最初の選択][現在の選択]）で管理しておき、最初と最後の選択で辻褄が合わない遷移を捨てればよい
 - この場合、dpの初期値を埋めるのが若干手間（i=0のときのdpとi>=1の遷移を分けて書く必要あり。最初だけ特別だから）
 - 更に綺麗な実装とするには、dp[最後の選択][現在の選択]とし、最後の選択が一致したものだけ採用するという方法もある（snuke解説）
 - 円環のどこかに必ず固定できる点があるのであれば、それを1番目かつN+1番目の要素とする事で、円環を固定できる場合あり
 ### 例題
+- [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
 - [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
 - [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
 
@@ -455,11 +458,12 @@
 - [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 
 # 括弧列
-- 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
+- 括弧列は、開き括弧があ る度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
 - 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
 - つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
 ### 例題
 - [D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
+- [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
 
 # 2変数問題
 

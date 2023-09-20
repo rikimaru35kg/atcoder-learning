@@ -42,6 +42,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define CHR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
+#define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
@@ -55,6 +56,7 @@ template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
 template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
+inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
@@ -64,12 +66,31 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
 
 
 int main () {
+    LONG(N, M);
+
+    vector<mint> dp(2);
+    dp[0] = 1;
+    mint base = 1;
+
+    rep (i, N-1) {
+        vector<mint> p(2);
+        swap(p, dp);
+
+        dp[1] += p[0] * (M-1);
+        dp[0] += p[1];
+        dp[1] += p[1] * (M-2);
+        base *= (M-1);
+    }
+
+    mint ans = (base - dp[0]) * M;
+    Out(ans.val())
+
     
 }
 

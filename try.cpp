@@ -37,8 +37,31 @@ const ll INF = 1e18;
 const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117;
 
 
-int main() {
-    for (int i = 10; i < 5; ++i) {
-        printf("%d\n", i);
+struct fenwick_tree {
+    ll n; vl bit;
+    fenwick_tree (ll n): n(n+1), bit(n+1) {}
+
+    void add(ll i, ll x) {
+        for (ll idx=i; idx < n; idx += (-idx & idx)) bit[idx] += x;
     }
+    ll sum(ll i) {
+        ll ret = 0;
+        for (ll idx=i; idx > 0; idx -= (-idx&idx)) ret += bit[idx];
+        return ret;
+    }
+    ll lower_bound(ll x) {
+        ll width = 1, l = 0;
+        while ((width<<1) < n) width <<= 1;
+        for (; width > 0; width >>= 1) {
+            if (l + width >= n) continue;
+            if (bit[l+width] >= x) continue;
+            x -= bit[l+width];
+            l += width;
+        }
+        return l+1;
+    }
+};
+int main() {
+    fenwick_tree bit(5);
+    bit.sum(0);
 }
