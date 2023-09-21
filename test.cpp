@@ -66,32 +66,46 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
     LONG(N, M);
-
-    vector<mint> dp(2);
-    dp[0] = 1;
-    mint base = 1;
-
-    rep (i, N-1) {
-        vector<mint> p(2);
-        swap(p, dp);
-
-        dp[1] += p[0] * (M-1);
-        dp[0] += p[1];
-        dp[1] += p[1] * (M-2);
-        base *= (M-1);
+    vl A, B, C;
+    rep (i, N) {
+        LONG(t, x);
+        if (t == 0) A.push_back(x);
+        if (t == 1) B.push_back(x);
+        if (t == 2) C.push_back(x);
     }
 
-    mint ans = (base - dp[0]) * M;
-    Out(ans.val())
+    sort(allr(A)); ll na = SIZE(A);
+    sort(allr(B)); ll nb = SIZE(B);
+    sort(allr(C)); ll nc = SIZE(C);
+    vl SA(na+1);
+    vl SB(nb+1);
+    vl SC(nc+1);
 
-    
+    rep (i, na) SA[i+1] = SA[i] + A[i];
+    rep (i, nb) SB[i+1] = SB[i] + B[i];
+    rep (i, nc) SC[i+1] = SC[i] + C[i];
+
+    ll ans = 0;
+    rep (b, M+1) {
+        ll value = 0;
+        if (b > nb) continue;
+        value += SB[b];
+        ll c = lower_bound(all(SC), b) - SC.begin();
+        if (c > nc) continue;
+        ll a = M - b - c;
+        if (a < 0) continue;
+        chmin(a, na);
+        value += SA[a];
+        chmax(ans, value);
+    }
+    Out(ans)
 }
 
 // ### test.cpp ###
