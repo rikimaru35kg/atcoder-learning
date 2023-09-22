@@ -16,6 +16,7 @@ using vpd = vector<Paird>;
 using vvi = vector<vector<int>>;
 using vvc = vector<vector<char>>;
 using vvl = vector<vector<ll>>;
+using vvp = vector<vector<Pair>>;
 using vvb = vector<vector<bool>>;
 using vvd = vector<vector<double>>;
 using vvs = vector<vector<string>>;
@@ -72,40 +73,7 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    LONG(N, M);
-    vl A, B, C;
-    rep (i, N) {
-        LONG(t, x);
-        if (t == 0) A.push_back(x);
-        if (t == 1) B.push_back(x);
-        if (t == 2) C.push_back(x);
-    }
-
-    sort(allr(A)); ll na = SIZE(A);
-    sort(allr(B)); ll nb = SIZE(B);
-    sort(allr(C)); ll nc = SIZE(C);
-    vl SA(na+1);
-    vl SB(nb+1);
-    vl SC(nc+1);
-
-    rep (i, na) SA[i+1] = SA[i] + A[i];
-    rep (i, nb) SB[i+1] = SB[i] + B[i];
-    rep (i, nc) SC[i+1] = SC[i] + C[i];
-
-    ll ans = 0;
-    rep (b, M+1) {
-        ll value = 0;
-        if (b > nb) continue;
-        value += SB[b];
-        ll c = lower_bound(all(SC), b) - SC.begin();
-        if (c > nc) continue;
-        ll a = M - b - c;
-        if (a < 0) continue;
-        chmin(a, na);
-        value += SA[a];
-        chmax(ans, value);
-    }
-    Out(ans)
+    
 }
 
 // ### test.cpp ###

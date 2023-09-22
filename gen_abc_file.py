@@ -19,6 +19,7 @@ using vpd = vector<Paird>;
 using vvi = vector<vector<int>>;
 using vvc = vector<vector<char>>;
 using vvl = vector<vector<ll>>;
+using vvp = vector<vector<Pair>>;
 using vvb = vector<vector<bool>>;
 using vvd = vector<vector<double>>;
 using vvs = vector<vector<string>>;
