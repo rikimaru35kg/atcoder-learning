@@ -73,7 +73,34 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    
+    LONG(N, Z, W);
+    VL(a, N);
+
+    vvl dp(N+1, vl(2, INF));
+
+    auto dfs = [&](auto f, ll i, ll p) -> ll {
+        if (dp[i][p] != INF) return dp[i][p];
+
+        ll ret = -INF;
+        if (p == 1) ret = INF;
+        repk (k, i, N) {
+            if (k == N-1) {
+                ll x = W;
+                if (i != 0) x = a[i-1];
+                if (p == 0) chmax(ret, abs(x - a[N-1]));
+                else chmin(ret, abs(x - a[N-1]));
+                break;
+            }
+            ll score = f(f, k+1, 1-p);
+            if (p == 0) chmax(ret, score);
+            else chmin(ret, score);
+        }
+        return dp[i][p] = ret;
+    };
+
+    ll ans = dfs(dfs, 0, 0);
+    Out(ans)
+
 }
 
 // ### test.cpp ###
