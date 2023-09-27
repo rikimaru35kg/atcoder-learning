@@ -73,34 +73,48 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    LONG(N, Z, W);
-    VL(a, N);
-
-    vvl dp(N+1, vl(2, INF));
-
-    auto dfs = [&](auto f, ll i, ll p) -> ll {
-        if (dp[i][p] != INF) return dp[i][p];
-
-        ll ret = -INF;
-        if (p == 1) ret = INF;
-        repk (k, i, N) {
-            if (k == N-1) {
-                ll x = W;
-                if (i != 0) x = a[i-1];
-                if (p == 0) chmax(ret, abs(x - a[N-1]));
-                else chmin(ret, abs(x - a[N-1]));
-                break;
-            }
-            ll score = f(f, k+1, 1-p);
-            if (p == 0) chmax(ret, score);
-            else chmin(ret, score);
+    LONG(N, K);
+    vi X, Y;
+    vc C;
+    rep (i, N) {
+        LONG(x, y);
+        CHR(c);
+        X.push_back(x);
+        Y.push_back(y);
+        C.push_back(c);
+    }
+    vvi white(4*K, vi(4*K));
+    vvi black(4*K, vi(4*K));
+    rep (i, N) {
+        ll x = X[i], y = Y[i], c = C[i];
+        x %= 2*K; y %= 2*K;
+        if (c == 'W') {
+            rep (a, 2) rep (b, 2) white[x+a*2*K][y+b*2*K] += 1;
+        } else {
+            rep (a, 2) rep (b, 2) black[x+a*2*K][y+b*2*K] += 1;
         }
-        return dp[i][p] = ret;
+    }
+    vvi Sw(4*K+1, vi(4*K+1));
+    vvi Sb(4*K+1, vi(4*K+1));
+    rep (i, 4*K) rep (j, 4*K) {
+        Sw[i+1][j+1] = Sw[i+1][j] + Sw[i][j+1] - Sw[i][j] + white[i][j];
+        Sb[i+1][j+1] = Sb[i+1][j] + Sb[i][j+1] - Sb[i][j] + black[i][j];
+    }
+    ll ans = 0;
+    auto cnt_x = [&](ll i, ll j, vvi &S) -> ll {
+        ll ret = 0;
+        ret += S[i+K][j+K] - S[i][j+K] - S[i+K][j] + S[i][j];
+        return ret;
     };
-
-    ll ans = dfs(dfs, 0, 0);
-    Out(ans)
-
+    rep (i, 2*K) rep (j, 2*K) {
+        ll cnt = 0;
+        cnt += cnt_x(i, j, Sw);
+        cnt += cnt_x(i+K, j+K, Sw);
+        cnt += cnt_x(i, j+K, Sb);
+        cnt += cnt_x(i+K, j, Sb);
+        chmax(ans, cnt);
+    }
+    Out(ans);
 }
 
 // ### test.cpp ###
