@@ -73,48 +73,24 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    LONG(N, K);
-    vi X, Y;
-    vc C;
-    rep (i, N) {
-        LONG(x, y);
-        CHR(c);
-        X.push_back(x);
-        Y.push_back(y);
-        C.push_back(c);
-    }
-    vvi white(4*K, vi(4*K));
-    vvi black(4*K, vi(4*K));
-    rep (i, N) {
-        ll x = X[i], y = Y[i], c = C[i];
-        x %= 2*K; y %= 2*K;
-        if (c == 'W') {
-            rep (a, 2) rep (b, 2) white[x+a*2*K][y+b*2*K] += 1;
-        } else {
-            rep (a, 2) rep (b, 2) black[x+a*2*K][y+b*2*K] += 1;
-        }
-    }
-    vvi Sw(4*K+1, vi(4*K+1));
-    vvi Sb(4*K+1, vi(4*K+1));
-    rep (i, 4*K) rep (j, 4*K) {
-        Sw[i+1][j+1] = Sw[i+1][j] + Sw[i][j+1] - Sw[i][j] + white[i][j];
-        Sb[i+1][j+1] = Sb[i+1][j] + Sb[i][j+1] - Sb[i][j] + black[i][j];
-    }
+    LONG(N); VL(A, N);
+
+    ll r = 0;
     ll ans = 0;
-    auto cnt_x = [&](ll i, ll j, vvi &S) -> ll {
-        ll ret = 0;
-        ret += S[i+K][j+K] - S[i][j+K] - S[i+K][j] + S[i][j];
-        return ret;
-    };
-    rep (i, 2*K) rep (j, 2*K) {
-        ll cnt = 0;
-        cnt += cnt_x(i, j, Sw);
-        cnt += cnt_x(i+K, j+K, Sw);
-        cnt += cnt_x(i, j+K, Sb);
-        cnt += cnt_x(i+K, j, Sb);
-        chmax(ans, cnt);
+    ll t = 0;
+    rep (l, N) {
+        while (r+1 <= N && (A[r] & t) == 0) {
+            t += A[r];
+            ++r;
+        }
+        ll num = r - l;
+        ans += num;
+
+        if (l == r) ++r;
+        else t -= A[l];
     }
-    Out(ans);
+    Out(ans)
+
 }
 
 // ### test.cpp ###

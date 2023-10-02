@@ -206,8 +206,10 @@
 - 例えばA[l]～A[r]の和はS[r+1]-S[l]だが、これはr+1個からl個を除いたものとも解釈できる（元の数列が0-indexedなので、A[l]はl+1個目である事に注意）
 - 元の数列が非負なら累積和は必ず広義単調増加、非正なら必ず広義単調減少となる
 - 逆向きに累積和と取れば単調減少（単調増加）となる
+- 和だけでなく、累積XORも考えられる
 ### 例題
 - [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
+- [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる
@@ -231,7 +233,7 @@
 - [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 ## 連続部分列問題
-- キーワード：連続部分列は累積和！
+- キーワード：連続部分列は累積和！（もしくは尺取り法）
 - 和がKとなる連続部分列が存在するかどうかは、累積和をsetに入れておけば判定可能。S[i]+KとなるS[j]が存在するのであれば、[i,j)の和はKという事
 - 連続部分列の和がある値Kとなる個数を求めるには、Sr-Sl=Kとなれば良いので、Slをmap[Sl]=（Slとなる個数）としておけば高速に求められる
 - 数列の連続部分列[L,R]の中で値がKに一致する個数を求める場合、事前にK毎にvectorを用意しておき、そのvectorにKとなる要素番号を格納しておく。後は[L,R]となる個数をupper_boundで調べれば良い
@@ -500,6 +502,8 @@
 - xの小さい順に走査し、存在するか判定。存在しなければyの値をためていく
 - こうすることで、xについての大小判定を気にする必要がなくなる
 - xに等しい値が存在する場合の実装に注意
+### 例題
+- [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 
 # 読解が難しい問題
 - 添え字多すぎ問題[B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
