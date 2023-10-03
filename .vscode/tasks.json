@@ -17,7 +17,9 @@
                 "-Wno-format",
                 // "-Wextra",
                 "-O0",
-                "-D_GLIBCXX_DEBUG"
+                "-D_GLIBCXX_DEBUG",
+                "-Wl,--stack",
+                "-Wl,1073741824",
             ],
             "options": {
                 "cwd": "C:/Program Files/mingw64/bin"
