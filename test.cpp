@@ -73,22 +73,31 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 
 int main () {
-    LONG(N, M);
-    vp hate;
-    rep (i, M) {
-        LONG(a, b);
-        hate.emplace_back(b, a);
-    }
-    sort(all(hate));
-
+    LONG(N, M); VL(A, N);
+    vl S(N+1);
+    rep (i, N) S[i+1] = S[i] + A[i];
+    rep (i, N) S[i+1] %= M;
     ll ans = 0;
-    ll end = -1;
-    rep (i, M) {
-        auto [b, a] = hate[i];
-        if (a >= end) {
-            end = b;
-            ++ans;
-        }
+    map<ll,ll> mp;
+    mp[0]++;
+    rep(i, N) {
+        auto myf = [&]() {
+            printf("-----------------\n");
+            printf("try %lld\n", i);
+            rep (k, i+1) {
+                ll z = 0;
+                repk (m, k, i+1) {
+                    z += A[m];
+                }
+                if (z % M == 0) {
+                    printf("%lld %lld\n", k, i);
+                }
+            }
+        };
+        // myf();
+        ll k = ((S[i+1]%M) - M + M) % M;
+        ans += mp[k];
+        mp[S[i+1] % M]++;
     }
     Out(ans)
 }

@@ -240,6 +240,7 @@
 - 連続部分列の和がある値Kとなる個数を求めるには、Sr-Sl=Kとなれば良いので、Slをmap[Sl]=（Slとなる個数）としておけば高速に求められる
 - 数列の連続部分列[L,R]の中で値がKに一致する個数を求める場合、事前にK毎にvectorを用意しておき、そのvectorにKとなる要素番号を格納しておく。後は[L,R]となる個数をupper_boundで調べれば良い
 ### 例題
+- [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
 - [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
 - [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 
