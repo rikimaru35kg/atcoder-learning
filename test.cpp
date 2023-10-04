@@ -71,27 +71,26 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-    vl mem(100000, INF);
-    ll dfs (ll n) {
-        if (mem[n] != INF) return mem[n];
-        if (n == 0) return 0;
-        ll ret = INF;
-        chmin(ret, dfs(n-1)+1);
-        for (int d=6; n-d>=0; d*=6) {
-            chmin(ret, dfs(n-d)+1);
-        }
-        for (int d=9; n-d>=0; d*=9) {
-            chmin(ret, dfs(n-d)+1);
-        }
-        return mem[n] = ret;
-    }
 
 int main () {
-    LONG(N);
+    LONG(N, M);
+    vp hate;
+    rep (i, M) {
+        LONG(a, b);
+        hate.emplace_back(b, a);
+    }
+    sort(all(hate));
 
-    // Out(dfs(dfs, N))
-    ll ans = dfs(N);
-    cout << ans << endl;
+    ll ans = 0;
+    ll end = -1;
+    rep (i, M) {
+        auto [b, a] = hate[i];
+        if (a >= end) {
+            end = b;
+            ++ans;
+        }
+    }
+    Out(ans)
 }
 
 // ### test.cpp ###
