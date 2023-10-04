@@ -71,28 +71,13 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 
 int main () {
-    print_vec(listup_divisor(10, true));
-    print_vec(listup_divisor(12, true));
-    print_vec(listup_divisor(36, true));
-    print_vec(listup_divisor(100, true));
-    print_vec(listup_divisor(10));
-    print_vec(listup_divisor(12));
-    print_vec(listup_divisor(36));
-    print_vec(listup_divisor(100));
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    LONG(N); VL(A, N);
+
 }
 
 // ### test.cpp ###

@@ -219,6 +219,7 @@
 - 区間和を取るときも包除原理的な考え方でやる
 ### 例題
 - [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b) なお、この問題は何も考えずにlong longを使いすぎるとMLEする
+- [D - AtCoder Express 2](https://atcoder.jp/contests/abc106/tasks/abc106_d)
 
 ## BIT木（Fenwick tree）
 - 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる
