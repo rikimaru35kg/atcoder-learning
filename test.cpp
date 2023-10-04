@@ -71,35 +71,28 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
 
 int main () {
-    LONG(N, M); VL(A, N);
-    vl S(N+1);
-    rep (i, N) S[i+1] = S[i] + A[i];
-    rep (i, N) S[i+1] %= M;
-    ll ans = 0;
-    map<ll,ll> mp;
-    mp[0]++;
-    rep(i, N) {
-        auto myf = [&]() {
-            printf("-----------------\n");
-            printf("try %lld\n", i);
-            rep (k, i+1) {
-                ll z = 0;
-                repk (m, k, i+1) {
-                    z += A[m];
-                }
-                if (z % M == 0) {
-                    printf("%lld %lld\n", k, i);
-                }
-            }
-        };
-        // myf();
-        ll k = ((S[i+1]%M) - M + M) % M;
-        ans += mp[k];
-        mp[S[i+1] % M]++;
-    }
-    Out(ans)
+    print_vec(listup_divisor(10, true));
+    print_vec(listup_divisor(12, true));
+    print_vec(listup_divisor(36, true));
+    print_vec(listup_divisor(100, true));
+    print_vec(listup_divisor(10));
+    print_vec(listup_divisor(12));
+    print_vec(listup_divisor(36));
+    print_vec(listup_divisor(100));
 }
 
 // ### test.cpp ###

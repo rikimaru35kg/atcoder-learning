@@ -19,3 +19,15 @@ vector<pair<long long, long long>> prime_factrization (long long n) {
     if (rem != 1) primes.emplace_back(rem, 1);
     return primes;
 }
+
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
