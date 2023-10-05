@@ -70,62 +70,27 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
-vector<string> crop(vector<string> &field, char c='#') {
-    long long h = field.size();
-    long long w = field[0].size();
-    long long i_min = h, i_max = -1;
-    long long j_min = w, j_max = -1;
-    for(long long i=0; i<h; ++i) {
-        for(long long j=0; j<w; ++j) {
-            if (field[i][j] == c) {
-                i_min = min(i_min, i);
-                i_max = max(i_max, i);
-                j_min = min(j_min, j);
-                j_max = max(j_max, j);
-            }
-        }
-    }
-    vector<string> ret;
-    for(long long i=i_min; i<=i_max; ++i) {
-        ret.push_back(field[i].substr(j_min, j_max-j_min+1));
-    }
-    return ret;
-}
 
-vector<string> crop_out(vs &field, char c='.') {
-    long long h = field.size();
-    long long w = field[0].size();
-    vector<bool> rows(h), cols(w); 
-    for(long long i=0; i<h; ++i) {
-        for(long long j=0; j<w; ++j) {
-            if (field[i][j] != c) {
-                rows[i] = true;
-                cols[j] = true;
-            }
-        }
-    }
-    vector<string> ret;
-    for(long long i=0; i<h; ++i) {
-        if (!rows[i]) continue;
-        ret.push_back("");
-        for(long long j=0; j<w; ++j) {
-            if (cols[j]) ret.back() += field[i][j];
-        }
-    }
-    return ret;
+//! Rotate p1 by 90 degrees based on p0.
+pair<long,long> rot90(pair<long,long> p1, pair<long,long> p0, bool counter_clockwise=true) {
+    auto [x0, y0] = p0;
+    auto [x1, y1] = p1;
+    long long sign = (counter_clockwise ? 1: -1);
+    long long x2 = -sign*(y1 - y0) + x0;
+    long long y2 = sign*(x1 - x0) + y0;
+    return {x2, y2};
 }
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W); VS(a, H);
-
-    vs ans = crop(a, '#');
-
-    rep (i, SIZE(ans)) {
-        cout << ans[i] << endl;
-    }
-    
+    Pair p1, p2;
+    cin >> p1.first >> p1.second >> p2.first >> p2.second;
+    Pair p3 = rot90(p1, p2, false);
+    Pair p4 = rot90(p2, p1, true);
+    auto [x3, y3] = p3;
+    auto [x4, y4] = p4;
+    printf("%lld %lld %lld %lld\n", x3, y3, x4, y4);
 }
 
 // ### test.cpp ###
