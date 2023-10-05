@@ -1,7 +1,7 @@
 import sys
 
 
-filehead = """
+filehead = r"""
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -38,7 +38,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) cout << (x) << endl;
-#define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
+#define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)

@@ -35,7 +35,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) cout << (x) << endl;
-#define print_vec(vec) {for (auto x: vec) cout << x << ' '; cout << endl;}
+#define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -71,26 +71,11 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-//! Rotate p1 by 90 degrees based on p0.
-pair<long,long> rot90(pair<long,long> p1, pair<long,long> p0, bool counter_clockwise=true) {
-    auto [x0, y0] = p0;
-    auto [x1, y1] = p1;
-    long long sign = (counter_clockwise ? 1: -1);
-    long long x2 = -sign*(y1 - y0) + x0;
-    long long y2 = sign*(x1 - x0) + y0;
-    return {x2, y2};
-}
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Pair p1, p2;
-    cin >> p1.first >> p1.second >> p2.first >> p2.second;
-    Pair p3 = rot90(p1, p2, false);
-    Pair p4 = rot90(p2, p1, true);
-    auto [x3, y3] = p3;
-    auto [x4, y4] = p4;
-    printf("%lld %lld %lld %lld\n", x3, y3, x4, y4);
+    
 }
 
 // ### test.cpp ###
