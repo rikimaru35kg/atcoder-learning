@@ -85,6 +85,7 @@
 - ライブラリprime_factorizationとして保存した
 ### 例題
 - [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
+- [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
 
 ## 素数全列挙
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
