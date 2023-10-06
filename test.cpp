@@ -70,29 +70,53 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl divs = listup_divisor(M);
-    ll ans = -1;
-    for (auto m: divs) {
-        if (m*N <= M && M%m==0) chmax(ans, m);
+    LONG(N, K);
+    VP(sushi, N);
+    sort(all(sushi), greater<Pair>());
+    ll type = -1;
+    for (auto &[t, d]: sushi) {
+        if (t != type) {
+            type = t;
+            t = 1;
+        } else {
+            t = 0;
+        }
+        swap(t, d);
     }
-    Out(ans)
+    sort(all(sushi), greater<Pair>());
+    multiset<ll> selected;
+    multiset<ll> remaining;
+    ll n_type = 0;
+    ll sum = 0;
+    rep (i, N) {
+        auto [d, t] = sushi[i];
+        if (i < K) {
+            sum += d;
+            if (t == 1) ++n_type;
+            else selected.insert(d);
+        } else {
+            if (t == 1) remaining.insert(d);
+        }
+    }
 
+    ll content = sum + n_type*n_type;
+    ll ans = content;
+    while (!selected.empty() && !remaining.empty()) {
+        ++n_type;
+        ll del = *selected.begin();
+        ll sel = *remaining.rbegin();
+        sum += sel - del;
+        ll content = sum + n_type*n_type;
+        chmax(ans, content);
+        selected.erase(selected.find(del));
+        remaining.erase(remaining.find(sel));
+    }
+    cout << ans << endl;
     
 }
 

@@ -12,6 +12,7 @@
 - charをintに直すには'5'-'0'などとする
 - 文字列が連続している場合はランレングス圧縮が有効。余事象との組み合わせで、異なる文字が含まれる区間の場合の数も求められる
 - tolower(c)、toupper(c)で小文字、大文字変換が可能
+- scanfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
 
 ## ビット操作
 - &や|等のビット演算子は==よりも優先順位が低いことに注意。ビットシフトも含め、ビット操作はとにかく括弧で囲め！
@@ -86,9 +87,11 @@
 - 2からsqrt(N)まで試して、割り切れる回数が指数となる
 - sqrt(N)まで試して、割り切った数が1でない場合は、その数も素数であるので忘れないように
 - ライブラリprime_factorizationとして保存した
+- 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
 ### 例題
 - [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
+- [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 
 ## 素数全列挙
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
@@ -522,13 +525,17 @@
 ### 例題
 - [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 
+# 差分を考える
+- O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
+- この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
+### 例題
+- [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 
 # コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 ### 例題
 - [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
-
 
 # 読解が難しい問題
 - 添え字多すぎ問題[B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
