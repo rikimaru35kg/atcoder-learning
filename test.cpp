@@ -76,47 +76,35 @@ int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    VP(sushi, N);
-    sort(all(sushi), greater<Pair>());
-    ll type = -1;
-    for (auto &[t, d]: sushi) {
-        if (t != type) {
-            type = t;
-            t = 1;
-        } else {
-            t = 0;
-        }
-        swap(t, d);
-    }
-    sort(all(sushi), greater<Pair>());
-    multiset<ll> selected;
-    multiset<ll> remaining;
-    ll n_type = 0;
-    ll sum = 0;
-    rep (i, N) {
-        auto [d, t] = sushi[i];
-        if (i < K) {
-            sum += d;
-            if (t == 1) ++n_type;
-            else selected.insert(d);
-        } else {
-            if (t == 1) remaining.insert(d);
-        }
-    }
+    VL(A, N);
+    // if (K == 0) {
+    //     ll ans = accumulate(all(A), 0LL);
+    //     Out(ans)
+    //     return 0;
+    // }
+    bitset<50> bit(K);
+    ll d = 49;
+    // rep (i, 50) if (bit.test(i)) chmax(d, i);
+    vl dp(2, -INF);
+    dp[0] = 0;
+    while(true) {
+        vl p(2, -INF);
+        swap(p, dp);
+        ll cnt1 = 0;
+        rep (i, N) if (A[i]>>d&1) ++cnt1;
+        ll cnt0 = N - cnt1;
 
-    ll content = sum + n_type*n_type;
-    ll ans = content;
-    while (!selected.empty() && !remaining.empty()) {
-        ++n_type;
-        ll del = *selected.begin();
-        ll sel = *remaining.rbegin();
-        sum += sel - del;
-        ll content = sum + n_type*n_type;
-        chmax(ans, content);
-        selected.erase(selected.find(del));
-        remaining.erase(remaining.find(sel));
+        if (bit.test(d)) {
+            chmax(dp[1], p[0]+(cnt1<<d)); //K limit -> not limit
+            chmax(dp[0], p[0]+(cnt0<<d)); //K limit -> limit
+        } else {
+            chmax(dp[0], p[0]+(cnt1<<d)); //K limit -> limit
+        }
+        if (p[1] != -INF) chmax(dp[1], p[1]+(max(cnt1, cnt0)<<d)); //K not limit -> not limit
+        if (d == 0) break;
+        --d;
     }
-    cout << ans << endl;
+    Out(max(dp[0], dp[1]))
     
 }
 
