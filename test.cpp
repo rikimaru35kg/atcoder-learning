@@ -75,37 +75,8 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    // if (K == 0) {
-    //     ll ans = accumulate(all(A), 0LL);
-    //     Out(ans)
-    //     return 0;
-    // }
-    bitset<50> bit(K);
-    ll d = 49;
-    // rep (i, 50) if (bit.test(i)) chmax(d, i);
-    vl dp(2, -INF);
-    dp[0] = 0;
-    while(true) {
-        vl p(2, -INF);
-        swap(p, dp);
-        ll cnt1 = 0;
-        rep (i, N) if (A[i]>>d&1) ++cnt1;
-        ll cnt0 = N - cnt1;
-
-        if (bit.test(d)) {
-            chmax(dp[1], p[0]+(cnt1<<d)); //K limit -> not limit
-            chmax(dp[0], p[0]+(cnt0<<d)); //K limit -> limit
-        } else {
-            chmax(dp[0], p[0]+(cnt1<<d)); //K limit -> limit
-        }
-        if (p[1] != -INF) chmax(dp[1], p[1]+(max(cnt1, cnt0)<<d)); //K not limit -> not limit
-        if (d == 0) break;
-        --d;
-    }
-    Out(max(dp[0], dp[1]))
-    
+    LONG(N);
+    cout << N << endl;
 }
 
 // ### test.cpp ###

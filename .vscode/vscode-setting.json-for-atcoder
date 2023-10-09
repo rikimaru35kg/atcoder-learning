@@ -1,0 +1,11 @@
+{
+    "window.zoomLevel": 1,
+    "vim.handleKeys": {
+        "<C-d>": false,
+        "<C-s>": false,
+        "<C-z>": false,
+    },
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {"before": ["U"], "after": ["<c-r>"]},
+    ],
+}
