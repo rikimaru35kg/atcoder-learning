@@ -93,12 +93,14 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # My aliases
-alias g='g++'
+alias g='g++ -std=gnu++20 -O2 -D_GLIBCXX_DEBUG -Wall -Wextra -I/opt/ac-library'
 alias a='./a.out'
 alias abc='python3 gen_abc_file.py'
 alias clip='/mnt/c/WINDOWS/system32/clip.exe'
 alias c='clip'
 alias e='powershell.exe -command "Get-Clipboard" > in; a < in'
+# My stacksize
+ulimit -s 1048576
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
