@@ -75,6 +75,21 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M);
+    vl foods(M);
+    rep (i, N) {
+        LONG(k);
+        rep (j, k) {
+            LONGM(a);
+            foods[a]++;
+        }
+    }
+    ll ans = 0;
+    rep (i, M) {
+        if (foods[i] == N) ++ans;
+    }
+    Out(ans)
+
     
 }
 
