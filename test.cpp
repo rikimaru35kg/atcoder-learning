@@ -67,29 +67,59 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+
+vl n2four (ll n) {
+    vl ret;
+    while (n > 0) {
+        ret.push_back(n % 4);
+        n /= 4;
+    }
+    while (SIZE(ret) < 4) {
+        ret.push_back(0);
+    }
+    return ret;
+}
+ll four2n (vl vec) {
+    ll ret = 0;
+    repr (i, SIZE(vec)) {
+        ret = ret * 4 + vec[i];
+    }
+    return ret;
+}
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl foods(M);
+    LONG(N);
+    ll M = 4;
+    ll mx = 1;
+    rep (i, 3) mx *= M;
+    vector<mint> dp(mx);
+    dp[four2n({3, 3, 3})] = 1;
     rep (i, N) {
-        LONG(k);
-        rep (j, k) {
-            LONGM(a);
-            foods[a]++;
+        vector<mint> p(mx);
+        swap(p, dp);
+        rep (a, M) rep (b, M) rep (c, M) rep (d, M) {
+            if (a==0 && b==1 && d == 2) continue;
+            if (a==0 && c==1 && d == 2) continue;
+            if (b==0 && c==1 && d == 2) continue;
+            if (b==1 && c==0 && d == 2) continue;
+            if (b==0 && c==2 && d == 1) continue;
+            if (four2n({a, b, c}) == 93 ){
+                cout << "";
+            }
+            dp[four2n({b, c, d})] += p[four2n({a, b, c})];
         }
     }
-    ll ans = 0;
-    rep (i, M) {
-        if (foods[i] == N) ++ans;
+    mint ans = 0;
+    rep (a, M) rep (b, M) rep (c, M) {
+        ans += dp[four2n({a, b, c})];
     }
-    Out(ans)
-
+    Out(ans.val())
     
 }
 
