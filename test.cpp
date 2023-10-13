@@ -75,26 +75,30 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y, Z, K);
-    VL(A, X);
-    VL(B, Y);
-    VL(C, Z);
-    sort(allr(A));sort(allr(B));sort(allr(C));
-    vl ans;
-    rep (i, X) {
-        rep (j, Y) {
-            // if ((i+1)*(j+1) > K) break;
-            rep (k, Z) {
-                if ((i+1)*(j+1)*(k+1) > K) break;
-                ans.push_back(A[i]+B[j]+C[k]);
-            }
+    LONG(N);
+    VL(A, N);
+    ll sum = 0;
+    rep (i, N) {
+        sum += abs(A[i]);
+    }
+    ll ans = -INF;
+    vl rev(N+1);
+    rep (i, N) {
+        if (A[i] < 0) rev[i+1] = 1 - rev[i];
+        else rev[i+1] = rev[i];
+    }
+    rep (i, N-1) {
+        ll current = sum;
+        current = current - abs(A[i]) - abs(A[i+1]);
+        for(int k=-1; k<2; k+=2) {
+            ll a=1, b=1;
+            if (rev[i] == 1) a = -1;
+            if (rev[N] != rev[i+2]) b = -1;
+            ll tmp = current + k*(a*A[i] + b*A[i+1]);
+            chmax(ans, tmp);
         }
     }
-
-    sort(allr(ans));
-    rep (i, K) {
-        cout << ans[i] << '\n';
-    }
+    Out(ans)
     
 }
 
