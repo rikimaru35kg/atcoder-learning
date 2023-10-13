@@ -67,59 +67,34 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-
-vl n2four (ll n) {
-    vl ret;
-    while (n > 0) {
-        ret.push_back(n % 4);
-        n /= 4;
-    }
-    while (SIZE(ret) < 4) {
-        ret.push_back(0);
-    }
-    return ret;
-}
-ll four2n (vl vec) {
-    ll ret = 0;
-    repr (i, SIZE(vec)) {
-        ret = ret * 4 + vec[i];
-    }
-    return ret;
-}
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 4;
-    ll mx = 1;
-    rep (i, 3) mx *= M;
-    vector<mint> dp(mx);
-    dp[four2n({3, 3, 3})] = 1;
-    rep (i, N) {
-        vector<mint> p(mx);
-        swap(p, dp);
-        rep (a, M) rep (b, M) rep (c, M) rep (d, M) {
-            if (a==0 && b==1 && d == 2) continue;
-            if (a==0 && c==1 && d == 2) continue;
-            if (b==0 && c==1 && d == 2) continue;
-            if (b==1 && c==0 && d == 2) continue;
-            if (b==0 && c==2 && d == 1) continue;
-            if (four2n({a, b, c}) == 93 ){
-                cout << "";
+    LONG(X, Y, Z, K);
+    VL(A, X);
+    VL(B, Y);
+    VL(C, Z);
+    sort(allr(A));sort(allr(B));sort(allr(C));
+    vl ans;
+    rep (i, X) {
+        rep (j, Y) {
+            // if ((i+1)*(j+1) > K) break;
+            rep (k, Z) {
+                if ((i+1)*(j+1)*(k+1) > K) break;
+                ans.push_back(A[i]+B[j]+C[k]);
             }
-            dp[four2n({b, c, d})] += p[four2n({a, b, c})];
         }
     }
-    mint ans = 0;
-    rep (a, M) rep (b, M) rep (c, M) {
-        ans += dp[four2n({a, b, c})];
+
+    sort(allr(ans));
+    rep (i, K) {
+        cout << ans[i] << '\n';
     }
-    Out(ans.val())
     
 }
 
