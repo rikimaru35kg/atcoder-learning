@@ -187,10 +187,12 @@
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
 - 最小値の最大化を二分探索で求められる事が多いのは、最大値=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
+- 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる
 ### 例題
 - [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
+- [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 
 # 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
