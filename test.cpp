@@ -67,33 +67,58 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
+// 区間更新・区間最小値取得（RUQ+RMQ）=========================
+using S = long long;
+using F = long long;
+
+const S UNIT = 8e18;
+const F ID = 8e18;
+
+S op(S a, S b){ return std::min(a, b); }
+S e(){ return UNIT; }
+S mapping(F f, S x){ return (f == ID ? x : f); }
+F composition(F f, F g){ return (f == ID ? g : f); }
+F id(){ return ID; }
+// =========================================================
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<pair<string,ll>> ps;
+    LONG(N, Q);
+    vector<pair<ll,Pair>> ps;
     rep (i, N) {
-        STRING(s); LONG(p);
-        ps.emplace_back(s, p);
+        LONG(s, t, x);
+        ps.emplace_back(x, make_pair(s-x, t-x));
     }
-    vl nums;
-    rep (i, N) nums.push_back(i);
-    sort(all(nums), [&](ll i, ll j){
-        auto [s1, p1] = ps[i];
-        auto [s2, p2] = ps[j];
-        if (s1 == s2) {
-            return p1 > p2;
-        }
-        return s1 < s2;
-    });
+    sort(allr(ps));
+    VL(D, Q);
+    map<ll,ll> mp;
+    mp[0] = 0;
     rep (i, N) {
-        Out(nums[i]+1)
+        auto [x, p] = ps[i];
+        auto [s, t] = p;
+        mp[s] = 0; mp[t] = 0;
     }
+    rep (i, Q) mp[D[i]] = 0;
+    ll idx = 0;
+    for (auto [k, v]: mp) mp[k] = idx++;
+    ll org = mp[0];
 
+    lazy_segtree<S, op, e, F, mapping, composition, id> seg(idx);
+    rep (i, N) {
+        auto [x, p] = ps[i];
+        auto [s, t] = p;
+        seg.apply(mp[s], mp[t], x);
+    }
+    rep (i, Q) {
+        ll d = D[i];
+        ll x = seg.prod(mp[d], mp[d]+1);
+        if (x >= INF) Out(-1)
+        else Out(x)
+    }
     
 }
 
