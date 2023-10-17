@@ -412,6 +412,7 @@
 - 上限からの遷移が複雑なので注意
 ### 例題
 - [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
+- 難しいが練習になる [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 
 ## 対戦ゲーム
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い

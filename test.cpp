@@ -69,56 +69,31 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 
 #include <atcoder/all>
 using namespace atcoder;
-// using mint = modint998244353;
-// 区間更新・区間最小値取得（RUQ+RMQ）=========================
-using S = long long;
-using F = long long;
+using mint = modint1000000007;
 
-const S UNIT = 8e18;
-const F ID = 8e18;
-
-S op(S a, S b){ return std::min(a, b); }
-S e(){ return UNIT; }
-S mapping(F f, S x){ return (f == ID ? x : f); }
-F composition(F f, F g){ return (f == ID ? g : f); }
-F id(){ return ID; }
-// =========================================================
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<pair<ll,Pair>> ps;
+    STRING(L);
+    ll N = SIZE(L);
+    vector<mint> dp(2);
+    dp[0] = 1;
     rep (i, N) {
-        LONG(s, t, x);
-        ps.emplace_back(x, make_pair(s-x, t-x));
+        char x = L[i];
+        vector<mint> p(2);
+        swap(p, dp);
+        if (x == '1') {
+            dp[0] += 2*p[0];
+            dp[1] += p[0]; //ok
+            dp[1] += 3*p[1];
+        } else {
+            dp[0] += p[0];
+            dp[1] += 3*p[1];
+        }
     }
-    sort(allr(ps));
-    VL(D, Q);
-    map<ll,ll> mp;
-    mp[0] = 0;
-    rep (i, N) {
-        auto [x, p] = ps[i];
-        auto [s, t] = p;
-        mp[s] = 0; mp[t] = 0;
-    }
-    rep (i, Q) mp[D[i]] = 0;
-    ll idx = 0;
-    for (auto [k, v]: mp) mp[k] = idx++;
-    ll org = mp[0];
-
-    lazy_segtree<S, op, e, F, mapping, composition, id> seg(idx);
-    rep (i, N) {
-        auto [x, p] = ps[i];
-        auto [s, t] = p;
-        seg.apply(mp[s], mp[t], x);
-    }
-    rep (i, Q) {
-        ll d = D[i];
-        ll x = seg.prod(mp[d], mp[d]+1);
-        if (x >= INF) Out(-1)
-        else Out(x)
-    }
+    mint ans = dp[0] + dp[1];
+    Out(ans.val())
     
 }
 
