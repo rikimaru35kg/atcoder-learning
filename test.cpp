@@ -71,44 +71,29 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, K);
-    if (M == 0) {
-        if (K >= 1) {
-            Out(-1);
+    LONG(N);
+    vector<pair<string,ll>> ps;
+    rep (i, N) {
+        STRING(s); LONG(p);
+        ps.emplace_back(s, p);
+    }
+    vl nums;
+    rep (i, N) nums.push_back(i);
+    sort(all(nums), [&](ll i, ll j){
+        auto [s1, p1] = ps[i];
+        auto [s2, p2] = ps[j];
+        if (s1 == s2) {
+            return p1 > p2;
         }
-        else {
-            puts("0 0");
-        }
-        return 0;
+        return s1 < s2;
+    });
+    rep (i, N) {
+        Out(nums[i]+1)
     }
-    if (M == 1) {
-        if (K == 0) {
-            puts("0 0 1 1");
-        } else {
-            Out(-1)
-        }
-        return 0;
-    }
-    if (K >= 1LL<<M) {
-        Out(-1)
-        return 0;
-    }
-    vl ans;
-    rep (i, 1LL<<M) {
-        if (i == K) continue;
-        ans.push_back(i);
-    }
-    ans.push_back(K);
-    repr (i, 1LL<<M) {
-        if (i == K) continue;
-        ans.push_back(i);
-    }
-    ans.push_back(K);
-    print_vec(ans)
+
     
 }
 

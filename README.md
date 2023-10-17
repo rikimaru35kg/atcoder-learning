@@ -12,7 +12,7 @@
 - charをintに直すには'5'-'0'などとする
 - 文字列が連続している場合はランレングス圧縮が有効。余事象との組み合わせで、異なる文字が含まれる区間の場合の数も求められる
 - tolower(c)、toupper(c)で小文字、大文字変換が可能
-- scanfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
+- scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
 
 ## ビット操作
 - &や|等のビット演算子は==よりも優先順位が低いことに注意。ビットシフトも含め、ビット操作はとにかく括弧で囲め！
@@ -562,8 +562,10 @@
 # コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
+- 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
 - [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
+- [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 
 # 読解が難しい問題
 - 添え字多すぎ問題[B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
@@ -599,6 +601,7 @@
 
 ## 実装テクニック（その他）
 - for(auto [k,v]:map)のループ中にmp.erase(k)すると壊れるので、vl esに消したいkをプッシュバックしておいて後で消す
+- accumulate(v.begin(), v.end(), 0LL)は一見便利だが、setに対して使うと壊れるので使わないこと！
 - _GLIBCXX_DEBUGオプションはlower_boundを遅くする（ソート済みかの事前チェック）。ループ内にあると酷い事になりうる
 - vec.resize(K)で先頭K要素だけ取り出す事が可能
 - __builtin_popcountll()と末尾にllを付けないとオーバーフローする可能性あり
