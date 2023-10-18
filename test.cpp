@@ -67,33 +67,31 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(L);
-    ll N = SIZE(L);
-    vector<mint> dp(2);
-    dp[0] = 1;
-    rep (i, N) {
-        char x = L[i];
-        vector<mint> p(2);
-        swap(p, dp);
-        if (x == '1') {
-            dp[0] += 2*p[0];
-            dp[1] += p[0]; //ok
-            dp[1] += 3*p[1];
-        } else {
-            dp[0] += p[0];
-            dp[1] += 3*p[1];
+    LONG(N, K);
+    VL(A, N);
+    // A.push_back(INF);
+    N++;
+    ll ans = 0;
+    vl S(N+1);
+    rep (i, N) S[i+1] = S[i] + A[i];
+    rep (l, N) {
+        ll ng = l, ok = N;
+        while (abs(ng - ok) > 1) {
+            ll mid = (ng + ok) / 2;
+            if (S[mid] - S[l] >= K) ok = mid;
+            else ng = mid;
         }
+        ans += max(N - ok, 0LL);
     }
-    mint ans = dp[0] + dp[1];
-    Out(ans.val())
+    Out(ans)
     
 }
 
