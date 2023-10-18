@@ -67,25 +67,44 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(S, N); VL(T, M);
-    vector dp(N+1, vector<mint>(M+1));
-    dp[0][0] = 1;
-    rep (i, N+1) rep (j, M+1) {
-        if (i+1 <= N) dp[i+1][j] += dp[i][j];
-        if (j+1 <= M) dp[i][j+1] += dp[i][j];
-        if (i+1 <= N && j+1 <= M && S[i] == T[j]) dp[i+1][j+1] += dp[i][j];
-        if (i+1 <= N && j+1 <= M) dp[i+1][j+1] -= dp[i][j];
+    LONG(N, K);
+    if (K > (N-1)*(N-2)/2) {
+        Out(-1)
+        return 0;
     }
-    Out(dp[N][M].val())
+    vp ans;
+    ll m = 0;
+    rep (i, N-1) ans.emplace_back(i+1, N);
+    m = N-1;
+
+    ll rem = (N-1)*(N-2)/2 - K;
+    rep (i, N-1) rep (j, i) {
+        if (rem == 0) {
+            cout << m << endl;
+            for (auto [u, v]: ans) {
+                printf("%lld %lld\n", u, v);
+            }
+            return 0;
+        }
+        m++;
+        --rem;
+        ans.emplace_back(i+1, j+1);
+    }
+    cout << m << endl;
+    for (auto [u, v]: ans) {
+        printf("%lld %lld\n", u, v);
+    }
+    return 0;
+
+
     
 }
 
