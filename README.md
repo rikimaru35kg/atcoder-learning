@@ -384,6 +384,14 @@
 ### 例題
 - [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 
+## LCS（Longest Common Subsequence）
+- 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという
+- Sのi文字目、Tのj文字目まで見たLCSをdp[i][j]と定義し、更新していけば良い
+- chmax(dp[i+1][j], dp[i][j]), chmax(dp[i][j+1], dp[i][j])であり、S[i]==T[j]のときのみchmax(dp[i+1][j+1], dp[i][j]+1)する
+- SとTでテーブルを書くと遷移がわかりやすい
+### 例題
+- LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)
+
 ## ナップサックDP
 - 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
 - 全探索では計算量が間に合わず、幾つか要素がある場合はこれが使えないか検討してみる

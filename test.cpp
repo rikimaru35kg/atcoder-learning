@@ -67,31 +67,25 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    // A.push_back(INF);
-    N++;
-    ll ans = 0;
-    vl S(N+1);
-    rep (i, N) S[i+1] = S[i] + A[i];
-    rep (l, N) {
-        ll ng = l, ok = N;
-        while (abs(ng - ok) > 1) {
-            ll mid = (ng + ok) / 2;
-            if (S[mid] - S[l] >= K) ok = mid;
-            else ng = mid;
-        }
-        ans += max(N - ok, 0LL);
+    LONG(N, M);
+    VL(S, N); VL(T, M);
+    vector dp(N+1, vector<mint>(M+1));
+    dp[0][0] = 1;
+    rep (i, N+1) rep (j, M+1) {
+        if (i+1 <= N) dp[i+1][j] += dp[i][j];
+        if (j+1 <= M) dp[i][j+1] += dp[i][j];
+        if (i+1 <= N && j+1 <= M && S[i] == T[j]) dp[i+1][j+1] += dp[i][j];
+        if (i+1 <= N && j+1 <= M) dp[i+1][j+1] -= dp[i][j];
     }
-    Out(ans)
+    Out(dp[N][M].val())
     
 }
 
