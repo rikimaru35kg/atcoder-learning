@@ -67,49 +67,76 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
-
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+    long long modpow(long long a, long long b, long long mod) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2, mod);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2, mod);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+};
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl X(N), Y(N);
-    rep (i, N) {
-        LONG(x, y);
-        X[i] = x, Y[i] = y;
+    ll MOD = 1e9+7;
+    Combination comb(1e5, MOD);
+    LONG(N, K);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    ll M = 1e5;
 
-    dsu uf(2*(M+1));
-    rep (i, N) {
-        uf.merge(X[i], Y[i] + M + 1);
-    }
-    vl xnum(2*(M+1));
-    vl ynum(2*(M+1));
-
-
-    rep (i, 2*(M+1)) {
-        ll l = uf.leader(i);
-        if (i <= M) xnum[l]++;
-        else ynum[l]++;
-    }
-    vb used(2*(M+1));
-    ll cnt = 0;
-    rep (i, 2*(M+1)) {
-        ll l = uf.leader(i);
-        if (used[l]) continue;
-
-        ll x = xnum[l];
-        ll y = ynum[l];
-        cnt += x * y;
-        used[l] = true;
-    }
-    ll ans = cnt - N;
+    ll ans = 1;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        ll n=0, r=0;
+        if (p == -1) {
+            n = K;
+            r = SIZE(from[v])+1;
+        } else {
+            n = K - 2;
+            r = SIZE(from[v])-1;
+        }
+        (ans *= comb.nPr(n, r)) %= MOD;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            f(f, nv, v);
+        }
+    };
+    dfs(dfs, 0);
     Out(ans)
-    
 }
 
 // ### test.cpp ###
