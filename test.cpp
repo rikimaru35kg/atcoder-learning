@@ -67,44 +67,48 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    if (K > (N-1)*(N-2)/2) {
-        Out(-1)
-        return 0;
+    LONG(N);
+    vl X(N), Y(N);
+    rep (i, N) {
+        LONG(x, y);
+        X[i] = x, Y[i] = y;
     }
-    vp ans;
-    ll m = 0;
-    rep (i, N-1) ans.emplace_back(i+1, N);
-    m = N-1;
+    ll M = 1e5;
 
-    ll rem = (N-1)*(N-2)/2 - K;
-    rep (i, N-1) rep (j, i) {
-        if (rem == 0) {
-            cout << m << endl;
-            for (auto [u, v]: ans) {
-                printf("%lld %lld\n", u, v);
-            }
-            return 0;
-        }
-        m++;
-        --rem;
-        ans.emplace_back(i+1, j+1);
+    dsu uf(2*(M+1));
+    rep (i, N) {
+        uf.merge(X[i], Y[i] + M + 1);
     }
-    cout << m << endl;
-    for (auto [u, v]: ans) {
-        printf("%lld %lld\n", u, v);
-    }
-    return 0;
+    vl xnum(2*(M+1));
+    vl ynum(2*(M+1));
 
 
+    rep (i, 2*(M+1)) {
+        ll l = uf.leader(i);
+        if (i <= M) xnum[l]++;
+        else ynum[l]++;
+    }
+    vb used(2*(M+1));
+    ll cnt = 0;
+    rep (i, 2*(M+1)) {
+        ll l = uf.leader(i);
+        if (used[l]) continue;
+
+        ll x = xnum[l];
+        ll y = ynum[l];
+        cnt += x * y;
+        used[l] = true;
+    }
+    ll ans = cnt - N;
+    Out(ans)
     
 }
 

@@ -355,8 +355,11 @@
 - 再帰関数DFSによって簡単に色塗り可能（BFSでも可）
 - DFSして同じ色同士を結んでしまう場合は2部グラフでない
 - 異なる連結成分同士を結ぶときは2部グラフを壊すことはない
+- 完全2部グラフはKm,nのように表す
+- XY平面上の格子系問題ではxとyの2部グラフと考えると上手くいくことがある（点を辺に対応させる）e.g. Must Be Rectangular
 ### 例題
 - [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
+- [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
