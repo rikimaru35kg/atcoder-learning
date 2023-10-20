@@ -11,7 +11,6 @@ struct BIT {
             bit[i] += x;
         }
     }
-
     long long sum (long long i) {
         long long ret = 0;
         for (; i > 0; i -= (i) & (-i)) {
@@ -19,13 +18,11 @@ struct BIT {
         }
         return ret;
     }
-
     long long sum_lower_bound(long long k) {
-        // if (k <= 0) return 0; この条件必要？
         long long x = 0, len = 1;
         while ((len << 1) < size) len <<= 1;
         while(len > 0) {
-            if (x + len < size && bit[x + len] < k) { //xを進める条件
+            if (x + len < size && bit[x + len] < k) {
                 k -= bit[x + len];
                 x += len;
             }

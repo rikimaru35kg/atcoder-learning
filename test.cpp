@@ -70,73 +70,100 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
+struct BIT {
+    long long size;
+    vector<long long> bit;
+    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-    long long modpow(long long a, long long b, long long mod) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2, mod);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
+    void add (long long i, long long x) {
+        for (; i < size; i += (i & -i)) {
+            bit[i] += x;
+        }
     }
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2, mod);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+
+    long long sum (long long i) {
+        long long ret = 0;
+        for (; i > 0; i -= (i) & (-i)) {
+            ret += bit[i];
+        }
+        return ret;
     }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+
+    long long sum_lower_bound (long long k) {
+        long long x = 0, len = 1;
+        while ((len << 1) < size) len <<= 1;
+        while(len > 0) {
+            if (x + len < size && bit[x + len] < k) {
+                k -= bit[x + len];
+                x += len;
+            }
+            len >>= 1;
+        }
+        return x + 1;
     }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
+
+    void check_status () {
+        for (long long i=1; i<size; ++i) {
+            printf("%lld ", sum(i) - sum(i-1));
+        }
+        printf("\n");
     }
 };
+
+class CoordinateCompression {
+    vector<long long> vec;
+public:
+    void add (long long x) {
+        vec.push_back(x);
+    }
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+    }
+    long long get (long long x) {
+        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+    }
+    long long get_back (long long i) {
+        if (i >= SIZE(vec)) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        return SIZE(vec);
+    }
+};
+
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll MOD = 1e9+7;
-    Combination comb(1e5, MOD);
-    LONG(N, K);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+    LONG(N); VL(A, N);
+    multiset<ll> st;
+    st.insert(INF);
+    rep (i, N) {
+        auto it = st.lower_bound(A[i]);
+        if (it == st.begin()) st.insert(A[i]);
+        else {
+            --it;
+            st.insert(A[i]);
+            st.erase(it);
+        }
     }
+    Out(SIZE(st)-1)
+    // CoordinateCompression cc;
+    // rep (i, N) cc.add(A[i]);
+    // cc.compress();
+    // ll M = cc.size();
 
-    ll ans = 1;
-    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
-        ll n=0, r=0;
-        if (p == -1) {
-            n = K;
-            r = SIZE(from[v])+1;
-        } else {
-            n = K - 2;
-            r = SIZE(from[v])-1;
-        }
-        (ans *= comb.nPr(n, r)) %= MOD;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            f(f, nv, v);
-        }
-    };
-    dfs(dfs, 0);
-    Out(ans)
+    // BIT bit(M+1);
+    // ll ans = 0;
+    // rep (i, N) {
+    //     ll a_comp = cc.get(A[i])+1;
+    //     printf("%lld: ", i);
+    //     bit.check_status();
+    //     ans += bit.sum(M+1) - bit.sum(a_comp-1);
+    //     bit.add(a_comp, 1);
+    // }
+    // Out(ans)
+    
 }
 
 // ### test.cpp ###
