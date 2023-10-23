@@ -246,13 +246,6 @@
 ### 例題
 - [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
 
-# 全部クリア問題（全クリ）
-- 全要素をリセットするようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
-- 情報としてはリセット後だけあれば良いので、その情報だけmapで持てば良い
-- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
-### 例題
-- [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
-
 ## 連続部分列問題
 - キーワード：連続部分列は累積和！（もしくは尺取り法）
 - 和がKとなる連続部分列が存在するかどうかは、累積和をsetに入れておけば判定可能。S[i]+KとなるS[j]が存在するのであれば、[i,j)の和はKという事
@@ -264,6 +257,21 @@
 - [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
 - [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
+
+# 貪欲法
+- 自明な貪欲は簡単だが非自明な貪欲は思いつくのが難しい
+- DPで計算量が間に合わないなら貪欲を疑ってみると良い
+- 2つ以上の変数がある場合、1つに減らせれば貪欲な選択ができる（区間スケジューリングはその代表例）
+### 例題
+- 前から見れば開始時刻は無視してよくなる [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
+- 後ろから見れば時刻は無視してよくなる [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
+
+# 全部クリア問題（全クリ）
+- 全要素をリセットするようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
+- 情報としてはリセット後だけあれば良いので、その情報だけmapで持てば良い
+- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
+### 例題
+- [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 # グラフ
 

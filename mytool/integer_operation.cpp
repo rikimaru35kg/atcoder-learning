@@ -61,28 +61,6 @@ long long spow(long long a, long long b) {
 	return ans;
 }
 
-//! Stock factorias from 0 to n.
-//! Specify empty vector as facts.
-void stock_factorials (vector<long long> &facts, long long n, long long mod) {
-    long long x = 1;
-    for (long long i=0; i<=n; ++i) {
-        (x *= max(1LL, i)) %= mod;
-        facts.push_back(x);
-    }
-}
-
-//! Calculate nCr based on factorias vector.
-//! Please put modpow funtion above.
-long long nCr_based_on_factorials(long long n, long long r, vector<long long> &facts, long long mod) {
-    long long ret = 1;
-    (ret *= facts[n]) %= mod;
-    long long r_inv = modpow(facts[r], mod-2, mod);
-    long long nr_inv = modpow(facts[n-r], mod-2, mod);
-    (ret *= r_inv) %= mod;
-    (ret *= nr_inv) %= mod;
-    return ret;
-}
-
 class Combination {
     long long mx, mod;
     vector<long long> facts, ifacts;

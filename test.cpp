@@ -70,99 +70,49 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
-struct BIT {
-    long long size;
-    vector<long long> bit;
-    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
 
-    void add (long long i, long long x) {
-        for (; i < size; i += (i & -i)) {
-            bit[i] += x;
-        }
-    }
-
-    long long sum (long long i) {
-        long long ret = 0;
-        for (; i > 0; i -= (i) & (-i)) {
-            ret += bit[i];
-        }
-        return ret;
-    }
-
-    long long sum_lower_bound (long long k) {
-        long long x = 0, len = 1;
-        while ((len << 1) < size) len <<= 1;
-        while(len > 0) {
-            if (x + len < size && bit[x + len] < k) {
-                k -= bit[x + len];
-                x += len;
-            }
-            len >>= 1;
-        }
-        return x + 1;
-    }
-
-    void check_status () {
-        for (long long i=1; i<size; ++i) {
-            printf("%lld ", sum(i) - sum(i-1));
-        }
-        printf("\n");
-    }
-};
-
-class CoordinateCompression {
-    vector<long long> vec;
-public:
-    void add (long long x) {
-        vec.push_back(x);
-    }
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-    }
-    long long get (long long x) {
-        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-    }
-    long long get_back (long long i) {
-        if (i >= SIZE(vec)) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        return SIZE(vec);
-    }
-};
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    multiset<ll> st;
-    st.insert(INF);
+    LONG(N, M);
+    vl A, B;
     rep (i, N) {
-        auto it = st.lower_bound(A[i]);
-        if (it == st.begin()) st.insert(A[i]);
-        else {
-            --it;
-            st.insert(A[i]);
-            st.erase(it);
-        }
+        LONG(a, b);
+        A.push_back(a);
+        B.push_back(b);
     }
-    Out(SIZE(st)-1)
-    // CoordinateCompression cc;
-    // rep (i, N) cc.add(A[i]);
-    // cc.compress();
-    // ll M = cc.size();
-
-    // BIT bit(M+1);
-    // ll ans = 0;
-    // rep (i, N) {
-    //     ll a_comp = cc.get(A[i])+1;
-    //     printf("%lld: ", i);
-    //     bit.check_status();
-    //     ans += bit.sum(M+1) - bit.sum(a_comp-1);
-    //     bit.add(a_comp, 1);
-    // }
-    // Out(ans)
+    vp p;
+    rep (i, N) {
+        // if (M - A[i] < 0) continue;
+        p.emplace_back(M - A[i], B[i]);
+    }
+    if (SIZE(p) == 0) {
+        Out(0)
+        return 0;
+    }
+    sort(allr(p));
+    ll t = M-1;
+    ll ans = 0;
+    ll idx = 0;
+    priority_queue<ll> pque;
+    while (t >= 0) {
+        while (idx < N && t <= p[idx].first) {
+            // if (t <= 95) {
+            //     cerr << idx << ' ' << p[idx].first << endl;
+            // }
+            pque.push(p[idx].second);
+            ++idx;
+        }
+        if (pque.size() == 0) {
+            --t;
+            continue;
+        }
+        ll b = pque.top(); pque.pop();
+        ans += b;
+        --t;
+    }
+    Out(ans)
     
 }
 
