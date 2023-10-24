@@ -75,44 +75,46 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl A, B;
-    rep (i, N) {
-        LONG(a, b);
-        A.push_back(a);
-        B.push_back(b);
+    LONG(N, M, P);
+    vvl from(N), rfrom(N);
+    vector<tuple<ll,ll,ll>> edges(M);
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        c = -(c-P);
+        from[a].push_back(b);
+        rfrom[b].push_back(a);
+        edges.emplace_back(a, b, c);
     }
-    vp p;
-    rep (i, N) {
-        // if (M - A[i] < 0) continue;
-        p.emplace_back(M - A[i], B[i]);
-    }
-    if (SIZE(p) == 0) {
-        Out(0)
-        return 0;
-    }
-    sort(allr(p));
-    ll t = M-1;
-    ll ans = 0;
-    ll idx = 0;
-    priority_queue<ll> pque;
-    while (t >= 0) {
-        while (idx < N && t <= p[idx].first) {
-            // if (t <= 95) {
-            //     cerr << idx << ' ' << p[idx].first << endl;
-            // }
-            pque.push(p[idx].second);
-            ++idx;
+    vb reach1(N), reachN(N);
+    auto dfs = [&](auto f, ll v, vvl &from, vb &reach) -> void {
+        if (reach[v]) return;
+        reach[v] = true;
+        for (auto nv: from[v]) f(f, nv, from, reach);
+    };
+    dfs(dfs, 0, from, reach1);
+    dfs(dfs, N-1, rfrom, reachN);
+
+    bool update = true;
+    ll step = 0;
+    vl dist(N, INF);
+    dist[0] = 0;
+    while (update) {
+        update = false;
+        for(auto [a, b, c]: edges) {
+            if (!reach1[a] || !reachN[a]) continue;
+            if (!reach1[b] || !reachN[b]) continue;
+            if (dist[b] > dist[a] + c) {
+                update = true;
+                dist[b] = dist[a] + c;
+            }
         }
-        if (pque.size() == 0) {
-            --t;
-            continue;
+        ++step;
+        if (step > N) {
+            Out(-1)
+            return 0;
         }
-        ll b = pque.top(); pque.pop();
-        ans += b;
-        --t;
     }
-    Out(ans)
+    Out(max(-dist[N-1], 0LL))
     
 }
 

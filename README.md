@@ -508,6 +508,14 @@
 - この時、同じ辺は1度だけ削除するように！（何度も削除しないように）
 - 当然だが、三角不等式が不成立の場合はおかしいので、この場合はワーシャルフロイド後の行列として間違っていたということ
 
+## ベルマンフォード法
+- 負閉路があっても使える最短経路を求めるアルゴリズムで、計算量はO(NM)
+- 全辺に対して、dist[v] > dist[u] + costである限り更新し続ける
+- 更新ステップ数がNを超えたら、負閉路があるということ
+- 始点と終点に関係ない点をあらかじめ除いておく事で、関係ない負閉路を使うことを避ける事も重要
+### 例題
+- [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
+
 ### 例題
 - [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
