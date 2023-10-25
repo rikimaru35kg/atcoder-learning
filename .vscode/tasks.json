@@ -17,6 +17,7 @@
                 "-Wextra",
                 "-O0",
                 "-D_GLIBCXX_DEBUG",
+                "-D__DEBUG",
                 // "-Wl,--stack", // <- This option invalid for WSL2
                 // "-Wl,1073741824", // <- This option invalid for WSL2
             ],

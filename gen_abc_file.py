@@ -67,6 +67,14 @@ inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pve
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
+#ifdef __DEBUG
+#define debug(var) {cerr << #var << ": "; debug_view(var);}
+template<typename T> void debug_view(T e){cerr << e << endl;}
+template<typename T> void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
+template<typename T> void debug_view(const vector<vector<T> > &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#else
+#define debug(var)
+#endif
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 

@@ -64,6 +64,14 @@ inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pve
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
+#ifdef __DEBUG
+#define debug(var) {cerr << #var << ": "; debug_view(var);}
+template<typename T> void debug_view(T e){cerr << e << endl;}
+template<typename T> void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
+template<typename T> void debug_view(const vector<vector<T> > &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#else
+#define debug(var)
+#endif
 const ll INF = 3e18;
 const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
 
@@ -75,46 +83,21 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, P);
-    vvl from(N), rfrom(N);
-    vector<tuple<ll,ll,ll>> edges(M);
-    rep (i, M) {
-        LONGM(a, b); LONG(c);
-        c = -(c-P);
-        from[a].push_back(b);
-        rfrom[b].push_back(a);
-        edges.emplace_back(a, b, c);
+    LONG(N);
+    VL(B, N-1);
+    vl A(N, INF);
+    rep (i, N-1) {
+        chmin(A[i], B[i]);
+        chmin(A[i+1], B[i]);
     }
-    vb reach1(N), reachN(N);
-    auto dfs = [&](auto f, ll v, vvl &from, vb &reach) -> void {
-        if (reach[v]) return;
-        reach[v] = true;
-        for (auto nv: from[v]) f(f, nv, from, reach);
-    };
-    dfs(dfs, 0, from, reach1);
-    dfs(dfs, N-1, rfrom, reachN);
-
-    bool update = true;
-    ll step = 0;
-    vl dist(N, INF);
-    dist[0] = 0;
-    while (update) {
-        update = false;
-        for(auto [a, b, c]: edges) {
-            if (!reach1[a] || !reachN[a]) continue;
-            if (!reach1[b] || !reachN[b]) continue;
-            if (dist[b] > dist[a] + c) {
-                update = true;
-                dist[b] = dist[a] + c;
-            }
-        }
-        ++step;
-        if (step > N) {
-            Out(-1)
-            return 0;
-        }
-    }
-    Out(max(-dist[N-1], 0LL))
+    // print_vec(A)
+    vvl test(N, vl(N));
+    debug(A);
+    debug(B);
+    debug(N);
+    debug(test);
+    ll ans = accumulate(all(A), 0LL);
+    Out(ans)
     
 }
 

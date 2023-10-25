@@ -5,6 +5,7 @@
         "<C-s>": false,
         "<C-z>": false,
     },
+    "vim.hlsearch": true,
     "vim.normalModeKeyBindingsNonRecursive": [
         {"before": ["U"], "after": ["<c-r>"]},
     ],
