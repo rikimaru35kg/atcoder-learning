@@ -34,7 +34,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
-#define Out(x) cout << (x) << endl;
+#define Out(x) {cout << (x) << endl;}
 #define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -83,20 +83,37 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(B, N-1);
-    vl A(N, INF);
-    rep (i, N-1) {
-        chmin(A[i], B[i]);
-        chmin(A[i+1], B[i]);
+    LONG(N); VLM(P, N);
+    vl idxs(N);
+    rep(i, N) idxs[P[i]] = i;
+    set<ll> st;
+    ll ans = 0;
+    repr (x, N) {
+        ll idx = idxs[x];
+        st.insert(idx);
+        vl ls(2, -1), rs(2, N);
+        {
+            auto it = st.find(idx);
+            rep (i, 2) {
+                if (it == st.begin()) break;
+                --it;
+                ls[i] = *it;
+            }
+        }
+        {
+            auto it = st.find(idx);
+            rep (i, 2) {
+                ++it;
+                if (it == st.end()) break;
+                rs[i] = *it;
+            }
+        }
+        vl nls(2), nrs(2);
+        nls[0] = idx - ls[0]; nls[1] = ls[0] - ls[1];
+        nrs[0] = rs[0] - idx; nrs[1] = rs[1] - rs[0];
+        ll cnt = nls[0] * nrs[1] + nls[1] * nrs[0];
+        ans += (x+1) * cnt;
     }
-    // print_vec(A)
-    vvl test(N, vl(N));
-    debug(A);
-    debug(B);
-    debug(N);
-    debug(test);
-    ll ans = accumulate(all(A), 0LL);
     Out(ans)
     
 }

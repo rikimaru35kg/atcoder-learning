@@ -258,6 +258,16 @@
 - [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
 
+## 区間max値の総和
+- 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
+- 大きい順に見るループを作り、まず自分自身のインデックスをsetに突っ込む
+- setの中で、自分より1つ小さいインデックスをlとし、nl = idx - lとする
+- setの中で、自分より1つ大きいインデックスをrとし、nr = r - idxとする
+- nl * nrが、その数が最大値となる区間数であるので、区間数*その数をansに足していく
+- 本テクニックは、区間2nd maxやK-th maxでも応用可能
+### 例題
+- 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
+
 # 貪欲法
 - 自明な貪欲は簡単だが非自明な貪欲は思いつくのが難しい
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
