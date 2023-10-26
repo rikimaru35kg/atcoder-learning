@@ -79,40 +79,38 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-//! eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
-//! primes = {(1,1), (2,3), (3,2), (5,1)}
-//! NOTE: 1^1 is always included!!
-vector<pair<long long, long long>> prime_factrization (long long n) {
-    vector<pair<long long, long long>> primes;
-    primes.emplace_back(1, 1);
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    char last_char = s[0]+1;
+    for (auto c: s) {
+        if (c != last_char) ret.emplace_back(c, 1);
+        else ++ret.back().second;
+        last_char = c;
     }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
+    return ret;
 }
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A, B);
-
-    auto a = prime_factrization(A);
-    auto b = prime_factrization(B);
-    map<ll,ll> mp;
-    for (auto [k, m]: a) mp[k]++;
-    for (auto [k, m]: b) mp[k]++;
-    set<ll> st;
-    for (auto [k, v]: mp) {
-        if (v == 2) st.insert(k);
+    LONG(N);
+    VL(A, N);
+    auto x = run_length_encoding(A);
+    rep (i, SIZE(x)) {
+        printf("%lld %lld\n", x[i].first, x[i].second);
     }
-    Out(SIZE(st))
-
     
 }
 
