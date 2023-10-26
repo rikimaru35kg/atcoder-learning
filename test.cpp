@@ -79,57 +79,40 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-pair<vector<long long>, ll> z_algo(string s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    ll mx = 0;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
-        // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
-        // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {  // update from & last
-            from = i;
-            last = i+same;
+//! eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
+//! primes = {(1,1), (2,3), (3,2), (5,1)}
+//! NOTE: 1^1 is always included!!
+vector<pair<long long, long long>> prime_factrization (long long n) {
+    vector<pair<long long, long long>> primes;
+    primes.emplace_back(1, 1);
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        if (i >= same) chmax(mx, same);
     }
-    a[0] = n;  // substitute ovious value at last
-    return make_pair(a, mx);
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
 }
 
-vector<long long> z_algo(vector<long long> s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
-        // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
-        // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {  // update from & last
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;  // substitute ovious value at last
-    return a;
-}
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    ll ans = 0;
-    rep (i, N) {
-        auto [v, mx] = z_algo(S.substr(i));
-        chmax(ans, (ll)mx);
+    LONG(A, B);
+
+    auto a = prime_factrization(A);
+    auto b = prime_factrization(B);
+    map<ll,ll> mp;
+    for (auto [k, m]: a) mp[k]++;
+    for (auto [k, m]: b) mp[k]++;
+    set<ll> st;
+    for (auto [k, v]: mp) {
+        if (v == 2) st.insert(k);
     }
-    Out(ans)
+    Out(SIZE(st))
+
     
 }
 

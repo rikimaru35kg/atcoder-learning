@@ -7,16 +7,15 @@ using namespace std;
 vector<pair<long long, long long>> prime_factrization (long long n) {
     vector<pair<long long, long long>> primes;
     primes.emplace_back(1, 1);
-    long long rem = n;
     for (long long k=2; k*k<=n; ++k) {
-        long long num = 0;
-        while(rem % k == 0) {
-            ++num;
-            rem /= k;
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        if (num > 0) primes.emplace_back(k, num);
     }
-    if (rem != 1) primes.emplace_back(rem, 1);
+    if (n != 1) primes.emplace_back(n, 1);
     return primes;
 }
 
