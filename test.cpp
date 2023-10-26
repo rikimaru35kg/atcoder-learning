@@ -79,40 +79,55 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
+pair<vector<long long>, ll> z_algo(string s) {
+    long long n = s.size();
+    vector<long long> a(n);
+    long long from = -1, last = -1;
+    ll mx = 0;
+    for (long long i = 1; i < n; ++i) {
+        long long same = 0;  // length of same substring
+        // skip duplicated search
+        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        // move forward while possible
+        while (i + same < n && s[same] == s[i+same]) ++same;
+        a[i] = same;
+        if(last < i + same) {  // update from & last
+            from = i;
+            last = i+same;
+        }
+        if (i >= same) chmax(mx, same);
+    }
+    a[0] = n;  // substitute ovious value at last
+    return make_pair(a, mx);
+}
 
+vector<long long> z_algo(vector<long long> s) {
+    long long n = s.size();
+    vector<long long> a(n);
+    long long from = -1, last = -1;
+    for (long long i = 1; i < n; ++i) {
+        long long same = 0;  // length of same substring
+        // skip duplicated search
+        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        // move forward while possible
+        while (i + same < n && s[same] == s[i+same]) ++same;
+        a[i] = same;
+        if(last < i + same) {  // update from & last
+            from = i;
+            last = i+same;
+        }
+    }
+    a[0] = n;  // substitute ovious value at last
+    return a;
+}
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(P, N);
-    vl idxs(N);
-    rep(i, N) idxs[P[i]] = i;
-    set<ll> st;
+    LONG(N); STRING(S);
     ll ans = 0;
-    repr (x, N) {
-        ll idx = idxs[x];
-        st.insert(idx);
-        vl ls(2, -1), rs(2, N);
-        {
-            auto it = st.find(idx);
-            rep (i, 2) {
-                if (it == st.begin()) break;
-                --it;
-                ls[i] = *it;
-            }
-        }
-        {
-            auto it = st.find(idx);
-            rep (i, 2) {
-                ++it;
-                if (it == st.end()) break;
-                rs[i] = *it;
-            }
-        }
-        vl nls(2), nrs(2);
-        nls[0] = idx - ls[0]; nls[1] = ls[0] - ls[1];
-        nrs[0] = rs[0] - idx; nrs[1] = rs[1] - rs[0];
-        ll cnt = nls[0] * nrs[1] + nls[1] * nrs[0];
-        ans += (x+1) * cnt;
+    rep (i, N) {
+        auto [v, mx] = z_algo(S.substr(i));
+        chmax(ans, (ll)mx);
     }
     Out(ans)
     
