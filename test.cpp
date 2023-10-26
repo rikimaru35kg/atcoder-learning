@@ -79,37 +79,43 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 // using namespace atcoder;
 // using mint = modint998244353;
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    char last_char = s[0]+1;
-    for (auto c: s) {
-        if (c != last_char) ret.emplace_back(c, 1);
-        else ++ret.back().second;
-        last_char = c;
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
-
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    auto x = run_length_encoding(A);
-    rep (i, SIZE(x)) {
-        printf("%lld %lld\n", x[i].first, x[i].second);
+    LONG(N, M, L);
+    vvl dist(N, vl(N, INF));
+    rep (i, N) dist[i][i] = 0;
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        dist[a][b] = c;
+        dist[b][a] = c;
+    }
+    LONG(Q);
+    vl S(Q), T(Q);
+    rep (i, Q) {
+        LONGM(s,t);
+        S[i] = s;
+        T[i] = t;
+    }
+    rep(k, N) rep(i, N) rep (j, N) {
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
+    }
+    vvl dist2(N, vl(N, INF));
+    rep (i, N) dist2[i][i] = 0;
+    rep (i, N) rep (j, N) {
+        if (dist[i][j] <= L) dist2[i][j] = 1;
+    }
+    rep(k, N) rep(i, N) rep (j, N) {
+        chmin(dist2[i][j], dist2[i][k] + dist2[k][j]);
+    }
+    rep (i, Q) {
+        ll s = S[i], t = T[i];
+        ll d = dist2[s][t];
+        if (d == INF) {
+            Out(-1); continue;
+        }
+        Out(d - 1)
     }
     
 }

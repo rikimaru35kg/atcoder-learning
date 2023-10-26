@@ -543,6 +543,12 @@
 ### 例題
 - [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
 
+## 最小燃料回数問題
+- 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
+- もしかしたら辺の張り直しという典型に分類されるか？？
+### 例題
+- [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)
+
 ### 例題
 - [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
