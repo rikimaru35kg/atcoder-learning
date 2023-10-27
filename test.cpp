@@ -85,30 +85,13 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    VL(F, N);
-    sort(all(A));
-    sort(allr(F));
-
-    auto n_trial = [&](ll x) -> ll {
-        ll ret = 0;
-        rep (i, N) {
-            ll ia = x / F[i];
-            ll n = max(A[i] - ia, 0LL);
-            ret += n;
-        }
-        return ret;
-    };
-
-    ll ng = -1, ok = INF;
-    while(abs(ok-ng) > 1) {
-        ll m = (ng + ok) / 2;
-        if (n_trial(m) <= K) ok = m;
-        else ng = m;
+    LONG(N); STRING(S);
+    rep (i, SIZE(S)) {
+        int c = S[i] - 'A';
+        (c += N) %= 26;
+        S[i] = c + 'A';
     }
-    Out(ok)
-    
+    Out(S)
 }
 
 // ### test.cpp ###

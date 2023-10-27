@@ -8,5 +8,7 @@
     "vim.hlsearch": true,
     "vim.normalModeKeyBindingsNonRecursive": [
         {"before": ["U"], "after": ["<c-r>"]},
+        {"before": ["j"], "after": ["g","j"]},
+        {"before": ["k"], "after": ["g","k"]},
     ],
 }
