@@ -43,6 +43,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
 #define LONGM(...) ll __VA_ARGS__; inm(__VA_ARGS__)
+#define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
 #define CHR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
@@ -76,7 +77,8 @@ template<typename T> void debug_view(const vector<vector<T> > &vv){cerr << "----
 #define debug(var)
 #endif
 const ll INF = 3e18;
-const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
+const double PI = acos(-1);
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
 // #include <atcoder/all>
 // using namespace atcoder;

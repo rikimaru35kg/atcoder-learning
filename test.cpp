@@ -40,6 +40,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
 #define LONGM(...) ll __VA_ARGS__; inm(__VA_ARGS__)
+#define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
 #define CHR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
@@ -73,7 +74,8 @@ template<typename T> void debug_view(const vector<vector<T> > &vv){cerr << "----
 #define debug(var)
 #endif
 const ll INF = 3e18;
-const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628;
+const double PI = acos(-1);
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
 // #include <atcoder/all>
 // using namespace atcoder;
@@ -83,40 +85,29 @@ const double PI = 3.141592653589793238462643383279502884197169399375105820974944
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, L);
-    vvl dist(N, vl(N, INF));
-    rep (i, N) dist[i][i] = 0;
-    rep (i, M) {
-        LONGM(a, b); LONG(c);
-        dist[a][b] = c;
-        dist[b][a] = c;
-    }
-    LONG(Q);
-    vl S(Q), T(Q);
-    rep (i, Q) {
-        LONGM(s,t);
-        S[i] = s;
-        T[i] = t;
-    }
-    rep(k, N) rep(i, N) rep (j, N) {
-        chmin(dist[i][j], dist[i][k] + dist[k][j]);
-    }
-    vvl dist2(N, vl(N, INF));
-    rep (i, N) dist2[i][i] = 0;
-    rep (i, N) rep (j, N) {
-        if (dist[i][j] <= L) dist2[i][j] = 1;
-    }
-    rep(k, N) rep(i, N) rep (j, N) {
-        chmin(dist2[i][j], dist2[i][k] + dist2[k][j]);
-    }
-    rep (i, Q) {
-        ll s = S[i], t = T[i];
-        ll d = dist2[s][t];
-        if (d == INF) {
-            Out(-1); continue;
+    LONG(N, K);
+    VL(A, N);
+    VL(F, N);
+    sort(all(A));
+    sort(allr(F));
+
+    auto n_trial = [&](ll x) -> ll {
+        ll ret = 0;
+        rep (i, N) {
+            ll ia = x / F[i];
+            ll n = max(A[i] - ia, 0LL);
+            ret += n;
         }
-        Out(d - 1)
+        return ret;
+    };
+
+    ll ng = -1, ok = INF;
+    while(abs(ok-ng) > 1) {
+        ll m = (ng + ok) / 2;
+        if (n_trial(m) <= K) ok = m;
+        else ng = m;
     }
+    Out(ok)
     
 }
 

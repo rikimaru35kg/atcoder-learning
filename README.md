@@ -157,6 +157,14 @@
 - [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
 - [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 
+## 要素積のmaxを最小化
+- 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い
+- 割と自明とみなされているようだが、ここの理解に苦しんだ
+- Aの降順、Bの昇順を並べて組み合わせを考える場合、もしクロスしている組み合わせがあれば、組み合わせを逆にすることでかならずmax値は減少する
+- 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
+### 例題
+- [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
+
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
 - 以下はmapの定数倍の遅さを解決したい場合の手法（あまり使う事はないかもしれない）
@@ -190,11 +198,12 @@
 
 # 二分探索法
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
-- 最小値の最大化を二分探索で求められる事が多いのは、最大値=Xが成立となるかどうかを貪欲法で求められる事が多いから
+- 最小値の最大化を二分探索で求められる事が多いのは、最小値=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 - 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
 ### 例題
 - [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
+- [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
