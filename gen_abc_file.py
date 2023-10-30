@@ -93,11 +93,12 @@ int main () {
 
 """
 
-filename = f'{sys.argv[1]}.cpp'
-str_header_footer = f'// ### {filename} ###'
+for filebase in sys.argv[1:]:
+    filename = f'{filebase}.cpp'
+    str_header_footer = f'// ### {filename} ###'
 
-with open(filename, 'w', encoding='utf-8') as f:
-    f.write(str_header_footer)
-    f.writelines(filehead)
-    f.write(str_header_footer)
-    f.write('\n')
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(str_header_footer)
+        f.writelines(filehead)
+        f.write(str_header_footer)
+        f.write('\n')
