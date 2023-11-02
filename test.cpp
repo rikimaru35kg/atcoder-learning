@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = r"""
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -73,8 +70,7 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 inline void debug_view(Pair &p){cerr << p.first << ' ' << p.second << endl;}
 inline void debug_view(ll &e){cerr << e << endl;}
 template<typename T> inline void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
-template<typename T> inline void debug_view(const vector<vector<T>> &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-template<typename T1,typename T2> inline void debug_view(const map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T> inline void debug_view(const vector<vector<T> > &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #else
 #define debug(var)
 #endif
@@ -90,17 +86,40 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M);
+    VL(A, N);
+    sort(allr(A));
+    vl S(N+1);
+    rep (i, N) S[i+1] = S[i] + A[i];
+
+    auto calc = [&] (ll x) -> Pair { // tot, num
+        ll tot = 0, num = 0;
+        rep (i, N) {
+            ll idx = upper_bound(all(A), x - A[i], greater<ll>()) - A.begin();
+            num += idx;
+            tot += S[idx];
+            tot += idx * A[i];
+        }
+        return {tot, num};
+    };
+
+    ll l = 0, r = 2e5 + 10;
+    while (r - l > 1) {
+        ll m = (l + r) / 2;
+        if (calc(m).second >= M) {
+            l = m;
+        }
+        else r = m;
+    }
+
+    auto p = calc(l);
+    debug(p)
+    ll rem = p.second - M;
+    debug(rem)
+    ll ans = p.first;
+    ans -= rem * l;
+    Out(ans)
     
 }
 
-"""
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### test.cpp ###

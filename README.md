@@ -195,12 +195,16 @@
 
 ## その他全探索
 - bit全探索（2進数と考えループ）
-- 再帰全探索（次に探索する状態へ再帰でつなぐ。自分自身で終了する事も忘れずに）
 ### 例題
 - [C - Coverage](https://atcoder.jp/contests/abc289/tasks/abc289_c)
+- [C - HonestOrUnkind2](https://atcoder.jp/contests/abc147/tasks/abc147_c)
+
+## 再帰全探索
+- 次に探索する状態へ再帰でつなぐ。自分自身で終了する事も忘れずに
 
 # 二分探索法
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
+- lower_boundの第4引数にgreater<ll>()を指定すると降順ソート列のx以下となるイテレータを返すようになる（upperはx未満）
 - 最小値の最大化を二分探索で求められる事が多いのは、最小値=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 - 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
@@ -210,6 +214,7 @@
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
+- 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 
 # 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
@@ -264,11 +269,13 @@
 - 連続部分列の和がある値Kとなる個数を求めるには、Sr-Sl=Kとなれば良いので、Slをmap[Sl]=（Slとなる個数）としておけば高速に求められる
 - 数列の連続部分列[L,R]の中で値がKに一致する個数を求める場合、事前にK毎にvectorを用意しておき、そのvectorにKとなる要素番号を格納しておく。後は[L,R]となる個数をupper_boundで調べれば良い
 - Kと一致ではなくK以上の個数などとなる場合はmapで累積和を保存しても個数が求められないので尺取り法か二分探索
+- 累積和のMODが部分列の長さと一致するという問題でも応用可能。具体的には最初に1ずつ引いた数列にしておけば、累積和を取った時に長さ分の考慮が不要となる
 ### 例題
 - [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
 - [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
 - [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
+- 累積和MOD部分列の長さと一致 [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 
 ## 区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
@@ -663,6 +670,7 @@
 - 2次元配列をIDに変える場合は x * W + yでhash化すれば良い。ただし、Wはyの範囲であることに注意！
 - 隣接行列などは、Nが大きいとMLE（あるいは初期化時にTLE）するので要注意
 - vec.size()はunsignedなので、それ同士を引き算してもマイナスにならない（SIZEマクロでll型に変更推奨）
+- 数列各要素を±のどちらかにして総和を求める問題は、dp[i][j]=｛iまで見て総和がjになればtrue｝とするのが定石だが、dp[i]=bitsetとすると、dp[i+1] |= dp[i]<<A[i]、dp[i+1] |= dp[i]>>A[i]でOKなのでいちいちループを回さずに済むので楽（https://www.youtube.com/watch?v=tNyPYIhy9MsのE問題解説コードが参考になる）
 
 ## 構造体
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
