@@ -70,7 +70,8 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 inline void debug_view(Pair &p){cerr << p.first << ' ' << p.second << endl;}
 inline void debug_view(ll &e){cerr << e << endl;}
 template<typename T> inline void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
-template<typename T> inline void debug_view(const vector<vector<T> > &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+template<typename T> inline void debug_view(const vector<vector<T>> &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+template<typename T1,typename T2> inline void debug_view(const map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 #else
 #define debug(var)
 #endif
@@ -78,47 +79,60 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
 
-
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+    long long modpow(long long a, long long b, long long mod) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2, mod);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2, mod);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+};
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    sort(allr(A));
-    vl S(N+1);
-    rep (i, N) S[i+1] = S[i] + A[i];
-
-    auto calc = [&] (ll x) -> Pair { // tot, num
-        ll tot = 0, num = 0;
-        rep (i, N) {
-            ll idx = upper_bound(all(A), x - A[i], greater<ll>()) - A.begin();
-            num += idx;
-            tot += S[idx];
-            tot += idx * A[i];
-        }
-        return {tot, num};
-    };
-
-    ll l = 0, r = 2e5 + 10;
-    while (r - l > 1) {
-        ll m = (l + r) / 2;
-        if (calc(m).second >= M) {
-            l = m;
-        }
-        else r = m;
+    ll MOD = 1e9 + 7;
+    Combination comb(1e5, MOD);
+    LONG(N, K); VL(A, N);
+    sort(all(A));
+    mint ans = 0;
+    rep (i, N) {
+        ans += A[i] * comb.nCr(i, K-1);
     }
-
-    auto p = calc(l);
-    debug(p)
-    ll rem = p.second - M;
-    debug(rem)
-    ll ans = p.first;
-    ans -= rem * l;
-    Out(ans)
+    rep (i, N) {
+        ans -= A[i] * comb.nCr(N-1-i, K-1);
+    }
+    Out(ans.val())
     
 }
 

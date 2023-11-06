@@ -79,11 +79,11 @@ public:
         for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
     long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n > mx) return 0;
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
     long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n > mx) return 0;
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[n-r] % mod;
     }
     long long get_fact(long long n) {
