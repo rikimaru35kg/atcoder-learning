@@ -220,8 +220,10 @@
 - 狭義に下に凸の区間における最小値を求めるときに使える。
 - 幅が2になるまでwhileループさせる
 - 最後はleftからrightまでの最小値を求めれば良い
+- 最小包含円のようにxy平面で凸な関数となる場合は二重に三分探索すれば良い
 ### 例題
 - [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
+- 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
 
 # 尺取り法
 - 単調性があるときに使用可能
