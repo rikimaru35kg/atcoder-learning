@@ -79,64 +79,87 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-using PD = vector<pair<double,double>>;
-
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+//! eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
+//! primes = {(1,1), (2,3), (3,2), (5,1)}
+//! NOTE: 1^1 is always included!!
+vector<pair<long long, long long>> prime_factrization (long long n) {
+    vector<pair<long long, long long>> primes;
+    primes.emplace_back(1, 1);
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
+        }
+    }
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
 }
-
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    void add_prime(vector<pair<long long,long long>> &vp, long long m) {
+        if (vp.size() == 0) {
+            vp.emplace_back(m, 1);
+            return;
+        }
+        if (vp.back().first == m) {
+            ++vp.back().second;
+        } else {
+            vp.emplace_back(m, 1);
+        }
+    }
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == 0) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        while (sieve[k] != 0) {
+            add_prime(ret, sieve[k]);
+            k /= sieve[k];
+        }
+        add_prime(ret, k);
+        return ret;
+    }
+};
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vpd pos;
+    VL(A, N);
+    map<ll,ll> mp;
+    Sieve sieve((ll)1e6);
     rep (i, N) {
-        LONG(x, y);
-        pos.emplace_back(x, y);
-    }
-
-    auto max_dist = [&](Paird p1) -> double {
-        double ret = 0;
-        rep (i, N) {
-            double d = euclid_distd(p1, pos[i]);
-            chmax(ret, d);
+        vp vecp = sieve.factorize(A[i]);
+        for (auto [k, v]: vecp) {
+            chmax(mp[k], v);
         }
-        return ret;
-    };
-
-    auto f = [&](double x) -> double {
-        double l = 0, r = 1000;
-        rep(_, 100) {
-            double c1 = (l*2 + r) / 3;
-            double c2 = (l + r*2) / 3;
-            Paird p1 = {x, c1};
-            Paird p2 = {x, c2};
-            if (max_dist(p1) > max_dist(p2)) l = p1.second;
-            else r = p2.second;
-        }
-        Paird p1 = {x, l};
-        return max_dist(p1);
-    };
-
-    double l = 0, r = 1000;
-    rep(_, 100) {
-        double c1 = (l*2 + r) / 3;
-        double c2 = (l + r*2) / 3;
-        if (f(c1) > f(c2)) l = c1;
-        else r = c2;
     }
-    printf("%.10f\n", f(l));
-    
+    mint l = 1;
+    for (auto [k, v]: mp) {
+        rep (j, v) l *= k;
+    }
+    mint ans = 0;
+    rep (i, N ) {
+        ans += l / A[i];
+    }
+    Out(ans.val())
 }
 
 // ### test.cpp ###

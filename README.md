@@ -96,10 +96,12 @@
 - sqrt(N)まで試して、割り切った数が1でない場合は、その数も素数であるので忘れないように
 - ライブラリprime_factorizationとして保存した
 - 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
+- エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
 ### 例題
 - [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
 - [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
+- 高速素因数分解が有効 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 
 ## 素数全列挙
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))

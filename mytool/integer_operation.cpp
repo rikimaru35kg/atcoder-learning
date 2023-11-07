@@ -1,23 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//! eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
-//! primes = {(1,1), (2,3), (3,2), (5,1)}
-//! NOTE: 1^1 is always included!!
-vector<pair<long long, long long>> prime_factrization (long long n) {
-    vector<pair<long long, long long>> primes;
-    primes.emplace_back(1, 1);
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
 
 vector<long long> listup_divisor(long long x, bool issort=false) {
     vector<long long> ret;
