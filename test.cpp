@@ -79,87 +79,66 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-//! eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
-//! primes = {(1,1), (2,3), (3,2), (5,1)}
-//! NOTE: 1^1 is always included!!
-vector<pair<long long, long long>> prime_factrization (long long n) {
-    vector<pair<long long, long long>> primes;
-    primes.emplace_back(1, 1);
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    void add_prime(vector<pair<long long,long long>> &vp, long long m) {
-        if (vp.size() == 0) {
-            vp.emplace_back(m, 1);
-            return;
-        }
-        if (vp.back().first == m) {
-            ++vp.back().second;
-        } else {
-            vp.emplace_back(m, 1);
-        }
-    }
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == 0) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        while (sieve[k] != 0) {
-            add_prime(ret, sieve[k]);
-            k /= sieve[k];
-        }
-        add_prime(ret, k);
-        return ret;
-    }
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+
+struct Edge {
+    ll to, id;
+    Edge(ll to, ll id): to(to), id(id) {};
 };
+
+
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    map<ll,ll> mp;
-    Sieve sieve((ll)1e6);
-    rep (i, N) {
-        vp vecp = sieve.factorize(A[i]);
-        for (auto [k, v]: vecp) {
-            chmax(mp[k], v);
+    vector<vector<Edge>> from(N);
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
+    }
+    LONG(M);
+    vl eset(M); // Mは条件数
+    vl edges;
+    auto dfs = [&](auto f, ll a, ll b, ll p=-1) -> bool {
+        cerr << "---- in ---- " << endl;
+        debug(a) debug(b) debug(p)
+        if (a == b) return true;
+        for (auto [to, id]: from[a]) {
+            if (to == p) continue;
+            edges.push_back(id);
+            debug(edges)
+            bool t = f(f, to, b, a);
+            if (t) return true;
+        }
+        edges.pop_back();
+        debug(a) debug(b) debug(p)
+        cerr << "---- out ---- " << endl;
+        return false;
+    };
+    rep (i, M) {
+        LONGM(u, v);
+        edges.clear();
+        dfs(dfs, u, v);
+        for (auto v: edges) {
+            eset[i] |= 1LL<<v;
         }
     }
-    mint l = 1;
-    for (auto [k, v]: mp) {
-        rep (j, v) l *= k;
+    ll ans = 0;
+    rep (i, 1LL<<M) { // iは組み合わせ条件
+        ll now = 0;
+        rep (j, M) { //j は集合
+            if (i>>j&1) now |= eset[j];
+        }
+        ll cnt = __builtin_popcountll(now);
+        ll pat = 1LL<<(N-1-cnt);
+        if (__builtin_popcountll(i)%2 == 0) ans += pat;
+        else ans -= pat;
     }
-    mint ans = 0;
-    rep (i, N ) {
-        ans += l / A[i];
-    }
-    Out(ans.val())
+    Out(ans)
+    
 }
 
 // ### test.cpp ###
