@@ -23,21 +23,11 @@ vector<pair<long long, long long>> prime_factorization (long long n) {
 class Sieve {
     long long n;
     vector<long long> sieve;
-    void add_prime(vector<pair<long long,long long>> &vp, long long m) {
-        if (vp.size() == 0) {
-            vp.emplace_back(m, 1);
-            return;
-        }
-        if (vp.back().first == m) {
-            ++vp.back().second;
-        } else {
-            vp.emplace_back(m, 1);
-        }
-    }
 public:
     Sieve (long long n): n(n), sieve(n+1) {
         for (long long i=2; i<=n; ++i) {
             if (sieve[i] != 0) continue;
+            sieve[i] = i;
             for (long long k=i*i; k<=n; k+=i) {
                 if (sieve[k] == 0) sieve[k] = i;
             }
@@ -45,17 +35,18 @@ public:
     }
     bool is_prime(long long k) {
         if (k <= 1 || k > n) return false;
-        if (sieve[k] == 0) return true;
+        if (sieve[k] == k) return true;
         return false;
     }
     vector<pair<long long,long long>> factorize(long long k) {
         vector<pair<long long,long long>> ret;
         if (k <= 1 || k > n) return ret;
-        while (sieve[k] != 0) {
-            add_prime(ret, sieve[k]);
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
             k /= sieve[k];
         }
-        add_prime(ret, k);
         return ret;
     }
 };
@@ -68,4 +59,6 @@ int main () {
         auto vp2 = prime_factorization(i);
         if (vp != vp2) cout << "No" << endl;
     }
+    cout << sieve.is_prime(5) << endl;
+    cout << sieve.is_prime(91) << endl;
 }
