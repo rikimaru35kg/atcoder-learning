@@ -83,61 +83,27 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using namespace atcoder;
 // using mint = modint998244353;
 
-struct Edge {
-    ll to, id;
-    Edge(ll to, ll id): to(to), id(id) {};
-};
-
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<vector<Edge>> from(N);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b, i);
-        from[b].emplace_back(a, i);
-    }
-    LONG(M);
-    vl eset(M); // Mは条件数
-    vl edges;
-    auto dfs = [&](auto f, ll a, ll b, ll p=-1) -> bool {
-        cerr << "---- in ---- " << endl;
-        debug(a) debug(b) debug(p)
-        if (a == b) return true;
-        for (auto [to, id]: from[a]) {
-            if (to == p) continue;
-            edges.push_back(id);
-            debug(edges)
-            bool t = f(f, to, b, a);
-            if (t) return true;
+    LONG(H, N);
+    VP(magics, N);
+    vl dp(H+1, INF);
+
+    auto f = [&](auto f, ll h) -> ll {
+        chmax(h, 0LL);
+        if (dp[h] != INF) return dp[h];
+        ll ret = INF;
+        if (h <= 0) return 0;
+        rep (i, N) {
+            auto [a, b] = magics[i];
+            chmin(ret, f(f, h - a) + b);
         }
-        edges.pop_back();
-        debug(a) debug(b) debug(p)
-        cerr << "---- out ---- " << endl;
-        return false;
+        return dp[h] = ret;
     };
-    rep (i, M) {
-        LONGM(u, v);
-        edges.clear();
-        dfs(dfs, u, v);
-        for (auto v: edges) {
-            eset[i] |= 1LL<<v;
-        }
-    }
-    ll ans = 0;
-    rep (i, 1LL<<M) { // iは組み合わせ条件
-        ll now = 0;
-        rep (j, M) { //j は集合
-            if (i>>j&1) now |= eset[j];
-        }
-        ll cnt = __builtin_popcountll(now);
-        ll pat = 1LL<<(N-1-cnt);
-        if (__builtin_popcountll(i)%2 == 0) ans += pat;
-        else ans -= pat;
-    }
-    Out(ans)
+    f(f, H);
+    Out(dp[H])
     
 }
 
