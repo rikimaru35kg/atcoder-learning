@@ -79,31 +79,80 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
+class CoordinateCompression {
+    vector<long long> vec;
+public:
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+    }
+    long long get (long long x) {
+        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+    }
+    long long get_back (long long i) {
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {return (long long)vec.size();}
+};
+// 区間加算・区間和取得（RAQ+RSQ）=========================
+struct S{
+    long long value;
+    int size;
+};
+using F = long long;
+
+S op(S a, S b){ return {a.value+b.value, a.size+b.size}; }
+S e(){ return {0, 0}; }
+S mapping(F f, S x){ return {x.value + f*x.size, x.size}; }
+F composition(F f, F g){ return f+g; }
+F id(){ return 0; }
+// seg.prod(l, r).valueで値を取り出す
+
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, N);
-    VP(magics, N);
-    vl dp(H+1, INF);
+    LONG(N, D, A);
+    vp monsters;
+    rep (i, N) {
+        LONG(x, h);
+        monsters.emplace_back(x, h);
+    }
+    sort(all(monsters));
 
-    auto f = [&](auto f, ll h) -> ll {
-        chmax(h, 0LL);
-        if (dp[h] != INF) return dp[h];
-        ll ret = INF;
-        if (h <= 0) return 0;
-        rep (i, N) {
-            auto [a, b] = magics[i];
-            chmin(ret, f(f, h - a) + b);
-        }
-        return dp[h] = ret;
-    };
-    f(f, H);
-    Out(dp[H])
+    CoordinateCompression cc;
+    cc.add(INF);
+    rep (i, N) {
+        auto [x, h] = monsters[i];
+        cc.add(x);
+        // cc.add(x - D);
+        // cc.add(x + D);
+        cc.add(x + 2*D);
+    }
+    cc.compress();
+    ll M = cc.size();
+    vector<S> v(M, {0, 1});
+    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
+
+    ll ans = 0;
+    rep (i, N) {
+        auto [x, h] = monsters[i];
+        ll l = cc.get(x);
+        ll r = cc.get(x + 2*D);
+        // ll a = seg.prod(l, l+1).value;
+        // debug(a);
+        h = max(0LL, h - seg.get(l).value);
+        ll num = (h + A - 1) / A;
+        ans += num;
+        seg.apply(l, r+1, num*A);
+    }
+    Out(ans)
     
 }
 

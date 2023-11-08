@@ -643,6 +643,13 @@
 ### 例題
 - [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 
+# セグメントツリー（Segment tree）
+- atcoder libraryで使える
+- 区間更新・加算、区間min・max・和取得などができる
+- モノイドであればセグ木にのる
+### 例題
+- [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
 - 一般には集合の個数がM個あるとすると、積集合の全組み合わせ2^M通りについて、（符号）積集合[i]の場合の数の総和を求めればよい。符号は積集合のベース集合が奇数ならマイナス、偶数ならプラス（積集合が空集合の場合は全体集合となる）

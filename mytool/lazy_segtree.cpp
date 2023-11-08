@@ -2,9 +2,9 @@
 #include<atcoder/all>
 using namespace std;
 using namespace atcoder;
-#define RAQ_RMINQ
+// #define RAQ_RMINQ
 //#define RAQ_RMAXQ
-//#define RAQ_RSQ
+#define RAQ_RSQ
 //#define RUQ_RMINQ
 //#define RUQ_RMAXQ
 //#define RUQ_RSQ
@@ -21,6 +21,9 @@ S e(){ return UNIT; }
 S mapping(F f, S x){ return f+x; }
 F composition(F f, F g){ return f+g; }
 F id(){ return 0; }
+// 書き方例
+// vector<S> v(N);
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 #endif
 // 区間加算・区間最大値取得（RAQ+RMAXQ）=========================
 #ifdef RAQ_RMAXQ
@@ -34,6 +37,9 @@ S e(){ return -UNIT; }
 S mapping(F f, S x){ return f+x; }
 F composition(F f, F g){ return f+g; }
 F id(){ return 0; }
+// 書き方例
+// vector<S> v(N);
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 #endif
 // 区間加算・区間和取得（RAQ+RSQ）=========================
 #ifdef RAQ_RSQ
@@ -49,6 +55,9 @@ S mapping(F f, S x){ return {x.value + f*x.size, x.size}; }
 F composition(F f, F g){ return f+g; }
 F id(){ return 0; }
 // seg.prod(l, r).valueで値を取り出す
+// 書き方例
+// vector<S> v(N, {0, 1});
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 #endif
 // 区間更新・区間最小値取得（RUQ+RMINQ）=========================
 #ifdef RUQ_RMINQ
@@ -63,6 +72,9 @@ S e(){ return UNIT; }
 S mapping(F f, S x){ return (f == ID ? x : f); }
 F composition(F f, F g){ return (f == ID ? g : f); }
 F id(){ return ID; }
+// 書き方例
+// vector<S> v(N);
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 #endif
 // 区間更新・区間最大値取得（RUQ+RMAXQ）=========================
 #ifdef RUQ_RMAXQ
@@ -77,6 +89,9 @@ S e(){ return -UNIT; }
 S mapping(F f, S x){ return (f == ID ? x : f); }
 F composition(F f, F g){ return (f == ID ? g : f); }
 F id(){ return ID; }
+// 書き方例
+// vector<S> v(N);
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 #endif
 // 区間更新・区間和取得（RUQ+RSQ）=========================
 #ifdef RUQ_RSQ
@@ -97,12 +112,21 @@ S mapping(F f, S x){
 F composition(F f, F g){ return (f == ID ? g : f); }
 F id(){ return ID; }
 // seg.prod(l, r).valueで値を取り出す
+// 書き方例
+// vector<S> v(N, {0, 1});
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 #endif
 // =========================================================
 
 int main(){
     int N = 1e6;
-    lazy_segtree<S, op, e, F, mapping, composition, id> seg(N);
+    // lazy_segtree<S, op, e, F, mapping, composition, id> seg(N);
+    // seg.apply(10, 20, 5);  // [10,20)に5を適用（加算or更新）
+    // long long x = seg.prod(11, 15);  // [11,15)の区間演算（min or max or sum）
+    vector<S> v(N, {0, 1});
+    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
     seg.apply(10, 20, 5);  // [10,20)に5を適用（加算or更新）
-    long long x = seg.prod(11, 15);  // [11,15)の区間演算（min or max or sum）
+    long long x = seg.prod(11, 50).value;
+    cout << x << endl;
+
 }
