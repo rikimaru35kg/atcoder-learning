@@ -499,9 +499,11 @@
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
 - 上限->上限、上限->not上限、not上限->not上限の3通りの遷移がある
 - 上限からの遷移が複雑なので注意
+- 遷移が複雑なので、i桁目で0-9のどれを選ぶかのループ(rep(d, 10))を回し、その中でp[i][j][k] -> dp[ni][nj][nk]の遷移（すなわちni,nj,nk）がどうなるかのループを回した方が考えやすい
 ### 例題
 - [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
 - 難しいが練習になる [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
+- [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 
 ## 対戦ゲーム
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
@@ -711,6 +713,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- 文字列S[i] != 0などと書いてしまうバグる。意外に気付かないので注意！（S[i] != '0'が正しい）
 - for(auto [k,v]:map)のループ中にmp.erase(k)すると壊れるので、vl esに消したいkをプッシュバックしておいて後で消す
 - accumulate(v.begin(), v.end(), 0LL)は一見便利だが、setに対して使うと壊れるので使わないこと！
 - _GLIBCXX_DEBUGオプションはlower_boundを遅くする（ソート済みかの事前チェック）。ループ内にあると酷い事になりうる
