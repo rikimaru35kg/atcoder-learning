@@ -671,6 +671,13 @@
 ### 例題
 - [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
 
+# パスカルの三角形
+- 各行の総和は2^行番号となる
+- ある斜め列のすぐ下側の斜め列は累積和の行列となっている
+### 例題
+- [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
+
+
 # コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
