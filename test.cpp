@@ -79,56 +79,34 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-    long long modpow(long long a, long long b, long long mod) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2, mod);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2, mod);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-};
+
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(r1, c1, r2, c2);
-    ll MOD = 1e9+7;
-    Combination comb((ll)2e6+10, MOD);
-    mint ans = comb.nCr(r2+c2+2, r2+1) - 1;
-    ans -= comb.nCr(r2+c1-1+2, r2+1) - 1;
-    ans -= comb.nCr(r1+c2-1+2, c2+1) - 1;
-    ans += comb.nCr(r1+c1-2+2, r1-1+1) - 1;
-    Out(ans.val())
+    STRING(S);
+    ll N = SIZE(S);
+    reverse(all(S));
+    vl dp(2, INF);
+    dp[0] = 0;
+    rep (i, N) {
+        vl p(2, INF);
+        swap(p, dp);
+        rep (d, 10) {
+            ll cd = S[i] - '0';
+            if (d >= cd) chmin(dp[0], p[0] + d - cd + d);
+            else chmin(dp[1], p[0] + 10+d-cd + d);
+            cd++;
+            if (d >= cd) chmin(dp[0], p[1] + d - cd + d);
+            else chmin(dp[1], p[1] + 10+d-cd + d);
+        }
+        cout << "";
+    }
+    ll ans = min(dp[0], dp[1] + 1);
+    Out(ans)
     
 }
 
