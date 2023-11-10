@@ -84,28 +84,48 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using mint = modint998244353;
 
 
+//! Use this class if n >= 1e7 && r <= 1e6
+class Combination2 {
+    long long mod;
+public:
+    Combination2 (long long mod): mod(mod) {}
+    long long nCr (long long n, long long r) {
+        r = min(n-r , r);
+        long long r_fact = 1;
+        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
+        long long r_fact_inv = modpow(r_fact, mod-2, mod);
+        long long ret = r_fact_inv;
+        for (long long i=0; i<r; ++i) (ret *= (n-i)) %= mod;
+        return ret;
+    }
+    long long modpow(long long a, long long b, long long mod) {
+        long long ret = 1;
+        a %= mod;
+        while (b > 0) {
+            if ((b & 1) == 1) ret = ret * a % mod;
+            a = a * a % mod;
+            b = (b >> 1);
+        }
+        return ret;
+    }
+};
+
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    reverse(all(S));
-    vl dp(2, INF);
-    dp[0] = 0;
-    rep (i, N) {
-        vl p(2, INF);
-        swap(p, dp);
-        rep (d, 10) {
-            ll cd = S[i] - '0';
-            if (d >= cd) chmin(dp[0], p[0] + d - cd + d);
-            else chmin(dp[1], p[0] + 10+d-cd + d);
-            cd++;
-            if (d >= cd) chmin(dp[0], p[1] + d - cd + d);
-            else chmin(dp[1], p[1] + 10+d-cd + d);
-        }
-        cout << "";
-    }
-    ll ans = min(dp[0], dp[1] + 1);
+    LONG(n, a, b);
+    ll MOD = (ll)1e9+7;
+    Combination2 comb(MOD);
+    ll ans = 0;
+    ans += comb.modpow(2, n, MOD);
+    debug(ans)
+    ans -= comb.nCr(n, a);
+    debug(ans)
+    ans -= comb.nCr(n, b);
+    debug(ans)
+    ans -= 1;
+    debug(ans)
+    (ans += 3*MOD) %= MOD;
     Out(ans)
     
 }

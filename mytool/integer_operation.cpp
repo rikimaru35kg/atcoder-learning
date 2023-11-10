@@ -43,16 +43,12 @@ long long spow(long long a, long long b) {
 	return ans;
 }
 
+
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
 class Combination {
     long long mx, mod;
     vector<long long> facts, ifacts;
-    long long modpow(long long a, long long b, long long mod) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2, mod);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
 public:
     // argument mod must be a prime number!!
     Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
@@ -77,7 +73,41 @@ public:
         if (n > mx) return 0;
         return ifacts[n];
     }
+    long long modpow(long long a, long long b, long long mod) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2, mod);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
 };
+
+//! Use this class if n >= 1e7 && r <= 1e6
+class Combination2 {
+    long long mod;
+public:
+    Combination2 (long long mod): mod(mod) {}
+    long long nCr (long long n, long long r) {
+        r = min(n-r , r);
+        long long r_fact = 1;
+        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
+        long long r_fact_inv = modpow(r_fact, mod-2, mod);
+        long long ret = r_fact_inv;
+        for (long long i=0; i<r; ++i) (ret *= (n-i)) %= mod;
+        return ret;
+    }
+    long long modpow(long long a, long long b, long long mod) {
+        long long ret = 1;
+        a %= mod;
+        while (b > 0) {
+            if ((b & 1) == 1) ret = ret * a % mod;
+            a = a * a % mod;
+            b = (b >> 1);
+        }
+        return ret;
+    }
+};
+
 
 int main () {
     Combination comb(100, 1e9+7);
