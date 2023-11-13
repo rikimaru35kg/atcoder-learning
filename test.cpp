@@ -68,6 +68,7 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 #ifdef __DEBUG
 #define debug(var) {cerr << #var << ": "; debug_view(var);}
 inline void debug_view(Pair &p){cerr << p.first << ' ' << p.second << endl;}
+inline void debug_view(int &e){cerr << e << endl;}
 inline void debug_view(ll &e){cerr << e << endl;}
 template<typename T> inline void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(const vector<vector<T>> &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
@@ -82,50 +83,49 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
-
-
-//! Use this class if n >= 1e7 && r <= 1e6
-class Combination2 {
-    long long mod;
-public:
-    Combination2 (long long mod): mod(mod) {}
-    long long nCr (long long n, long long r) {
-        r = min(n-r , r);
-        long long r_fact = 1;
-        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
-        long long r_fact_inv = modpow(r_fact, mod-2, mod);
-        long long ret = r_fact_inv;
-        for (long long i=0; i<r; ++i) (ret *= (n-i)) %= mod;
-        return ret;
-    }
-    long long modpow(long long a, long long b, long long mod) {
-        long long ret = 1;
-        a %= mod;
-        while (b > 0) {
-            if ((b & 1) == 1) ret = ret * a % mod;
-            a = a * a % mod;
-            b = (b >> 1);
-        }
-        return ret;
-    }
-};
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+	long long ans = 1;
+	a %= mod;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
+}
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(n, a, b);
-    ll MOD = (ll)1e9+7;
-    Combination2 comb(MOD);
+    LONG(N, P);
+    STRING(S);
+    map<ll,ll> mp;
+    mp[0] = 1;
     ll ans = 0;
-    ans += comb.modpow(2, n, MOD);
-    debug(ans)
-    ans -= comb.nCr(n, a);
-    debug(ans)
-    ans -= comb.nCr(n, b);
-    debug(ans)
-    ans -= 1;
-    debug(ans)
-    (ans += 3*MOD) %= MOD;
+    ll now = 0;
+    ll d = 1;
+    reverse(all(S));
+    if (P == 2 || P == 5) {
+        rep (i, N) {
+            int x = S[i] - '0';
+            if (x % P == 0) {
+                ans += N - i;
+            }
+        }
+        Out(ans)
+        return 0;
+    }
+    rep (i, N) {
+        int x = S[i] - '0';
+        now = (now + x * d) % P;
+        ans += mp[now];
+        mp[now]++;
+        (d *= 10) %= P;
+    }
     Out(ans)
     
 }
