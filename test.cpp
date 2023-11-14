@@ -67,11 +67,12 @@ inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 #ifdef __DEBUG
 #define debug(var) {cerr << #var << ": "; debug_view(var);}
-inline void debug_view(Pair &p){cerr << p.first << ' ' << p.second << endl;}
-inline void debug_view(ll &e){cerr << e << endl;}
-template<typename T> inline void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
-template<typename T> inline void debug_view(const vector<vector<T>> &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-template<typename T1,typename T2> inline void debug_view(const map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T> inline void debug_view(T e){cerr << e << endl;}
+template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
+template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
+template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
+template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 #else
 #define debug(var)
 #endif
@@ -79,30 +80,26 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, S); VL(A, N);
-    vector<mint> coef(S+1);
-    coef[0] = 0;
-    mint ans = 0;
-    rep (i, N) {
-        coef[0]++;
-        vector<mint> c = coef;
-        // debug(c)
-        rep (s, S) {
-            if (s + A[i] > S) continue;
-            coef[s + A[i]] += c[s];
-        }
-        ans += coef[S];
-        // debug(coef)
-    }
-    Out(ans.val())
+    int x = 5;
+    ll y = 10;
+    string s = "aa";
+    Pair p = {3, 5};
+    vl a = {-1, 5, 35};
+    double z = 0.5;
+    debug(x)
+    debug(y)
+    debug(s)
+    debug(p)
+    debug(a)
+    debug(z)
 
     
 }
