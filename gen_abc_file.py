@@ -44,7 +44,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
 #define LONGM(...) ll __VA_ARGS__; inm(__VA_ARGS__)
 #define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
-#define CHR(...) char __VA_ARGS__; in(__VA_ARGS__)
+#define CHAR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)

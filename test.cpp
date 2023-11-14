@@ -41,7 +41,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
 #define LONGM(...) ll __VA_ARGS__; inm(__VA_ARGS__)
 #define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
-#define CHR(...) char __VA_ARGS__; in(__VA_ARGS__)
+#define CHAR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
@@ -68,7 +68,6 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 #ifdef __DEBUG
 #define debug(var) {cerr << #var << ": "; debug_view(var);}
 inline void debug_view(Pair &p){cerr << p.first << ' ' << p.second << endl;}
-inline void debug_view(int &e){cerr << e << endl;}
 inline void debug_view(ll &e){cerr << e << endl;}
 template<typename T> inline void debug_view(const vector<T> &v){for(const auto &e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(const vector<vector<T>> &vv){cerr << "----" << endl;for(const auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
@@ -80,53 +79,31 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-	long long ans = 1;
-	a %= mod;
-	while (b > 0) {
-		if ((b & 1) == 1) {
-			ans = ans * a % mod;
-		}
-		a = a * a % mod;
-		b = (b >> 1);
-	}
-	return ans;
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    STRING(S);
-    map<ll,ll> mp;
-    mp[0] = 1;
-    ll ans = 0;
-    ll now = 0;
-    ll d = 1;
-    reverse(all(S));
-    if (P == 2 || P == 5) {
-        rep (i, N) {
-            int x = S[i] - '0';
-            if (x % P == 0) {
-                ans += N - i;
-            }
-        }
-        Out(ans)
-        return 0;
-    }
+    LONG(N, S); VL(A, N);
+    vector<mint> coef(S+1);
+    coef[0] = 0;
+    mint ans = 0;
     rep (i, N) {
-        int x = S[i] - '0';
-        now = (now + x * d) % P;
-        ans += mp[now];
-        mp[now]++;
-        (d *= 10) %= P;
+        coef[0]++;
+        vector<mint> c = coef;
+        // debug(c)
+        rep (s, S) {
+            if (s + A[i] > S) continue;
+            coef[s + A[i]] += c[s];
+        }
+        ans += coef[S];
+        // debug(coef)
     }
-    Out(ans)
+    Out(ans.val())
+
     
 }
 
