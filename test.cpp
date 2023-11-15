@@ -66,7 +66,7 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin 
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 #ifdef __DEBUG
-#define debug(var) {cerr << #var << ": "; debug_view(var);}
+#define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
@@ -74,7 +74,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 #else
-#define debug(var)
+#define de(var)
 #endif
 const ll INF = 3e18;
 const double PI = acos(-1);
@@ -84,58 +84,49 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using namespace atcoder;
 // using mint = modint998244353;
 
-
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, C); STRING(S);
-    vl numl(N), numr(N);
-    vl ls, rs;
-    auto get = [&](vl &num, vl &is) -> void {
-        ll cnt = 0;
-        ll rem = 0;
-        rep (i, N) {
-            --rem;
-            chmax(rem, 0LL);
-            if (S[i] == 'x' || rem > 0) num[i] = cnt;
-            else {
-                ++cnt;
-                rem = C+1;
-                num[i] = cnt;
-                is.push_back(i);
-            }
+    LONG(N);
+    vl divs = listup_divisor(N);
+    ll ans = 0;
+    ll ex = 0;
+    de(divs)
+    set<ll> st;
+    for (auto x: divs) {
+        st.insert(x);
+        if (x == 1) continue;
+        ll _N = N;
+        while (_N % x == 0) _N /= x;
+        if (_N % x == 1) ans++;
+        if (_N % x == 1) {
+            de(x);
         }
-    };
-    get(numl, ls);
-    reverse(all(S));
-    get(numr, rs);
-    reverse(all(numr));
-    reverse(all(S));
-    ll M = SIZE(rs);
-    rep (i, M) rs[i] = N - 1 - rs[i];
-    debug(numl) debug(ls) debug(numr) debug(rs)
-
-    vl ans;
-    rep (i, N) {
-        if (S[i] == 'x') continue;
-        if (i == 0) {
-            if (numr[i+1] < K) ans.push_back(i);
-            continue;
-        }
-        if (i == N - 1) {
-            if (numl[i-1] < K) ans.push_back(i);
-            continue;
-        }
-        ll nl = numl[i-1], nr = numr[i+1];
-        debug(i) debug(nl) debug(nr) debug(ls[nl]) debug(rs[nr])
-        if (nl + nr < K) {
-            ans.push_back(i); continue;
-        }
-        if (nl + nr > K) continue;
-        if (rs[nr-1] - ls[nl-1] <= C) ans.push_back(i);
+        else if ((N - 1) % x == 1 && _N % x == 1) ex++;
     }
-    rep (i, SIZE(ans)) ans[i]++;
-    print_vec(ans)
+    vl divs2 = listup_divisor(N-1);
+    // for (auto x: divs2) {
+    //     if (x == 1) continue;
+    //     if (st.count(x)) continue;
+    //     if (N%x == 1) ++ans;
+    //     if (N%x == 1) {
+    //         de(x);
+    //     }
+    // }
+    ll n2 = SIZE(divs2) - 1;
+    ans += n2 - ex;
+    Out(ans)
     
 }
 

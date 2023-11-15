@@ -80,6 +80,7 @@
 - オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
 ### 例題
 - [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
+- 約数の個数が少ないが故に解ける問題 [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 
 ## 積分解（約数類似系）
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
@@ -690,7 +691,7 @@
 # 左右から攻める
 - ある要素について何かを調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられることがある
 ### 例題
-- 発想も実装も難しい良問 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
+- [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
 
 # コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり

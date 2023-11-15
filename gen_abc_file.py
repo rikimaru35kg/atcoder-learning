@@ -69,7 +69,7 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin 
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 #ifdef __DEBUG
-#define debug(var) {cerr << #var << ": "; debug_view(var);}
+#define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
@@ -77,7 +77,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 #else
-#define debug(var)
+#define de(var)
 #endif
 const ll INF = 3e18;
 const double PI = acos(-1);
