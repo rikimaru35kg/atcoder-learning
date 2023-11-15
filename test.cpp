@@ -88,19 +88,54 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    int x = 5;
-    ll y = 10;
-    string s = "aa";
-    Pair p = {3, 5};
-    vl a = {-1, 5, 35};
-    double z = 0.5;
-    debug(x)
-    debug(y)
-    debug(s)
-    debug(p)
-    debug(a)
-    debug(z)
+    LONG(N, K, C); STRING(S);
+    vl numl(N), numr(N);
+    vl ls, rs;
+    auto get = [&](vl &num, vl &is) -> void {
+        ll cnt = 0;
+        ll rem = 0;
+        rep (i, N) {
+            --rem;
+            chmax(rem, 0LL);
+            if (S[i] == 'x' || rem > 0) num[i] = cnt;
+            else {
+                ++cnt;
+                rem = C+1;
+                num[i] = cnt;
+                is.push_back(i);
+            }
+        }
+    };
+    get(numl, ls);
+    reverse(all(S));
+    get(numr, rs);
+    reverse(all(numr));
+    reverse(all(S));
+    ll M = SIZE(rs);
+    rep (i, M) rs[i] = N - 1 - rs[i];
+    debug(numl) debug(ls) debug(numr) debug(rs)
 
+    vl ans;
+    rep (i, N) {
+        if (S[i] == 'x') continue;
+        if (i == 0) {
+            if (numr[i+1] < K) ans.push_back(i);
+            continue;
+        }
+        if (i == N - 1) {
+            if (numl[i-1] < K) ans.push_back(i);
+            continue;
+        }
+        ll nl = numl[i-1], nr = numr[i+1];
+        debug(i) debug(nl) debug(nr) debug(ls[nl]) debug(rs[nr])
+        if (nl + nr < K) {
+            ans.push_back(i); continue;
+        }
+        if (nl + nr > K) continue;
+        if (rs[nr-1] - ls[nl-1] <= C) ans.push_back(i);
+    }
+    rep (i, SIZE(ans)) ans[i]++;
+    print_vec(ans)
     
 }
 

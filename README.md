@@ -687,6 +687,10 @@
 ### 例題
 - [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
 
+# 左右から攻める
+- ある要素について何かを調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられることがある
+### 例題
+- 発想も実装も難しい良問 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
 
 # コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり
