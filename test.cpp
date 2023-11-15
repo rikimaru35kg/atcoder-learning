@@ -80,53 +80,27 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl divs = listup_divisor(N);
-    ll ans = 0;
-    ll ex = 0;
-    de(divs)
-    set<ll> st;
-    for (auto x: divs) {
-        st.insert(x);
-        if (x == 1) continue;
-        ll _N = N;
-        while (_N % x == 0) _N /= x;
-        if (_N % x == 1) ans++;
-        if (_N % x == 1) {
-            de(x);
+    LONG(N, K);
+    vector<mint> d(K+1);
+    mint ans = 0;
+    for (ll i=K; i>0; --i) {
+        mint base = K / i;
+        base = base.pow(N);
+        for (ll j=2*i; j<=K; j+=i) {
+            base -= d[j];
         }
-        else if ((N - 1) % x == 1 && _N % x == 1) ex++;
+        d[i] = base;
+        ans += base * i;
     }
-    vl divs2 = listup_divisor(N-1);
-    // for (auto x: divs2) {
-    //     if (x == 1) continue;
-    //     if (st.count(x)) continue;
-    //     if (N%x == 1) ++ans;
-    //     if (N%x == 1) {
-    //         de(x);
-    //     }
-    // }
-    ll n2 = SIZE(divs2) - 1;
-    ans += n2 - ex;
-    Out(ans)
+    Out(ans.val())
     
 }
 

@@ -670,6 +670,12 @@
 ### 例題
 - [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 
+# 実は計算量がlogに落ちる問題
+- ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
+- 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
+### 例題
+- [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+
 # 差分を考える
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
