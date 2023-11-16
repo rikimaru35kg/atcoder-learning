@@ -440,8 +440,10 @@
 ## 部分和問題
 - （連続でない）部分列の総和がKになる場合の数は単純なDPで解ける
 - 部分和は各要素を(1+x^A[i])とみなし、全積を取ったときのx^Kの係数が答えとみなす事もできる（難しい問題の時に見通しをよくするテクニック）
+- M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
-- [https://atcoder.jp/contests/abc159/tasks/abc159_f](https://atcoder.jp/contests/abc159/tasks/abc159_f)
+- [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
+- 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
 ## 個数制限なしナップサックDP
 - 通常のDPのように、i個目までを選んでという状態を取ってしまうと、個数制限がないのでiを1つ進めるたびにN回のループが発生してしまう

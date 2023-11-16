@@ -80,28 +80,31 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vector<mint> d(K+1);
-    mint ans = 0;
-    for (ll i=K; i>0; --i) {
-        mint base = K / i;
-        base = base.pow(N);
-        for (ll j=2*i; j<=K; j+=i) {
-            base -= d[j];
+    LONG(N); VL(A, N);
+    int K = 0;
+    if (N % 2 == 0) K = 1;
+    else K = 2;
+    vl dp(K+1, -INF);
+    dp[0] = 0;
+    rep (i, N) {
+        vl p(K+1, -INF);
+        de(dp)
+        swap(p, dp);
+        rep (j, K+1) {
+            if (j != K) chmax(dp[j+1], p[j]);
+            ll sel = (1 + i%2 + j) % 2;
+            chmax(dp[j], p[j] + sel * A[i]);
         }
-        d[i] = base;
-        ans += base * i;
     }
-    Out(ans.val())
-    
+    Out(dp[K])
 }
 
 // ### test.cpp ###
