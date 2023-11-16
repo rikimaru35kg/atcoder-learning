@@ -84,68 +84,37 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using namespace atcoder;
 // using mint = modint998244353;
 
-struct Edge {
-    ll to, a, b;
-    Edge(ll to, ll a, ll b): to(to), a(a), b(b) {}
-};
-struct Vx {
-    ll v, m, t;
-    Vx(ll v, ll m, ll t): v(v), m(m), t(t) {}
-    bool operator < (Vx o) const {
-        return t > o.t;
-    }
-};
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, S);
-    ll K = N*50;
-    vvl time(N, vl(K, INF));
-
-    vector<vector<Edge>> edges(N);
-    rep(i, M) {
-        LONGM(u, v); LONG(a, b);
-        edges[u].emplace_back(v, a, b);
-        edges[v].emplace_back(u, a, b);
+    LONG(N);
+    VL(A, N);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    vl C, D;
+    vl lis(N, INF);
+    vl ans(N);
+
+    auto dfs = [&](auto f, ll v, ll p = -1) -> void {
+        ll idx = lower_bound(all(lis), A[v]) - lis.begin();
+        ll old = lis[idx];
+        lis[idx] = A[v];
+        ll len = lower_bound(all(lis), INF) - lis.begin();
+        ans[v] = len;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            f(f, nv, v);
+        }
+        lis[idx] = old;
+    };
+    dfs(dfs, 0);
     rep (i, N) {
-        LONG(c, d);
-        C.push_back(c);
-        D.push_back(d);
+        printf("%lld\n", ans[i]);
     }
-
-    priority_queue<Vx> pque;
-    chmin(S, K-1);
-    pque.emplace(0, S, 0);
-    time[0][S] = 0;
-    while (!pque.empty()) {
-        auto [v, m, t] = pque.top(); pque.pop();
-        de(v) de(m)de(t)
-        if (t != time[v][m]) continue;
-
-        for (auto [to, a, b]: edges[v]) {
-            if (m-a < 0) continue;
-            ll nt = t + b;
-            if (time[to][m-a] > nt) {
-                time[to][m-a] = nt;
-                pque.emplace(to, m-a, nt);
-            }
-        }
-        ll nt = t + D[v];
-        ll nm = min(m + C[v], K-1);
-        if (time[v][nm] > nt) {
-            time[v][nm] = nt;
-            pque.emplace(v, nm, nt);
-        }
-    }
-    repk (i, 1, N) {
-        ll ans = INF;
-        rep (m, K) chmin(ans, time[i][m]);
-        cout << ans << endl;
-    }
-
     
 }
 
