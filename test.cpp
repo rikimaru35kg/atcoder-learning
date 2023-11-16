@@ -84,28 +84,68 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using namespace atcoder;
 // using mint = modint998244353;
 
+struct Edge {
+    ll to, a, b;
+    Edge(ll to, ll a, ll b): to(to), a(a), b(b) {}
+};
+struct Vx {
+    ll v, m, t;
+    Vx(ll v, ll m, ll t): v(v), m(m), t(t) {}
+    bool operator < (Vx o) const {
+        return t > o.t;
+    }
+};
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    reverse(all(S));
-    int MOD = 2019;
-    vl m2019(MOD);
-    ll x = 0;
-    ll ten = 1;
-    m2019[x]++;
-    ll ans = 0;
-    rep (i, N) {
-        int c = S[i] - '0';
-        (x += ten * c) %= MOD;
-        ans += m2019[x];
+    LONG(N, M, S);
+    ll K = N*50;
+    vvl time(N, vl(K, INF));
 
-        m2019[x]++;
-        (ten *= 10) %= MOD;
+    vector<vector<Edge>> edges(N);
+    rep(i, M) {
+        LONGM(u, v); LONG(a, b);
+        edges[u].emplace_back(v, a, b);
+        edges[v].emplace_back(u, a, b);
     }
-    Out(ans)
+    vl C, D;
+    rep (i, N) {
+        LONG(c, d);
+        C.push_back(c);
+        D.push_back(d);
+    }
+
+    priority_queue<Vx> pque;
+    chmin(S, K-1);
+    pque.emplace(0, S, 0);
+    time[0][S] = 0;
+    while (!pque.empty()) {
+        auto [v, m, t] = pque.top(); pque.pop();
+        de(v) de(m)de(t)
+        if (t != time[v][m]) continue;
+
+        for (auto [to, a, b]: edges[v]) {
+            if (m-a < 0) continue;
+            ll nt = t + b;
+            if (time[to][m-a] > nt) {
+                time[to][m-a] = nt;
+                pque.emplace(to, m-a, nt);
+            }
+        }
+        ll nt = t + D[v];
+        ll nm = min(m + C[v], K-1);
+        if (time[v][nm] > nt) {
+            time[v][nm] = nt;
+            pque.emplace(v, nm, nt);
+        }
+    }
+    repk (i, 1, N) {
+        ll ans = INF;
+        rep (m, K) chmin(ans, time[i][m]);
+        cout << ans << endl;
+    }
+
     
 }
 
