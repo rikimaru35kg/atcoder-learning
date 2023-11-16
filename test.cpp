@@ -88,23 +88,25 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    int K = 0;
-    if (N % 2 == 0) K = 1;
-    else K = 2;
-    vl dp(K+1, -INF);
-    dp[0] = 0;
+    STRING(S);
+    ll N = SIZE(S);
+    reverse(all(S));
+    int MOD = 2019;
+    vl m2019(MOD);
+    ll x = 0;
+    ll ten = 1;
+    m2019[x]++;
+    ll ans = 0;
     rep (i, N) {
-        vl p(K+1, -INF);
-        de(dp)
-        swap(p, dp);
-        rep (j, K+1) {
-            if (j != K) chmax(dp[j+1], p[j]);
-            ll sel = (1 + i%2 + j) % 2;
-            chmax(dp[j], p[j] + sel * A[i]);
-        }
+        int c = S[i] - '0';
+        (x += ten * c) %= MOD;
+        ans += m2019[x];
+
+        m2019[x]++;
+        (ten *= 10) %= MOD;
     }
-    Out(dp[K])
+    Out(ans)
+    
 }
 
 // ### test.cpp ###

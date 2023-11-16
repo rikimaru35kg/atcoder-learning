@@ -283,6 +283,7 @@
 - K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
 - 累積和MOD部分列の長さと一致 [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 - 連続部分文字列がMOD Pで0になる個数 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
+- 連続部分文字列がMOD Pで0になる個数 その2 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
 
 ## 区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
