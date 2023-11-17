@@ -205,7 +205,9 @@
 ## 再帰全探索
 - 次に探索する状態へ再帰でつなぐ。自分自身で終了する事も忘れずに
 
-# 二分探索法
+# 工夫した探索
+
+## 二分探索法
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
 - lower_boundの第4引数にgreater<ll>()を指定すると降順ソート列のx以下となるイテレータを返すようになる（upperはx未満）
 - 最小値の最大化を二分探索で求められる事が多いのは、最小値=Xが成立となるかどうかを貪欲法で求められる事が多いから
@@ -219,7 +221,7 @@
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 
-# 三分探索法
+## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
 - 幅が2になるまでwhileループさせる
 - 最後はleftからrightまでの最小値を求めれば良い
@@ -228,7 +230,7 @@
 - [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
 - 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
 
-# 尺取り法
+## 尺取り法
 - 単調性があるときに使用可能
 - 区間の長さ1（left=right）の時にOK、NGの両方ありうる場合は半開区間で考える（[l,r)）というか基本は半開区間
 - rightをNGになるまでwhile分で進める際、NGになった瞬間のrightでwhile分の中を計算しないこと！
@@ -546,7 +548,7 @@
 ### 例題
 - [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 
-## 最短経路問題
+# 最短経路問題
 - 重み無しグラフの最短経路問題はBFSで解ける（始点が複数あってもOK！）
 - 0/1重みグラフの最短経路問題は0/1-BFSで解ける（0の場合は先頭にpush）
 - 重み有りグラフの最短経路問題はダイクストラ法（後述）
@@ -605,8 +607,6 @@
 - もしかしたら辺の張り直しという典型に分類されるか？？
 ### 例題
 - [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)
-
-### 例題
 - [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
 
@@ -684,36 +684,37 @@
 ### 例題
 - [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 
-# 実は計算量がlogに落ちる問題
+# その他典型
+## 実は計算量がlogに落ちる問題
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
 ### 例題
 - [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 
-# 差分を考える
+## 差分を考える
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
 ### 例題
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 
-# 偶奇に注目
+## 偶奇に注目
 - 隣り合う要素を反転できる場合、実は任意の2要素を反転できる事と等しい
 - 更に、反転しても要素数（例えば黒の数）の偶奇は変わらない。
 ### 例題
 - [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
 
-# パスカルの三角形
+## パスカルの三角形
 - 各行の総和は2^行番号となる
 - ある斜め列のすぐ下側の斜め列は累積和の行列となっている
 ### 例題
 - [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
 
-# 左右から攻める
+## 左右から攻める
 - ある要素について何かを調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられることがある
 ### 例題
 - [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
 
-# コロンブスの卵
+## コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
@@ -721,8 +722,14 @@
 - [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 - [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 
+## 殆どOKなゲーム
+- 殆どの手はOKだが、最後の方だけ気を付けないといけないゲーム
+- 考察できれば勝ち
+### 例題
+- [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+
 # 読解が難しい問題
-- 添え字多すぎ問題[B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
+- 添え字多すぎ問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 
 # 実装テクニック
@@ -787,12 +794,13 @@
 - stdc++.hの場所は/usr/include/x86~~~/c++/11/bits/にあった。
 - 意味は分からないが`gcc -x c++ -v -E /dev/null | grep include`でインクルードパス一覧が出るので、上位階層で`find -name "stdc++.h"`とでも打てば良いだろう
 
-# その他
+# その他のメモ
 - 直線の標準系: 傾きを(a, b)ベクトルで持つ（aは正、a=0ならb=1、約分必須）。y切片的なものをc=ay-bxとする。(a,b,c)をが標準系となる。
 - 3点が同一直線状である事と外積が0である事は同値
 - 円環問題は、2*Nのベクターにすると解けることがある。円環で考えると難しいが直線だと簡単な場合は要検討
 - 長方形は対角線上の2点を決めればすべての座標が決まる
 - floor(N/i) i=1...Nは高々2*sqrt(N)個しかない。i<=sqrt(N)がsqrt(N)種類、その他のiについてはfloor(N/i)がsqrt(N)以下となるのでsqrt(N)種類という事
+- グラフの形からオーダー制約を考えると見通しが良い場合あり（[D - I hate Factorization](https://atcoder.jp/contests/abc166/tasks/abc166_d)）
 - WINDOWSでMINGWのgccを使う場合、スタックオーバーフローに注意。AtCoderでは1024MBのスタックサイズが許容されているが、`ulimit -a`で調べると手元では2032KBしか確保されていなかった。ulimitでは変更が上手くいかないので、コンパイル時に`-Wl,--stack,1073741824`を指定して解決した（1073741824[Byte] = 1024MB）
 - AtCoderではスペースと改行を区別しないとsnuke氏はおっしゃっていたが、少なくともABC109のD問題では行末にスペースを入れたことでWAした・・・。サンプルまでWAになった場合は疑ってみる価値あり
 

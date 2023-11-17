@@ -43,6 +43,8 @@ using vvvd = vector<vector<vector<double>>>;
 #define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
 #define CHAR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
+#define VI(ivec, n) vi ivec; input_ivec(ivec, n)
+#define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
@@ -57,6 +59,8 @@ inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
 template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
+inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(x);}}
+inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
@@ -88,33 +92,43 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
-    }
-    vl lis(N, INF);
-    vl ans(N);
-
-    auto dfs = [&](auto f, ll v, ll p = -1) -> void {
-        ll idx = lower_bound(all(lis), A[v]) - lis.begin();
-        ll old = lis[idx];
-        lis[idx] = A[v];
-        ll len = lower_bound(all(lis), INF) - lis.begin();
-        ans[v] = len;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            f(f, nv, v);
-        }
-        lis[idx] = old;
+    INT(N); VL(D, 3);
+    VS(S, N);
+    S.push_back("AB");
+    vc ans;
+    auto det = [&](string &s, ll &x, ll &y) {
+        if (s == "AB") {x = 0; y = 1;}
+        if (s == "BC") {x = 1; y = 2;}
+        if (s == "AC") {x = 0; y = 2;}
     };
-    dfs(dfs, 0);
+    auto move = [&](ll x, ll y) {
+        D[x]--; D[y]++;
+        ans.push_back(y+'A');
+    };
     rep (i, N) {
-        printf("%lld\n", ans[i]);
+        string s = S[i];
+        ll x, y;
+        det(s, x, y);
+        if (D[x] == 0 && D[y] == 0) PNo
+        if (D[x] == 0) {
+            move(y, x);
+            continue;
+        }
+        if (D[y] == 0) {
+            move(x, y);
+            continue;
+        }
+        ll nx, ny;
+        string ns = S[i+1];
+        det(ns, nx, ny);
+        if (x == nx || x == ny) {
+            move(y, x);
+        } else {
+            move(x, y);
+        }
     }
+    puts("Yes");
+    rep(i, N) printf("%c\n", ans[i]);
     
 }
 
