@@ -93,7 +93,7 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
 
 int main () {
-    ios::sync_with_stdio(false);
+    // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     
 }

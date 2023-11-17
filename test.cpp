@@ -84,50 +84,20 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 
 
 int main () {
-    ios::sync_with_stdio(false);
+    // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll zero = 0;
-    map<Pair,Pair> mp;
-    rep (i, N) {
-        LONG(x, y);
-        if (x == 0 && y == 0) {
-            ++zero;
-            continue;
-        }
-        ll g = gcd(x, y);
-        x /= g;
-        y /= g;
-        if (x < 0) x = -x, y = -y;
-        if (x == 0 && y > 0) y = -y;
-        bool rot = false;
-        if (y < 0) {
-            rot = true;
-            ll tmp = x;
-            x = -y;
-            y = tmp;
-        }
-        if (!rot) mp[{x, y}].first++;
-        else mp[{x, y}].second++;
-    }
-    mint ans = 1;
-    for (auto [_, v]: mp) {
-        mint now = 1;
-        auto [a, b] = v;
-        mint two = 2;
-        now += two.pow(a) - 1;
-        now += two.pow(b) - 1;
-        ans *= now;
-    }
-    ans -= 1;
-    ans += zero;
-    Out(ans.val())
+    LONG(A); 
+    int B, C;
+    scanf("%d.%02d", &B, &C);
+    de(A)de(B)de(C)
+    ll b = 100*B + C;
+    Out(A * b / 100);
     
 }
 
