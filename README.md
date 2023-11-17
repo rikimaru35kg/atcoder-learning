@@ -694,6 +694,11 @@
 ### 例題
 - [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 
+## 標準形を考える
+- 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
+### 例題
+- [E - ∙ (Bullet)](https://atcoder.jp/contests/abc168/tasks/abc168_e)
+
 ## 差分を考える
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる

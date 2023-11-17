@@ -84,75 +84,50 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+
 
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VS(S, N);
-    vp vec;
-    auto makep = [&](string s) -> Pair {
-        ll n = SIZE(s);
-        string stck;
-        ll l = 0;
-        ll r = 0;
-        rep (j, n) {
-            if (SIZE(stck) == 0 && s[j] == ')') {
-                l++;
-                continue;
-            }
-            if (SIZE(stck) == 0) {
-                r++;
-                stck.push_back('(');
-                continue;
-            }
-            if (stck.back() == '(' && s[j] == ')') {
-                stck.pop_back();
-                --r;
-                continue;
-            }
-            if (s[j] == '(') ++r;
-            stck.push_back(s[j]);
-        }
-        return make_pair(l, r);
-    };
-    vp vecp, vecm;
+    ll zero = 0;
+    map<Pair,Pair> mp;
     rep (i, N) {
-        Pair p = makep(S[i]);
-        auto [l, r] = p;
-        if (r -l > 0) vecp.push_back(p);
-        else vecm.emplace_back(r, l);
-    }
-    // sort(all(vec), [&](Pair p1, Pair p2){
-    //     auto [l1, r1] = p1;
-    //     auto [l2, r2] = p2;
-    //     return (r1-l1 > r2-l2);
-    // });
-    // 並び替えがおかしい
-
-    sort(all(vecp));
-    sort(all(vecm));
-
-    auto mount = [&](vp &vec, ll &now) -> void {
-        now = 0;
-        rep (i, SIZE(vec)) {
-            auto [l, r] = vec[i];
-            if (now - l < 0) {
-                puts("No");
-                exit(0);
-            }
-            now -= l;
-            now += r;
+        LONG(x, y);
+        if (x == 0 && y == 0) {
+            ++zero;
+            continue;
         }
-    };
-    ll now, nowr;
-    mount(vecp, now);
-    mount(vecm, nowr);
-    if (now == nowr) PYes PNo
-
+        ll g = gcd(x, y);
+        x /= g;
+        y /= g;
+        if (x < 0) x = -x, y = -y;
+        if (x == 0 && y > 0) y = -y;
+        bool rot = false;
+        if (y < 0) {
+            rot = true;
+            ll tmp = x;
+            x = -y;
+            y = tmp;
+        }
+        if (!rot) mp[{x, y}].first++;
+        else mp[{x, y}].second++;
+    }
+    mint ans = 1;
+    for (auto [_, v]: mp) {
+        mint now = 1;
+        auto [a, b] = v;
+        mint two = 2;
+        now += two.pow(a) - 1;
+        now += two.pow(b) - 1;
+        ans *= now;
+    }
+    ans -= 1;
+    ans += zero;
+    Out(ans.val())
     
 }
 
