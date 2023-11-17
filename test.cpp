@@ -92,43 +92,28 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INT(N); VL(D, 3);
-    VS(S, N);
-    S.push_back("AB");
-    vc ans;
-    auto det = [&](string &s, ll &x, ll &y) {
-        if (s == "AB") {x = 0; y = 1;}
-        if (s == "BC") {x = 1; y = 2;}
-        if (s == "AC") {x = 0; y = 2;}
-    };
-    auto move = [&](ll x, ll y) {
-        D[x]--; D[y]++;
-        ans.push_back(y+'A');
-    };
-    rep (i, N) {
-        string s = S[i];
-        ll x, y;
-        det(s, x, y);
-        if (D[x] == 0 && D[y] == 0) PNo
-        if (D[x] == 0) {
-            move(y, x);
+    LONG(N, K); VLM(A, N);
+    ll M = 61;
+    vvl from(M, vl(N));
+    rep (m, M) {
+        if (m == 0) {
+            from[m] = A;
             continue;
         }
-        if (D[y] == 0) {
-            move(x, y);
-            continue;
-        }
-        ll nx, ny;
-        string ns = S[i+1];
-        det(ns, nx, ny);
-        if (x == nx || x == ny) {
-            move(y, x);
-        } else {
-            move(x, y);
+        rep (i, N) {
+            from[m][i] = from[m-1][from[m-1][i]];
         }
     }
-    puts("Yes");
-    rep(i, N) printf("%c\n", ans[i]);
+    ll v = 0;
+    ll m = 0;
+    while (K > 0) {
+        ll nv = v;
+        if (K%2 != 0) nv = from[m][v];
+        m++;
+        K >>= 1;
+        v = nv;
+    }
+    Out(v+1)
     
 }
 

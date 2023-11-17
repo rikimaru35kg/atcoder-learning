@@ -424,6 +424,7 @@
 - あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
 ### 例題
 - [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)　（ダブリング使わずに解いたが・・・）
+- ダブリングそのまま問題 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
 
 ## グラフその他
 - 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または[全2頂点間最大辺の総和問題](https://atcoder.jp/contests/abc214/tasks/abc214_d)など
