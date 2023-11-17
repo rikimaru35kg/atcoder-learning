@@ -88,32 +88,71 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using namespace atcoder;
 // using mint = modint998244353;
 
-
 int main () {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VLM(A, N);
-    ll M = 61;
-    vvl from(M, vl(N));
-    rep (m, M) {
-        if (m == 0) {
-            from[m] = A;
-            continue;
+    LONG(N);
+    VS(S, N);
+    vp vec;
+    auto makep = [&](string s) -> Pair {
+        ll n = SIZE(s);
+        string stck;
+        ll l = 0;
+        ll r = 0;
+        rep (j, n) {
+            if (SIZE(stck) == 0 && s[j] == ')') {
+                l++;
+                continue;
+            }
+            if (SIZE(stck) == 0) {
+                r++;
+                stck.push_back('(');
+                continue;
+            }
+            if (stck.back() == '(' && s[j] == ')') {
+                stck.pop_back();
+                --r;
+                continue;
+            }
+            if (s[j] == '(') ++r;
+            stck.push_back(s[j]);
         }
-        rep (i, N) {
-            from[m][i] = from[m-1][from[m-1][i]];
+        return make_pair(l, r);
+    };
+    vp vecp, vecm;
+    rep (i, N) {
+        Pair p = makep(S[i]);
+        auto [l, r] = p;
+        if (r -l > 0) vecp.push_back(p);
+        else vecm.emplace_back(r, l);
+    }
+    // sort(all(vec), [&](Pair p1, Pair p2){
+    //     auto [l1, r1] = p1;
+    //     auto [l2, r2] = p2;
+    //     return (r1-l1 > r2-l2);
+    // });
+    // 並び替えがおかしい
+
+    sort(all(vecp));
+    sort(all(vecm));
+
+    auto mount = [&](vp &vec, ll &now) -> void {
+        now = 0;
+        rep (i, SIZE(vec)) {
+            auto [l, r] = vec[i];
+            if (now - l < 0) {
+                puts("No");
+                exit(0);
+            }
+            now -= l;
+            now += r;
         }
-    }
-    ll v = 0;
-    ll m = 0;
-    while (K > 0) {
-        ll nv = v;
-        if (K%2 != 0) nv = from[m][v];
-        m++;
-        K >>= 1;
-        v = nv;
-    }
-    Out(v+1)
+    };
+    ll now, nowr;
+    mount(vecp, now);
+    mount(vecm, nowr);
+    if (now == nowr) PYes PNo
+
     
 }
 
