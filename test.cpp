@@ -84,31 +84,65 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
 
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+
+struct State {
+    int x, y, d;
+    State(int x, int y, int d): x(x), y(y), d(d) {};
+    bool operator< (const State &s) const {
+        // if (d == s.d) {
+        //     if (y == s.y) return x < s.d;
+        //     return y < s.y;
+        // }
+        return d < s.d;
+    }
+};
+using PS = pair<ll,State>;
+
+vl dx = {1, 0, -1, 0};
+vl dy = {0, 1, 0, -1};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, S);
-    VL(A, N);
-    vector<mint> dp(S+1);
-    dp[0] = 1;
-    rep (i, N) {
-        vector<mint> p(S+1);
-        swap(p, dp);
-        rep (j, S+1) {
-            dp[j] += 2*p[j];
-            if (j + A[i] > S) continue;
-            dp[j+A[i]] += p[j];
-        }
-        rep(j, S+1) {
-            de(i)de(j)de(dp[j].val())
-        }
+    LONG(H, W, K);
+    LONGM(x1, y1);
+    LONGM(x2, y2);
+    VS(C, H);
+    auto modceil = [&](ll x) {
+        return (x+K-1)/K * K;
+    };
+    vvvl dist(H, vvl(W, vl(4, INF)));
+    rep (i, 4) dist[x1][y1][i] = 0;
+    priority_queue<PS, vector<PS>, greater<PS>> pque;
+    rep (i, 4) pque.emplace(0, State(x1, y1, i));
+    auto push = [&](int x, int y, int dir, int z) {
+        if (dist[x][y][dir] <= z) return;
+        dist[x][y][dir] = z;
+        pque.emplace(z, State(x, y, dir));
+    };
+    while(pque.size()) {
+        auto [d, s] = pque.top(); pque.pop();
+        auto [x, y, dir] = s;
+        if (dist[x][y][dir] != d) continue;
+        int ceil = modceil(d);
+        rep (i, 4) push(x, y, i, ceil);
+        int nx = x + dx[dir];
+        int ny = y + dy[dir];
+        if (nx < 0 || nx >= H || ny < 0 || ny >= W) continue;
+        if (C[nx][ny] == '@') continue;
+        push(nx, ny, dir, d+1);
     }
-    Out(dp[S].val())
+    ll ans = INF;
+    rep (i, 4) chmin(ans, (ll)dist[x2][y2][i]);
+    if (ans == INF) ans = -1;
+    else {
+        ans = modceil(ans)/K;
+    }
+    Out(ans)
     
 }
 
