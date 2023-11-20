@@ -2,7 +2,7 @@
 using namespace std;
 
 
-//! eg) 360 = 1^1 * 2^3 * 3^2 * 5^1;
+//! eg) 360 = 2^3 * 3^2 * 5^1;
 //! primes = {(2,3), (3,2), (5,1)}
 vector<pair<long long, long long>> prime_factorization (long long n) {
     vector<pair<long long, long long>> primes;
