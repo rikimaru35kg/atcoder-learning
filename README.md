@@ -35,6 +35,7 @@
 - XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
 ### 例題
 - [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
+- [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 
 ## 整数
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
