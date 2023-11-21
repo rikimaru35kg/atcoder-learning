@@ -84,21 +84,66 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2, mod);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b, long long mod) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2, mod);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll xo = 0;
-    rep (i, N) xo ^= A[i];
-    rep (i, N) {
-        ll ans = xo ^ A[i];
-        Out(ans)
+    LONG(K); STRING(S);
+    ll N = SIZE(S);
+    ll MOD = 1e9+7;
+    Combination comb(N+K+10, MOD);
+    auto f = [&](ll n, ll i) {
+        ll ret = comb.nCr(n+i-1, n);
+        return ret;
+    };
+    mint ans = 0;
+    rep (i, K+1) {
+        mint now = comb.modpow(26, i, MOD);
+        now *= comb.modpow(25, K-i, MOD);
+        now *= f(K-i, N);
+        ans += now;
     }
+    Out(ans.val())
     
 }
 
