@@ -87,6 +87,7 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 #include <atcoder/all>
 using namespace atcoder;
 using mint = modint1000000007;
+
 //! Only when <= 1e6
 //! If not, use Combination2 class below.
 class Combination {
@@ -124,25 +125,23 @@ public:
         else return a * child % mod * child % mod;
     }
 };
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K); STRING(S);
-    ll N = SIZE(S);
+    LONG(N, M);
     ll MOD = 1e9+7;
-    Combination comb(N+K+10, MOD);
-    auto f = [&](ll n, ll i) {
-        ll ret = comb.nCr(n+i-1, n);
-        return ret;
-    };
+    Combination comb(M, MOD);
     mint ans = 0;
-    rep (i, K+1) {
-        mint now = comb.modpow(26, i, MOD);
-        now *= comb.modpow(25, K-i, MOD);
-        now *= f(K-i, N);
+    rep (k, N+1) {
+        mint now = 1;
+        now *= comb.nCr(N, k);
+        now *= comb.nPr(M-k, N-k);
+        de(now.val())
+        now *= mint(-1).pow(k);
         ans += now;
+        de(ans.val())
     }
+    ans *= comb.nPr(M, N);
     Out(ans.val())
     
 }
