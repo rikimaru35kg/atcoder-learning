@@ -219,6 +219,7 @@
 - [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
+- 二分探索で解ける事に辿り着けるかどうかが勝負 [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 
@@ -683,6 +684,7 @@
 - xに等しい値が存在する場合の実装に注意
 ### 例題
 - [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
+- 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 
 # セグメントツリー（Segment tree）
 - atcoder libraryで使える

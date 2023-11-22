@@ -84,26 +84,46 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll v = 0;
-    rep1 (i, N) {
-        v += i * (N-i+1);
+    LONG(N, Q);
+    VLM(C, N);
+    vvp qs(N);
+    rep (i, Q) {
+        LONGM(l, r);
+        qs[l].emplace_back(r, i);
     }
-    ll e = 0;
-    rep (i, N-1) {
-        LONG(a, b);
-        if (a > b) swap(a, b);
-        e += a * (N-b+1);
+    vl former(N, -1);
+    vvl lrs(N);
+    rep (i, N) {
+        ll &f = former[C[i]];
+        if (f != -1) {
+            lrs[f].push_back(i);
+        }
+        f = i;
     }
-    Out(v - e);
+    fenwick_tree<ll> bit(N-1);
+    vl anss(Q);
+    for (int x = N-1; x >= 0; --x) {
+        for (auto y: lrs[x]) {
+            bit.add(y, 1);
+        }
+        for (auto [y, i]: qs[x]) {
+            de(y+1)
+            ll ans = bit.sum(0, y+1);
+            anss[i] = y - x + 1- ans;
+        }
+    }
+    for (auto x: anss) {
+        cout << x << endl;
+    }
+
     
 }
 
