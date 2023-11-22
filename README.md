@@ -366,6 +366,7 @@
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
 ### 例題
 - 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
+- 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
