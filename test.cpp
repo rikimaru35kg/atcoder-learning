@@ -84,46 +84,55 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VLM(C, N);
-    vvp qs(N);
-    rep (i, Q) {
-        LONGM(l, r);
-        qs[l].emplace_back(r, i);
-    }
-    vl former(N, -1);
-    vvl lrs(N);
-    rep (i, N) {
-        ll &f = former[C[i]];
-        if (f != -1) {
-            lrs[f].push_back(i);
+    INT(H, W);
+    INTM(CX, CY);
+    INTM(DX, DY);
+    VS(S, H);
+    deque<Pair> deq;
+    deq.emplace_front(CX, CY);
+    vvl dist(H, vl(W, INF));
+    dist[CX][CY] = 0;
+    vi dx = {1, 0, -1, 0};
+    vi dy = {0, 1, 0, -1};
+    while (deq.size()) {
+        auto [x, y] = deq.front(); deq.pop_front();
+        auto emplace = [&](int nx, int ny, ll d, bool fr) {
+            if (nx < 0 || ny < 0 || nx >= H || ny >= W) return;
+            if (S[nx][ny] == '#') return;
+            if (dist[nx][ny] > d) {
+                if (fr) {
+                    dist[nx][ny] = d;
+                    deq.emplace_front(nx, ny);
+                } else {
+                    dist[nx][ny] = d+1;
+                    deq.emplace_back(nx, ny);
+                }
+            }
+        };
+        rep (i, 4) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            emplace(nx, ny, dist[x][y], true);
         }
-        f = i;
-    }
-    fenwick_tree<ll> bit(N-1);
-    vl anss(Q);
-    for (int x = N-1; x >= 0; --x) {
-        for (auto y: lrs[x]) {
-            bit.add(y, 1);
-        }
-        for (auto [y, i]: qs[x]) {
-            de(y+1)
-            ll ans = bit.sum(0, y+1);
-            anss[i] = y - x + 1- ans;
+        repk(i, -2, 3) repk (j, -2, 3) {
+            if (i==0 && j==0) continue;
+            int nx = x + i;
+            int ny = y + j;
+            emplace(nx, ny, dist[x][y], false);
         }
     }
-    for (auto x: anss) {
-        cout << x << endl;
-    }
-
+    de(dist)
+    ll ans = dist[DX][DY];
+    if (ans == INF) ans = -1;
+    Out(ans)
     
 }
 

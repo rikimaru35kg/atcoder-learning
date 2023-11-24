@@ -3,12 +3,10 @@ using namespace std;
 
 struct SCC {
     SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-
     void add_edge (long long a, long long b) {
         from[a].push_back(b);
         ifrom[b].push_back(a);
     }
-
     vector<vector<long long>> scc () {
         vector<vector<long long>> group;
         back_num.clear();
@@ -26,13 +24,11 @@ struct SCC {
         }
         return group;
     }
-
 private:
     long long n;
     vector<vector<long long>> from, ifrom;
     vector<long long> back_num;
     vector<bool> selected;
-
     void dfs1 (long long x) {
         selected[x] = true;
         for (auto y: from[x]) {
@@ -41,7 +37,6 @@ private:
         }
         back_num.push_back(x);
     }
-
     void dfs2 (long long x, vector<long long> &vec) {
         selected[x] = true;
         vec.push_back(x);
@@ -53,3 +48,21 @@ private:
 };
 
 
+
+int main () {
+    int n, m; cin >> n >> m;
+    SCC scc(n);
+    for(int i=0; i<m; ++i) {
+        int a, b; cin >> a >> b;
+        scc.add_edge(a, b);
+    }
+    vector<vector<long long>> groups = scc.scc();
+    for(int i=0; i<groups.size(); ++i) {
+        for(int j=0; j<groups[i].size(); ++j) {
+            cout << groups[i][j] << ' ';
+        }
+        cout << endl;
+    }
+
+
+}
