@@ -84,54 +84,51 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
+// 区間加算・区間最大値取得（RAQ+RMAXQ）=========================
+using S = long long;
+using F = long long;
 
+const S UNIT = 8e18;
+
+S op(S a, S b){ return std::max(a, b); }
+S e(){ return -UNIT; }
+S mapping(F f, S x){ return f+x; }
+F composition(F f, F g){ return f+g; }
+F id(){ return 0; }
+// 書き方例
+// vector<S> v(N);
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INT(H, W);
-    INTM(CX, CY);
-    INTM(DX, DY);
-    VS(S, H);
-    deque<Pair> deq;
-    deq.emplace_front(CX, CY);
-    vvl dist(H, vl(W, INF));
-    dist[CX][CY] = 0;
-    vi dx = {1, 0, -1, 0};
-    vi dy = {0, 1, 0, -1};
-    while (deq.size()) {
-        auto [x, y] = deq.front(); deq.pop_front();
-        auto emplace = [&](int nx, int ny, ll d, bool fr) {
-            if (nx < 0 || ny < 0 || nx >= H || ny >= W) return;
-            if (S[nx][ny] == '#') return;
-            if (dist[nx][ny] > d) {
-                if (fr) {
-                    dist[nx][ny] = d;
-                    deq.emplace_front(nx, ny);
-                } else {
-                    dist[nx][ny] = d+1;
-                    deq.emplace_back(nx, ny);
-                }
-            }
-        };
-        rep (i, 4) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            emplace(nx, ny, dist[x][y], true);
+    LONG(H, W, M);
+    vector<S> v(W);
+    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
+    vl rows(H);
+    vvl bombs(H);
+    rep (i, M) {
+        INTM(h, w);
+        rows[h]++;
+        bombs[h].push_back(w);
+        seg.apply(w, w+1, 1);
+    }
+    ll ans = 0;
+    rep (h, H) {
+        ll base = rows[h];
+        for (auto w: bombs[h]) {
+            seg.apply(w, w+1, -1);
         }
-        repk(i, -2, 3) repk (j, -2, 3) {
-            if (i==0 && j==0) continue;
-            int nx = x + i;
-            int ny = y + j;
-            emplace(nx, ny, dist[x][y], false);
+        ll now = seg.prod(0, W);
+        now += base;
+        chmax(ans, now);
+        for (auto w: bombs[h]) {
+            seg.apply(w, w+1, 1);
         }
     }
-    de(dist)
-    ll ans = dist[DX][DY];
-    if (ans == INF) ans = -1;
     Out(ans)
     
 }

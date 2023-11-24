@@ -693,6 +693,7 @@
 - モノイドであればセグ木にのる
 ### 例題
 - [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- 想定解は違うがセグ木で殴った [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
