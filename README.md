@@ -770,6 +770,9 @@
 # 読解が難しい問題
 - 添え字多すぎ問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
+# 実装が難しい問題
+- 考察も難しいが実装も難しい [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
+
 
 # 実装テクニック
 
@@ -801,6 +804,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- multisetでfor文やcountは計算量の面で危険
 - 文字列S[i] != 0などと書いてしまうバグる。意外に気付かないので注意！（S[i] != '0'が正しい）
 - for(auto [k,v]:map)のループ中にmp.erase(k)すると壊れるので、vl esに消したいkをプッシュバックしておいて後で消す
 - accumulate(v.begin(), v.end(), 0LL)は一見便利だが、setに対して使うと壊れるので使わないこと！

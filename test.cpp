@@ -88,22 +88,111 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using namespace atcoder;
 // using mint = modint998244353;
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl a, b;
+    VL(A, N); VL(B, N);
+    vl cnt(N+1);
     rep (i, N) {
-        LONG(x, y);
-        a.push_back(x+y);
-        b.push_back(x-y);
+        cnt[A[i]]++;
+        if (cnt[A[i]] > N) PNo
+        cnt[B[i]]++;
+        if (cnt[B[i]] > N) PNo
     }
-    sort(all(a));
-    sort(all(b));
-    ll ans = max(a[N-1]-a[0], b[N-1]-b[0]);
-    Out(ans)
-    
+    puts("Yes");
+
+    map<ll,ll> mp;
+    rep (i, N) mp[A[i]]++;
+    rep (i, N) mp[B[i]]++;
+    vector<set<ll>> cnt2(N+1);
+    for (auto [k, v]: mp) {
+        cnt2[v].insert(k);
+    }
+
+    map<ll,ll> mpa, mpb;
+    rep (i, N) mpa[A[i]]++;
+    rep (i, N) mpb[B[i]]++;
+    vp ans;
+    auto getany = [&](map<ll,ll> &mp, ll x) {
+        ll ret=0;
+        for (auto [k, v]: mp) {
+            if (k != x) {
+                mp[k]--;
+                ret = k;
+                break;
+            }
+        }
+        if (mp[ret] == 0) mp.erase(ret);
+        return ret;
+    };
+    rep (i, N) {
+        if (SIZE(cnt2[N-i]) == 2) {
+            auto it = cnt2[N-i].begin();
+            ll x = *it++;
+            ll y = *it;
+            if (mpa.count(x)) {
+                mpa[x]--;
+                if (mpa[x] == 0) mpa.erase(x);
+                mpb[y]--;
+                if (mpb[y] == 0) mpb.erase(y);
+                cnt[x]--; cnt[y]--;
+                cnt2[N-i].clear();
+                cnt2[N-i-1].insert(x);
+                cnt2[N-i-1].insert(y);
+                ans.emplace_back(x, y);
+            }
+            else {
+                mpa[y]--;
+                if (mpa[y] == 0) mpa.erase(y);
+                mpb[x]--;
+                if (mpb[x] == 0) mpb.erase(x);
+                cnt[x]--; cnt[y]--;
+                cnt2[N-i].clear();
+                cnt2[N-i-1].insert(x);
+                cnt2[N-i-1].insert(y);
+                ans.emplace_back(y, x);
+            }
+        } else if (SIZE(cnt2[N-i]) == 1) {
+            ll x = *cnt2[N-i].begin();
+            if (mpa.count(x)) {
+                mpa[x]--;
+                if (mpa[x] == 0) mpa.erase(x);
+                ll y = getany(mpb, x);
+                cnt[x]--; ll z = cnt[y]--;
+                cnt2[N-i].clear();
+                cnt2[z].erase(y);
+                cnt2[N-i-1].insert(x);
+                cnt2[z-1].insert(y);
+                ans.emplace_back(x, y);
+            } else {
+                mpb[x]--;
+                if (mpb[x] == 0) mpb.erase(x);
+                ll y = getany(mpa, x);
+                cnt[x]--; ll z = cnt[y]--;
+                cnt2[N-i].clear();
+                cnt2[z].erase(y);
+                cnt2[N-i-1].insert(x);
+                cnt2[z-1].insert(y);
+                ans.emplace_back(y, x);
+            }
+        } else {
+            ll x = getany(mpa, -1);
+            ll y = getany(mpb, x);
+            ll z1 = cnt[x]--; ll z2 = cnt[y]--;
+            cnt2[z1].erase(x);
+            cnt2[z1-1].insert(x);
+            cnt2[z2].erase(y);
+            cnt2[z2-1].insert(y);
+            ans.emplace_back(x, y);
+        }
+    }
+    sort(all(ans));
+    rep (i, N) {
+        cout << ans[i].second << ' ';
+    }
+    cout << endl;
+
 }
 
 // ### test.cpp ###
