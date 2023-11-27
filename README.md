@@ -240,6 +240,8 @@
 - もしA[r]を参照したいなら、rを進めた後にr>0なら--rする（例えば例題のImpartial Gift）
 - 尺の中にある要素をmapやsetで持つのが典型（！？）
 ### 例題
+- 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
+- 本番では尺取りを使わなかったが… [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
 - [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 
 # 区間和

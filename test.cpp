@@ -84,49 +84,32 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
-// 区間加算・区間最大値取得（RAQ+RMAXQ）=========================
-using S = long long;
-using F = long long;
 
-const S UNIT = 8e18;
-
-S op(S a, S b){ return std::max(a, b); }
-S e(){ return -UNIT; }
-S mapping(F f, S x){ return f+x; }
-F composition(F f, F g){ return f+g; }
-F id(){ return 0; }
-// 書き方例
-// vector<S> v(N);
-// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, M);
-    vector<S> v(W);
-    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
-    vl rows(H);
-    vvl bombs(H);
-    rep (i, M) {
-        INTM(h, w);
-        rows[h]++;
-        bombs[h].push_back(w);
-        seg.apply(w, w+1, 1);
+    LONG(N, K); VL(A, N);
+    ll mn = *min_element(all(A));
+    if (mn == 0) {
+        Out(N) return 0;
     }
+
+    int r = 0;
+    ll ml = 1;
     ll ans = 0;
-    rep (h, H) {
-        ll base = rows[h];
-        for (auto w: bombs[h]) {
-            seg.apply(w, w+1, -1);
+    rep (l, N) {
+        while (r < N && ml * A[r] <= K) {
+            ml *= A[r];
+            ++r;
         }
-        ll now = seg.prod(0, W);
-        now += base;
-        chmax(ans, now);
-        for (auto w: bombs[h]) {
-            seg.apply(w, w+1, 1);
+        chmax(ans, r - l);
+        if (ml != 1) ml /= A[l];
+        else {
+            ++r;
         }
     }
     Out(ans)
