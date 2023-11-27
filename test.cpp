@@ -92,26 +92,16 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VL(A, N);
-    ll mn = *min_element(all(A));
-    if (mn == 0) {
-        Out(N) return 0;
+    LONG(N);
+    vl a, b;
+    rep (i, N) {
+        LONG(x, y);
+        a.push_back(x+y);
+        b.push_back(x-y);
     }
-
-    int r = 0;
-    ll ml = 1;
-    ll ans = 0;
-    rep (l, N) {
-        while (r < N && ml * A[r] <= K) {
-            ml *= A[r];
-            ++r;
-        }
-        chmax(ans, r - l);
-        if (ml != 1) ml /= A[l];
-        else {
-            ++r;
-        }
-    }
+    sort(all(a));
+    sort(all(b));
+    ll ans = max(a[N-1]-a[0], b[N-1]-b[0]);
     Out(ans)
     
 }

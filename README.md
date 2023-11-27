@@ -732,6 +732,12 @@
 ### 例題
 - [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
 
+## マンハッタン距離
+- 45度回転した座標系を(a,b)とすると、max(ai-aj, bi-bj)がマンハッタン距離となる
+- maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
+### 例題
+- [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
+
 ## パスカルの三角形
 - 各行の総和は2^行番号となる
 - ある斜め列のすぐ下側の斜め列は累積和の行列となっている
@@ -742,6 +748,10 @@
 - ある要素について何かを調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられることがある
 ### 例題
 - [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
+
+## XY独立に考える
+### 例題
+- [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
 
 ## コロンブスの卵
 - 固定するものを入れ替える事で探索量が減りケースあり
