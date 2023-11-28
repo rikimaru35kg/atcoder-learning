@@ -86,45 +86,51 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint998244353;
-
-// 区間加算・区間和取得（RAQ+RSQ）=========================
-struct S{
-    mint value;
-    int size;
-};
+// using mint = modint998244353;
+// 区間更新・区間最小値取得（RUQ+RMINQ）=========================
+using S = long long;
 using F = long long;
 
-S op(S a, S b){ return {a.value+b.value, a.size+b.size}; }
-S e(){ return {0, 0}; }
-S mapping(F f, S x){ return {x.value + f*x.size, x.size}; }
-F composition(F f, F g){ return f+g; }
-F id(){ return 0; }
-// seg.prod(l, r).valueで値を取り出す
+const S UNIT = 8e18;
+const F ID = 8e18;
+
+S op(S a, S b){ return std::min(a, b); }
+S e(){ return UNIT; }
+S mapping(F f, S x){ return (f == ID ? x : f); }
+F composition(F f, F g){ return (f == ID ? g : f); }
+F id(){ return ID; }
 // 書き方例
-// vector<S> v(N, {0, 1});
+// vector<S> v(N);
 // lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 
 int main () {
     // ios::sync_with_stdio(false);
+    ll ans = 0;
     cin.tie(nullptr);
-    LONG(N, K);
-    VP(move, N);
-    vector<S> v(N, {0, 1});
-    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
-    seg.apply(0, 1, 1);
-    rep (i, N) {
-        rep (j, K) {
-            auto [l, r] = move[j];
-            if (i+l >= N) continue;
-            if (i+r+1 > N) r = N-i-1;
-            de(i)de(l)de(r)
-            ll x = seg.get(i).value.val();
-            seg.apply(i+l, i+r+1, x);
+    LONG(N, Q);
+    vector<S> v(N);
+    lazy_segtree<S, op, e, F, mapping, composition, id> segr(v);
+    lazy_segtree<S, op, e, F, mapping, composition, id> segc(v);
+    segr.apply(0, N, N-1);
+    segc.apply(0, N, N-1);
+    ll mnr = N-1, mnc = N-1;
+    rep (i, Q) {
+        LONG(q); LONGM(x);
+        if (q==1) {
+            ll mn = segr.get(x);
+            ans += mn - 1;
+            if (x < mnc) segc.apply(0, mn, x);
+            chmin(mnc, x);
+            de(ans)
+        } else {
+            ll mn = segc.get(x);
+            ans += mn - 1;
+            if (x < mnr) segr.apply(0, mn, x);
+            chmin(mnr, x);
+            de(ans)
         }
     }
-    ll ans = seg.get(N-1).value.val();
-    Out(ans)
+    Out((N-2)*(N-2) - ans)
     
 }
 
