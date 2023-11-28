@@ -84,115 +84,48 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+
+// 区間加算・区間和取得（RAQ+RSQ）=========================
+struct S{
+    mint value;
+    int size;
+};
+using F = long long;
+
+S op(S a, S b){ return {a.value+b.value, a.size+b.size}; }
+S e(){ return {0, 0}; }
+S mapping(F f, S x){ return {x.value + f*x.size, x.size}; }
+F composition(F f, F g){ return f+g; }
+F id(){ return 0; }
+// seg.prod(l, r).valueで値を取り出す
+// 書き方例
+// vector<S> v(N, {0, 1});
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N); VL(B, N);
-    vl cnt(N+1);
+    LONG(N, K);
+    VP(move, N);
+    vector<S> v(N, {0, 1});
+    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
+    seg.apply(0, 1, 1);
     rep (i, N) {
-        cnt[A[i]]++;
-        if (cnt[A[i]] > N) PNo
-        cnt[B[i]]++;
-        if (cnt[B[i]] > N) PNo
-    }
-    puts("Yes");
-
-    map<ll,ll> mp;
-    rep (i, N) mp[A[i]]++;
-    rep (i, N) mp[B[i]]++;
-    vector<set<ll>> cnt2(N+1);
-    for (auto [k, v]: mp) {
-        cnt2[v].insert(k);
-    }
-
-    map<ll,ll> mpa, mpb;
-    rep (i, N) mpa[A[i]]++;
-    rep (i, N) mpb[B[i]]++;
-    vp ans;
-    auto getany = [&](map<ll,ll> &mp, ll x) {
-        ll ret=0;
-        for (auto [k, v]: mp) {
-            if (k != x) {
-                mp[k]--;
-                ret = k;
-                break;
-            }
-        }
-        if (mp[ret] == 0) mp.erase(ret);
-        return ret;
-    };
-    rep (i, N) {
-        if (SIZE(cnt2[N-i]) == 2) {
-            auto it = cnt2[N-i].begin();
-            ll x = *it++;
-            ll y = *it;
-            if (mpa.count(x)) {
-                mpa[x]--;
-                if (mpa[x] == 0) mpa.erase(x);
-                mpb[y]--;
-                if (mpb[y] == 0) mpb.erase(y);
-                cnt[x]--; cnt[y]--;
-                cnt2[N-i].clear();
-                cnt2[N-i-1].insert(x);
-                cnt2[N-i-1].insert(y);
-                ans.emplace_back(x, y);
-            }
-            else {
-                mpa[y]--;
-                if (mpa[y] == 0) mpa.erase(y);
-                mpb[x]--;
-                if (mpb[x] == 0) mpb.erase(x);
-                cnt[x]--; cnt[y]--;
-                cnt2[N-i].clear();
-                cnt2[N-i-1].insert(x);
-                cnt2[N-i-1].insert(y);
-                ans.emplace_back(y, x);
-            }
-        } else if (SIZE(cnt2[N-i]) == 1) {
-            ll x = *cnt2[N-i].begin();
-            if (mpa.count(x)) {
-                mpa[x]--;
-                if (mpa[x] == 0) mpa.erase(x);
-                ll y = getany(mpb, x);
-                cnt[x]--; ll z = cnt[y]--;
-                cnt2[N-i].clear();
-                cnt2[z].erase(y);
-                cnt2[N-i-1].insert(x);
-                cnt2[z-1].insert(y);
-                ans.emplace_back(x, y);
-            } else {
-                mpb[x]--;
-                if (mpb[x] == 0) mpb.erase(x);
-                ll y = getany(mpa, x);
-                cnt[x]--; ll z = cnt[y]--;
-                cnt2[N-i].clear();
-                cnt2[z].erase(y);
-                cnt2[N-i-1].insert(x);
-                cnt2[z-1].insert(y);
-                ans.emplace_back(y, x);
-            }
-        } else {
-            ll x = getany(mpa, -1);
-            ll y = getany(mpb, x);
-            ll z1 = cnt[x]--; ll z2 = cnt[y]--;
-            cnt2[z1].erase(x);
-            cnt2[z1-1].insert(x);
-            cnt2[z2].erase(y);
-            cnt2[z2-1].insert(y);
-            ans.emplace_back(x, y);
+        rep (j, K) {
+            auto [l, r] = move[j];
+            if (i+l >= N) continue;
+            if (i+r+1 > N) r = N-i-1;
+            de(i)de(l)de(r)
+            ll x = seg.get(i).value.val();
+            seg.apply(i+l, i+r+1, x);
         }
     }
-    sort(all(ans));
-    rep (i, N) {
-        cout << ans[i].second << ' ';
-    }
-    cout << endl;
-
+    ll ans = seg.get(N-1).value.val();
+    Out(ans)
+    
 }
 
 // ### test.cpp ###
