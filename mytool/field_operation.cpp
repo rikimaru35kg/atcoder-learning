@@ -26,7 +26,7 @@ vector<string> crop(vector<string> &field, char c='#') {
 }
 
 //! Delete rows and columns that only include character c.
-vector<string> crop_out(vector<string> &field, char c='.') {
+vector<string> slash_out(vector<string> &field, char c='.') {
     long long h = field.size();
     long long w = field[0].size();
     vector<bool> rows(h), cols(w); 
@@ -49,7 +49,32 @@ vector<string> crop_out(vector<string> &field, char c='.') {
     return ret;
 }
 
+//! Rotate field by +/-90deg
+vector<string> rot90(vector<string> &field, bool clockwise=true) {
+    long long h = field.size();
+    long long w = field[0].size();
+    vector<string> ret(w, string(h, ' '));
+    for (long long i=0; i<h; ++i) {
+        for (long long j=0; j<w; ++j) {
+            if (clockwise) ret[j][h-1-i] = field[i][j];
+            else ret[w-1-j][i] = field[i][j];
+        }
+    }
+    return ret;
+}
+
 int main () {
-    
+    int n; cin >> n;
+    vector<string> s(n);
+    for(int i=0; i<n; ++i) cin >> s[i];
+    cout << endl;
+    for (int r=0; r<4; ++r) {
+        vector<string> s2 = rot90(s, false);
+        s.clear();
+        s = s2;
+        int m = s.size();
+        for(int i=0; i<m; ++i) cout << s[i] << endl;
+        cout << endl;
+    }
 }
 

@@ -84,53 +84,110 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
-// 区間更新・区間最小値取得（RUQ+RMINQ）=========================
-using S = long long;
-using F = long long;
 
-const S UNIT = 8e18;
-const F ID = 8e18;
-
-S op(S a, S b){ return std::min(a, b); }
-S e(){ return UNIT; }
-S mapping(F f, S x){ return (f == ID ? x : f); }
-F composition(F f, F g){ return (f == ID ? g : f); }
-F id(){ return ID; }
-// 書き方例
-// vector<S> v(N);
-// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
 
 int main () {
     // ios::sync_with_stdio(false);
-    ll ans = 0;
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<S> v(N);
-    lazy_segtree<S, op, e, F, mapping, composition, id> segr(v);
-    lazy_segtree<S, op, e, F, mapping, composition, id> segc(v);
-    segr.apply(0, N, N-1);
-    segc.apply(0, N, N-1);
-    ll mnr = N-1, mnc = N-1;
-    rep (i, Q) {
-        LONG(q); LONGM(x);
-        if (q==1) {
-            ll mn = segr.get(x);
-            ans += mn - 1;
-            if (x < mnc) segc.apply(0, mn, x);
-            chmin(mnc, x);
-            de(ans)
-        } else {
-            ll mn = segc.get(x);
-            ans += mn - 1;
-            if (x < mnr) segr.apply(0, mn, x);
-            chmin(mnr, x);
-            de(ans)
+    LONG(H, W, N, M);
+    vvl lightrow(H), lightcol(W);
+    vvl blockrow(H), blockcol(W);
+    rep (i, N) {
+        INTM(a, b);
+        de(a)de(b)
+        lightrow[a].push_back(b);
+        lightcol[b].push_back(a);
+    }
+    rep (i, M) {
+        INTM(c, d);
+        blockrow[c].push_back(d);
+        blockcol[d].push_back(c);
+    }
+    rep (i, H) sort(all(lightrow[i]));
+    rep (i, W) sort(all(lightcol[i]));
+    rep (i, H) sort(all(blockrow[i]));
+    rep (i, W) sort(all(blockcol[i]));
+    int ans = 0;
+    auto findnext = [&](int x, vl &v) -> int {
+        if (SIZE(v) == 0) return -1;
+        ll l = -1, r = SIZE(v);
+        while (r - l > 1) {
+            ll m = (r + l) / 2;
+            if (v[m] > x) r = m;
+            else l = m;
+        }
+        if (r == SIZE(v)) return -1;
+        return v[r];
+    };
+    auto findprev = [&](int x, vl &v) -> int {
+        if (SIZE(v) == 0) return -1;
+        ll l = -1, r = SIZE(v);
+        while (r - l > 1) {
+            ll m = (r + l) / 2;
+            if (v[m] <= x) l = m;
+            else r = m;
+        }
+        if (l == -1) return -1;
+        return v[l];
+    };
+    de(blockrow)de(blockcol)
+    vp deb;
+    rep (i, H) rep (j, W) {
+        // check block
+        int x = findprev(j, blockrow[i]);
+        // int y = findprev(i, blockcol[j]);
+        if (j == x) continue;
+        //check row
+        {
+            int nl = findnext(j, lightrow[i]);
+            int nb = findnext(j, blockrow[i]);
+            if (nl != -1 && nb == -1) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+            if (nl != -1 && nl < nb) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+            int pl = findprev(j, lightrow[i]);
+            int pb = findprev(j, blockrow[i]);
+            if (pl != -1 && pb == -1) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+            if (pl != -1 && pl > pb) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+        }
+        // check col
+        {
+            int nl = findnext(i, lightcol[j]);
+            int nb = findnext(i, blockcol[j]);
+            if (nl != -1 && nb == -1) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+            if (nl != -1 && nl < nb) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+            int pl = findprev(i, lightcol[j]);
+            int pb = findprev(i, blockcol[j]);
+            if (pl != -1 && pb == -1) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
+            if (pl != -1 && pl > pb) {
+                deb.emplace_back(i, j);
+                ++ans; continue;
+            }
         }
     }
-    Out((N-2)*(N-2) - ans)
+    Out(ans)
     
 }
 
