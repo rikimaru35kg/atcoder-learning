@@ -1,38 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
 struct UnionFind {
-    vector<T> p, num;
-    UnionFind(T n) : p(n, -1), num(n, 1) {}
+    vector<long long> p, num;
+    UnionFind(long long n) : p(n, -1), num(n, 1) {}
 
-    T find (T x) {
+    long long leader (long long x) {
         if (p[x] == -1) return x;
-        return p[x] = find(p[x]);
+        return p[x] = leader(p[x]);
     }
-    void unite (T x, T y) {
-        x = find(x); y = find(y);
+    void merge (long long x, long long y) {
+        x = leader(x); y = leader(y);
         if (x == y) return;
+        if (size(x) > size(y)) swap(x, y); // new parent = y
         p[x] = y;
         num[y] += num[x];
     }
-    bool same (T x, T y) {
-        return find(x) == find(y);
+    bool same (long long x, long long y) {
+        return leader(x) == leader(y);
     }
-    T size (T x) {
-        return num[find(x)];
+    long long size (long long x) {
+        return num[leader(x)];
     }
 };
-
 int main () {
-    UnionFind<long long> uf(100);
-    uf.unite(5, 10);
-    uf.unite(10, 15);
+    UnionFind uf(100);
+    uf.merge(5, 10);
+    uf.merge(10, 15);
     cout << uf.same(5, 15) << endl;
     cout << uf.size(10) << endl;
     cout << uf.size(5) << endl;
     cout << uf.size(15) << endl;
-    uf.unite(6, 99);
+    uf.merge(6, 99);
     cout << uf.size(6) << endl;
     cout << uf.size(99) << endl;
     cout << uf.size(50) << endl;

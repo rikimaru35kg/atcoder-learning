@@ -84,33 +84,79 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+
+// struct UnionFind {
+//     vector<long long> p, num;
+//     UnionFind(long long n) : p(n, -1), num(n, 1) {}
+
+//     long long find (long long x) {
+//         if (p[x] == -1) return x;
+//         return p[x] = find(p[x]);
+//     }
+//     void unite (long long x, long long y) {
+//         x = find(x); y = find(y);
+//         if (x == y) return;
+//         if (size(x) > size(y)) swap(x, y); // new parent = y
+//         p[x] = y;
+//         num[y] += num[x];
+//     }
+//     bool same (long long x, long long y) {
+//         return find(x) == find(y);
+//     }
+//     long long size (long long x) {
+//         return num[find(x)];
+//     }
+// };
+struct UnionFind {
+    vector<long long> p, num;
+    vector<map<ll,ll>> cl; 
+    UnionFind(long long n) : p(n, -1), num(n, 1), cl(n) {}
+
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        return p[x] = leader(p[x]);
+    }
+    void merge (long long x, long long y) {
+        x = leader(x); y = leader(y);
+        if (x == y) return;
+        if (size(x) > size(y)) swap(x, y); // new parent = y
+        p[x] = y;
+        num[y] += num[x];
+        for (auto [c, v]: cl[x]) cl[y][c] += v;
+    }
+    bool same (long long x, long long y) {
+        return leader(x) == leader(y);
+    }
+    long long size (long long x) {
+        return num[leader(x)];
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    vl di = {1, 0, 1};
-    vl dj = {0, 1, 1};
-    vvm dp(H, vm(W));
-    dp[0][0] = 1;
-    vvvm stck(H, vvm(W, vm(3)));
-    rep (i, H) rep (j, W) rep (k, 3) {
-        ll ni = i + di[k];
-        ll nj = j + dj[k];
-        if (ni < 0 || ni >= H || nj < 0 || nj >= W) continue;
-        if (S[ni][nj] == '#') continue;
-        dp[ni][nj] += dp[i][j] + stck[i][j][k];
-        stck[ni][nj][k] += dp[i][j] + stck[i][j][k];
+    LONG(N, Q);
+    VL(whcl, N);
+    UnionFind uf(N);
+    rep (i, N) uf.cl[i][whcl[i]]++;
+    rep (i, Q) {
+        INT(t);
+        if (t == 1) {
+            LONGM(a, b);
+            uf.merge(a, b);
+        } else {
+            LONGM(x); LONG(y);
+            ll gr = uf.leader(x);
+            ll ans = uf.cl[gr][y];
+            Out(ans)
+        }
     }
-    Out(dp[H-1][W-1].val());
-    
 }
 
 // ### test.cpp ###
