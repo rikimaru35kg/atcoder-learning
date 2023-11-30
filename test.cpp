@@ -83,6 +83,10 @@ template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr <<
 const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const vi di = {1, 0, -1, 0};
+const vi dj = {0, 1, 0, -1};
+const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
+const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 // #include <atcoder/all>
 // using namespace atcoder;
@@ -91,72 +95,85 @@ const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-// struct UnionFind {
-//     vector<long long> p, num;
-//     UnionFind(long long n) : p(n, -1), num(n, 1) {}
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long l = -1, r = SIZE(a);
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != SIZE(a)) return make_pair(r, a[r]);
+    else return make_pair(SIZE(a), (long long)3e8);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long l = -1, r = SIZE(a);
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != SIZE(a)) return make_pair(r, a[r]);
+    else return make_pair(SIZE(a), (long long)3e8);
+}
 
-//     long long find (long long x) {
-//         if (p[x] == -1) return x;
-//         return p[x] = find(p[x]);
-//     }
-//     void unite (long long x, long long y) {
-//         x = find(x); y = find(y);
-//         if (x == y) return;
-//         if (size(x) > size(y)) swap(x, y); // new parent = y
-//         p[x] = y;
-//         num[y] += num[x];
-//     }
-//     bool same (long long x, long long y) {
-//         return find(x) == find(y);
-//     }
-//     long long size (long long x) {
-//         return num[find(x)];
-//     }
-// };
-struct UnionFind {
-    vector<long long> p, num;
-    vector<map<ll,ll>> cl; 
-    UnionFind(long long n) : p(n, -1), num(n, 1), cl(n) {}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = SIZE(a);
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e8);
+}
 
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        return p[x] = leader(p[x]);
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = SIZE(a);
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
     }
-    void merge (long long x, long long y) {
-        x = leader(x); y = leader(y);
-        if (x == y) return;
-        if (size(x) > size(y)) swap(x, y); // new parent = y
-        p[x] = y;
-        num[y] += num[x];
-        for (auto [c, v]: cl[x]) cl[y][c] += v;
-    }
-    bool same (long long x, long long y) {
-        return leader(x) == leader(y);
-    }
-    long long size (long long x) {
-        return num[leader(x)];
-    }
-};
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e8);
+}
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(whcl, N);
-    UnionFind uf(N);
-    rep (i, N) uf.cl[i][whcl[i]]++;
-    rep (i, Q) {
-        INT(t);
-        if (t == 1) {
-            LONGM(a, b);
-            uf.merge(a, b);
-        } else {
-            LONGM(x); LONG(y);
-            ll gr = uf.leader(x);
-            ll ans = uf.cl[gr][y];
-            Out(ans)
+    LONG(N, T);
+    VL(A, N);
+    vl s, t;
+    s.push_back(0);
+    t.push_back(0);
+    rep (i, N) {
+        ll M = SIZE(s);
+        rep(j, M) {
+            s.push_back(s[j]+A[i]);
         }
+        swap(s, t);
     }
+    sort(all(t));
+    ll ans = 0;
+    for (auto x: s) {
+        auto [i, y] = lowbou_r(t, T-x);
+        if (i != -1) chmax(ans, x + y);
+    }
+    Out(ans)
+    
 }
 
 // ### test.cpp ###

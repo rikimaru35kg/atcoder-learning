@@ -7,23 +7,24 @@ def in_mat(h):
     return [list(map(int, input().split())) for _ in range(h)]
 def in_vec():
     return list(map(int, input().split()))
+def make_list2(n, m, init=0):
+    return [[init]*m for _ in range(n)]
+def make_list3(n, m, l, init=0):
+    return [[[init]*l for _ in range(m)] for _ in range(n)]
 
-N, W = in_ints()
-S = [0]*N
-T = [0]*N
-P = [0]*N
-for i in range(N):
-    S[i], T[i], P[i] = in_ints()
 
-imos = [0]*(int(2e5)+1)
-for i in range(N):
-    imos[S[i]] += P[i]
-    imos[T[i]] -= P[i]
-for i in range(len(imos)-1):
-    imos[i+1] += imos[i]
+from itertools import product as pd
+def main():
+    di = []
+    dj = []
+    for i, j in pd(range(-1, 2), range(-1, 2)):
+        if (i == j == 0): continue
+        di.append(i)
+        dj.append(j)
+    print(di)
+    print(dj)
 
-ok = True
-for x in imos:
-    ok &= (x <= W)
-if (ok): print("Yes")
-else: print("No")
+
+
+if __name__ == '__main__':
+    main()

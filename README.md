@@ -718,6 +718,7 @@
 ### 例題
 - [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - 一般的なマージテク [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+- 一般的なマージテクだがUnionFindの改造が楽 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
