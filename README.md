@@ -466,8 +466,10 @@
 ## 経路数問題
 - 単純にDPで足し合わせていけば経路数が求める
 - 座標が大きい場合、map<Pair,ll> dpというdpテーブルを作れば良い（配列にこだわる必要なし）
+- 一つの頂点から複数の頂点に行ける場合（飛車など）、累積和用のDPテーブルを持っておき、それぞれ遷移すれば良い（DP->DP、累積DP->累積DP、DP->累積DP、累積DP->DP）
 ### 例題
 - [E - Warp](https://atcoder.jp/contests/abc265/tasks/abc265_e)
+- 累積DP [E - Queen on Grid](https://atcoder.jp/contests/abc183/tasks/abc183_e)
 
 ## 文字列の部分列
 - SがTのある要素を抜き取って並べたものであるとき、SはTの部分列という。連続していなくてもよい。連続している場合は部分文字列という。

@@ -84,110 +84,32 @@ const ll INF = 3e18;
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, N, M);
-    vvl lightrow(H), lightcol(W);
-    vvl blockrow(H), blockcol(W);
-    rep (i, N) {
-        INTM(a, b);
-        de(a)de(b)
-        lightrow[a].push_back(b);
-        lightcol[b].push_back(a);
+    LONG(H, W);
+    VS(S, H);
+    vl di = {1, 0, 1};
+    vl dj = {0, 1, 1};
+    vvm dp(H, vm(W));
+    dp[0][0] = 1;
+    vvvm stck(H, vvm(W, vm(3)));
+    rep (i, H) rep (j, W) rep (k, 3) {
+        ll ni = i + di[k];
+        ll nj = j + dj[k];
+        if (ni < 0 || ni >= H || nj < 0 || nj >= W) continue;
+        if (S[ni][nj] == '#') continue;
+        dp[ni][nj] += dp[i][j] + stck[i][j][k];
+        stck[ni][nj][k] += dp[i][j] + stck[i][j][k];
     }
-    rep (i, M) {
-        INTM(c, d);
-        blockrow[c].push_back(d);
-        blockcol[d].push_back(c);
-    }
-    rep (i, H) sort(all(lightrow[i]));
-    rep (i, W) sort(all(lightcol[i]));
-    rep (i, H) sort(all(blockrow[i]));
-    rep (i, W) sort(all(blockcol[i]));
-    int ans = 0;
-    auto findnext = [&](int x, vl &v) -> int {
-        if (SIZE(v) == 0) return -1;
-        ll l = -1, r = SIZE(v);
-        while (r - l > 1) {
-            ll m = (r + l) / 2;
-            if (v[m] > x) r = m;
-            else l = m;
-        }
-        if (r == SIZE(v)) return -1;
-        return v[r];
-    };
-    auto findprev = [&](int x, vl &v) -> int {
-        if (SIZE(v) == 0) return -1;
-        ll l = -1, r = SIZE(v);
-        while (r - l > 1) {
-            ll m = (r + l) / 2;
-            if (v[m] <= x) l = m;
-            else r = m;
-        }
-        if (l == -1) return -1;
-        return v[l];
-    };
-    de(blockrow)de(blockcol)
-    vp deb;
-    rep (i, H) rep (j, W) {
-        // check block
-        int x = findprev(j, blockrow[i]);
-        // int y = findprev(i, blockcol[j]);
-        if (j == x) continue;
-        //check row
-        {
-            int nl = findnext(j, lightrow[i]);
-            int nb = findnext(j, blockrow[i]);
-            if (nl != -1 && nb == -1) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-            if (nl != -1 && nl < nb) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-            int pl = findprev(j, lightrow[i]);
-            int pb = findprev(j, blockrow[i]);
-            if (pl != -1 && pb == -1) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-            if (pl != -1 && pl > pb) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-        }
-        // check col
-        {
-            int nl = findnext(i, lightcol[j]);
-            int nb = findnext(i, blockcol[j]);
-            if (nl != -1 && nb == -1) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-            if (nl != -1 && nl < nb) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-            int pl = findprev(i, lightcol[j]);
-            int pb = findprev(i, blockcol[j]);
-            if (pl != -1 && pb == -1) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-            if (pl != -1 && pl > pb) {
-                deb.emplace_back(i, j);
-                ++ans; continue;
-            }
-        }
-    }
-    Out(ans)
+    Out(dp[H-1][W-1].val());
     
 }
 
