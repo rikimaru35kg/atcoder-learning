@@ -88,92 +88,64 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long l = -1, r = SIZE(a);
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != SIZE(a)) return make_pair(r, a[r]);
-    else return make_pair(SIZE(a), (long long)3e8);
+struct S {
+    ll x, w;
+};
+S op(S a, S b) {
+    return S(a.x ^ b.x, a.w+b.w);
 }
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long l = -1, r = SIZE(a);
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != SIZE(a)) return make_pair(r, a[r]);
-    else return make_pair(SIZE(a), (long long)3e8);
+S e() {return S(0, 0);}
+using F = long long;
+S mapping (F f, S x) {
+    long long add = 0;
+    if (x.w % 2 == 1) add = 1;
+    return S(x.x ^ (add*f), x.w);
 }
-
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = SIZE(a);
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e8);
+F composition(F f, F g) {
+    return f^g;
 }
-
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = SIZE(a);
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e8);
-}
-
+F id() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, T);
+    LONG(N, Q);
     VL(A, N);
-    vl s, t;
-    s.push_back(0);
-    t.push_back(0);
-    rep (i, N) {
-        ll M = SIZE(s);
-        rep(j, M) {
-            s.push_back(s[j]+A[i]);
+    vl pre(Q);
+    vvl query(Q);
+    rep (i, Q) {
+        LONG(t, x, y);
+        if (t == 1) {
+            --x;
+            query[i].push_back(t);
+            query[i].push_back(x);
+            query[i].push_back(y);
+        } else {
+            --x; --y;
+            query[i].push_back(t);
+            query[i].push_back(x);
+            query[i].push_back(y);
         }
-        swap(s, t);
     }
-    sort(all(t));
-    ll ans = 0;
-    for (auto x: s) {
-        auto [i, y] = lowbou_r(t, T-x);
-        if (i != -1) chmax(ans, x + y);
+    vector<S> v(N, {0, 1});
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    rep (i, N) {seg.apply(i, i+1, A[i]);}
+    rep (i, Q) {
+        ll t = query[i][0], x = query[i][1], y = query[i][2];
+        if (t == 1) {
+            seg.apply(x, x+1, y);
+        } else {
+            ll ans = seg.prod(x, y+1).x;
+            Out(ans)
+        }
     }
-    Out(ans)
-    
 }
 
 // ### test.cpp ###
