@@ -88,64 +88,50 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-struct S {
-    ll x, w;
-};
-S op(S a, S b) {
-    return S(a.x ^ b.x, a.w+b.w);
+// return {gcd(a,b), x, y}, where ax + by = gcd(a, b) 
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
 }
-S e() {return S(0, 0);}
-using F = long long;
-S mapping (F f, S x) {
-    long long add = 0;
-    if (x.w % 2 == 1) add = 1;
-    return S(x.x ^ (add*f), x.w);
-}
-F composition(F f, F g) {
-    return f^g;
-}
-F id() {return 0;}
+
+// long long extgcd(long long a, long long b, long long &x, long long &y) {
+//     if (b == 0) {
+//         x = 1;
+//         y = 0;
+//         return a;
+//     }
+//     long long d = extgcd(b, a%b, y, x);
+//     y -= a/b * x;
+//     return d;
+// }
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N);
-    vl pre(Q);
-    vvl query(Q);
-    rep (i, Q) {
-        LONG(t, x, y);
-        if (t == 1) {
-            --x;
-            query[i].push_back(t);
-            query[i].push_back(x);
-            query[i].push_back(y);
-        } else {
-            --x; --y;
-            query[i].push_back(t);
-            query[i].push_back(x);
-            query[i].push_back(y);
+    LONG(T);
+    rep (i, T) {
+        LONG(N, S, K);
+        auto [g, x, y] = extgcd(K, N);
+        if (S % g != 0) {
+            Out(-1) continue;
         }
+        N /= g, K /= g, S /= g;
+        ll ans = (((-S*x) % N) + N) % N;
+        Out(ans)
+        // mint::set_mod(N);
+        // Out(((mint)(-S)/K).val())
     }
-    vector<S> v(N, {0, 1});
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    rep (i, N) {seg.apply(i, i+1, A[i]);}
-    rep (i, Q) {
-        ll t = query[i][0], x = query[i][1], y = query[i][2];
-        if (t == 1) {
-            seg.apply(x, x+1, y);
-        } else {
-            ll ans = seg.prod(x, y+1).x;
-            Out(ans)
-        }
-    }
+    
 }
 
 // ### test.cpp ###
