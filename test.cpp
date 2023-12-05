@@ -34,7 +34,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
-#define Out(x) {cout << (x) << '\n';}
+#define Out(x) {cout << (x) << endl;}
 #define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -99,51 +99,35 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(N, M);
     vvl from(N);
-    vp edges;
-    rep (i, N-1) {
+    vl edges(N);
+    rep (i, M) {
         LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-        edges.emplace_back(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+        edges[a] |= 1LL<<b;
+        edges[b] |= 1LL<<a;
     }
-    vl depth(N, -1);
-    auto dfs1 = [&](auto f, ll v, ll d=0) -> void {
-        depth[v] = d;
-        for (auto nv: from[v]) {
-            if (depth[nv] != -1) continue;
-            f(f, nv, d+1);
-        }
-    };
-    dfs1(dfs1, 0);
-
-    LONG(Q);
-    vl imos(N);
-    rep (i, Q) {
-        LONG(t, e, x);
-        --e;
-        ll a = edges[e].first;
-        ll b = edges[e].second;
-        if (t == 2) swap(a, b);
-        if (depth[a] < depth[b]) {
-            imos[0] += x;
-            imos[b] -= x;
-        } else {
-            imos[a] += x;
+    vl dp(1LL<<N, INF);
+    dp[0] = 0;
+    rep (s, 1LL<<N) {
+        rep (i, N) {
+            if (~s>>i&1) continue;
+            ll rem = s ^ (1LL<<i);
+            if (dp[rem] <= 1 && (edges[i]&rem) == rem) {
+                dp[s] = 1;
+                break;
+            }
         }
     }
-    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            imos[nv] += imos[v];
-            f(f, nv, v);
+    rep (s, 1<<N) {
+        for (ll t=s; t>0; t=(t-1)&s) {
+            ll u = s ^ t;
+            chmin(dp[s], dp[u] + dp[t]);
         }
-    };
-    dfs2(dfs2, 0);
-    rep (i, N) {
-        Out(imos[i])
     }
+    Out(dp[(1LL<<N)-1])
 }
 
 // ### test.cpp ###
