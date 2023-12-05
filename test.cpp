@@ -99,29 +99,25 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C);
-    vector<tuple<ll,ll,ll>> events;
-    rep (i, N) {
-        LONG(a, b, c);
-        events.emplace_back(a, 0, c);
-        events.emplace_back(b+1, 1, c);
-    }
-    sort(allr(events));
-    ll sum=0;
-    ll tsave = 0;
-    ll ans = 0;
-    while (events.size() ) {
-        auto [a, ty, c] = events.back();
-        events.pop_back();
-        ll t = a;
-        de(t)
-        ans += min(sum, C) * (t - tsave);
-        if (ty == 0) sum += c;
-        else sum -= c;
-        tsave = t;
-    }
+    LONG(X, Y);
+    map<ll,ll> mem;
+    auto f = [&](auto f, ll y) -> ll {
+        de(y)
+        if (mem.count(y)) return mem[y];
+        if (y == 1) return abs(X-y);
+        ll ret = INF;
+        if (y % 2 == 0) {
+            chmin(ret, f(f, y/2) + 1);
+            chmin(ret, abs(X - y));
+        } else {
+            chmin(ret, f(f, y+1) + 1);
+            chmin(ret, f(f, y-1) + 1);
+            chmin(ret, abs(X - y));
+        }
+        return mem[y] = ret;
+    };
+    ll ans = f(f, Y);
     Out(ans)
-
     
 }
 
