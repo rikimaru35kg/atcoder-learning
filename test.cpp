@@ -99,35 +99,30 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    vl edges(N);
-    rep (i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-        edges[a] |= 1LL<<b;
-        edges[b] |= 1LL<<a;
+    LONG(N, C);
+    vector<tuple<ll,ll,ll>> events;
+    rep (i, N) {
+        LONG(a, b, c);
+        events.emplace_back(a, 0, c);
+        events.emplace_back(b+1, 1, c);
     }
-    vl dp(1LL<<N, INF);
-    dp[0] = 0;
-    rep (s, 1LL<<N) {
-        rep (i, N) {
-            if (~s>>i&1) continue;
-            ll rem = s ^ (1LL<<i);
-            if (dp[rem] <= 1 && (edges[i]&rem) == rem) {
-                dp[s] = 1;
-                break;
-            }
-        }
+    sort(allr(events));
+    ll sum=0;
+    ll tsave = 0;
+    ll ans = 0;
+    while (events.size() ) {
+        auto [a, ty, c] = events.back();
+        events.pop_back();
+        ll t = a;
+        de(t)
+        ans += min(sum, C) * (t - tsave);
+        if (ty == 0) sum += c;
+        else sum -= c;
+        tsave = t;
     }
-    rep (s, 1<<N) {
-        for (ll t=s; t>0; t=(t-1)&s) {
-            ll u = s ^ t;
-            chmin(dp[s], dp[u] + dp[t]);
-        }
-    }
-    Out(dp[(1LL<<N)-1])
+    Out(ans)
+
+    
 }
 
 // ### test.cpp ###

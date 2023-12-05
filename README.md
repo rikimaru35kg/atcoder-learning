@@ -397,7 +397,7 @@
 - 次に、各部分集合sに対して、部分集合tとuに分け、chmin(DP[s], DP[t]+DP[u])を繰り返す
 - 部分集合の全列挙は、各頂点がsに選ばれない、sに選ばれるがtに選ばれない、tに選ばれるの3通りなので、3^N通り（uはs-tで求まるのでO(1)）
 - 部分集合tの全列挙は1引いてsとのandを取るを繰り返せば良い
-- 計算量はO(N 2^N + 3^N)
+- 計算量はO(N 2^N + 3^N) 3^18≒4e8が限界
 ### 例題
 - [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
@@ -831,6 +831,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 例 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 - multisetでfor文やcountは計算量の面で危険
 - 文字列S[i] != 0などと書いてしまうバグる。意外に気付かないので注意！（S[i] != '0'が正しい）
 - for(auto [k,v]:map)のループ中にmp.erase(k)すると壊れるので、vl esに消したいkをプッシュバックしておいて後で消す
