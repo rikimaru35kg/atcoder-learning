@@ -668,8 +668,10 @@
 - 重なり領域の累積はいもす法を用いて解決
 - IMOS法は配列数が多すぎるときは座標圧縮とのコンビネーションで解ける問題多し
 - 累積ではなく、重なっているかだけの判定で良ければ、引継ぎ型dpで解ける（ある点から何個後ろまで加算すべきかという情報において、何個の部分をmax取りしていけばよい）
+- 木の上でもimos法は使える
 ### 例題
 - [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
+- 木 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 
 
 # 括弧列

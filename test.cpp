@@ -34,7 +34,7 @@ using vvvd = vector<vector<vector<double>>>;
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
-#define Out(x) {cout << (x) << endl;}
+#define Out(x) {cout << (x) << '\n';}
 #define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -90,48 +90,60 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 // #include <atcoder/all>
 // using namespace atcoder;
-// using mint = modint;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-// return {gcd(a,b), x, y}, where ax + by = gcd(a, b) 
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
-}
-
-// long long extgcd(long long a, long long b, long long &x, long long &y) {
-//     if (b == 0) {
-//         x = 1;
-//         y = 0;
-//         return a;
-//     }
-//     long long d = extgcd(b, a%b, y, x);
-//     y -= a/b * x;
-//     return d;
-// }
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep (i, T) {
-        LONG(N, S, K);
-        auto [g, x, y] = extgcd(K, N);
-        if (S % g != 0) {
-            Out(-1) continue;
-        }
-        N /= g, K /= g, S /= g;
-        ll ans = (((-S*x) % N) + N) % N;
-        Out(ans)
-        // mint::set_mod(N);
-        // Out(((mint)(-S)/K).val())
+    LONG(N);
+    vvl from(N);
+    vp edges;
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        edges.emplace_back(a, b);
     }
-    
+    vl depth(N, -1);
+    auto dfs1 = [&](auto f, ll v, ll d=0) -> void {
+        depth[v] = d;
+        for (auto nv: from[v]) {
+            if (depth[nv] != -1) continue;
+            f(f, nv, d+1);
+        }
+    };
+    dfs1(dfs1, 0);
+
+    LONG(Q);
+    vl imos(N);
+    rep (i, Q) {
+        LONG(t, e, x);
+        --e;
+        ll a = edges[e].first;
+        ll b = edges[e].second;
+        if (t == 2) swap(a, b);
+        if (depth[a] < depth[b]) {
+            imos[0] += x;
+            imos[b] -= x;
+        } else {
+            imos[a] += x;
+        }
+    }
+    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            imos[nv] += imos[v];
+            f(f, nv, v);
+        }
+    };
+    dfs2(dfs2, 0);
+    rep (i, N) {
+        Out(imos[i])
+    }
 }
 
 // ### test.cpp ###
