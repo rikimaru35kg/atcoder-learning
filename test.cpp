@@ -100,32 +100,73 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    vl ls(N), rs(N);
-    auto proc = [&](vl &ls) {
-        vp stck;
-        stck.emplace_back(0, -1);
-        rep (i, N) {
-            ll a = A[i];
-            while (stck.back().first >= a) stck.pop_back();
-            auto [x, idx] = stck.back();
-            ls[i] = idx + 1;
-            stck.emplace_back(a, i);
-        }
-    };
-    proc(ls);
-    reverse(all(A));
-    proc(rs);
-    reverse(all(rs));
-    rep (i, N) rs[i] = N - rs[i];
-    reverse(all(A));
-    ll ans = 0;
-    rep (i, N) {
-        de(rs[i])de(ls[i])
-        chmax(ans, (rs[i]-ls[i])*A[i]);
-        de(i)de(ans)
+    VP(pos, N);
+    LONG(M);
+    vvl op(M);
+    rep (i, M) {
+        LONG(t);
+        op[i].push_back(t);
+        ll p;
+        if (t >= 3) cin >> p;
+        op[i].push_back(p);
     }
-    Out(ans)
+    LONG(Q);
+    vector<tuple<ll,ll,ll>> queries;
+    rep (i, Q) {
+        LONG(a, b);
+        --b;
+        queries.emplace_back(a, b, i);
+    }
+    sort(allr(queries));
+    vp ans(Q);
+    ll rot = 0, p = 0, q = 0, np = 0, nq = 0;
+    auto getans = [&](Pair pos, ll rot, ll p, ll q, ll np, ll nq) -> Pair {
+        auto [x, y] = pos;
+        ll sx = 1, sy = 1;
+        if (np == 1) sx = -1;
+        if (nq == 1) sy = -1;
+        x = 2*p + sx * x;
+        y = 2*q + sy * y;
+        while (rot > 0) {
+            ll xtmp = x;
+            x = -y;
+            y = xtmp;
+            --rot;
+        }
+        return {x, y};
+    };
+    rep (i, M+1) {
+        while (queries.size() > 0 && get<0>(queries.back()) == i) {
+            auto [a, b, idx] = queries.back(); queries.pop_back();
+            Pair xy = getans(pos[b], rot, p, q, np, nq);
+            ans[idx] = xy;
+        }
+        if (i==M) break;
+        ll t = op[i][0];
+        if (t == 1) {
+            --rot;
+            rot = (rot%4+4)%4;
+        } else if (t == 2) {
+            ++rot;
+            rot = rot%4;
+        } else if (t == 3) {
+            ll x = op[i][1];
+            if (rot == 0) p = x - p, np = 1 - np;
+            if (rot == 1) q = -x - q, nq = 1 - nq;
+            if (rot == 2) p = -x - p, np = 1 - np;
+            if (rot == 3) q = x - q, nq = 1 - nq;
+        } else if (t == 4) {
+            ll x = op[i][1];
+            if (rot == 0) q = x - q, nq = 1 - nq;
+            if (rot == 1) p = x - p, np = 1 - np;
+            if (rot == 2) q = -x - q, nq = 1 - nq;
+            if (rot == 3) p = -x - p, np = 1 - np;
+        }
+    }
+    rep (i, Q) {
+        auto [x, y] = ans[i];
+        printf("%lld %lld\n", x, y);
+    }
     
 }
 
