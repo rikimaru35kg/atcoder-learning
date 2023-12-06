@@ -99,24 +99,32 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y);
-    map<ll,ll> mem;
-    auto f = [&](auto f, ll y) -> ll {
-        de(y)
-        if (mem.count(y)) return mem[y];
-        if (y == 1) return abs(X-y);
-        ll ret = INF;
-        if (y % 2 == 0) {
-            chmin(ret, f(f, y/2) + 1);
-            chmin(ret, abs(X - y));
-        } else {
-            chmin(ret, f(f, y+1) + 1);
-            chmin(ret, f(f, y-1) + 1);
-            chmin(ret, abs(X - y));
+    LONG(N);
+    VL(A, N);
+    vl ls(N), rs(N);
+    auto proc = [&](vl &ls) {
+        vp stck;
+        stck.emplace_back(0, -1);
+        rep (i, N) {
+            ll a = A[i];
+            while (stck.back().first >= a) stck.pop_back();
+            auto [x, idx] = stck.back();
+            ls[i] = idx + 1;
+            stck.emplace_back(a, i);
         }
-        return mem[y] = ret;
     };
-    ll ans = f(f, Y);
+    proc(ls);
+    reverse(all(A));
+    proc(rs);
+    reverse(all(rs));
+    rep (i, N) rs[i] = N - rs[i];
+    reverse(all(A));
+    ll ans = 0;
+    rep (i, N) {
+        de(rs[i])de(ls[i])
+        chmax(ans, (rs[i]-ls[i])*A[i]);
+        de(i)de(ans)
+    }
     Out(ans)
     
 }
