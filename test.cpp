@@ -95,101 +95,59 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-//! n*n matrix
-//! Currently, only operator* is defined.
-class Mat {
-    long long n; vector<vector<long long>> a;
-public:
-    // Initialize n*n matrix
-    Mat (long long n, const vector<vector<long long>> &mat={}): n(n), a(n, vector<long long>(n)) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        ret.a.assign(n, vector<long long>(n, 0));  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) ret.a[i][j] += a[i][k] * rhs.a[k][j];
-        }
-        return ret;
-    }
-    vector<long long> operator* (const vector<long long> &rhs) {  // Mat * vector
-        vector<long long> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==2? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname) {}
-#endif
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(pos, N);
-    LONG(M);
-    vvl op(M);
+    LONG(N, M);
+    vvl f(N);
     rep (i, M) {
-        LONG(t);
-        op[i].push_back(t);
-        ll p;
-        if (t >= 3) cin >> p;
-        op[i].push_back(p);
+        LONGM(a, b);
+        f[a].push_back(b);
+        f[b].push_back(a);
     }
-    LONG(Q);
-    vector<tuple<ll,ll,ll>> queries;
-    rep (i, Q) {
-        LONG(a, b);
-        --b;
-        queries.emplace_back(a, b, i);
-    }
-    sort(allr(queries));
-    vp ans(Q);
-    Mat affine(3);
-    affine.print("saisyo");
-    rep (i, M+1) {
-        while (queries.size() > 0 && get<0>(queries.back()) == i) {
-            auto [a, b, idx] = queries.back(); queries.pop_back();
-            auto [ex, ey] = pos[b];
-            vl z = affine * vl({ex, ey, 1});
-            ans[idx] = {z[0], z[1]};
-        }
-        if (i == M) break;
-        int t = op[i][0];
-        if (t == 1) affine = Mat(3, {{0,1,0},{-1,0,0},{0,0,1}}) * affine;
-        if (t == 2) affine = Mat(3, {{0,-1,0},{1,0,0},{0,0,1}}) * affine;
-        if (t == 3) {
-            ll p = op[i][1];
-            affine = Mat(3, {{-1,0,2*p},{0,1,0},{0,0,1}}) * affine;
-            affine.print("3ban");
-        }
-        if (t == 4) {
-            ll q = op[i][1];
-            affine = Mat(3, {{1,0,0},{0,-1,2*q},{0,0,1}}) * affine;
-            affine.print("4ban");
+    LONG(K);
+    VLM(C, K);
+    set<ll> st;
+    map<ll,ll> mp;
+    rep (i, K) st.insert(C[i]);
+    rep (i, K) mp[C[i]] = i;
+    vvl dist(K, vl(K, INF));
+    rep (i, K) {
+        vl dis(N, INF);
+        ll ii = C[i];
+        dis[ii] = 0;
+        queue<ll> que;
+        que.emplace(ii);
+        while (!que.empty()) {
+            ll v = que.front(); que.pop();
+            for (auto nv: f[v]) {
+                if (v != ii && st.count(v) && st.count(nv)) continue;
+                if (dis[nv] != INF) continue;
+                dis[nv] = dis[v] + 1;
+                if (st.count(nv)) dist[mp[ii]][mp[nv]] = dis[nv];
+                que.push(nv);
+            }
         }
     }
-    rep (i, Q) {
-        auto [x, y] = ans[i];
-        printf("%lld %lld\n", x, y);
+    ll ans = INF;
+    rep (i, K) {
+        vvl dp(1<<K, vl(K, INF));
+        dp[1<<i][i] = 0;
+        rep (s, 1<<K) rep (j, K) {
+            if (~s>>j&1) continue;
+            rep (k, K) {
+                if (s>>k&1) continue;
+                if (dist[j][k] == INF) continue;
+                chmin(dp[s|(1<<k)][k], dp[s][j] + dist[j][k]);
+            }
+        }
+        ll now = INF;
+        rep (m, K) chmin(now, dp[(1<<K)-1][m]);
+        chmin(ans, now+1);
     }
+    if (ans == INF) ans = -1;
+    Out(ans)
     
 }
 

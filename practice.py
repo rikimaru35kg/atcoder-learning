@@ -1,31 +1,29 @@
 import sys
-def in_int():
+def inint():
     return int(input())
-def in_ints():
+def inints():
     return list(map(int, input().split()))
-def in_mat(h):
+def inmat(h):
     return [list(map(int, input().split())) for _ in range(h)]
-def in_vec():
+def invec():
     return list(map(int, input().split()))
-def make_list2(n, m, init=0):
+def makelist2(n, m, init=0):
     return [[init]*m for _ in range(n)]
-def make_list3(n, m, l, init=0):
+def makelist3(n, m, l, init=0):
     return [[[init]*l for _ in range(m)] for _ in range(n)]
 def eprint(*args, **kwargs):
     print(*args, **kwargs, file=sys.stderr)  # 提出時はコメントアウト
     pass
 
 def main():
-    N, X = in_ints()
-    VP = in_mat(N)
-    sum = 0
-    for i in range(N):
-        sum += VP[i][0]*VP[i][1]
-        if (sum > X*100):
-            print(i+1)
-            return
-    print(-1)
-
+    N = int(input())
+    ans = 0
+    for A in range(1, 2*N+1):
+        if (A*A > 2*N): break
+        if ((2*N) % A == 0):
+            B = 2*N // A
+            if ((A+B)%2 == 1): ans += 2
+    print(ans)
 
     
 if __name__ == '__main__':
