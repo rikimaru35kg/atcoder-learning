@@ -94,59 +94,50 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
-
-
+//! Calculate Euclid distance
+//! input type = long long
+//! output type = double
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+bool euclid_distd(pair<ll,ll> p1, pair<double,double> p2, double r) {
+    ll x1 = p1.first*10000;
+    ll y1 = p1.second*10000;
+    ll x2 = round(p2.first*10000);
+    ll y2 = round(p2.second*10000);
+    ll d = (x1-x2)*(x1-x2);
+    d += (y1-y2)*(y1-y2);
+    ll rr = round(r*10000);
+    if (d <= rr*rr) return true;
+    return false;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl f(N);
-    rep (i, M) {
-        LONGM(a, b);
-        f[a].push_back(b);
-        f[b].push_back(a);
-    }
-    LONG(K);
-    VLM(C, K);
-    set<ll> st;
-    map<ll,ll> mp;
-    rep (i, K) st.insert(C[i]);
-    rep (i, K) mp[C[i]] = i;
-    vvl dist(K, vl(K, INF));
-    rep (i, K) {
-        vl dis(N, INF);
-        ll ii = C[i];
-        dis[ii] = 0;
-        queue<ll> que;
-        que.emplace(ii);
-        while (!que.empty()) {
-            ll v = que.front(); que.pop();
-            for (auto nv: f[v]) {
-                if (v != ii && st.count(v) && st.count(nv)) continue;
-                if (dis[nv] != INF) continue;
-                dis[nv] = dis[v] + 1;
-                if (st.count(nv)) dist[mp[ii]][mp[nv]] = dis[nv];
-                que.push(nv);
-            }
+    DOUBLE(X, Y, R);
+    ll x = X;
+    ll y = Y;
+    ll ans = 0;
+    repk (yi, y - (ll)R - 5, y + (ll)R + 5) {
+        ll l = x, r = x + (ll)R + 5;
+        if (!euclid_distd({l, yi}, {X,Y}, R)) continue;
+        while (r - l > 1) {
+            ll xi = (l+r) / 2;
+            if (euclid_distd({xi, yi}, {X, Y}, R)) l = xi;
+            else r = xi;
         }
+        ans += r - x;
     }
-    ll ans = INF;
-    rep (i, K) {
-        vvl dp(1<<K, vl(K, INF));
-        dp[1<<i][i] = 0;
-        rep (s, 1<<K) rep (j, K) {
-            if (~s>>j&1) continue;
-            rep (k, K) {
-                if (s>>k&1) continue;
-                if (dist[j][k] == INF) continue;
-                chmin(dp[s|(1<<k)][k], dp[s][j] + dist[j][k]);
-            }
+    repk (yi, y - (ll)R - 5, y + (ll)R + 5) {
+        ll l = x - (ll)R - 5, r = x - 1;
+        if (!euclid_distd({r, yi}, {X,Y}, R)) continue;
+        while (r - l > 1) {
+            ll xi = (l+r) / 2;
+            if (euclid_distd({xi, yi}, {X, Y}, R)) r = xi;
+            else l = xi;
         }
-        ll now = INF;
-        rep (m, K) chmin(now, dp[(1<<K)-1][m]);
-        chmin(ans, now+1);
+        ans += x-1 - l;
     }
-    if (ans == INF) ans = -1;
     Out(ans)
     
 }

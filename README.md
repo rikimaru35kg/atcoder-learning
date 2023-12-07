@@ -851,6 +851,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となってい桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり） （eg [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)）
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 例 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 - multisetでfor文やcountは計算量の面で危険
 - 文字列S[i] != 0などと書いてしまうバグる。意外に気付かないので注意！（S[i] != '0'が正しい）
