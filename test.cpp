@@ -95,6 +95,49 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
+//! n*n matrix
+//! Currently, only operator* is defined.
+class Mat {
+    long long n; vector<vector<long long>> a;
+public:
+    // Initialize n*n matrix
+    Mat (long long n, const vector<vector<long long>> &mat={}): n(n), a(n, vector<long long>(n)) {
+        // unit matrix if mat is not specified
+        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
+        else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = mat[i][j];
+            }
+        }
+    }
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        ret.a.assign(n, vector<long long>(n, 0));  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) ret.a[i][j] += a[i][k] * rhs.a[k][j];
+        }
+        return ret;
+    }
+    vector<long long> operator* (const vector<long long> &rhs) {  // Mat * vector
+        vector<long long> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
+    }
+#ifdef __DEBUG
+    void print(string debugname="------") {  // for debug
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j] << (j==2? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+    }
+#else
+    void print(string debugname) {}
+#endif
+};
 
 int main () {
     // ios::sync_with_stdio(false);
@@ -119,48 +162,28 @@ int main () {
     }
     sort(allr(queries));
     vp ans(Q);
-    ll rot = 0, p = 0, q = 0, np = 0, nq = 0;
-    auto getans = [&](Pair pos, ll rot, ll p, ll q, ll np, ll nq) -> Pair {
-        auto [x, y] = pos;
-        ll sx = 1, sy = 1;
-        if (np == 1) sx = -1;
-        if (nq == 1) sy = -1;
-        x = 2*p + sx * x;
-        y = 2*q + sy * y;
-        while (rot > 0) {
-            ll xtmp = x;
-            x = -y;
-            y = xtmp;
-            --rot;
-        }
-        return {x, y};
-    };
+    Mat affine(3);
+    affine.print("saisyo");
     rep (i, M+1) {
         while (queries.size() > 0 && get<0>(queries.back()) == i) {
             auto [a, b, idx] = queries.back(); queries.pop_back();
-            Pair xy = getans(pos[b], rot, p, q, np, nq);
-            ans[idx] = xy;
+            auto [ex, ey] = pos[b];
+            vl z = affine * vl({ex, ey, 1});
+            ans[idx] = {z[0], z[1]};
         }
-        if (i==M) break;
-        ll t = op[i][0];
-        if (t == 1) {
-            --rot;
-            rot = (rot%4+4)%4;
-        } else if (t == 2) {
-            ++rot;
-            rot = rot%4;
-        } else if (t == 3) {
-            ll x = op[i][1];
-            if (rot == 0) p = x - p, np = 1 - np;
-            if (rot == 1) q = -x - q, nq = 1 - nq;
-            if (rot == 2) p = -x - p, np = 1 - np;
-            if (rot == 3) q = x - q, nq = 1 - nq;
-        } else if (t == 4) {
-            ll x = op[i][1];
-            if (rot == 0) q = x - q, nq = 1 - nq;
-            if (rot == 1) p = x - p, np = 1 - np;
-            if (rot == 2) q = -x - q, nq = 1 - nq;
-            if (rot == 3) p = -x - p, np = 1 - np;
+        if (i == M) break;
+        int t = op[i][0];
+        if (t == 1) affine = Mat(3, {{0,1,0},{-1,0,0},{0,0,1}}) * affine;
+        if (t == 2) affine = Mat(3, {{0,-1,0},{1,0,0},{0,0,1}}) * affine;
+        if (t == 3) {
+            ll p = op[i][1];
+            affine = Mat(3, {{-1,0,2*p},{0,1,0},{0,0,1}}) * affine;
+            affine.print("3ban");
+        }
+        if (t == 4) {
+            ll q = op[i][1];
+            affine = Mat(3, {{1,0,0},{0,-1,2*q},{0,0,1}}) * affine;
+            affine.print("4ban");
         }
     }
     rep (i, Q) {
