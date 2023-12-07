@@ -3,20 +3,20 @@
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using Pair = pair<ll, ll>;
-using Paird = pair<double, double>;
+using P = pair<ll, ll>;
+using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
 using vc = vector<char>;
 using vl = vector<ll>;
 using vb = vector<bool>;
 using vd = vector<double>;
-using vp = vector<Pair>;
-using vpd = vector<Paird>;
+using vp = vector<P>;
+using vpd = vector<Pd>;
 using vvi = vector<vector<int>>;
 using vvc = vector<vector<char>>;
 using vvl = vector<vector<ll>>;
-using vvp = vector<vector<Pair>>;
+using vvp = vector<vector<P>>;
 using vvb = vector<vector<bool>>;
 using vvd = vector<vector<double>>;
 using vvs = vector<vector<string>>;
@@ -94,51 +94,50 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
-//! Calculate Euclid distance
-//! input type = long long
-//! output type = double
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-bool euclid_distd(pair<ll,ll> p1, pair<double,double> p2, double r) {
-    ll x1 = p1.first*10000;
-    ll y1 = p1.second*10000;
-    ll x2 = round(p2.first*10000);
-    ll y2 = round(p2.second*10000);
-    ll d = (x1-x2)*(x1-x2);
-    d += (y1-y2)*(y1-y2);
-    ll rr = round(r*10000);
-    if (d <= rr*rr) return true;
-    return false;
-}
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(X, Y, R);
-    ll x = X;
-    ll y = Y;
-    ll ans = 0;
-    repk (yi, y - (ll)R - 5, y + (ll)R + 5) {
-        ll l = x, r = x + (ll)R + 5;
-        if (!euclid_distd({l, yi}, {X,Y}, R)) continue;
-        while (r - l > 1) {
-            ll xi = (l+r) / 2;
-            if (euclid_distd({xi, yi}, {X, Y}, R)) l = xi;
-            else r = xi;
-        }
-        ans += r - x;
+    LONG(N, M);
+    vvl dist(N, vl(N, INF));
+    vvl from(N);
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        chmin(dist[a][b], c);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    repk (yi, y - (ll)R - 5, y + (ll)R + 5) {
-        ll l = x - (ll)R - 5, r = x - 1;
-        if (!euclid_distd({r, yi}, {X,Y}, R)) continue;
-        while (r - l > 1) {
-            ll xi = (l+r) / 2;
-            if (euclid_distd({xi, yi}, {X, Y}, R)) r = xi;
-            else l = xi;
+
+    auto dirk = [&](ll i) -> ll{
+        vl dis(N+1, INF);
+        dis[i] = 0;
+        priority_queue<P,vp,greater<P>> pque;
+        pque.emplace(0, i);
+        while(pque.size()) {
+            auto [d, v] = pque.top(); pque.pop();
+            if (v == N) continue;
+            if (d != dis[v]) continue;
+            for (auto nv: from[v]) {
+                ll nd = d + dist[v][nv];
+                if (nv == i) nv = N;
+                if (dis[nv] > nd) {
+                    dis[nv] = nd;
+                    pque.emplace(nd, nv);
+                }
+            }
         }
-        ans += x-1 - l;
+        ll ret = -1;
+        if (dis[N] != INF) ret = dis[N];
+        return ret;
+    };
+
+    rep (i, N) {
+        ll ans = dirk(i);
+        Out(ans)
     }
-    Out(ans)
+
+
     
 }
 
