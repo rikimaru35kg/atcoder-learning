@@ -24,6 +24,7 @@ using vvvi = vector<vector<vector<int>>>;
 using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
+using pq = priority_queue<P,vector<P>,greater<P>>;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
 #define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
 #define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
@@ -99,45 +100,31 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
-    vvl from(N);
-    rep (i, M) {
-        LONGM(a, b); LONG(c);
-        chmin(dist[a][b], c);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-
-    auto dirk = [&](ll i) -> ll{
-        vl dis(N+1, INF);
-        dis[i] = 0;
-        priority_queue<P,vp,greater<P>> pque;
-        pque.emplace(0, i);
-        while(pque.size()) {
-            auto [d, v] = pque.top(); pque.pop();
-            if (v == N) continue;
-            if (d != dis[v]) continue;
-            for (auto nv: from[v]) {
-                ll nd = d + dist[v][nv];
-                if (nv == i) nv = N;
-                if (dis[nv] > nd) {
-                    dis[nv] = nd;
-                    pque.emplace(nd, nv);
+    LONG(N, X);
+    VL(A, N);
+    ll ans = INF;
+    rep1 (k, N) {  //k type
+        vvl dp(k+1, vl(k, -1));
+        dp[0][0] = 0;
+        rep (z, N) {  // A[z]
+            vvl p(k+1, vl(k, -1));
+            swap(p, dp);
+            rep (i, k+1) {  // # of selection
+                rep (j, k) {  // S mod k
+                    if (p[i][j] == -1) continue;
+                    chmax(dp[i][j], p[i][j]);
+                    if (i+1>k) continue;
+                    chmax(dp[i+1][(j+A[z])%k], p[i][j] + A[z]);
                 }
             }
         }
-        ll ret = -1;
-        if (dis[N] != INF) ret = dis[N];
-        return ret;
-    };
-
-    rep (i, N) {
-        ll ans = dirk(i);
-        Out(ans)
+        de(k)de(dp[k])
+        if (dp[k][X%k] == -1) continue;
+        ll now = (X - dp[k][X%k]) / k;
+        chmin(ans, now);
     }
-
-
+    if (ans == INF) ans = -1;
+    Out(ans)
     
 }
 
