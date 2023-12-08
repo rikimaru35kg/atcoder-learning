@@ -616,7 +616,8 @@
 - しかしながら、完全グラフなど辺の数が多い場合は、O(N^2)で実装した方が速い。ヨビノリ動画の通りに素直に実装すれば良い。自分で解いた例は[こちら](https://atcoder.jp/contests/joi2014yo/submissions/42739462)
 - ダイクストラ木を構成するには、各頂点がどの辺を使って辿りついたのかをキューに入れるタイミングで記録する。計算過程では複数経路で同じ頂点に辿り付くが、最終的に使われた（＝距離を更新した）経路が正しい（自明）。
 ### 例題
-- E問題だがなぜかど典型で解ける [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
+- 典型+α [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
+- 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
 
 ## 拡張ダイクストラ法
 - 頂点＋状態をキューに入れていくダイクストラ法
