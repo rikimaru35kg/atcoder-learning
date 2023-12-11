@@ -91,33 +91,45 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-void solve() {
-    LONG(X, Y, P, Q);
-    ll ans = INF;
-    repk(a, X, X+Y) repk(b, P, P+Q) {
-        ll C = 2*X + 2*Y;
-        ll D = P+Q;
-        auto [t, r] = crt({a, b}, {C, D});
-        if (r == 0) continue;
-        chmin(ans, t);
-    }
-    if (ans == INF) Out("infinity")
-    else Out(ans)
-
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep (i, T) solve();
+    LONG(N); STRING(S); STRING(X);
+    reverse(all(S));
+    reverse(all(X));
+    vl dp(7);
+    dp[0] = 1;
+    ll base = 1;
+    de(dp)
+    rep (i, N) {
+        int c = S[i] - '0';
+        int taka = 0;
+        if (X[i] == 'T') taka = 1;
+        vl p(7);
+        if (taka == 0) p.assign(7, 1);
+        swap(p, dp);
+        rep (k, 7) {
+            if (taka == 1) {
+                dp[k] |= p[k];
+                dp[(k+c*base)%7] |= p[k];
+            } else {
+                dp[k] &= p[k];
+                dp[(k+c*base)%7] &= p[k];
+            }
+        }
+        de(dp)
+        (base *= 10) %= 7;
+    }
+    if (dp[0] == 1) puts("Takahashi");
+    else puts("Aoki");
     
 }
 

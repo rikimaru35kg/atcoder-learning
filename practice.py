@@ -1,3 +1,5 @@
+import sys
+sys.setrecursionlimit(10**8)
 def inint():
     return int(input())
 def inints():
@@ -17,22 +19,17 @@ def makelist2(n, m, init=0):
 def makelist3(n, m, l, init=0):
     return [[[init]*l for _ in range(m)] for _ in range(n)]
 def de(*args, **kwargs):
-    import sys
     print(*args, **kwargs, file=sys.stderr)  # 提出時はコメントアウト
     pass
 INF = int(3e18)
 
+def f(k, N):
+    if (k==0): return 0
+    return f(k-1, N) + N/k
+
 def main():
     N = inint()
-    st = set()
-    for a in range(2, N+1):
-        if (a*a>N): break
-        for b in range(2, N+1):
-            x = pow(a, b)
-            if (x > N): break
-            st.add(x)
-    ans = N - len(st)
-    print(ans)
+    print(f(N-1, N))
 
     
 if __name__ == '__main__':

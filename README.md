@@ -574,6 +574,7 @@
 ### 例題
 - [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 - [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
+- 典型的な対戦ゲームだが、頭の整理に良い [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 
 ## 円環系DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
