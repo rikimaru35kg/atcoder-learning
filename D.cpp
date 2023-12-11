@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = r"""
+// ### D.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -52,7 +49,6 @@ using pq = priority_queue<P,vector<P>,greater<P>>;
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
-#define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
@@ -69,7 +65,6 @@ inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
-inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
@@ -94,8 +89,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -105,17 +100,77 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(H, W);
+    VVL(A, H, W);
+    VVL(B, H, W);
+    auto findr = [&](vvl &A, vvl &B) -> ll {
+        ll H = SIZE(A), W = SIZE(A[0]);
+        vector<multiset<ll>> sta(H), stb(H);
+        rep (i, H) {
+            rep (j, W) {
+                sta[i].insert(A[i][j]);
+                stb[i].insert(B[i][j]);
+            }
+        }
+        vl perm;
+        rep (i, H) perm.push_back(i);
+        ll ret = INF;
+        do {
+            bool ok = true;
+            rep (i, H) {
+                if (sta[perm[i]] != stb[i]) ok = false;
+            }
+            if (ok) {
+                vl ord;
+                rep (i, H) ord.push_back(perm[i]);
+                fenwick_tree<ll> bit(H);
+                ll now = 0;
+                rep (i, H) {
+                    now += bit.sum(ord[i]+1, H);
+                    bit.add(ord[i], 1);
+                }
+                // retsu
+                vl perm2;
+                rep (i, W) perm2.push_back(i);
+                do {
+                    bool ok2 = true;
+                    rep (i, H) rep (j, W) {
+                        if (A[perm[i]][perm2[j]] != B[i][j]) ok2 = false;
+                    }
+                    if (ok2) {
+                        vl ord2;
+                        rep (i, W) ord2.push_back(perm2[i]);
+                        fenwick_tree<ll> bit2(W);
+                        ll now2 = 0;
+                        rep (i, W) {
+                            now2 += bit2.sum(ord2[i]+1, W);
+                            bit2.add(ord2[i], 1);
+                        }
+                        chmin(ret, now+now2);
+                    }
+                } while(next_permutation(all(perm2)));
+            }
+        } while(next_permutation(all(perm)));
+        return ret;
+    };
+    ll row = findr(A, B);
+    if (row == INF) {
+        Out(-1)
+        return 0;
+    }
+    Out(row)
+    // vvl A2(W, vl(H)), B2(W, vl(H));
+    // rep (i, W) rep (j, H) {
+    //     A2[i][j] = A[j][i];
+    //     B2[i][j] = B[j][i];
+    // }
+    // ll col = findr(A2, B2);
+    // if (col == INF) {
+    //     Out(-1)
+    //     return 0;
+    // }
+    // Out(row + col)
     
 }
 
-"""
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### D.cpp ###

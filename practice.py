@@ -24,12 +24,14 @@ INF = int(3e18)
 
 def main():
     N = inint()
-    A, P, X = invecvertical(N)
-    ans = INF
-    for i in range(N):
-        if (X[i] - A[i] <= 0): continue
-        ans = min(ans, P[i])
-    if (ans == INF): ans = -1
+    st = set()
+    for a in range(2, N+1):
+        if (a*a>N): break
+        for b in range(2, N+1):
+            x = pow(a, b)
+            if (x > N): break
+            st.add(x)
+    ans = N - len(st)
     print(ans)
 
     

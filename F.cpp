@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### F.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -100,32 +100,7 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    VL(A, N);
-    ll ans = INF;
-    rep1 (k, N) {  //k type
-        vvl dp(k+1, vl(k, -1));
-        dp[0][0] = 0;
-        rep (z, N) {  // A[z]
-            vvl p(k+1, vl(k, -1));
-            swap(p, dp);
-            rep (i, k+1) {  // # of selection
-                rep (j, k) {  // S mod k
-                    if (p[i][j] == -1) continue;
-                    chmax(dp[i][j], p[i][j]);
-                    if (i+1>k) continue;
-                    chmax(dp[i+1][(j+A[z])%k], p[i][j] + A[z]);
-                }
-            }
-        }
-        de(k)de(dp[k])
-        if (dp[k][X%k] == -1) continue;
-        ll now = (X - dp[k][X%k]) / k;
-        chmin(ans, now);
-    }
-    if (ans == INF) ans = -1;
-    Out(ans)
     
 }
 
-// ### test.cpp ###
+// ### F.cpp ###

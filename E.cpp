@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = r"""
+// ### E.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -105,17 +102,36 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, D);
+    VD(W, N);
+    double avg = 0;
+    rep (i, N) avg += W[i];
+    avg /= D;
+    ll n2 = 1<<N;
+    vd stck(n2);
+    rep (s, n2) {
+        double tmp = 0;
+        rep (i, N) {
+            if (s>>i&1) tmp += W[i];
+        }
+        tmp = (tmp-avg)*(tmp-avg);
+        stck[s] = tmp;
+    }
+    de(stck)
+    vd dp(n2, INF);
+    dp[n2-1] = 0;
+    rep (i, D) {
+        vd p(n2, INF);
+        swap(p, dp);
+        rep (s, n2) {
+            for (ll t = s; t > 0; t=(t-1)&s) {
+                chmin(dp[s^t], p[s] + stck[t]);
+            }
+        }
+    }
+    double ans = dp[0] / D;
+    printf("%.10f\n", ans);
     
 }
 
-"""
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### E.cpp ###

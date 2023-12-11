@@ -1,7 +1,4 @@
-import sys
-
-
-filehead = r"""
+// ### C.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -52,7 +49,6 @@ using pq = priority_queue<P,vector<P>,greater<P>>;
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
-#define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
@@ -69,7 +65,6 @@ inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
-inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
@@ -105,17 +100,24 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M);
+    STRING(S);
+    S.push_back('0');
+    vp tshirts;
+    ll muji = 0, logo = 0;
+    ll ans = 0;
+    rep (i, N+1) {
+        ll t = S[i] - '0';
+        if (t == 0) {
+            chmax(ans, logo);
+            chmax(ans, logo+muji-M);
+            muji = 0;
+            logo = 0;
+        } else if (t == 1) muji++;
+        else logo++;
+    }
+    Out(ans)
     
 }
 
-"""
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### C.cpp ###
