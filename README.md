@@ -121,6 +121,14 @@
 ### 例題
 - [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 
+## 中国剰余定理（CRT: Chinese Remainder Theorem）
+- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題
+- 式変形により拡張ユークリッドの互除法で解ける
+- ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
+- s==0の場合は解なし
+### 例題
+- [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
+
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
 - 平方数を考えるときは指数をMOD 2で考える（つまり0か1のみで、0の場合は無いのと同じなので指数が1の素因数の積になる）
