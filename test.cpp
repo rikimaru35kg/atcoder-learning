@@ -81,7 +81,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 #else
-#define de(var)
+#define de(var) {}
 #endif
 const ll INF = 3e18;
 const double PI = acos(-1);
@@ -102,34 +102,38 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S); STRING(X);
-    reverse(all(S));
-    reverse(all(X));
-    vl dp(7);
-    dp[0] = 1;
-    ll base = 1;
-    de(dp)
+    LONG(N);
+    ll sum = 0;
+    ll mx = INF, mn = -INF;
+    ll s = 0;
     rep (i, N) {
-        int c = S[i] - '0';
-        int taka = 0;
-        if (X[i] == 'T') taka = 1;
-        vl p(7);
-        if (taka == 0) p.assign(7, 1);
-        swap(p, dp);
-        rep (k, 7) {
-            if (taka == 1) {
-                dp[k] |= p[k];
-                dp[(k+c*base)%7] |= p[k];
-            } else {
-                dp[k] &= p[k];
-                dp[(k+c*base)%7] &= p[k];
-            }
+        LONG(a, t);
+        if (t == 1) {
+            sum += a;
+            s += a;
         }
-        de(dp)
-        (base *= 10) %= 7;
+        if (t == 2) {
+            chmax(mn, a - sum);
+            chmax(s, a);
+        }
+        if (t == 3) {
+            chmin(mx, a - sum);
+            chmin(s, a);
+        }
     }
-    if (dp[0] == 1) puts("Takahashi");
-    else puts("Aoki");
+    LONG(Q);
+    rep (i, Q) {
+        LONG(x);
+        ll ans = 0;
+        if (mx - mn >= 0) {
+            ans = clamp(x, mn, mx); 
+            ans += sum;
+        } else {
+            ans = s;
+        }
+        Out(ans)
+    }
+
     
 }
 

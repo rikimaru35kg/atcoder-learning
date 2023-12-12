@@ -23,14 +23,13 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-def f(k, N):
-    if (k==0): return 0
-    return f(k-1, N) + N/k
 
 def main():
-    N = inint()
-    print(f(N-1, N))
+    s = input()
+    t = s.split('.')
+    print(t[0])
 
     
+
 if __name__ == '__main__':
     main()

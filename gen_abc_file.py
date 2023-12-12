@@ -84,7 +84,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 #else
-#define de(var)
+#define de(var) {}
 #endif
 const ll INF = 3e18;
 const double PI = acos(-1);
