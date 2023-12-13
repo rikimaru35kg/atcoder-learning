@@ -28,6 +28,8 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using pq = priority_queue<P,vector<P>,greater<P>>;
+using cl = complex<ll>;
+using cd = complex<double>;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
 #define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
 #define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)

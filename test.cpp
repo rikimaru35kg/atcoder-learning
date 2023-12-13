@@ -97,43 +97,19 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
-
+using Cl = complex<double>;
+using Cd = complex<double>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    ll sum = 0;
-    ll mx = INF, mn = -INF;
-    ll s = 0;
-    rep (i, N) {
-        LONG(a, t);
-        if (t == 1) {
-            sum += a;
-            s += a;
-        }
-        if (t == 2) {
-            chmax(mn, a - sum);
-            chmax(s, a);
-        }
-        if (t == 3) {
-            chmin(mx, a - sum);
-            chmin(s, a);
-        }
-    }
-    LONG(Q);
-    rep (i, Q) {
-        LONG(x);
-        ll ans = 0;
-        if (mx - mn >= 0) {
-            ans = clamp(x, mn, mx); 
-            ans += sum;
-        } else {
-            ans = s;
-        }
-        Out(ans)
-    }
-
+    DOUBLE(x0, y0, x2, y2);
+    C p0(x0, y0), p2(x2, y2);
+    C pc = (p0 + p2) / 2.0;
+    double ct = cos(2*PI/N), st = sin(2*PI/N);
+    C p1 = (p0 - pc) * C(ct, st) + pc;
+    printf("%.10f %.10f\n", p1.real(), p1.imag());
     
 }
 
