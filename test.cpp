@@ -86,7 +86,6 @@ template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr <<
 #define de(var) {}
 #endif
 const ll INF = 3e18;
-template<typename T> inline void ch1(T &x) {if(x==INF) x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {1, 0, -1, 0};
@@ -105,36 +104,61 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INT(N, M);
-    vvp from(N);
-    rep (i, M) {
-        INTM(a, b); CHAR(c);
-        int d = c - '0';
-        from[a].emplace_back(b, d);
-        from[b].emplace_back(a, d);
+    VS(S, 3);
+    set<char> st;
+    rep (i, 3) rep (j, SIZE(S[i])) {
+        st.insert(S[i][j]);
     }
-    vvl dist(N, vl(N, INF));
-    dist[0][N-1] = 0;
-    queue<P> que;
-    que.emplace(0, N-1);
-    while(que.size()){
-        auto [a, b] = que.front(); que.pop();
-        for (auto [na, ca]: from[a]) for (auto [nb, cb]: from[b]) {
-            if (ca != cb) continue;
-            if (dist[na][nb] != INF) continue;
-            que.emplace(na, nb);
-            dist[na][nb] = dist[a][b] + 1;
+    vc chars;
+    for (auto c: st) chars.push_back(c);
+    ll N = SIZE(chars);
+    if (N > 10) {
+        puts("UNSOLVABLE");
+        return 0;
+    }
+    auto judge = [&](vl nums) -> bool {
+        vs s = S;
+        de(s)
+        map<char,char> mp;
+        rep (i, SIZE(nums)) {
+            char c = chars[i];
+            mp[c] = nums[i] + '0';
         }
-    }
-    ll ans = INF;
-    rep (i, N) chmin(ans, dist[i][i]*2);
-    rep (i, N) {
-        for (auto [ni, c]: from[i]) {
-            chmin(ans, dist[i][ni]*2+1);
+        rep (i, 3) rep (j, SIZE(s[i])) s[i][j] = mp[s[i][j]];
+        de(s)
+        rep (i, 3) if (s[i][0] == '0') return false;
+        ll n0 = stoll(s[0]);
+        ll n1 = stoll(s[1]);
+        ll n2 = stoll(s[2]);
+        if (n0 + n1 == n2) {
+            Out(n0)Out(n1)Out(n2)
+            return true;
         }
-    }
-    ch1(ans);
-    Out(ans)
+        return false;
+    };
+    auto f = [&](auto f, vl nums, set<int> rems) -> bool {
+        if (SIZE(nums) == N) {
+            bool b = judge(nums);
+            if (b) return true;
+            return false;
+        }
+        vl rems2;
+        for (auto x: rems) rems2.push_back(x);
+        repr (i, SIZE(rems)) {
+            nums.push_back(rems2[i]);
+            rems.erase(rems2[i]);
+            bool b = f(f, nums, rems);
+            nums.pop_back();
+            rems.insert(rems2[i]);
+            if (b) return true;
+        }
+        return false;
+    };
+    set<int> rems;
+    rep (i, 10) rems.insert(i);
+    bool b = f(f, vl(), rems);
+    if (!b) puts("UNSOLVABLE");
+
     
 }
 

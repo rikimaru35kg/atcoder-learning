@@ -95,6 +95,7 @@ alias l='ls -CF'
 # My aliases ----------------------------------
 # Atcoder
 alias g='g++ -std=gnu++20 -O2 -D_GLIBCXX_DEBUG -Wall -Wextra -I/opt/ac-library -D__DEBUG'
+alias gno='g++ -std=gnu++20 -O2 -I/opt/ac-library'
 alias a='./a.out'
 alias abc='python3 gen_abc_file.py'
 alias clip='/mnt/c/WINDOWS/system32/clip.exe'
