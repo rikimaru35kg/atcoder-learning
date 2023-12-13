@@ -608,9 +608,11 @@
 - 重み有りグラフの全頂点最短経路問題はワーシャル・フロイド法（後述）
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 移動する点が複数ある時は、その状態をqueueに入れてBFSなど可能
+- 2頂点を同時に動かす最短経路問題もある
 ### 例題
 - [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
+- 2頂点 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能

@@ -86,6 +86,7 @@ template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr <<
 #define de(var) {}
 #endif
 const ll INF = 3e18;
+template<typename T> inline void ch1(T &x) {if(x==INF) x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {1, 0, -1, 0};
@@ -104,35 +105,36 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp colors(N, {INF, -INF});
-    rep (i, N) {
-        LONG(x, c);
-        --c;
-        chmin(colors[c].first, x);
-        chmax(colors[c].second, x);
+    INT(N, M);
+    vvp from(N);
+    rep (i, M) {
+        INTM(a, b); CHAR(c);
+        int d = c - '0';
+        from[a].emplace_back(b, d);
+        from[b].emplace_back(a, d);
     }
-    colors.emplace_back(0, 0);
-    map<ll,ll> dp;
-    dp[0] = 0;
-    rep (i, N+1) {
-        if (colors[i].first == INF) continue;
-        map<ll,ll> p;
-        swap(p, dp);
-        for (auto [x, v]: p) {
-            ll now = INF;
-            auto [x1, x2] = colors[i];
-            now = v + abs(x-x1) + abs(x1-x2);
-            if (dp.count(x2)) chmin(dp[x2], now);
-            else dp[x2] = now;
-            now = v + abs(x-x2) + abs(x1-x2);
-            if (dp.count(x1)) chmin(dp[x1], now);
-            else dp[x1] = now;
+    vvl dist(N, vl(N, INF));
+    dist[0][N-1] = 0;
+    queue<P> que;
+    que.emplace(0, N-1);
+    while(que.size()){
+        auto [a, b] = que.front(); que.pop();
+        for (auto [na, ca]: from[a]) for (auto [nb, cb]: from[b]) {
+            if (ca != cb) continue;
+            if (dist[na][nb] != INF) continue;
+            que.emplace(na, nb);
+            dist[na][nb] = dist[a][b] + 1;
         }
     }
-    ll ans = dp[0];
+    ll ans = INF;
+    rep (i, N) chmin(ans, dist[i][i]*2);
+    rep (i, N) {
+        for (auto [ni, c]: from[i]) {
+            chmin(ans, dist[i][ni]*2+1);
+        }
+    }
+    ch1(ans);
     Out(ans)
-
     
 }
 
