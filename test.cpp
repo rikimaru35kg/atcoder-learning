@@ -57,6 +57,7 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
+#define pcnt __builtin_popcountll
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -86,6 +87,7 @@ template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr <<
 #define de(var) {}
 #endif
 const ll INF = 3e18;
+template <typename T> inline void ch1(T &x) {if(x==INF) x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {1, 0, -1, 0};
@@ -100,60 +102,39 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
+    vl X, Y, Z;
+    vvp ps(N+1);
     rep (i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+        LONG(x, y, z);
+        ps[x].emplace_back(y, z);
     }
-    ll ans = 1;
-    vl colors(N, -1);
-    vb used(N);
-    auto euler = [&](auto f, ll v, vl &e) -> void {
-        e.push_back(v);
-        used[v] = true;
-        for (auto nv: from[v]) {
-            if (used[nv]) continue;
-            f(f, nv, e); 
-        }
-    };
-    vvl es;
-    ll cnt = 0;
-    rep (i, N) {
-        if (used[i]) continue;
-        ++cnt;
-        es.push_back(vl());
-        euler(euler, i, es.back());
-    }
-    ll now = 0;
-    auto dfs = [&](auto f, ll i, vl &e) -> void {
-        if (i == SIZE(e)) {
-            ++now;
-            de(colors)
-            return;
-        }
-        ll v = e[i];
-        rep (c, 3) {
-            colors[v] = c;
+    ll n2 = 1LL<<N;
+    vl dp(n2);
+    dp[0] = 1;
+    rep (s, n2) {
+        rep (i, N) {
+            if (s>>i&1) continue;
+            ll ns = s|1LL<<i;
+            ll cnt = pcnt(ns);
             bool ok = true;
-            for (auto nv: from[v]) {
-                if (colors[nv] == c) ok = false;
+            for (auto [y, z]: ps[cnt]) {
+                ll ms = ns & ((1LL<<y)-1);
+                ll mcnt = pcnt(ms);
+                if (mcnt > z) {
+                    // printf("%06b %06b %lld %s\n", s, ns, cnt, ok?"ok":"ng");
+                    ok = false;
+                }
             }
-            if (ok) f(f, i+1, e);
+            if (ok) dp[ns] += dp[s];
         }
-        colors[v] = -1;
-    };
-    rep (i, cnt) {
-        now = 0;
-        dfs(dfs, 0, es[i]);
-        ans *= now;
     }
-    Out(ans)
+    de(dp)
+    Out(dp[n2-1])
+    
 }
 
 // ### test.cpp ###

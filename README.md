@@ -567,6 +567,7 @@
 - [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
 - [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - 実装がやや大変 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
+- bit DPである事を見抜くのが難しい [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 
 ## 桁DP（Digit DP）
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
