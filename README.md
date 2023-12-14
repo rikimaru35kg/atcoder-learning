@@ -581,6 +581,14 @@
 - [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 - 繰り下がり型DP [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 
+## DP経路復元
+- 逆順にたどれば良いだけなのでよく考えればできるはず
+- ただし、i=0以外ににも始点がある場合、遡るのを途中でやめなければならない
+- 2経路の復元の場合は、常に異なる戦略を取って逆順に辿れば良い
+- 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
+### 例題
+- 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
+
 ## 対戦ゲーム
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
 - dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin

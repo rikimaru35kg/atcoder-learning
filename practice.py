@@ -27,30 +27,21 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-ans = INF
-
-def calc(i, A, v, N):
-    if (i == N):
-        global ans
-        y = 0
-        for x in v:
-            y ^= x
-        ans = min(ans, y)
-        return
-
-    v.append(A[i])
-    calc(i+1, A, v, N)
-    del(v[-1])
-    v[-1] |= A[i]
-    calc(i+1, A, v, N)
-
 def main():
     N = inint()
     A = invec()
-    v = [0]
-    calc(0, A, v, N)
+    stck = [0]*200
+    ans = 0
+    for a in A:
+        ans += stck[a%200]
+        stck[a%200] += 1
+    # ans = 0
+    # for x in stck:
+    #     if (x <= 1): continue
+    #     ans += x*(x-1)//2
     print(ans)
-    
+
+
 
 if __name__ == '__main__':
     main()

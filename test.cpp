@@ -57,7 +57,6 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt __builtin_popcountll
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -87,7 +86,6 @@ template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr <<
 #define de(var) {}
 #endif
 const ll INF = 3e18;
-template <typename T> inline void ch1(T &x) {if(x==INF) x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {1, 0, -1, 0};
@@ -102,38 +100,68 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl X, Y, Z;
-    vvp ps(N+1);
-    rep (i, M) {
-        LONG(x, y, z);
-        ps[x].emplace_back(y, z);
-    }
-    ll n2 = 1LL<<N;
-    vl dp(n2);
-    dp[0] = 1;
-    rep (s, n2) {
-        rep (i, N) {
-            if (s>>i&1) continue;
-            ll ns = s|1LL<<i;
-            ll cnt = pcnt(ns);
-            bool ok = true;
-            for (auto [y, z]: ps[cnt]) {
-                ll ms = ns & ((1LL<<y)-1);
-                ll mcnt = pcnt(ms);
-                if (mcnt > z) {
-                    // printf("%06b %06b %lld %s\n", s, ns, cnt, ok?"ok":"ng");
-                    ok = false;
-                }
-            }
-            if (ok) dp[ns] += dp[s];
+    LONG(N);
+    VL(A, N);
+    ll M = 200;
+    vvl dp(N+1, vl(M));
+    auto f = [&](ll x, ll y) {
+        return ((x + y) % M + M) % M;
+    };
+    rep (i, N) {
+        dp[i+1][A[i]%M] += 1;
+        rep (r, M) {
+            dp[i+1][r] += dp[i][r];
+            chmin(dp[i+1][r], 3LL);
+            dp[i+1][(r+A[i])%M] += dp[i][r];
+            chmin(dp[i+1][(r+A[i])%M], 3LL);
         }
     }
-    de(dp)
-    Out(dp[n2-1])
+    vl B;
+    auto recon = [&](ll r) {
+        for(int i=N-1; i>=0; --i) {
+            ll na = A[i]%M;
+            if (r == na && dp[i+1][r] == 1) {
+                B.push_back(i+1); break;
+            }
+            if (dp[i][f(r, -A[i])] > 0) {
+                B.push_back(i+1);
+                r = f(r, -A[i]);
+            }
+        }
+        reverse(all(B));
+        printf("%lld ", SIZE(B));
+        print_vec(B);
+    };
+    vl C;
+    auto recon2 = [&](ll r) {
+        for(int i=N-1; i>=0; --i) {
+            ll na = A[i]%M;
+            if (r == na && dp[i+1][r] > 0) {
+                C.push_back(i+1); break;
+            }
+            if (dp[i][f(r, 0)] > 0) {
+                continue;
+            }
+            C.push_back(i+1);
+            r = f(r, -A[i]);
+        }
+        reverse(all(C));
+        printf("%lld ", SIZE(C));
+        print_vec(C);
+    };
+    rep (i, M) {
+        if (dp[N][i] >= 2) {
+            puts("Yes");
+            recon(i);
+            recon2(i);
+            return 0;
+        }
+    }
+    PNo
     
 }
 
