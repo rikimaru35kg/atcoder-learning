@@ -104,62 +104,56 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    VS(S, 3);
-    set<char> st;
-    rep (i, 3) rep (j, SIZE(S[i])) {
-        st.insert(S[i][j]);
+    LONG(N, M);
+    vvl from(N);
+    rep (i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    vc chars;
-    for (auto c: st) chars.push_back(c);
-    ll N = SIZE(chars);
-    if (N > 10) {
-        puts("UNSOLVABLE");
-        return 0;
+    ll ans = 1;
+    vl colors(N, -1);
+    vb used(N);
+    auto euler = [&](auto f, ll v, vl &e) -> void {
+        e.push_back(v);
+        used[v] = true;
+        for (auto nv: from[v]) {
+            if (used[nv]) continue;
+            f(f, nv, e); 
+        }
+    };
+    vvl es;
+    ll cnt = 0;
+    rep (i, N) {
+        if (used[i]) continue;
+        ++cnt;
+        es.push_back(vl());
+        euler(euler, i, es.back());
     }
-    auto judge = [&](vl nums) -> bool {
-        vs s = S;
-        de(s)
-        map<char,char> mp;
-        rep (i, SIZE(nums)) {
-            char c = chars[i];
-            mp[c] = nums[i] + '0';
+    ll now = 0;
+    auto dfs = [&](auto f, ll i, vl &e) -> void {
+        if (i == SIZE(e)) {
+            ++now;
+            de(colors)
+            return;
         }
-        rep (i, 3) rep (j, SIZE(s[i])) s[i][j] = mp[s[i][j]];
-        de(s)
-        rep (i, 3) if (s[i][0] == '0') return false;
-        ll n0 = stoll(s[0]);
-        ll n1 = stoll(s[1]);
-        ll n2 = stoll(s[2]);
-        if (n0 + n1 == n2) {
-            Out(n0)Out(n1)Out(n2)
-            return true;
+        ll v = e[i];
+        rep (c, 3) {
+            colors[v] = c;
+            bool ok = true;
+            for (auto nv: from[v]) {
+                if (colors[nv] == c) ok = false;
+            }
+            if (ok) f(f, i+1, e);
         }
-        return false;
+        colors[v] = -1;
     };
-    auto f = [&](auto f, vl nums, set<int> rems) -> bool {
-        if (SIZE(nums) == N) {
-            bool b = judge(nums);
-            if (b) return true;
-            return false;
-        }
-        vl rems2;
-        for (auto x: rems) rems2.push_back(x);
-        repr (i, SIZE(rems)) {
-            nums.push_back(rems2[i]);
-            rems.erase(rems2[i]);
-            bool b = f(f, nums, rems);
-            nums.pop_back();
-            rems.insert(rems2[i]);
-            if (b) return true;
-        }
-        return false;
-    };
-    set<int> rems;
-    rep (i, 10) rems.insert(i);
-    bool b = f(f, vl(), rems);
-    if (!b) puts("UNSOLVABLE");
-
-    
+    rep (i, cnt) {
+        now = 0;
+        dfs(dfs, 0, es[i]);
+        ans *= now;
+    }
+    Out(ans)
 }
 
 // ### test.cpp ###
