@@ -104,64 +104,50 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll M = 200;
-    vvl dp(N+1, vl(M));
-    auto f = [&](ll x, ll y) {
-        return ((x + y) % M + M) % M;
+    LONG(N, K);
+    auto nC2 = [&](ll n) -> ll {
+        // if (n < 2) return 0;
+        return n*(n-1)/2;
     };
-    rep (i, N) {
-        dp[i+1][A[i]%M] += 1;
-        rep (r, M) {
-            dp[i+1][r] += dp[i][r];
-            chmin(dp[i+1][r], 3LL);
-            dp[i+1][(r+A[i])%M] += dp[i][r];
-            chmin(dp[i+1][(r+A[i])%M], 3LL);
-        }
-    }
-    vl B;
-    auto recon = [&](ll r) {
-        for(int i=N-1; i>=0; --i) {
-            ll na = A[i]%M;
-            if (r == na && dp[i+1][r] == 1) {
-                B.push_back(i+1); break;
-            }
-            if (dp[i][f(r, -A[i])] > 0) {
-                B.push_back(i+1);
-                r = f(r, -A[i]);
-            }
-        }
-        reverse(all(B));
-        printf("%lld ", SIZE(B));
-        print_vec(B);
+    auto f3 = [&](ll s) -> ll {
+        ll ret = 0;
+        ret += nC2(s-1);
+        ret -= 3 * nC2(s-N-1);
+        ret += 3 * nC2(s-2*N-1);
+        ret -= nC2(s-3*N-1);
+        return ret;
     };
-    vl C;
-    auto recon2 = [&](ll r) {
-        for(int i=N-1; i>=0; --i) {
-            ll na = A[i]%M;
-            if (r == na && dp[i+1][r] > 0) {
-                C.push_back(i+1); break;
-            }
-            if (dp[i][f(r, 0)] > 0) {
+    auto f2 = [&](ll s) -> ll {
+        if (s < 2 || s > 2*N) return 0;
+        ll ymn = clamp(s - N, 1LL, N);
+        ll ymx = clamp(s - 1, 1LL, N);
+        return (ymx - ymn + 1);
+    };
+
+    repk (s, 3, 3*N+1) {
+        ll f3s = f3(s);
+        if (f3s < K) {
+            K -= f3s;
+            continue;
+        }
+        repk (x, 1, N+1) {
+            ll f2s = f2(s - x);
+            if (f2s < K) {
+                K -= f2s;
                 continue;
             }
-            C.push_back(i+1);
-            r = f(r, -A[i]);
-        }
-        reverse(all(C));
-        printf("%lld ", SIZE(C));
-        print_vec(C);
-    };
-    rep (i, M) {
-        if (dp[N][i] >= 2) {
-            puts("Yes");
-            recon(i);
-            recon2(i);
-            return 0;
+            ll ymn = clamp(s-x-N, 1LL, N);
+            repk (y, ymn, N+1) {
+                K--;
+                if (K == 0) {
+                    ll z = s - x - y;
+                    printf("%lld %lld %lld\n", x, y, z);
+                    return 0;
+                }
+            }
         }
     }
-    PNo
+
     
 }
 
