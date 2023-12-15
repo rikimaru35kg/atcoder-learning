@@ -27,19 +27,17 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
+def mymap(c):
+    if (c == '6'): return '9'
+    if (c == '9'): return '6'
+    return c
+
 def main():
-    N = inint()
-    A = invec()
-    stck = [0]*200
-    ans = 0
-    for a in A:
-        ans += stck[a%200]
-        stck[a%200] += 1
-    # ans = 0
-    # for x in stck:
-    #     if (x <= 1): continue
-    #     ans += x*(x-1)//2
-    print(ans)
+    S = input().rstrip()
+    S = ''.join(list(map(mymap, S)))
+    S = S[::-1]
+    print(S)
+
 
 
 

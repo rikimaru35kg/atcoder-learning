@@ -43,6 +43,28 @@ long long spow(long long a, long long b) {
 	return ans;
 }
 
+//! no mod nCr
+//! return value shall be within long long range
+class Pascal {
+    int mx = 66;
+    vector<vector<long long>> comb;
+public:
+    Pascal () :comb(mx+1, vector<long long>(mx+1)) {
+        comb[0][0] = 1;
+        for (int i=0; i<mx; ++i) for (int j=0; j<=i; ++j) {
+            comb[i+1][j] += comb[i][j];
+            comb[i+1][j+1] += comb[i][j];
+        }
+    }
+    long long nCr(int n, int r) {
+        if (n < 0 || r < 0 || n < r) return 0;
+        if (n > mx) {
+            cout << "[ClassPascalError@nCr] n is too large (shall be <=66)" << endl;
+            assert(0);
+        }
+        return comb[n][r];
+    }
+};
 
 //! Only when <= 1e6
 //! If not, use Combination2 class below.
@@ -110,14 +132,9 @@ public:
 
 
 int main () {
-    Combination comb(100, 1e9+7);
-    cout << comb.nCr(6, 2) << endl;
-    cout << comb.nPr(6, 2) << endl;
-    cout << comb.nCr(6, 6) << endl;
-    cout << comb.nCr(10, 2) << endl;
-    cout << comb.nCr(10, 10) << endl;
-    cout << comb.nCr(10, 0) << endl;
-    cout << comb.nCr(10, 11) << endl;
-    cout << comb.get_fact(10) << endl;
-    cout << comb.nPr(11, 3) << endl;
+    Pascal p;
+    cout << p.nCr(66, 0) << endl;
+    cout << p.nCr(66, 66) << endl;
+    cout << p.nCr(67, 67) << endl;
+
 }

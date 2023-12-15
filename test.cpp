@@ -99,55 +99,43 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+public:
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0) return 0;
+        ll ret = 1;
+        rep (i, r) {
+            ret = ret * (n-i) / (i+1);
+        }
+        return ret;
+    }
+};
 
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    auto nC2 = [&](ll n) -> ll {
-        // if (n < 2) return 0;
-        return n*(n-1)/2;
-    };
-    auto f3 = [&](ll s) -> ll {
-        ll ret = 0;
-        ret += nC2(s-1);
-        ret -= 3 * nC2(s-N-1);
-        ret += 3 * nC2(s-2*N-1);
-        ret -= nC2(s-3*N-1);
-        return ret;
-    };
-    auto f2 = [&](ll s) -> ll {
-        if (s < 2 || s > 2*N) return 0;
-        ll ymn = clamp(s - N, 1LL, N);
-        ll ymx = clamp(s - 1, 1LL, N);
-        return (ymx - ymn + 1);
-    };
-
-    repk (s, 3, 3*N+1) {
-        ll f3s = f3(s);
-        if (f3s < K) {
-            K -= f3s;
-            continue;
+    LONG(A, B, K);
+    string ans = "";
+    Combination comb;
+    ll M = A+B;
+    rep (i, M) {
+        de(i)
+        ll na = comb.nCr(A+B-1, A-1);
+        de(A+B-1)de(A-1)de(na)
+        if (K <= na) {
+            ans += 'a';
+            A--;
+        } else {
+            ans += 'b';
+            B--;
+            K -= na;
         }
-        repk (x, 1, N+1) {
-            ll f2s = f2(s - x);
-            if (f2s < K) {
-                K -= f2s;
-                continue;
-            }
-            ll ymn = clamp(s-x-N, 1LL, N);
-            repk (y, ymn, N+1) {
-                K--;
-                if (K == 0) {
-                    ll z = s - x - y;
-                    printf("%lld %lld %lld\n", x, y, z);
-                    return 0;
-                }
-            }
-        }
+        de(ans)
     }
-
+    Out(ans)
     
 }
 
