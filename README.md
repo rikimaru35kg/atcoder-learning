@@ -393,6 +393,13 @@
 - 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
 - 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 
+## オイラーツアーと部分木
+- 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
+- 各頂点に対し、オイラーツアーの行きがけ順を開始時と終了時に記憶しておくと部分木の半開区間が求まる
+### 例題
+- [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+
+
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
 
