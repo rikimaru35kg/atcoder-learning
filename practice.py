@@ -23,7 +23,7 @@ def makelist2(n, m, init=0):
 def makelist3(n, m, l, init=0):
     return [[[init]*l for _ in range(m)] for _ in range(n)]
 def de(*args, **kwargs):
-    print(*args, **kwargs, file=sys.stderr)  # 提出時はコメントアウト
+    print(*args, **kwargs, file=sys.stderr)  #!! Comment out when submitted
     pass
 INF = int(3e18)
 
@@ -33,13 +33,20 @@ def mymap(c):
     return c
 
 def main():
-    S = input().rstrip()
-    S = ''.join(list(map(mymap, S)))
-    S = S[::-1]
-    print(S)
-
-
-
+    N, K = inints()
+    friends = []
+    for _ in range(N):
+        friends.append(inints())
+    friends.sort()
+    now = 0
+    for a, b in friends:
+        if (a - now > K):
+            print(now + K)
+            return
+        K += b
+        K -= (a - now)
+        now = a
+    print(now + K)
 
 if __name__ == '__main__':
     main()

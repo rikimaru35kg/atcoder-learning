@@ -233,9 +233,10 @@
 ## 二分探索法
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
 - lower_boundの第4引数にgreater<ll>()を指定すると降順ソート列のx以下となるイテレータを返すようになる（upperはx未満）
-- 最小値の最大化を二分探索で求められる事が多いのは、最小値=Xが成立となるかどうかを貪欲法で求められる事が多いから
+- 最小値の最大化を二分探索で求められる事が多いのは、最小値（正確には下界）=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 - 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
+- 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意
 ### 例題
 - [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
 - [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
@@ -244,6 +245,7 @@
 - 二分探索で解ける事に辿り着けるかどうかが勝負 [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
+- 二分探索に用いる関数で頭が混乱するが二分探索の本質を考えさせられる良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。

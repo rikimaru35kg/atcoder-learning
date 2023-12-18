@@ -79,6 +79,8 @@ inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; ci
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
+template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
@@ -93,100 +95,43 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e8);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e8);
-}
-
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e8);
-}
-
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e8);
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(p);
-        from[p].push_back(i+1);
-    }
-    ll cnt = 0;
-    vp spans(N);
-    vvl dstck(N);
-    auto dfs = [&](auto f, ll v, ll d=0) -> void {
-        spans[v].first = cnt;
-        dstck[d].push_back(cnt);
-        ++cnt;
-        for (auto nv: from[v]) f(f, nv, d+1);
-        spans[v].second = cnt;
+    LONG(N, K);
+    VVL(A, N, N);
+
+    ll c = K*K/2;
+    if (K %2 == 1) ++c;
+    auto cnt = [&](ll m) -> bool {
+        vvl S(N+1, vl(N+1));
+        rep (i, N) rep (j, N) if (A[i][j] <= m) S[i+1][j+1] = 1;
+        rep (i, N+1) rep (j, N) S[i][j+1] += S[i][j];
+        rep (i, N) rep (j, N+1) S[i+1][j] += S[i][j];
+        rep (i, N) rep (j, N) {
+            if (i+K >N || j+K > N) break;
+            ll now = S[i+K][j+K] - S[i][j+K] - S[i+K][j] + S[i][j];
+            if (now >= c) {
+                return true;
+            }
+        }
+        return false;
     };
-    dfs(dfs, 0);
-    LONG(Q);
-    rep (i ,Q) {
-        LONGM(u); LONG(d);
-        auto [l, r] = spans[u];
-        auto [ri, y] = uppbou_r(dstck[d], r);
-        auto [li, z] = lowbou(dstck[d], l);
-        ll now = max(ri-li+1, 0LL);
-        Out(now);
+    ll l = -1, r = 1e9+1;
+    while (r - l > 1) {
+        ll m = (l + r) / 2;
+        if (cnt(m)) r = m;
+        else l = m;
     }
-    
+    Out(r)
 }
 
 // ### test.cpp ###
