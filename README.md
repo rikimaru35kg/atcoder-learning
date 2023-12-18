@@ -707,18 +707,6 @@
 - queに入ったコスト（得たい値）は別配列cost[v][state]で管理すれば良い
 - 迷路の最小方向転換問題などに利用可能（01-BFS＋状態遷移）
 
-## Union Find tree
-- UnionFind構造体を作る
-- parentsの初期化（p[x]を用意し、全てが親、例えば-1としておく）
-- find関数（再帰関数で実装すれば良い。実行時、p[x]も更新するとパス圧縮され次回のfindが速くなる）
-- unite関数（親同士をくっつける。ただし、同じ連結木はつながないように注意）
-- 辺を削除する問題は逆順に見てUnion Findをつなぐ問題に書き換えると解ける場合がある
-- Union Findは親に情報を持たせるとデータ管理がしやすい（連結成分のサイズやある点群に繋がっているかなど）
-- Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
-### 例題
-- [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
-- [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
-
 ## 最小全域木
 - 全域木の中で辺の和が最小のものをいう
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
@@ -739,7 +727,6 @@
 - [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 - 木 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 
-
 # 括弧列
 - 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
 - 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
@@ -749,6 +736,26 @@
 - [D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
 - [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
 - どのように括弧列同士をつなげると括弧列になるか。つなげ方に工夫が必要 [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
+
+# データ構造
+
+## Union Find tree
+- UnionFind構造体を作る
+- parentsの初期化（p[x]を用意し、全てが親、例えば-1としておく）
+- find関数（再帰関数で実装すれば良い。実行時、p[x]も更新するとパス圧縮され次回のfindが速くなる）
+- unite関数（親同士をくっつける。ただし、同じ連結木はつながないように注意）
+- 辺を削除する問題は逆順に見てUnion Findをつなぐ問題に書き換えると解ける場合がある
+- Union Findは親に情報を持たせるとデータ管理がしやすい（連結成分のサイズやある点群に繋がっているかなど）
+- Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
+### 例題
+- [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
+
+## 集合
+- Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
+### 例題
+- [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
+
 
 # 2変数問題
 

@@ -95,8 +95,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -106,32 +106,24 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VVL(A, N, N);
-
-    ll c = K*K/2;
-    if (K %2 == 1) ++c;
-    auto cnt = [&](ll m) -> bool {
-        vvl S(N+1, vl(N+1));
-        rep (i, N) rep (j, N) if (A[i][j] <= m) S[i+1][j+1] = 1;
-        rep (i, N+1) rep (j, N) S[i][j+1] += S[i][j];
-        rep (i, N) rep (j, N+1) S[i+1][j] += S[i][j];
-        rep (i, N) rep (j, N) {
-            if (i+K >N || j+K > N) break;
-            ll now = S[i+K][j+K] - S[i][j+K] - S[i+K][j] + S[i][j];
-            if (now >= c) {
-                return true;
-            }
-        }
-        return false;
-    };
-    ll l = -1, r = 1e9+1;
-    while (r - l > 1) {
-        ll m = (l + r) / 2;
-        if (cnt(m)) r = m;
-        else l = m;
+    LONG(N, M);
+    map<ll,vl> porns;
+    rep (i, M) {
+        LONG(x, y);
+        porns[x].push_back(y);
     }
-    Out(r)
+    set<ll> locs;
+    locs.insert(N);
+    for (auto [x, vec]: porns) {
+        vl add;
+        for (auto y: vec) {
+            if (locs.count(y-1) || locs.count(y+1)) add.push_back(y);
+        }
+        for (auto y: vec) locs.erase(y);
+        for (auto y: add) locs.insert(y);
+    }
+    Out(SIZE(locs))
+    
 }
 
 // ### test.cpp ###
