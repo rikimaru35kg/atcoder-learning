@@ -106,23 +106,20 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    map<ll,vl> porns;
+    LONG(N); VL(T, N);
+    ll S = 0;
+    rep (i, N) S += T[i];
+    const ll M = 100000+5;
+    bitset<size_t(M)> dp;
+    dp[0] = 1;
+    rep (i, N) {
+        dp |= dp<<T[i];
+    }
+    ll ans = INF;
     rep (i, M) {
-        LONG(x, y);
-        porns[x].push_back(y);
+        if (dp[i]) chmin(ans, max(i, S-i));
     }
-    set<ll> locs;
-    locs.insert(N);
-    for (auto [x, vec]: porns) {
-        vl add;
-        for (auto y: vec) {
-            if (locs.count(y-1) || locs.count(y+1)) add.push_back(y);
-        }
-        for (auto y: vec) locs.erase(y);
-        for (auto y: add) locs.insert(y);
-    }
-    Out(SIZE(locs))
+    Out(ans)
     
 }
 

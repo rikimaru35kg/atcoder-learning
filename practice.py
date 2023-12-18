@@ -27,26 +27,31 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-def mymap(c):
-    if (c == '6'): return '9'
-    if (c == '9'): return '6'
-    return c
+cnt = 0
+def dfs(v, frm, visited):
+    global cnt
+    cnt += 1
+    visited[v] = True
+    for nv in frm[v]:
+        if visited[nv]: continue
+        dfs(nv, frm, visited)
 
 def main():
-    N, K = inints()
-    friends = []
-    for _ in range(N):
-        friends.append(inints())
-    friends.sort()
-    now = 0
-    for a, b in friends:
-        if (a - now > K):
-            print(now + K)
-            return
-        K += b
-        K -= (a - now)
-        now = a
-    print(now + K)
+    global cnt
+    N, M = inints()
+    frm = [[] for _ in range(N)]
+    for _ in range(M):
+        a, b = inints(); a-=1; b-=1
+        frm[a].append(b)
+    ans = 0
+    for i in range(N):
+        cnt = 0
+        visited = [False]*N
+        dfs(i, frm, visited)
+        ans += cnt
+    print(ans)
+
+
 
 if __name__ == '__main__':
     main()
