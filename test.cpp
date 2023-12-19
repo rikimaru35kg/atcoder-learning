@@ -106,18 +106,29 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(T, N);
-    ll S = 0;
-    rep (i, N) S += T[i];
-    const ll M = 100000+5;
-    bitset<size_t(M)> dp;
-    dp[0] = 1;
-    rep (i, N) {
-        dp |= dp<<T[i];
+    LONG(L,R);
+    auto cnt = [&](ll x) -> ll{
+        ll ret = R/x;
+        ret -= (L-1)/x;
+        return ret;
+    };
+    ll ans = 0;
+    auto np2 = [&](ll x) ->ll{
+        if (x<=1) return 0;
+        return x*(x-1);
+    };
+    vl f(R+1);
+    for (int i=R;i>=2;--i) {
+        ll now = np2(cnt(i));
+        f[i] = now;
+        for (int j=2*i; j<=R; j+=i) {
+            f[i] -= f[j];
+        }
+        ans += f[i];
     }
-    ll ans = INF;
-    rep (i, M) {
-        if (dp[i]) chmin(ans, max(i, S-i));
+    for(int i=max(L,2LL); i<=R; ++i) {
+        ll now = (cnt(i)-1)*2;
+        ans -= now;
     }
     Out(ans)
     

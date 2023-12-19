@@ -27,30 +27,19 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-cnt = 0
-def dfs(v, frm, visited):
-    global cnt
-    cnt += 1
-    visited[v] = True
-    for nv in frm[v]:
-        if visited[nv]: continue
-        dfs(nv, frm, visited)
 
 def main():
-    global cnt
-    N, M = inints()
-    frm = [[] for _ in range(N)]
-    for _ in range(M):
-        a, b = inints(); a-=1; b-=1
-        frm[a].append(b)
-    ans = 0
-    for i in range(N):
-        cnt = 0
-        visited = [False]*N
-        dfs(i, frm, visited)
-        ans += cnt
-    print(ans)
-
+    A,B,C = inints()
+    if (A == B): print('=');return
+    # if (0<=A<B): print('<');return
+    # if (0<=B<A): print('>');return
+    if (C%2==0):
+        if (abs(A) == abs(B)): print('=');return
+        if (abs(A) < abs(B)): print('<');return
+        print('>'); return
+    else:
+        if(A<B): print('<')
+        else:print('>')
 
 
 if __name__ == '__main__':
