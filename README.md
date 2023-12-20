@@ -322,6 +322,12 @@
 - 連続部分文字列がMOD Pで0になる個数 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
 - 連続部分文字列がMOD Pで0になる個数 その2 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
 
+## 区間和がxの倍数
+- 区間和がxの倍数になるとは、[l,r)の累積和Sr-Sl≡0（mod x）、つまりSr≡Slなので、累積和（mod x）が等しければ良い
+- 累積和が等しい場合の数を全て加算しておけば、貰うDPで一括で足しこめる
+### 例題
+- 非常に難しく頭が混乱。DPに慣れた頃に再度解きたい問題 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e)
+
 ## 区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
 - 大きい順に見るループを作り、まず自分自身のインデックスをsetに突っ込む

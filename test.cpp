@@ -95,42 +95,46 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
 
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L,R);
-    auto cnt = [&](ll x) -> ll{
-        ll ret = R/x;
-        ret -= (L-1)/x;
-        return ret;
-    };
-    ll ans = 0;
-    auto np2 = [&](ll x) ->ll{
-        if (x<=1) return 0;
-        return x*(x-1);
-    };
-    vl f(R+1);
-    for (int i=R;i>=2;--i) {
-        ll now = np2(cnt(i));
-        f[i] = now;
-        for (int j=2*i; j<=R; j+=i) {
-            f[i] -= f[j];
+    LONG(N); VL(A, N);
+    vl S(N+1);
+    rep (i, N) S[i+1] = S[i] + A[i];
+    vvm dp(N+1, vm(N+1));
+    dp[0][0] = 1;
+    // vvm dpr(N+1, vm(N+1));
+    // dpr[0][0] = 1;
+    vvm dps(N+1, vm(N+1));
+    dps[0][0] = 1;
+    rep1 (i, N) {
+        vector<tuple<ll,ll,ll>> ps;
+        rep1 (j, i) {
+            ll smod = S[i]%j;
+            // rep (k, i) {
+            //     if (S[k]%j == smod) dpr[i][j] += dpr[k][j-1];
+            // }
+            ll now = dps[j-1][smod].val();
+            dp[i][j] += now;
+            smod = S[i]%(j+1);
+            ps.emplace_back(smod, j, now);
         }
-        ans += f[i];
+        for (auto [smod, j, p]: ps) {
+            dps[j][smod] += p;
+        }
     }
-    for(int i=max(L,2LL); i<=R; ++i) {
-        ll now = (cnt(i)-1)*2;
-        ans -= now;
-    }
-    Out(ans)
+    mint ans = 0;
+    rep (i, N+1) ans += dp[N][i];
+    Out(ans.val())
+
     
 }
 
