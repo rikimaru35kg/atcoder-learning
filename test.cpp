@@ -95,46 +95,39 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
 
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl S(N+1);
-    rep (i, N) S[i+1] = S[i] + A[i];
-    vvm dp(N+1, vm(N+1));
-    dp[0][0] = 1;
-    // vvm dpr(N+1, vm(N+1));
-    // dpr[0][0] = 1;
-    vvm dps(N+1, vm(N+1));
-    dps[0][0] = 1;
-    rep1 (i, N) {
-        vector<tuple<ll,ll,ll>> ps;
-        rep1 (j, i) {
-            ll smod = S[i]%j;
-            // rep (k, i) {
-            //     if (S[k]%j == smod) dpr[i][j] += dpr[k][j-1];
-            // }
-            ll now = dps[j-1][smod].val();
-            dp[i][j] += now;
-            smod = S[i]%(j+1);
-            ps.emplace_back(smod, j, now);
+    LONG(N, M);
+    vvp edges(N);
+    vvl dist(N, vl(N, INF));
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        edges[a].emplace_back(b, c);
+        dist[a][b] = c;
+    }
+    // rep(i, N) dist[i][i] = 0;
+    ll ans = 0;
+    rep (k, N) {
+        rep (s, N) rep (t, N) {
+            if (s==t) continue;
+            chmin(dist[s][t], dist[s][k] + dist[k][t]);
         }
-        for (auto [smod, j, p]: ps) {
-            dps[j][smod] += p;
+        rep (s, N) rep (t, N) {
+            ll now = dist[s][t];
+            if (now == INF) now = 0;
+            ans += now;
         }
     }
-    mint ans = 0;
-    rep (i, N+1) ans += dp[N][i];
-    Out(ans.val())
-
+    Out(ans)
     
 }
 
