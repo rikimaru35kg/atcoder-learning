@@ -107,26 +107,21 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvp edges(N);
-    vvl dist(N, vl(N, INF));
+    vp As;
     rep (i, M) {
-        LONGM(a, b); LONG(c);
-        edges[a].emplace_back(b, c);
-        dist[a][b] = c;
+        LONG(a, c);
+        As.emplace_back(c, a);
     }
-    // rep(i, N) dist[i][i] = 0;
+    sort(all(As));
+    ll g = N;
     ll ans = 0;
-    rep (k, N) {
-        rep (s, N) rep (t, N) {
-            if (s==t) continue;
-            chmin(dist[s][t], dist[s][k] + dist[k][t]);
-        }
-        rep (s, N) rep (t, N) {
-            ll now = dist[s][t];
-            if (now == INF) now = 0;
-            ans += now;
-        }
+    rep (i, M) {
+        auto [c, a] = As[i];
+        ll gsave = g;
+        g = gcd(g, a);
+        ans += (gsave - g) * c;
     }
+    if (g != 1) ans = -1;
     Out(ans)
     
 }

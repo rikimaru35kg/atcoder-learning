@@ -73,6 +73,10 @@
 - 最大公約数は、各素因数の最小指数を選んだもの、最小公倍数は最大指数を選んだものとなる
 - (a, b, c)のGCDとLCMはそれぞれ、gcd(gcd(a, b), c)、lcm(lcm(a, b), c)と書ける。理由は素因数分解から明らか
 - 素因数の指数部が同じであるかどうかの判定は、LCM/GCDを素因数で割り切れるかどうか調べればよい（例えばLCM/GCDが3で割り切れなければ、3の指数部は同じ数。理由は素因数分解から明らか）
+- 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
+- より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
+### 例題
+- [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 
 ## 約数全列挙
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -724,7 +728,7 @@
 - queに入ったコスト（得たい値）は別配列cost[v][state]で管理すれば良い
 - 迷路の最小方向転換問題などに利用可能（01-BFS＋状態遷移）
 
-## 最小全域木
+## 最小全域木（Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
 - 連結頂点の判定はUnion-Find木を用いる
@@ -790,6 +794,11 @@
 ### 例題
 - [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 - 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
+
+## 変数分離
+- ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる
+### 例題
+- [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
 
 # セグメントツリー（Segment tree）
 - atcoder libraryで使える
