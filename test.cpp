@@ -88,6 +88,7 @@ template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr <<
 #define de(var) {}
 #endif
 const ll INF = 3e18;
+template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {1, 0, -1, 0};
@@ -97,31 +98,51 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 // #include <atcoder/all>
 // using namespace atcoder;
-// using mint = modint998244353;
+// using mint = modint1000000007;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
-
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp As;
-    rep (i, M) {
-        LONG(a, c);
-        As.emplace_back(c, a);
-    }
-    sort(all(As));
-    ll g = N;
+    LONG(N, K);
+    VS(S, N);
+    set<vs> st;
+    
     ll ans = 0;
-    rep (i, M) {
-        auto [c, a] = As[i];
-        ll gsave = g;
-        g = gcd(g, a);
-        ans += (gsave - g) * c;
-    }
-    if (g != 1) ans = -1;
+    auto dfs = [&](auto f, vs s, ll k=0) -> void {
+        if (st.count(s)) return;
+        st.insert(s);
+        if (k==K) {++ans; return;}
+        rep (i, N) rep (j, N) {
+            if (s[i][j] != '.') continue;
+            if (k==0) {
+                s[i][j] = 'o';
+                f(f, s, k+1);
+                s[i][j] = '.';
+                continue;
+            }
+            bool ok = false;
+            rep (z, 4) {
+                ll ni = i + di[z];
+                ll nj = j + dj[z];
+                if (ni < 0 || nj < 0 || ni >= N || nj >= N) continue;
+                if (s[ni][nj] == 'o') ok = true;
+            }
+            if(ok) {
+                s[i][j] = 'o';
+                f(f, s, k+1);
+                s[i][j] = '.';
+            }
+        }
+    };
+    dfs(dfs, S);
     Out(ans)
     
 }
