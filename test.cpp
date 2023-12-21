@@ -107,34 +107,25 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); STRING(S);
-    ll imax = 0;
-    ll M = 26;
-    vvl firsti(M, vl(N, INF));
-    repr(i, N) {
-        ll a = S[i] - 'a';
-        if (i != N-1) {
-            rep (k, M)  firsti[k][i] = firsti[k][i+1];
-        }
-        chmin(firsti[a][i], i);
-    }
-    string ans = "";
-    rep (i, K) {
-        rep (a, M) {
-            ll x = firsti[a][imax];
-            if (x == INF) continue;
-            if (K-i > N-x) continue;
-            ans += S[x];
-            imax = x+1;
-            break;
-        }
-    }
-    Out(ans)
-
+    LONG(a, b);
+    Out(abs(a-b))
     
 }
 

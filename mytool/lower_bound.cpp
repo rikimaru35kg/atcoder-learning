@@ -13,7 +13,7 @@ pair<long long,long long> lowbou(vector<long long> &a, long long x) {
         else l = m;
     }
     if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e8);
+    else return make_pair(n, (long long)3e18);
 }
 // return minimum index i where a[i] > x, and its value a[i]
 // vector a must be pre-sorted in ascending (normal) order!
@@ -27,7 +27,7 @@ pair<long long,long long> uppbou(vector<long long> &a, long long x) {
         else l = m;
     }
     if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e8);
+    else return make_pair(n, (long long)3e18);
 }
 
 // return maximum index i where a[i] <= x, and its value a[i]
@@ -41,7 +41,7 @@ pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
         else r = m;
     }
     if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e8);
+    else return make_pair(-1, (long long)-3e18);
 }
 
 // return maximum index i where a[i] < x, and its value a[i]
@@ -55,7 +55,7 @@ pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
         else r = m;
     }
     if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e8);
+    else return make_pair(-1, (long long)-3e18);
 }
 
 int main () {
