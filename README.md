@@ -248,9 +248,10 @@
 - 最小値の最大化を二分探索で求められる事が多いのは、最小値（正確には下界）=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 - 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
-- 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意
+- 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
 - [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
+- [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
 - [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
@@ -750,11 +751,13 @@
 - 木 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 
 # 括弧列
+- 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
 - 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
 - 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
 - つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
 - 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
 ### 例題
+- [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
 - [D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
 - [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
 - どのように括弧列同士をつなげると括弧列になるか。つなげ方に工夫が必要 [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
