@@ -348,9 +348,11 @@
 - 自明な貪欲は簡単だが非自明な貪欲は思いつくのが難しい
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
 - 2つ以上の変数がある場合、1つに減らせれば貪欲な選択ができる（区間スケジューリングはその代表例）
+- 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
 - 前から見れば開始時刻は無視してよくなる [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - 後ろから見れば時刻は無視してよくなる [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
+- 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 
 ## 区間スケジューリング問題
 - なるべく多くの会議に出席したい場合、終了時刻で昇順ソートして、貪欲に選択するのが最適
