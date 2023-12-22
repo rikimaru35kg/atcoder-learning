@@ -17,6 +17,7 @@ using namespace atcoder;
 // mappingはSにFを適用させる関数。
 // compositionはfとgの合成関数を定義する。
 // id()は恒等写像、すなわち値を変化させない写像を定義する
+// 参考: [snuke氏の解説@ACL Beginner Contest](https://www.youtube.com/watch?v=D0Op33UL_cA)
 
 // 区間最小更新・区間最小値取得（RMUQ+RMQ）=========================
 #ifdef RMINUQ_RMINQ
@@ -51,10 +52,10 @@ F id(){ return 0; }
 using S = long long;
 using F = long long;
 
-const S UNIT = 8e18;
+const S UNIT = -8e18;
 
 S op(S a, S b){ return std::max(a, b); }
-S e(){ return -UNIT; }
+S e(){ return UNIT; }
 S mapping(F f, S x){ return f+x; }
 F composition(F f, F g){ return f+g; }
 F id(){ return 0; }
@@ -102,11 +103,11 @@ F id(){ return ID; }
 using S = long long;
 using F = long long;
 
-const S UNIT = 8e18;
-const F ID = 8e18;
+const S UNIT = -8e18;
+const F ID = -8e18;
 
 S op(S a, S b){ return std::max(a, b); }
-S e(){ return -UNIT; }
+S e(){ return UNIT; }
 S mapping(F f, S x){ return (f == ID ? x : f); }
 F composition(F f, F g){ return (f == ID ? g : f); }
 F id(){ return ID; }
