@@ -28,11 +28,13 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 def main():
+    st = set()
     N = inint()
-    S = input()
-    if (S.find('1') % 2 == 0): print("Takahashi")
-    else: print("Aoki")
-
+    for i in range(N):
+        S = input().rstrip()
+        if (S in st): continue
+        print(i+1)
+        st.add(S)
 
 
 

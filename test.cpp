@@ -84,6 +84,7 @@ template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr <<
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 #else
 #define de(var) {}
 #endif
@@ -107,25 +108,30 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(a, b);
-    Out(abs(a-b))
+    LONG(N);
+    ll M = 1001;
+    vvl imos(M+1, vl(M+1));
+    rep (i, N) {
+        LONG(x1, y1, x2, y2);
+        imos[x1+1][y1+1] += 1;
+        imos[x1+1][y2+1] -= 1;
+        imos[x2+1][y1+1] -= 1;
+        imos[x2+1][y2+1] += 1;
+    }
+    rep (i, M+1) rep (j, M) imos[i][j+1] += imos[i][j];
+    rep (i, M) rep (j, M+1) imos[i+1][j] += imos[i][j];
+    vl areas(N+1);
+    rep (i, M+1) rep (j, M+1) {
+        areas[imos[i][j]]++;
+    }
+    rep1(i, N) {
+        Out(areas[i])
+    }
+
     
 }
 
