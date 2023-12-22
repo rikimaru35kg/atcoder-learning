@@ -28,13 +28,14 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 def main():
-    st = set()
-    N = inint()
-    for i in range(N):
-        S = input().rstrip()
-        if (S in st): continue
-        print(i+1)
-        st.add(S)
+    H,W = inints()
+    if (H > W): H,W=W,H
+    if (H==1):
+        print(W);return
+    nh = (H+1)//2
+    nw = (W+1)//2
+    print(nh*nw)
+            
 
 
 

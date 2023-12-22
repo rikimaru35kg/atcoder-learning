@@ -97,8 +97,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint1000000007;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -109,43 +109,34 @@ using namespace atcoder;
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-// Sはモノイド（各マスのイメージ）の元の型。mapping Fを定義する際に幅がないとFで更新できないので、区間加算などの時はstructにする
-// opはモノイドの元同士の演算（区間取得するときに必要）
-// e()はモノイドの単位元を返す関数
-// Fは更新写像を定義する為に必要な型（単に値を足すだけならintで良い）。例えばf(S)=S+10という写像（加算更新）があったとすると、fは10で定義されるので、Fの型はintで良い
-// mappingはSにFを適用させる関数。
-// compositionはfとgの合成関数を定義する。
-// id()は恒等写像、すなわち値を変化させない写像を定義する
-// 区間更新・区間最大値取得（RUQ+RMAXQ）=========================
-using S = long long;
-using F = long long;
-
-const S UNIT = -8e18;
-const F ID = -8e18;
-
-S op(S a, S b){ return std::max(a, b); }
-S e(){ return UNIT; }
-S mapping(F f, S x){ return (f == ID ? x : f); }
-F composition(F f, F g){ return (f == ID ? g : f); }
-F id(){ return ID; }
-// 書き方例
-// vector<S> v(N);
-// lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, N);
-    vector<S> v(W+10);
-    lazy_segtree<S, op, e, F, mapping, composition, id> seg(v);
-    seg.apply(0, W+1, 0);
+    LONG(N, Q);
+    vl A, B;
+    ll amx = -INF, amn = INF;
+    ll bmx = -INF, bmn = INF;
     rep (i, N) {
-        LONGM(l, r);
-        ll mx = seg.prod(l, r+1);
-        Out(mx+1)
-        seg.apply(l, r+1, mx+1);
+        LONG(x, y);
+        ll a = x-y, b = x+y;
+        A.push_back(a);
+        B.push_back(b);
+        chmax(amx, a);
+        chmin(amn, a);
+        chmax(bmx, b);
+        chmin(bmn, b);
     }
-    
+    de(A)de(B)
+    rep (i, Q) {
+        LONGM(q);
+        ll a = A[q], b = B[q];
+        ll ans = -INF;
+        chmax(ans, llabs(a - amx));
+        chmax(ans, llabs(a - amn));
+        chmax(ans, llabs(b - bmx));
+        chmax(ans, llabs(b - bmn));
+        printf("%lld\n", ans);
+    }
     
 }
 

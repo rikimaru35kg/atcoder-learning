@@ -870,10 +870,11 @@
 - [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 
 ## マンハッタン距離
-- 45度回転した座標系を(a,b)とすると、max(ai-aj, bi-bj)がマンハッタン距離となる
+- 45度回転（して√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)がマンハッタン距離となる
 - maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
 ### 例題
 - [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
+- [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 
 ## パスカルの三角形
 - 各行の総和は2^行番号となる
