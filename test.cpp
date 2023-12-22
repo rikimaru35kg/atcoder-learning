@@ -99,51 +99,32 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 #include <atcoder/all>
 using namespace atcoder;
-// using mint = modint1000000007;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-
-ll op(ll a, ll b) {
-    return max(a, b);
-}
-ll e() {return -INF;}
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, N);
-    ll Wmax = W;
-    segtree<ll,op,e> dp(Wmax+1);
-    dp.set(0, 0);
-    rep (i, N) {
-        de(i)de("----------")
-        LONG(l, r, v);
-        segtree<ll,op,e> p(Wmax+1);
-        swap(p, dp);
-        rep (j, Wmax+1) {
-            ll x = max(p.get(j), dp.get(j));
-            dp.set(j, x);
-            de(j)de(x)
-            if (j-l < 0) continue;
-            ll mn = clamp(j-r, 0LL, j-1);
-            ll mx = clamp(j-l, 0LL, j-1);
-            ll y = p.prod(mn, mx+1);
-            // if (y + v > Wmax) continue;
-            ll z = y + v;
-            if (y == -INF) z = -INF;
-            dp.set(j, max(z, x));
-            de(y+v)
+    LONG(K);
+    if (K%9 != 0) {
+        Out(0) return 0;
+    }
+    vm dp(K+1);
+    dp[0] = 1;
+    rep (i, K) {
+        rep1 (j, 9) {
+            if (i+j > K) continue;
+            dp[i+j] += dp[i];
         }
     }
-    ll ans = dp.get(Wmax);
-    if (ans == -INF) ans = -1;
-    Out(ans)
+    Out(dp[K].val())
     
 }
 
