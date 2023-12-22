@@ -812,10 +812,12 @@
 - atcoder libraryで使える
 - 区間更新・加算、区間min・max・和取得などができる
 - モノイドであればセグ木にのる
+- セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
 ### 例題
 - [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - 想定解は違うがセグ木で殴った [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - セグ木の典型 [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
+- セグ木 x DP [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる

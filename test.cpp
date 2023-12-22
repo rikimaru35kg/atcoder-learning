@@ -97,8 +97,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint1000000007;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -109,34 +109,41 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+ll op(ll a, ll b) {
+    return max(a, b);
+}
+ll e() {return -INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl A, B;
-    ll amx = -INF, amn = INF;
-    ll bmx = -INF, bmn = INF;
+    LONG(W, N);
+    ll Wmax = W;
+    segtree<ll,op,e> dp(Wmax+1);
+    dp.set(0, 0);
     rep (i, N) {
-        LONG(x, y);
-        ll a = x-y, b = x+y;
-        A.push_back(a);
-        B.push_back(b);
-        chmax(amx, a);
-        chmin(amn, a);
-        chmax(bmx, b);
-        chmin(bmn, b);
+        de(i)de("----------")
+        LONG(l, r, v);
+        segtree<ll,op,e> p(Wmax+1);
+        swap(p, dp);
+        rep (j, Wmax+1) {
+            ll x = max(p.get(j), dp.get(j));
+            dp.set(j, x);
+            de(j)de(x)
+            if (j-l < 0) continue;
+            ll mn = clamp(j-r, 0LL, j-1);
+            ll mx = clamp(j-l, 0LL, j-1);
+            ll y = p.prod(mn, mx+1);
+            // if (y + v > Wmax) continue;
+            ll z = y + v;
+            if (y == -INF) z = -INF;
+            dp.set(j, max(z, x));
+            de(y+v)
+        }
     }
-    de(A)de(B)
-    rep (i, Q) {
-        LONGM(q);
-        ll a = A[q], b = B[q];
-        ll ans = -INF;
-        chmax(ans, llabs(a - amx));
-        chmax(ans, llabs(a - amn));
-        chmax(ans, llabs(b - bmx));
-        chmax(ans, llabs(b - bmn));
-        printf("%lld\n", ans);
-    }
+    ll ans = dp.get(Wmax);
+    if (ans == -INF) ans = -1;
+    Out(ans)
     
 }
 
