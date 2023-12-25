@@ -281,6 +281,13 @@
 - 本番では尺取りを使わなかったが… [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
 - [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 
+## 半分全列挙
+- N=40程度のとき、2^NはTLEするが2^(N/2)であればTLEしない事を利用
+- 数列を半分に分け、それぞれで全探索する
+- その後、問題に応じて上手く組み合わせる事ができるのであれば使えるアルゴリズムである
+### 例題
+- [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
+
 # 区間和
 
 ## 累積和

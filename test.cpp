@@ -108,40 +108,55 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using T = tuple<ll,ll,ll,ll>;
 
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INT(H, W);
-    INTM(si, sj);
-    INTM(gi, gj);
-    VS(S, H);
-    vvvl dist(H, vvl(W, vl(4, INF)));
-    rep (i, 4) dist[si][sj][i] = 0;
-    priority_queue<T,vector<T>,greater<T>> pq;
-    rep (i, 4) pq.emplace(0, si, sj, i);
-    auto push = [&](int i, int j, int dir, int dis) {
-        if (i<0 || i>=H || j<0 || j>=W) return;
-        if (S[i][j] == '#') return;
-        if (dist[i][j][dir] <= dis) return;
-        dist[i][j][dir] = dis;
-        pq.emplace(dis, i, j, dir);
+    LONG(N, K, P);
+    vl a, b;
+    rep (i, N) {
+        LONG(x);
+        if (i%2==0) a.push_back(x);
+        else b.push_back(x);
+    }
+    ll na = SIZE(a), nb = SIZE(b);
+    vvl cola(K+1), colb(K+1);
+    vl aa, bb;
+    auto f = [&](ll na, vl &a, vvl &cola, vl &aa) {
+        rep (s, 1<<na) {
+            ll cnt = __builtin_popcountll(s);
+            if (cnt > K) continue;
+            ll now = 0;
+            rep (i, na)  if (s>>i&1) now += a[i];
+            cola[cnt].push_back(now);
+            aa.push_back(now);
+        }
     };
-    while (pq.size()) {
-        auto [dis, i, j, dir] = pq.top(); pq.pop();
-        int ni = i + di[dir];
-        int nj = j + dj[dir];
-        push(ni, nj, dir, dist[i][j][dir]);
-        rep (ndir, 4) {
-            if (ndir == dir) continue;
-            push(i, j, ndir, dist[i][j][dir]+1);
+    f(na, a, cola, aa);
+    f(nb, b, colb, bb);
+    rep (i, SIZE(colb)) sort(all(colb[i]));
+    ll ans = 0;
+    rep (i, K+1) {
+        for (auto x: cola[i]) {
+            ll r = P - x;
+            auto [k, y] = lowbou_r(colb[K-i], r);
+            ans += (k+1);
         }
     }
-    ll ans = INF;
-    rep (i, 4) chmin(ans, dist[gi][gj][i]);
     Out(ans)
-
     
 }
 
