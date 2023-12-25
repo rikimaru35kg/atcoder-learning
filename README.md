@@ -678,6 +678,7 @@
 - 0コスト辺の場合、接続先頂点をqueのfrontに、1コスト辺の場合、接続先頂点をqueのbackにpushする事で実装可能
 - 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
 ### 例題
+- [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
 - [E- Biship 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
 - [D - Wizard in Maze](成分atcoder.jp/contests/abc176/tasks/abc176_d)
 

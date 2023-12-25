@@ -97,34 +97,51 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+using T = tuple<ll,ll,ll,ll>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    if (K%9 != 0) {
-        Out(0) return 0;
-    }
-    vm dp(K+1);
-    dp[0] = 1;
-    rep (i, K) {
-        rep1 (j, 9) {
-            if (i+j > K) continue;
-            dp[i+j] += dp[i];
+    INT(H, W);
+    INTM(si, sj);
+    INTM(gi, gj);
+    VS(S, H);
+    vvvl dist(H, vvl(W, vl(4, INF)));
+    rep (i, 4) dist[si][sj][i] = 0;
+    priority_queue<T,vector<T>,greater<T>> pq;
+    rep (i, 4) pq.emplace(0, si, sj, i);
+    auto push = [&](int i, int j, int dir, int dis) {
+        if (i<0 || i>=H || j<0 || j>=W) return;
+        if (S[i][j] == '#') return;
+        if (dist[i][j][dir] <= dis) return;
+        dist[i][j][dir] = dis;
+        pq.emplace(dis, i, j, dir);
+    };
+    while (pq.size()) {
+        auto [dis, i, j, dir] = pq.top(); pq.pop();
+        int ni = i + di[dir];
+        int nj = j + dj[dir];
+        push(ni, nj, dir, dist[i][j][dir]);
+        rep (ndir, 4) {
+            if (ndir == dir) continue;
+            push(i, j, ndir, dist[i][j][dir]+1);
         }
     }
-    Out(dp[K].val())
+    ll ans = INF;
+    rep (i, 4) chmin(ans, dist[gi][gj][i]);
+    Out(ans)
+
     
 }
 
