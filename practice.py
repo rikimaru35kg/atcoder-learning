@@ -27,15 +27,16 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
+from collections import deque
+
 def main():
-    A,M,L,R = inints()
-    l = (L-A+M-1)//M
-    r = (R-A)//M
-    ans = r-l+1
-    print(ans)
-            
-
-
+    deq = deque()
+    Q = inint()
+    for _ in range(Q):
+        t,x = inints()
+        if (t==1): deq.appendleft(x)
+        if (t==2): deq.append(x)
+        if (t==3): print(deq[x-1])
 
 if __name__ == '__main__':
     main()

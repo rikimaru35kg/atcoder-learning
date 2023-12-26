@@ -411,6 +411,7 @@
 ### 例題
 - 単純なfunctional graphだが、サイクル検出の難しさを考えさせられる良問 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
 - これもfunctional graphだが、自己ループあり[E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
+- ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
@@ -665,6 +666,7 @@
 - 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
 ### 例題
 - [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- LIS+少しのひねり [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 
 # 最短経路問題
 - 重み無しグラフの最短経路問題はBFSで解ける（始点が複数あってもOK！）
@@ -925,12 +927,13 @@
 - 自力で性質を考えてACしたが、グラフのまま考えればより自明に解が求まる [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
 ## コロンブスの卵
-- 固定するものを入れ替える事で探索量が減りケースあり
+- 固定するものを入れ替える事で探索量が減るケースあり
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
 - [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 - [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
+- [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 
 ## 殆どOKなゲーム
 - 殆どの手はOKだが、最後の方だけ気を付けないといけないゲーム

@@ -109,54 +109,39 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, P);
-    vl a, b;
+    LONG(N);
+    vl L(N), R(N);
     rep (i, N) {
-        LONG(x);
-        if (i%2==0) a.push_back(x);
-        else b.push_back(x);
+        LONG(l, r);
+        L[i] = l, R[i] = r;
     }
-    ll na = SIZE(a), nb = SIZE(b);
-    vvl cola(K+1), colb(K+1);
-    vl aa, bb;
-    auto f = [&](ll na, vl &a, vvl &cola, vl &aa) {
-        rep (s, 1<<na) {
-            ll cnt = __builtin_popcountll(s);
-            if (cnt > K) continue;
-            ll now = 0;
-            rep (i, na)  if (s>>i&1) now += a[i];
-            cola[cnt].push_back(now);
-            aa.push_back(now);
-        }
-    };
-    f(na, a, cola, aa);
-    f(nb, b, colb, bb);
-    rep (i, SIZE(colb)) sort(all(colb[i]));
-    ll ans = 0;
-    rep (i, K+1) {
-        for (auto x: cola[i]) {
-            ll r = P - x;
-            auto [k, y] = lowbou_r(colb[K-i], r);
-            ans += (k+1);
-        }
+    double tot = 1;
+    rep (i, N) {
+        tot *= R[i] - L[i] + 1;
     }
-    Out(ans)
+    de(tot)
+    double ans = 0;
+    rep (j, N) rep (i, j) {
+        ll l1 = L[i], r1 = R[i];
+        ll l2 = L[j], r2 = R[j];
+        ll s1 = r1 - l1 + 1;
+        ll s2 = r2 - l2 + 1;
+        ll now = 0;
+        repk (k, l1, r1+1) {
+            now += max(k - l2, 0LL);
+            now -= max(k - (r2 + 1), 0LL);
+        }
+        de(i)de(j)de(now)
+        ans += (double)now * ((double)tot / s1 / s2);
+    }
+    de(ans)
+    rep (i, N) {
+        ans /= (double)(R[i] - L[i] + 1);
+    }
+    printf("%.10f\n", ans);
     
 }
 
