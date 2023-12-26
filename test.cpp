@@ -54,6 +54,7 @@ using cd = complex<double>;
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
+#define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
@@ -71,6 +72,7 @@ inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.pus
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
+inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
@@ -108,40 +110,55 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+//! e.g.) n=6, k=2, digit=5
+//! ret = {0, 0, 1, 1, 0}
+//! e.g.) n=10, k=3
+//! ret = {1, 0, 1}
+vector<long long> num_to_kbase (long long n, long long k, long long digit=0) {
+    vector<long long> ret;
+    if (n == 0) ret.push_back(0);
+    else {
+        while (n > 0) {
+            ret.push_back(n % k);
+            n /= k;
+        }
+    }
+    if (digit == 0) {
+        reverse(ret.begin(), ret.end());
+        return ret;
+    }
 
+    while ((long long)ret.size() < digit) {
+        ret.push_back(0);
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl L(N), R(N);
-    rep (i, N) {
-        LONG(l, r);
-        L[i] = l, R[i] = r;
-    }
-    double tot = 1;
-    rep (i, N) {
-        tot *= R[i] - L[i] + 1;
-    }
-    de(tot)
-    double ans = 0;
-    rep (j, N) rep (i, j) {
-        ll l1 = L[i], r1 = R[i];
-        ll l2 = L[j], r2 = R[j];
-        ll s1 = r1 - l1 + 1;
-        ll s2 = r2 - l2 + 1;
+    STRING(N);
+    LONG(K);
+    vl vec = num_to_kbase(K, 2, 3);
+    de(vec)
+    auto change = [&](string eight) -> string {
+        if (eight == "0") return "0";
+        string ret;
         ll now = 0;
-        repk (k, l1, r1+1) {
-            now += max(k - l2, 0LL);
-            now -= max(k - (r2 + 1), 0LL);
+        rep (i, SIZE(eight)) now = now * 8 + eight[i] - '0';
+        while (now > 0) {
+            ll x = now % 9;
+            if (x == 8) x = 5;
+            ret += x + '0';
+            now /= 9;
         }
-        de(i)de(j)de(now)
-        ans += (double)now * ((double)tot / s1 / s2);
+        reverse(all(ret));
+        return ret;
+    };
+    rep (i, K) {
+        N = change(N);
     }
-    de(ans)
-    rep (i, N) {
-        ans /= (double)(R[i] - L[i] + 1);
-    }
-    printf("%.10f\n", ans);
+    Out(N)
     
 }
 

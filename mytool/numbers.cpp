@@ -7,9 +7,12 @@ using namespace std;
 //! ret = {1, 0, 1}
 vector<long long> num_to_kbase (long long n, long long k, long long digit=0) {
     vector<long long> ret;
-    while (n > 0) {
-        ret.push_back(n % k);
-        n /= k;
+    if (n == 0) ret.push_back(0);
+    else {
+        while (n > 0) {
+            ret.push_back(n % k);
+            n /= k;
+        }
     }
     if (digit == 0) {
         reverse(ret.begin(), ret.end());
