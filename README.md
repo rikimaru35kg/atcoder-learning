@@ -906,6 +906,11 @@
 ### 例題
 - [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
 
+## クエリ先読み
+- クエリを先読みすると楽に処理できる事がある
+### 例題
+- [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+
 ## XY独立に考える
 ### 例題
 - [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)

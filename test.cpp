@@ -99,8 +99,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -110,55 +110,46 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! e.g.) n=6, k=2, digit=5
-//! ret = {0, 0, 1, 1, 0}
-//! e.g.) n=10, k=3
-//! ret = {1, 0, 1}
-vector<long long> num_to_kbase (long long n, long long k, long long digit=0) {
-    vector<long long> ret;
-    if (n == 0) ret.push_back(0);
-    else {
-        while (n > 0) {
-            ret.push_back(n % k);
-            n /= k;
-        }
-    }
-    if (digit == 0) {
-        reverse(ret.begin(), ret.end());
-        return ret;
-    }
 
-    while ((long long)ret.size() < digit) {
-        ret.push_back(0);
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(N);
-    LONG(K);
-    vl vec = num_to_kbase(K, 2, 3);
-    de(vec)
-    auto change = [&](string eight) -> string {
-        if (eight == "0") return "0";
-        string ret;
-        ll now = 0;
-        rep (i, SIZE(eight)) now = now * 8 + eight[i] - '0';
-        while (now > 0) {
-            ll x = now % 9;
-            if (x == 8) x = 5;
-            ret += x + '0';
-            now /= 9;
+    LONG(N);
+    LONG(Q);
+    vector<tuple<ll,ll,ll>> query0, query1;
+    vector<tuple<ll,ll,ll,ll>> queries;
+    rep (i, Q) {
+        LONG(t); LONGM(x, y); LONG(v);
+        if (t == 0) {
+            query0.emplace_back(x, y, v);
+
+        } else {
+            query1.emplace_back(x, y, v);
         }
-        reverse(all(ret));
-        return ret;
-    };
-    rep (i, K) {
-        N = change(N);
+        queries.emplace_back(t, x, y, v);
     }
-    Out(N)
+    sort(all(query0));
+    vl A(N);
+    for (auto [x, y, v]: query0) {
+        A[y] = v - A[x];
+    }
+    dsu uf(N);
+    rep (i, Q) {
+        auto [t, x, y, v] = queries[i];
+        if (t == 0) uf.merge(x, y);
+        else {
+            if (!uf.same(x, y)) {
+                puts("Ambiguous");
+                continue;
+            }
+            ll diff = v - A[x];
+            ll ans;
+            if ((x-y)%2 == 0) {
+                ans = A[y] + diff;
+            } else ans = A[y] - diff;
+            Out(ans)
+        }
+    }
     
 }
 
