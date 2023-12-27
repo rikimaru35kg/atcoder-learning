@@ -99,44 +99,50 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-//! Calculate Manhattan distance
-long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += abs(p1.first - p2.first);
-    ret += abs(p1.second - p2.second);
-    return ret;
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl X(N), Y(N);
+    vi C(N);
     rep (i, N) {
-        LONG(x, y);
-        X[i] = x;
-        Y[i] = y;
+        CHAR(x);
+        if (x == 'a') C[i] = 1;
+        else C[i] = 2;
     }
-    sort(all(X));
-    sort(all(Y));
-    ll ans = 0;
-    ll mx = X[N/2];
-    ll my = Y[N/2];
-    rep (i, N) {
-        ans += manhattan_dist({mx, my}, {X[i], Y[i]});
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    Out(ans)
 
+    vvm dp(N, vm(4));
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        dp[v][C[v]] = 1;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            f(f, nv, v);
+            mint tmp = dp[v][C[v]] * (dp[nv][C[v]] + dp[nv][3]);
+            dp[v][3] =   dp[v][3]    * (dp[nv][1]+dp[nv][2]+dp[nv][3]*2)
+                       + dp[v][C[v]] * (dp[nv][3-C[v]]+dp[nv][3]);
+            dp[v][C[v]] = tmp;
+        }
+        de(v)de(dp[v])
+    };
+    dfs(dfs, 0);
+    Out(dp[0][3].val())
     
 }
 

@@ -631,6 +631,12 @@
 - [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 - 繰り下がり型DP [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 
+## 木DP
+- DFSをしながら部分木に対する処理を実行していく
+- 潜った直後に処理すれば、部分木に対する処理は終わっているはず
+### 例題
+- 典型90からの出題だが難しめ [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu)
+
 ## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
 - ただし、i=0以外ににも始点がある場合、遡るのを途中でやめなければならない
