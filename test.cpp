@@ -99,51 +99,40 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vi C(N);
-    rep (i, N) {
-        CHAR(x);
-        if (x == 'a') C[i] = 1;
-        else C[i] = 2;
-    }
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-
-    vvm dp(N, vm(4));
-    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
-        dp[v][C[v]] = 1;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            f(f, nv, v);
-            mint tmp = dp[v][C[v]] * (dp[nv][C[v]] + dp[nv][3]);
-            dp[v][3] =   dp[v][3]    * (dp[nv][1]+dp[nv][2]+dp[nv][3]*2)
-                       + dp[v][C[v]] * (dp[nv][3-C[v]]+dp[nv][3]);
-            dp[v][C[v]] = tmp;
+    VL(A, N);
+    ll sum = accumulate(all(A), 0LL);
+    if (sum % 10 != 0) PNo
+    sum /= 10;
+    rep (i, N) A.push_back(A[i]);
+    N *= 2;
+    int r = 0;
+    ll now = 0;
+    rep (l, N) {
+        while (r < N && now + A[r] <= sum) {
+            now += A[r];
+            ++r;
         }
-        de(v)de(dp[v])
-    };
-    dfs(dfs, 0);
-    Out(dp[0][3].val())
-    
+        if (now == sum) PYes
+        de(l)de(now)
+        now -= A[l];
+    }
+    PNo
 }
 
 // ### test.cpp ###
