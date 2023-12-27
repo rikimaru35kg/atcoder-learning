@@ -913,6 +913,7 @@
 
 ## XY独立に考える
 ### 例題
+- [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
 - [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
 
 ## 操作列を考える

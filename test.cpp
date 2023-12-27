@@ -99,8 +99,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -110,46 +110,33 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+//! Calculate Manhattan distance
+long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += abs(p1.first - p2.first);
+    ret += abs(p1.second - p2.second);
+    return ret;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    LONG(Q);
-    vector<tuple<ll,ll,ll>> query0, query1;
-    vector<tuple<ll,ll,ll,ll>> queries;
-    rep (i, Q) {
-        LONG(t); LONGM(x, y); LONG(v);
-        if (t == 0) {
-            query0.emplace_back(x, y, v);
+    vl X(N), Y(N);
+    rep (i, N) {
+        LONG(x, y);
+        X[i] = x;
+        Y[i] = y;
+    }
+    sort(all(X));
+    sort(all(Y));
+    ll ans = 0;
+    ll mx = X[N/2];
+    ll my = Y[N/2];
+    rep (i, N) {
+        ans += manhattan_dist({mx, my}, {X[i], Y[i]});
+    }
+    Out(ans)
 
-        } else {
-            query1.emplace_back(x, y, v);
-        }
-        queries.emplace_back(t, x, y, v);
-    }
-    sort(all(query0));
-    vl A(N);
-    for (auto [x, y, v]: query0) {
-        A[y] = v - A[x];
-    }
-    dsu uf(N);
-    rep (i, Q) {
-        auto [t, x, y, v] = queries[i];
-        if (t == 0) uf.merge(x, y);
-        else {
-            if (!uf.same(x, y)) {
-                puts("Ambiguous");
-                continue;
-            }
-            ll diff = v - A[x];
-            ll ans;
-            if ((x-y)%2 == 0) {
-                ans = A[y] + diff;
-            } else ans = A[y] - diff;
-            Out(ans)
-        }
-    }
     
 }
 
