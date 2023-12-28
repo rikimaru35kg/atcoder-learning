@@ -99,52 +99,47 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    auto divs = listup_divisor(K);
-    int N = SIZE(divs);
-    de(divs)
-    set<vl> st;
-    rep (j, N) rep (i, N) {
-        ll a = divs[i], b = divs[j];
-        ll k = K;
-        if (k % a != 0) continue;
-        k /= a;
-        if (k % b != 0) continue;
-        k /= b;
-        // if (k != 1){
-            ll c = k; 
-            vl vec = {a, b, c};
-            sort(all(vec));
-            st.insert(vec);
-        // }
+    LONG(N, Q);
+    vector<tuple<ll,ll,ll,ll>> queries;
+    rep (i, Q) {
+        LONGM(x, y, z); LONG(w);
+        queries.emplace_back(x, y, z, w);
     }
-    Out(st.size())
+    ll M = 60;
+    mint ans = 1;
+    rep (d, M) {
+        mint now = 0;
+        rep (s, 1<<N) {
+            bool ok = true;
+            rep (q, Q) {
+                auto [x, y, z, w] = queries[q];
+                w = w>>d&1;
+                int m = 0;
+                m |= s>>x&1;
+                m |= s>>y&1;
+                m |= s>>z&1;
+                if (m != w) ok = false;
+            }
+            if(ok) now++;
+        }
+        ans *= now;
+    }
+    Out(ans.val())
     
 }
 

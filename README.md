@@ -923,6 +923,10 @@
 - [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
 - [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
 
+## bitごとに独立に考える
+### 例題
+- [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
+
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
 ### 例題
