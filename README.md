@@ -581,9 +581,11 @@
 - chmax(dp[i+1][j], dp[i][j]), chmax(dp[i][j+1], dp[i][j])であり、S[i]==T[j]のときのみchmax(dp[i+1][j+1], dp[i][j]+1)する（dpテーブルのiは1-indexed！）
 - dpテーブルは全て0で初期化すれば良い（たぶん…）
 - SとTでテーブルを書くと遷移がわかりやすい
+- 復元するには、dp[i][j]==dp[i-1][j]ならi--、dp[i][j]==dp[i][j-1]ならj--、両方偽なら文字S[i-1]を選択してi--,j--すれば良い
 ### 例題
 - LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)
 - LCSではないが似たようなDP [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
+- LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
 
 ## Z-algorithm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム

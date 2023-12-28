@@ -114,45 +114,31 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P, K);
-    VVL(A, N, N);
-
-    auto wf = [&](vvl A, ll x) -> ll {
-        rep (i, N) rep (j, N) if (A[i][j] == -1) A[i][j] = x;
-        rep (k, N) rep (i, N) rep (j, N) {
-            chmin(A[i][j], A[i][k] + A[k][j]);
-        }
-        int ret = 0;
-        rep (i, N) rep (j, N) {
-            if (A[i][j] != 0 && A[i][j] <= P) ++ret;
-        }
-        return ret/2;
-    };
-    ll tmp = wf(A, INF);
-    if (tmp == K) {
-        puts("Infinity"); return 0;
+    STRING(S, T);
+    ll N = SIZE(S), M = SIZE(T);
+    vvl dp(N+1, vl(M+1, -INF));
+    dp[0][0] = 0;
+    rep (i, N+1) rep (j, M+1) {
+        if (i+1 <= N) chmax(dp[i+1][j], dp[i][j]);
+        if (j+1 <= M) chmax(dp[i][j+1], dp[i][j]);
+        if (i+1 > N || j+1 > M) continue;
+        if (S[i] == T[j]) chmax(dp[i+1][j+1], dp[i][j] + 1);
     }
-    ll mx, mn;
-    {
-        ll l = 0, r = INF;
-        while (r -l > 1) {
-            ll m = (r+l)/2;
-            if (wf(A, m) >= K) l = m;
-            else r = m;
+    string ans = "";
+    ll i = N, j = M;
+    while (i > 0 && j > 0) {
+        ll cur = dp[i][j];
+        if (dp[i-1][j] == cur) {
+            --i; continue;
         }
-        mx = l;
-    }
-    {
-        ll l = 0, r = INF;
-        while (r -l > 1) {
-            ll m = (r+l)/2;
-            if (wf(A, m) > K) l = m;
-            else r = m;
+        if (dp[i][j-1] == cur) {
+            --j; continue;
         }
-        mn = l;
+        ans += S[i-1];
+        --i; --j;
     }
-    de(mn)de(mx)
-    Out(mx - mn)
+    reverse(all(ans));
+    Out(ans)
     
 }
 
