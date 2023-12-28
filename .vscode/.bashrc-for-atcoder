@@ -104,6 +104,7 @@ alias e='powershell.exe -command "Get-Clipboard" > in; a < in'
 alias ee='e 2>/dev/null'
 alias rm='rm -i'
 alias py='python3'
+alias b='python3 get_binary_number.py'
 alias p='powershell.exe -command "Get-Clipboard" > in; py practice.py < in'
 # My stacksize
 ulimit -s 1048576

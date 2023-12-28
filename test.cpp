@@ -110,29 +110,42 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll sum = accumulate(all(A), 0LL);
-    if (sum % 10 != 0) PNo
-    sum /= 10;
-    rep (i, N) A.push_back(A[i]);
-    N *= 2;
-    int r = 0;
-    ll now = 0;
-    rep (l, N) {
-        while (r < N && now + A[r] <= sum) {
-            now += A[r];
-            ++r;
-        }
-        if (now == sum) PYes
-        de(l)de(now)
-        now -= A[l];
+    LONG(K);
+    auto divs = listup_divisor(K);
+    int N = SIZE(divs);
+    de(divs)
+    set<vl> st;
+    rep (j, N) rep (i, N) {
+        ll a = divs[i], b = divs[j];
+        ll k = K;
+        if (k % a != 0) continue;
+        k /= a;
+        if (k % b != 0) continue;
+        k /= b;
+        // if (k != 1){
+            ll c = k; 
+            vl vec = {a, b, c};
+            sort(all(vec));
+            st.insert(vec);
+        // }
     }
-    PNo
+    Out(st.size())
+    
 }
 
 // ### test.cpp ###

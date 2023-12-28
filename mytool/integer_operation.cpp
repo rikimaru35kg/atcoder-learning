@@ -132,9 +132,12 @@ public:
 
 
 int main () {
-    Pascal p;
-    cout << p.nCr(66, 0) << endl;
-    cout << p.nCr(66, 66) << endl;
-    cout << p.nCr(67, 67) << endl;
+    long long K; cin >> K;
+    auto v = listup_divisor(K, true);
+    cout << v.size() << endl;
+    // Pascal p;
+    // cout << p.nCr(66, 0) << endl;
+    // cout << p.nCr(66, 66) << endl;
+    // cout << p.nCr(67, 67) << endl;
 
 }
