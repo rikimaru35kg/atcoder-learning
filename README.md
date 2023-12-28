@@ -259,6 +259,7 @@
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 - 二分探索に用いる関数で頭が混乱するが二分探索の本質を考えさせられる良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
+- [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。

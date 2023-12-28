@@ -99,47 +99,60 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<tuple<ll,ll,ll,ll>> queries;
-    rep (i, Q) {
-        LONGM(x, y, z); LONG(w);
-        queries.emplace_back(x, y, z, w);
-    }
-    ll M = 60;
-    mint ans = 1;
-    rep (d, M) {
-        mint now = 0;
-        rep (s, 1<<N) {
-            bool ok = true;
-            rep (q, Q) {
-                auto [x, y, z, w] = queries[q];
-                w = w>>d&1;
-                int m = 0;
-                m |= s>>x&1;
-                m |= s>>y&1;
-                m |= s>>z&1;
-                if (m != w) ok = false;
-            }
-            if(ok) now++;
+    LONG(N, P, K);
+    VVL(A, N, N);
+
+    auto wf = [&](vvl A, ll x) -> ll {
+        rep (i, N) rep (j, N) if (A[i][j] == -1) A[i][j] = x;
+        rep (k, N) rep (i, N) rep (j, N) {
+            chmin(A[i][j], A[i][k] + A[k][j]);
         }
-        ans *= now;
+        int ret = 0;
+        rep (i, N) rep (j, N) {
+            if (A[i][j] != 0 && A[i][j] <= P) ++ret;
+        }
+        return ret/2;
+    };
+    ll tmp = wf(A, INF);
+    if (tmp == K) {
+        puts("Infinity"); return 0;
     }
-    Out(ans.val())
+    ll mx, mn;
+    {
+        ll l = 0, r = INF;
+        while (r -l > 1) {
+            ll m = (r+l)/2;
+            if (wf(A, m) >= K) l = m;
+            else r = m;
+        }
+        mx = l;
+    }
+    {
+        ll l = 0, r = INF;
+        while (r -l > 1) {
+            ll m = (r+l)/2;
+            if (wf(A, m) > K) l = m;
+            else r = m;
+        }
+        mn = l;
+    }
+    de(mn)de(mx)
+    Out(mx - mn)
     
 }
 
