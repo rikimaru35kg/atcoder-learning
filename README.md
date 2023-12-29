@@ -692,6 +692,7 @@
 ### 例題
 - 累積和 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - セグ木 x DP [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- セグ木 x DP [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 
 # 最短経路問題
 - 重み無しグラフの最短経路問題はBFSで解ける（始点が複数あってもOK！）

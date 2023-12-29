@@ -101,40 +101,34 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+
+using S = ll;
+S op(S a, S b) {return max(a, b);}
+S e() {return -INF;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(x, y);
-        from[x].push_back(y);
-        from[y].push_back(x);
+    VL(H, N);
+    VL(A, N);
+    segtree<S,op,e> seg(N+1);
+    seg.set(0, 0);
+    rep (i, N) {
+        S mx = seg.prod(0, H[i]);
+        seg.set(H[i], mx + A[i]);
     }
-    vvm dp(N, vm(2));
-    auto dfs = [&](auto f, int v, int p=-1) -> void {
-        dp[v][0] = 1;
-        dp[v][1] = 1;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            f(f, nv, v);
-            dp[v][0] *= (dp[nv][0] + dp[nv][1]);
-            dp[v][1] *= dp[nv][0];
-        }
-    };
-    dfs(dfs, 0);
-    Out((dp[0][0] + dp[0][1]).val())
-
+    ll ans = seg.all_prod();
+    Out(ans)
     
 }
 
