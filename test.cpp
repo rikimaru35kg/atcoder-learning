@@ -114,30 +114,32 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S, T);
-    ll N = SIZE(S), M = SIZE(T);
-    vvl dp(N+1, vl(M+1, -INF));
-    dp[0][0] = 0;
-    rep (i, N+1) rep (j, M+1) {
-        if (i+1 <= N) chmax(dp[i+1][j], dp[i][j]);
-        if (j+1 <= M) chmax(dp[i][j+1], dp[i][j]);
-        if (i+1 > N || j+1 > M) continue;
-        if (S[i] == T[j]) chmax(dp[i+1][j+1], dp[i][j] + 1);
+    LONG(N, M);
+    vvl from(N);
+    rep (i, M) {
+        LONGM(x, y);
+        from[x].push_back(y);
     }
-    string ans = "";
-    ll i = N, j = M;
-    while (i > 0 && j > 0) {
-        ll cur = dp[i][j];
-        if (dp[i-1][j] == cur) {
-            --i; continue;
+    vb seen(N);
+    vl topol;
+    auto dfs = [&](auto f, ll v) -> void {
+        seen[v] = true;
+        for (auto nv: from[v]) if(!seen[nv]) f(f, nv);
+        topol.push_back(v);
+    };
+    rep (i, N) if (!seen[i]) dfs(dfs, i);
+    reverse(all(topol));
+    de(topol)
+    vl dp(N);
+    for (auto i: topol) {
+        for (auto nv: from[i]) {
+            chmax(dp[nv], dp[i]+1);
+            if(i==1){de(nv)de(dp)}
         }
-        if (dp[i][j-1] == cur) {
-            --j; continue;
-        }
-        ans += S[i-1];
-        --i; --j;
+        de(i)de(dp)
     }
-    reverse(all(ans));
+    ll ans = 0;
+    rep (i, N) chmax(ans, dp[i]);
     Out(ans)
     
 }
