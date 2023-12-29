@@ -655,6 +655,7 @@
 - dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
 - 後ろから考えていく場合でも、後ろの情報だけでは決まらない場合もある（例: D - ABS）。しかし必ずしも再起関数の先頭でreturnする必要はなく、最終的にきちんとreturnできれば良い。
 ### 例題
+- 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
 - [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 - [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 - 典型的な対戦ゲームだが、頭の整理に良い [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)

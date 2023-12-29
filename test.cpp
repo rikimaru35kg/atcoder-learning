@@ -114,33 +114,23 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep (i, M) {
-        LONGM(x, y);
-        from[x].push_back(y);
-    }
-    vb seen(N);
-    vl topol;
-    auto dfs = [&](auto f, ll v) -> void {
-        seen[v] = true;
-        for (auto nv: from[v]) if(!seen[nv]) f(f, nv);
-        topol.push_back(v);
-    };
-    rep (i, N) if (!seen[i]) dfs(dfs, i);
-    reverse(all(topol));
-    de(topol)
-    vl dp(N);
-    for (auto i: topol) {
-        for (auto nv: from[i]) {
-            chmax(dp[nv], dp[i]+1);
-            if(i==1){de(nv)de(dp)}
+    LONG(N, K);
+    VL(A, N);
+    vvb dp(K+1, vb(2));
+    vvb used(K+1, vb(2));
+    auto dfs = [&](auto f, ll k, ll p) -> bool {
+        if (used[k][p]) return dp[k][p];
+        used[k][p] = true;
+        bool ret = false;
+        for (auto a: A) {
+            if (k - a < 0) continue;
+            bool b = f(f, k-a, 1-p);
+            if (!b) ret = true;
         }
-        de(i)de(dp)
-    }
-    ll ans = 0;
-    rep (i, N) chmax(ans, dp[i]);
-    Out(ans)
+        return dp[k][p] = ret;
+    };
+    if (dfs(dfs, K, 0)) puts("First");
+    else puts("Second");
     
 }
 
