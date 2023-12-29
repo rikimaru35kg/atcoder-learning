@@ -99,38 +99,36 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    vvb dp(K+1, vb(2));
-    vvb used(K+1, vb(2));
-    auto dfs = [&](auto f, ll k, ll p) -> bool {
-        if (used[k][p]) return dp[k][p];
-        used[k][p] = true;
-        bool ret = false;
-        for (auto a: A) {
-            if (k - a < 0) continue;
-            bool b = f(f, k-a, 1-p);
-            if (!b) ret = true;
+    LONG(N, K); VL(A, N);
+    vm dp(K+1);
+    dp[0] = 1;
+    vm S(K+2, 1);
+    S[0] = 0;
+    rep (i, N) {
+        vm p(K+1);
+        swap(p, dp);
+        rep (j, K+1) {
+            ll l = max(j - A[i], 0LL);
+            dp[j] = S[j+1] - S[l];
         }
-        return dp[k][p] = ret;
-    };
-    if (dfs(dfs, K, 0)) puts("First");
-    else puts("Second");
+        rep (j, K+1) S[j+1] = S[j] + dp[j];
+    }
+    Out(dp[K].val())
     
 }
 

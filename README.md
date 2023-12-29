@@ -553,6 +553,10 @@
 - 全ての部分集合の部分和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
 - [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
+## ナップサックDP
+- 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
+- 全探索では計算量が間に合わず、幾つか要素がある場合はこれが使えないか検討してみる
+
 ## 個数制限なしナップサックDP
 - 通常のDPのように、i個目までを選んでという状態を取ってしまうと、個数制限がないのでiを1つ進めるたびにN回のループが発生してしまう
 - 重さ制限、残り体力など、通常2つ目に使う状態のみで実は十分。個数制限がない為、i個目まで使ってとか考える必要がないから
@@ -568,7 +572,7 @@
 - [E - Warp](https://atcoder.jp/contests/abc265/tasks/abc265_e)
 - 累積DP [E - Queen on Grid](https://atcoder.jp/contests/abc183/tasks/abc183_e)
 
-## 文字列の部分
+## 文字列の部分列
 - SがTのある要素を抜き取って並べたものであるとき、SはTの部分列という。連続していなくてもよい。連続している場合は部分文字列という。
 - 部分列であるかどうかの判定は、Tのidxを用意し、Sの各文字に対して文字が一致するまでidxを進める（範囲外アクセス注意）
 - idxが最後まで進んだら一致しなかったという事でアウト。
@@ -596,10 +600,6 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
-
-## ナップサックDP
-- 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
-- 全探索では計算量が間に合わず、幾つか要素がある場合はこれが使えないか検討してみる
 
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能
@@ -650,12 +650,13 @@
 ### 例題
 - 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 
-## 対戦ゲーム
+## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
 - dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
 - 後ろから考えていく場合でも、後ろの情報だけでは決まらない場合もある（例: D - ABS）。しかし必ずしも再起関数の先頭でreturnする必要はなく、最終的にきちんとreturnできれば良い。
 ### 例題
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
+- 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 - [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 - 典型的な対戦ゲームだが、頭の整理に良い [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
@@ -679,6 +680,13 @@
 ### 例題
 - [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - LIS+少しのひねり [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
+
+## DP高速化
+- 遷移するときのループ分をO(1)で実施する
+- 累積和やセグメント木が使える
+### 例題
+- 累積和 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
+- セグ木 x DP [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 
 # 最短経路問題
 - 重み無しグラフの最短経路問題はBFSで解ける（始点が複数あってもOK！）
@@ -846,7 +854,6 @@
 - [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - 想定解は違うがセグ木で殴った [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - セグ木の典型 [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
-- セグ木 x DP [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
