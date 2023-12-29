@@ -114,18 +114,27 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VVL(A, N, N);
-    vm dp(1<<N);
-    dp[0] = 1;
-    rep (s, 1<<N) {
-        ll ni = __builtin_popcount(s);
-        rep (j, N) {
-            if (s>>j&1) continue;
-            if (A[ni][j] == 0) continue;
-            dp[s|1<<j] += dp[s];
-        }
+    LONG(N);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(x, y);
+        from[x].push_back(y);
+        from[y].push_back(x);
     }
-    Out(dp[(1<<N)-1].val())
+    vvm dp(N, vm(2));
+    auto dfs = [&](auto f, int v, int p=-1) -> void {
+        dp[v][0] = 1;
+        dp[v][1] = 1;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            f(f, nv, v);
+            dp[v][0] *= (dp[nv][0] + dp[nv][1]);
+            dp[v][1] *= dp[nv][0];
+        }
+    };
+    dfs(dfs, 0);
+    Out((dp[0][0] + dp[0][1]).val())
+
     
 }
 

@@ -641,8 +641,10 @@
 
 ## 木DP
 - DFSをしながら部分木に対する処理を実行していく
+- dp[v][k]=頂点vを根とする部分木で状態kの時の場合の数などとすれば良い
 - 潜った直後に処理すれば、部分木に対する処理は終わっているはず
 ### 例題
+- 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 - 典型90からの出題だが難しめ [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu)
 
 ## DP経路復元
