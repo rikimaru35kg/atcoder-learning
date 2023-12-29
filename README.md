@@ -602,7 +602,7 @@
 - Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
 ## 区間DP
-- 列の中で隣り合うものを順に処理していく問題に活用可能
+- 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
 - widthを2～Nまで動かして、r=l+widthとする。lは0からN-widthまで動かす。repの終端条件が1ずれないように注意（1足さないと等号成立しない）！
 - 遷移させるとき、単にdp[l][k]とdp[k][r]と分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できないのか、よく考える事
@@ -611,7 +611,7 @@
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
-- 巡回セールスマン問題（TSP: Travelling Salesman Problem）が有名
+- 巡回セールスマン問題（TSP: Travelling Salesman Problem）やマッチング数が有名
 - 各頂点を1度だけ訪れるという条件がないとbitDPで解けないが、頂点間距離に三角不等式が成り立つならこの条件がなくても解ける（2度以上訪れるメリットがないので）
 - 集合から1つ取り除いたときの残りの集合との漸化式により解く
 - dp[1がn個のbit列] = dp[1がn-1個のbit列] + 1個を取り除いたときのコストなどとする
@@ -621,6 +621,7 @@
 - なお、遷移の順を単純に考えてBFSで実装する事も可能（下のE-Boosterはそうやって解いた）
 - 最短経路問題はforでも再帰でも解けそうだが、ゲームのように後ろからしか決まらないものは再帰でないと厳しい
 ### 例題
+- マッチング数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
 - [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
 - [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - 実装がやや大変 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
