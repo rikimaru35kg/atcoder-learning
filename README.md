@@ -634,6 +634,7 @@
 - 遷移が複雑なので、i桁目で0-9のどれを選ぶかのループ(rep(d, 10))を回し、その中でp[i][j][k] -> dp[ni][nj][nk]の遷移（すなわちni,nj,nk）がどうなるかのループを回した方が考えやすい
 - 引き算の筆算のように、下位桁から考えるDPもある。問題設定によるが、繰り下がりの有無で状態を持つ
 ### 例題
+- 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
 - [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
 - 難しいが練習になる [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)

@@ -99,99 +99,40 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-//! n*n matrix
-//! Currently, only operator* is defined.
-template <typename T>
-class Mat {
-    long long n; vector<vector<T>> a; long long mod;
-public:
-    // Initialize n*n matrix
-    Mat (long long n, const vector<vector<T>> &mat={}, long long mod=-1)
-    : n(n), a(n, vector<T>(n)), mod(mod) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
-                if (mod != -1) a[i][j] %= mod;
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        if (mod != -1) ret = Mat(n, ret.a, mod);
-        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-                if (mod != -1) ret.a[i][j] %= mod;
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-            if (mod != -1) ret[j] %= mod;
-        }
-        return ret;
-    }
-    // power k (A^k)
-    Mat pow(long long k) {
-        Mat ret = pow_recursive(*this, k);
-        return ret;
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(n);
-        if (mod != -1) ret = Mat(n, ret.a, mod);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
 #ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    long long MOD = 1e9+7;
-    LONG(N, K);
-    VVL(_A, N, N);
-    Mat<ll> A(N, _A, MOD);
-    A = A.pow(K);
-    ll ans = 0;
-    rep(i, N) rep (j, N) {
-        (ans += A.ij(i, j)) %= MOD;
+    STRING(K);
+    LONG(D);
+    vvm dp(D, vm(2));
+    dp[0][0] = 1;
+    rep (i, SIZE(K)) {
+        vvm p(D, vm(2));
+        swap(p, dp);
+        int x = K[i] - '0';
+        de(x)
+        rep (j, D) rep (k, 2) rep (d, 10) {
+            if (k == 0 && d > x) continue;
+            int nk = 1;
+            if (k == 0 && d == x) nk = 0;
+            dp[(j+d)%D][nk] += p[j][k];
+        }
+        de(dp)
     }
-    Out(ans)
+    mint ans = dp[0][0] + dp[0][1] - 1;
+    Out(ans.val())
     
 }
 
