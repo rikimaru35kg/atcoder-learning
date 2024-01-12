@@ -58,6 +58,8 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
+#define pcnt(x) __builtin_popcount(x)
+#define pcntll(x) __builtin_popcountll(x)
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -99,40 +101,41 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(K);
-    LONG(D);
-    vvm dp(D, vm(2));
-    dp[0][0] = 1;
-    rep (i, SIZE(K)) {
-        vvm p(D, vm(2));
-        swap(p, dp);
-        int x = K[i] - '0';
-        de(x)
-        rep (j, D) rep (k, 2) rep (d, 10) {
-            if (k == 0 && d > x) continue;
-            int nk = 1;
-            if (k == 0 && d == x) nk = 0;
-            dp[(j+d)%D][nk] += p[j][k];
-        }
-        de(dp)
+    INT(N, M);
+    vvb friends(N, vb(N));
+    rep (i, M) {
+        INTM(x, y);
+        friends[x][y] = true;
+        friends[y][x] = true;
     }
-    mint ans = dp[0][0] + dp[0][1] - 1;
-    Out(ans.val())
+    int ans = 0;
+    rep(s, 1<<N) {
+        bool ok = true;
+        rep (j, N) rep (i, j) {
+            if (~s>>j&1 || ~s>>i&1) continue;
+            if (!friends[i][j]) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) chmax(ans, pcntll(s));
+    }
+    Out(ans)
     
 }
 

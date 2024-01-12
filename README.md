@@ -1074,7 +1074,4 @@
 - 以下は最初に解いた115問。以降は[Atcoder Problemsで管理](https://kenkoooo.com/atcoder/#/table/)。ABCの過去問を解いている
 - 45問: 競プロ典型90問: （★4以下の全問->後ほど★5以下全問in2023/12/28）
 - 69問: 分野別　初中級者が解くべき過去問精選 100 問: （問1,10,17,18,24-25,28,32,34-38,44-46,48-49,53,56,60,64,66,68,70,82,85,92,94はatcoderでないためスキップ。52,75,84は難しい為スキップ）(memo) 4+2+2+5+3+2+9=28, 3
-- 1問: [N Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
-
-
-
+- 1問: [N Slimes](https://atcoder.jp/contests/dp/tasks/dp_n) -> 後ほどEDPC Sまで全問
