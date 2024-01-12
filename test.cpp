@@ -112,23 +112,39 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(P);
-    auto t = [&](double x) -> double {
-        return x + P*pow(2, -x/1.5);
-    };
-    double l = 0, r = 1e18;
-    rep (_, 1000) {
-        double m1 = (2*l + r) / 3;
-        double m2 = (l + 2*r) / 3;
-        if (t(m1) < t(m2)) r = m2;
-        else l = m1;
-        de(l)de(r)de(t(r))
+    LONG(N, M); VL(P, N);
+    P.push_back(0);
+    N++;
+    vl P2;
+    rep (i, N) rep (j, N) {
+        P2.push_back(P[i]+P[j]);
     }
-    printf("%.10f\n", t(l));
+    sort(all(P2));
+    ll N2 = SIZE(P2);
+    ll ans = 0;
+    rep (i, N2) {
+        ll p = P2[i];
+        if (M-p<0) continue;
+        auto [k, x] = lowbou_r(P2, M-p);
+        if (k != -1) chmax(ans, p+x);
+    }
+    Out(ans)
     
 }
 
