@@ -116,26 +116,19 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INT(N, M);
-    vvb friends(N, vb(N));
-    rep (i, M) {
-        INTM(x, y);
-        friends[x][y] = true;
-        friends[y][x] = true;
+    DOUBLE(P);
+    auto t = [&](double x) -> double {
+        return x + P*pow(2, -x/1.5);
+    };
+    double l = 0, r = 1e18;
+    rep (_, 1000) {
+        double m1 = (2*l + r) / 3;
+        double m2 = (l + 2*r) / 3;
+        if (t(m1) < t(m2)) r = m2;
+        else l = m1;
+        de(l)de(r)de(t(r))
     }
-    int ans = 0;
-    rep(s, 1<<N) {
-        bool ok = true;
-        rep (j, N) rep (i, j) {
-            if (~s>>j&1 || ~s>>i&1) continue;
-            if (!friends[i][j]) {
-                ok = false;
-                break;
-            }
-        }
-        if (ok) chmax(ans, pcntll(s));
-    }
-    Out(ans)
+    printf("%.10f\n", t(l));
     
 }
 

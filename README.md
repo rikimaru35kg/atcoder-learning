@@ -266,9 +266,11 @@
 - 幅が2になるまでwhileループさせる
 - 最後はleftからrightまでの最小値を求めれば良い
 - 最小包含円のようにxy平面で凸な関数となる場合は二重に三分探索すれば良い
+- double型の三分探索はr-lの幅ではなく回数を決め打ちすると良いが、収束が意外に遅いので注意。(2/3)^100でも1e-17ぐらいなので、場合によっては100回では足りない
 ### 例題
 - [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
 - 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
+- double型の三分探索 [B - ムーアの法則](https://atcoder.jp/contests/arc054/tasks/arc054_b)
 
 ## 尺取り法
 - 単調性があるときに使用可能
