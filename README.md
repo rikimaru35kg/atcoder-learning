@@ -612,6 +612,7 @@
 - 遷移させるとき、単にdp[l][k]とdp[k][r]と分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できないのか、よく考える事
 ### 例題
 - [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
+- [Matrix Chain Multiplication](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_B&lang=ja)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
