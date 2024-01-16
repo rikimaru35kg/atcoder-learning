@@ -113,32 +113,36 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+void solve(ll N) {
+    VL(W, N);
+    vvl dp(N+1, vl(N+1));
+    // rep (i, N-1) {
+    //     if (abs(W[i]-W[i+1])<=1) dp[i][i+2] = 2;
+    // }
+    for(int w=2; w<=N; ++w) {
+        rep (l, N) {
+            int r = l + w;
+            if (r > N) break;
+            repk (k, l+1, r) {
+                chmax(dp[l][r], dp[l][k]+dp[k][r]);
+            }
+            if (dp[l+1][r-1]==r-l-2 && abs(W[l]-W[r-1])<=1) {
+                dp[l][r] = r-l;
+            }
+        }
+    }
+    Out(dp[0][N])
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl A;
-    rep (i, N) {
-        LONG(x);
-        A.push_back(x);
+    while (true) {
+        LONG(N);
+        if (N == 0) break;
+        solve(N);
     }
-    rep (i, N) A.push_back(A[i]);
-    de(A)
-    vvl dp(2*N+1, vl(2*N+1));
-    rep (i, 2*N) dp[i][i+1] = A[i];
-    for (int w=2; w<=N; ++w) {
-        rep (l, 2*N) {
-            int r = l + w;
-            if (r>2*N) break;
-            if (A[l]<A[r-2]) chmax(dp[l][r], dp[l][r-2] + A[r-1]);
-            else chmax(dp[l][r], dp[l+1][r-1] + A[r-1]);
-            if (A[l+1]<A[r-1]) chmax(dp[l][r], dp[l+1][r-1] + A[l]);
-            else chmax(dp[l][r], dp[l+2][r] + A[l]);
-        }
-    }
-    ll ans = 0;
-    rep (i, N) chmax(ans, dp[i][i+N]);
-    Out(ans)
+    
 }
 
 // ### test.cpp ###

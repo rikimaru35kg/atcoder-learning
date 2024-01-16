@@ -609,11 +609,12 @@
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
 - widthを2～Nまで動かして、r=l+widthとする。lは0からN-widthまで動かす。repの終端条件が1ずれないように注意（1足さないと等号成立しない）！
-- 遷移させるとき、単にdp[l][k]とdp[k][r]と分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できないのか、よく考える事
+- 遷移させるとき、単にdp[l][k]とdp[k][r]と必ず分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できない場合もあるのか、よく考える事（Daruma Otoshiが分割できない良い例）
 ### 例題
 - [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - [Matrix Chain Multiplication](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_B&lang=ja)
 - [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
+- [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
