@@ -117,26 +117,28 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl R(N), C(N);
+    vl A;
     rep (i, N) {
-        LONG(r, c);
-        R[i] = r;
-        C[i] = c;
+        LONG(x);
+        A.push_back(x);
     }
-    vvl dp(N, vl(N+1, INF));
-    rep (i, N) dp[i][i+1] = 0;
+    rep (i, N) A.push_back(A[i]);
+    de(A)
+    vvl dp(2*N+1, vl(2*N+1));
+    rep (i, 2*N) dp[i][i+1] = A[i];
     for (int w=2; w<=N; ++w) {
-        rep (l, N) {
-            int r = l+w;
-            if (r>N) continue;
-            repk (m, l+1, r) {
-                int x = R[l] * R[m] * C[r-1];
-                chmin(dp[l][r], dp[l][m]+dp[m][r] + x);
-            }
+        rep (l, 2*N) {
+            int r = l + w;
+            if (r>2*N) break;
+            if (A[l]<A[r-2]) chmax(dp[l][r], dp[l][r-2] + A[r-1]);
+            else chmax(dp[l][r], dp[l+1][r-1] + A[r-1]);
+            if (A[l+1]<A[r-1]) chmax(dp[l][r], dp[l+1][r-1] + A[l]);
+            else chmax(dp[l][r], dp[l+2][r] + A[l]);
         }
     }
-    Out(dp[0][N])
-    
+    ll ans = 0;
+    rep (i, N) chmax(ans, dp[i][i+N]);
+    Out(ans)
 }
 
 // ### test.cpp ###
