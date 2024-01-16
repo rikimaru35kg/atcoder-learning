@@ -606,7 +606,7 @@
 - Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
 ## 区間DP
-- 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)
+- 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
 - widthを2～Nまで動かして、r=l+widthとする。lは0からN-widthまで動かす。repの終端条件が1ずれないように注意（1足さないと等号成立しない）！
 - 遷移させるとき、単にdp[l][k]とdp[k][r]と必ず分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できない場合もあるのか、よく考える事（Daruma Otoshiが分割できない良い例）
@@ -710,10 +710,12 @@
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 移動する点が複数ある時は、その状態をqueueに入れてBFSなど可能
 - 2頂点を同時に動かす最短経路問題もある
+- 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 ### 例題
 - [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - 2頂点 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
+- 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能

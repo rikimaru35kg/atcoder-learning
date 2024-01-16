@@ -112,35 +112,41 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
-void solve(ll N) {
-    VL(W, N);
-    vvl dp(N+1, vl(N+1));
-    // rep (i, N-1) {
-    //     if (abs(W[i]-W[i+1])<=1) dp[i][i+2] = 2;
-    // }
-    for(int w=2; w<=N; ++w) {
-        rep (l, N) {
-            int r = l + w;
-            if (r > N) break;
-            repk (k, l+1, r) {
-                chmax(dp[l][r], dp[l][k]+dp[k][r]);
-            }
-            if (dp[l+1][r-1]==r-l-2 && abs(W[l]-W[r-1])<=1) {
-                dp[l][r] = r-l;
-            }
-        }
-    }
-    Out(dp[0][N])
-}
+struct Edge {
+    ll v, d,  t;
+    Edge(ll v, ll d, ll t): v(v), d(d), t(t) {}
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    while (true) {
-        LONG(N);
-        if (N == 0) break;
-        solve(N);
+    LONG(N, M);
+    vector<vector<Edge>> from(N);
+    rep (i, M) {
+        LONGM(u, v); LONG(d, t);
+        from[u].emplace_back(v, d, t);
+        from[v].emplace_back(u, d, t);
+    }
+    vvp dp(1<<N, vp(N, {INF, 0}));
+    dp[0][0] = {0, 1};
+    rep (s, 1<<N) {
+        rep (v, N) {
+            if (s==0 && v!=0) break;
+            if (s!=0 && ~s>>v&1) continue;
+            auto [ct, n] = dp[s][v];
+            for (auto [nv, d, t]: from[v]) {
+                auto [nt, nn] = dp[s|1<<nv][nv];
+                if (s>>nv&1) continue;
+                if (ct + d > t) continue;
+                if (ct + d < nt) dp[s|1<<nv][nv] = {ct+d, n};
+                if (ct + d == nt) dp[s|1<<nv][nv].second += n;
+            }
+        }
+    }
+    auto [a, b] = dp[(1<<N)-1][0];
+    if (a == INF) puts("IMPOSSIBLE");
+    else {
+        printf("%lld %lld\n", a, b);
     }
     
 }
