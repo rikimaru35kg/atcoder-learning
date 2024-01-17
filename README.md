@@ -618,6 +618,7 @@
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
+- N=20程度の場合、O(N!)は無理だがO(N*2^N)ならいける！などと制約から思いつくのも手
 - 巡回セールスマン問題（TSP: Travelling Salesman Problem）やマッチング数が有名
 - 各頂点を1度だけ訪れるという条件がないとbitDPで解けないが、頂点間距離に三角不等式が成り立つならこの条件がなくても解ける（2度以上訪れるメリットがないので）
 - 集合から1つ取り除いたときの残りの集合との漸化式により解く
@@ -633,6 +634,7 @@
 - [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - 実装がやや大変 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
 - bit DPである事を見抜くのが難しい [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
+- bit DPである事を見抜くのが難しい2 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
 
 ## 桁DP（Digit DP）
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく

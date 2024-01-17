@@ -112,42 +112,42 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct Edge {
-    ll v, d,  t;
-    Edge(ll v, ll d, ll t): v(v), d(d), t(t) {}
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vector<vector<Edge>> from(N);
-    rep (i, M) {
-        LONGM(u, v); LONG(d, t);
-        from[u].emplace_back(v, d, t);
-        from[v].emplace_back(u, d, t);
-    }
-    vvp dp(1<<N, vp(N, {INF, 0}));
-    dp[0][0] = {0, 1};
-    rep (s, 1<<N) {
-        rep (v, N) {
-            if (s==0 && v!=0) break;
-            if (s!=0 && ~s>>v&1) continue;
-            auto [ct, n] = dp[s][v];
-            for (auto [nv, d, t]: from[v]) {
-                auto [nt, nn] = dp[s|1<<nv][nv];
-                if (s>>nv&1) continue;
-                if (ct + d > t) continue;
-                if (ct + d < nt) dp[s|1<<nv][nv] = {ct+d, n};
-                if (ct + d == nt) dp[s|1<<nv][nv].second += n;
-            }
+    VLM(A, N);
+    vl n_st(M);
+    rep (i, N) n_st[A[i]]++;
+    vl s2num(1<<M);
+    rep (s, 1<<M) {
+        rep (i, M) {
+            if (~s>>i&1) continue;
+            s2num[s] += n_st[i];
         }
     }
-    auto [a, b] = dp[(1<<N)-1][0];
-    if (a == INF) puts("IMPOSSIBLE");
-    else {
-        printf("%lld %lld\n", a, b);
+    vvl S(M, vl(N+1));
+    rep (i, N) {
+        S[A[i]][i+1]++;
     }
+    rep (i, M) {
+        rep (j, N) {
+            S[i][j+1] += S[i][j];
+        }
+    }
+    vl dp(1<<M, INF);
+    dp[0] = 0;
+    rep (s, 1<<M) {
+        rep (i, M) {
+            if (s>>i&1) continue;
+            ll ns = s|1<<i;
+            ll l = s2num[s], r = s2num[ns];
+            ll num = (r - l) - (S[i][r] - S[i][l]);
+            chmin(dp[ns], dp[s]+num);
+        }
+    }
+    Out(dp[(1<<M)-1])
     
 }
 
