@@ -117,37 +117,32 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    VLM(A, N);
-    vl n_st(M);
-    rep (i, N) n_st[A[i]]++;
-    vl s2num(1<<M);
-    rep (s, 1<<M) {
-        rep (i, M) {
-            if (~s>>i&1) continue;
-            s2num[s] += n_st[i];
-        }
-    }
-    vvl S(M, vl(N+1));
-    rep (i, N) {
-        S[A[i]][i+1]++;
-    }
+    vl edges(N);
     rep (i, M) {
-        rep (j, N) {
-            S[i][j+1] += S[i][j];
-        }
+        LONGM(a, b);
+        edges[a] |= 1<<b;
+        edges[b] |= 1<<a;
     }
-    vl dp(1<<M, INF);
+    vl dp(1<<N, INF);
     dp[0] = 0;
-    rep (s, 1<<M) {
-        rep (i, M) {
-            if (s>>i&1) continue;
-            ll ns = s|1<<i;
-            ll l = s2num[s], r = s2num[ns];
-            ll num = (r - l) - (S[i][r] - S[i][l]);
-            chmin(dp[ns], dp[s]+num);
+    rep (s, 1<<N) {
+        if (s==0) continue;
+        ll x = s&(-s);
+        ll v = 0;
+        while (x>1) {
+            ++v;
+            x >>= 1;
+        }
+        ll ms = s ^ (1<<v);
+        if ((ms&edges[v]) == ms && dp[ms]<=1) dp[s] = 1;
+    }
+    rep (s, 1<<N) {
+        for (int u=s; u>0; u=(u-1)&s) {
+            ll t = s^u;
+            chmin(dp[s], dp[u]+dp[t]);
         }
     }
-    Out(dp[(1<<M)-1])
+    Out(dp[(1<<N)-1])
     
 }
 
