@@ -120,27 +120,23 @@ int main () {
     vvl dist(N, vl(N, INF));
     rep (i, N) dist[i][i] = 0;
     rep (i, M) {
-        LONG(s, t, d);
-        dist[s][t] = d;
+        LONGM(a, b); LONG(t);
+        dist[a][b] = t;
+        dist[b][a] = t;
     }
     rep (k, N) rep (i, N) rep (j, N) {
-        if (dist[i][k] == INF || dist[k][j] == INF) continue;
         chmin(dist[i][j], dist[i][k] + dist[k][j]);
     }
+    ll ans = INF;
     rep (i, N) {
-        if (dist[i][i]<0) {
-            puts("NEGATIVE CYCLE"); return 0;
-        }
-    }
-    rep (i, N) {
+        ll mx = 0;
         rep (j, N) {
-            char c = ' ';
-            if (j == N-1) c = '\n';
-            ll d = dist[i][j];
-            if (d == INF) printf("INF%c", c);
-            else printf("%lld%c", d, c);
+            chmax(mx, dist[i][j]);
         }
+        chmin(ans, mx);
     }
+    Out(ans)
+    
 }
 
 // ### test.cpp ###
