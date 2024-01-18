@@ -738,17 +738,19 @@
 ### 例題
 - [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 
-## ダイクストラ法（Dirkstra）
+## ダイクストラ法（Dijkstra）
 - 下記を繰り返していくことで、全頂点の距離を更新していき、最短経路を求める
 - 始点（複数可）は0、それ以外の全頂点にINFを代入
 - 確定された頂点に接続された頂点を更新
 - 未確定頂点の中から最小コスト頂点を確定（その他の頂点がその頂点の距離を更新する事がありえない為）
+- 負辺や負閉路があると使えない
 - 実装はpriority_queueを用いると簡単。pushした時点の距離が更新されていたらそのpop値は破棄する
 - しかしながら、完全グラフなど辺の数が多い場合は、O(N^2)で実装した方が速い。ヨビノリ動画の通りに素直に実装すれば良い。自分で解いた例は[こちら](https://atcoder.jp/contests/joi2014yo/submissions/42739462)
 - ダイクストラ木を構成するには、各頂点がどの辺を使って辿りついたのかをキューに入れるタイミングで記録する。計算過程では複数経路で同じ頂点に辿り付くが、最終的に使われた（＝距離を更新した）経路が正しい（自明）。
 ### 例題
 - 典型+α [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
+- Nの制約から工夫 [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
 
 ## 拡張ダイクストラ法
 - 頂点＋状態をキューに入れていくダイクストラ法

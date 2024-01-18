@@ -3,7 +3,7 @@
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using P = pair<ll, ll>;
+using P = pair<int,int>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -92,7 +92,8 @@ template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]
 #else
 #define de(var) {}
 #endif
-const ll INF = 3e18;
+// const ll INF = 3e18;
+const ll INF = 2e9;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
@@ -116,33 +117,54 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl edges(N);
-    rep (i, M) {
+    LONG(N, K);
+    vi C(N), R(N);
+    rep (i, N) {
+        LONG(c, r);
+        C[i] = c; R[i] = r;
+    }
+    vvi frm(N);
+    rep (i, K) {
         LONGM(a, b);
-        edges[a] |= 1<<b;
-        edges[b] |= 1<<a;
+        frm[a].push_back(b);
+        frm[b].push_back(a);
     }
-    vl dp(1<<N, INF);
-    dp[0] = 0;
-    rep (s, 1<<N) {
-        if (s==0) continue;
-        ll x = s&(-s);
-        ll v = 0;
-        while (x>1) {
-            ++v;
-            x >>= 1;
+    vvi dist(N, vi(N, INF));
+    auto bfs = [&](ll si) {
+        dist[si][si] = 0;
+        queue<int> que;
+        que.push(si);
+        while (que.size()) {
+            ll v = que.front(); que.pop();
+            for (auto nv: frm[v]) {
+                if (dist[si][nv] != INF) continue;
+                dist[si][nv] = dist[si][v] + 1;
+                que.push(nv);
+            }
         }
-        ll ms = s ^ (1<<v);
-        if ((ms&edges[v]) == ms && dp[ms]<=1) dp[s] = 1;
+    };
+    rep (i, N) bfs(i);
+    vvi from(N);
+    rep (i, N) rep (j, N) {
+        if (i == j) continue;
+        if (dist[i][j] <= R[i]) from[i].push_back(j);
     }
-    rep (s, 1<<N) {
-        for (int u=s; u>0; u=(u-1)&s) {
-            ll t = s^u;
-            chmin(dp[s], dp[u]+dp[t]);
+    vi cost(N, INF);
+    cost[0] = 0;
+    vb fix(N);
+    rep(_, N) {
+        P mn = {INF, -1};
+        rep (i, N) {
+            if (!fix[i]) chmin(mn, {cost[i], i});
+        }
+        auto [d, v] = mn;
+        fix[v] = true;
+        for (auto nv: from[v]) {
+            int nd = d + C[v];
+            chmin(cost[nv], nd);
         }
     }
-    Out(dp[(1<<N)-1])
+    Out(cost[N-1])
     
 }
 
