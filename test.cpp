@@ -116,26 +116,24 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
-    rep (i, N) dist[i][i] = 0;
-    rep (i, M) {
-        LONGM(a, b); LONG(t);
-        dist[a][b] = t;
-        dist[b][a] = t;
+    LONG(N);
+    VVL(A, N, N);
+    ll ans = 0;
+    rep (i, N) rep (j, N) {
+        ans += A[i][j];
     }
+    vvb used(N, vb(N));
     rep (k, N) rep (i, N) rep (j, N) {
-        chmin(dist[i][j], dist[i][k] + dist[k][j]);
-    }
-    ll ans = INF;
-    rep (i, N) {
-        ll mx = 0;
-        rep (j, N) {
-            chmax(mx, dist[i][j]);
+        if (i==k || k==j || j==i) continue;
+        if (A[i][j] > A[i][k] + A[k][j]) {
+            Out(-1) return 0;
         }
-        chmin(ans, mx);
+        if (!used[i][j] && A[i][j] == A[i][k] + A[k][j]) {
+            ans -= A[i][j];
+            used[i][j] = true;
+        }
     }
-    Out(ans)
+    Out(ans/2)
     
 }
 
