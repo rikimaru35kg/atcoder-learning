@@ -3,7 +3,7 @@
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using P = pair<int,int>;
+using P = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -92,8 +92,7 @@ template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]
 #else
 #define de(var) {}
 #endif
-// const ll INF = 3e18;
-const ll INF = 2e9;
+const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
@@ -117,55 +116,31 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vi C(N), R(N);
+    LONG(N, M);
+    vvl dist(N, vl(N, INF));
+    rep (i, N) dist[i][i] = 0;
+    rep (i, M) {
+        LONG(s, t, d);
+        dist[s][t] = d;
+    }
+    rep (k, N) rep (i, N) rep (j, N) {
+        if (dist[i][k] == INF || dist[k][j] == INF) continue;
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
+    }
     rep (i, N) {
-        LONG(c, r);
-        C[i] = c; R[i] = r;
-    }
-    vvi frm(N);
-    rep (i, K) {
-        LONGM(a, b);
-        frm[a].push_back(b);
-        frm[b].push_back(a);
-    }
-    vvi dist(N, vi(N, INF));
-    auto bfs = [&](ll si) {
-        dist[si][si] = 0;
-        queue<int> que;
-        que.push(si);
-        while (que.size()) {
-            ll v = que.front(); que.pop();
-            for (auto nv: frm[v]) {
-                if (dist[si][nv] != INF) continue;
-                dist[si][nv] = dist[si][v] + 1;
-                que.push(nv);
-            }
-        }
-    };
-    rep (i, N) bfs(i);
-    vvi from(N);
-    rep (i, N) rep (j, N) {
-        if (i == j) continue;
-        if (dist[i][j] <= R[i]) from[i].push_back(j);
-    }
-    vi cost(N, INF);
-    cost[0] = 0;
-    vb fix(N);
-    rep(_, N) {
-        P mn = {INF, -1};
-        rep (i, N) {
-            if (!fix[i]) chmin(mn, {cost[i], i});
-        }
-        auto [d, v] = mn;
-        fix[v] = true;
-        for (auto nv: from[v]) {
-            int nd = d + C[v];
-            chmin(cost[nv], nd);
+        if (dist[i][i]<0) {
+            puts("NEGATIVE CYCLE"); return 0;
         }
     }
-    Out(cost[N-1])
-    
+    rep (i, N) {
+        rep (j, N) {
+            char c = ' ';
+            if (j == N-1) c = '\n';
+            ll d = dist[i][j];
+            if (d == INF) printf("INF%c", c);
+            else printf("%lld%c", d, c);
+        }
+    }
 }
 
 // ### test.cpp ###
