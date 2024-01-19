@@ -116,24 +116,26 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VVL(A, N, N);
-    ll ans = 0;
-    rep (i, N) rep (j, N) {
-        ans += A[i][j];
-    }
-    vvb used(N, vb(N));
-    rep (k, N) rep (i, N) rep (j, N) {
-        if (i==k || k==j || j==i) continue;
-        if (A[i][j] > A[i][k] + A[k][j]) {
-            Out(-1) return 0;
-        }
-        if (!used[i][j] && A[i][j] == A[i][k] + A[k][j]) {
-            ans -= A[i][j];
-            used[i][j] = true;
+    LONG(Q);
+    ll M = 1e5;
+    vb sieve(M+1, true);
+    sieve[0] = false;
+    sieve[1] = false;
+    for (ll i=2; i<=M; ++i) {
+        if (!sieve[i]) continue;
+        for (ll j=i*i; j<=M; j+=i) {
+            sieve[j] = false;
         }
     }
-    Out(ans/2)
+    vl S(M+2);
+    rep (i, M+1) {
+        if (sieve[i] && sieve[(i+1)/2]) S[i+1]++;
+    }
+    rep (i, M+1) S[i+1] += S[i];
+    rep (i, Q) {
+        LONG(l, r);
+        printf("%lld\n", S[r+1] - S[l]);
+    }
     
 }
 

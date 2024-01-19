@@ -120,6 +120,8 @@
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
 - 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
 - 消す倍数はp^2以上の数でOK（i=p*pからスタートしてi+=pしてループを回す）
+### 例題
+- 篩を使わなくてもぎりぎりTLEはしないが… [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
 
 ## 互いに素でない数字組合せの個数数え上げ
 - L<=(x,y)<=Rの二つの数字であり、互いに素でない組の選び方をf(g)（gは共通の約数）とするとf(g)は簡単に求まるが、f(g)、f(2g)、f(3g)で重複して数え上げている
@@ -803,6 +805,9 @@
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
 - 連結頂点の判定はUnion-Find木を用いる
 - Edgeという構造体を定義し、辺の長さで小さい順に並べる。この時、bool operaterで演算を定義しておく
+### 例題
+- 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
+- 工夫して計算量を減らす [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 
 # 計算量
 - 問題文にある制約は使うべし（e.g. 一般解を求めると計算量が不足するが、合計枚数9999枚で支払えるとある場合には、その制約内でループを回す事で計算量を制限する事が可能）
