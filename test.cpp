@@ -117,31 +117,31 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    VLM(P, M);
-    vl A(N), B(N), C(N);
-    rep (i, N-1) {
-        LONG(a, b, c);
-        A[i] = a;
-        B[i] = b;
-        C[i] = c;
+    vvl from(N);
+    rep (i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    vl imos(N+1);
-    rep (i, M-1) {
-        ll s = P[i], g = P[i+1];
-        if (s > g) swap(s, g);
-        imos[s]++;
-        imos[g]--;
-    }
-    rep (i, N) imos[i+1] += imos[i];
-    de(imos)
     ll ans = 0;
-    rep (i, N) {
-        ll n = imos[i];
-        ll price = n*A[i];
-        chmin(price, C[i] + n*B[i]);
-        ans += price;
-        de(price)
-    }
+    vl ord(N, -1), low(N);
+    ll cnt = 0;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        ord[v] = cnt;
+        low[v] = cnt;
+        ++cnt;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            if (ord[nv] != -1) {
+                chmin(low[v], ord[nv]);
+                continue;
+            }
+            f(f, nv, v);
+            if (ord[v] < low[nv]) ++ans;
+            chmin(low[v], low[nv]);
+        }
+    };
+    dfs(dfs, 0);
     Out(ans)
     
 }

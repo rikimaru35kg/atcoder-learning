@@ -440,7 +440,6 @@
 ### 例題
 - [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
 
-
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
 
@@ -510,6 +509,14 @@
 ### 例題
 - [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
+
+## 橋
+- 取り除くと連結成分が増える辺を橋と呼ぶ
+- low link法を用いるとDFSの計算量O(V+E)で全橋を列挙できる
+- ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
+- 文による説明は分かりにくい為、[こちらのyoutube参照](https://www.youtube.com/watch?v=iYJqgMKYsdI)
+### 例題
+- lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
@@ -811,11 +818,6 @@
 - 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
 - 工夫して計算量を減らす [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 
-# 計算量
-- 問題文にある制約は使うべし（e.g. 一般解を求めると計算量が不足するが、合計枚数9999枚で支払えるとある場合には、その制約内でループを回す事で計算量を制限する事が可能）
-- 連想配列mapを使うと、キーへのアクセスがO(logN)で可能。集合setも同様にO(logN)
-- 計算量オーダーが10^10程度の場合、もしかしたら間に合うかもしれない。例えば100C5は分母が120なので実際は10^8程度まてオーダーが下がる
-
 # IMOS法
 - 重なり領域の累積はいもす法を用いて解決
 - IMOS法は配列数が多すぎるときは座標圧縮とのコンビネーションで解ける問題多し
@@ -823,6 +825,7 @@
 - 木の上でもimos法は使える
 ### 例題
 - 基本 [https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a](A - 鉄道旅行 (Railroad Trip) )
+- 引継ぎ型dp [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 - 木 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 - 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
@@ -1088,6 +1091,11 @@
 - このページ[bits/stdc++.hのインクルードを高速化しよう！（MacOS版）](https://qiita.com/DaikiSuyama/items/e502e09a1090f4a2cee3)がわかりやすい
 - stdc++.hの場所は/usr/include/x86~~~/c++/11/bits/にあった。
 - 意味は分からないが`gcc -x c++ -v -E /dev/null | grep include`でインクルードパス一覧が出るので、上位階層で`find -name "stdc++.h"`とでも打てば良いだろう
+
+# 計算量
+- 問題文にある制約は使うべし（e.g. 一般解を求めると計算量が不足するが、合計枚数9999枚で支払えるとある場合には、その制約内でループを回す事で計算量を制限する事が可能）
+- 連想配列mapを使うと、キーへのアクセスがO(logN)で可能。集合setも同様にO(logN)
+- 計算量オーダーが10^10程度の場合、もしかしたら間に合うかもしれない。例えば100C5は分母が120なので実際は10^8程度まてオーダーが下がる
 
 # その他のメモ
 - 直線の標準系: 傾きを(a, b)ベクトルで持つ（aは正、a=0ならb=1、約分必須）。y切片的なものをc=ay-bxとする。(a,b,c)をが標準系となる。
