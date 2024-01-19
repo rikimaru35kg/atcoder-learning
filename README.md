@@ -316,6 +316,7 @@
 - 包除原理的な考え方で累積和を取る
 - 区間和を取るときも包除原理的な考え方でやる
 ### 例題
+- 基本 [A - 惑星探査 (Planetary Exploration)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho1)
 - [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b) なお、この問題は何も考えずにlong longを使いすぎるとMLEする
 - [D - AtCoder Express 2](https://atcoder.jp/contests/abc106/tasks/abc106_d)
 

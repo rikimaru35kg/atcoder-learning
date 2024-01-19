@@ -101,51 +101,47 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+    LONG(M, N, K);
+    VS(place, M);
+    vvl jungle(M+1, vl(N+1));
+    vvl ocean(M+1, vl(N+1));
+    vvl ice(M+1, vl(N+1));
+    rep (i, M) rep (j, N) {
+        if (place[i][j] == 'J') jungle[i+1][j+1] = 1;
+        if (place[i][j] == 'O') ocean[i+1][j+1] = 1;
+        if (place[i][j] == 'I') ice[i+1][j+1] = 1;
     }
-    mint ans = 0;
-    auto dfs = [&](auto f, ll v, ll p=-1) -> ll {
-        ll num = 0;
-        mint now = 1;
-        mint two = 2;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            ll n = f(f, nv, v);
-            // procedure
-            now += two.pow(n) - 1;
-
-            num += n;
-        }
-        // parent procedure
-        now += two.pow(N-num-1) - 1;
-        ans += two.pow(N-1) - now;
-        return num + 1;
-    };
-    dfs(dfs, 0);
-    mint two = 2;
-    ans /= two.pow(N);
-    Out(ans.val())
-
+    rep (i, M+1) rep (j, N) jungle[i][j+1] += jungle[i][j];
+    rep (i, M+1) rep (j, N) ocean[i][j+1] += ocean[i][j];
+    rep (i, M+1) rep (j, N) ice[i][j+1] += ice[i][j];
+    rep (i, M) rep (j, N+1) jungle[i+1][j] += jungle[i][j];
+    rep (i, M) rep (j, N+1) ocean[i+1][j] += ocean[i][j];
+    rep (i, M) rep (j, N+1) ice[i+1][j] += ice[i][j];
+    de(jungle)
+    rep (i, K) {
+        LONGM(a, b, c, d);
+        ++c; ++d;
+        vl ans(3);
+        ans[0] = jungle[c][d] - jungle[a][d] - jungle[c][b] + jungle[a][b];
+        ans[1] = ocean[c][d] - ocean[a][d] - ocean[c][b] + ocean[a][b];
+        ans[2] = ice[c][d] - ice[a][d] - ice[c][b] + ice[a][b];
+        print_vec(ans)
+    }
     
 }
 
