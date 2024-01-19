@@ -116,32 +116,33 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, N, K);
-    VS(place, M);
-    vvl jungle(M+1, vl(N+1));
-    vvl ocean(M+1, vl(N+1));
-    vvl ice(M+1, vl(N+1));
-    rep (i, M) rep (j, N) {
-        if (place[i][j] == 'J') jungle[i+1][j+1] = 1;
-        if (place[i][j] == 'O') ocean[i+1][j+1] = 1;
-        if (place[i][j] == 'I') ice[i+1][j+1] = 1;
+    LONG(N, M);
+    VLM(P, M);
+    vl A(N), B(N), C(N);
+    rep (i, N-1) {
+        LONG(a, b, c);
+        A[i] = a;
+        B[i] = b;
+        C[i] = c;
     }
-    rep (i, M+1) rep (j, N) jungle[i][j+1] += jungle[i][j];
-    rep (i, M+1) rep (j, N) ocean[i][j+1] += ocean[i][j];
-    rep (i, M+1) rep (j, N) ice[i][j+1] += ice[i][j];
-    rep (i, M) rep (j, N+1) jungle[i+1][j] += jungle[i][j];
-    rep (i, M) rep (j, N+1) ocean[i+1][j] += ocean[i][j];
-    rep (i, M) rep (j, N+1) ice[i+1][j] += ice[i][j];
-    de(jungle)
-    rep (i, K) {
-        LONGM(a, b, c, d);
-        ++c; ++d;
-        vl ans(3);
-        ans[0] = jungle[c][d] - jungle[a][d] - jungle[c][b] + jungle[a][b];
-        ans[1] = ocean[c][d] - ocean[a][d] - ocean[c][b] + ocean[a][b];
-        ans[2] = ice[c][d] - ice[a][d] - ice[c][b] + ice[a][b];
-        print_vec(ans)
+    vl imos(N+1);
+    rep (i, M-1) {
+        ll s = P[i], g = P[i+1];
+        if (s > g) swap(s, g);
+        imos[s]++;
+        imos[g]--;
     }
+    rep (i, N) imos[i+1] += imos[i];
+    de(imos)
+    ll ans = 0;
+    rep (i, N) {
+        ll n = imos[i];
+        ll price = n*A[i];
+        chmin(price, C[i] + n*B[i]);
+        ans += price;
+        de(price)
+    }
+    Out(ans)
     
 }
 

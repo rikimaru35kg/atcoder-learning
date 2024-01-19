@@ -822,6 +822,7 @@
 - 累積ではなく、重なっているかだけの判定で良ければ、引継ぎ型dpで解ける（ある点から何個後ろまで加算すべきかという情報において、何個の部分をmax取りしていけばよい）
 - 木の上でもimos法は使える
 ### 例題
+- 基本 [https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a](A - 鉄道旅行 (Railroad Trip) )
 - [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 - 木 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 - 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
