@@ -101,41 +101,51 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    ll M = 1e5;
-    vb sieve(M+1, true);
-    sieve[0] = false;
-    sieve[1] = false;
-    for (ll i=2; i<=M; ++i) {
-        if (!sieve[i]) continue;
-        for (ll j=i*i; j<=M; j+=i) {
-            sieve[j] = false;
+    LONG(N);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+    }
+    mint ans = 0;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> ll {
+        ll num = 0;
+        mint now = 1;
+        mint two = 2;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            ll n = f(f, nv, v);
+            // procedure
+            now += two.pow(n) - 1;
+
+            num += n;
         }
-    }
-    vl S(M+2);
-    rep (i, M+1) {
-        if (sieve[i] && sieve[(i+1)/2]) S[i+1]++;
-    }
-    rep (i, M+1) S[i+1] += S[i];
-    rep (i, Q) {
-        LONG(l, r);
-        printf("%lld\n", S[r+1] - S[l]);
-    }
+        // parent procedure
+        now += two.pow(N-num-1) - 1;
+        ans += two.pow(N-1) - now;
+        return num + 1;
+    };
+    dfs(dfs, 0);
+    mint two = 2;
+    ans /= two.pow(N);
+    Out(ans.val())
+
     
 }
 

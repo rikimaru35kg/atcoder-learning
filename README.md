@@ -431,6 +431,7 @@
 ### 例題
 - 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
 - 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
+- DFSしながら期待値（場合の数）を数え上げる [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
