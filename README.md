@@ -850,6 +850,7 @@
 # データ構造
 
 ## Union Find tree
+- 各頂点の連結操作や判定がO(α(N))で可能（α(N)はアッカーマンの逆関数で、実質的にO(1)）
 - UnionFind構造体を作る
 - parentsの初期化（p[x]を用意し、全てが親、例えば-1としておく）
 - find関数（再帰関数で実装すれば良い。実行時、p[x]も更新するとパス圧縮され次回のfindが速くなる）
@@ -981,6 +982,7 @@
 - クエリを先読みすると楽に処理できる事がある
 ### 例題
 - [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+- [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 
 ## XY独立に考える
 ### 例題
