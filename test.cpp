@@ -85,10 +85,11 @@ template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' 
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
+template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
-template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 #else
 #define de(var) {}
 #endif
@@ -112,11 +113,57 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
+        }
+    }
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    
+    LONG(N, M);
+    vl A(N);
+    vl d(N);
+    rep (i, N) {
+        LONG(a);
+        A[i] = a/2;
+    }
+    rep (i, N) {
+        ll a = A[i];
+        while (a%2 == 0) {
+            d[i]++;
+            a /= 2;
+        }
+    }
+    sort(all(d));
+    if (d[0] != d[N-1]) {
+        Out(0)
+        return 0;
+    }
+    ll l = 1;
+    rep (i, N) {
+        ll g = gcd(l, A[i]);
+        if (l/g > M/A[i]) {
+            Out(0);
+            return 0;
+        }
+        l = l / g * A[i];
+    }
+    ll ans = 0;
+    ans += M / l;
+    ans -= M / (2*l);
+    Out(ans)
 }
 
 // ### test.cpp ###
