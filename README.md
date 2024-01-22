@@ -39,6 +39,11 @@
 - [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 
+## K進数
+- 2進数を用いると、N桁で2^Nの情報量を表せる
+### 例題
+- 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
+
 ## 整数
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
 - a, b, cが自然数の時、a*b<=c とa<=floor(c/b)は同値（必要十分条件）
