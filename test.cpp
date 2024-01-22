@@ -101,8 +101,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -116,31 +116,6 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp edges;
-    rep (i, M) {
-        LONGM(a, b);
-        edges.emplace_back(a, b);
-    }
-    reverse(all(edges));
-    dsu uf(N);
-    ll ans = N*(N-1)/2;
-    vl vec;
-    de(edges)
-    rep (i, M) {
-        auto [a, b] = edges[i];
-        vec.push_back(ans);
-        if (i == M-1) break;
-        if (uf.same(a, b)) continue;
-        de(i)
-        de(uf.size(a))
-        de(uf.size(b))
-        ans -= uf.size(a) * uf.size(b);
-        uf.merge(a, b);
-    }
-    repr(i, M) {
-        Out(vec[i])
-    }
     
 }
 
