@@ -76,9 +76,9 @@
 - gcd(a, b) = gcd(b, r) = ... = gcd(b', 0) = b'という古典的アルゴリズム
 - 再帰関数で簡潔に書ける
 - 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
+- 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
 ### 例題
-- snuke氏の解説動画が神 [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
-
+- !復習価値あり snuke氏の拡張ユークリッド解説動画が神 [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
 
 ## 最大公約数と最小公倍数
 - 最大公約数は、各素因数の最小指数を選んだもの、最小公倍数は最大指数を選んだものとなる

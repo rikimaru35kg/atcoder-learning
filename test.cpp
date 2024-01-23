@@ -104,7 +104,7 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -113,34 +113,31 @@ inline void debug_view(mint e){cerr << e.val() << endl;}
 inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
+void solve() {
+    LONG(N, S, K);
+    ll g = gcd(K, N);
+    if (S%g != 0) {
+        Out(-1)
+        return;
+    }
+    S /= g;
+    K /= g;
+    N /= g;
+    mint::set_mod(N);
+    mint s = S;
+    s *= -1;
+    mint x = s / K;
+    Out(x.val())
+
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvp from(N);
-    rep (i, N-1) {
-        LONGM(u, v); LONG(w);
-        from[u].emplace_back(v, w);
-        from[v].emplace_back(u, w);
+    LONG(T);
+    rep (_, T) {
+        solve();
     }
-    vl xors(N);
-    auto dfs = [&](auto f, ll v, ll xo=0, ll p=-1) -> void {
-        for (auto [nv, w]: from[v]) {
-            if (nv == p) continue;
-            xors[nv] = xo ^ w;
-            f(f, nv, xors[nv], v);
-        }
-    };
-    dfs(dfs, 0);
-    mint ans = 0;
-    rep (d, 60) {
-        ll cnt1 = 0;
-        rep (i, N) cnt1 += (xors[i]>>d&1);
-        mint now = cnt1 * (N-cnt1);
-        ans += now * (1LL<<d);
-    }
-    Out(ans.val())
     
 }
 
