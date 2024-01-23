@@ -37,12 +37,13 @@
 ## XOR
 - XORは繰り上がりなし足し算。その為、交換法則、結合法則が成り立つ（ANDが混ざっていたら不可）
 - XORは反転処理ともみなす事ができる
+- XORはビット毎に独立して考えると見通しが良くなることがある
 - XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
 - 木の任意の二頂点間のXORは、根からのXORをそれぞれ求めておき、それのXORを取れば求まる（共通部分のXORは消える為）
 ### 例題
-- 要復習 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
-- [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
+- 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
+- !要復習 構築系問題 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
+- !要復習 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 
 ## K進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる

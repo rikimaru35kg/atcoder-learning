@@ -102,46 +102,45 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, K);
-    if (M == 0) {
-        if (K == 0) printf("0 0\n");
-        else puts("-1");
-        return 0;
+    LONG(N);
+    vvp from(N);
+    rep (i, N-1) {
+        LONGM(u, v); LONG(w);
+        from[u].emplace_back(v, w);
+        from[v].emplace_back(u, w);
     }
-    if (M == 1) {
-        if (K == 0) printf("0 0 1 1\n");
-        else puts("-1");
-        return 0;
+    vl xors(N);
+    auto dfs = [&](auto f, ll v, ll xo=0, ll p=-1) -> void {
+        for (auto [nv, w]: from[v]) {
+            if (nv == p) continue;
+            xors[nv] = xo ^ w;
+            f(f, nv, xors[nv], v);
+        }
+    };
+    dfs(dfs, 0);
+    mint ans = 0;
+    rep (d, 60) {
+        ll cnt1 = 0;
+        rep (i, N) cnt1 += (xors[i]>>d&1);
+        mint now = cnt1 * (N-cnt1);
+        ans += now * (1LL<<d);
     }
-    ll M2 = 1<<M;
-    if (K >= M2) {
-        puts("-1");
-        return 0;
-    }
-    deque<ll> deq;
-    deq.push_back(K);
-    rep (i, M2) {
-        if (i == K) continue;
-        deq.push_front(i);
-        deq.push_back(i);
-    }
-    deq.push_back(K);
-    print_vec(deq)
+    Out(ans.val())
     
 }
 
