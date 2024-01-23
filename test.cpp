@@ -113,57 +113,21 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl A(N);
-    vl d(N);
-    rep (i, N) {
-        LONG(a);
-        A[i] = a/2;
+    LONG(M);
+    ll n = 0, s = 0;
+    rep (i, M) {
+        LONG(a, b);
+        s += a*b;
+        n += b;
     }
-    rep (i, N) {
-        ll a = A[i];
-        while (a%2 == 0) {
-            d[i]++;
-            a /= 2;
-        }
-    }
-    sort(all(d));
-    if (d[0] != d[N-1]) {
-        Out(0)
-        return 0;
-    }
-    ll l = 1;
-    rep (i, N) {
-        ll g = gcd(l, A[i]);
-        if (l/g > M/A[i]) {
-            Out(0);
-            return 0;
-        }
-        l = l / g * A[i];
-    }
-    ll ans = 0;
-    ans += M / l;
-    ans -= M / (2*l);
+    ll init = 9*n + s - 18;
+    ll ans = (init + 8) / 9;
     Out(ans)
+    
 }
 
 // ### test.cpp ###

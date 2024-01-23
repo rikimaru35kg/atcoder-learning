@@ -88,6 +88,7 @@
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
 ### 例題
 - [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
+- 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
 
 ## 約数全列挙
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -965,6 +966,11 @@
 - 求めたい物に割り算が関係する場合、MODで考えてみると見通しが良くなる場合あり。特にDPする際には、MODであれば状態数が減らせる
 ### 例題
 - [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
+
+## 不変量を見つける
+- 不変量に着目すると解ける問題あり
+### 例題
+- 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
 
 ## マンハッタン距離
 - 45度回転（して√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)がマンハッタン距離となる
