@@ -48,7 +48,7 @@
 ## K進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
 ### 例題
-- 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
+- !要復習 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
 
 ## 整数
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
@@ -78,7 +78,7 @@
 - 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
 - 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
 ### 例題
-- !復習価値あり snuke氏の拡張ユークリッド解説動画が神 [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- !復習価値高 snuke氏の拡張ユークリッド解説動画が神 [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
 
 ## 最大公約数と最小公倍数
 - 最大公約数は、各素因数の最小指数を選んだもの、最小公倍数は最大指数を選んだものとなる
@@ -89,7 +89,7 @@
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
 ### 例題
 - !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
-- 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
+- !復習価値高 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
 
 ## 約数全列挙
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -104,8 +104,8 @@
 - 約数の個数がそれ以下のどの自然数よりも多いものを高度合成数というが、10^9以下で1344個、10^18で約10^5個の約数を持つ
 - オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
 ### 例題
-- !復習価値あり [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
-- !復習価値あり 約数の個数が少ないが故に解ける問題 [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
+- !復習価値中 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
+- !復習価値高 約数の個数が少ないが故に解ける問題 [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 
 ## 積分解（約数類似系）
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
@@ -124,8 +124,8 @@
 - 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
 - エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
 ### 例題
-- !復習価値あり（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
-- [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
+- !復習価値中（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
+- !復習価値低 素因数分解というよりnが大きいときのnCrの求め方が肝 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
 - [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 - 高速素因数分解が有効 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 

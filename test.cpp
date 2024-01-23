@@ -102,17 +102,17 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 //! eg) 360 = 2^3 * 3^2 * 5^1;
 //! primes = {(2,3), (3,2), (5,1)}
 vector<pair<long long, long long>> prime_factorization (long long n) {
@@ -129,32 +129,43 @@ vector<pair<long long, long long>> prime_factorization (long long n) {
     if (n != 1) primes.emplace_back(n, 1);
     return primes;
 }
+//! Use this class if n >= 1e7 && r <= 1e6
+class Combination2 {
+    long long mod;
+public:
+    Combination2 (long long mod): mod(mod) {}
+    long long nCr (long long n, long long r) {
+        r = min(n-r , r);
+        long long r_fact = 1;
+        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
+        long long r_fact_inv = modpow(r_fact, mod-2, mod);
+        long long ret = r_fact_inv;
+        for (long long i=0; i<r; ++i) (ret *= (n-i)) %= mod;
+        return ret;
+    }
+    long long modpow(long long a, long long b, long long mod) {
+        long long ret = 1;
+        a %= mod;
+        while (b > 0) {
+            if ((b & 1) == 1) ret = ret * a % mod;
+            a = a * a % mod;
+            b = (b >> 1);
+        }
+        return ret;
+    }
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    auto vecp = prime_factorization(K);
-    auto func = [&](ll x) -> bool {
-        for (auto [p, n]: vecp) {
-            ll cnt = 0;
-            ll z = p;
-            while (true) {
-                ll y = x/z;
-                if (y == 0) break;
-                cnt += y;
-                z *= p;
-            }
-            if (cnt < n) return false;
-        }
-        return true;
-    };
-    ll l = 0, r = INF;
-    while (r-l>1) {
-        ll m = (l+r)/2;
-        if (func(m)) r = m;
-        else l = m;
+    LONG(N, M);
+    auto vecp = prime_factorization(M);
+    ll MOD = 1e9+7;
+    mint ans = 1;
+    Combination2 comb(MOD);
+    for (auto [p, n]: vecp) {
+        ans *= comb.nCr(n+N-1, n);
     }
-    Out(r)
+    Out(ans.val())
     
 }
 
