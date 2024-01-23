@@ -102,42 +102,44 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-void solve() {
-    LONG(N, S, K);
-    ll g = gcd(K, N);
-    if (S%g != 0) {
-        Out(-1)
-        return;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
     }
-    S /= g;
-    K /= g;
-    N /= g;
-    mint::set_mod(N);
-    mint s = S;
-    s *= -1;
-    mint x = s / K;
-    Out(x.val())
-
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
 }
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep (_, T) {
-        solve();
+    LONG(N);
+    vl divs = listup_divisor(N);
+    ll ans = 0;
+    for (auto x: divs) {
+        if (x==1) continue;
+        ll n = N;
+        while (n%x==0) n/=x;
+        if (n%x==1) ++ans;
     }
+    vl divs2 = listup_divisor(N-1);
+    ans += SIZE(divs2)-1;
+    Out(ans)
+
     
 }
 

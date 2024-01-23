@@ -88,7 +88,7 @@
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
 ### 例題
-- [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
+- !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 - 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
 
 ## 約数全列挙
@@ -104,14 +104,14 @@
 - 約数の個数がそれ以下のどの自然数よりも多いものを高度合成数というが、10^9以下で1344個、10^18で約10^5個の約数を持つ
 - オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
 ### 例題
-- [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
-- 約数の個数が少ないが故に解ける問題 [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
+- !復習価値あり [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
+- !復習価値あり 約数の個数が少ないが故に解ける問題 [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 
 ## 積分解（約数類似系）
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
-- [D - M<=ab](https://atcoder.jp/contests/abc296/submissions/me)
+- [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
 
 ## 素数判定
 - sqrt(N)まで試して割れなければ素数である
@@ -822,7 +822,7 @@
 - queに入ったコスト（得たい値）は別配列cost[v][state]で管理すれば良い
 - 迷路の最小方向転換問題などに利用可能（01-BFS＋状態遷移）
 
-## 最小全域木（Minimum Spanning Tree）
+## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
 - 連結頂点の判定はUnion-Find木を用いる
