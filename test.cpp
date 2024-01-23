@@ -117,16 +117,29 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M);
-    ll n = 0, s = 0;
-    rep (i, M) {
-        LONG(a, b);
-        s += a*b;
-        n += b;
+    LONG(N);
+    ll l = 1, r = 1e8;
+    while (r-l>1) {
+        ll m = (l+r)/2;
+        if (m*(m-1) - 2*N >= 0) r = m;
+        else l = m;
     }
-    ll init = 9*n + s - 18;
-    ll ans = (init + 8) / 9;
-    Out(ans)
+    ll v = r;
+    if (v*(v-1) - 2*N != 0) PNo
+
+    puts("Yes");
+    Out(v)
+    vvl S(v);
+    ll idx = 1;
+    rep (j, v) rep (i, j) {
+        S[i].push_back(idx);
+        S[j].push_back(idx);
+        ++idx;
+    }
+    rep (i, v) {
+        printf("%lld ", SIZE(S[i]));
+        print_vec(S[i])
+    }
     
 }
 
