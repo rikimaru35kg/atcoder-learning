@@ -40,7 +40,7 @@
 - XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
 - 木の任意の二頂点間のXORは、根からのXORをそれぞれ求めておき、それのXORを取れば求まる（共通部分のXORは消える為）
 ### 例題
-- [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
+- 要復習 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
 - [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 
