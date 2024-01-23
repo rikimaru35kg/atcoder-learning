@@ -113,33 +113,48 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
     }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
 }
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl divs = listup_divisor(N);
-    ll ans = 0;
-    for (auto x: divs) {
-        if (x==1) continue;
-        ll n = N;
-        while (n%x==0) n/=x;
-        if (n%x==1) ++ans;
+    LONG(K);
+    auto vecp = prime_factorization(K);
+    auto func = [&](ll x) -> bool {
+        for (auto [p, n]: vecp) {
+            ll cnt = 0;
+            ll z = p;
+            while (true) {
+                ll y = x/z;
+                if (y == 0) break;
+                cnt += y;
+                z *= p;
+            }
+            if (cnt < n) return false;
+        }
+        return true;
+    };
+    ll l = 0, r = INF;
+    while (r-l>1) {
+        ll m = (l+r)/2;
+        if (func(m)) r = m;
+        else l = m;
     }
-    vl divs2 = listup_divisor(N-1);
-    ans += SIZE(divs2)-1;
-    Out(ans)
-
+    Out(r)
     
 }
 

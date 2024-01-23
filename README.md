@@ -111,7 +111,7 @@
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
-- [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+- !要復習 [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
 
 ## 素数判定
 - sqrt(N)まで試して割れなければ素数である
@@ -124,7 +124,7 @@
 - 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
 - エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
 ### 例題
-- [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
+- !復習価値あり（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
 - [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 - 高速素因数分解が有効 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
