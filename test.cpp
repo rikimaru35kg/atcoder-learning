@@ -102,8 +102,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -113,28 +113,22 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+void solve() {
+    LONG(X, Y, P, Q);
+    ll ans = INF;
+    repk(a, X, X+Y) repk(b, P, P+Q) {
+        auto [x, y] = crt({a,b}, {2*X+2*Y, P+Q});
+        if (y != 0) chmin(ans, x);
+    }
+    if (ans == INF) puts("infinity");
+    else Out(ans)
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L, R);
-    vl f(R+1), g(R+1);
-    repk (i, 2, R+1) {
-        g[i] = (R/i - (L-1)/i)*(R/i - (L-1)/i);
-    }
-    ll ans = 0;
-    for (ll i=R; i>=2; --i) {
-        f[i] = g[i];
-        for (ll j=2*i; j<=R; j+=i) {
-            f[i] -= f[j];
-        }
-        ans += f[i];
-    }
-    for (ll i=L; i<=R; ++i) {
-        if (i==1) continue;
-        ans -= 2*(R/i - (L-1)/i) - 1;
-    }
-    Out(ans)
+    INT(T);
+    rep(_, T) solve();
     
 }
 

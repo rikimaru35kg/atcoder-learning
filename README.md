@@ -151,8 +151,8 @@
 - DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
 - gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
 ### 例題
+- !復習価値中 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 - !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
-- [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
 - t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題
@@ -160,7 +160,7 @@
 - ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
 - s==0の場合は解なし
 ### 例題
-- [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
+- !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
