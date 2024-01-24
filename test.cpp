@@ -102,9 +102,9 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -113,47 +113,82 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
         }
     }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+	long long ans = 1;
+	a %= mod;
+	while (b > 0) {
+		if ((b & 1) == 1) {
+			ans = ans * a % mod;
+		}
+		a = a * a % mod;
+		b = (b >> 1);
+	}
+	return ans;
 }
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl powers(N+1);
-    rep1(i, N) {
-        auto vecp = prime_factorization(i);
-        for (auto [p, n]: vecp) {
-            powers[p] += n;
+    ll M = 1e6;
+    ll MOD = 1e9+7;
+    VL(A, N);
+    Sieve sieve(M);
+    vl powers(M+1);
+    vvp vecp(N);
+    mint lc = 1;
+    rep (i, N) {
+        ll a = A[i];
+        vecp[i] = sieve.factorize(a);
+        for (auto [p, k]: vecp[i]) {
+            chmax(powers[p], k);
         }
     }
-    rep1(i, N) powers[i]++;
-
-    ll M = 75;
-    vl dp(M+1);
-    dp[1] = 1;
-    rep1 (i, N) {  // i:prime number
-        vl p(M+1);
-        swap(p, dp);
-        rep1 (j, M) rep1 (k, powers[i]) {  // j:multiple of powers, k:powers of i
-            if (j*k > M) continue;
-            dp[j*k] += p[j];
-        }
+    rep (i, M+1) {
+        if (powers[i] == 0) continue;
+        lc *= modpow(i, powers[i], MOD);
     }
-    Out(dp[M])
+    de(lc.val())
+    mint ans = 0;
+    rep (i, N) {
+        mint now = lc;
+        for (auto [p, k]: vecp[i]) {
+            now /= modpow(p, k, MOD);
+        }
+        ans += now;
+    }
+    Out(ans.val())
     
 }
 

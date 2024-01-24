@@ -88,7 +88,6 @@
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
 ### 例題
-- !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 - !復習価値高 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
 
 ## 約数全列挙
@@ -127,7 +126,7 @@
 - !復習価値中（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - !復習価値低 素因数分解というよりnが大きいときのnCrの求め方が肝 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
 - !復習価値高 考察は易 実装工夫すると楽 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
-- 高速素因数分解が有効 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
+- LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 
 ## 素数全列挙
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
@@ -143,10 +142,11 @@
 ### 例題
 - [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 
-## 剰余関連
+## 剰余埋めつくし系
 - DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
 - gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
 ### 例題
+- !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 - [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
