@@ -102,9 +102,9 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -113,82 +113,28 @@ using mint = modint1000000007;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-	long long ans = 1;
-	a %= mod;
-	while (b > 0) {
-		if ((b & 1) == 1) {
-			ans = ans * a % mod;
-		}
-		a = a * a % mod;
-		b = (b >> 1);
-	}
-	return ans;
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1e6;
-    ll MOD = 1e9+7;
-    VL(A, N);
-    Sieve sieve(M);
-    vl powers(M+1);
-    vvp vecp(N);
-    mint lc = 1;
-    rep (i, N) {
-        ll a = A[i];
-        vecp[i] = sieve.factorize(a);
-        for (auto [p, k]: vecp[i]) {
-            chmax(powers[p], k);
+    LONG(L, R);
+    vl f(R+1), g(R+1);
+    repk (i, 2, R+1) {
+        g[i] = (R/i - (L-1)/i)*(R/i - (L-1)/i);
+    }
+    ll ans = 0;
+    for (ll i=R; i>=2; --i) {
+        f[i] = g[i];
+        for (ll j=2*i; j<=R; j+=i) {
+            f[i] -= f[j];
         }
+        ans += f[i];
     }
-    rep (i, M+1) {
-        if (powers[i] == 0) continue;
-        lc *= modpow(i, powers[i], MOD);
+    for (ll i=L; i<=R; ++i) {
+        if (i==1) continue;
+        ans -= 2*(R/i - (L-1)/i) - 1;
     }
-    de(lc.val())
-    mint ans = 0;
-    rep (i, N) {
-        mint now = lc;
-        for (auto [p, k]: vecp[i]) {
-            now /= modpow(p, k, MOD);
-        }
-        ans += now;
-    }
-    Out(ans.val())
+    Out(ans)
     
 }
 
