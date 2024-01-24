@@ -168,7 +168,7 @@
 - 指数をMOD 2した場合、2数の積が平方数となるのは、同じ数との積のみ
 - 指数をMOD 2するには、素因数分解までは不要で、平方数で割れるだけ割ればよい
 ### 例題
-- [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
+- !復習価値中 平方数判定の本質が分ければ解ける [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
 
 ## 小数
 - 小数点を出力する際はcout << fixed << setprecision(10) << x << endl;などとしないと小数点以下の桁が6桁ぐらいまでしか出力されない（printf("%.10f\n", x)の方が簡単）
