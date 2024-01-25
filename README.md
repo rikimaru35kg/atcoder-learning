@@ -205,13 +205,11 @@
 - sort()関数の第3引数に自作関数compを渡すことが可能。ただしcomp(a,a)==falseとなる事が必要。compの第1引数を左に並べたい場合にtrueを返せばよい
 
 ## 転倒数
-- バブルソートするのに必要な回数
-- ai > ajとなるペアをソートする回数と等しい（これ以上の回数が必要な事は自明だし、ソートが終わっていないときこのようなペアが存在するので）
-- 広義単調増加の場合でも、回数の求め方は同じ
+- バブルソートするのに必要な回数であるが、より本質的にはai>ajとなるペアの組合せの数と等しい（ソートにはこれ以上の回数が必要な事は自明だし、ソートが終わっていない時このような隣り合うペアが存在するので）
 - 全探索するとO(N^2)だが、BIT木を使えばO(NlogN)で可能。
 ### 例題
-- !要復習（考え方OKだが実装できず） [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
-- [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
+- !要復習（考え方OKだが実装できず） 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
+- !要復習 転倒数と結びつけるのが難しい [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 
 ## 要素積のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い

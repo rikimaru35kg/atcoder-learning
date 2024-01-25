@@ -113,39 +113,6 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-class CoordinateCompression {
-    bool init = false;
-    vector<long long> vec;
-public:
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-        de("pupup")
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {return (long long)vec.size();}
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
 struct BIT {
     long long size;
     vector<long long> bit;
@@ -177,25 +144,75 @@ struct BIT {
     }
 };
 
-long long get_inv_num(vector<long long> a) {
+class CoordinateCompression {
+    bool init = false;
+    vector<long long> vec;
+public:
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {return (long long)vec.size();}
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+long long get_inv_num(vector<long long> a, bool compression=false) {
+    long long ret = 0, n = (*max_element(all(a))) + 1;
     CoordinateCompression cc;
-    for (long long i=0; i<SIZE(a); ++i) cc.add(a[i]);
-    long long n = cc.size();
-    BIT bit(n);
-    long long ret = 0;
-    for (long long i=0; i<SIZE(a); ++i) {
-        ret += bit.sum(n) - bit.sum(cc(a[i])+1);
-        bit.add(cc(a[i])+1, 1);
+    if (compression) {
+        for (long long i=0; i<(long long)a.size(); ++i) cc.add(a[i]);
+        n = cc.size();
+    }
+    BIT bit(n);  // NOTE: BIT is 1-indexed!!
+    for (long long i=0; i<(long long)a.size(); ++i) {
+        long long x = a[i];
+        if (compression) x = cc(a[i]);
+        ret += bit.sum(n) - bit.sum(x+1);
+        bit.add(x+1, 1);
     }
     return ret;
 }
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll ans = get_inv_num(A);
+    LONG(N, M);
+    vp A;
+    rep(i, N) {
+        rep (j, M) {
+            LONG(a);
+            A.emplace_back(a, i);
+        }
+    }
+    sort(all(A));
+    ll ans = M*(M+1)/2*N*(N-1)/2;
+    vl B;
+    rep (i, N*M) B.push_back(A[i].second);
+    de(B)
+    ans += get_inv_num(B);
     Out(ans)
+
     
 }
 

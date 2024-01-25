@@ -65,15 +65,19 @@ public:
 #endif
 };
 
-long long get_inv_num(vector<long long> a) {
+long long get_inv_num(vector<long long> a, bool compression=false) {
+    long long ret = 0, n = (*max_element(all(a))) + 1;
     CoordinateCompression cc;
-    for (long long i=0; i<a.size(); ++i) cc.add(a[i]);
-    long long n = cc.size();
+    if (compression) {
+        for (long long i=0; i<(long long)a.size(); ++i) cc.add(a[i]);
+        n = cc.size();
+    }
     BIT bit(n);  // NOTE: BIT is 1-indexed!!
-    long long ret = 0;
-    for (long long i=0; i<a.size(); ++i) {
-        ret += bit.sum(n) - bit.sum(cc(a[i])+1);
-        bit.add(cc(a[i])+1, 1);
+    for (long long i=0; i<(long long)a.size(); ++i) {
+        long long x = a[i];
+        if (compression) x = cc(a[i]);
+        ret += bit.sum(n) - bit.sum(x+1);
+        bit.add(x+1, 1);
     }
     return ret;
 }
