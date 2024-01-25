@@ -247,11 +247,11 @@
 ### 例題
 - 基本+実装少し工夫 [D - Send More Money](https://atcoder.jp/contests/abc198/tasks/abc198_d)
 
-## その他全探索
-- bit全探索（2進数と考えループ）
+## bit全探索
+- 各要素を選ぶ選ばないを2進数と考えループ
 ### 例題
-- [C - Coverage](https://atcoder.jp/contests/abc289/tasks/abc289_c)
-- [C - HonestOrUnkind2](https://atcoder.jp/contests/abc147/tasks/abc147_c)
+- bit全探索基本 [C - Coverage](https://atcoder.jp/contests/abc289/tasks/abc289_c)
+- bit全探索基本 [C - HonestOrUnkind2](https://atcoder.jp/contests/abc147/tasks/abc147_c)
 
 ## 再帰全探索
 - 次に探索する状態へ再帰でつなぐ。自分自身で終了する事も忘れずに

@@ -117,59 +117,30 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S1, S2, S3);
-    map<char,int> mp;
-    for (auto c: S1) mp[c] = 0;
-    for (auto c: S2) mp[c] = 0;
-    for (auto c: S3) mp[c] = 0;
-    ll N = SIZE(mp);
-    if (N>10) {
-        puts("UNSOLVABLE");
-        return 0;
+    LONG(N);
+    vvp testimony(N);
+    rep (i, N) {
+        LONG(a);
+        rep (j, a) {
+            LONG(x, y);
+            --x;
+            testimony[i].emplace_back(x, y);
+        }
     }
-    auto judge = [&](vl vec) -> bool {
-        int idx = 0;
-        for (auto [k, _]: mp) {
-            mp[k] = vec[idx];
-            ++idx;
-        }
-        if (mp[S1[0]] == 0) return false;
-        if (mp[S2[0]] == 0) return false;
-        if (mp[S3[0]] == 0) return false;
-        auto change = [&](string &s) -> ll {
-            ll ret = 0;
-            rep (j, SIZE(s)) {
-                ret = 10*ret + mp[s[j]];
+    ll ans = 0;
+    rep(s, 1<<N) {
+        bool ok = true;
+        rep (i, N) {
+            if (~s>>i&1) continue;
+            for (auto [x, y]: testimony[i]) {
+                if (y==1 && ~s>>x&1) ok = false;
+                if (y==0 && s>>x&1) ok = false;
             }
-            return ret;
-        };
-        ll n1 = change(S1);
-        ll n2 = change(S2);
-        ll n3 = change(S3);
-        if (n1 + n2 == n3) {
-            Out(n1)Out(n2)Out(n3)
-            return true;
         }
-        return false;
-    };
-
-    vb used(10);
-    auto dfs = [&](auto f, vl v={}) -> bool {
-        if (SIZE(v) == N) {
-            if(judge(v)) return true;
-            return false;
-        }
-        rep (i, 10) {
-            if (used[i]) continue;
-            v.push_back(i);
-            used[i] = true;
-            if(f(f, v)) return true;
-            v.pop_back();
-            used[i] = false;
-        }
-        return false;
-    };
-    if(!dfs(dfs)) puts("UNSOLVABLE");
+        if (ok) chmax(ans, (ll)__builtin_popcountll(s));
+    }
+    Out(ans)
+    
 }
 
 // ### test.cpp ###
