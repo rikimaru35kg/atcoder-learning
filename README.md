@@ -217,7 +217,7 @@
 - Aの降順、Bの昇順を並べて組み合わせを考える場合、もしクロスしている組み合わせがあれば、組み合わせを逆にすることでかならずmax値は減少する
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
-- [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
+- !要復習（考え方OKだが実装ミス） [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
@@ -234,7 +234,7 @@
 - 途中までループして後は二分探索などすると、O(N^4)がO(N^2 logN^2)となってACできる場合あり
 - 途中からループに意味がなくなる場合breakする事で探索量を減らせる。特にi*j<=Kでのみループを回す必要があるのであれば、計算量はO(KlogK)となり、i*j*k<=Kの3重ループならO(Klog^2K)となる
 ### 例題
-- [D - Cake 123](https://atcoder.jp/contests/abc123/tasks/abc123_d)
+- !復習価値低 ループ探索計算量を考察する良問（chokudai氏の解説動画あり） [D - Cake 123](https://atcoder.jp/contests/abc123/tasks/abc123_d)
 
 ## 順列全探索
 - 制約数が少なければ全探索を考える
@@ -245,7 +245,7 @@
 - 10!は約360万であるので、O(11!)ぐらいまではループで回せる
 - 10P5が必要だったとしても、next_permutationで10!回して、先頭の5つを取り出せば10P5の全列挙ができる（計算量が間に合うので）。nPr<=1e8かつn!>1e9のような場合には素直に再帰関数で実装するしかないと思われる
 ### 例題
-- 実装重め [D - Send More Money](https://atcoder.jp/contests/abc198/tasks/abc198_d)
+- 基本+実装少し工夫 [D - Send More Money](https://atcoder.jp/contests/abc198/tasks/abc198_d)
 
 ## その他全探索
 - bit全探索（2進数と考えループ）

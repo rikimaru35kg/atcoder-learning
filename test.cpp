@@ -113,107 +113,63 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct BIT {
-    long long size;
-    vector<long long> bit;
-    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
-
-    void add (long long i, long long x) {
-        for (; i < size; i += (i & -i)) {
-            bit[i] += x;
-        }
-    }
-    long long sum (long long i) {
-        long long ret = 0;
-        for (; i > 0; i -= (i) & (-i)) {
-            ret += bit[i];
-        }
-        return ret;
-    }
-    long long sum_lower_bound(long long k) {
-        long long x = 0, len = 1;
-        while ((len << 1) < size) len <<= 1;
-        while(len > 0) {
-            if (x + len < size && bit[x + len] < k) {
-                k -= bit[x + len];
-                x += len;
-            }
-            len >>= 1;
-        }
-        return x + 1;
-    }
-};
-
-class CoordinateCompression {
-    bool init = false;
-    vector<long long> vec;
-public:
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {return (long long)vec.size();}
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-long long get_inv_num(vector<long long> a, bool compression=false) {
-    long long ret = 0, n = (*max_element(all(a))) + 1;
-    CoordinateCompression cc;
-    if (compression) {
-        for (long long i=0; i<(long long)a.size(); ++i) cc.add(a[i]);
-        n = cc.size();
-    }
-    BIT bit(n);  // NOTE: BIT is 1-indexed!!
-    for (long long i=0; i<(long long)a.size(); ++i) {
-        long long x = a[i];
-        if (compression) x = cc(a[i]);
-        ret += bit.sum(n) - bit.sum(x+1);
-        bit.add(x+1, 1);
-    }
-    return ret;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp A;
-    rep(i, N) {
-        rep (j, M) {
-            LONG(a);
-            A.emplace_back(a, i);
-        }
+    STRING(S1, S2, S3);
+    map<char,int> mp;
+    for (auto c: S1) mp[c] = 0;
+    for (auto c: S2) mp[c] = 0;
+    for (auto c: S3) mp[c] = 0;
+    ll N = SIZE(mp);
+    if (N>10) {
+        puts("UNSOLVABLE");
+        return 0;
     }
-    sort(all(A));
-    ll ans = M*(M+1)/2*N*(N-1)/2;
-    vl B;
-    rep (i, N*M) B.push_back(A[i].second);
-    de(B)
-    ans += get_inv_num(B);
-    Out(ans)
+    auto judge = [&](vl vec) -> bool {
+        int idx = 0;
+        for (auto [k, _]: mp) {
+            mp[k] = vec[idx];
+            ++idx;
+        }
+        if (mp[S1[0]] == 0) return false;
+        if (mp[S2[0]] == 0) return false;
+        if (mp[S3[0]] == 0) return false;
+        auto change = [&](string &s) -> ll {
+            ll ret = 0;
+            rep (j, SIZE(s)) {
+                ret = 10*ret + mp[s[j]];
+            }
+            return ret;
+        };
+        ll n1 = change(S1);
+        ll n2 = change(S2);
+        ll n3 = change(S3);
+        if (n1 + n2 == n3) {
+            Out(n1)Out(n2)Out(n3)
+            return true;
+        }
+        return false;
+    };
 
-    
+    vb used(10);
+    auto dfs = [&](auto f, vl v={}) -> bool {
+        if (SIZE(v) == N) {
+            if(judge(v)) return true;
+            return false;
+        }
+        rep (i, 10) {
+            if (used[i]) continue;
+            v.push_back(i);
+            used[i] = true;
+            if(f(f, v)) return true;
+            v.pop_back();
+            used[i] = false;
+        }
+        return false;
+    };
+    if(!dfs(dfs)) puts("UNSOLVABLE");
 }
 
 // ### test.cpp ###
