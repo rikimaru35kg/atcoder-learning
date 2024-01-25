@@ -179,13 +179,13 @@
 - 係数を保存しておくことで文字式を表すことができる。例えばax+bを保存したい場合、aとbを保存しておく
 - 文字式を保存できれば、方程式を解くこともできる。ax+bが保存されていれば、ax+b=cが解ける（x=(c-b)/a）
 ### 例題
-- [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
+- !復習価値中 基本 [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
 ## MEX（Minimum Excluded value）
 - K個の数のMEXは必ずK以下
 - 長さKの配列を持ち、順番に数が存在するか見ていけば良い
 ### 例題
-- [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
+- 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 
 # 確率と期待値
 

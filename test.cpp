@@ -102,8 +102,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -113,22 +113,24 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-void solve() {
-    LONG(X, Y, P, Q);
-    ll ans = INF;
-    repk(a, X, X+Y) repk(b, P, P+Q) {
-        auto [x, y] = crt({a,b}, {2*X+2*Y, P+Q});
-        if (y != 0) chmin(ans, x);
-    }
-    if (ans == INF) puts("infinity");
-    else Out(ans)
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INT(T);
-    rep(_, T) solve();
+    LONG(N, K);
+    set<ll> st;
+    VL(A, N);
+    rep(i, N) st.insert(A[i]);
+    ll cnt = 0;
+    ll mex = 0;
+    rep (i, K) {
+        if (st.count(mex)) {
+            mex++;
+            continue;
+        }
+        break;
+    }
+    Out(mex)
     
 }
 
