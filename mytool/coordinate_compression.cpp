@@ -2,17 +2,21 @@
 using namespace std;
 
 class CoordinateCompression {
+    bool init = false;
     vector<long long> vec;
 public:
     void add (long long x) {vec.push_back(x);}
     void compress () {
         sort(vec.begin(), vec.end());
         vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    long long get (long long x) {
+    long long operator() (long long x) {
+        if (!init) compress();
         return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
     }
-    long long get_back (long long i) {
+    long long operator[] (long long i) {
+        if (!init) compress();
         if (i < 0 || i >= (long long)vec.size()) return 3e18;
         return vec[i];
     }

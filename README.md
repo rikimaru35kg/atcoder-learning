@@ -210,7 +210,7 @@
 - 広義単調増加の場合でも、回数の求め方は同じ
 - 全探索するとO(N^2)だが、BIT木を使えばO(NlogN)で可能。
 ### 例題
-- [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
+- !要復習（考え方OKだが実装できず） [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
 - [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 
 ## 要素積のmaxを最小化

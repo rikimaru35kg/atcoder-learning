@@ -113,43 +113,90 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+class CoordinateCompression {
+    bool init = false;
+    vector<long long> vec;
+public:
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+        de("pupup")
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {return (long long)vec.size();}
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+struct BIT {
+    long long size;
+    vector<long long> bit;
+    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
 
+    void add (long long i, long long x) {
+        for (; i < size; i += (i & -i)) {
+            bit[i] += x;
+        }
+    }
+    long long sum (long long i) {
+        long long ret = 0;
+        for (; i > 0; i -= (i) & (-i)) {
+            ret += bit[i];
+        }
+        return ret;
+    }
+    long long sum_lower_bound(long long k) {
+        long long x = 0, len = 1;
+        while ((len << 1) < size) len <<= 1;
+        while(len > 0) {
+            if (x + len < size && bit[x + len] < k) {
+                k -= bit[x + len];
+                x += len;
+            }
+            len >>= 1;
+        }
+        return x + 1;
+    }
+};
+
+long long get_inv_num(vector<long long> a) {
+    CoordinateCompression cc;
+    for (long long i=0; i<SIZE(a); ++i) cc.add(a[i]);
+    long long n = cc.size();
+    BIT bit(n);
+    long long ret = 0;
+    for (long long i=0; i<SIZE(a); ++i) {
+        ret += bit.sum(n) - bit.sum(cc(a[i])+1);
+        bit.add(cc(a[i])+1, 1);
+    }
+    return ret;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl C(N), P(N);
-    vvl S(N);
-    rep (i, N) {
-        LONG(c, p);
-        C[i] = c;
-        P[i] = p;
-        rep (j, p) {
-            LONG(s);
-            S[i].push_back(s);
-        }
-    }
-    vd dp(M+1, INF);
-    dp[0] = 0;
-    rep1(i, M) {
-        rep (n, N) {  // n: roulette
-            double a = 1, b = 0;
-            rep (k, P[n]) {  //k: deme
-                ll s = S[n][k];  //s: point
-                if (s == 0) {
-                    a -= 1.0/P[n];
-                    continue;
-                }
-                double d = 0;
-                if (i-s>=0) d = dp[i-s];
-                b += d;
-            }
-            b /= (double)P[n];
-            double now = (b + C[n]) / a;
-            chmin(dp[i], now);
-        }
-    }
-    printf("%.10f\n", dp[M]);
+    LONG(N);
+    VL(A, N);
+    ll ans = get_inv_num(A);
+    Out(ans)
+    
 }
 
 // ### test.cpp ###
