@@ -117,29 +117,55 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvp testimony(N);
-    rep (i, N) {
-        LONG(a);
-        rep (j, a) {
-            LONG(x, y);
-            --x;
-            testimony[i].emplace_back(x, y);
-        }
+    LONG(N, M);
+    vvl from(N);
+    rep (i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    ll ans = 0;
-    rep(s, 1<<N) {
-        bool ok = true;
-        rep (i, N) {
-            if (~s>>i&1) continue;
-            for (auto [x, y]: testimony[i]) {
-                if (y==1 && ~s>>x&1) ok = false;
-                if (y==0 && s>>x&1) ok = false;
-            }
+    ll ans = 1;
+    vl euler;
+    vb used(N);
+    auto dfs = [&](auto f, ll v) -> void {
+        used[v] = true;
+        euler.push_back(v);
+        for (auto nv: from[v]) {
+            if (used[nv]) continue;
+            f(f, nv);
         }
-        if (ok) chmax(ans, (ll)__builtin_popcountll(s));
+    };
+    vi colors(N, -1);
+    ll now = 0;
+    auto dfs2 = [&](auto f, ll i, ll N) -> void {
+        if (i == N) {
+            ++now;
+            de(colors)
+            return;
+        }
+        ll v = euler[i];
+        rep (c, 3) {
+            bool ok = true;
+            for (auto nv: from[v]) {
+                if (colors[nv] == c) ok = false;
+            }
+            if (!ok) continue;
+            colors[v] = c;
+            f(f, i+1, N);
+            colors[v] = -1;
+        }
+    };
+    rep (i, N) {
+        if (used[i]) continue;
+        euler.clear();
+        dfs(dfs, i);
+        de(euler)
+        now = 0;
+        dfs2(dfs2, 0, SIZE(euler));
+        ans *= now;
     }
     Out(ans)
+
     
 }
 

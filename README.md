@@ -258,7 +258,7 @@
 - 再帰しながら全探索するのではなく、先にオイラーツアーして順番を決めてから再度再帰して全探索する方が良い場合あり
 - 例えば連結無向グラフ（ループあり）の終端処理をしたい場合、終端判定がそもそも難しいので、先にオイラーツアーしておけばその順序で処理をかける事ができる
 ### 例題
-- DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
+- !要復習 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - 盤面を状態にDFS。無意味な遷移はしない [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
 
 # 工夫した探索
@@ -273,7 +273,6 @@
 ### 例題
 - [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
 - [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
-- [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 - [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 二分探索で解ける事に辿り着けるかどうかが勝負 [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
