@@ -117,21 +117,39 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    set<ll> st;
-    VL(A, N);
-    rep(i, N) st.insert(A[i]);
-    ll cnt = 0;
-    ll mex = 0;
-    rep (i, K) {
-        if (st.count(mex)) {
-            mex++;
-            continue;
+    LONG(N, M);
+    vl C(N), P(N);
+    vvl S(N);
+    rep (i, N) {
+        LONG(c, p);
+        C[i] = c;
+        P[i] = p;
+        rep (j, p) {
+            LONG(s);
+            S[i].push_back(s);
         }
-        break;
     }
-    Out(mex)
-    
+    vd dp(M+1, INF);
+    dp[0] = 0;
+    rep1(i, M) {
+        rep (n, N) {  // n: roulette
+            double a = 1, b = 0;
+            rep (k, P[n]) {  //k: deme
+                ll s = S[n][k];  //s: point
+                if (s == 0) {
+                    a -= 1.0/P[n];
+                    continue;
+                }
+                double d = 0;
+                if (i-s>=0) d = dp[i-s];
+                b += d;
+            }
+            b /= (double)P[n];
+            double now = (b + C[n]) / a;
+            chmin(dp[i], now);
+        }
+    }
+    printf("%.10f\n", dp[M]);
 }
 
 // ### test.cpp ###
