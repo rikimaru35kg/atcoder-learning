@@ -113,53 +113,55 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vvl from(N);
-    vl cost(N);
-    rep (i, M) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
-        cost[v] += A[u];
-        cost[u] += A[v];
-    }
+    LONG(N);
+    ll M = 1e6;
+    Sieve sieve(M);
+    vl n_p(M+1);
+    rep (i, M+1) if (sieve.is_prime(i)) n_p[i]++;
+    rep (i, M) n_p[i+1] += n_p[i];
 
-    auto judge = [&](ll x) -> bool {
-        vl cos = cost;
-        vb finished(N);
-        queue<ll> que;
-        rep (i, N) if (cos[i]<=x) {
-            que.emplace(i);
-            finished[i] = true;
-        }
-        while (que.size()) {
-            ll v = que.front(); que.pop();
-            for (auto nv: from[v]) {
-                cos[nv] -= A[v];
-                if (cos[nv]<=x && !finished[nv]) {
-                    que.emplace(nv);
-                    finished[nv] = true;
-                }
-            }
-        }
-        rep (i, N) {
-            if (!finished[i]) return false;
-        }
-        return true;
-    };
-
-    ll l = -1, r = INF;
-    while (r-l>1) {
-        ll m = (l+r)/2;
-        if (judge(m)) r = m;
-        else l = m;
+    ll ans = 0;
+    rep1 (q, M) {
+        if (!sieve.is_prime(q)) continue;
+        if (q*q*q>=N) break;
+        ll p_max = N/q/q/q;
+        chmin(p_max, q-1);
+        ans += n_p[p_max];
     }
-    Out(r);
+    Out(ans)
     
 }
 

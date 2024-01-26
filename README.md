@@ -133,6 +133,7 @@
 - 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
 - 消す倍数はp^2以上の数でOK（i=p*pからスタートしてi+=pしてループを回す）
 ### 例題
+- !要復習（茶diffなのに解けなかった） [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 篩を使わなくてもぎりぎりTLEはしないが… [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
 
 ## 互いに素でない数字組合せの個数数え上げ
@@ -274,7 +275,6 @@
 - !復習価値中 二分探索の基本 [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
 - !復習価値高 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
 - !要復習 判定部分が難しい [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
-- [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 二分探索で解ける事に辿り着けるかどうかが勝負 [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
