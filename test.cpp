@@ -113,37 +113,37 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+using vvt = vector<vector<tuple<ll,ll,ll>>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    auto judge = [&](ll x) -> bool {
-        de(x)
-        ll cut = 0;
-        rep (i, N) {
-            // ll l = 0, r = INF;
-            // de(A[i])
-            // while (r-l>1) {
-            //     ll m  = (l+r)/2;
-            //     if ((A[i]+m-1)/m <= x) r=m;
-            //     else l=m;
-            // }
-            // de(r)
-            ll now = (A[i]+x-1)/x-1;
-            cut += now;
-        }
-        de(cut)
-        return cut <= K; 
-    };
-    ll l = 0, r = INF;
-    while (r-l>1) {
-        ll m = (l+r)/2;
-        if (judge(m)) r = m;
-        else l = m;
+    LONG(N, M);
+    vvt from(N);
+    rep (i, M) {
+        LONGM(u, v); LONG(b, c);
+        from[u].emplace_back(v, b, c);
     }
-    Out(r)
+    auto judge = [&](double x) -> bool {
+        vd dist(N, -INF);
+        dist[0] = 0;
+        rep (i, N) {
+            if (dist[i] == -INF) continue;
+            for (auto [nv, b, c]: from[i]) {
+                double nd = dist[i] + b - x*c;
+                chmax(dist[nv], nd);
+            }
+        }
+        return dist[N-1]>=0;
+    };
+    double l = 0, r = INF;
+    rep(_, 100) {
+        double m = (l+r)/2;
+        de(m)
+        if (judge(m)) l = m;
+        else r = m;
+    }
+    printf("%.15f\n", l);
     
 }
 
