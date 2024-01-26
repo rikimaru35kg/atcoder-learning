@@ -117,33 +117,33 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
+    LONG(N, P, K);
     VVL(A, N, N);
-    auto judge = [&](ll x) -> bool {
-        de(x)
-        vvl S(N+1, vl(N+1));
-        rep (i, N) rep (j, N) {
-            S[i+1][j+1] = (A[i][j]<=x);
-        }
-        de(S)
-        rep (i, N+1) rep (j, N) S[i][j+1] += S[i][j];
-        rep (i, N) rep (j, N+1) S[i+1][j] += S[i][j];
-        de(S)
+    auto judge = [&](ll x, ll K) -> pair<ll,ll> {
+        vvl B = A;
+        rep (i, N) rep (j, N) if (A[i][j]==-1) B[i][j] = x;
+        rep(k, N) rep(i, N) rep (j, N) chmin(B[i][j], B[i][k]+B[k][j]);
         ll cnt = 0;
-        rep (i, N) rep (j, N) {
-            if (i+K>N || j+K>N) continue;
-            chmax(cnt, S[i+K][j+K] - S[i][j+K] - S[i+K][j] + S[i][j]);
+        rep (i, N) rep (j, i) {
+            if (B[i][j] <= P) ++cnt;
         }
-        de(cnt)
-        return cnt >= (K*K+1)/2;
+        return make_pair(cnt >= K, cnt);
     };
-    ll l = -1, r = INF;
-    while (r-l>1) {
-        ll m = (l+r)/2;
-        if (judge(m)) r = m;
-        else l = m;
+    auto bis = [&](ll K) -> ll {
+        ll l = 0, r = INF;
+        while (r-l>1) {
+            ll m = (l+r)/2;
+            if (judge(m, K).first) l = m;
+            else r = m;
+        }
+        return l;
+    };
+    if (judge(INF, K).second == K) {
+        puts("Infinity");return 0;
     }
-    Out(r)
+    ll k0 = bis(K);
+    ll k1 = bis(K+1);
+    Out(k0-k1)
     
 }
 

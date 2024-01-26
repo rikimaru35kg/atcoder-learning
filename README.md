@@ -276,10 +276,10 @@
 - !復習価値高 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
 - !要復習 判定部分が難しい [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - !要復習 小数の扱いが難しい [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
-- !要復習 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - !復習価値中 混乱しがちな実装だが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 - !復習価値高 頭が混乱するが良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
-- [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
+- !要復習 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
+- !復習価値中 ひねりあり [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
