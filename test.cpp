@@ -117,34 +117,33 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    sort(all(A));
-    vl S(N+1);
-    rep(i, N) S[i+1] = S[i] + A[i];
-    auto count = [&](ll x) -> P {
-        ll ret = 0;
-        ll sum = 0;
-        rep (i, N) {
-            ll idx = lower_bound(all(A), x-A[i]) - A.begin();
-            ret += (N - idx);
-            sum += (N-idx)*A[i] + S[N] - S[idx];
+    LONG(N, K);
+    VVL(A, N, N);
+    auto judge = [&](ll x) -> bool {
+        de(x)
+        vvl S(N+1, vl(N+1));
+        rep (i, N) rep (j, N) {
+            S[i+1][j+1] = (A[i][j]<=x);
         }
-        return {ret, sum};
+        de(S)
+        rep (i, N+1) rep (j, N) S[i][j+1] += S[i][j];
+        rep (i, N) rep (j, N+1) S[i+1][j] += S[i][j];
+        de(S)
+        ll cnt = 0;
+        rep (i, N) rep (j, N) {
+            if (i+K>N || j+K>N) continue;
+            chmax(cnt, S[i+K][j+K] - S[i][j+K] - S[i+K][j] + S[i][j]);
+        }
+        de(cnt)
+        return cnt >= (K*K+1)/2;
     };
-    ll l = 0, r = 1e6;
+    ll l = -1, r = INF;
     while (r-l>1) {
         ll m = (l+r)/2;
-        if (count(m).first >= M) l = m;
-        else r = m;
+        if (judge(m)) r = m;
+        else l = m;
     }
-    de(l)
-    auto [n, sum] = count(l);
-    de(n)de(sum)
-    ll ans = sum;
-    ans -= (n-M)*l;
-    Out(ans)
-
+    Out(r)
     
 }
 
