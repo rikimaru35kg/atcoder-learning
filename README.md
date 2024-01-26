@@ -277,7 +277,7 @@
 - !要復習 判定部分が難しい [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - !要復習 小数の扱いが難しい [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - !要復習 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
-- 答え自体の二分探索でない為難しいが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
+- !復習価値中 混乱しがちな実装だが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 - 二分探索に用いる関数で頭が混乱するが二分探索の本質を考えさせられる良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
 - [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 

@@ -113,37 +113,38 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using vvt = vector<vector<tuple<ll,ll,ll>>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvt from(N);
-    rep (i, M) {
-        LONGM(u, v); LONG(b, c);
-        from[u].emplace_back(v, b, c);
-    }
-    auto judge = [&](double x) -> bool {
-        vd dist(N, -INF);
-        dist[0] = 0;
+    VL(A, N);
+    sort(all(A));
+    vl S(N+1);
+    rep(i, N) S[i+1] = S[i] + A[i];
+    auto count = [&](ll x) -> P {
+        ll ret = 0;
+        ll sum = 0;
         rep (i, N) {
-            if (dist[i] == -INF) continue;
-            for (auto [nv, b, c]: from[i]) {
-                double nd = dist[i] + b - x*c;
-                chmax(dist[nv], nd);
-            }
+            ll idx = lower_bound(all(A), x-A[i]) - A.begin();
+            ret += (N - idx);
+            sum += (N-idx)*A[i] + S[N] - S[idx];
         }
-        return dist[N-1]>=0;
+        return {ret, sum};
     };
-    double l = 0, r = INF;
-    rep(_, 100) {
-        double m = (l+r)/2;
-        de(m)
-        if (judge(m)) l = m;
+    ll l = 0, r = 1e6;
+    while (r-l>1) {
+        ll m = (l+r)/2;
+        if (count(m).first >= M) l = m;
         else r = m;
     }
-    printf("%.15f\n", l);
+    de(l)
+    auto [n, sum] = count(l);
+    de(n)de(sum)
+    ll ans = sum;
+    ans -= (n-M)*l;
+    Out(ans)
+
     
 }
 
