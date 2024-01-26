@@ -113,37 +113,52 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P, K);
-    VVL(A, N, N);
-    auto judge = [&](ll x, ll K) -> pair<ll,ll> {
-        vvl B = A;
-        rep (i, N) rep (j, N) if (A[i][j]==-1) B[i][j] = x;
-        rep(k, N) rep(i, N) rep (j, N) chmin(B[i][j], B[i][k]+B[k][j]);
-        ll cnt = 0;
-        rep (i, N) rep (j, i) {
-            if (B[i][j] <= P) ++cnt;
-        }
-        return make_pair(cnt >= K, cnt);
-    };
-    auto bis = [&](ll K) -> ll {
-        ll l = 0, r = INF;
-        while (r-l>1) {
-            ll m = (l+r)/2;
-            if (judge(m, K).first) l = m;
-            else r = m;
-        }
-        return l;
-    };
-    if (judge(INF, K).second == K) {
-        puts("Infinity");return 0;
+    LONG(N);
+    vpd pos(N);
+    rep (i, N) {
+        DOUBLE(x, y);
+        pos[i] = {x, y};
     }
-    ll k0 = bis(K);
-    ll k1 = bis(K+1);
-    Out(k0-k1)
+    auto func2 = [&](double x, double y) -> double {
+        double ret = 0;
+        rep (i, N) {
+            auto [xi, yi] = pos[i];
+            chmax(ret, euclid_distd({x,y}, {xi,yi}));
+        }
+        return ret;
+    };
+    auto func = [&](double y) -> double {
+        double l = -2000, r = 2000;
+        rep(_, 100) {
+            double m1 = (2*l+r)/3;
+            double m2 = (l+2*r)/3;
+            if (func2(m1, y) < func2(m2, y)) r = m2;
+            else l = m1;
+        }
+        return func2(l, y);
+    };
+    double l = -2000, r = 2000;
+    rep(_, 100) {
+        double m1 = (2*l+r)/3;
+        double m2 = (l+2*r)/3;
+        if (func(m1) < func(m2)) r = m2;
+        else l = m1;
+    }
+    printf("%.10f\n", func(l));
+
     
 }
 
