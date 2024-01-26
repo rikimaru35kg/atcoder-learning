@@ -117,44 +117,49 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VS(S, N);
-    set<vs> st;
-    ll ans = 0;
-    auto judge = [&](vs &s) {
-        de(s)
-        ++ans;
-    };
-    auto dfs = [&](auto f, vs s, ll red=0) -> void {
-        if(st.count(s)) return;
-        st.insert(s);
-        if (red == K) {
-            judge(s);
-            return;
+    LONG(N, M);
+    VL(A, N);
+    vvl from(N);
+    vl cost(N);
+    rep (i, M) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
+        cost[v] += A[u];
+        cost[u] += A[v];
+    }
+
+    auto judge = [&](ll x) -> bool {
+        vl cos = cost;
+        vb finished(N);
+        queue<ll> que;
+        rep (i, N) if (cos[i]<=x) {
+            que.emplace(i);
+            finished[i] = true;
         }
-        rep(i, N) rep(j, N) {
-            if (s[i][j]!='.') continue;
-            if (red == 0) {
-                s[i][j] = '@';
-                f(f, s, red+1);
-                s[i][j] = '.';
-            } else {
-                rep (k, 4) {
-                    ll ni = i + di[k];
-                    ll nj = j + dj[k];
-                    if (ni<0 || ni>=N ||nj<0 || nj>=N) continue;
-                    if (s[ni][nj]=='@') {
-                        s[i][j] = '@';
-                        f(f, s, red+1);
-                        s[i][j] = '.';
-                        break;
-                    }
+        while (que.size()) {
+            ll v = que.front(); que.pop();
+            for (auto nv: from[v]) {
+                cos[nv] -= A[v];
+                if (cos[nv]<=x && !finished[nv]) {
+                    que.emplace(nv);
+                    finished[nv] = true;
                 }
             }
         }
+        rep (i, N) {
+            if (!finished[i]) return false;
+        }
+        return true;
     };
-    dfs(dfs, S);
-    Out(ans)
+
+    ll l = -1, r = INF;
+    while (r-l>1) {
+        ll m = (l+r)/2;
+        if (judge(m)) r = m;
+        else l = m;
+    }
+    Out(r);
     
 }
 

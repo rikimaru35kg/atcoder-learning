@@ -271,9 +271,9 @@
 - 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
 - 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
-- [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
-- [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
-- [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
+- !復習価値中 二分探索の基本 [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
+- !復習価値高 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
+- !要復習 判定部分が難しい [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 二分探索で解ける事に辿り着けるかどうかが勝負 [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
