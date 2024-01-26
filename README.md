@@ -259,7 +259,7 @@
 - 例えば連結無向グラフ（ループあり）の終端処理をしたい場合、終端判定がそもそも難しいので、先にオイラーツアーしておけばその順序で処理をかける事ができる
 ### 例題
 - !要復習 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
-- 盤面を状態にDFS。無意味な遷移はしない [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
+- !復習価値低 ポリオミオ（Polyomio）の種類数が少ないから解ける [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
 
 # 工夫した探索
 

@@ -117,55 +117,44 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep (i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    ll ans = 1;
-    vl euler;
-    vb used(N);
-    auto dfs = [&](auto f, ll v) -> void {
-        used[v] = true;
-        euler.push_back(v);
-        for (auto nv: from[v]) {
-            if (used[nv]) continue;
-            f(f, nv);
-        }
+    LONG(N, K);
+    VS(S, N);
+    set<vs> st;
+    ll ans = 0;
+    auto judge = [&](vs &s) {
+        de(s)
+        ++ans;
     };
-    vi colors(N, -1);
-    ll now = 0;
-    auto dfs2 = [&](auto f, ll i, ll N) -> void {
-        if (i == N) {
-            ++now;
-            de(colors)
+    auto dfs = [&](auto f, vs s, ll red=0) -> void {
+        if(st.count(s)) return;
+        st.insert(s);
+        if (red == K) {
+            judge(s);
             return;
         }
-        ll v = euler[i];
-        rep (c, 3) {
-            bool ok = true;
-            for (auto nv: from[v]) {
-                if (colors[nv] == c) ok = false;
+        rep(i, N) rep(j, N) {
+            if (s[i][j]!='.') continue;
+            if (red == 0) {
+                s[i][j] = '@';
+                f(f, s, red+1);
+                s[i][j] = '.';
+            } else {
+                rep (k, 4) {
+                    ll ni = i + di[k];
+                    ll nj = j + dj[k];
+                    if (ni<0 || ni>=N ||nj<0 || nj>=N) continue;
+                    if (s[ni][nj]=='@') {
+                        s[i][j] = '@';
+                        f(f, s, red+1);
+                        s[i][j] = '.';
+                        break;
+                    }
+                }
             }
-            if (!ok) continue;
-            colors[v] = c;
-            f(f, i+1, N);
-            colors[v] = -1;
         }
     };
-    rep (i, N) {
-        if (used[i]) continue;
-        euler.clear();
-        dfs(dfs, i);
-        de(euler)
-        now = 0;
-        dfs2(dfs2, 0, SIZE(euler));
-        ans *= now;
-    }
+    dfs(dfs, S);
     Out(ans)
-
     
 }
 
