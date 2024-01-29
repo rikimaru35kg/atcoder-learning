@@ -113,21 +113,80 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
 
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    map<ll,ll> mp;
-    mp[0]++;
-    ll now = 0, ans = 0;
-    rep (i, SIZE(S)) {
-        int c = S[i] - '0';
-        now ^= 1LL<<c;
-        ans += mp[now];
-        mp[now]++;
+    LONG(N); VLM(A, N);
+    vvl idxs(N);
+    rep (i, N) {
+        idxs[A[i]].push_back(i);
     }
-    Out(ans)
+    LONG(Q);
+    rep (i, Q) {
+        LONGM(l, r); LONGM(x);
+        auto [left, y] = lowbou(idxs[x], l);
+        if (left == N) {
+            Out(0) continue;
+        }
+        auto [right, z] = lowbou_r(idxs[x], r); 
+        Out(right-left+1)
+    }
     
 }
 

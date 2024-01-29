@@ -355,7 +355,7 @@
 ### 例題
 - !復習価値高 なぜか典型解法を忘れていた [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
 - !復習価値低 [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
-- [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
+- !復習価値高 茶diff？ [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
 - 累積和MOD部分列の長さと一致 [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 - 連続部分文字列がMOD Pで0になる個数 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
