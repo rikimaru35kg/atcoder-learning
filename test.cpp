@@ -118,40 +118,36 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N); VL(A, N);
-    ll mx = 0;
-    ll idx = 0;
-    cout << 2*(N-1) << endl;
-    rep (i, N) {
-        if (abs(A[i]) >= mx) {
-            mx = abs(A[i]);
-            idx = i;
+    // ll M = 20;
+    // vvl cnt1(M, vl(N+1));
+    // rep (i, N) {
+    //     ll a = A[i];
+    //     rep (d, M) {
+    //         if (a>>d&1) cnt1[d][i+1] = 1;
+    //     }
+    // }
+    // rep (d, M) {
+    //     rep (i, N) {
+    //         cnt1[d][i+1] += cnt1[d][i];
+    //     }
+    // }
+    ll r = 0;
+    ll sum = 0, xo = 0;
+    ll ans = 0;
+    rep (l, N) {
+        while (r<N && sum+A[r] == (xo^A[r])) {
+            sum += A[r];
+            xo ^= A[r];
+            ++r;
+        }
+        ans += r - l;
+        if (l == r) ++r;
+        else {
+            sum -= A[l];
+            xo ^= A[l];
         }
     }
-    de(1)
-    rep (i, N) {
-        if (idx == i) continue;
-        printf("%lld %lld\n", idx+1, i+1);
-        A[i] += A[idx];
-        de(i)
-    }
-    if (A[idx] >= 0) {
-        de(2)
-        rep (i, N-1) {
-            printf("%lld %lld\n", i+1, i+2);
-            A[i+1] += A[i];
-            de(i)
-        }
-    } else {
-    de(3)
-        repr (i, N) {
-            de(i)
-            if (i == 0) break;
-            printf("%lld %lld\n", i+1, i);
-            A[i-1] += A[i];
-        }
-    }
-    de(A)
-
+    Out(ans)
     
 }
 

@@ -301,6 +301,7 @@
 ### 例題
 - 基本 [076 - Cake Cut（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_bx)
 - 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
+- !復習価値低 XORの性質 [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
 - !復習価値低 尺取りでなくても解ける [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
 - !復習価値中 尺取りでなくても解ける [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 
@@ -324,9 +325,8 @@
 - 逆向きに累積和と取れば単調減少（単調増加）となる
 - 和だけでなく、累積XORや累積GCDも考えられる（要するにnow=f(now,x)みたいな形で更新できる演算であれば何でも累積できる。区間を求められるかは別問題だが・・・）
 ### 例題
-- !要復習 性質を理解していれば解ける [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
-- [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
 - [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
+- !要復習 性質を理解していれば解ける [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる
