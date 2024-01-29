@@ -117,37 +117,46 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    // ll M = 20;
-    // vvl cnt1(M, vl(N+1));
-    // rep (i, N) {
-    //     ll a = A[i];
-    //     rep (d, M) {
-    //         if (a>>d&1) cnt1[d][i+1] = 1;
-    //     }
-    // }
-    // rep (d, M) {
-    //     rep (i, N) {
-    //         cnt1[d][i+1] += cnt1[d][i];
-    //     }
-    // }
-    ll r = 0;
-    ll sum = 0, xo = 0;
-    ll ans = 0;
-    rep (l, N) {
-        while (r<N && sum+A[r] == (xo^A[r])) {
-            sum += A[r];
-            xo ^= A[r];
-            ++r;
+    LONG(N, K);
+    vvi white(4*K+1, vi(4*K+1));
+    vvi black(4*K+1, vi(4*K+1));
+    rep (i, N) {
+        LONG(x, y); CHAR(c);
+        x %= 2*K, y %= 2*K;
+        if (c=='W') {
+            white[x+1][y+1] += 1;
+            white[x+2*K+1][y+1] += 1;
+            white[x+1][y+2*K+1] += 1;
+            white[x+2*K+1][y+2*K+1] += 1;
         }
-        ans += r - l;
-        if (l == r) ++r;
         else {
-            sum -= A[l];
-            xo ^= A[l];
+            black[x+1][y+1] += 1;
+            black[x+2*K+1][y+1] += 1;
+            black[x+1][y+2*K+1] += 1;
+            black[x+2*K+1][y+2*K+1] += 1;
         }
     }
+    rep (i, 4*K+1) rep (j, 4*K) white[i][j+1] += white[i][j];
+    rep (i, 4*K) rep (j, 4*K+1) white[i+1][j] += white[i][j];
+    rep (i, 4*K+1) rep (j, 4*K) black[i][j+1] += black[i][j];
+    rep (i, 4*K) rep (j, 4*K+1) black[i+1][j] += black[i][j];
+    ll ans = 0;
+    auto count = [&](vvi &color, ll i1, ll j1, ll i2, ll j2) {
+        ll ret = 0;
+        ret += color[i2][j2] - color[i2][j1] - color[i1][j2] + color[i1][j1];
+        return ret;
+    };
+    rep (i, 2*K) rep (j, 2*K) {
+        ll now = 0;
+        // black
+        now += count(black, i, j, i+K, j+K);
+        now += count(black, i+K, j+K, i+2*K, j+2*K);
+        now += count(white, i+K, j, i+2*K, j+K);
+        now += count(white, i, j+K, i+K, j+2*K);
+        chmax(ans, now);
+    }
     Out(ans)
+
     
 }
 
