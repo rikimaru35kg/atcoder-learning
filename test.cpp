@@ -117,18 +117,14 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(D);
-    auto f = [&](ll x, ll y) {
-        return x*x + y*y - D;
-    };
-    ll y = 2e6;
-    ll ans = INF;
-    rep (x, 2e6) {
-        while (y>0 && f(x,y) >= 0) {
-            --y;
-        }
-        chmin(ans, abs(f(x,y+1)));
-        chmin(ans, abs(f(x,y)));
+    LONG(N, M, D);
+    VL(A, N); VL(B, M);
+    sort(all(A));
+    sort(all(B));
+    ll ans = -1, j = 0;
+    rep (i, N) {
+        while (j<M && B[j] <= A[i]+D) ++j;
+        if (j!= 0 && abs(A[i]-B[j-1])<=D) chmax(ans, A[i] + B[j-1]);
     }
     Out(ans)
     

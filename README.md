@@ -292,18 +292,17 @@
 - 基本 double型の三分探索 [B - ムーアの法則](https://atcoder.jp/contests/arc054/tasks/arc054_b)
 - !復習価値中 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
 
-## 尺取り法
+## 尺取り法（Two-pointer approach）
 - 単調性があるときに使用可能
-- 区間の長さ1（left=right）の時にOK、NGの両方ありうる場合は半開区間で考える（[l,r)）というか基本は半開区間
-- rightをNGになるまでwhile分で進める際、NGになった瞬間のrightでwhile分の中を計算しないこと！
-- 尺取り法は半開区間なので、rを進めた後にA[r]を参照する事はもうないという事に注意
-- もしA[r]を参照したいなら、rを進めた後にr>0なら--rする（例えば例題のImpartial Gift）
-- 尺の中にある要素をmapやsetで持つのが典型（！？）
+- 半開区間[l,r)で考えると、要素を全く選ばなかった時も考慮可能なので便利
+- whileを抜けた後のrはrを進める条件に当てはまらない状態という事
+- 例えばwhile(r<N && sum+A[r]<=K)なら、whileを抜けた後はsum+A[r]>Kとなっている（もしくはr==Nかつsum+A[r]<=K）
+- whileを抜けた後に直前の値を参照したいならA[r-1]とする必要がある
 ### 例題
 - 基本 [076 - Cake Cut（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_bx)
 - 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
 - !復習価値低 尺取りでなくても解ける [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
-- [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
+- !復習価値中 尺取りでなくても解ける [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 
 ## 半分全列挙
 - N=40程度のとき、2^NはTLEするが2^(N/2)であればTLEしない事を利用
