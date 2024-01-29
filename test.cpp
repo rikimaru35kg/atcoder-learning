@@ -113,34 +113,33 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VL(A, N);
-    vl S;
-    S.push_back(0);
-    ll sum = 0;
-    ll ans = 0;
+    LONG(N, K);
+    VL(A, N);
+    auto modK = [&](ll x) {
+        return (x%K + K) % K;
+    };
+    map<ll,ll> mp;
+    ll sum = 0, ans = 0;
+    mp[0]++;
+    queue<ll> que;
+    que.push(0);
     rep (i, N) {
-        sum += A[i];
-        auto [idx, x] = lowbou_r(S, sum-K);
-        ans += idx+1;
-        S.push_back(sum);
+        if (SIZE(que)>=K) {
+            ll x = que.front(); que.pop();
+            mp[x]--;
+        }
+        (sum += A[i]) %= K;
+        ll y = modK(sum-(i));
+        ans += mp[y];
+        mp[y]++;
+        que.push(y);
     }
     Out(ans)
+    
 }
 
 // ### test.cpp ###
