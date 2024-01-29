@@ -324,7 +324,7 @@
 - 逆向きに累積和と取れば単調減少（単調増加）となる
 - 和だけでなく、累積XORや累積GCDも考えられる（要するにnow=f(now,x)みたいな形で更新できる演算であれば何でも累積できる。区間を求められるかは別問題だが・・・）
 ### 例題
-- [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
+- !要復習 性質を理解していれば解ける [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 - [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
 - [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 

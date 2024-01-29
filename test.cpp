@@ -113,41 +113,45 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(P, N);
-    vl a;
-    a.push_back(0);
-    rep (i, N) a.push_back(P[i]);
-    rep (i, N) rep (j, N) {
-        a.push_back(P[i]+P[j]);
+    LONG(N); VL(A, N);
+    ll mx = 0;
+    ll idx = 0;
+    cout << 2*(N-1) << endl;
+    rep (i, N) {
+        if (abs(A[i]) >= mx) {
+            mx = abs(A[i]);
+            idx = i;
+        }
     }
-    sort(all(a));
-    ll ans = 0;
-    ll K = SIZE(a);
-    rep (i, K) {
-        ll x = a[i];
-        ll y = M - x;
-        if (y < 0) continue;
-        auto [idx, z] = lowbou_r(a, y);
-        chmax(ans, x + z);
+    de(1)
+    rep (i, N) {
+        if (idx == i) continue;
+        printf("%lld %lld\n", idx+1, i+1);
+        A[i] += A[idx];
+        de(i)
     }
-    Out(ans)
+    if (A[idx] >= 0) {
+        de(2)
+        rep (i, N-1) {
+            printf("%lld %lld\n", i+1, i+2);
+            A[i+1] += A[i];
+            de(i)
+        }
+    } else {
+    de(3)
+        repr (i, N) {
+            de(i)
+            if (i == 0) break;
+            printf("%lld %lld\n", i+1, i);
+            A[i-1] += A[i];
+        }
+    }
+    de(A)
+
     
 }
 
