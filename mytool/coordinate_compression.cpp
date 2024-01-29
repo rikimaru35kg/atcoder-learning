@@ -2,9 +2,10 @@
 using namespace std;
 
 class CoordinateCompression {
-    bool init = false;
+    bool oneindexed, init = false;
     vector<long long> vec;
 public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
     void add (long long x) {vec.push_back(x);}
     void compress () {
         sort(vec.begin(), vec.end());
@@ -13,10 +14,13 @@ public:
     }
     long long operator() (long long x) {
         if (!init) compress();
-        return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
     }
     long long operator[] (long long i) {
         if (!init) compress();
+        if (oneindexed) --i;
         if (i < 0 || i >= (long long)vec.size()) return 3e18;
         return vec[i];
     }

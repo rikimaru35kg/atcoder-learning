@@ -342,7 +342,7 @@
 - 個数を保存しておけば、ある値以下の個数を求める事にも使える
 - 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
 ### 例題
-- [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
+- !復習価値中 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
 
 ## 連続部分列問題
 - キーワード：連続部分列は累積和！（もしくは尺取り法）

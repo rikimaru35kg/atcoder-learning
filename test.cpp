@@ -113,50 +113,100 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+struct BIT {
+    long long size;
+    vector<long long> bit;
+    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
 
+    void add (long long i, long long x) {
+        for (; i < size; i += (i & -i)) {
+            bit[i] += x;
+        }
+    }
+    long long sum (long long i) {
+        long long ret = 0;
+        for (; i > 0; i -= (i) & (-i)) {
+            ret += bit[i];
+        }
+        return ret;
+    }
+    long long sum_lower_bound(long long k) {
+        long long x = 0, len = 1;
+        while ((len << 1) < size) len <<= 1;
+        while(len > 0) {
+            if (x + len < size && bit[x + len] < k) {
+                k -= bit[x + len];
+                x += len;
+            }
+            len >>= 1;
+        }
+        return x + 1;
+    }
+};
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {return (long long)vec.size();}
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vvi white(4*K+1, vi(4*K+1));
-    vvi black(4*K+1, vi(4*K+1));
-    rep (i, N) {
-        LONG(x, y); CHAR(c);
-        x %= 2*K, y %= 2*K;
-        if (c=='W') {
-            white[x+1][y+1] += 1;
-            white[x+2*K+1][y+1] += 1;
-            white[x+1][y+2*K+1] += 1;
-            white[x+2*K+1][y+2*K+1] += 1;
-        }
-        else {
-            black[x+1][y+1] += 1;
-            black[x+2*K+1][y+1] += 1;
-            black[x+1][y+2*K+1] += 1;
-            black[x+2*K+1][y+2*K+1] += 1;
-        }
+    LONG(N, M, K);
+    VL(A, N);
+    CoordinateCompression cc;
+    rep (i, N) cc.add(A[i]);
+    BIT bitcnt(N);
+    BIT bitsum(N);
+    rep (i, M) {
+        bitcnt.add(cc(A[i]), 1);
+        bitsum.add(cc(A[i]), A[i]);
     }
-    rep (i, 4*K+1) rep (j, 4*K) white[i][j+1] += white[i][j];
-    rep (i, 4*K) rep (j, 4*K+1) white[i+1][j] += white[i][j];
-    rep (i, 4*K+1) rep (j, 4*K) black[i][j+1] += black[i][j];
-    rep (i, 4*K) rep (j, 4*K+1) black[i+1][j] += black[i][j];
-    ll ans = 0;
-    auto count = [&](vvi &color, ll i1, ll j1, ll i2, ll j2) {
-        ll ret = 0;
-        ret += color[i2][j2] - color[i2][j1] - color[i1][j2] + color[i1][j1];
-        return ret;
-    };
-    rep (i, 2*K) rep (j, 2*K) {
-        ll now = 0;
-        // black
-        now += count(black, i, j, i+K, j+K);
-        now += count(black, i+K, j+K, i+2*K, j+2*K);
-        now += count(white, i+K, j, i+2*K, j+K);
-        now += count(white, i, j+K, i+K, j+2*K);
-        chmax(ans, now);
-    }
-    Out(ans)
+    vl ans;
+    rep (i, N-M+1) {
+        ll idx = bitcnt.sum_lower_bound(K);
+        ll sum = bitsum.sum(idx);
+        ll rem = bitcnt.sum(idx) - K;
+        sum -= rem * cc[idx];
+        ans.push_back(sum);
+        if (i==N-M) break;
 
+        bitcnt.add(cc(A[i]), -1);
+        bitcnt.add(cc(A[i+M]), 1);
+        bitsum.add(cc(A[i]), -A[i]);
+        bitsum.add(cc(A[i+M]), A[i+M]);
+    }
+    print_vec(ans)
     
 }
 
