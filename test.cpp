@@ -113,18 +113,56 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, D);
-    VL(A, N); VL(B, M);
-    sort(all(A));
-    sort(all(B));
-    ll ans = -1, j = 0;
+    LONG(N,K,P);
+    VL(A, N);
+    vl a, b;
     rep (i, N) {
-        while (j<M && B[j] <= A[i]+D) ++j;
-        if (j!= 0 && abs(A[i]-B[j-1])<=D) chmax(ans, A[i] + B[j-1]);
+        if (i%2==0) a.push_back(A[i]);
+        else b.push_back(A[i]);
+    }
+    ll na = SIZE(a), nb = SIZE(b);
+    vvl as(K+1), bs(K+1);
+    auto calc = [&](ll na, vvl &as, vl &a) -> void {
+        rep (s, 1<<na) {
+            ll x = __builtin_popcountll(s);
+            if (x>K) continue;
+            ll sum = 0;
+            rep (i, na) if (s>>i&1) sum += a[i];
+            as[x].push_back(sum);
+        }
+    };
+    calc(na, as, a);
+    calc(nb, bs, b);
+    rep (i, K+1) sort(all(as[i]));
+    rep (i, K+1) sort(all(bs[i]));
+    de(a)de(b)
+    de(as)de(bs)
+    ll ans = 0;
+    rep (i, K+1) {
+        ll j = K - i;
+        for (auto x: as[i]) {
+            if (x > P) continue;
+            ll y = P - x;
+            auto [idx, z] = lowbou_r(bs[j], y);
+            ans += idx+1;
+            if (idx>=0) {de(i)de(j)de(x)de(idx)}
+        }
     }
     Out(ans)
     
