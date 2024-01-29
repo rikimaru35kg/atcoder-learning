@@ -353,8 +353,8 @@
 - 累積和のMODが部分列の長さと一致するという問題でも応用可能。具体的には最初に1ずつ引いた数列にしておけば、累積和を取った時に長さ分の考慮が不要となる
 - 0-9で構成された連続部分文字列がMOD Pで0になる個数を求める問題は、右から見ていくと良い（左から見ると単純に足していけない、もちろん累積和も、ので）
 ### 例題
-- [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
-- [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
+- !復習価値高 なぜか典型解法を忘れていた [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
+- !復習価値低 [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
 - [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
 - 累積和MOD部分列の長さと一致 [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)

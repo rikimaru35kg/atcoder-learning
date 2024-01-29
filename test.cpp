@@ -113,100 +113,21 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct BIT {
-    long long size;
-    vector<long long> bit;
-    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
 
-    void add (long long i, long long x) {
-        for (; i < size; i += (i & -i)) {
-            bit[i] += x;
-        }
-    }
-    long long sum (long long i) {
-        long long ret = 0;
-        for (; i > 0; i -= (i) & (-i)) {
-            ret += bit[i];
-        }
-        return ret;
-    }
-    long long sum_lower_bound(long long k) {
-        long long x = 0, len = 1;
-        while ((len << 1) < size) len <<= 1;
-        while(len > 0) {
-            if (x + len < size && bit[x + len] < k) {
-                k -= bit[x + len];
-                x += len;
-            }
-            len >>= 1;
-        }
-        return x + 1;
-    }
-};
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {return (long long)vec.size();}
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    VL(A, N);
-    CoordinateCompression cc;
-    rep (i, N) cc.add(A[i]);
-    BIT bitcnt(N);
-    BIT bitsum(N);
-    rep (i, M) {
-        bitcnt.add(cc(A[i]), 1);
-        bitsum.add(cc(A[i]), A[i]);
+    STRING(S);
+    map<ll,ll> mp;
+    mp[0]++;
+    ll now = 0, ans = 0;
+    rep (i, SIZE(S)) {
+        int c = S[i] - '0';
+        now ^= 1LL<<c;
+        ans += mp[now];
+        mp[now]++;
     }
-    vl ans;
-    rep (i, N-M+1) {
-        ll idx = bitcnt.sum_lower_bound(K);
-        ll sum = bitsum.sum(idx);
-        ll rem = bitcnt.sum(idx) - K;
-        sum -= rem * cc[idx];
-        ans.push_back(sum);
-        if (i==N-M) break;
-
-        bitcnt.add(cc(A[i]), -1);
-        bitcnt.add(cc(A[i+M]), 1);
-        bitsum.add(cc(A[i]), -A[i]);
-        bitsum.add(cc(A[i+M]), A[i+M]);
-    }
-    print_vec(ans)
+    Out(ans)
     
 }
 
