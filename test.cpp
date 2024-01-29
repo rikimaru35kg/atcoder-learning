@@ -129,40 +129,23 @@ pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N,K,P);
-    VL(A, N);
-    vl a, b;
-    rep (i, N) {
-        if (i%2==0) a.push_back(A[i]);
-        else b.push_back(A[i]);
+    LONG(N, M);
+    VL(P, N);
+    vl a;
+    a.push_back(0);
+    rep (i, N) a.push_back(P[i]);
+    rep (i, N) rep (j, N) {
+        a.push_back(P[i]+P[j]);
     }
-    ll na = SIZE(a), nb = SIZE(b);
-    vvl as(K+1), bs(K+1);
-    auto calc = [&](ll na, vvl &as, vl &a) -> void {
-        rep (s, 1<<na) {
-            ll x = __builtin_popcountll(s);
-            if (x>K) continue;
-            ll sum = 0;
-            rep (i, na) if (s>>i&1) sum += a[i];
-            as[x].push_back(sum);
-        }
-    };
-    calc(na, as, a);
-    calc(nb, bs, b);
-    rep (i, K+1) sort(all(as[i]));
-    rep (i, K+1) sort(all(bs[i]));
-    de(a)de(b)
-    de(as)de(bs)
+    sort(all(a));
     ll ans = 0;
-    rep (i, K+1) {
-        ll j = K - i;
-        for (auto x: as[i]) {
-            if (x > P) continue;
-            ll y = P - x;
-            auto [idx, z] = lowbou_r(bs[j], y);
-            ans += idx+1;
-            if (idx>=0) {de(i)de(j)de(x)de(idx)}
-        }
+    ll K = SIZE(a);
+    rep (i, K) {
+        ll x = a[i];
+        ll y = M - x;
+        if (y < 0) continue;
+        auto [idx, z] = lowbou_r(a, y);
+        chmax(ans, x + z);
     }
     Out(ans)
     

@@ -310,8 +310,8 @@
 - その後、問題に応じて上手く組み合わせる事ができるのであれば使えるアルゴリズムである
 - N=10^12程度のとき、10^6に分けるとうまくいくような問題もある（数列の二乗など）
 ### 例題
+- !復習価値低 基本 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
 - !要復習 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
-- 全探索でN=10^12程度 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
 
 # 区間和
 
