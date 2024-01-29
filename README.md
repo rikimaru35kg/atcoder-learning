@@ -302,7 +302,7 @@
 ### 例題
 - 基本 [076 - Cake Cut（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_bx)
 - 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
-- 本番では尺取りを使わなかったが… [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
+- !復習価値低 尺取りでなくても解ける [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
 - [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 
 ## 半分全列挙

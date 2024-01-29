@@ -113,52 +113,24 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vpd pos(N);
-    rep (i, N) {
-        DOUBLE(x, y);
-        pos[i] = {x, y};
-    }
-    auto func2 = [&](double x, double y) -> double {
-        double ret = 0;
-        rep (i, N) {
-            auto [xi, yi] = pos[i];
-            chmax(ret, euclid_distd({x,y}, {xi,yi}));
-        }
-        return ret;
+    LONG(D);
+    auto f = [&](ll x, ll y) {
+        return x*x + y*y - D;
     };
-    auto func = [&](double y) -> double {
-        double l = -2000, r = 2000;
-        rep(_, 100) {
-            double m1 = (2*l+r)/3;
-            double m2 = (l+2*r)/3;
-            if (func2(m1, y) < func2(m2, y)) r = m2;
-            else l = m1;
+    ll y = 2e6;
+    ll ans = INF;
+    rep (x, 2e6) {
+        while (y>0 && f(x,y) >= 0) {
+            --y;
         }
-        return func2(l, y);
-    };
-    double l = -2000, r = 2000;
-    rep(_, 100) {
-        double m1 = (2*l+r)/3;
-        double m2 = (l+2*r)/3;
-        if (func(m1) < func(m2)) r = m2;
-        else l = m1;
+        chmin(ans, abs(f(x,y+1)));
+        chmin(ans, abs(f(x,y)));
     }
-    printf("%.10f\n", func(l));
-
+    Out(ans)
     
 }
 
