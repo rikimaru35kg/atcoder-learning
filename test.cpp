@@ -117,28 +117,31 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp cord(2*N);
-    rep (i, N) {
-        LONGM(a, b);
-        if (b<a) swap(a, b);
-        cord[a] = {i, 0};
-        cord[b] = {i, 1};
-    }
-    de(cord)
-    vl stck;
-    rep (i, 2*N) {
-        auto [x, o] = cord[i];
-        if (o==0) {
-            stck.push_back(x);
-        } else {
-            if (SIZE(stck) == 0) PYes
-            ll y = stck.back(); stck.pop_back();
-            if (y != x) PYes
+    LONG(N, P);
+    STRING(S);
+    reverse(all(S));
+    ll ans = 0;
+    if (P == 2 || P == 5) {
+        rep (i, N) {
+            int x = S[i] - '0';
+            if (x%P != 0) continue;
+            ans += N - i;
         }
-        de(stck)
+        Out(ans)
+        return 0;
     }
-    PNo
+    vl cnt(P);
+    cnt[0] = 1;
+    ll ten = 1;
+    ll now = 0;
+    rep (i, N) {
+        int x = S[i] - '0';
+        (now += x*ten) %= P;
+        ans += cnt[now];
+        cnt[now]++;
+        (ten *= 10) %= P;
+    }
+    Out(ans)
     
 }
 
