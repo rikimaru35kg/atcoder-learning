@@ -117,22 +117,26 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp edges(M);
-    rep (i, M) {
-        LONGM(a, b);
-        edges[i] = {b, a};
+    LONG(N);
+    VL(A, N);
+    LONG(Q);
+    map<ll,ll> mp;
+    rep (i, N) mp[i] = A[i];
+    ll base = 0;
+    rep (i, Q) {
+        LONG(t);
+        if (t==1) {
+            LONG(x);
+            base = x;
+            mp.clear();
+        } else if (t==2) {
+            LONGM(j); LONG(x);
+            mp[j] += x;
+        } else {
+            LONGM(j);
+            printf("%lld\n", base + mp[j]);
+        }
     }
-    sort(all(edges));
-    ll end = -1;
-    ll ans = 0;
-    rep (i, M) {
-        auto [b, a] = edges[i];
-        if (end > a) continue;
-        ++ans;
-        end = b;
-    }
-    Out(ans)
     
 }
 
