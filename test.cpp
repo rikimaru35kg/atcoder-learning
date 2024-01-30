@@ -102,41 +102,39 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    reverse(all(S));
-    ll P = 2019;
-    vl cnt(P);
-    cnt[0]++;
-    ll now = 0;
-    ll ten = 1;
-    rep (i, SIZE(S)) {
-        int x = S[i] - '0';
-        (now += x*ten) %= P;
-        cnt[now]++;
-        ten *= 10; ten %= P;
+    LONG(N); VL(A, N);
+    ll sum = 0;  // 累積和
+    vvm dp(N+1, vm(N+1));  //dp[i][j]: ちょうどi番目でj個のグループを作った時の個数
+    dp[0][0] = 1;
+    vvm ds(N+1, vm(N+1));  //ds[s][t]: グループsまで決めたものだけで、累積和がt(mod s+1)となるdp配列の総和（s+1なのは、次のグループ決めでmod s+1で考える事になるから）
+    ds[0][0] = 1;
+    rep1 (i, N) {  // 貰うDP
+        sum += A[i-1];
+        for (int j=i; j>=1; --j) {  // ds配列を壊さないように逆順で演算
+            dp[i][j] = ds[j-1][sum%j];  // j-1グループまで決めた時、これまでで累積和（mod j）が等しくなる個数
+            ds[j][sum%(j+1)] += dp[i][j];  // jグループまで決めた個数が求まったのでds配列に保存
+        }
     }
-    ll ans = 0;
-    de(cnt)
-    rep (i, P) {
-        if (cnt[i]*(cnt[i]-1)/2) de(i)
-        ans += cnt[i]*(cnt[i]-1)/2;
+    mint ans = 0;
+    repk(i, 1, N+1) {  // i=1~N
+        ans += dp[N][i];
     }
-    Out(ans)
+    Out(ans.val())
     
 }
 
