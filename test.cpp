@@ -117,29 +117,24 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
     STRING(S);
     reverse(all(S));
-    ll ans = 0;
-    if (P == 2 || P == 5) {
-        rep (i, N) {
-            int x = S[i] - '0';
-            if (x%P != 0) continue;
-            ans += N - i;
-        }
-        Out(ans)
-        return 0;
-    }
+    ll P = 2019;
     vl cnt(P);
-    cnt[0] = 1;
-    ll ten = 1;
+    cnt[0]++;
     ll now = 0;
-    rep (i, N) {
+    ll ten = 1;
+    rep (i, SIZE(S)) {
         int x = S[i] - '0';
         (now += x*ten) %= P;
-        ans += cnt[now];
         cnt[now]++;
-        (ten *= 10) %= P;
+        ten *= 10; ten %= P;
+    }
+    ll ans = 0;
+    de(cnt)
+    rep (i, P) {
+        if (cnt[i]*(cnt[i]-1)/2) de(i)
+        ans += cnt[i]*(cnt[i]-1)/2;
     }
     Out(ans)
     
