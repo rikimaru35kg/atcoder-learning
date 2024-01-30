@@ -387,15 +387,16 @@
 ### 例題
 - !復習価値中（実装難しめ） キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - !要復習 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
-- 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
+- !要復習 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 
 ## 区間スケジューリング問題
 - なるべく多くの会議に出席したい場合、終了時刻で昇順ソートして、貪欲に選択するのが最適
-- 昇順ソートしたpairを順に見えていけば良い（開始時刻で二分探索とか変なことを考えると難しくなってしまう）
+- 昇順ソートしたpairを順に見えていけば良い
+- ソート済みpair（すなわち区間）を図示するとイメージしやすい。M区間に対してrep(i,M)して、それぞれどういう処理をすれば良いか考えれば実装できる
 - 全部で最大K会議選べるとしたとき、最初の1会議をなるべく早く終わらせた方が残りK-1会議の選択肢が増える。2番目、3番目の会議も同様の考え方
 - 亜種問題として、全ての会議を串刺しする問題あり。この階は区間スケジューリング問題の解に一致する。終了時刻昇順でソートしたとき、最初に終わる会議をその終了時刻までに選択するしかないが、なるべくたくさん串刺しするには、終了時刻で串刺しした方が残りの会議数を減らせる為
 ### 例題
-- [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
+- !要復習 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
 
 # 全部クリア問題（全クリ）
 - 全要素をリセットするようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする

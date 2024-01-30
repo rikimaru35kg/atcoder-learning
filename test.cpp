@@ -118,24 +118,19 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vp limits(N);
-    rep (i, N) {
-        LONG(a, b);
-        limits[i] = {M-a, b};
+    vp edges(M);
+    rep (i, M) {
+        LONGM(a, b);
+        edges[i] = {b, a};
     }
-    sort(allr(limits));
-    multiset<ll> st;
-    ll idx = 0;
+    sort(all(edges));
+    ll end = -1;
     ll ans = 0;
-    repr (d, M) {
-        while (idx < N && limits[idx].first >= d) {
-            st.insert(limits[idx].second);
-            ++idx;
-        }
-        if (SIZE(st)==0) continue;
-        ll mx = *(--st.end());
-        ans += mx;
-        st.erase(--st.end());
+    rep (i, M) {
+        auto [b, a] = edges[i];
+        if (end > a) continue;
+        ++ans;
+        end = b;
     }
     Out(ans)
     
