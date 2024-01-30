@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### D.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -117,29 +117,27 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    auto modK = [&](ll x) {
-        return (x%K + K) % K;
-    };
-    map<ll,ll> mp;
-    ll sum = 0, ans = 0;
-    mp[0]++;
-    queue<ll> que;
-    que.push(0);
-    rep (i, N) {
-        if (SIZE(que)>=K) {
-            ll x = que.front(); que.pop();
-            mp[x]--;
-        }
-        (sum += A[i]) %= K;
-        ll y = modK(sum-(i));
-        ans += mp[y];
-        mp[y]++;
-        que.push(y);
+    LONG(N, M);
+    VLM(X, M);
+    vl cnt(N);
+    rep (i, M-1) {
+        ll x1 = X[i], x2 = X[i+1];
+        if (x2<x1) swap(x1, x2);
+        ll dist = x2-x1;
+        ll distm = N - dist;
+        cnt[x1] += distm;
+        cnt[x2] -= distm;
+        cnt[0] += dist;
+        cnt[x1] -= dist;
+        cnt[x2] += dist;
+        // cnt[N] -= dist;
     }
+    rep(i, N-1) cnt[i+1] += cnt[i];
+    de(cnt)
+    ll ans = INF;
+    rep (i, N) chmin(ans, cnt[i]);
     Out(ans)
     
 }
 
-// ### test.cpp ###
+// ### D.cpp ###
