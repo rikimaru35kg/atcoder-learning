@@ -117,37 +117,28 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,vl> ends;
-    multiset<ll> st;
-    rep(i, N) {
-        LONG(t, d);
-        ends[t].push_back(t+d);
+    LONG(N, M);
+    vp limits(N);
+    rep (i, N) {
+        LONG(a, b);
+        limits[i] = {M-a, b};
     }
-    ll t = 1;
+    sort(allr(limits));
+    multiset<ll> st;
+    ll idx = 0;
     ll ans = 0;
-    while (true) {
-        while(SIZE(st) >= 1 && t > *st.begin()) {
-            st.erase(st.begin());
+    repr (d, M) {
+        while (idx < N && limits[idx].first >= d) {
+            st.insert(limits[idx].second);
+            ++idx;
         }
-        if (ends.count(t)) {
-            for (auto e: ends[t]) {
-                st.insert(e);
-            }
-        }
-        if (SIZE(st)) {
-            ++ans;
-            st.erase(st.begin());
-        }
-        // advance t
-        if (SIZE(st)) ++t;
-        else {
-            auto it = ends.lower_bound(t+1);
-            if (it == ends.end()) break;
-            t = it->first;
-        }
+        if (SIZE(st)==0) continue;
+        ll mx = *(--st.end());
+        ans += mx;
+        st.erase(--st.end());
     }
     Out(ans)
+    
 }
 
 // ### test.cpp ###
