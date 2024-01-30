@@ -384,7 +384,7 @@
 - 2つ以上の変数がある場合、1つに減らせれば貪欲な選択ができる（区間スケジューリングはその代表例）
 - 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
-- 前から見れば開始時刻は無視してよくなる [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
+- !復習価値中（実装難しめ） キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - 後ろから見れば時刻は無視してよくなる [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 - 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 

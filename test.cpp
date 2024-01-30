@@ -117,39 +117,37 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(P, N);
-    vl idx(N);
-    rep (i, N) idx[P[i]] = i;
-    set<ll> st;
-    st.insert(-1); st.insert(N);
+    LONG(N);
+    map<ll,vl> ends;
+    multiset<ll> st;
+    rep(i, N) {
+        LONG(t, d);
+        ends[t].push_back(t+d);
+    }
+    ll t = 1;
     ll ans = 0;
-    repr(x, N) {
-        ll id = idx[x];
-        st.insert(id);
-        vl ls(2, -1), rs(2, N);
-        {
-            auto it = st.find(id);
-            rep (i, 2) {
-                if (it == st.begin()) break;
-                --it;
-                ls[i] = *it;
+    while (true) {
+        while(SIZE(st) >= 1 && t > *st.begin()) {
+            st.erase(st.begin());
+        }
+        if (ends.count(t)) {
+            for (auto e: ends[t]) {
+                st.insert(e);
             }
         }
-        {
-            auto it = st.find(id);
-            rep (i, 2) {
-                ++it;
-                if (it == st.end()) break;
-                rs[i] = *it;
-            }
+        if (SIZE(st)) {
+            ++ans;
+            st.erase(st.begin());
         }
-        ll cnt = 0;
-        cnt += (ls[0]-ls[1])*(rs[0]-id);
-        cnt += (id-ls[0])*(rs[1]-rs[0]);
-        ans += cnt * (x+1);
+        // advance t
+        if (SIZE(st)) ++t;
+        else {
+            auto it = ends.lower_bound(t+1);
+            if (it == ends.end()) break;
+            t = it->first;
+        }
     }
     Out(ans)
-    
 }
 
 // ### test.cpp ###
