@@ -102,39 +102,53 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll sum = 0;  // 累積和
-    vvm dp(N+1, vm(N+1));  //dp[i][j]: ちょうどi番目でj個のグループを作った時の個数
-    dp[0][0] = 1;
-    vvm ds(N+1, vm(N+1));  //ds[s][t]: グループsまで決めたものだけで、累積和がt(mod s+1)となるdp配列の総和（s+1なのは、次のグループ決めでmod s+1で考える事になるから）
-    ds[0][0] = 1;
-    rep1 (i, N) {  // 貰うDP
-        sum += A[i-1];
-        for (int j=i; j>=1; --j) {  // ds配列を壊さないように逆順で演算
-            dp[i][j] = ds[j-1][sum%j];  // j-1グループまで決めた時、これまでで累積和（mod j）が等しくなる個数
-            ds[j][sum%(j+1)] += dp[i][j];  // jグループまで決めた個数が求まったのでds配列に保存
+    LONG(N); VLM(P, N);
+    vl idx(N);
+    rep (i, N) idx[P[i]] = i;
+    set<ll> st;
+    st.insert(-1); st.insert(N);
+    ll ans = 0;
+    repr(x, N) {
+        ll id = idx[x];
+        st.insert(id);
+        vl ls(2, -1), rs(2, N);
+        {
+            auto it = st.find(id);
+            rep (i, 2) {
+                if (it == st.begin()) break;
+                --it;
+                ls[i] = *it;
+            }
         }
+        {
+            auto it = st.find(id);
+            rep (i, 2) {
+                ++it;
+                if (it == st.end()) break;
+                rs[i] = *it;
+            }
+        }
+        ll cnt = 0;
+        cnt += (ls[0]-ls[1])*(rs[0]-id);
+        cnt += (id-ls[0])*(rs[1]-rs[0]);
+        ans += cnt * (x+1);
     }
-    mint ans = 0;
-    repk(i, 1, N+1) {  // i=1~N
-        ans += dp[N][i];
-    }
-    Out(ans.val())
+    Out(ans)
     
 }
 

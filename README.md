@@ -367,12 +367,13 @@
 ### 例題
 - !要復習 非常に難しく頭が混乱。DPに慣れた頃に再度解きたい問題 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 
-## 区間max値の総和
+## ある順列P{1,2,...,N}の区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
-- 大きい順に見るループを作り、まず自分自身のインデックスをsetに突っ込む
+- 数が大きい順に見るループを作り、まず自分自身のインデックスをsetに突っ込む
 - setの中で、自分より1つ小さいインデックスをlとし、nl = idx - lとする
 - setの中で、自分より1つ大きいインデックスをrとし、nr = r - idxとする
-- nl * nrが、その数が最大値となる区間数であるので、区間数*その数をansに足していく
+- nl * nrが、その数が最大値となる区間数であるので、区間数*その数をansに足す
+- 文章ではわかりにくいので、[snuke氏の解説参照](https://www.youtube.com/live/VSeggcnxwrc?feature=shared&t=5618)
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
 - 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
