@@ -1,4 +1,4 @@
-// ### D.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -117,27 +117,29 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VLM(X, M);
-    vl cnt(N);
-    rep (i, M-1) {
-        ll x1 = X[i], x2 = X[i+1];
-        if (x2<x1) swap(x1, x2);
-        ll dist = x2-x1;
-        ll distm = N - dist;
-        cnt[x1] += distm;
-        cnt[x2] -= distm;
-        cnt[0] += dist;
-        cnt[x1] -= dist;
-        cnt[x2] += dist;
-        // cnt[N] -= dist;
+    LONG(N);
+    vp cord(2*N);
+    rep (i, N) {
+        LONGM(a, b);
+        if (b<a) swap(a, b);
+        cord[a] = {i, 0};
+        cord[b] = {i, 1};
     }
-    rep(i, N-1) cnt[i+1] += cnt[i];
-    de(cnt)
-    ll ans = INF;
-    rep (i, N) chmin(ans, cnt[i]);
-    Out(ans)
+    de(cord)
+    vl stck;
+    rep (i, 2*N) {
+        auto [x, o] = cord[i];
+        if (o==0) {
+            stck.push_back(x);
+        } else {
+            if (SIZE(stck) == 0) PYes
+            ll y = stck.back(); stck.pop_back();
+            if (y != x) PYes
+        }
+        de(stck)
+    }
+    PNo
     
 }
 
-// ### D.cpp ###
+// ### test.cpp ###
