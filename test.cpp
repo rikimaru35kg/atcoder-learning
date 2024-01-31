@@ -117,26 +117,54 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    LONG(Q);
-    map<ll,ll> mp;
-    rep (i, N) mp[i] = A[i];
-    ll base = 0;
-    rep (i, Q) {
-        LONG(t);
-        if (t==1) {
-            LONG(x);
-            base = x;
-            mp.clear();
-        } else if (t==2) {
-            LONGM(j); LONG(x);
-            mp[j] += x;
-        } else {
-            LONGM(j);
-            printf("%lld\n", base + mp[j]);
+    LONG(N, K);
+    ll M = 1e5;
+    vl nxt(M);
+    auto digsum = [&](ll x) -> ll {
+        ll ret = 0;
+        while (x > 0) {
+            ret += x%10;
+            x /= 10;
         }
+        return ret;
+    };
+    rep (i, M) {
+        nxt[i] = i + digsum(i);
+        nxt[i] %= M;
     }
+
+    vb seen(M), finished(M);
+    ll pos = -1;
+    vl stck;
+    auto dfs = [&](auto f, ll v) -> void {
+        seen[v] = true;
+        stck.push_back(v);
+        ll nv = nxt[v];
+        if (seen[nv]) {
+            pos = nv;
+            return ;
+        }
+        f(f, nv);
+        if (pos != -1) {
+            return;
+        }
+    };
+    dfs(dfs, N);
+    ll psize = 0;
+    rep (i, SIZE(stck)) {
+        if (stck[i] == pos) break;
+        ++psize;
+    }
+    ll csize = SIZE(stck) - psize;
+
+    ll len = (K-psize) % csize + psize;
+    if (K <= SIZE(stck)) len = K;
+    ll now = N;
+    rep (i, len) {
+        now = nxt[now];
+    }
+    Out(now)
+
     
 }
 

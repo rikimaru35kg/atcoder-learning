@@ -404,7 +404,7 @@
 - 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
 - リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
 ### 例題
-- [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+- !復習価値低 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 # グラフ
 
@@ -427,7 +427,7 @@
 - 頂点を1度だけ訪れれば良い場合は、行きがけ順で探索済みの頂点は再探索不要
 - 合計距離Kでゴールにたどり着く迷路問題など、ループを許容し同じ地点での再探索がありうる場合は、頂点以外の情報（距離など）もセットで状態として管理し、状態が同じものは再探索しないようにする
 ### 例題
-- バックトラック (072 - Loop Railway Plan（★4）)[https://xn--atcoder-nr4f8b4xyfyc.jp/contests/typical90/tasks/typical90_bt]
+- !復習価値中 バックトラック (072 - Loop Railway Plan（★4）)[https://atcoder.jp/contests/typical90/tasks/typical90_bt]
 
 ## サイクル検出
 - 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）
@@ -439,9 +439,9 @@
 - サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいる場合、自己ループがある場合は要注意
 - サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
 ### 例題
-- 単純なfunctional graphだが、サイクル検出の難しさを考えさせられる良問 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
-- これもfunctional graphだが、自己ループあり[E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
-- ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
+- !復習価値中 単純なfunctional graphだが、サイクル検出の難しさを考えさせられる良問 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
+- !復習価値中 自己ループありのfunctional graph [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
+- !復習価値低 ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
