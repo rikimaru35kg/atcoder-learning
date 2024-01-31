@@ -451,15 +451,17 @@
 - 森の連結成分数は頂点数 - 辺の数
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
 ### 例題
-- 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
+- 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - DFSしながら期待値（場合の数）を数え上げる [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
 - 各頂点に対し、オイラーツアーの行きがけ順を開始時と終了時に記憶しておくと部分木の半開区間が求まる
+- 各頂点を探索している時に、その頂点に対する操作をするのか、あるいは繋がっている全頂点に対する操作（場合の数をかける等）をするのか、色々バリエーションあり
 ### 例題
 - [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+- !要復習 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
