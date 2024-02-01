@@ -520,7 +520,7 @@
 - 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
 - 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
 ### 例題
-- [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
+- !復習価値中 基本 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ
