@@ -470,7 +470,7 @@
 - 距離2の頂点組み合わせが最も多くなる（N-1C2）。nC2から最低必要辺数のN-1を引くと一致する事からこれより多くはできないことがわかる
 - 針の先同士をつなげば距離2の組み合わせを1つずつ減らせるので、距離2の頂点組み合わせは0以上N-1C2であればすべて実現可能
 ### 例題
-- [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
+- !復習価値高 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く
@@ -489,7 +489,7 @@
 - 実装方法としては、部分集合tの全列挙は1引いてsとのandを取るを繰り返せば良い
 - 計算量はO(N 2^N + 3^N) 3^18≒4e8（N=18）が限界
 ### 例題
-- [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
+- !要復習 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
 ## なもり木（pseudo tree）
 - 頂点数と辺の数が一致する（実際は木ではない）

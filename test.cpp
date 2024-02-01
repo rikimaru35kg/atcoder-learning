@@ -113,95 +113,38 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
 
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    repk (i, 1, N) {
-        LONGM(p);
-        from[p].push_back(i);
+    LONG(N, M);
+    vl edges(N);
+    rep (i, M) {
+        LONGM(a, b);
+        edges[a] |= 1<<b;
+        edges[b] |= 1<<a;
     }
-    vp span(N);
-    int cnt = 0;
-    vvl vs(N);
-    auto dfs = [&](auto f, int v, int depth=0, int p=-1) -> void {
-        span[v].first = cnt;
-        vs[depth].push_back(cnt);
-        ++cnt;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            f(f, nv, depth+1, v);
+    vl clique(1<<N, INF);
+    clique[0] = 0;
+    rep (s, 1<<N) {
+        if (s==0) continue;
+        rep (j, N) {
+            if (~s>>j&1) continue;
+            ll smj = s^(1<<j);
+            if ((edges[j]&smj)==smj && clique[smj]<=1) {
+                clique[s] = 1;
+            }
+            break;
         }
-        span[v].second = cnt;
-    };
-    dfs(dfs, 0);
-    de(span)de(vs)
-    LONG(Q);
-    rep (i, Q) {
-        LONG(u, d); --u;
-        auto [a, b] = span[u];
-        auto [n1, x1] = lowbou(vs[d], a);
-        auto [n2, x2] = uppbou_r(vs[d], b);
-        int y = max(0LL, n2-n1+1);
-        printf("%d\n", y);
     }
+    rep (s, 1<<N) {
+        if (s==0) continue;
+        for (ll t=s; t>0; t=(t-1)&s) {
+            ll u = s^t;
+            chmin(clique[s], clique[t] + clique[u]);
+        }
+    }
+    Out(clique[(1<<N)-1])
     
 }
 
