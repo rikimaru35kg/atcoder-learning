@@ -452,7 +452,7 @@
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
-- 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
+- !要復習（惜しかった!） 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - DFSしながら期待値（場合の数）を数え上げる [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 
 ## オイラーツアーと部分木
