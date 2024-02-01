@@ -503,10 +503,10 @@
 - トポロジカルソートは入次数が0の頂点をキューに入れ、繋がっている頂点の入次数を1減らしてゼロになればキューに入れる事で実現可能
 - あるいはDFSの帰りがけ順を求め、その逆順としても良い（行きがけ順でseen配列を管理して、再度訪れないようにする事）
 - 有向グラフの閉路判定は、トポロジカルソートができなければ閉路ありと判定可能（ソート済み配列のsize != N）
-- DAGであっても、DFSの計算量が発散する事はありえる（同じ経路を重複して数えてしまう場合）。DFSなら帰りがけ順でfinished配列を管理すると良い（finishedでcontinueするのは再帰関数の直前で！）
+- DAGであっても、DFSの計算量が発散する事はありえる（同じ経路を重複して数えてしまう場合）ので、同じ頂点を何度も探索しないようにする事
 ### 例題
-- [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
-- 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
+- !復習価値中 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
+- !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
 
 ## Functional graph
 - 全頂点からの出次数が1のグラフをfunctional graphと呼ぶ

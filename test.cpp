@@ -118,33 +118,41 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vl edges(N);
+    vvl from(N);
+    vb indeg(N);
     rep (i, M) {
-        LONGM(a, b);
-        edges[a] |= 1<<b;
-        edges[b] |= 1<<a;
+        LONGM(x, y);
+        from[x].push_back(y);
+        indeg[y] = true;
     }
-    vl clique(1<<N, INF);
-    clique[0] = 0;
-    rep (s, 1<<N) {
-        if (s==0) continue;
-        rep (j, N) {
-            if (~s>>j&1) continue;
-            ll smj = s^(1<<j);
-            if ((edges[j]&smj)==smj && clique[smj]<=1) {
-                clique[s] = 1;
-            }
-            break;
+    vl tpl;
+    vb used(N);
+    auto dfs = [&](auto f, int v) -> void {
+        used[v] = true;
+        for (auto nv: from[v]) {
+            if (used[nv]) continue;
+            f(f, nv);
+        }
+        tpl.push_back(v);
+    };
+    rep (i, N) {
+        if (used[i]) continue;
+        dfs(dfs, i);
+    }
+    reverse(all(tpl));
+    vl dist(N, -1);
+    rep (i, N) {
+        if (indeg[i]) continue;
+        dist[i] = 0;
+    }
+    for (auto v: tpl) {
+        for (auto nv: from[v]){
+            chmax(dist[nv], dist[v]+1);
         }
     }
-    rep (s, 1<<N) {
-        if (s==0) continue;
-        for (ll t=s; t>0; t=(t-1)&s) {
-            ll u = s^t;
-            chmin(clique[s], clique[t] + clique[u]);
-        }
-    }
-    Out(clique[(1<<N)-1])
+    ll ans = *max_element(all(dist));
+    Out(ans)
+
     
 }
 
