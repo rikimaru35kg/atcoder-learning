@@ -531,7 +531,7 @@
 - 完全2部グラフはKm,nのように表す
 - XY平面上の格子系問題ではxとyの2部グラフと考えると上手くいくことがある（点を辺に対応させる）e.g. Must Be Rectangular
 ### 例題
-- [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
+- !要復習 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 
 ## 橋

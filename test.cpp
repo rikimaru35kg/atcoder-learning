@@ -113,106 +113,54 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(N, M);
     vvl from(N);
-    rep (i, N) {
-        LONGM(x);
-        from[i].push_back(x);
+    rep (i, M) {
+        INTM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    VL(C, N);
-    vl stck;
-    ll pos = -1;
-    vb used(N), finished(N);
-    auto dfs = [&](auto f, int v) -> void {
+    vb used(N);
+    vi colors(N);
+    ll n0 = 0, n1 = 0, e = 0;
+    auto dfs = [&](auto f, int v, int c=0) -> bool {
+        colors[v] = c;
         used[v] = true;
-        stck.push_back(v);
+        (c==0)?n0++:n1++;
+        e += SIZE(from[v]);
         for (auto nv: from[v]) {
-            if (finished[nv]) continue;
             if (used[nv]) {
-                pos = nv;
-                finished[v] = true;
-                return;
+                if (colors[nv] == c) return false;
+                continue;
             }
-            f(f, nv);
-            if (pos != -1) {
-                finished[v] = true;
-                return;
-            }
+            bool b = f(f, nv, 1-c);
+            if (!b) return false;
         }
-        stck.pop_back();
-        finished[v] = true;
+        return true;
     };
-    ll ans = 0;
+    auto nC2 = [&](ll n) {
+        return n*(n-1)/2;
+    };
+    ll ans = 0, ng = 0;
     rep (i, N) {
-        stck.clear();
-        pos = -1;
+        de(i)
+        ll now = 0;
         if (used[i]) continue;
-        dfs(dfs, i);
-        if (pos == -1) continue;
-        vl cycle;
-        while(stck.size()) {
-            int v = stck.back(); stck.pop_back();
-            if (v == pos) {
-                cycle.push_back(v);
-                break;
-            }
-            cycle.push_back(v);
+        n0 = 0, n1 = 0, e = 0;
+        bool b = dfs(dfs, i);
+        if (!b) {
+            Out(0)
+            return 0;
         }
-        ll now = INF;
-        for (auto v: cycle) chmin(now, C[v]);
-        ans += now;
+        now += nC2(n0) + nC2(n1);
+        ng += now;
     }
+    ans = nC2(N) - M - ng;
     Out(ans)
-
-
     
 }
 
