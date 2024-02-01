@@ -436,12 +436,14 @@
 - 例えば、1->2->3で、2から探索すると2と3がseenとなる。次に1から探索すると2のseenに辿り付きサイクル検出してしまう
 - 従って現在探索中がseen、完全終了がfinishedにしておく
 - 再帰関数をリターンして良いのはサイクル検出した時のみ（検出の瞬間と次頂点がサイクル検出した時）。finishedを見つけてもreturnではなくcontinue（スルー）
-- サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいる場合、自己ループがある場合は要注意
+- 再帰関数の途中でリターンする場合、必ずfinishedをtrueにするのを忘れずに！（サイクルが複数ある場合は必須）
+- サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいるsnuke式の場合、自己ループがある場合は要注意
 - サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
 ### 例題
 - !復習価値中 単純なfunctional graphだが、サイクル検出の難しさを考えさせられる良問 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
 - !復習価値中 自己ループありのfunctional graph [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
 - !復習価値低 ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
+- !復習価値高 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
@@ -518,7 +520,6 @@
 - 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
 - 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
 ### 例題
-- [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 - [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 
 ## 2部グラフ（二部グラフ）

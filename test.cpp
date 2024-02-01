@@ -113,45 +113,105 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+struct SCC {
+    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
+    void add_edge (long long a, long long b) {
+        from[a].push_back(b);
+        ifrom[b].push_back(a);
+    }
+    vector<vector<long long>> scc () {
+        vector<vector<long long>> group;
+        back_num.clear();
+        selected.assign(n, false);
+        for (long long i=0; i < n; ++i) {
+            if (!selected[i]) dfs1(i);
+        }
+        selected.assign(n, false);
+        for (long long i=n-1; i >= 0; --i) {
+            long long x = back_num[i];
+            if (selected[x]) continue;
+            vector<long long> emp;
+            dfs2(x, emp);
+            group.push_back(emp);
+        }
+        return group;
+    }
+private:
+    long long n;
+    vector<vector<long long>> from, ifrom;
+    vector<long long> back_num;
+    vector<bool> selected;
+    void dfs1 (long long x) {
+        selected[x] = true;
+        for (auto y: from[x]) {
+            if (selected[y]) continue;
+            dfs1(y);
+        }
+        back_num.push_back(x);
+    }
+    void dfs2 (long long x, vector<long long> &vec) {
+        selected[x] = true;
+        vec.push_back(x);
+        for (auto y: ifrom[x]) {
+            if (selected[y]) continue;
+            dfs2(y, vec);
+        }
+    }
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
+    LONG(N);
     vvl from(N);
-    vb indeg(N);
-    rep (i, M) {
-        LONGM(x, y);
-        from[x].push_back(y);
-        indeg[y] = true;
+    rep (i, N) {
+        LONGM(x);
+        from[i].push_back(x);
     }
-    vl tpl;
-    vb used(N);
+    VL(C, N);
+    vl stck;
+    ll pos = -1;
+    vb used(N), finished(N);
     auto dfs = [&](auto f, int v) -> void {
         used[v] = true;
+        stck.push_back(v);
         for (auto nv: from[v]) {
-            if (used[nv]) continue;
+            if (finished[nv]) continue;
+            if (used[nv]) {
+                pos = nv;
+                finished[v] = true;
+                return;
+            }
             f(f, nv);
+            if (pos != -1) {
+                finished[v] = true;
+                return;
+            }
         }
-        tpl.push_back(v);
+        stck.pop_back();
+        finished[v] = true;
     };
+    ll ans = 0;
     rep (i, N) {
+        stck.clear();
+        pos = -1;
         if (used[i]) continue;
         dfs(dfs, i);
-    }
-    reverse(all(tpl));
-    vl dist(N, -1);
-    rep (i, N) {
-        if (indeg[i]) continue;
-        dist[i] = 0;
-    }
-    for (auto v: tpl) {
-        for (auto nv: from[v]){
-            chmax(dist[nv], dist[v]+1);
+        if (pos == -1) continue;
+        vl cycle;
+        while(stck.size()) {
+            int v = stck.back(); stck.pop_back();
+            if (v == pos) {
+                cycle.push_back(v);
+                break;
+            }
+            cycle.push_back(v);
         }
+        ll now = INF;
+        for (auto v: cycle) chmin(now, C[v]);
+        ans += now;
     }
-    ll ans = *max_element(all(dist));
     Out(ans)
+
 
     
 }
