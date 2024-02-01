@@ -102,30 +102,47 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    ll ans = N*(N+1)*(N+2)/6;
+    vvl from(N);
     rep (i, N-1) {
-        LONG(a, b);
-        if (b<a) swap(a, b);
-        ans -= a * (N-b+1);
-        de(a)de(b)de(ans)
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    Out(ans)
+    mint ans = 0;
+    mint two = 2;
+    auto dfs = [&](auto f, int v, int p=-1) -> int {
+        int ret = 1;
+        mint now = 0;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            int k = f(f, nv, v);
+            ret += k;
+            now += two.pow(k) - 1;
+        }
+        now += 1;  // all white
+        now += two.pow(N-ret) - 1;  // 1 black
+        ans += two.pow(N-1) - now;
+        return ret;
+    };
+    dfs(dfs, 0);
+    ans /= two.pow(N);
+    Out(ans.val())
     
 }
 
