@@ -104,33 +104,43 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 #include <atcoder/all>
 using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+mint op(mint a, mint b) {
+    return a+b;
+}
+mint e() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<tuple<ll,ll,ll>> edges(N);
-    rep (i, N-1) {
-        LONGM(u, v); LONG(w);
-        edges[i] = {w, u, v};
+    LONG(N, K);
+    vl L(K), R(K);
+    rep (i, K) {
+        LONG(l, r);
+        L[i] = l; R[i] = r;
     }
-    sort(all(edges));
-    dsu uf(N);
-    ll ans = 0;
-    for (auto [w, u, v]: edges) {
-        ans += (ll)uf.size(u) * uf.size(v) * w;
-        uf.merge(u, v);
+    segtree<mint, op, e> seg(N);
+    seg.set(0, 1);
+    rep1(i, N-1) {
+        mint sum = 0;
+        rep(k, K) {
+            ll l = i - R[k], r = i - L[k] + 1;
+            chmax(l, 0LL); chmax(r, 0LL);
+            sum += seg.prod(l, r);
+        }
+        seg.set(i, sum);
     }
-    Out(ans)
+    Out(seg.get(N-1).val());
+    
 }
 
 // ### test.cpp ###
