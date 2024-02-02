@@ -117,36 +117,48 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1e5+10;
-    vvl from(2*M);
+    LONG(N, Q, X);
+    VL(W, N);
+    ll sum = accumulate(all(W), 0LL);
+    vl W2 = W;
+    rep (i, N) W2.push_back(W[i]);
+    vl S(2*N+1);
+    rep (i, 2*N) S[i+1] = S[i] + W2[i];
+    ll M = 50;
+    vvl nxt(M, vl(N));
+    vl num(N);
     rep (i, N) {
-        LONG(x, y);
-        y += M;
-        from[x].push_back(y);
-        from[y].push_back(x);
+        ll x = X%sum;
+        ll k = X/sum;
+        ll idx = lower_bound(all(S), x+S[i]) - S.begin();
+        num[i] = k*N + (idx-i);
+        idx %= N;
+        nxt[0][i] = idx;
     }
-    vb used(2*M);
-    vl cnt(2);
-    auto dfs = [&](auto f, int v) -> void {
-        used[v] = true;
-        if (v < M) cnt[0]++;
-        else cnt[1]++;
-        for (auto nv: from[v]) {
-            de(nv)
-            if (used[nv]) continue;
-            f(f, nv);
+    vvl from(M, vl(N));
+    rep (j, M-1) {
+        rep (i, N) {
+            nxt[j+1][i] = nxt[j][nxt[j][i]];
         }
-    };
-    ll ans = 0;
-    rep(i, M) {
-        if (used[i]) continue;
-        cnt.assign(2, 0);
-        dfs(dfs, i);
-        ans += cnt[0]*cnt[1];
     }
-    ans -= N;
-    Out(ans)
+    rep (i, Q) {
+        LONGM(K);
+        ll idx = 0, d = 0;
+        while (K>0) {
+            if (K%2==1) {
+                idx = nxt[d][idx];
+            }
+            ++d;
+            K >>= 1;
+        }
+        printf("%lld\n", num[idx]);
+    }
+    
+
+
+
+
+
     
 }
 

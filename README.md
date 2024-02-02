@@ -540,14 +540,14 @@
 - ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
 - 文による説明は分かりにくい為、[こちらのyoutube参照](https://www.youtube.com/watch?v=iYJqgMKYsdI)
 ### 例題
-- lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
+- !要復習 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
 - 前準備として、2^k個だけ進むグラフ辺を作っておく（kは0以上で、2^kがn以上となるkまで）
 - あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
 ### 例題
-- [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)　（ダブリング使わずに解いたが・・・）
+- !復習価値中 考察1つ [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 - ダブリングそのまま問題 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
 
 ## グラフその他
