@@ -102,42 +102,21 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    ll M = 10;
-    vvm dp(1<<M, vm(M));
-    mint ans = 0;
-    rep (i, N) {
-        int x = S[i] - 'A';
-        vvm p(1<<M, vm(M));
-        swap(p, dp);
-        dp[1<<x][x] += 1;
-        rep (s, 1<<M) rep (j, M) {
-            if (~s>>j&1) continue;
-            dp[s][j] += p[s][j];
-            if (j==x) dp[s|1<<x][x] += p[s][j];
-            if (s>>x&1) continue;
-            if (j!=x) dp[s|1<<x][x] += p[s][j];
-        }
-    }
-    rep (s, 1<<M) rep (j, M) {
-        ans += dp[s][j];
-    }
-    Out(ans.val())
     
 }
 

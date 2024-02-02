@@ -575,7 +575,7 @@
 - 問題設定によってはカエル型であることを見抜くのが難しい
 - 特に、一つずつの遷移ではないDPが苦手なので、何を状態にできるかよく考えること
 ### 例題
-- 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
+- !要復習 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 
 ## DP実装特殊系問題
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持ったほうが良い場合あり
