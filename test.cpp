@@ -114,32 +114,30 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-mint op(mint a, mint b) {
-    return a+b;
-}
-mint e() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl L(K), R(K);
-    rep (i, K) {
-        LONG(l, r);
-        L[i] = l; R[i] = r;
-    }
-    segtree<mint, op, e> seg(N);
-    seg.set(0, 1);
-    rep1(i, N-1) {
-        mint sum = 0;
-        rep(k, K) {
-            ll l = i - R[k], r = i - L[k] + 1;
-            chmax(l, 0LL); chmax(r, 0LL);
-            sum += seg.prod(l, r);
+    LONG(N); STRING(S);
+    ll M = 10;
+    vvm dp(1<<M, vm(M));
+    mint ans = 0;
+    rep (i, N) {
+        int x = S[i] - 'A';
+        vvm p(1<<M, vm(M));
+        swap(p, dp);
+        dp[1<<x][x] += 1;
+        rep (s, 1<<M) rep (j, M) {
+            if (~s>>j&1) continue;
+            dp[s][j] += p[s][j];
+            if (j==x) dp[s|1<<x][x] += p[s][j];
+            if (s>>x&1) continue;
+            if (j!=x) dp[s|1<<x][x] += p[s][j];
         }
-        seg.set(i, sum);
     }
-    Out(seg.get(N-1).val());
+    rep (s, 1<<M) rep (j, M) {
+        ans += dp[s][j];
+    }
+    Out(ans.val())
     
 }
 

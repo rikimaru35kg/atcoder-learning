@@ -568,7 +568,7 @@
 - 初期値を-INFにする場合は要注意。足されて正の値になったら元も子もない。-1を初期値にして処理しないようにした方が無難かもしれない
 ### 例題
 - !復習価値中 計算量改善の考察1つ [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
-- [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
+- !要復習 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
 
 ## カエル型DP
 - カエルが1~Kマスジャンプできるとき、最後のマスに到達する場合の数を求める問題
