@@ -102,8 +102,8 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -117,19 +117,20 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VLM(A, N);
-    ll M = 60;
-    vvl nxt(M, vl(N));
-    rep (i, N) nxt[0][i] = A[i];
-    rep (k, M-1) rep (i, N) nxt[k+1][i] = nxt[k][nxt[k][i]];
-
-    ll x = 0;
-    repr (d, M) {
-        if (K>>d&1) x = nxt[d][x];
+    LONG(N);
+    vector<tuple<ll,ll,ll>> edges(N);
+    rep (i, N-1) {
+        LONGM(u, v); LONG(w);
+        edges[i] = {w, u, v};
     }
-    Out(x+1)
-    
+    sort(all(edges));
+    dsu uf(N);
+    ll ans = 0;
+    for (auto [w, u, v]: edges) {
+        ans += (ll)uf.size(u) * uf.size(v) * w;
+        uf.merge(u, v);
+    }
+    Out(ans)
 }
 
 // ### test.cpp ###

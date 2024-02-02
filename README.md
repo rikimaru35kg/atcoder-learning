@@ -551,7 +551,9 @@
 - !復習価値中 考察1つ [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 
 ## グラフその他
-- 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または[全2頂点間最大辺の総和問題](https://atcoder.jp/contests/abc214/tasks/abc214_d)など
+- 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または下の例題（Sum of Maximum Weights）など
+### 例題
+- !要復習 全2頂点間最大辺の総和問題 [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
 # 動的計画法（DP）
 
@@ -1092,6 +1094,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- ACLのdsu.size(v)はint型なので、そのまま掛け算に使うとオーバーフローして危険
 - double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となっていて桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり） （eg [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)）
 - 区間[l,r)の一方だけに制限値処理をすると危険（たとえばchmax(l,x)などとするとl>rになりうる）。制限値処理は同時にかける（できればclampで）
 - 下桁から処理するwhile文（例えばwhile(x>0){x/=10}）は、x==0のコーナーケースに注意！一度も処理されない
