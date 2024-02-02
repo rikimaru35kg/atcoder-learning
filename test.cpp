@@ -117,48 +117,18 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q, X);
-    VL(W, N);
-    ll sum = accumulate(all(W), 0LL);
-    vl W2 = W;
-    rep (i, N) W2.push_back(W[i]);
-    vl S(2*N+1);
-    rep (i, 2*N) S[i+1] = S[i] + W2[i];
-    ll M = 50;
+    LONG(N, K);
+    VLM(A, N);
+    ll M = 60;
     vvl nxt(M, vl(N));
-    vl num(N);
-    rep (i, N) {
-        ll x = X%sum;
-        ll k = X/sum;
-        ll idx = lower_bound(all(S), x+S[i]) - S.begin();
-        num[i] = k*N + (idx-i);
-        idx %= N;
-        nxt[0][i] = idx;
+    rep (i, N) nxt[0][i] = A[i];
+    rep (k, M-1) rep (i, N) nxt[k+1][i] = nxt[k][nxt[k][i]];
+
+    ll x = 0;
+    repr (d, M) {
+        if (K>>d&1) x = nxt[d][x];
     }
-    vvl from(M, vl(N));
-    rep (j, M-1) {
-        rep (i, N) {
-            nxt[j+1][i] = nxt[j][nxt[j][i]];
-        }
-    }
-    rep (i, Q) {
-        LONGM(K);
-        ll idx = 0, d = 0;
-        while (K>0) {
-            if (K%2==1) {
-                idx = nxt[d][idx];
-            }
-            ++d;
-            K >>= 1;
-        }
-        printf("%lld\n", num[idx]);
-    }
-    
-
-
-
-
-
+    Out(x+1)
     
 }
 
