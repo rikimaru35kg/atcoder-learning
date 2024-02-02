@@ -578,10 +578,10 @@
 - !要復習 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 
 ## DP実装特殊系問題
-- 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持ったほうが良い場合あり
+- 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
 - 実装になれないと混乱しがちなので問題をまとめておく
 ### 例題
-- [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
+- !復習価値中 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
 
 ## 部分和問題
 - （連続でない）部分列の総和がKになる場合の数は単純なDPで解ける
