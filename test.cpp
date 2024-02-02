@@ -117,49 +117,35 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep (i, M) {
-        INTM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    vb used(N);
-    vi colors(N);
-    ll n0 = 0, n1 = 0, e = 0;
-    auto dfs = [&](auto f, int v, int c=0) -> bool {
-        colors[v] = c;
-        used[v] = true;
-        (c==0)?n0++:n1++;
-        e += SIZE(from[v]);
-        for (auto nv: from[v]) {
-            if (used[nv]) {
-                if (colors[nv] == c) return false;
-                continue;
-            }
-            bool b = f(f, nv, 1-c);
-            if (!b) return false;
-        }
-        return true;
-    };
-    auto nC2 = [&](ll n) {
-        return n*(n-1)/2;
-    };
-    ll ans = 0, ng = 0;
+    LONG(N);
+    ll M = 1e5+10;
+    vvl from(2*M);
     rep (i, N) {
-        de(i)
-        ll now = 0;
-        if (used[i]) continue;
-        n0 = 0, n1 = 0, e = 0;
-        bool b = dfs(dfs, i);
-        if (!b) {
-            Out(0)
-            return 0;
-        }
-        now += nC2(n0) + nC2(n1);
-        ng += now;
+        LONG(x, y);
+        y += M;
+        from[x].push_back(y);
+        from[y].push_back(x);
     }
-    ans = nC2(N) - M - ng;
+    vb used(2*M);
+    vl cnt(2);
+    auto dfs = [&](auto f, int v) -> void {
+        used[v] = true;
+        if (v < M) cnt[0]++;
+        else cnt[1]++;
+        for (auto nv: from[v]) {
+            de(nv)
+            if (used[nv]) continue;
+            f(f, nv);
+        }
+    };
+    ll ans = 0;
+    rep(i, M) {
+        if (used[i]) continue;
+        cnt.assign(2, 0);
+        dfs(dfs, i);
+        ans += cnt[0]*cnt[1];
+    }
+    ans -= N;
     Out(ans)
     
 }
