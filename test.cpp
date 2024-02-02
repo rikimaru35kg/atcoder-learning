@@ -102,37 +102,36 @@ const vi dj = {0, 1, 0, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(T, N);
-    int sum = accumulate(all(T), 0LL);
-    bitset<100005> dp;
-    dp[0] = 1;
+    LONG(N, S); VL(A, N);
+    vm dp(S+1);
+    mint ans = 0;
     rep (i, N) {
-        dp |= dp<<T[i];
+        dp[0] += 1;
+        vm p(S+1);
+        swap(p, dp);
+        rep (j, S+1) {
+            dp[j] += p[j];
+            if (j+A[i]>S) continue;
+            dp[j+A[i]] += p[j];
+        }
+        ans += dp[S];
     }
-    int ans = 1001001001;
-    rep (i, 100005) {
-        if (dp[i]==0) continue;
-        int now = max(i, sum-i);
-        chmin(ans, now);
-    }
-    Out(ans)
-
+    Out(ans.val())
     
 }
 

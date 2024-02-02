@@ -586,11 +586,12 @@
 ## 部分和問題
 - （連続でない）部分列の総和がKになる場合の数は単純なDPで解ける
 - 部分和が存在するかどうかの単純DPの場合、bitsetでOR演算を繰り返すと超絶楽（ビット数に気を付けて！！）
-- 部分和は各要素を(1+x^A[i])とみなし、全積を取ったときのx^Kの係数が答えとみなす事もできる（難しい問題の時に見通しをよくするテクニック）
+- 部分和は各要素を(1+x^A[i])とみなし、全積を取ったときのx^Kの係数が答えとみなす事もできる（難しい問題の時に見通しを良くするテクニック）
+- 上記は結局、rep(i,N)の毎ループでdp[0]++をしてから普通の部分和問題を解く事に一致する
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
 - !復習価値低 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
-- [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
+- !要復習 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
 - 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
 ## 部分集合の部分集合DP
