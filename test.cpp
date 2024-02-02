@@ -118,32 +118,21 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vb existc(N);
-    vp colorx(N, {INF, -INF});
+    VL(T, N);
+    int sum = accumulate(all(T), 0LL);
+    bitset<100005> dp;
+    dp[0] = 1;
     rep (i, N) {
-        LONG(x, c); --c;
-        chmin(colorx[c].first, x);
-        chmax(colorx[c].second, x);
-        existc[c] = true;
+        dp |= dp<<T[i];
     }
-    map<ll,ll> dp;
-    dp[0] = 0;
-    rep (c, N) {
-        if (!existc[c]) continue;
-        map<ll,ll> p;
-        swap(p, dp);
-        auto [nl, nr] = colorx[c];
-        dp[nl] = INF, dp[nr] = INF;
-        for (auto [x, v]: p) {
-            chmin(dp[nl], v + llabs(x-nr) + llabs(nr-nl));
-            chmin(dp[nr], v + llabs(x-nl) + llabs(nr-nl));
-        }
-    }
-    ll ans = INF;
-    for (auto [x, v]: dp) {
-        chmin(ans, v + abs(x));
+    int ans = 1001001001;
+    rep (i, 100005) {
+        if (dp[i]==0) continue;
+        int now = max(i, sum-i);
+        chmin(ans, now);
     }
     Out(ans)
+
     
 }
 
