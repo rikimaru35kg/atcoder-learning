@@ -117,35 +117,21 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    VL(W, N);
-    vvd dp(D+1, vd(1<<N, INF));
-    dp[0][(1<<N)-1] = 0;
-
-    double ave = 0;
-    rep (i, N) ave += W[i];
-    ave /= D;
-
-    vl weight(1<<N);
-    rep (s, 1<<N) {
+    LONG(H, N);
+    vl A(N), B(N);
+    rep (i, N) {
+        LONG(a, b);
+        A[i] = a, B[i] = b;
+    }
+    vl dp(H+1, INF);
+    dp[0] = 0;
+    rep (h, H) {
         rep (i, N) {
-            if (s>>i&1) weight[s] += W[i];
+            ll nh = min(H, h+A[i]);
+            chmin(dp[nh], dp[h] + B[i]);
         }
     }
-
-    rep (i, D) {
-        rep (s, 1<<N) {
-            if (dp[i][s] == INF) continue;
-            for (int t=s; t>=0; t=(t-1)&s) {
-                ll ns = s&(~t);
-                double w = weight[ns];
-                w -= ave;
-                chmin(dp[i+1][t], dp[i][s] + w*w);
-                if (t==0) break;
-            }
-        }
-    }
-    printf("%.10f\n", dp[D][0]/D);
+    Out(dp[H])
     
 }
 

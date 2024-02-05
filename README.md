@@ -609,7 +609,7 @@
 - 重さ制限、残り体力など、通常2つ目に使う状態のみで実は十分。個数制限がない為、i個目まで使ってとか考える必要がないから
 - 2次元のまま遷移を高速化するという手法もあり、そっちのほうが実は典型解法かも？？
 ### 例題
-- [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
+- 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
 
 ## 経路数問題
 - 単純にDPで足し合わせていけば経路数が求める
