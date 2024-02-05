@@ -598,8 +598,7 @@
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
 - N=15の時、4^N=1e9、3^N=1e7なので、N=15ぐらいのときはこのテクニックが効いてくる
 ### 例題
-- 全ての部分集合の部分和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
-- [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
+- !要復習 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
 ## ナップサックDP
 - 縦に要素、横にパターンや最大コスト等を並べて順次更新していく

@@ -97,8 +97,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {1, 0, -1, 0};
-const vi dj = {0, 1, 0, -1};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
@@ -117,26 +117,35 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    int K = 1;
-    if (N%2==1) K = 2;
-    vl dp(K+1, -INF);
-    dp[0] = 0;
-    rep (i, N) {
-        vl p(K+1, -INF);
-        swap(p, dp);
-        rep (j, K+1) {
-            if (p[j]==-INF) continue;
-            if ((i+j)%2==0) {
-                chmax(dp[j], p[j] + A[i]);
-                if (j+1<=K) chmax(dp[j+1], p[j]);
-            } else {
-                chmax(dp[j], p[j]);
-                if (j+1<=K) chmax(dp[j+1], p[j]);
+    LONG(N, D);
+    VL(W, N);
+    vvd dp(D+1, vd(1<<N, INF));
+    dp[0][(1<<N)-1] = 0;
+
+    double ave = 0;
+    rep (i, N) ave += W[i];
+    ave /= D;
+
+    vl weight(1<<N);
+    rep (s, 1<<N) {
+        rep (i, N) {
+            if (s>>i&1) weight[s] += W[i];
+        }
+    }
+
+    rep (i, D) {
+        rep (s, 1<<N) {
+            if (dp[i][s] == INF) continue;
+            for (int t=s; t>=0; t=(t-1)&s) {
+                ll ns = s&(~t);
+                double w = weight[ns];
+                w -= ave;
+                chmin(dp[i+1][t], dp[i][s] + w*w);
+                if (t==0) break;
             }
         }
     }
-    Out(dp[K])
+    printf("%.10f\n", dp[D][0]/D);
     
 }
 
