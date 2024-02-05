@@ -624,7 +624,7 @@
 - 部分列であるかどうかの判定は、Tのidxを用意し、Sの各文字に対して文字が一致するまでidxを進める（範囲外アクセス注意）
 - idxが最後まで進んだら一致しなかったという事でアウト。
 ### 例題
-- [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
+- !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - 部分列そのものの問題ではないが、部分列は先頭から貪欲に取れば判定できる性質を利用 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
 
 ## LCS（Longest Common Subsequence）
