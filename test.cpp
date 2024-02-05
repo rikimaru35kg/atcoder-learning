@@ -97,41 +97,58 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {0, 1, 0, -1};
-const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
+const vi di = {0, -1, -1};
+const vi dj = {-1, 0, -1};
     cin.tie(nullptr);
-    LONG(H, N);
-    vl A(N), B(N);
-    rep (i, N) {
-        LONG(a, b);
-        A[i] = a, B[i] = b;
-    }
-    vl dp(H+1, INF);
-    dp[0] = 0;
-    rep (h, H) {
-        rep (i, N) {
-            ll nh = min(H, h+A[i]);
-            chmin(dp[nh], dp[h] + B[i]);
+    LONG(H, W);
+    VS(S, H);
+    vvm path(H, vm(W));
+    vvvm cum(3, vvm(H, vm(W)));
+    path[0][0] = 1;
+    cum[0][0][0] = 1;
+    cum[1][0][0] = 1;
+    cum[2][0][0] = 1;
+    rep (i, H) rep (j, W) {
+        if (i==0 && j ==0) continue;
+        if (S[i][j] == '#') {
+            // cum[0][i][j] = 0;
+            // cum[1][i][j] = 0;
+            // cum[2][i][j] = 0;
+            continue;
+        }
+        rep (k, 3) {
+            ll pi = i + di[k];
+            ll pj = j + dj[k];
+            if (pi<0 || pj<0) continue;
+            path[i][j] += cum[k][pi][pj];
+        }
+        rep (k, 3) {
+            ll pi = i + di[k];
+            ll pj = j + dj[k];
+            cum[k][i][j] = path[i][j];
+            if (pi<0 || pj<0) continue;
+            cum[k][i][j] += cum[k][pi][pj];
         }
     }
-    Out(dp[H])
+    de(path)
+    Out(path[H-1][W-1].val())
     
 }
 
