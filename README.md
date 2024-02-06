@@ -625,7 +625,7 @@
 - idxが最後まで進んだら一致しなかったという事でアウト。
 ### 例題
 - !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
-- 部分列そのものの問題ではないが、部分列は先頭から貪欲に取れば判定できる性質を利用 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
+- !要復習 部分列そのものの問題ではないが、部分列は先頭から貪欲に取れば判定できる性質を利用 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
 
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという

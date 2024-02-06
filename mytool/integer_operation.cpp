@@ -76,10 +76,10 @@ public:
     Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
         facts[0] = 1;
         for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2, mod);
+        ifacts[mx] = modpow(facts[mx], mod-2);
         for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    long long nCr(long long n, long long r) {
+    long long operator()(long long n, long long r) {
         if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
@@ -95,10 +95,10 @@ public:
         if (n > mx) return 0;
         return ifacts[n];
     }
-    long long modpow(long long a, long long b, long long mod) {
+    long long modpow(long long a, long long b) {
         if (b == 0) return 1;
         a %= mod;
-        long long child = modpow(a, b/2, mod);
+        long long child = modpow(a, b/2);
         if (b % 2 == 0) return child * child % mod;
         else return a * child % mod * child % mod;
     }

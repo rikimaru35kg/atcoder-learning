@@ -102,52 +102,69 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(T); ll M = SIZE(T);
-    VS(S, N);
-    vl fr(N);
-    auto cnt = [&](string s) -> ll {
-        ll n = SIZE(s);
-        ll idx = 0;
-        rep (j, n) {
-            if (T[idx] == s[j]) ++idx;
-        }
-        return idx;
-    };
-    rep (i, N) {
-        fr[i] = cnt(S[i]);
+    LONG(K); STRING(S);
+    ll N = SIZE(S);
+    mint ans = 0;
+    ll MOD = 1e9+7;
+    Combination comb(2e6, MOD);
+    rep(i, K+1) {
+        mint now = mint(26).pow(K-i);
+        now *= mint(25).pow(i);
+        now *= comb(N-1+i, i);
+        ans += now;
     }
-    vl rrcnt(M+1);
-    reverse(all(T));
-    rep (i, N) {
-        reverse(all(S[i]));
-        ll num = cnt(S[i]);
-        rrcnt[num]++;
-    }
-    repr (i, M) {
-        rrcnt[i] += rrcnt[i+1];
-    }
-    ll ans = 0;
-    rep (i, N) {
-        ll x = fr[i];
-        ans += rrcnt[M-x];
-    }
-    Out(ans)
-    
+    Out(ans.val())
     
 }
 
