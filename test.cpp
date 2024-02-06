@@ -113,40 +113,29 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-vector<long long> z_algo(string s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
-        // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
-        // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {  // update from & last
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;  // substitute ovious value at last
-    return a;
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(S);
-    ll ans = 0;
+    vl R(N), C(N);
     rep (i, N) {
-        string s = S.substr(i);
-        ll M = SIZE(s);
-        vl z = z_algo(s);
-        rep (j, M) {
-            chmax(ans, min(j, z[j]));
+        LONG(r, c);
+        R[i] = r, C[i] = c;
+    }
+    vvl dp(N+1, vl(N+1, INF));
+    rep (i, N+1) dp[i][i] = 0;
+    rep (i, N) dp[i][i+1] = 0;
+    for(int w=2; w<=N; ++w) {
+        rep (l, N) {
+            ll r = l+w;
+            if (r>N) break;
+            repk(k, l+1, r) {
+                chmin(dp[l][r], dp[l][k]+dp[k][r]+ R[l]*R[k]*C[r-1]);
+            }
         }
     }
-    Out(ans)
+    Out(dp[0][N])
     
 }
 
