@@ -113,36 +113,41 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
+vector<long long> z_algo(string s) {
+    long long n = s.size();
+    vector<long long> a(n);
+    long long from = -1, last = -1;
+    for (long long i = 1; i < n; ++i) {
+        long long same = 0;  // length of same substring
+        // skip duplicated search
+        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        // move forward while possible
+        while (i + same < n && s[same] == s[i+same]) ++same;
+        a[i] = same;
+        if(last < i + same) {  // update from & last
+            from = i;
+            last = i+same;
+        }
+    }
+    a[0] = n;  // substitute ovious value at last
+    return a;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S,T);
-    ll N = SIZE(S), M = SIZE(T);
-    vvl dp(N+1, vl(M+1));    
-    rep (i, N+1) rep (j, M+1) {
-        if (i<N) chmax(dp[i+1][j], dp[i][j]);
-        if (j<M) chmax(dp[i][j+1], dp[i][j]);
-        if (i<N && j<M && S[i]==T[j]) chmax(dp[i+1][j+1], dp[i][j]+1);
-        if (i<N && j<M && S[i]!=T[j]) chmax(dp[i+1][j+1], dp[i][j]);
-    }
-    de(dp)
-    string ans;
-    ll i = N, j = M;
-    while (i>0 || j>0) {
-        if (i>0 && j>0 && S[i-1]==T[j-1]) {
-            ans.push_back(S[i-1]);
-            --i; --j;
-            continue;
+    LONG(N);
+    STRING(S);
+    ll ans = 0;
+    rep (i, N) {
+        string s = S.substr(i);
+        ll M = SIZE(s);
+        vl z = z_algo(s);
+        rep (j, M) {
+            chmax(ans, min(j, z[j]));
         }
-        if (i>0 && dp[i-1][j] == dp[i][j]) {
-            --i;
-            continue;
-        }
-        --j;
     }
-    reverse(all(ans));
     Out(ans)
+    
 }
 
 // ### test.cpp ###
