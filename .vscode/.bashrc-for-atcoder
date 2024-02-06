@@ -111,6 +111,7 @@ ulimit -s 1048576
 # git operations
 alias ga='git add .'
 alias gc='git commit -m'
+alias gp='git push'
 # Terminal operations
 alias cl='clear'
 # --------------------------------------------
