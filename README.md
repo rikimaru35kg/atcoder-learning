@@ -631,11 +631,14 @@
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという
 - Sのi文字目、Tのj文字目まで見たLCSをdp[i][j]と定義し、更新していけば良い
 - chmax(dp[i+1][j], dp[i][j]), chmax(dp[i][j+1], dp[i][j])であり、S[i]==T[j]のときのみchmax(dp[i+1][j+1], dp[i][j]+1)する（dpテーブルのiは1-indexed！）
-- dpテーブルは全て0で初期化すれば良い（たぶん…）
+- LCSっぽいDPを書く場合、i,jをカーソルと考えて1つずつ進める遷移を考えてみると良い
+- LCSの場合、i,jまでの文字は処理済み（つまり共通文字として採用or不採用で棄却）と考えると、過去のi,jまでの文字がどうであったかはどうでも良い事が分かると思う（そもそも状態としてi,jしか持っていないので、過去の文字は不必要な情報という事）
+- i+1,jやi,j+1への遷移は文字不採用、i+1,j+1への遷移は文字採用という事。なおi+1,j+1への遷移でも不採用で遷移しても良いが、処理としてあまり意味がない（chmax(dp[i+1][j+1],dp[i][j]はあってもなくても結果には影響しないから）
+- dpテーブルは全て0で初期化すれば良い
 - SとTでテーブルを書くと遷移がわかりやすい
 - 復元するには、dp[i][j]==dp[i-1][j]ならi--、dp[i][j]==dp[i][j-1]ならj--、両方偽なら文字S[i-1]を選択してi--,j--すれば良い
 ### 例題
-- LCSではないが似たようなDP [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
+- !要復習 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
 - LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
 - !要復習 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
 
