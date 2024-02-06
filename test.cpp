@@ -117,18 +117,32 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N); VL(B, M);
-    vvl dp(N+1, vl(M+1, INF));
-    dp[0][0] = 0;
+    STRING(S,T);
+    ll N = SIZE(S), M = SIZE(T);
+    vvl dp(N+1, vl(M+1));    
     rep (i, N+1) rep (j, M+1) {
-        if (i+1<=N) chmin(dp[i+1][j], dp[i][j]+1);
-        if (j+1<=M) chmin(dp[i][j+1], dp[i][j]+1);
-        if (i<N && j<M && A[i]==B[j]) chmin(dp[i+1][j+1], dp[i][j]);
-        if (i<N && j<M && A[i]!=B[j]) chmin(dp[i+1][j+1], dp[i][j]+1);
+        if (i<N) chmax(dp[i+1][j], dp[i][j]);
+        if (j<M) chmax(dp[i][j+1], dp[i][j]);
+        if (i<N && j<M && S[i]==T[j]) chmax(dp[i+1][j+1], dp[i][j]+1);
+        if (i<N && j<M && S[i]!=T[j]) chmax(dp[i+1][j+1], dp[i][j]);
     }
-    Out(dp[N][M])
-    
+    de(dp)
+    string ans;
+    ll i = N, j = M;
+    while (i>0 || j>0) {
+        if (i>0 && j>0 && S[i-1]==T[j-1]) {
+            ans.push_back(S[i-1]);
+            --i; --j;
+            continue;
+        }
+        if (i>0 && dp[i-1][j] == dp[i][j]) {
+            --i;
+            continue;
+        }
+        --j;
+    }
+    reverse(all(ans));
+    Out(ans)
 }
 
 // ### test.cpp ###
