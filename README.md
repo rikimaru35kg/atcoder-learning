@@ -635,9 +635,9 @@
 - SとTでテーブルを書くと遷移がわかりやすい
 - 復元するには、dp[i][j]==dp[i-1][j]ならi--、dp[i][j]==dp[i][j-1]ならj--、両方偽なら文字S[i-1]を選択してi--,j--すれば良い
 ### 例題
-- LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)
 - LCSではないが似たようなDP [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
 - LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
+- !要復習 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
 
 ## Z-algorithm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
