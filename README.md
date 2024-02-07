@@ -677,7 +677,7 @@
 ### 例題
 - !復習価値中 基本 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
 - !復習価値中 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
-- [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
+- !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - 実装がやや大変 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
 - bit DPである事を見抜くのが難しい [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 - bit DPである事を見抜くのが難しい2 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)

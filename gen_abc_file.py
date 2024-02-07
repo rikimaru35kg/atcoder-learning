@@ -6,7 +6,7 @@ filehead = r"""
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using P = pair<ll, ll>;
+using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -14,12 +14,12 @@ using vc = vector<char>;
 using vl = vector<ll>;
 using vb = vector<bool>;
 using vd = vector<double>;
-using vp = vector<P>;
+using vp = vector<Pr>;
 using vpd = vector<Pd>;
 using vvi = vector<vector<int>>;
 using vvc = vector<vector<char>>;
 using vvl = vector<vector<ll>>;
-using vvp = vector<vector<P>>;
+using vvp = vector<vector<Pr>>;
 using vvb = vector<vector<bool>>;
 using vvd = vector<vector<double>>;
 using vvs = vector<vector<string>>;
@@ -27,7 +27,7 @@ using vvvi = vector<vector<vector<int>>>;
 using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
-using pq = priority_queue<P,vector<P>,greater<P>>;
+using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
@@ -93,6 +93,9 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+#define deb(var) {cerr << #var << ": "; debugb_view(var);}
+template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl;}
+template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
 #endif

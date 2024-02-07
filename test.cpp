@@ -90,6 +90,9 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+#define deb(var) {cerr << #var << ": "; debugb_view(var);}
+template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl;}
+template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
 #endif
@@ -113,60 +116,37 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! Calculate Euclid distance
-//! input type = long long
-//! output type = double
-double euclid_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl X(N+1), Y(N+1);
-    vl P(M), Q(M);
-    rep (i, N) {
-        LONG(x, y);
-        X[i+1] = x, Y[i+1] = y;
-    }
-    rep (i, M) {
-        LONG(p, q);
-        P[i] = p, Q[i] = q;
-    }
-    ll Z = N+M+1;
-    vvd dp(1<<Z, vd(Z, INF));
-    dp[0][0] = 0;
-    rep(s, 1<<Z) {
-        rep (i, Z) {
-            if (s!= 0 && ~s>>i&1) continue;
-            if (s== 0 && i != 0) continue;
-            rep (j, Z) {
-                if (i==j) continue;
-                if (s>>j&1) continue;
-                Pr start, end;
-                if (i<N+1) start = {X[i], Y[i]};
-                else start = {P[i-N-1], Q[i-N-1]};
-                if (j<N+1) end = {X[j], Y[j]};
-                else end = {P[j-N-1], Q[j-N-1]};
-                double dist = euclid_dist(start, end);
-                ll power = pcnt(s>>(N+1));
-                ll spd = 1<<power;
-                double cost = dist / (double)spd;
-                chmin(dp[s|1<<j][j], dp[s][i] + cost);
-            }
+    LONG(N);
+    VS(S, N);
+    vl edges(N);
+    rep (i, N) rep (j, N) {
+        if (i==j) continue;
+        if (S[i].back() == S[j][0]) {
+            edges[i] |= 1<<j;
         }
     }
-    double ans = INF;
-    rep (s, 1<<Z) {
-        ll ns = s & ((1<<(N+1))-1);
-        if (pcnt(ns) != N+1) continue;
-        chmin(ans, dp[s][0]);
+    vvb dp(1<<N, vb(N));
+    rep (s, 1<<N) {
+        rep (i, N) {
+            bool win = false;
+            if(s==2&&i==3){
+                cout<<"";
+            }
+            if (s!=(1<<N)-1 && s>>i&1) continue;
+            rep(j, N) {
+                if (~s>>j&1) continue;
+                if (s!=(1<<N)-1 && ~edges[i]>>j&1) continue;
+                if (!dp[s^(1<<j)][j]) win = true;
+            }
+            dp[s][i] = win;
+        }
     }
-    printf("%.10f\n", ans);
+    if (dp[(1<<N)-1][0]) puts("First");
+    else puts("Second");
     
 }
 
