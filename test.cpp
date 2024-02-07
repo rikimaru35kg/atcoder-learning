@@ -3,7 +3,7 @@
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using P = pair<ll, ll>;
+using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -11,12 +11,12 @@ using vc = vector<char>;
 using vl = vector<ll>;
 using vb = vector<bool>;
 using vd = vector<double>;
-using vp = vector<P>;
+using vp = vector<Pr>;
 using vpd = vector<Pd>;
 using vvi = vector<vector<int>>;
 using vvc = vector<vector<char>>;
 using vvl = vector<vector<ll>>;
-using vvp = vector<vector<P>>;
+using vvp = vector<vector<Pr>>;
 using vvb = vector<vector<bool>>;
 using vvd = vector<vector<double>>;
 using vvs = vector<vector<string>>;
@@ -24,7 +24,7 @@ using vvvi = vector<vector<vector<int>>>;
 using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
-using pq = priority_queue<P,vector<P>,greater<P>>;
+using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
@@ -102,40 +102,71 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+//! Calculate Euclid distance
+//! input type = long long
+//! output type = double
+double euclid_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl A(N);
+    LONG(N, M);
+    vl X(N+1), Y(N+1);
+    vl P(M), Q(M);
     rep (i, N) {
-        rep (j, N) {
-            LONG(a);
-            A[i] |= a<<j;
+        LONG(x, y);
+        X[i+1] = x, Y[i+1] = y;
+    }
+    rep (i, M) {
+        LONG(p, q);
+        P[i] = p, Q[i] = q;
+    }
+    ll Z = N+M+1;
+    vvd dp(1<<Z, vd(Z, INF));
+    dp[0][0] = 0;
+    rep(s, 1<<Z) {
+        rep (i, Z) {
+            if (s!= 0 && ~s>>i&1) continue;
+            if (s== 0 && i != 0) continue;
+            rep (j, Z) {
+                if (i==j) continue;
+                if (s>>j&1) continue;
+                Pr start, end;
+                if (i<N+1) start = {X[i], Y[i]};
+                else start = {P[i-N-1], Q[i-N-1]};
+                if (j<N+1) end = {X[j], Y[j]};
+                else end = {P[j-N-1], Q[j-N-1]};
+                double dist = euclid_dist(start, end);
+                ll power = pcnt(s>>(N+1));
+                ll spd = 1<<power;
+                double cost = dist / (double)spd;
+                chmin(dp[s|1<<j][j], dp[s][i] + cost);
+            }
         }
     }
-    vm dp(1<<N);
-    dp[0] = 1;
-    rep (s, 1<<N) {
-        ll man = pcnt(s);
-        rep(i, N) {
-            if (s>>i&1) continue;
-            if (~A[man]>>i&1) continue;
-            dp[s|1<<i] += dp[s];
-        }
+    double ans = INF;
+    rep (s, 1<<Z) {
+        ll ns = s & ((1<<(N+1))-1);
+        if (pcnt(ns) != N+1) continue;
+        chmin(ans, dp[s][0]);
     }
-    Out(dp[(1<<N)-1].val())
+    printf("%.10f\n", ans);
     
 }
 
