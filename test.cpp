@@ -102,47 +102,40 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-
-void solve(ll N) {
-    VL(W, N);
-    vvl dp(N+1, vl(N+1));
-    rep(i, N-1) {
-        if (abs(W[i]-W[i+1])<=1) dp[i][i+2] = 2;
-    }
-    for (int w=3; w<=N; ++w) {
-        rep (l, N) {
-            ll r = l + w;
-            if (r>N) break;
-            repk (k, l+1, r) {
-                chmax(dp[l][r], dp[l][k] + dp[k][r]);
-            }
-            if (abs(W[l]-W[r-1])<=1 && dp[l+1][r-1]==r-l-2) chmax(dp[l][r], dp[l+1][r-1]+2);
-        }
-    }
-    de(dp)
-    Out(dp[0][N])
-
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    while (true) {
-        LONG(N);
-        if (N==0) break;
-        solve(N);
+    LONG(N);
+    vl A(N);
+    rep (i, N) {
+        rep (j, N) {
+            LONG(a);
+            A[i] |= a<<j;
+        }
     }
+    vm dp(1<<N);
+    dp[0] = 1;
+    rep (s, 1<<N) {
+        ll man = pcnt(s);
+        rep(i, N) {
+            if (s>>i&1) continue;
+            if (~A[man]>>i&1) continue;
+            dp[s|1<<i] += dp[s];
+        }
+    }
+    Out(dp[(1<<N)-1].val())
     
 }
 

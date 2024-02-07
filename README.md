@@ -675,7 +675,7 @@
 - なお、遷移の順を単純に考えてBFSで実装する事も可能（下のE-Boosterはそうやって解いた）
 - 最短経路問題はforでも再帰でも解けそうだが、ゲームのように後ろからしか決まらないものは再帰でないと厳しい
 ### 例題
-- マッチング数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
+- !復習価値中 基本 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
 - [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
 - [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - 実装がやや大変 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
