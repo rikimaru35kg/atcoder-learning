@@ -105,55 +105,43 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    ll M = 41;
-    vl cnt1(M);
+    STRING(L);
+    ll N = SIZE(L);
+
+    vm dp(2);
+    dp[0] = 1;
     rep (i, N) {
-        ll a = A[i];
-        rep (j, M) {
-            if (a%2==1) cnt1[j]++;
-            a>>=1;
-        }
-    }
-    vl dp(2, -INF);
-    dp[0] = 0;
-    repr (i, M) {
-        vl p(2, -INF);
+        vm p(2);
         swap(p, dp);
-        ll x = (K>>i&1);
-        ll c1 = cnt1[i]<<i;
-        ll c0 = (N - cnt1[i])<<i;
-        rep (k, 2) rep (y, 2) {
-            if (p[k] == -INF) continue;
-            if (k==1) {
-                if (y==0) chmax(dp[k], p[k] + c1);
-                else chmax(dp[k], p[k] + c0);
-                continue;
-            }
-            if (x==1 && y==0) chmax(dp[1-k], p[k] + c1);
-            if (x==1 && y==1) chmax(dp[k], p[k] + c0);
-            if (x==0 && y==0) chmax(dp[k], p[k] + c1);
+        ll l = L[i] - '0';
+        rep (k, 2) rep (a, 2) rep (b, 2) {
+            if (p[k]==0) continue;
+            if (a==1 && b==1) continue;
+            if (k==0 && l<a+b) continue;
+            ll nk = k;
+            if (k==0 && a+b<l) nk = 1-k;
+            dp[nk] += p[k];
         }
+        de(dp)
     }
-    Out(max(dp[0], dp[1]))
-
-
+    mint ans = 0;
+    rep (i, 2) ans += dp[i];
+    Out(ans.val())
     
 }
 
