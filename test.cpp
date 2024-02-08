@@ -120,36 +120,33 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl X(N), Y(N), Z(N);
-    vvp YZ(N+1);
-    rep (i, M) {
-        LONG(x, y, z);
-        YZ[x].emplace_back(y, z);
-    }
-    vl dp(1<<N);
-    dp[0] = 1;
-    rep (s, 1<<N) {
-        if(s==0) continue;
-        ll x = pcnt(s);
-        bool ok = true;
-        for (auto [y, z]: YZ[x]) {
-            ll mask = (1<<y)-1;
-            ll cnt = pcnt(s&mask);
-            if (cnt > z) ok = false;
-        }
-        if (!ok) continue;
-        dp[s] = 0;
-        if (s==1) {
-            cout <<"";
-        }
-        rep (i, N) {
+    LONG(N, M); VLM(A, N);
+    vl cnt(M);
+    rep (i, N) cnt[A[i]]++;
+    vl pos(1<<M);
+    rep (s, 1<<M) {
+        rep (i, M) {
             if (~s>>i&1) continue;
-            dp[s] += dp[s^(1<<i)];
+            pos[s] += cnt[i];
+        }
+    }
+    vvl S(M, vl(N+1));
+    rep (i, N) S[A[i]][i+1] = 1;
+    rep (mi, M) rep (i, N) S[mi][i+1] += S[mi][i];
+
+    vl dp(1<<M, INF);
+    dp[0] = 0;
+    rep (s, 1<<M) {
+        ll p = pos[s];
+        rep (i, M) {
+            if (s>>i&1) continue;
+            ll ns = s|1<<i;
+            ll np = pos[ns];
+            ll rem = (np-p) - (S[i][np] - S[i][p]);
+            chmin(dp[ns], dp[s] + rem);
         }
     }
     Out(dp.back())
-
 
     
 }

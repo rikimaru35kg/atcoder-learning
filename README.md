@@ -679,8 +679,8 @@
 - !復習価値中 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
 - !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - !要復習 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
-- !要復習 bit DPである事を見抜くのが難しい [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
-- bit DPである事を見抜くのが難しい2 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
+- !復習価値中 bit DPである事を見抜くのが難しい [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
+- !要復習 bit DPである事を見抜くのが難しい2 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 
 ## 桁DP（Digit DP）
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
