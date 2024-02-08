@@ -105,48 +105,38 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M); VLM(A, N);
-    vl cnt(M);
-    rep (i, N) cnt[A[i]]++;
-    vl pos(1<<M);
-    rep (s, 1<<M) {
-        rep (i, M) {
-            if (~s>>i&1) continue;
-            pos[s] += cnt[i];
+    STRING(K); LONG(D);
+    vl Kd;
+    ll N = SIZE(K);
+    rep (i, N) Kd.push_back(K[i] - '0');
+    vvm dp(D, vm(2));
+    dp[0][0] = 1;
+    rep (i, N) {
+        vvm p(D, vm(2));
+        swap(p, dp);
+        rep (r, D) rep (k, 2) rep(x, 10) {
+            if (k==1) dp[(r+x)%D][k] += p[r][k];
+            if (k==0 && x==Kd[i]) dp[(r+x)%D][k] += p[r][k];
+            if (k==0 && x<Kd[i]) dp[(r+[i])%D][1-k] += p[r][k];
         }
+        de(dp)
     }
-    vvl S(M, vl(N+1));
-    rep (i, N) S[A[i]][i+1] = 1;
-    rep (mi, M) rep (i, N) S[mi][i+1] += S[mi][i];
-
-    vl dp(1<<M, INF);
-    dp[0] = 0;
-    rep (s, 1<<M) {
-        ll p = pos[s];
-        rep (i, M) {
-            if (s>>i&1) continue;
-            ll ns = s|1<<i;
-            ll np = pos[ns];
-            ll rem = (np-p) - (S[i][np] - S[i][p]);
-            chmin(dp[ns], dp[s] + rem);
-        }
-    }
-    Out(dp.back())
+    Out((dp[0][0]+dp[0][1]-1).val())
 
     
 }
