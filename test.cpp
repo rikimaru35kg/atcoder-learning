@@ -120,33 +120,69 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    vl edges(N);
-    rep (i, N) rep (j, N) {
-        if (i==j) continue;
-        if (S[i].back() == S[j][0]) {
-            edges[i] |= 1<<j;
+    LONG(N, M);
+    vl A(M), B(M);
+    rep (i, M) {
+        LONGM(a, b);
+        A[i] = a, B[i] = b;
+    }
+    LONG(K);
+    VLM(C, K);
+    set<ll> st;
+    rep (i, K) st.insert(C[i]);
+    vl newi(2*N);
+    rep (i, K) newi[C[i]+N] = i;
+
+    vvl from(2*N);
+    rep (i, M) {
+        ll a = A[i], b = B[i];
+        if (st.count(a)) a += N;
+        if (st.count(b)) b += N;
+        from[a].push_back(b);
+        from[b].push_back(a);
+    }
+    vvl distk(K, vl(K, INF));
+    auto bfs = [&](ll sv) -> void {
+        vl dist(2*N, INF);
+        dist[sv] = 0;
+        queue<ll> que;
+        que.push(sv);
+        while (que.size()) {
+            ll v = que.front(); que.pop();
+            for (auto nv: from[v]) {
+                if (dist[nv] != INF) continue;
+                dist[nv] = dist[v] + 1;
+                que.push(nv);
+            }
+        }
+        rep (i, K) {
+            ll gv = C[i]+N;
+            distk[newi[sv]][newi[gv]] = dist[gv];
+        }
+    };
+    rep(i, K) {
+        bfs(C[i]+N);
+    }
+    rep (i, K) rep(j, K) {
+        if (distk[i][j] == INF) {
+            Out(-1)
+            return 0;
         }
     }
-    vvb dp(1<<N, vb(N));
-    rep (s, 1<<N) {
-        rep (i, N) {
-            bool win = false;
-            if(s==2&&i==3){
-                cout<<"";
-            }
-            if (s!=(1<<N)-1 && s>>i&1) continue;
-            rep(j, N) {
-                if (~s>>j&1) continue;
-                if (s!=(1<<N)-1 && ~edges[i]>>j&1) continue;
-                if (!dp[s^(1<<j)][j]) win = true;
-            }
-            dp[s][i] = win;
+    vvl dp(1<<K, vl(K, INF));
+    rep (i, K) dp[1<<i][i] = 0;
+    rep (s, 1<<K) rep (i, K) {
+        if (~s>>i&1) continue;
+        if (dp[s][i] == INF) continue;
+        rep (j, K) {
+            if (s>>j&1) continue;
+            chmin(dp[s|1<<j][j], dp[s][i] + distk[i][j]);
         }
     }
-    if (dp[(1<<N)-1][0]) puts("First");
-    else puts("Second");
+    ll ans = INF;
+    rep (i, K) chmin(ans, dp[(1<<K)-1][i]+1);
+    ch1(ans);
+    Out(ans)
     
 }
 
