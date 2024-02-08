@@ -105,43 +105,43 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(L);
-    ll N = SIZE(L);
-
-    vm dp(2);
-    dp[0] = 1;
+    STRING(S); LONG(K);
+    ll N = SIZE(S);
+    vvl dp(K+1, vl(2));
+    dp[0][0] = 1;
     rep (i, N) {
-        vm p(2);
+        vvl p(K+1, vl(2));
         swap(p, dp);
-        ll l = L[i] - '0';
-        rep (k, 2) rep (a, 2) rep (b, 2) {
-            if (p[k]==0) continue;
-            if (a==1 && b==1) continue;
-            if (k==0 && l<a+b) continue;
-            ll nk = k;
-            if (k==0 && a+b<l) nk = 1-k;
-            dp[nk] += p[k];
+        ll x = S[i] - '0';
+        rep(k, K+1) rep (j, 2) rep (y, 10) {  // p[k][j]
+            if (p[k][j]==0) continue;
+            if (k==0&&j==1) {
+                cout<<"";
+            }
+            if (j==0 && x<y) continue;
+            ll nk = k, nj = j;
+            if (y!=0) nk = k+1;
+            if (nk>K) continue;
+            if (j==0 && x>y) nj = 1;
+            dp[nk][nj] += p[k][j];
         }
-        de(dp)
     }
-    mint ans = 0;
-    rep (i, 2) ans += dp[i];
-    Out(ans.val())
+    Out(dp[K][0] + dp[K][1])
     
 }
 
