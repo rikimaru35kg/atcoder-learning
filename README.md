@@ -690,7 +690,7 @@
 - 引き算の筆算のように、下位桁から考えるDPもある。問題設定によるが、繰り下がりの有無で状態を持つ
 ### 例題
 - !復習価値中 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
-- [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
+- !要復習 XOR（ちゃんと考えないとハマる） [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
 - 難しいが練習になる [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 - 繰り下がり型DP [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)

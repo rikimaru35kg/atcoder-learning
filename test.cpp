@@ -105,38 +105,54 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(K); LONG(D);
-    vl Kd;
-    ll N = SIZE(K);
-    rep (i, N) Kd.push_back(K[i] - '0');
-    vvm dp(D, vm(2));
-    dp[0][0] = 1;
+    LONG(N, K);
+    VL(A, N);
+    ll M = 41;
+    vl cnt1(M);
     rep (i, N) {
-        vvm p(D, vm(2));
-        swap(p, dp);
-        rep (r, D) rep (k, 2) rep(x, 10) {
-            if (k==1) dp[(r+x)%D][k] += p[r][k];
-            if (k==0 && x==Kd[i]) dp[(r+x)%D][k] += p[r][k];
-            if (k==0 && x<Kd[i]) dp[(r+[i])%D][1-k] += p[r][k];
+        ll a = A[i];
+        rep (j, M) {
+            if (a%2==1) cnt1[j]++;
+            a>>=1;
         }
-        de(dp)
     }
-    Out((dp[0][0]+dp[0][1]-1).val())
+    vl dp(2, -INF);
+    dp[0] = 0;
+    repr (i, M) {
+        vl p(2, -INF);
+        swap(p, dp);
+        ll x = (K>>i&1);
+        ll c1 = cnt1[i]<<i;
+        ll c0 = (N - cnt1[i])<<i;
+        rep (k, 2) rep (y, 2) {
+            if (p[k] == -INF) continue;
+            if (k==1) {
+                if (y==0) chmax(dp[k], p[k] + c1);
+                else chmax(dp[k], p[k] + c0);
+                continue;
+            }
+            if (x==1 && y==0) chmax(dp[1-k], p[k] + c1);
+            if (x==1 && y==1) chmax(dp[k], p[k] + c0);
+            if (x==0 && y==0) chmax(dp[k], p[k] + c1);
+        }
+    }
+    Out(max(dp[0], dp[1]))
+
 
     
 }
