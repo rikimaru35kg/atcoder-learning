@@ -120,28 +120,31 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S); LONG(K);
+    STRING(S);
+    reverse(all(S));
+    S.push_back('0');
     ll N = SIZE(S);
-    vvl dp(K+1, vl(2));
-    dp[0][0] = 1;
+
+    vl dp(2, INF);
+    dp[0] = 0;
+
     rep (i, N) {
-        vvl p(K+1, vl(2));
+        vl p(2, INF);
         swap(p, dp);
-        ll x = S[i] - '0';
-        rep(k, K+1) rep (j, 2) rep (y, 10) {  // p[k][j]
-            if (p[k][j]==0) continue;
-            if (k==0&&j==1) {
-                cout<<"";
-            }
-            if (j==0 && x<y) continue;
-            ll nk = k, nj = j;
-            if (y!=0) nk = k+1;
-            if (nk>K) continue;
-            if (j==0 && x>y) nj = 1;
-            dp[nk][nj] += p[k][j];
+        ll x = S[i]-'0';
+        rep (j, 2) rep(y, 10) {
+            if (p[j]==INF) continue;
+            ll _x = x;
+            if (j==1) ++_x;
+            ll z = y - _x;
+            ll nj = 0;
+            if (z<0) nj = 1;
+            if (z<0) z += 10;
+            chmin(dp[nj], p[j] + y+z);
         }
+        de(dp)
     }
-    Out(dp[K][0] + dp[K][1])
+    Out(dp[0])
     
 }
 
