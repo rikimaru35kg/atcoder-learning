@@ -50,7 +50,6 @@ using cd = complex<double>;
 #define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
-#define VC(cvec, n) vc cvec; input_cvec(cvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
@@ -71,7 +70,6 @@ inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_b
 inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
-inline void input_cvec(vc &cvec, ll n) {rep (i, n) {char c; cin >> c; cvec.push_back(c);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
@@ -107,47 +105,84 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VC(C, N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    vvm dp(N, vm(4));
-    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
-        int c = C[v] - 'a' + 1;
-        dp[v][c] = 1; dp[v][3-c] = 0, dp[v][3] = 0;
-        ll cnt = 0;
-        for (auto nv: from[v]) {
-            mint one, both;
-            if (nv == p) continue;
-            ++cnt;
-            f(f, nv, v);
-            one = dp[v][c] * (dp[nv][c] + dp[nv][3]);
-            both = dp[v][3]*(2*dp[nv][3]+dp[nv][1]+dp[nv][2]) + dp[v][c]*(dp[nv][3]+dp[nv][3-c]);
-            dp[v][c] = one;
-            dp[v][3] = both;
+    VL(A, N);
+    ll M = 200;
+    vvl dp(N+1, vl(M));
+    rep (i, N) {
+        dp[i+1][A[i]%M]++;
+        rep (j, M) {
+            dp[i+1][j] += dp[i][j];
+            chmin(dp[i+1][j], 2LL);
+            dp[i+1][(j+A[i])%M] += dp[i][j];
+            chmin(dp[i+1][(j+A[i])%M], 2LL);
         }
+    }
+
+    auto rest1 = [&](ll m) {
+        vl ret;
+        for (int i=N-1; i>=0; --i) {
+            ll one = dp[i][m];
+            ll two = dp[i][((m-A[i])%M + M) % M];
+            if (m == A[i]%M) {
+                ret.push_back(i+1);
+                break;
+            } else if (one>=1) {
+            } else if(two == 0) {
+                ret.push_back(i+1);
+                break;
+            } else {
+                ret.push_back(i+1);
+                m = ((m-A[i])%M + M) % M;
+            }
+        }
+        printf("%lld ", SIZE(ret));
+        reverse(all(ret));
+        print_vec(ret);
     };
-    dfs(dfs, 0);
-    Out(dp[0][3].val())
+    auto rest2 = [&](ll m) {
+        vl ret;
+        for (int i=N-1; i>=0; --i) {
+            ll one = dp[i][m];
+            ll two = dp[i][((m-A[i])%M + M) % M];
+            if (two>=1) {
+                ret.push_back(i+1);
+                m = ((m-A[i])%M + M) % M;
+            } else if (one ==0) {
+                ret.push_back(i+1);
+                break;
+            } else {
+            }
+        }
+        printf("%lld ", SIZE(ret));
+        reverse(all(ret));
+        print_vec(ret);
+    };
+
+    rep (i, M) {
+        if (dp[N][i] == 2) {
+            puts("Yes");
+            rest1(i);
+            rest2(i);
+            return 0;
+        }
+    }
+    puts("No");
     
 }
 

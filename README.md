@@ -709,7 +709,7 @@
 - 2経路の復元の場合は、常に異なる戦略を取って逆順に辿れば良い
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
-- 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
+- !要復習 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
