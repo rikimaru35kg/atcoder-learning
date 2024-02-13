@@ -120,23 +120,22 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vvl dp(2, vl(2, INF));
-    dp[0][0] = 0;
-    dp[1][1] = 0;
-    repk (i, 0, N) {
-        vvl p(2, vl(2, INF));
-        swap(p, dp);
-        rep (s, 2) {
-            chmin(dp[s][1], p[s][0] + A[i]);
-            chmin(dp[s][1], p[s][1] + A[i]);
-            chmin(dp[s][0], p[s][1]);
+    LONG(N); VL(A , N);
+    vl S(N+1);
+    rep (i, N) S[i+1] += S[i] + A[i];
+    vl dp(N+1, 0);
+    dp[0] = 0;
+    repk (i, 1, N+1) {
+        repk(j, 1, N+1) {
+            if (i-j<0) break;
+            ll spn = j - 1;
+            ll now = S[spn/2]*2;
+            if (spn%2 == 1) now += A[spn/2];
+            chmax(dp[i], dp[i-j] + now);
         }
     }
-    ll ans = INF;
-    chmin(ans, dp[0][0]);
-    chmin(ans, dp[1][1]);
-    Out(ans)
+    de(dp)
+    Out(dp[N])
     
 }
 

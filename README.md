@@ -732,7 +732,7 @@
 ### 例題
 - !復習価値低 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
 - !要復習 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
-- [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
+- !要復習 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
 
 ## LIS 最長増加部分列
 - 単調増加する最長の部分列を特定する手法
