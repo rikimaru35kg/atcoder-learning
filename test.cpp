@@ -120,30 +120,22 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S, X);
-    ll M = 7;
-    vl dp(7);
-    dp[0] = true;
-    ll ten = 1;
-    repr (i, N) {
-        vl p(7);
+    LONG(N); VL(A, N);
+    vvl dp(2, vl(2, INF));
+    dp[0][0] = 0;
+    dp[1][1] = 0;
+    repk (i, 0, N) {
+        vvl p(2, vl(2, INF));
         swap(p, dp);
-        char play = X[i];
-        ll a = S[i] - '0';
-        rep (r, M) {
-            if (play == 'T') {
-                if (p[r] || p[(r+a*ten)%M]) dp[r] = true;
-                else dp[r] = false;
-            } else {
-                if (!p[r] || !p[(r+a*ten)%M]) dp[r] = false;
-                else dp[r] = true;
-            }
+        rep (s, 2) {
+            chmin(dp[s][1], p[s][0] + A[i]);
+            chmin(dp[s][1], p[s][1] + A[i]);
+            chmin(dp[s][0], p[s][1]);
         }
-        (ten *= 10) %= M;
     }
-    string ans;
-    if (dp[0]) ans = "Takahashi";
-    else ans = "Aoki";
+    ll ans = INF;
+    chmin(ans, dp[0][0]);
+    chmin(ans, dp[1][1]);
     Out(ans)
     
 }
