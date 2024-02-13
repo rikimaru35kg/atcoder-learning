@@ -740,7 +740,7 @@
 - 要素を順番に検査し、自分より大きい数を見つけたら書き換えていくだけで実装可能（実装上は二分探索で挿入位置を見つける）
 - 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
 ### 例題
-- [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- !復習価値低 LIS+木の実装 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - LIS+少しのひねり [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 
 ## DP高速化

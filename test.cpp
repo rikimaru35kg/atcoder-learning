@@ -120,22 +120,35 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A , N);
-    vl S(N+1);
-    rep (i, N) S[i+1] += S[i] + A[i];
-    vl dp(N+1, 0);
-    dp[0] = 0;
-    repk (i, 1, N+1) {
-        repk(j, 1, N+1) {
-            if (i-j<0) break;
-            ll spn = j - 1;
-            ll now = S[spn/2]*2;
-            if (spn%2 == 1) now += A[spn/2];
-            chmax(dp[i], dp[i-j] + now);
-        }
+    LONG(N);
+    VL(A, N);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    de(dp)
-    Out(dp[N])
+    vl lis(N, INF);
+    vl ans(N);
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        ll idx = lower_bound(all(lis), A[v]) - lis.begin();
+        ll pre = lis[idx];
+        lis[idx] = A[v];
+
+        ll now = lower_bound(all(lis), INF) - lis.begin();
+        ans[v] = now;
+
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            f(f, nv, v);
+        }
+
+        lis[idx] = pre;
+    };
+    dfs(dfs, 0);
+    rep (i, N) {
+        Out(ans[i])
+    }
     
 }
 
