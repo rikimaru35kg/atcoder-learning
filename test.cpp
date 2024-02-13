@@ -120,69 +120,31 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll M = 200;
-    vvl dp(N+1, vl(M));
-    rep (i, N) {
-        dp[i+1][A[i]%M]++;
-        rep (j, M) {
-            dp[i+1][j] += dp[i][j];
-            chmin(dp[i+1][j], 2LL);
-            dp[i+1][(j+A[i])%M] += dp[i][j];
-            chmin(dp[i+1][(j+A[i])%M], 2LL);
-        }
-    }
-
-    auto rest1 = [&](ll m) {
-        vl ret;
-        for (int i=N-1; i>=0; --i) {
-            ll one = dp[i][m];
-            ll two = dp[i][((m-A[i])%M + M) % M];
-            if (m == A[i]%M) {
-                ret.push_back(i+1);
-                break;
-            } else if (one>=1) {
-            } else if(two == 0) {
-                ret.push_back(i+1);
-                break;
+    LONG(N); STRING(S, X);
+    ll M = 7;
+    vl dp(7);
+    dp[0] = true;
+    ll ten = 1;
+    repr (i, N) {
+        vl p(7);
+        swap(p, dp);
+        char play = X[i];
+        ll a = S[i] - '0';
+        rep (r, M) {
+            if (play == 'T') {
+                if (p[r] || p[(r+a*ten)%M]) dp[r] = true;
+                else dp[r] = false;
             } else {
-                ret.push_back(i+1);
-                m = ((m-A[i])%M + M) % M;
+                if (!p[r] || !p[(r+a*ten)%M]) dp[r] = false;
+                else dp[r] = true;
             }
         }
-        printf("%lld ", SIZE(ret));
-        reverse(all(ret));
-        print_vec(ret);
-    };
-    auto rest2 = [&](ll m) {
-        vl ret;
-        for (int i=N-1; i>=0; --i) {
-            ll one = dp[i][m];
-            ll two = dp[i][((m-A[i])%M + M) % M];
-            if (two>=1) {
-                ret.push_back(i+1);
-                m = ((m-A[i])%M + M) % M;
-            } else if (one ==0) {
-                ret.push_back(i+1);
-                break;
-            } else {
-            }
-        }
-        printf("%lld ", SIZE(ret));
-        reverse(all(ret));
-        print_vec(ret);
-    };
-
-    rep (i, M) {
-        if (dp[N][i] == 2) {
-            puts("Yes");
-            rest1(i);
-            rest2(i);
-            return 0;
-        }
+        (ten *= 10) %= M;
     }
-    puts("No");
+    string ans;
+    if (dp[0]) ans = "Takahashi";
+    else ans = "Aoki";
+    Out(ans)
     
 }
 

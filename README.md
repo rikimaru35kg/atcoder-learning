@@ -714,13 +714,13 @@
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
 - dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
-- 後ろから考えていく場合でも、後ろの情報だけでは決まらない場合もある（例: D - ABS）。しかし必ずしも再起関数の先頭でreturnする必要はなく、最終的にきちんとreturnできれば良い。
+- DP全般に言える事だが、いかにして状態数を減らせるかが大事（例: D - ABS）。計算量が間に合わないときは、無駄な状態はないかよく考える事
 ### 例題
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
 - 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
-- [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
-- [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
-- 典型的な対戦ゲームだが、頭の整理に良い [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
+- 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
+- 基本（なぜ青diff？） [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
+- !要復習 カードめくり [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 
 ## 円環系DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
