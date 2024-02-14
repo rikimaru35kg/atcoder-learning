@@ -748,7 +748,7 @@
 - 累積和やセグメント木が使える
 ### 例題
 - !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
-- セグ木 x DP [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - セグ木 x DP [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 
 # 最短経路問題

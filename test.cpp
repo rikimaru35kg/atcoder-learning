@@ -107,7 +107,7 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -117,54 +117,40 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-struct S {
-    mint x; ll w;
-};
-S op(S a, S b) {return {a.x+b.x, a.w+b.w};}
-S e() {return {0,0};}
+using S = ll;
+S op(S a, S b) {return max(a, b);}
+S e() {return -INF;}
 using F = ll;
-S mapping (F f, S x) {
-    if (f==INF) return x;
-    return {x.w*f, x.w};
+S mapping(F f, S x) { return max(f, x); }
+F composition (F f, F g) {
+    return max(f, g);
 }
-F composition(F f, F g) {
-    if (f==INF) return g;
-    return f;
-}
-F id() {return INF;}
-// struct S{
-//     mint value;
-//     int size;
-// };
-// using F = ll;
-// const F ID = 8e18;
-
-// S op(S a, S b){ return {a.value+b.value, a.size+b.size}; }
-// S e(){ return {0, 0}; }
-// S mapping(F f, S x){
-//     if(f != ID) x.value = f*x.size;
-//     return x;
-// }
-// F composition(F f, F g){ return (f == ID ? g : f); }
-// F id(){ return ID; }
+F id() {return -INF;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    vector<S> vec(K+1, {0, 1});
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(vec);
-    seg.apply(0, 1, 1);
+    LONG(W, N);
+    vl L(N), R(N), V(N);
     rep (i, N) {
-        repr (j, K+1) {
-            ll l = max(j-A[i], 0LL);
-            ll r = j+1;
-            mint tmp = seg.prod(l, r).x;
-            seg.apply(j, j+1, tmp.val());
+        LONG(l, r, v);
+        L[i] = l, R[i] = r, V[i] = v;
+    }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(W+1);
+    seg.set(0, 0);
+    rep (i, N) {
+        // lazy_segtree<S,op,e,F,mapping,composition,id> segp(W+1);
+        // swap(seg, segp);
+        rep (j, W+1) {
+            ll l = min(W+1, j+L[i]);
+            ll r = min(W+1, j+R[i]+1);
+            seg.apply(l, r, seg.get(j)+V[i]);
+            seg.apply(j, j+1, seg.get(j));
         }
     }
-    Out(seg.prod(K, K+1).x.val())
+    ll ans = seg.get(W);
+    if (ans <0) ans = -1;
+    Out(ans)
     
 }
 
