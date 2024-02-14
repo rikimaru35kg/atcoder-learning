@@ -120,35 +120,38 @@ const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
+    LONG(N); VL(A, N);
+    if (N==1) {
+        Out(1) return 0;
     }
+    vl fr(N), rr(N);
+    vl frsel(N), rrsel(N);
     vl lis(N, INF);
-    vl ans(N);
-    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
-        ll idx = lower_bound(all(lis), A[v]) - lis.begin();
-        ll pre = lis[idx];
-        lis[idx] = A[v];
-
-        ll now = lower_bound(all(lis), INF) - lis.begin();
-        ans[v] = now;
-
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            f(f, nv, v);
-        }
-
-        lis[idx] = pre;
-    };
-    dfs(dfs, 0);
+    ll mx = 0;
     rep (i, N) {
-        Out(ans[i])
+        ll idx = lower_bound(all(lis), A[i]) - lis.begin();
+        lis[idx] = A[i];
+        if (mx < idx+1) frsel[i] = true;
+        chmax(mx, idx+1);
+        fr[i] = mx;
     }
+    reverse(all(A));
+    lis.assign(N, INF);
+    mx = 0;
+    rep (i, N) {
+        ll idx = lower_bound(all(lis), A[i]) - lis.begin();
+        lis[idx] = A[i];
+        if (mx < idx+1) rrsel[N-1-i] = true;
+        chmax(mx, idx+1);
+        rr[N-1-i] = mx;
+    }
+    de(fr)de(rr)
+    ll ans = 0;
+    rep (i, N-1) {
+        if (A[i] == A[i+1]) chmax(ans, fr[i]+rr[i+1]-1);
+        else chmax(ans, fr[i]+rr[i+1]);
+    }
+    Out(ans)
     
 }
 

@@ -741,7 +741,7 @@
 - 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
 ### 例題
 - !復習価値低 LIS+木の実装 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
-- LIS+少しのひねり [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
+- !復習価値高 LIS+ひねり [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する
