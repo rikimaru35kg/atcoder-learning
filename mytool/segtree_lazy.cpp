@@ -17,7 +17,7 @@ using namespace atcoder;
 // mappingはSにFを適用させる関数。
 // compositionはfとgの合成関数を定義する。
 // id()は恒等写像、すなわち値を変化させない写像を定義する
-// 参考: [snuke氏の解説@ACL Beginner Contest](https://www.youtube.com/watch?v=D0Op33UL_cA)
+// 参考: [snuke氏の解説@ACL Beginner Contest](https://www.youtube.com/live/D0Op33UL_cA?feature=shared&t=4861)
 
 // 区間最小更新・区間最小値取得（RMUQ+RMQ）=========================
 #ifdef RMINUQ_RMINQ

@@ -747,7 +747,7 @@
 - 遷移するときのループ分をO(1)で実施する
 - 累積和やセグメント木が使える
 ### 例題
-- 累積和 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
+- !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - セグ木 x DP [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - セグ木 x DP [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 
@@ -920,10 +920,11 @@
 
 # セグメントツリー（Segment tree）
 - atcoder libraryで使える
-- 区間更新・加算、区間min・max・和取得などができる
+- 区間更新・加算、区間min・max・和取得などができる（遅延評価セグメントツリー）
 - モノイドであればセグ木にのる
 - セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
 ### 例題
+- 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
 - [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - 想定解は違うがセグ木で殴った [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - セグ木の典型 [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
@@ -1102,6 +1103,7 @@
 
 ## 実装テクニック（その他）
 - ACLのdsu.size(v)はint型なので、そのまま掛け算に使うとオーバーフローして危険
+- ACLのmintはdouble型をキャストできないので注意（eg. (mint)(1e8)などとすると壊れる）
 - double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となっていて桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり） （eg [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)）
 - 区間[l,r)の一方だけに制限値処理をすると危険（たとえばchmax(l,x)などとするとl>rになりうる）。制限値処理は同時にかける（できればclampで）
 - 下桁から処理するwhile文（例えばwhile(x>0){x/=10}）は、x==0のコーナーケースに注意！一度も処理されない

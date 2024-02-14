@@ -105,53 +105,66 @@ const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+struct S {
+    mint x; ll w;
+};
+S op(S a, S b) {return {a.x+b.x, a.w+b.w};}
+S e() {return {0,0};}
+using F = ll;
+S mapping (F f, S x) {
+    if (f==INF) return x;
+    return {x.w*f, x.w};
+}
+F composition(F f, F g) {
+    if (f==INF) return g;
+    return f;
+}
+F id() {return INF;}
+// struct S{
+//     mint value;
+//     int size;
+// };
+// using F = ll;
+// const F ID = 8e18;
+
+// S op(S a, S b){ return {a.value+b.value, a.size+b.size}; }
+// S e(){ return {0, 0}; }
+// S mapping(F f, S x){
+//     if(f != ID) x.value = f*x.size;
+//     return x;
+// }
+// F composition(F f, F g){ return (f == ID ? g : f); }
+// F id(){ return ID; }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    if (N==1) {
-        Out(1) return 0;
-    }
-    vl fr(N), rr(N);
-    vl frsel(N), rrsel(N);
-    vl lis(N, INF);
-    ll mx = 0;
+    LONG(N, K);
+    VL(A, N);
+    vector<S> vec(K+1, {0, 1});
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(vec);
+    seg.apply(0, 1, 1);
     rep (i, N) {
-        ll idx = lower_bound(all(lis), A[i]) - lis.begin();
-        lis[idx] = A[i];
-        if (mx < idx+1) frsel[i] = true;
-        chmax(mx, idx+1);
-        fr[i] = mx;
+        repr (j, K+1) {
+            ll l = max(j-A[i], 0LL);
+            ll r = j+1;
+            mint tmp = seg.prod(l, r).x;
+            seg.apply(j, j+1, tmp.val());
+        }
     }
-    reverse(all(A));
-    lis.assign(N, INF);
-    mx = 0;
-    rep (i, N) {
-        ll idx = lower_bound(all(lis), A[i]) - lis.begin();
-        lis[idx] = A[i];
-        if (mx < idx+1) rrsel[N-1-i] = true;
-        chmax(mx, idx+1);
-        rr[N-1-i] = mx;
-    }
-    de(fr)de(rr)
-    ll ans = 0;
-    rep (i, N-1) {
-        if (A[i] == A[i+1]) chmax(ans, fr[i]+rr[i+1]-1);
-        else chmax(ans, fr[i]+rr[i+1]);
-    }
-    Out(ans)
+    Out(seg.prod(K, K+1).x.val())
     
 }
 
