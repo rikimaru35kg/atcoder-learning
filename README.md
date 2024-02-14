@@ -761,7 +761,7 @@
 - 2頂点を同時に動かす最短経路問題もある
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 ### 例題
-- [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
+- !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - 2頂点 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)

@@ -107,6 +107,7 @@ const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
+Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 
 // #include <atcoder/all>
 // using namespace atcoder;
