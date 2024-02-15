@@ -100,8 +100,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {1, -1, 1, -1};
-const vi dj = {1, -1, -1, 1};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -124,33 +124,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(H, W);
     LONGM(si, sj, gi, gj);
-    VS(S, N);
-    vvvl dist(N, vvl(N, vl(4, INF)));
-    deque<tuple<ll,ll,ll>> que;
-    auto push = [&](ll i, ll j, ll dir, ll d, bool fr) {
-        if (i<0 || i>=N || j<0 || j>=N) return;
+    VS(S, H);
+    vvl dist(H, vl(W, INF));
+    deque<Pr> que;
+    auto push = [&](ll i, ll j, ll d, bool fr) {
+        if (i<0 || i>=H || j<0 || j>=W) return;
         if (S[i][j] == '#') return;
-        if (d >= dist[i][j][dir]) return;
-        dist[i][j][dir] = d;
-        if (fr) que.emplace_front(i, j, dir);
-        else que.emplace_back(i, j, dir);
+        if (dist[i][j] <= d) return;
+        dist[i][j] = d;
+        if (fr) que.emplace_front(i, j);
+        else que.emplace_back(i, j);
     };
-    rep (k, 4) push(si, sj, k, 1, true);
-    while(que.size()) {
-        auto [i, j, dir] = que.front(); que.pop_front();
-        ll d = dist[i][j][dir];
+    push(si, sj, 0, true);
+    while (que.size()) {
+        auto [i, j] = que.front(); que.pop_front();
+        ll d = dist[i][j];
         rep (k, 4) {
-            if (k==dir) continue;
-            push(i, j, k, d+1, false);
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            push(ni, nj, d, true);
         }
-        ll ni = i + di[dir];
-        ll nj = j + dj[dir];
-        push(ni, nj, dir, d, true);
+        repk (a, -2, 3) repk (b, -2, 3) {
+            if (a==0 && b==0) continue;
+            ll ni = i + a;
+            ll nj = j + b;
+            push(ni, nj, d+1, false);
+        }
     }
-    ll ans = INF;
-    rep (k, 4) chmin(ans, dist[gi][gj][k]);
+    ll ans = dist[gi][gj];
     ch1(ans);
     Out(ans)
     

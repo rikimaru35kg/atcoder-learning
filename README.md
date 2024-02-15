@@ -760,8 +760,8 @@
 - 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
 ### 例題
 - 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
-- !復習価値低 基本 [E- Biship 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
-- [D - Wizard in Maze](成分atcoder.jp/contests/abc176/tasks/abc176_d)
+- !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
+- !復習価値低 基本 [D - Wizard in Maze](https://atcoder.jp/contests/abc176/tasks/abc176_d)
 
 ## スケート最短経路問題
 - 同方向はコスト0、方向転換はコスト1の最短経路問題は、各頂点に方向の状態を持たせ01-BFSあるいはダイクストラすれば解ける
