@@ -120,15 +120,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+struct Edge {
+    ll to, d, t;
+    Edge(ll to, ll d, ll t): to(to), d(d), t(t) {}
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Pr a(1, 2), b(3, 4);
-    de(a+b)
-    de(a-b)
-    de(a*b)
-    de(a/b)
+    LONG(N, M);
+    vector<vector<Edge>> from(N);
+    rep (i, M) {
+        LONGM(u, v); LONG(d, t);
+        from[u].emplace_back(v, d, t);
+        from[v].emplace_back(u, d, t);
+    }
+    vvp dp(1<<N, vp(N, {INF, 0}));
+    dp[0][0] = {0, 1};
+    rep (s, 1<<N) {
+        rep (v, N) {
+            if (s!=0 && ~s>>v&1) continue;
+            auto [t_now, n] = dp[s][v];
+            for (auto [nv, d, t]: from[v]) {
+                if (s>>nv&1) continue;
+                if (t_now + d > t) continue;
+                ll ns = s|1<<nv;
+                if (t_now + d > dp[ns][nv].first) continue;
+                if (t_now + d < dp[ns][nv].first) {
+                    dp[ns][nv].first = t_now + d;
+                    dp[ns][nv].second = n;
+                } else {
+                    dp[ns][nv].second += n;
+                }
+            }
+        }
+    }
+    auto [ans, n] = dp[(1<<N)-1][0];
+    if(ans == INF) puts("IMPOSSIBLE");
+    else printf("%lld %lld\n", ans, n);
+
     
 }
 

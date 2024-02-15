@@ -757,8 +757,6 @@
 - 重み有りグラフの最短経路問題はダイクストラ法（後述）
 - 重み有りグラフの全頂点最短経路問題はワーシャル・フロイド法（後述）
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
-### 例題
-- 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能
@@ -826,11 +824,13 @@
 ## 最短経路問題+α
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
+- 最短経路となる場合の数を同時に数え上げる事も可能（距離が=なら場合の数を足すなどする）
 ### 例題
 - !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - !要復習 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 - !要復習 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
+- !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 
 ## 最小燃料回数問題
 - 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
