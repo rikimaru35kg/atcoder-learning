@@ -120,50 +120,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct Vertex {
-    ll d, i, j, dir;
-    Vertex (ll d, ll i, ll j, ll dir): 
-      d(d), i(i), j(j), dir(dir) {}
-    bool operator> (const Vertex &rhs) const {
-        return d>rhs.d;
-    }
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    LONGM(si, sj, gi, gj);
-    VS(C, H);
-    vvvl dist(H, vvl(W, vl(4, INF)));
-    priority_queue<Vertex,vector<Vertex>,greater<Vertex>> pque;
-    auto push = [&](ll i, ll j, ll dir, ll d) {
-        if (i<0 || i>=H || j<0 || j>=W) return;
-        if (C[i][j] == '@') return;
-        if (dist[i][j][dir] <= d) return;
-        dist[i][j][dir] = d;
-        pque.emplace(d, i, j, dir);
-    };
-    rep (k, 4) push(si, sj, k, 0);
-    while (pque.size()) {
-        auto [d, i, j, dir] = pque.top(); pque.pop();
-        if (d != dist[i][j][dir]) continue;
-        rep (k, 4) {
-            if (k==dir) continue;
-            ll nd = (d+K-1)/K*K;
-            push(i, j, k, nd);
+    LONG(N, M);
+    vvp from(N);
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+    }
+    rep (si, N) {
+        vl dist(N, INF);
+        pq pque;
+        auto push = [&](ll v, ll d) {
+            if (dist[v] <= d) return;
+            dist[v] = d;
+            pque.emplace(d, v);
+        };
+        for (auto [ni, c]: from[si]) {
+            push(ni, c);
         }
-        ll ni = i + di[dir];
-        ll nj = j + dj[dir];
-        push(ni, nj, dir, d+1);
+        while(pque.size()) {
+            auto [d, v] = pque.top(); pque.pop();
+            if (dist[v] != d) continue;
+            for (auto [nv, c]: from[v]){
+                push(nv, d+c);
+            }
+        }
+        ll ans = dist[si];
+        ch1(ans);
+        Out(ans)
     }
-    ll ans = INF;
-    rep(k, 4) chmin(ans, dist[gi][gj][k]);
-    if (ans == INF) {
-        Out(-1) return 0;
-    }
-    ans = (ans + K - 1) / K;
-    Out(ans)
     
 }
 
