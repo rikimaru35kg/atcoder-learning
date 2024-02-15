@@ -780,9 +780,8 @@
 ## 拡張ダイクストラ法
 - 頂点＋状態をキューに入れていくダイクストラ法
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
-- 計算量は辺の移動が状態S分だけ増えるので、O(SM)
 ### 例題
-- [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
+- !復習価値高 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 
 ## ワーシャルフロイド法（Warshall-Floyd）
 - 全頂点から全頂点への最短経路を求める方法。計算量はO(N^3)
@@ -1086,6 +1085,7 @@
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
 - 構造体にbool operater < (const &Struct s) {return x < s.x}などとすると、構造体同士の演算が定義できる。
 - ただし、priority_queueに使うときは2点注意が必要。(1)bool operator>（greater<MYSTRUCT>なので） (2){}の前にconstと書かないとエラーが出る（理由不明） -> 恐らくだが、greater<MYSTRUCT>と書く場合はconst記述が必要。そうしないと内部で定義してあるoperater>と型が完全一致しないのでエラーが出るのではないか
+- お行儀の悪い書き方としては、operator<を逆向き"<"で定義してしまうやり方あり。こうすればpriority_que<MYSTRUCT>と定義するだけでよくなり実装は楽
 - 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる
 - 構造体定義の直下でvectorのサイズを定義すると理由不明だがエラーが出る。初期値関連はコンストラクタで初期化する必要がある
 

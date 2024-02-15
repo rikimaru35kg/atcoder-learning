@@ -121,62 +121,50 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+using vvt = vector<vector<tuple<ll,ll,ll>>>;
+using T3 = tuple<ll,ll,ll>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl C(N), R(N);
+    LONG(N, M, S);
+    vvt from(N);
+    rep (i, M) {
+        LONGM(u, v); LONG(a, b);
+        from[u].emplace_back(v, a, b);
+        from[v].emplace_back(u, a, b);
+    }
+    vl C(N), D(N);
     rep (i, N) {
-        LONG(c, r);
-        C[i] = c; R[i] = r;
+        LONG(c, d);
+        C[i] = c;
+        D[i] = d;
     }
-    vvl from(N);
-    rep (i, K) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    vvl from2(N);
-    rep (i, N) {
-        vl dist(N, INF);
-        queue<ll> que;
-        auto push = [&](ll v, ll d) {
-            if (dist[v] != INF) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(i, 0);
-        while(que.size()) {
-            ll v = que.front(); que.pop();
-            ll d = dist[v];
-            if (d > R[i]) break;
-            if (v != i && d != 1) from2[i].push_back(v);
-            for (auto nv: from[v]) {
-                push(nv, d+1);
-            }
-        }
-    }
-    vl dist(N, INF);
-    pq pque;
-    auto push = [&](ll v, ll d) {
-        if (dist[v] <= d) return;
-        dist[v] = d;
-        pque.emplace(d, v);
+    ll Smx = N*50;
+    priority_queue<T3,vector<T3>,greater<T3>> pque;
+    vvl dist(N, vl(Smx, INF));
+    auto push = [&](ll v, ll s, ll d) {
+        chmin(s, Smx-1);
+        if (dist[v][s] <= d) return;
+        dist[v][s] = d;
+        pque.emplace(d, v, s);
     };
-    push(0, 0);
-    while(pque.size()) {
-        auto [d, v] = pque.top(); pque.pop();
-        if (d != dist[v]) continue;
-        for (auto nv: from[v]) {
-            push(nv, d + C[v]);
+    push(0, S, 0);
+    while(pque.size()){
+        auto [d, v, s] = pque.top(); pque.pop();
+        if (d != dist[v][s]) continue;
+        for (auto [nv, a, b]: from[v]) {
+            if (s < a) continue;
+            push(nv, s-a, d+b);
         }
-        for (auto nv: from2[v]) {
-            push(nv, d + C[v]);
-        }
+        push(v, s+C[v], d+D[v]);
     }
-    de(dist)
-    ll ans = dist[N-1];
-    Out(ans)
+    repk (i, 1, N) {
+        ll ans = INF;
+        rep (j, Smx) chmin(ans, dist[i][j]);
+        Out(ans)
+    }
+    
     
 }
 
