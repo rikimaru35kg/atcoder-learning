@@ -100,8 +100,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {0, 1, 0, -1};
-const vi dj = {1, 0, -1, 0};
+const vi di = {1, -1, 1, -1};
+const vi dj = {1, -1, -1, 1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -120,45 +120,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct Edge {
-    ll to, d, t;
-    Edge(ll to, ll d, ll t): to(to), d(d), t(t) {}
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vector<vector<Edge>> from(N);
-    rep (i, M) {
-        LONGM(u, v); LONG(d, t);
-        from[u].emplace_back(v, d, t);
-        from[v].emplace_back(u, d, t);
-    }
-    vvp dp(1<<N, vp(N, {INF, 0}));
-    dp[0][0] = {0, 1};
-    rep (s, 1<<N) {
-        rep (v, N) {
-            if (s!=0 && ~s>>v&1) continue;
-            auto [t_now, n] = dp[s][v];
-            for (auto [nv, d, t]: from[v]) {
-                if (s>>nv&1) continue;
-                if (t_now + d > t) continue;
-                ll ns = s|1<<nv;
-                if (t_now + d > dp[ns][nv].first) continue;
-                if (t_now + d < dp[ns][nv].first) {
-                    dp[ns][nv].first = t_now + d;
-                    dp[ns][nv].second = n;
-                } else {
-                    dp[ns][nv].second += n;
-                }
-            }
+    LONG(N);
+    LONGM(si, sj, gi, gj);
+    VS(S, N);
+    vvvl dist(N, vvl(N, vl(4, INF)));
+    deque<tuple<ll,ll,ll>> que;
+    auto push = [&](ll i, ll j, ll dir, ll d, bool fr) {
+        if (i<0 || i>=N || j<0 || j>=N) return;
+        if (S[i][j] == '#') return;
+        if (d >= dist[i][j][dir]) return;
+        dist[i][j][dir] = d;
+        if (fr) que.emplace_front(i, j, dir);
+        else que.emplace_back(i, j, dir);
+    };
+    rep (k, 4) push(si, sj, k, 1, true);
+    while(que.size()) {
+        auto [i, j, dir] = que.front(); que.pop_front();
+        ll d = dist[i][j][dir];
+        rep (k, 4) {
+            if (k==dir) continue;
+            push(i, j, k, d+1, false);
         }
+        ll ni = i + di[dir];
+        ll nj = j + dj[dir];
+        push(ni, nj, dir, d, true);
     }
-    auto [ans, n] = dp[(1<<N)-1][0];
-    if(ans == INF) puts("IMPOSSIBLE");
-    else printf("%lld %lld\n", ans, n);
-
+    ll ans = INF;
+    rep (k, 4) chmin(ans, dist[gi][gj][k]);
+    ch1(ans);
+    Out(ans)
     
 }
 

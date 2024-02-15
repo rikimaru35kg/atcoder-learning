@@ -752,20 +752,15 @@
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 
 # 最短経路問題
-- 重み無しグラフの最短経路問題はBFSで解ける（始点が複数あってもOK！）
-- 0/1重みグラフの最短経路問題は0/1-BFSで解ける（0の場合は先頭にpush）
-- 重み有りグラフの最短経路問題はダイクストラ法（後述）
-- 重み有りグラフの全頂点最短経路問題はワーシャル・フロイド法（後述）
-- 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能
-- ダイクストラ法の単純な場合と言っても良い（最小コスト頂点が自明な為。計算も速い）
+- ダイクストラ法の単純な場合と言っても良い（最小コスト頂点が自明な為。logが無いので計算も速い）
 - 0コスト辺の場合、接続先頂点をqueのfrontに、1コスト辺の場合、接続先頂点をqueのbackにpushする事で実装可能
 - 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
 ### 例題
 - 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
-- [E- Biship 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
+- !復習価値低 基本 [E- Biship 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
 - [D - Wizard in Maze](成分atcoder.jp/contests/abc176/tasks/abc176_d)
 
 ## スケート最短経路問題
@@ -824,7 +819,7 @@
 ## 最短経路問題+α
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
-- 最短経路となる場合の数を同時に数え上げる事も可能（距離が=なら場合の数を足すなどする）
+- 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 ### 例題
 - !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
