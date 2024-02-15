@@ -124,34 +124,59 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvp from(N);
-    rep (i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
+    LONG(N, K);
+    vl C(N), R(N);
+    rep (i, N) {
+        LONG(c, r);
+        C[i] = c; R[i] = r;
     }
-    rep (si, N) {
+    vvl from(N);
+    rep (i, K) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+    }
+    vvl from2(N);
+    rep (i, N) {
         vl dist(N, INF);
-        pq pque;
+        queue<ll> que;
         auto push = [&](ll v, ll d) {
-            if (dist[v] <= d) return;
+            if (dist[v] != INF) return;
             dist[v] = d;
-            pque.emplace(d, v);
+            que.push(v);
         };
-        for (auto [ni, c]: from[si]) {
-            push(ni, c);
-        }
-        while(pque.size()) {
-            auto [d, v] = pque.top(); pque.pop();
-            if (dist[v] != d) continue;
-            for (auto [nv, c]: from[v]){
-                push(nv, d+c);
+        push(i, 0);
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            ll d = dist[v];
+            if (d > R[i]) break;
+            if (v != i && d != 1) from2[i].push_back(v);
+            for (auto nv: from[v]) {
+                push(nv, d+1);
             }
         }
-        ll ans = dist[si];
-        ch1(ans);
-        Out(ans)
     }
+    vl dist(N, INF);
+    pq pque;
+    auto push = [&](ll v, ll d) {
+        if (dist[v] <= d) return;
+        dist[v] = d;
+        pque.emplace(d, v);
+    };
+    push(0, 0);
+    while(pque.size()) {
+        auto [d, v] = pque.top(); pque.pop();
+        if (d != dist[v]) continue;
+        for (auto nv: from[v]) {
+            push(nv, d + C[v]);
+        }
+        for (auto nv: from2[v]) {
+            push(nv, d + C[v]);
+        }
+    }
+    de(dist)
+    ll ans = dist[N-1];
+    Out(ans)
     
 }
 
