@@ -756,10 +756,8 @@
 - 0/1重みグラフの最短経路問題は0/1-BFSで解ける（0の場合は先頭にpush）
 - 重み有りグラフの最短経路問題はダイクストラ法（後述）
 - 重み有りグラフの全頂点最短経路問題はワーシャル・フロイド法（後述）
-- 移動する点が複数ある時は、その状態をqueueに入れてBFSなど可能
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 ### 例題
-- 2頂点 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 
 ## 01-BFS
@@ -832,6 +830,7 @@
 - !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - !要復習 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
+- !要復習 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 
 ## 最小燃料回数問題
 - 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
