@@ -763,12 +763,6 @@
 - !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
 - !復習価値低 基本 [D - Wizard in Maze](https://atcoder.jp/contests/abc176/tasks/abc176_d)
 
-## スケート最短経路問題
-- 同方向はコスト0、方向転換はコスト1の最短経路問題は、各頂点に方向の状態を持たせ01-BFSあるいはダイクストラすれば解ける
-- 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
-### 例題
-- [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
-
 ## ダイクストラ法（Dijkstra）
 - 下記を繰り返していくことで、全頂点の距離を更新していき、最短経路を求める
 - 始点（複数可）は0、それ以外の全頂点にINFを代入
@@ -820,12 +814,14 @@
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
+- 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
 ### 例題
 - !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - !要復習 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 - !要復習 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
+- !要復習 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 
 ## 最小燃料回数問題
 - 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
@@ -1088,7 +1084,8 @@
 
 ## 構造体
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
-- 構造体にbool operater < (const &Struct s) {return x < s.x}などとすると、構造体同士の演算が定義できる。ただし、priority_queueに使うときは{}の前にconstと書かないとエラーが出る（理由不明） -> 恐らくだが、greater<MYSTRUCT>と書く場合はconst記述が必要。そうしないとoperater>と型が完全一致しないのでエラーが出る
+- 構造体にbool operater < (const &Struct s) {return x < s.x}などとすると、構造体同士の演算が定義できる。
+- ただし、priority_queueに使うときは2点注意が必要。(1)bool operator>（greater<MYSTRUCT>なので） (2){}の前にconstと書かないとエラーが出る（理由不明） -> 恐らくだが、greater<MYSTRUCT>と書く場合はconst記述が必要。そうしないと内部で定義してあるoperater>と型が完全一致しないのでエラーが出るのではないか
 - 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる
 - 構造体定義の直下でvectorのサイズを定義すると理由不明だがエラーが出る。初期値関連はコンストラクタで初期化する必要がある
 

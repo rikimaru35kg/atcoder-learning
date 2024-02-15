@@ -120,41 +120,49 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+struct Vertex {
+    ll d, i, j, dir;
+    Vertex (ll d, ll i, ll j, ll dir): 
+      d(d), i(i), j(j), dir(dir) {}
+    bool operator> (const Vertex &rhs) const {
+        return d>rhs.d;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
+    LONG(H, W, K);
     LONGM(si, sj, gi, gj);
-    VS(S, H);
-    vvl dist(H, vl(W, INF));
-    deque<Pr> que;
-    auto push = [&](ll i, ll j, ll d, bool fr) {
+    VS(C, H);
+    vvvl dist(H, vvl(W, vl(4, INF)));
+    priority_queue<Vertex,vector<Vertex>,greater<Vertex>> pque;
+    auto push = [&](ll i, ll j, ll dir, ll d) {
         if (i<0 || i>=H || j<0 || j>=W) return;
-        if (S[i][j] == '#') return;
-        if (dist[i][j] <= d) return;
-        dist[i][j] = d;
-        if (fr) que.emplace_front(i, j);
-        else que.emplace_back(i, j);
+        if (C[i][j] == '@') return;
+        if (dist[i][j][dir] <= d) return;
+        dist[i][j][dir] = d;
+        pque.emplace(d, i, j, dir);
     };
-    push(si, sj, 0, true);
-    while (que.size()) {
-        auto [i, j] = que.front(); que.pop_front();
-        ll d = dist[i][j];
+    rep (k, 4) push(si, sj, k, 0);
+    while (pque.size()) {
+        auto [d, i, j, dir] = pque.top(); pque.pop();
+        if (d != dist[i][j][dir]) continue;
         rep (k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            push(ni, nj, d, true);
+            if (k==dir) continue;
+            ll nd = (d+K-1)/K*K;
+            push(i, j, k, nd);
         }
-        repk (a, -2, 3) repk (b, -2, 3) {
-            if (a==0 && b==0) continue;
-            ll ni = i + a;
-            ll nj = j + b;
-            push(ni, nj, d+1, false);
-        }
+        ll ni = i + di[dir];
+        ll nj = j + dj[dir];
+        push(ni, nj, dir, d+1);
     }
-    ll ans = dist[gi][gj];
-    ch1(ans);
+    ll ans = INF;
+    rep(k, 4) chmin(ans, dist[gi][gj][k]);
+    if (ans == INF) {
+        Out(-1) return 0;
+    }
+    ans = (ans + K - 1) / K;
     Out(ans)
     
 }
