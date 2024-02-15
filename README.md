@@ -756,13 +756,9 @@
 - 0/1重みグラフの最短経路問題は0/1-BFSで解ける（0の場合は先頭にpush）
 - 重み有りグラフの最短経路問題はダイクストラ法（後述）
 - 重み有りグラフの全頂点最短経路問題はワーシャル・フロイド法（後述）
-- 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 移動する点が複数ある時は、その状態をqueueに入れてBFSなど可能
-- 2頂点を同時に動かす最短経路問題もある
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 ### 例題
-- !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
-- [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - 2頂点 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 
@@ -772,7 +768,7 @@
 - 0コスト辺の場合、接続先頂点をqueのfrontに、1コスト辺の場合、接続先頂点をqueのbackにpushする事で実装可能
 - 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
 ### 例題
-- [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
+- 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
 - [E- Biship 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
 - [D - Wizard in Maze](成分atcoder.jp/contests/abc176/tasks/abc176_d)
 
@@ -828,6 +824,14 @@
 - 始点と終点に関係ない点をあらかじめ除いておく事で、関係ない負閉路を使うことを避ける事も重要
 ### 例題
 - [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
+
+## 最短経路問題+α
+- 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
+- 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
+### 例題
+- !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
+- 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
+- !要復習 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 
 ## 最小燃料回数問題
 - 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）

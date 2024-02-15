@@ -104,12 +104,8 @@ const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
-// Pr operator+ (Pr a, Pr b) {
-//     auto [x, y] = a;
-//     auto [z, w] = b;
-//     return {x+z, y+w};
-// }
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
+
 // #include <atcoder/all>
 // using namespace atcoder;
 // using mint = modint998244353;
@@ -122,43 +118,41 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-// Pr operator+ (Pr a, Pr b) {
-//     auto [x, y] = a;
-//     auto [z, w] = b;
-//     return {x+z, y+w};
-// }
+void solve() {
+    LONG(N, M);
+    VL(C, N);
+    vvl from(N);
+    rep (i, M) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
+    }
+    vvl dist(N, vl(N, INF));
+    dist[0][N-1] = 0;
+    queue<Pr> que;
+    que.emplace(0, N-1);
+    while(que.size()) {
+        auto [vt, va] = que.front(); que.pop();
+        ll d_now = dist[vt][va];
+        for (auto nvt: from[vt]) for (auto nva: from[va]) {
+            if (C[nvt] == C[nva]) continue;
+            ll &d_nxt = dist[nvt][nva];
+            if (d_nxt != INF) continue;
+            d_nxt = d_now + 1;
+            que.emplace(nvt, nva);
+        }
+    }
+    ll ans = dist[N-1][0];
+    ch1(ans);
+    Out(ans)
+
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    VS(S, N);
-    vvp edges(N, vp(N));
-    rep (i, N) rep (j, N) {
-        if (S[i][j] == 'N') {
-            edges[i][j] = {INF, 0};
-        } else {
-            edges[i][j] = {1, -A[j]};
-        }
-    }
-    rep(i, N) edges[i][i] = {0, 0};
-    // auto add = [&](Pr a, Pr b) -> Pr {
-    //     Pr ret;
-    //     ret.first = a.first + b.first;
-    //     ret.second = a.second + b.second;
-    //     return ret;
-    // };
-    rep(k, N) rep(i, N) rep (j, N) {
-        chmin(edges[i][j], edges[i][k]+edges[k][j]);
-    }
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(u, v);
-        auto [x, y] = edges[u][v];
-        if (x==INF) puts("Impossible");
-        else printf("%lld %lld\n", x, -y+A[u]);
-    }
-    
+    LONG(T);
+    rep (i, T) solve();
 }
 
 // ### test.cpp ###
