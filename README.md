@@ -569,6 +569,7 @@
 ### 例題
 - !復習価値中 計算量改善の考察1つ [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
 - !要復習 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
+- !復習価値中 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 
 ## カエル型DP
 - カエルが1~Kマスジャンプできるとき、最後のマスに到達する場合の数を求める問題
@@ -842,10 +843,9 @@
 - 累積ではなく、重なっているかだけの判定で良ければ、引継ぎ型dpで解ける（ある点から何個後ろまで加算すべきかという情報において、何個の部分をmax取りしていけばよい）
 - 木の上でもimos法は使える
 ### 例題
+- 基本 [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 - 基本 [https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a](A - 鉄道旅行 (Railroad Trip) )
-- 引継ぎ型dp [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
-- [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
-- 木 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
+- !復習価値中 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 - 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
 
 # 括弧列

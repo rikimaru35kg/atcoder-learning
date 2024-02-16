@@ -109,8 +109,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -125,35 +125,54 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vp X(N), Y(N);
+    vvl from(N);
+    vp edges(N-1);
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+        edges[i] = {a, b};
+    }
+    vl depth(N);
+    depth[0] = 0;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            depth[nv] = depth[v] + 1;
+            f(f, nv, v);
+        }
+    };
+    dfs(dfs, 0);
+    vl points(N);
+    LONG(Q);
+    rep (i, Q) {
+        de(i)
+        LONG(t, e, x); --e;
+        auto [a, b] = edges[e];
+        de(a)de(b)
+        ll v = a;
+        ll vo = b;
+        if (t==2) swap(v, vo);
+        ll dv = depth[v], dvo = depth[vo];
+        if (dv > dvo) points[v] += x;
+        else {
+            points[0] += x;
+            points[vo] -= x;
+        }
+        de(points)
+    }
+    de(points)
+    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            points[nv] += points[v];
+            f(f, nv, v);
+        }
+    };
+    dfs2(dfs2, 0);
     rep (i, N) {
-        LONG(x, y);
-        X[i] = {x, i}; Y[i] = {y, i};
+        printf("%lld\n", points[i]);
     }
-    sort(all(X)); sort(all(Y));
-
-    vector<tuple<ll,ll,ll>> dists;
-    rep (i, N-1) {
-        auto [x1, i1] = X[i];
-        auto [x2, i2] = X[i+1];
-        dists.emplace_back(x2-x1, i1, i2);
-    }
-    rep (i, N-1) {
-        auto [y1, i1] = Y[i];
-        auto [y2, i2] = Y[i+1];
-        dists.emplace_back(y2-y1, i1, i2);
-    }
-
-    sort(all(dists));
-    dsu uf(N);
-    ll ans = 0;
-    rep (i, SIZE(dists)) {
-        auto [d, a, b] = dists[i];
-        if (uf.leader(a) == uf.leader(b)) continue;
-        ans += d;
-        uf.merge(a, b);
-    }
-    Out(ans)
     
 }
 
