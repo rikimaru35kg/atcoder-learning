@@ -846,7 +846,7 @@
 - 基本 [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 - 基本 [https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a](A - 鉄道旅行 (Railroad Trip) )
 - !復習価値中 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
-- !復習価値低 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
+- !復習価値低t 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
 
 # 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
@@ -855,8 +855,8 @@
 - つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
 - 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
 ### 例題
-- [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
-- [D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
+- 基本 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
+- 基本（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
 - [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
 - どのように括弧列同士をつなげると括弧列になるか。つなげ方に工夫が必要 [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
 

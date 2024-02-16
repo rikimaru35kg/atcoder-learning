@@ -124,23 +124,28 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1000;
-    vvl imos(M+10, vl(M+10));
-    rep (i, N) {
-        LONG(a, b, c, d);
-        imos[a][b]++;
-        imos[a][d]--;
-        imos[c][b]--;
-        imos[c][d]++;
+    STRING(S);
+    vc stck;
+    map<char,ll> mp;
+    for (auto c: S) {
+        de(c)
+        if (c=='(') {
+            stck.push_back(c);
+        } else if (c==')') {
+            while(stck.back()!='('){
+                char co = stck.back();
+                mp[co]--;
+                stck.pop_back();
+            }
+            stck.pop_back();
+        } else {
+            if (mp[c]>0) PNo
+            stck.push_back(c);
+            mp[c]++;
+        }
+        de(stck)de(mp)
     }
-    rep (i, M+1) rep(j, M+1) imos[i+1][j] += imos[i][j];
-    rep (i, M+1) rep(j, M+1) imos[i][j+1] += imos[i][j];
-    vl A(N+1);
-    rep (i, M+1) rep (j, M+1) {
-        A[imos[i][j]]++;
-    }
-    rep1 (i, N) printf("%lld\n", A[i]);
+    PYes
     
 }
 
