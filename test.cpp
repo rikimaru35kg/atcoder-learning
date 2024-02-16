@@ -125,54 +125,22 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    vp edges(N-1);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-        edges[i] = {a, b};
-    }
-    vl depth(N);
-    depth[0] = 0;
-    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            depth[nv] = depth[v] + 1;
-            f(f, nv, v);
-        }
-    };
-    dfs(dfs, 0);
-    vl points(N);
-    LONG(Q);
-    rep (i, Q) {
-        de(i)
-        LONG(t, e, x); --e;
-        auto [a, b] = edges[e];
-        de(a)de(b)
-        ll v = a;
-        ll vo = b;
-        if (t==2) swap(v, vo);
-        ll dv = depth[v], dvo = depth[vo];
-        if (dv > dvo) points[v] += x;
-        else {
-            points[0] += x;
-            points[vo] -= x;
-        }
-        de(points)
-    }
-    de(points)
-    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            points[nv] += points[v];
-            f(f, nv, v);
-        }
-    };
-    dfs2(dfs2, 0);
+    ll M = 1000;
+    vvl imos(M+10, vl(M+10));
     rep (i, N) {
-        printf("%lld\n", points[i]);
+        LONG(a, b, c, d);
+        imos[a][b]++;
+        imos[a][d]--;
+        imos[c][b]--;
+        imos[c][d]++;
     }
+    rep (i, M+1) rep(j, M+1) imos[i+1][j] += imos[i][j];
+    rep (i, M+1) rep(j, M+1) imos[i][j+1] += imos[i][j];
+    vl A(N+1);
+    rep (i, M+1) rep (j, M+1) {
+        A[imos[i][j]]++;
+    }
+    rep1 (i, N) printf("%lld\n", A[i]);
     
 }
 
