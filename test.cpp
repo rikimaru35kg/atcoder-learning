@@ -125,28 +125,38 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    string ans;
-    STRING(S);
-    ll cnto = 0;
-    for (auto c: S) {
-        if (c=='(') {
-            ans.push_back(c);
-            cnto++;
-        } else if (c==')') {
-            if (cnto==0) {
-                ans.push_back(c);
-            } else {
-                while (ans.back()!='(') {
-                    ans.pop_back();
-                }
-                ans.pop_back();
-                cnto--;
-            }
-        } else {
-            ans.push_back(c);
+    VS(S, N);
+    vp pa(N);
+    rep (i, N) {
+        ll x = 0;
+        ll mn = 0;
+        for (auto c: S[i]) {
+            if (c=='(') ++x;
+            else --x;
+            chmin(mn, x);
         }
+        pa[i] = {mn, x-mn};
     }
-    Out(ans)
+    vp pls, mns;
+    for (auto [d, u]: pa) {
+        if (d+u>=0) pls.emplace_back(d, u);
+        else mns.emplace_back(u, d);
+    }
+    sort(allr(pls));
+    sort(allr(mns));
+    de(pls)de(mns)
+    ll x = 0;
+    for (auto [d, u]: pls) {
+        x += d;
+        if (x<0) PNo
+        x += u;
+    }
+    for (auto [u, d]: mns) {
+        x += d;
+        if (x < 0) PNo
+        x += u;
+    }
+    if (x==0) PYes PNo
     
 }
 

@@ -857,8 +857,8 @@
 ### 例題
 - 基本 正しい括弧列作成 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
 - 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
-- 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
-- どのように括弧列同士をつなげると括弧列になるか。つなげ方に工夫が必要 [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
+- !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
+- !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
 
 # データ構造
 
