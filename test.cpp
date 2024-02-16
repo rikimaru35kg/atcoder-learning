@@ -121,50 +121,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-using vvt = vector<vector<tuple<ll,ll,ll>>>;
-using T3 = tuple<ll,ll,ll>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, S);
-    vvt from(N);
-    rep (i, M) {
-        LONGM(u, v); LONG(a, b);
-        from[u].emplace_back(v, a, b);
-        from[v].emplace_back(u, a, b);
+    LONG(N);
+    VVL(A, N, N);
+    vvl B = A;
+    rep (k, N) rep (i, N) rep (j, N) {
+        chmin(B[i][j], B[i][k]+B[k][j]);
     }
-    vl C(N), D(N);
-    rep (i, N) {
-        LONG(c, d);
-        C[i] = c;
-        D[i] = d;
+    if (B != A) {
+        puts("-1"); return 0;
     }
-    ll Smx = N*50;
-    priority_queue<T3,vector<T3>,greater<T3>> pque;
-    vvl dist(N, vl(Smx, INF));
-    auto push = [&](ll v, ll s, ll d) {
-        chmin(s, Smx-1);
-        if (dist[v][s] <= d) return;
-        dist[v][s] = d;
-        pque.emplace(d, v, s);
-    };
-    push(0, S, 0);
-    while(pque.size()){
-        auto [d, v, s] = pque.top(); pque.pop();
-        if (d != dist[v][s]) continue;
-        for (auto [nv, a, b]: from[v]) {
-            if (s < a) continue;
-            push(nv, s-a, d+b);
+
+    // A is clique!!
+    ll ans = 0;
+    rep (i, N) rep(j, i) ans += A[i][j];  // sum of all bridge lengths.
+
+    // Delete bridge(i,j) if not necessary (i!=j)
+    rep (i, N) rep (j, i) {
+        ll now = 0;
+        rep (k, N) {
+            if (i==k || j==k) continue;  // Do not consider meaningless bridges.
+            if (A[i][j] == A[i][k]+A[k][j]) {
+                now = A[i][j];
+                break;
+            }
         }
-        push(v, s+C[v], d+D[v]);
+        ans -= now;
     }
-    repk (i, 1, N) {
-        ll ans = INF;
-        rep (j, Smx) chmin(ans, dist[i][j]);
-        Out(ans)
-    }
-    
+    Out(ans)
     
 }
 
