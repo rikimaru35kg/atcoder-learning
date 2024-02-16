@@ -120,37 +120,70 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+using T3 = tuple<ll,ll,ll>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VVL(A, N, N);
-    vvl B = A;
-    rep (k, N) rep (i, N) rep (j, N) {
-        chmin(B[i][j], B[i][k]+B[k][j]);
+    LONG(N, M, L);
+    vvp from(N);
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    if (B != A) {
-        puts("-1"); return 0;
-    }
+    LONG(Q);
+    auto divc = [&](ll a, ll b) {
+        return (a+b-1)/b;
+    };
+    vvl distf(N, vl(N, INF));
+    auto dijk = [&](ll s) {
+        vvl dist(N, vl(2, INF));
+        dist[s][1] = 0;
+        vvb fixed(N, vb(2));
+        rep (_, N*2) {
+            T3 w = {INF, INF, INF};
+            rep (i, N) rep (j, 2) {
+                if (fixed[i][j]) continue;
+                chmin(w, {dist[i][j], i, j});
+            }
+            auto [al, v, z] = w;
+            if (al == INF) break;
+            ll d = dist[v][z];
 
-    // A is clique!!
-    ll ans = 0;
-    rep (i, N) rep(j, i) ans += A[i][j];  // sum of all bridge lengths.
-
-    // Delete bridge(i,j) if not necessary (i!=j)
-    rep (i, N) rep (j, i) {
-        ll now = 0;
-        rep (k, N) {
-            if (i==k || j==k) continue;  // Do not consider meaningless bridges.
-            if (A[i][j] == A[i][k]+A[k][j]) {
-                now = A[i][j];
-                break;
+            fixed[v][z] = true;
+            if (z == 0) {
+                chmin(dist[v][1], divc(d, L)*L);
+            }
+            for (auto [nv, c]: from[v]) {
+                if (z==1) {
+                    if (c > L) continue;
+                    chmin(dist[nv][0], d+c);
+                } else {
+                    ll x = divc(d,L);
+                    if (divc(d+c,L) > x) continue;
+                    chmin(dist[nv][0], d+c);
+                }
             }
         }
-        ans -= now;
+        rep (t, N) {
+            ll ans = INF;
+            rep (i, 2) {
+                if (dist[t][i]==INF) continue;
+                if (i==0) chmin(ans, divc(dist[t][i],L)-1);
+                else chmin(ans, dist[t][i]/L);
+            }
+            if (ans == INF) distf[s][t] = -1;
+            else distf[s][t] = max(ans, 0LL);
+        }
+        de(dist)
+    };
+    rep (i, N) dijk(i);
+    rep (i, Q) {
+        LONGM(s, t);
+        Out(distf[s][t])
     }
-    Out(ans)
+    de(distf)
     
 }
 

@@ -775,7 +775,6 @@
 ### 例題
 - !復習価値低 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - !復習価値低 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
-- !復習価値高 定額タクシー [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
 
 ## 拡張ダイクストラ法
 - 頂点＋状態をキューに入れていくダイクストラ法
@@ -809,6 +808,12 @@
 ### 例題
 - [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
 
+## 一度に複数辺を進める場合の最短経路
+- 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
+### 例題
+- !復習価値低 燃料補給回数 [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)  （参考：[距離1/Kで燃料補給は切り上げ方式の別解](https://atcoder.jp/contests/abc143/submissions/50298596)だが、計算量改善、ダイクストラO(N^2)方式の優先順位、最終的な答えの求め方（切上？切捨？）が難しすぎるので非推奨。こんな解き方もできるよ程度）
+- !復習価値高 定額タクシー [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
+
 ## 最短経路問題+α
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
 - 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
@@ -821,14 +826,6 @@
 - !要復習 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !要復習 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
-
-## 最小燃料回数問題
-- 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
-- もしかしたら辺の張り直しという典型に分類されるか？？
-### 例題
-- [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)
-- [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
-- [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
 
 ## グラフ＋状態遷移
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
