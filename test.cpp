@@ -124,28 +124,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N);
+    string ans;
     STRING(S);
-    vc stck;
-    map<char,ll> mp;
+    ll cnto = 0;
     for (auto c: S) {
-        de(c)
         if (c=='(') {
-            stck.push_back(c);
+            ans.push_back(c);
+            cnto++;
         } else if (c==')') {
-            while(stck.back()!='('){
-                char co = stck.back();
-                mp[co]--;
-                stck.pop_back();
+            if (cnto==0) {
+                ans.push_back(c);
+            } else {
+                while (ans.back()!='(') {
+                    ans.pop_back();
+                }
+                ans.pop_back();
+                cnto--;
             }
-            stck.pop_back();
         } else {
-            if (mp[c]>0) PNo
-            stck.push_back(c);
-            mp[c]++;
+            ans.push_back(c);
         }
-        de(stck)de(mp)
     }
-    PYes
+    Out(ans)
     
 }
 

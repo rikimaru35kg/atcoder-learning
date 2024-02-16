@@ -855,9 +855,9 @@
 - つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
 - 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
 ### 例題
-- 基本 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
-- 基本（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
-- [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
+- 基本 正しい括弧列作成 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
+- 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
+- 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
 - どのように括弧列同士をつなげると括弧列になるか。つなげ方に工夫が必要 [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
 
 # データ構造
