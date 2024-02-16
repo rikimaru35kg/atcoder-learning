@@ -109,8 +109,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -120,70 +120,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using T3 = tuple<ll,ll,ll>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, L);
-    vvp from(N);
-    rep (i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+    LONG(N);
+    vp X(N), Y(N);
+    rep (i, N) {
+        LONG(x, y);
+        X[i] = {x, i}; Y[i] = {y, i};
     }
-    LONG(Q);
-    auto divc = [&](ll a, ll b) {
-        return (a+b-1)/b;
-    };
-    vvl distf(N, vl(N, INF));
-    auto dijk = [&](ll s) {
-        vvl dist(N, vl(2, INF));
-        dist[s][1] = 0;
-        vvb fixed(N, vb(2));
-        rep (_, N*2) {
-            T3 w = {INF, INF, INF};
-            rep (i, N) rep (j, 2) {
-                if (fixed[i][j]) continue;
-                chmin(w, {dist[i][j], i, j});
-            }
-            auto [al, v, z] = w;
-            if (al == INF) break;
-            ll d = dist[v][z];
+    sort(all(X)); sort(all(Y));
 
-            fixed[v][z] = true;
-            if (z == 0) {
-                chmin(dist[v][1], divc(d, L)*L);
-            }
-            for (auto [nv, c]: from[v]) {
-                if (z==1) {
-                    if (c > L) continue;
-                    chmin(dist[nv][0], d+c);
-                } else {
-                    ll x = divc(d,L);
-                    if (divc(d+c,L) > x) continue;
-                    chmin(dist[nv][0], d+c);
-                }
-            }
-        }
-        rep (t, N) {
-            ll ans = INF;
-            rep (i, 2) {
-                if (dist[t][i]==INF) continue;
-                if (i==0) chmin(ans, divc(dist[t][i],L)-1);
-                else chmin(ans, dist[t][i]/L);
-            }
-            if (ans == INF) distf[s][t] = -1;
-            else distf[s][t] = max(ans, 0LL);
-        }
-        de(dist)
-    };
-    rep (i, N) dijk(i);
-    rep (i, Q) {
-        LONGM(s, t);
-        Out(distf[s][t])
+    vector<tuple<ll,ll,ll>> dists;
+    rep (i, N-1) {
+        auto [x1, i1] = X[i];
+        auto [x2, i2] = X[i+1];
+        dists.emplace_back(x2-x1, i1, i2);
     }
-    de(distf)
+    rep (i, N-1) {
+        auto [y1, i1] = Y[i];
+        auto [y2, i2] = Y[i+1];
+        dists.emplace_back(y2-y1, i1, i2);
+    }
+
+    sort(all(dists));
+    dsu uf(N);
+    ll ans = 0;
+    rep (i, SIZE(dists)) {
+        auto [d, a, b] = dists[i];
+        if (uf.leader(a) == uf.leader(b)) continue;
+        ans += d;
+        uf.merge(a, b);
+    }
+    Out(ans)
     
 }
 

@@ -776,8 +776,8 @@
 - !復習価値低 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - !復習価値低 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
 
-## 拡張ダイクストラ法
-- 頂点＋状態をキューに入れていくダイクストラ法
+## 拡張ダイクストラ法（or 拡張BFS）
+- 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
 ### 例題
 - !復習価値高 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
@@ -827,11 +827,6 @@
 - !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !要復習 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 
-## グラフ＋状態遷移
-- 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
-- queに入ったコスト（得たい値）は別配列cost[v][state]で管理すれば良い
-- 迷路の最小方向転換問題などに利用可能（01-BFS＋状態遷移）
-
 ## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
@@ -839,7 +834,7 @@
 - Edgeという構造体を定義し、辺の長さで小さい順に並べる。この時、bool operaterで演算を定義しておく
 ### 例題
 - 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
-- 工夫して計算量を減らす [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
+- !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 
 # IMOS法
 - 重なり領域の累積はいもす法を用いて解決
