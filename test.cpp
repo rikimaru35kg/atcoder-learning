@@ -110,8 +110,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -125,32 +125,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,ll> Sr, Sc;
-    map<ll,vl> cs;
-    map<ll,map<ll,ll>> a;
+    LONG(N, Q);
+    VLM(C, N);
+    vvp queries(N);
+    rep (i, Q) {
+        LONGM(l, r);
+        queries[l].emplace_back(r, i);
+    }
+    vl last(N, -1);
+    vvl spans(N);
     rep (i, N) {
-        LONG(r, c, x);
-        Sr[r] += x;
-        Sc[c] += x;
-        cs[r].push_back(c);
-        a[r][c] = x;
-    }
-    multiset<ll> st;
-    for (auto [k,v]: Sc) st.insert(v);
-    st.insert(-INF);
-    ll ans = 0;
-    for (auto [r, x]: Sr) {
-        ll now = 0;
-        for (auto c: cs[r]) st.erase(st.find(Sc[c]));
-        chmax(now, x + *st.rbegin());
-        for (auto c: cs[r]) {
-            chmax(now, x + Sc[c] - a[r][c]);
+        if (last[C[i]] != -1) {
+            spans[last[C[i]]].push_back(i);
         }
-        for (auto c: cs[r]) st.insert(Sc[c]);
-        chmax(ans, now);
+        last[C[i]] = i;
     }
-    Out(ans)
+    fenwick_tree<ll> tree(N);
+    vl ans(Q);
+    repr(l, N) {
+        for (auto r: spans[l]) {
+            tree.add(r, 1);
+        }
+        for (auto [r, i]: queries[l]) {
+            ll now = tree.sum(0, r+1);
+            ans[i] = r-l+1-now;
+        }
+    }
+    for (auto x: ans) Out(x);
     
 }
 

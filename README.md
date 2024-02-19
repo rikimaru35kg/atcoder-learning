@@ -896,8 +896,8 @@
 - こうすることで、xについての大小判定を気にする必要がなくなる
 - xに等しい値が存在する場合の実装に注意
 ### 例題
-- [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
-- 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
+- !復習価値低 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
+- !要復習 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 
 ## 変数分離
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる
