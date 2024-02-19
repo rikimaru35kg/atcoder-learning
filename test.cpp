@@ -110,8 +110,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -125,42 +125,26 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(C, H);
-    ll si, sj;
-    rep (i, H) rep (j, W) {
-        if (C[i][j]=='S') {
-            si = i, sj = j;
-            break;
+    LONG(N, M);
+    map<ll,vl> mp;
+    rep (i, M) {
+        LONG(x, y);
+        mp[x].push_back(y);
+    }
+    unordered_set<ll> st;
+    st.insert(N);
+    for (auto [_, vec]: mp) {
+        vl as, es;
+        for (auto x: vec) {
+            if (st.count(x)) es.push_back(x);
         }
-    }
-    dsu uf(H*W);
-    rep (i, H) rep (j, W) {
-        if (C[i][j] == '#') continue;
-        if (C[i][j] == 'S') continue;
-        ll id = W*i + j;
-        rep (k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            ll nid = W*ni + nj;
-            if (!isin(ni, nj, H, W)) continue;
-            if (C[ni][nj]=='#') continue;
-            if (C[ni][nj]=='S') continue;
-            uf.merge(id, nid);
+        for (auto x: vec) {
+            if (st.count(x-1) || st.count(x+1)) as.push_back(x);
         }
+        for (auto x: es) st.erase(x);
+        for (auto x: as) st.insert(x);
     }
-    unordered_set<ll> ls;
-    rep (k, 4) {
-        ll i = si + di[k];
-        ll j = sj + dj[k];
-        de(i)de(j)
-        if (!isin(i, j, H, W)) continue;
-        if (C[i][j] == '#') continue;
-        ll id = W*i + j;
-        de(uf.leader(id))
-        if (!ls.insert(uf.leader(id)).second) PYes;
-    }
-    PNo
+    Out(SIZE(st));
     
 }
 

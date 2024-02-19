@@ -427,6 +427,7 @@
 - 頂点を1度だけ訪れれば良い場合は、行きがけ順で探索済みの頂点は再探索不要
 - 合計距離Kでゴールにたどり着く迷路問題など、ループを許容し同じ地点での再探索がありうる場合は、頂点以外の情報（距離など）もセットで状態として管理し、状態が同じものは再探索しないようにする
 ### 例題
+- 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 - !復習価値中 バックトラック (072 - Loop Railway Plan（★4）)[https://atcoder.jp/contests/typical90/tasks/typical90_bt]
 
 ## サイクル検出
@@ -873,12 +874,11 @@
 - Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
 ### 例題
 - !復習価値低 実装工夫次第 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
-- [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
 ### 例題
-- [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
+- !復習価値低 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 
 
 # 2変数問題
