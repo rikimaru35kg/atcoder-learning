@@ -872,7 +872,7 @@
 - Union Findは親に情報を持たせるとデータ管理がしやすい（連結成分のサイズやある点群に繋がっているかなど）
 - Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
 ### 例題
-- [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- !復習価値低 実装工夫次第 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 
 ## 集合
@@ -1054,6 +1054,7 @@
 - 添え字多すぎ問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 # 実装が難しい問題
+- [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
 - 考察も難しいが実装も難しい [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 

@@ -109,8 +109,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -124,39 +124,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    vp pa(N);
-    rep (i, N) {
-        ll x = 0;
-        ll mn = 0;
-        for (auto c: S[i]) {
-            if (c=='(') ++x;
-            else --x;
-            chmin(mn, x);
-        }
-        pa[i] = {mn, x-mn};
+    LONG(N, M, E);
+    vp edges(E);
+    vb dels(E);
+    rep (i, E) {
+        LONGM(u, v);
+        chmin(u, N); chmin(v, N);
+        edges[i] = {u, v};
     }
-    vp pls, mns;
-    for (auto [d, u]: pa) {
-        if (d+u>=0) pls.emplace_back(d, u);
-        else mns.emplace_back(u, d);
+    LONG(Q);
+    vl X(Q);
+    rep (i, Q) {
+        LONGM(x);
+        X[i] = x;
+        dels[x] = true;
     }
-    sort(allr(pls));
-    sort(allr(mns));
-    de(pls)de(mns)
-    ll x = 0;
-    for (auto [d, u]: pls) {
-        x += d;
-        if (x<0) PNo
-        x += u;
+
+    dsu uf(N+1);
+    rep (i, E) {
+        auto [a, b] = edges[i];
+        if (!dels[i]) uf.merge(a, b);
     }
-    for (auto [u, d]: mns) {
-        x += d;
-        if (x < 0) PNo
-        x += u;
+    vl ans;
+    reverse(all(X));
+    for (auto x: X) {
+        ll now = uf.size(N) - 1;
+        ans.push_back(now);
+        auto [a, b] = edges[x];
+        uf.merge(a, b);
     }
-    if (x==0) PYes PNo
+    reverse(all(ans));
+    for (auto x: ans) Out(x);
     
 }
 
