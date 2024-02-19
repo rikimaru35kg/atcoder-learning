@@ -78,6 +78,7 @@ inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; c
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
+inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
@@ -124,37 +125,42 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, E);
-    vp edges(E);
-    vb dels(E);
-    rep (i, E) {
-        LONGM(u, v);
-        chmin(u, N); chmin(v, N);
-        edges[i] = {u, v};
+    LONG(H, W);
+    VS(C, H);
+    ll si, sj;
+    rep (i, H) rep (j, W) {
+        if (C[i][j]=='S') {
+            si = i, sj = j;
+            break;
+        }
     }
-    LONG(Q);
-    vl X(Q);
-    rep (i, Q) {
-        LONGM(x);
-        X[i] = x;
-        dels[x] = true;
+    dsu uf(H*W);
+    rep (i, H) rep (j, W) {
+        if (C[i][j] == '#') continue;
+        if (C[i][j] == 'S') continue;
+        ll id = W*i + j;
+        rep (k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            ll nid = W*ni + nj;
+            if (!isin(ni, nj, H, W)) continue;
+            if (C[ni][nj]=='#') continue;
+            if (C[ni][nj]=='S') continue;
+            uf.merge(id, nid);
+        }
     }
-
-    dsu uf(N+1);
-    rep (i, E) {
-        auto [a, b] = edges[i];
-        if (!dels[i]) uf.merge(a, b);
+    unordered_set<ll> ls;
+    rep (k, 4) {
+        ll i = si + di[k];
+        ll j = sj + dj[k];
+        de(i)de(j)
+        if (!isin(i, j, H, W)) continue;
+        if (C[i][j] == '#') continue;
+        ll id = W*i + j;
+        de(uf.leader(id))
+        if (!ls.insert(uf.leader(id)).second) PYes;
     }
-    vl ans;
-    reverse(all(X));
-    for (auto x: X) {
-        ll now = uf.size(N) - 1;
-        ans.push_back(now);
-        auto [a, b] = edges[x];
-        uf.merge(a, b);
-    }
-    reverse(all(ans));
-    for (auto x: ans) Out(x);
+    PNo
     
 }
 
