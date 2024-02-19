@@ -125,26 +125,32 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    map<ll,vl> mp;
-    rep (i, M) {
-        LONG(x, y);
-        mp[x].push_back(y);
+    LONG(N);
+    map<ll,ll> Sr, Sc;
+    map<ll,vl> cs;
+    map<ll,map<ll,ll>> a;
+    rep (i, N) {
+        LONG(r, c, x);
+        Sr[r] += x;
+        Sc[c] += x;
+        cs[r].push_back(c);
+        a[r][c] = x;
     }
-    unordered_set<ll> st;
-    st.insert(N);
-    for (auto [_, vec]: mp) {
-        vl as, es;
-        for (auto x: vec) {
-            if (st.count(x)) es.push_back(x);
+    multiset<ll> st;
+    for (auto [k,v]: Sc) st.insert(v);
+    st.insert(-INF);
+    ll ans = 0;
+    for (auto [r, x]: Sr) {
+        ll now = 0;
+        for (auto c: cs[r]) st.erase(st.find(Sc[c]));
+        chmax(now, x + *st.rbegin());
+        for (auto c: cs[r]) {
+            chmax(now, x + Sc[c] - a[r][c]);
         }
-        for (auto x: vec) {
-            if (st.count(x-1) || st.count(x+1)) as.push_back(x);
-        }
-        for (auto x: es) st.erase(x);
-        for (auto x: as) st.insert(x);
+        for (auto c: cs[r]) st.insert(Sc[c]);
+        chmax(ans, now);
     }
-    Out(SIZE(st));
+    Out(ans)
     
 }
 
