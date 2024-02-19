@@ -110,8 +110,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -125,33 +125,21 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VLM(C, N);
-    vvp queries(N);
-    rep (i, Q) {
-        LONGM(l, r);
-        queries[l].emplace_back(r, i);
-    }
-    vl last(N, -1);
-    vvl spans(N);
-    rep (i, N) {
-        if (last[C[i]] != -1) {
-            spans[last[C[i]]].push_back(i);
+    LONG(H, W, C);
+    VVL(A, H, W);
+    vvl mns(H+1, vl(W+1, INF));
+    ll ans = INF;
+    rep(ri, 2) {
+        rep (i, H) rep (j, W) {
+            ll now = INF;
+            chmin(now, mns[i+1][j]);
+            chmin(now, mns[i][j+1]);
+            chmin(ans, now + A[i][j]+C*(i+j));
+            mns[i+1][j+1] = min(now, A[i][j]-C*(i+j));
         }
-        last[C[i]] = i;
+        reverse(all(A));
     }
-    fenwick_tree<ll> tree(N);
-    vl ans(Q);
-    repr(l, N) {
-        for (auto r: spans[l]) {
-            tree.add(r, 1);
-        }
-        for (auto [r, i]: queries[l]) {
-            ll now = tree.sum(0, r+1);
-            ans[i] = r-l+1-now;
-        }
-    }
-    for (auto x: ans) Out(x);
+    Out(ans)
     
 }
 
