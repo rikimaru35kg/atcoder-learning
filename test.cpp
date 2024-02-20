@@ -110,8 +110,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -121,25 +121,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+using S = ll;
+S op(S a, S b) {return a+b;}
+S e() {return 0;}
+using F = ll;
+S mapping(F f, S x) {return min(f, x);}
+F composition(F f, F g) { return min(f, g);}
+F id() {return INF;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, C);
-    VVL(A, H, W);
-    vvl mns(H+1, vl(W+1, INF));
-    ll ans = INF;
-    rep(ri, 2) {
-        rep (i, H) rep (j, W) {
-            ll now = INF;
-            chmin(now, mns[i+1][j]);
-            chmin(now, mns[i][j+1]);
-            chmin(ans, now + A[i][j]+C*(i+j));
-            mns[i+1][j+1] = min(now, A[i][j]-C*(i+j));
+    LONG(N, Q);
+    lazy_segtree<S,op,e,F,mapping,composition,id> row(N), col(N);
+    row.apply(0, N, N-1);
+    col.apply(0, N, N-1);
+    ll ans = (N-2)*(N-2);
+    rep (i, Q) {
+        LONG(t, x); --x;
+        if (t == 1) {
+            ll y = row.prod(x, x+1);
+            ans -= y-1;
+            col.apply(0, y, x);
+        } else {
+            ll y = col.prod(x, x+1);
+            ans -= y-1;
+            row.apply(0, y, x);
         }
-        reverse(all(A));
+        de(ans)
     }
     Out(ans)
+    
+
     
 }
 
