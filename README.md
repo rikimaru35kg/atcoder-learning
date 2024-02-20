@@ -925,7 +925,7 @@
 - 次に各変数にci=bi-aiの上限がなければ単純な重複組合せ問題だが、包除原理によりj個の変数がci超えとなる場合の数を足したり引いたりすればOK
 ### 例題
 - !復習価値中 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
-- 完全順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
+- !要復習 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - 重複組合せの包除原理 [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 
 # 行列累乗
