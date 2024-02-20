@@ -24,7 +24,10 @@ public:
         if (i < 0 || i >= (long long)vec.size()) return 3e18;
         return vec[i];
     }
-    long long size () {return (long long)vec.size();}
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
 #ifdef __DEBUG
     void print() {
         printf("---- cc print ----\ni: ");

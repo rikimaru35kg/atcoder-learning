@@ -58,8 +58,7 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) __builtin_popcount(x)
-#define pcntll(x) __builtin_popcountll(x)
+#define pcnt(x) __builtin_popcountll(x)
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -110,8 +109,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -121,86 +120,50 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-using S = ll;
-S op(S a, S b) {return max(a, b);}
-S e() {return 0;}
-using F = ll;
-S mapping (F f, S x) { return f+x; }
-F composition (F f, F g) {return f+g;}
-F id() { return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    map<ll,ll> row, col;
-    map<ll,vp> cs;
-    CoordinateCompression cc;
-    rep (i, N) {
-        LONG(r, c, x);
-        row[r] += x;
-        col[c] += x;
-        cs[r].emplace_back(c, x);
-        cc.add(c);
+    vvp from(N);
+    rep (i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
     }
-    ll M = cc.size();
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(M);
-    for (auto [c, x]: col) {
-        ll i = cc(c);
-        seg.apply(i, i+1, x);
+    vvl edges(N, vl(N));
+    ll st = 0;
+    auto dfs = [&](auto f, ll sv, ll v, ll p=-1) -> void {
+        edges[sv][v] = st;
+        for (auto [nv, i]: from[v]) {
+            if (nv == p) continue;
+            st |= 1LL<<i;
+            f(f, sv, nv, v);
+            st ^= 1LL<<i;
+        }
+    };
+    rep (i, N) dfs(dfs, i, i);
+    LONG(M);
+    vp cond(M);
+    rep (i, M) {
+        LONGM(u, v);
+        cond[i] = {u, v};
     }
-    ll ans = -INF;
-    for (auto [r, x]: row) {
-        for (auto [c, y]: cs[r]) {
-            ll i = cc(c);
-            seg.apply(i,i+1,-y);
+    ll ans = 0;
+    rep (s, 1<<M) {
+        ll sel = 0;
+        rep (i, M) {
+            if (~s>>i&1) continue;
+            auto [a, b] = cond[i];
+            sel |= edges[a][b];
         }
-        ll mx = seg.all_prod();
-        chmax(ans, x + mx);
-        for (auto [c, y]: cs[r]) {
-            ll i = cc(c);
-            seg.apply(i,i+1,y);
-        }
+        de(sel)
+        ll ne = N-1-pcnt(sel);
+        de(pcnt(sel))
+        de(ne)
+        ll co = 1;
+        if (pcnt(s)%2==1) co=-1;
+        ans += co*(1LL<<ne);
     }
     Out(ans)
     
