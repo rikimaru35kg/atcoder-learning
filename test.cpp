@@ -144,7 +144,10 @@ public:
         if (i < 0 || i >= (long long)vec.size()) return 3e18;
         return vec[i];
     }
-    long long size () {return (long long)vec.size();}
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
 #ifdef __DEBUG
     void print() {
         printf("---- cc print ----\ni: ");
@@ -158,54 +161,46 @@ public:
 #endif
 };
 
-struct S { ll x, w; };
-S op(S a, S b) { return {a.x+b.x, a.w+b.w}; }
-S e() { return {0, 1};}
+using S = ll;
+S op(S a, S b) {return max(a, b);}
+S e() {return 0;}
 using F = ll;
-S mapping (F f, S x) { return {x.x+f,x.w};}//{x.x+f*x.w, x.w}; }
-F composition (F f, F g) { return f+g; }
-F id() {return 0;}
+S mapping (F f, S x) { return f+x; }
+F composition (F f, F g) {return f+g;}
+F id() { return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D, A);
-    vp mons(N);
+    LONG(N);
+    map<ll,ll> row, col;
+    map<ll,vp> cs;
+    CoordinateCompression cc;
     rep (i, N) {
-        LONG(x, h);
-        mons[i] = {x, h};
+        LONG(r, c, x);
+        row[r] += x;
+        col[c] += x;
+        cs[r].emplace_back(c, x);
+        cc.add(c);
     }
-    sort(all(mons));
-    vl span(N);
-    ll r = 0;
-    rep (l, N) {
-        ll x = mons[l].first;
-        while (r<N && mons[r].first<=x+2*D) ++r;
-        span[l] = r;
+    ll M = cc.size();
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(M);
+    for (auto [c, x]: col) {
+        ll i = cc(c);
+        seg.apply(i, i+1, x);
     }
-    vector<S> v(N, {0, 1});
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    rep(i, N) {
-        auto [x, h] = mons[i];
-        seg.apply(i, i+1, h);
-    }
-    ll ans = 0;
-    auto print = [&](){
-        #ifdef __DEBUG
-        vl v;
-        rep (i, N) v.push_back(seg.get(i).x);
-        de(v)
-        #endif
-    };
-    print();
-    rep (l, N) {
-        ll h = seg.get(l).x;
-        if (h <= 0) continue;
-        ll n = (h+A-1)/A;
-        ll r = span[l];
-        seg.apply(l, r, -A*n);
-        ans += n;
-        print();
+    ll ans = -INF;
+    for (auto [r, x]: row) {
+        for (auto [c, y]: cs[r]) {
+            ll i = cc(c);
+            seg.apply(i,i+1,-y);
+        }
+        ll mx = seg.all_prod();
+        chmax(ans, x + mx);
+        for (auto [c, y]: cs[r]) {
+            ll i = cc(c);
+            seg.apply(i,i+1,y);
+        }
     }
     Out(ans)
     

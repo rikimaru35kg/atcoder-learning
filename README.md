@@ -914,7 +914,7 @@
 - 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
 - !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
 - !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
-- 想定解は違うがセグ木で殴った [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
