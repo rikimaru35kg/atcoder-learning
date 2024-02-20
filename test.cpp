@@ -121,38 +121,93 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e() {return 0;}
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {return (long long)vec.size();}
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+struct S { ll x, w; };
+S op(S a, S b) { return {a.x+b.x, a.w+b.w}; }
+S e() { return {0, 1};}
 using F = ll;
-S mapping(F f, S x) {return min(f, x);}
-F composition(F f, F g) { return min(f, g);}
-F id() {return INF;}
+S mapping (F f, S x) { return {x.x+f,x.w};}//{x.x+f*x.w, x.w}; }
+F composition (F f, F g) { return f+g; }
+F id() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    lazy_segtree<S,op,e,F,mapping,composition,id> row(N), col(N);
-    row.apply(0, N, N-1);
-    col.apply(0, N, N-1);
-    ll ans = (N-2)*(N-2);
-    rep (i, Q) {
-        LONG(t, x); --x;
-        if (t == 1) {
-            ll y = row.prod(x, x+1);
-            ans -= y-1;
-            col.apply(0, y, x);
-        } else {
-            ll y = col.prod(x, x+1);
-            ans -= y-1;
-            row.apply(0, y, x);
-        }
-        de(ans)
+    LONG(N, D, A);
+    vp mons(N);
+    rep (i, N) {
+        LONG(x, h);
+        mons[i] = {x, h};
+    }
+    sort(all(mons));
+    vl span(N);
+    ll r = 0;
+    rep (l, N) {
+        ll x = mons[l].first;
+        while (r<N && mons[r].first<=x+2*D) ++r;
+        span[l] = r;
+    }
+    vector<S> v(N, {0, 1});
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    rep(i, N) {
+        auto [x, h] = mons[i];
+        seg.apply(i, i+1, h);
+    }
+    ll ans = 0;
+    auto print = [&](){
+        #ifdef __DEBUG
+        vl v;
+        rep (i, N) v.push_back(seg.get(i).x);
+        de(v)
+        #endif
+    };
+    print();
+    rep (l, N) {
+        ll h = seg.get(l).x;
+        if (h <= 0) continue;
+        ll n = (h+A-1)/A;
+        ll r = span[l];
+        seg.apply(l, r, -A*n);
+        ans += n;
+        print();
     }
     Out(ans)
-    
-
     
 }
 

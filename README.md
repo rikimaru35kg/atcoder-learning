@@ -912,8 +912,8 @@
 - セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
 ### 例題
 - 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
-- !復習価値中 オセロ（典型） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
-- [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
+- !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - 想定解は違うがセグ木で殴った [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 
 # 包除原理
