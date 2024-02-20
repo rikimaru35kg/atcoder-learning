@@ -15,7 +15,7 @@
 - scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
 - 文字コードを扱うときは一旦開始文字（eg A, a）からの差分値とし、最後に開始文字からの差分値で求める。('C' + 20) % 26などとすると空白文字となってしまうので要注意！
 ### 例題
-- [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
+- 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
 
 ## ランレングス圧縮（Run Length Encoding）
 - 連続する文字が何個あるかという情報に書き換える事をランレングス圧縮という
@@ -926,7 +926,7 @@
 ### 例題
 - !復習価値中 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 - !要復習 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
-- 重複組合せの包除原理 [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
+- !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 
 # 行列累乗
 - 行列累乗でも繰り返し2乗法が使える

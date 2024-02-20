@@ -109,72 +109,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll MOD = 1e9+7;
-    Combination comb(M, MOD);
-    mint ans = 0;
-    rep (k, N+1) {
-        mint now = 1;
-        if (k%2==1) now *= -1;
-        now *= comb(N, k);
-        now *= comb.nPr(M-k, N-k);
-        ans += now;
+    LONG(N, K);
+    auto nck = [&](ll n, ll k) {
+        if (n<=0 || n<k) return 0LL;
+        ll ret = 1;
+        rep1 (i, k) {
+            ret *= (n-i+1);
+            ret /= i;
+        }
+        return ret;
+    };
+    auto f3 = [&](ll s) {
+        ll ret = 0;
+        rep (k, 4) {
+            ll tmp = 1;
+            if (k%2==1) tmp = -1;
+            tmp *= nck(3, k) * nck(s-3-k*N+2, 2);
+            ret += tmp;
+        }
+        return ret;
+    };
+     auto f2 = [&](ll s) {
+        ll ret = 0;
+        rep (k, 3) {
+            ll tmp = 1;
+            if (k%2==1) tmp = -1;
+            tmp *= nck(2, k) * nck(s-2-k*N+1, 1);
+            ret += tmp;
+        }
+        return ret;
+    };
+    repk (m, 3, 3*N+1) {
+        ll now = f3(m);
+        if (K <= now) {
+            rep1 (x, N) {
+                ll now = f2(m-x);
+                if (K <= now) {
+                    rep1 (y, N) {
+                        ll z = m-x-y;
+                        if (z<0 || z>N) continue;
+                        K--;
+                        if (K == 0) {
+                            printf("%lld %lld %lld\n", x, y, z);
+                            return 0;
+                        }
+                    }
+                }
+                K -= now;
+            }
+        }
+        K -= now;
     }
-    ans *= comb.nPr(M, N);
-    Out(ans.val())
-    
 }
 
 // ### test.cpp ###
