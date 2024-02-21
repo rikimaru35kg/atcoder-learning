@@ -86,6 +86,7 @@ template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr 
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T> inline void debug_view(vector<set<T>> &v){cerr << "----" << endl;for(auto s: v){debug_view(s);}cerr << "----" << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
@@ -124,17 +125,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl A;
-    rep (i, N) { LONG(a); A.push_back(a); }
-    ll ans = 0;
+    LONG(N, Q);
+    vector<set<int>> box(N);
     rep (i, N) {
-        ll l = i, r = i+1;
-        while(l>=0 && A[l]>=A[i]) --l;
-        while(r<N && A[r]>=A[i]) ++r;
-        chmax(ans, A[i]*(r-l-1));
+        LONG(c);
+        box[i].insert(c);
     }
-    Out(ans)
+    rep (i, Q) {
+        LONGM(a, b);
+        if (SIZE(box[a])>SIZE(box[b])) swap(box[a], box[b]);
+        for (auto c: box[a]) { box[b].insert(c); }
+        box[a].clear();
+        Out(SIZE(box[b]));
+        de(box)
+    }
     
 }
 

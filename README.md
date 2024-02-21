@@ -950,8 +950,8 @@
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（一般的なマージテク）
 ### 例題
-- [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
-- 一般的なマージテク [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+- !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+- !復習価値低 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 一般的なマージテクだがUnionFindの改造が楽 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 
 ## 標準形を考える
