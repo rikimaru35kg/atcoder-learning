@@ -124,57 +124,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    auto nck = [&](ll n, ll k) {
-        if (n<=0 || n<k) return 0LL;
-        ll ret = 1;
-        rep1 (i, k) {
-            ret *= (n-i+1);
-            ret /= i;
-        }
-        return ret;
-    };
-    auto f3 = [&](ll s) {
-        ll ret = 0;
-        rep (k, 4) {
-            ll tmp = 1;
-            if (k%2==1) tmp = -1;
-            tmp *= nck(3, k) * nck(s-3-k*N+2, 2);
-            ret += tmp;
-        }
-        return ret;
-    };
-     auto f2 = [&](ll s) {
-        ll ret = 0;
-        rep (k, 3) {
-            ll tmp = 1;
-            if (k%2==1) tmp = -1;
-            tmp *= nck(2, k) * nck(s-2-k*N+1, 1);
-            ret += tmp;
-        }
-        return ret;
-    };
-    repk (m, 3, 3*N+1) {
-        ll now = f3(m);
-        if (K <= now) {
-            rep1 (x, N) {
-                ll now = f2(m-x);
-                if (K <= now) {
-                    rep1 (y, N) {
-                        ll z = m-x-y;
-                        if (z<0 || z>N) continue;
-                        K--;
-                        if (K == 0) {
-                            printf("%lld %lld %lld\n", x, y, z);
-                            return 0;
-                        }
-                    }
-                }
-                K -= now;
-            }
-        }
-        K -= now;
+    LONG(N);
+    vl A;
+    rep (i, N) { LONG(a); A.push_back(a); }
+    ll ans = 0;
+    rep (i, N) {
+        ll l = i, r = i+1;
+        while(l>=0 && A[l]>=A[i]) --l;
+        while(r<N && A[r]>=A[i]) ++r;
+        chmax(ans, A[i]*(r-l-1));
     }
+    Out(ans)
+    
 }
 
 // ### test.cpp ###
