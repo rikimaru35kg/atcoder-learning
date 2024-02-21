@@ -86,7 +86,6 @@ template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr 
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
-template<typename T> inline void debug_view(vector<set<T>> &v){cerr << "----" << endl;for(auto s: v){debug_view(s);}cerr << "----" << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
@@ -110,8 +109,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -121,23 +120,53 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+struct UnionFind {
+    vector<long long> p, num;
+    UnionFind(long long n) : p(n, -1), num(n, 1) {}
 
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        return p[x] = leader(p[x]);
+    }
+    void merge (long long x, long long y) {
+        x = leader(x); y = leader(y);
+        if (x == y) return;
+        if (size(x) > size(y)) swap(x, y); // new parent = y
+        p[x] = y;
+        num[y] += num[x];
+    }
+    bool same (long long x, long long y) {
+        return leader(x) == leader(y);
+    }
+    long long size (long long x) {
+        return num[leader(x)];
+    }
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<set<int>> box(N);
-    rep (i, N) {
-        LONG(c);
-        box[i].insert(c);
-    }
+    LONG(N, Q); VL(C, N);
+    dsu uf(N);
+    vector<map<ll,ll>> cls(N);
+    rep (i, N) cls[i][C[i]] = 1;
     rep (i, Q) {
-        LONGM(a, b);
-        if (SIZE(box[a])>SIZE(box[b])) swap(box[a], box[b]);
-        for (auto c: box[a]) { box[b].insert(c); }
-        box[a].clear();
-        Out(SIZE(box[b]));
-        de(box)
+        LONG(t);
+        if (t == 1) {
+            LONGM(a, b);
+            a = uf.leader(a);
+            b = uf.leader(b);
+            if (a==b) continue;
+            uf.merge(a, b);
+            ll l = uf.leader(a);
+            if (l == a) swap(a, b);
+            for (auto [c, n]: cls[a]) {
+                cls[b][c] += n;
+            }
+        } else {
+            LONG(x, y); --x;
+            x = uf.leader(x);
+            Out(cls[x][y])
+        }
     }
     
 }
