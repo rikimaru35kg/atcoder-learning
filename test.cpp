@@ -125,25 +125,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X); VL(A, N);
-    ll ans = INF;
-    rep1 (K, N) {
-        vvl dp(K+1, vl(K, -INF));
-        dp[0][0] = 0;
-        rep (i, N) {
-            vvl p(K+1, vl(K, -INF));
-            swap(dp, p);
-            rep (j, K+1) rep (m, K) {
-                if (p[j][m]==-INF) continue;
-                chmax(dp[j][m], p[j][m]);
-                if (j<K) chmax(dp[j+1][(m+A[i])%K], p[j][m] + A[i]);
-            }
-        }
-        de(dp)
-        ll mod = X % K;
-        if (dp[K][mod]==-INF) continue;
-        chmin(ans, (X-dp[K][mod])/K);
+    LONG(M);
+    ll d = 0;
+    ll s = 0;
+    rep (i, M) {
+        LONG(_d, _c);
+        d += _c;
+        s += _d * _c;
     }
+    ll k = 9*d + s;
+    de(k)
+    k -= 18;
+    ll ans = (k+9-1)/9;
     Out(ans)
     
 }

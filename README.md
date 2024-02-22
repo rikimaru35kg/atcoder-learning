@@ -986,7 +986,7 @@
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
 ### 例題
-- 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
+- !復習価値高 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
 
 ## マンハッタン距離
 - 45度回転（して√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)がマンハッタン距離となる
