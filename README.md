@@ -1004,7 +1004,7 @@
 ## 左右から攻める
 - ある要素について何かを調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられることがある
 ### 例題
-- [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
+- !要復習 必ず働く日列挙 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
 
 ## クエリ先読み
 - クエリを先読みすると楽に処理できる事がある
