@@ -957,7 +957,7 @@
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
 ### 例題
-- [E - ∙ (Bullet)](https://atcoder.jp/contests/abc168/tasks/abc168_e)
+- !要復習 内積ペアを選ばない総数（難しいが良問） [E - ∙ (Bullet)](https://atcoder.jp/contests/abc168/tasks/abc168_e)
 
 ## 差分を考える
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
