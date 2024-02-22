@@ -110,8 +110,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -121,150 +121,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+using vt = vector<tuple<ll,ll,ll>>;
+using vt4 = vector<tuple<ll,ll,ll,ll>>;
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;:w
-
-    }
-    if (l != -1) return mjj:wake_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, C);
-    STRING(S);
-    auto cal = [&](string &s) -> pair<vl,ll> {
-        ll last = -INF;
-        vl v(N, -1);
-        ll cnt = 0;
-        rep (i, N) {
-            if (s[i] == 'x') continue;
-            if (i - last <= C) continue;
-            v[i] = cnt;
-            ++cnt;
-            if (cnt==K) break;
-            last = i;
+    LONG(N, Q);
+    vt con;
+    vt4 query;
+    rep (i, Q) {
+        LONG(t, x, y, v); --x; --y;
+        if (t == 0) {
+            con.emplace_back(x, y, v);
         }
-        return {v,cnt};
-    };
-    auto [fr, cnt] = cal(S);
-    reverse(all(S));
-    auto [rr, _]  = cal(S);
-    reverse(all(S));
-    reverse(all(rr));
-    rep (i, N) {
-        if (rr[i]==-1) {
-            rr[i] = INF;
-            continue;
+        query.emplace_back(t, x, y, v);
+    }
+    sort(all(con));
+    vl diff(N);
+    for (auto [x, y, v]: con) { diff[y] = v - diff[x]; }
+    dsu uf(N);
+    for (auto [t, x, y, v]: query) {
+        if (t == 0) {
+            uf.merge(x, y);
+        } else {
+            if (!uf.same(x, y)) {
+                puts("Ambiguous");
+                continue;
+            }
+            ll z = diff[y]-diff[x];
+            if ((x-y)%2!=0) z = diff[x]+diff[y];
+            if ((x-y)%2!=0) {
+                Out(z - v)
+            } else {
+                Out(z + v)
+            }
         }
-        rr[i] = cnt-1-rr[i];
     }
-    rep (i, N) {
-        if (fr[i]==rr[i]) Out(i+1)
-    }
+
+    
 }
 
 // ### test.cpp ###
