@@ -125,57 +125,17 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vp sushi(N);
-    rep (i, N) {
-        LONG(t, d);
-        sushi[i] = {d, t};
-    }
-    sort(allr(sushi));
-    vp sel;
-    map<ll,ll> mp;
+    LONG(N); VL(A, N);
+    ll mn = INF;
+    rep (i, N) chmin(mn, llabs(A[i]));
+    ll nm = 0;
+    rep (i, N) if(A[i]<=0) nm = 1-nm;
     ll sum = 0;
-    rep(i, K) { 
-        sel.push_back(sushi[i]);
-        mp[sushi[i].second]++;
-        sum += sushi[i].first;
+    rep (i, N) sum += llabs(A[i]);
+    if (nm == 0) {
+        Out(sum) return 0;
     }
-    vp unsel;
-    ll ans = sum + SIZE(mp) * SIZE(mp);
-    repk (i, K, N) {unsel.push_back(sushi[i]);}
-    reverse(all(unsel));
-    while(sel.size() && unsel.size()) {
-        bool rm = false;
-        while(sel.size()) {
-            auto [d, t] = sel.back();
-            if (mp[t]==1) {
-                sel.pop_back();
-                continue;
-            }
-            rm = true;
-            mp[t]--;
-            sel.pop_back();
-            sum -= d;
-            break;
-        }
-        if (!rm) break;
-        rm = false;
-        while(unsel.size()) {
-            auto [d, t] = unsel.back();
-            if (mp.count(t)) {
-                unsel.pop_back();
-                continue;
-            }
-            rm = true;
-            mp[t]++;
-            unsel.pop_back();
-            sum += d;
-            break;
-        }
-        if (!rm) break;
-        chmax(ans, sum + SIZE(mp) * SIZE(mp));
-    }
-    Out(ans)
+    Out(sum-2*mn)
     
 }
 
