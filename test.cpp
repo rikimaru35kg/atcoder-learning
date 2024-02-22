@@ -125,19 +125,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M);
-    ll d = 0;
-    ll s = 0;
-    rep (i, M) {
-        LONG(_d, _c);
-        d += _c;
-        s += _d * _c;
+    LONG(N, Q);
+    vl X(N), Y(N);
+    rep (i, N) {
+        LONG(x, y);
+        X[i] = x - y;
+        Y[i] = x + y;
     }
-    ll k = 9*d + s;
-    de(k)
-    k -= 18;
-    ll ans = (k+9-1)/9;
-    Out(ans)
+    de(X)de(Y)
+    auto calc = [&](vl &v) -> Pr {
+        ll mn = v[0], mx = v[0];
+        rep (i, N) {
+            chmin(mn, v[i]);
+            chmax(mx, v[i]);
+        }
+        return {mn, mx};
+    };
+    auto [xmn, xmx] = calc(X);
+    auto [ymn, ymx] = calc(Y);
+    de(calc(X))
+    de(calc(Y))
+    rep (i, Q) {
+        LONGM(z);
+        ll x = X[z], y = Y[z];
+        ll ans = 0;
+        chmax(ans, x-xmn);
+        chmax(ans, xmx-x);
+        chmax(ans, y-ymn);
+        chmax(ans, ymx-y);
+        Out(ans)
+    }
     
 }
 
