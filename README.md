@@ -999,7 +999,7 @@
 - 各行の総和は2^行番号となる
 - ある斜め列のすぐ下側の斜め列は累積和の行列となっている
 ### 例題
-- [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
+- !復習価値高 グリッド経路数の総和 [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
 
 ## 左右から攻める
 - ある要素について何かを調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられることがある

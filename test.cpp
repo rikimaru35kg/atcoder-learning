@@ -110,51 +110,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl X(N), Y(N);
-    rep (i, N) {
-        LONG(x, y);
-        X[i] = x - y;
-        Y[i] = x + y;
-    }
-    de(X)de(Y)
-    auto calc = [&](vl &v) -> Pr {
-        ll mn = v[0], mx = v[0];
-        rep (i, N) {
-            chmin(mn, v[i]);
-            chmax(mx, v[i]);
-        }
-        return {mn, mx};
+    LONG(r1, c1, r2, c2);
+    ll MOD = 1e9+7;
+    Combination comb((ll)2*1e6+10, MOD);
+    auto f = [&](ll r, ll c) -> mint {
+        mint ret = 0;
+        rep1 (i, r) { ret += comb(i+c+1, c); }
+        return ret;
     };
-    auto [xmn, xmx] = calc(X);
-    auto [ymn, ymx] = calc(Y);
-    de(calc(X))
-    de(calc(Y))
-    rep (i, Q) {
-        LONGM(z);
-        ll x = X[z], y = Y[z];
-        ll ans = 0;
-        chmax(ans, x-xmn);
-        chmax(ans, xmx-x);
-        chmax(ans, y-ymn);
-        chmax(ans, ymx-y);
-        Out(ans)
-    }
+    mint ans = 0;
+    ans += f(r2, c2);
+    de(ans)
+    ans -= f(r1-1, c2);
+    de(ans)
+    ans -= f(r2, c1-1);
+    de(ans)
+    ans += f(r1-1, c1-1);
+    Out(ans.val())
     
 }
 
