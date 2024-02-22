@@ -110,55 +110,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VP(A, N);
-    map<Pr,Pr> mp;
-    ll zero = 0;
+    LONG(N, K);
+    vp sushi(N);
     rep (i, N) {
-        auto [a, b] = A[i];
-        if (a==0 && b==0) {
-            zero++;continue;
-        }
-        if (a<0) {a=-a; b=-b;}
-        if (a==0) b=llabs(b);
-        ll g = gcd(a, llabs(b));
-        a /= g; b /= g;
-        bool mi = false;
-        if (b<=0) {
-            mi = true;
-            swap(a, b);
-            a = -a;
-        }
-        if(!mi) mp[{a,b}].first++;
-        else mp[{a,b}].second++;
-        auto p = mp[{a,b}];
-        de(Pr(a,b))de(p)
-        // de(a)
+        LONG(t, d);
+        sushi[i] = {d, t};
     }
-    mint ans = 1;
-    mint two = 2;
-    for (auto [_, v]: mp) {
-        auto [x, y] = v;
-        mint tmp = (two.pow(x)-1) + (two.pow(y)-1) + 1;
-        ans *= tmp;
+    sort(allr(sushi));
+    vp sel;
+    map<ll,ll> mp;
+    ll sum = 0;
+    rep(i, K) { 
+        sel.push_back(sushi[i]);
+        mp[sushi[i].second]++;
+        sum += sushi[i].first;
     }
-    ans--;
-    ans += zero;
-    Out(ans.val())
+    vp unsel;
+    ll ans = sum + SIZE(mp) * SIZE(mp);
+    repk (i, K, N) {unsel.push_back(sushi[i]);}
+    reverse(all(unsel));
+    while(sel.size() && unsel.size()) {
+        bool rm = false;
+        while(sel.size()) {
+            auto [d, t] = sel.back();
+            if (mp[t]==1) {
+                sel.pop_back();
+                continue;
+            }
+            rm = true;
+            mp[t]--;
+            sel.pop_back();
+            sum -= d;
+            break;
+        }
+        if (!rm) break;
+        rm = false;
+        while(unsel.size()) {
+            auto [d, t] = unsel.back();
+            if (mp.count(t)) {
+                unsel.pop_back();
+                continue;
+            }
+            rm = true;
+            mp[t]++;
+            unsel.pop_back();
+            sum += d;
+            break;
+        }
+        if (!rm) break;
+        chmax(ans, sum + SIZE(mp) * SIZE(mp));
+    }
+    Out(ans)
     
 }
 
