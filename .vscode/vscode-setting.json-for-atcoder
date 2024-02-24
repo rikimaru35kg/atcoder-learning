@@ -1,14 +1,23 @@
 {
     "window.zoomLevel": 1,
     "vim.handleKeys": {
-        "<C-d>": false,
         "<C-s>": false,
         "<C-z>": false,
     },
-    "vim.hlsearch": true,
+    "vim.useCtrlKeys": true,
     "vim.normalModeKeyBindingsNonRecursive": [
         {"before": ["U"], "after": ["<c-r>"]},
         {"before": ["j"], "after": ["g","j"]},
         {"before": ["k"], "after": ["g","k"]},
+        {"before": ["<C-d>"], "after": ["g","b"]},
     ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {"before": ["<C-d>"], "after": ["g","b"]},
+    ],
+    "vim.hlsearch": true,
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "remote.SSH.remotePlatform": {
+        "raspi": "linux"
+    },
+    "remote.autoForwardPortsSource": "hybrid",
 }
