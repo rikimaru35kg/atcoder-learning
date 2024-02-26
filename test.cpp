@@ -125,32 +125,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll icpt = 0;
-    ll l = -INF, h = INF;
-    rep (i, N) {
-        LONG(x, t);
-        if (t==1) {
-            icpt += x;
-            if (l!=-INF) l += x;
-            if (h!=INF) h += x;
-        } else if (t==2) {
-            chmax(l, x);
-            chmax(h, x);
-        } else {
-            chmin(l, x);
-            chmin(h, x);
-        }
-    }
-    LONG(Q);
-    rep (i, Q) {
-        LONG(x);
-        ll y = x + icpt;
-        y = clamp(y, l, h);
-        printf("%lld\n", y);
-    }
-    de(icpt)de(l)de(h)
     
+    LONG(N, M);
+    vector<tuple<ll,ll,ll>> info;
+    rep (i, N) {
+        LONG(x, y, z);
+        info.emplace_back(x, y, z);
+    }
+    ll ans = 0;
+    rep (s, 8) {
+        vector<ll> data(N);
+        rep (i, N) {
+            auto [x, y, z] = info[i];
+            if (s>>0&1) data[i] += x;
+            else data[i] -= x;
+            if (s>>1&1) data[i] += y;
+            else data[i] -= y;
+            if (s>>2&1) data[i] += z;
+            else data[i] -= z;
+        }
+        sort(allr(data));
+        ll now = 0;
+        rep (i, M) now += data[i];
+        chmax(ans, now);
+    }
+    Out(ans)
 }
 
 // ### test.cpp ###
