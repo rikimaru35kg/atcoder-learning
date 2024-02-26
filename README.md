@@ -1032,10 +1032,10 @@
 - !要復習 [F - +1-1x2](https://atcoder.jp/contests/abc188/tasks/abc188_f)
 
 ## アフィン変換（同次行列）
-- x, yが1次を保ったまま変換される場合は、アフィン返還可能
+- x, yが1次を保ったまま変換される場合は、アフィン変換可能
 - アフィン行列を構造体として定義し、アフィン行列同士の積を定義すれば実装が楽になる
 ### 例題
-- [E - Rotate and Flip](https://atcoder.jp/contests/abc189/tasks/abc189_e)
+- !復習価値高 [E - Rotate and Flip](https://atcoder.jp/contests/abc189/tasks/abc189_e)
 
 # 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
