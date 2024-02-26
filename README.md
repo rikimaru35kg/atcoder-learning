@@ -1048,7 +1048,7 @@
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
 - !要復習 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
-- [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
+- !要復習 駒置きコストの総和（難しいが良問） [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 
 ## 殆どOKなゲーム
