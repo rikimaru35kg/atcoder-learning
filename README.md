@@ -45,7 +45,7 @@
 - !要復習 構築系問題 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
 - !要復習 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 
-## K進数
+## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
 ### 例題
 - !要復習 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
@@ -72,7 +72,7 @@
 - なお、ACLを用いれば素数かどうか気にする事無く逆元が求まる（普通に割る記号でもいけるし、inv()を使っても良い）
 - xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
 
-## ユークリッドの互除法
+## ユークリッドの互除法（拡張含む）
 - gcd(a, b) = gcd(b, r) = ... = gcd(b', 0) = b'という古典的アルゴリズム
 - 再帰関数で簡潔に書ける
 - 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
@@ -169,7 +169,8 @@
 - 指数をMOD 2した場合、2数の積が平方数となるのは、同じ数との積のみ
 - 指数をMOD 2するには、素因数分解までは不要で、平方数で割れるだけ割ればよい
 ### 例題
-- !復習価値中 平方数判定の本質が分ければ解ける [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
+- 基本 平方数数え上げ [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
+- !復習価値中 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
 
 ## 小数
 - 小数点を出力する際はcout << fixed << setprecision(10) << x << endl;などとしないと小数点以下の桁が6桁ぐらいまでしか出力されない（printf("%.10f\n", x)の方が簡単）
@@ -752,6 +753,7 @@
 - !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
+- !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 
 # 最短経路問題
 
@@ -777,6 +779,7 @@
 ### 例題
 - !復習価値低 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - !復習価値低 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
+- !復習価値高 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 
 ## 拡張ダイクストラ法（or 拡張BFS）
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
