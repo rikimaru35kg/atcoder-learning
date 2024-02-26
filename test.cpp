@@ -110,44 +110,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-using t4 = tuple<ll,ll,ll,ll>;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<t4> query;
-    rep (i, Q) {
-        LONGM(x, y, z); LONG(w);
-        query.emplace_back(x, y, z, w);
-    }
-    mint ans = 1;
-    rep (d, 60) {
-        ll now = 0;
-        rep (s, 1<<N) {
-            bool ok = true;
-            rep (q, Q) {
-                auto [x, y, z, w] = query[q];
-                int bit = (s>>x&1) | (s>>y&1) | (s>>z&1);
-                if (bit != (w>>d&1)) ok = false;
-            }
-            if (ok) ++now;
+    LONG(X, Y);
+    map<ll,ll> mp;
+    auto f=[&](auto f, ll y) -> ll {
+        if (mp.count(y)) return mp[y];
+        if (y==1) return abs(X-y);
+        if (y%2==0) {
+            return mp[y] = min(f(f, y/2)+1, llabs(X-y));
+        } else {
+            return mp[y] = min({f(f, y+1)+1, f(f, y-1)+1, llabs(X-y)});
         }
-        ans *= now;
-    }
-    Out(ans.val())
-    
+    };
+    Out(f(f, Y));
 }
 
 // ### test.cpp ###

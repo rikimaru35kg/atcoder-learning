@@ -47,8 +47,10 @@
 
 ## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
+- Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
 ### 例題
 - !要復習 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
+- !復習価値中 [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
 
 ## 整数
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
@@ -1022,12 +1024,12 @@
 
 ## bitごとに独立に考える
 ### 例題
-- [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
+- !復習価値中 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
 
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
 ### 例題
-- [F - +1-1x2](https://atcoder.jp/contests/abc188/tasks/abc188_f)
+- !要復習 [F - +1-1x2](https://atcoder.jp/contests/abc188/tasks/abc188_f)
 
 ## アフィン変換（同次行列）
 - x, yが1次を保ったまま変換される場合は、アフィン返還可能
