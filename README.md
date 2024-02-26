@@ -1017,8 +1017,8 @@
 
 ## XY独立に考える
 ### 例題
-- [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
-- [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
+- 基本 [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
+- !復習価値高 格子点を正方形に収める最小回数 [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
 
 ## bitごとに独立に考える
 ### 例題

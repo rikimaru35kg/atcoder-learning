@@ -110,8 +110,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -121,30 +121,102 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp edges;
-    rep (i, M) {
-        LONGM(a, b);
-        edges.emplace_back(a, b);
+    LONG(N, K);
+    vl X(N), Y(N);
+    rep (i, N) {
+        LONG(x, y);
+        X[i] = x; Y[i] = y;
     }
-    dsu uf(N);
-    vl ans;
-    ll now = N*(N-1)/2;
-    while(edges.size()) {
-        auto [a, b] = edges.back();
-        edges.pop_back();
-        ans.push_back(now);
-        if (!uf.same(a, b)) {
-            now -= (ll)uf.size(a) * uf.size(b);
+    sort(all(X)); sort(all(Y));
+    auto calcnt = [&](vl &X) {
+        vl cnt(N);
+        rep (i, N-1) {
+            ll c = min(i+1, N-i-1);
+            cnt[c] += X[i+1] - X[i];
         }
-        uf.merge(a, b);
+        return cnt;
+    };
+    vl cntx = calcnt(X);
+    vl cnty = calcnt(Y);
+
+    auto cnt = [&](ll len, vl &v, vl &cnt) -> ll {
+        ll w = v.back() - v[0];
+        ll ret = 0;
+        ll rem = max(0LL, w - len);
+        rep (cost, SIZE(cnt)) {
+            ll n = min(rem, cnt[cost]);
+            ret += n * cost;
+            rem -= n;
+            if (rem == 0) break;
+        }
+        return ret;
+    };
+    ll l = -1, r = INF;
+    while(r-l>1) {
+        ll m = (l+r)/2;
+        if (cnt(m, X, cntx) + cnt(m, Y, cnty) <= K) r = m;
+        else l = m;
+        // de(m) de(cnt(m, X, cntx)) de(cnt(m, Y, cnty))
     }
-    reverse(all(ans));
-    rep(i, M) Out(ans[i])
+    Out(r)
     
 }
 
