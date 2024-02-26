@@ -1040,7 +1040,7 @@
 # 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
 ### 例題
-- 自力で性質を考えてACしたが、グラフのまま考えればより自明に解が求まる [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
+- 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
 ## コロンブスの卵
 - 固定するものを入れ替える事で探索量が減るケースあり

@@ -122,147 +122,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-//! n*n matrix
-//! Currently, only operator* is defined.
-template <typename T>
-class Mat {
-    long long n; vector<vector<T>> a; long long mod;
-public:
-    // Initialize n*n matrix
-    Mat (long long n, const vector<vector<T>> &mat={}, long long mod=-1)
-    : n(n), a(n, vector<T>(n)), mod(mod) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
-                if (mod != -1) a[i][j] %= mod;
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        if (mod != -1) ret = Mat(n, ret.a, mod);
-        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-                if (mod != -1) ret.a[i][j] %= mod;
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-            if (mod != -1) ret[j] %= mod;
-        }
-        return ret;
-    }
-    // power k (A^k)
-    Mat pow(long long k) {
-        Mat ret = pow_recursive(*this, k);
-        return ret;
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(n);
-        if (mod != -1) ret = Mat(n, ret.a, mod);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
-};
-
-struct Query {
-    ll a, b, i;
-    Query(ll a, ll b, ll i): a(a), b(b), i(i) {}
-    bool operator<(Query rhs) {
-        return a<rhs.a;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl X(N), Y(N);
+    ll icpt = 0;
+    ll l = -INF, h = INF;
     rep (i, N) {
-        LONG(x, y);
-        X[i] = x, Y[i] = y;
-    }
-    LONG(M);
-    vp operations(M);
-    rep (i, M) {
-        LONG(t);
-        if (t<=2) operations[i] = {t, -1};
-        else {
-            LONG(p);
-            operations[i] = {t, p};
+        LONG(x, t);
+        if (t==1) {
+            icpt += x;
+            if (l!=-INF) l += x;
+            if (h!=INF) h += x;
+        } else if (t==2) {
+            chmax(l, x);
+            chmax(h, x);
+        } else {
+            chmin(l, x);
+            chmin(h, x);
         }
     }
     LONG(Q);
-    vector<Query> queries;
     rep (i, Q) {
-        LONGM(a, b); ++a;
-        queries.emplace_back(a, b, i);
+        LONG(x);
+        ll y = x + icpt;
+        y = clamp(y, l, h);
+        printf("%lld\n", y);
     }
-    sort(allr(queries));
-    Mat<ll> aff(3);
-    ll oi = 0;
-    vp ans(Q);
-    while(queries.size()){
-        auto [a, b, i] = queries.back();
-        queries.pop_back();
-        while (a > oi && oi < M) {
-            auto [t, p] = operations[oi];
-            vvl op(3, vl(3));
-            op[2] = {0, 0, 1};
-            if (t == 1) {
-                op[0] = {0, 1, 0};
-                op[1] = {-1, 0, 0};
-            }
-            if (t == 2) {
-                op[0] = {0, -1, 0};
-                op[1] = {1, 0, 0};
-            }
-            if (t == 3) {
-                op[0] = {-1, 0, 2*p};
-                op[1] = {0, 1, 0};
-            }
-            if (t == 4) {
-                op[0] = {1, 0, 0};
-                op[1] = {0, -1, 2*p};
-            }
-            Mat now(3, op);
-            aff = now * aff;
-            ++oi;
-        }
-        vl vec = aff * vl({X[b], Y[b], 1});
-        ans[i] = {vec[0], vec[1]};
-    }
-    de(ans)
-    rep (i, Q) {
-        printf("%lld %lld\n", ans[i].first, ans[i].second);
-    }
-
+    de(icpt)de(l)de(h)
+    
 }
 
 // ### test.cpp ###
