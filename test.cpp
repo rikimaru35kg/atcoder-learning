@@ -128,34 +128,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // #endif
 
 int main () {
-    DOUBLE(_X, _Y, _R);
-    ll M = 10000;
-    ll X = round(_X*M);
-    ll Y = round(_Y*M);
-    ll R = round(_R*M);
-    X = percent(X, M);
-    Y = percent(Y, M);
-
-    auto incircle = [&](ll x, ll y, ll Y) ->bool {
-        ll lhs = (x-X)*(x-X) + (y-Y)*(y-Y);
-        ll rhs = R*R;
-        if (lhs <= rhs) return true; return false;
-    };
+    // ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    LONG(N, C);
+    vector<tuple<ll,ll,ll>> events;
+    rep (i, N) {
+        LONG(a, b, c);
+        events.emplace_back(a, c, 1);
+        events.emplace_back(b+1, c, 0);
+    }
+    sort(all(events));
+    ll day = -1;
+    ll cost = 0;
     ll ans = 0;
-    auto cnt = [&](ll Y, ll lim) -> ll {
-        ll ret = 0;
-        ll l = 0, r = M;
-        for (ll y=1e9; y>=lim; y-=M) {
-            while (incircle(l, y, Y)) l -= M;
-            while (incircle(r, y, Y)) r += M;
-            ans += (r-l)/M - 1;
+    for(auto [d, c, t]: events) {
+        ll len = d - day;
+        if (cost < C) {
+            ans += cost * len;
+        } else {
+            ans += C * len;
         }
-        return ret;
-    };
-    ans += cnt(Y, M);
-    ans += cnt(-Y, 0);
+        if (t == 1) cost += c;
+        else cost -= c;
+        day = d;
+    }
     Out(ans)
 
+
+    
 }
 
 // ### test.cpp ###
