@@ -1059,7 +1059,7 @@
 - !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
 
 # 読解が難しい問題
-- 添え字多すぎ問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
+- 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 # 実装が難しい問題
 - [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)

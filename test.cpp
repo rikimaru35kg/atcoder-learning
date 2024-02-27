@@ -38,6 +38,7 @@ using cd = complex<double>;
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) {cout << (x) << endl;}
+#define Outd(x) {printf("%.10f",x);cout<<endl;}
 #define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -125,52 +126,16 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, A, B, C);
-    vl X(3);
-    X[0] = A, X[1] = B, X[2] = C;
-    vc ans;
-    VS(S, N);
-    rep (i, N) {
-        string s = S[i];
-        ll a = s[0] - 'A';
-        ll b = s[1] - 'A';
-        ll n1 = (1<<a) | (1<<b);
-        if (X[a] == 0 && X[b] == 0) PNo
-        if (X[a]==0) { 
-            X[a]++; X[b]--;
-            ans.push_back(a+'A');
-            continue;
+    LONG(N); STRING(S);
+    rep1 (i, N-1) {
+        ll l = 0;
+        rep (j, N) {
+            ll r = i + j;
+            if (r >= N) break;
+            if (S[j] != S[r]) l = j+1;
+            else break;
         }
-        if (X[b]==0) { 
-            X[a]--; X[b]++;
-            ans.push_back(b+'A');
-            continue;
-        }
-        if (i==N-1) {
-            X[a]++; X[b]--;
-            ans.push_back(a+'A');
-            continue;
-        }
-        string s2 = S[i+1];
-        ll a2 = s2[0] - 'A';
-        ll b2 = s2[1] - 'A';
-        ll n2 = (1<<a2) | (1<<b2);
-        ll n = n1 & n2;
-        rep (k, 3) {
-            if (n>>k&1) {
-                X[k]++;
-                ans.push_back(k+'A');
-                rep (m, 3) {
-                    if (m==k) continue;
-                    if (n1>>m&1) X[m]--;
-                }
-                break;
-            }
-        }
-    }
-    puts("Yes");
-    rep(i, N){
-        Out(ans[i])
+        Out(l);
     }
     
 }
