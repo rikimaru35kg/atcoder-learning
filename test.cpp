@@ -79,6 +79,9 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin 
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
+inline ll percent(ll a, ll b) {return (a%b+b)%b;}
+inline ll slash(ll a, ll b) {return (a-percent(a,b))/b; }
+inline ll divceil(ll a, ll b) {return slash(a+b-1, b); }
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
@@ -125,68 +128,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // #endif
 
 int main () {
-    // ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
-    map<ll,unordered_set<ll>> mp;
-    vl cnt(N+1);
-    rep (i, N) { cnt[A[i]]++; }
-    rep (i, N) { cnt[B[i]]++; }
-    rep (i, N+1) {
-        if (cnt[i]==0) continue;
-        if (cnt[i]>N) PNo
-        mp[cnt[i]].insert(i);
-    }
-    puts("Yes");
-    vvl idx(N+1);
-    rep (i, N) { idx[A[i]].push_back(i); }
+    DOUBLE(_X, _Y, _R);
+    ll M = 10000;
+    ll X = round(_X*M);
+    ll Y = round(_Y*M);
+    ll R = round(_R*M);
+    X = percent(X, M);
+    Y = percent(Y, M);
 
-    unordered_map<ll,ll> cnta, cntb;
-    rep (i, N) cnta[A[i]]++;
-    rep (i, N) cntb[B[i]]++;
-
-    auto update=[&](auto &mp, auto &cnta, ll x) {
-        if (SIZE(mp[cnt[x]])==1) {
-            mp.erase(cnt[x]);
-        } else {
-            mp[cnt[x]].erase(x);
-        }
-        cnt[x]--;
-        if (cnt[x]!=0) {
-            mp[cnt[x]].insert(x);
-        }
-        cnta[x]--;
-        if (cnta[x]==0) {
-            cnta.erase(x);
-        }
+    auto incircle = [&](ll x, ll y, ll Y) ->bool {
+        ll lhs = (x-X)*(x-X) + (y-Y)*(y-Y);
+        ll rhs = R*R;
+        if (lhs <= rhs) return true; return false;
     };
-
-    vl ans(N);
-    rep (i, N) {
-        auto it = mp.end(); --it;
-        auto &st = it->second;
-        ll x = *st.begin();
-        ll y;
-        if (cnta.count(x)) {
-            for (auto [k, v]: cntb) {
-                if (k == x) continue;
-                y = k; break;
-            }
-        } else {
-            for (auto [k, v]: cnta) {
-                if (k == x) continue;
-                y = k; swap(x, y); break;
-            }
+    ll ans = 0;
+    auto cnt = [&](ll Y, ll lim) -> ll {
+        ll ret = 0;
+        ll l = 0, r = M;
+        for (ll y=1e9; y>=lim; y-=M) {
+            while (incircle(l, y, Y)) l -= M;
+            while (incircle(r, y, Y)) r += M;
+            ans += (r-l)/M - 1;
         }
-        ll z = idx[x].back();
-        idx[x].pop_back();
-        ans[z] = y;
-        update(mp, cnta, x);
-        update(mp, cntb, y);
-    }
-    print_vec(ans)
+        return ret;
+    };
+    ans += cnt(Y, M);
+    ans += cnt(-Y, 0);
+    Out(ans)
 
-    
 }
 
 // ### test.cpp ###
