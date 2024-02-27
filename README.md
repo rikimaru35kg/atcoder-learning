@@ -1061,8 +1061,8 @@
 # 読解が難しい問題
 - 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
-# 実装が難しい問題
-- [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
+# 実装が重い問題
+- !復習価値低 シート重ね合わせ（実装工夫すればすっきり書ける） [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
 - 考察も難しいが実装も難しい [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 

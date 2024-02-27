@@ -26,7 +26,7 @@ vector<string> crop(vector<string> &field, char c='#') {
 }
 
 //! Delete rows and columns that only include character c.
-vector<string> slash_out(vector<string> &field, char c='.') {
+vector<string> crop_out(vector<string> &field, char c='.') {
     long long h = field.size();
     long long w = field[0].size();
     vector<bool> rows(h), cols(w); 

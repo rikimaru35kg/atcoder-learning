@@ -122,21 +122,61 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+//! Crop the rectangle that completely surrounds the specified
+//! character c.
+//! The rectangle just fits the character c area.
+//! (= The rectangle is selected so that the size is minimum.)
+vector<string> crop(vector<string> &field, char c='#') {
+    long long h = field.size();
+    long long w = field[0].size();
+    long long i_min = h, i_max = -1;
+    long long j_min = w, j_max = -1;
+    for(long long i=0; i<h; ++i) {
+        for(long long j=0; j<w; ++j) {
+            if (field[i][j] == c) {
+                i_min = min(i_min, i); i_max = max(i_max, i);
+                j_min = min(j_min, j); j_max = max(j_max, j);
+            }
+        }
+    }
+    vector<string> ret;
+    for(long long i=i_min; i<=i_max; ++i) {
+        ret.push_back(field[i].substr(j_min, j_max-j_min+1));
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    rep1 (i, N-1) {
-        ll l = 0;
-        rep (j, N) {
-            ll r = i + j;
-            if (r >= N) break;
-            if (S[j] != S[r]) l = j+1;
-            else break;
+    LONG(HA, WA); VS(A, HA);
+    LONG(HB, WB); VS(B, HB);
+    LONG(HX, WX); VS(X, HX);
+    vs CA = crop(A);
+    vs CB = crop(B);
+    HA = SIZE(CA), WA = SIZE(CA[0]);
+    HB = SIZE(CB), WB = SIZE(CB[0]);
+    vp pos;
+    rep (i, HX) rep(j, WX) pos.emplace_back(i, j);
+    auto overlay = [&](vs &a, vs &b, ll si, ll sj) {
+        rep (i, SIZE(a)) rep (j, SIZE(a[0])) {
+            char &c = b[si+i][sj+j];
+            if (c=='#') continue;
+            c = a[i][j];
         }
-        Out(l);
+    };
+    for (auto [i, j]: pos) for (auto [k, l]: pos) {
+        vs tmp(HX, string(WX, '.'));
+        if (i+HA>HX || j+WA>WX) continue;
+        if (k+HB>HX || l+WB>WX) continue;
+        overlay(CA, tmp, i, j);
+        overlay(CB, tmp, k, l);
+        if (X == tmp) {
+            de(tmp)
+            PYes
+        }
     }
+    PNo
     
 }
 
