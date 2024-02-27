@@ -1054,8 +1054,9 @@
 ## 殆どOKなゲーム
 - 殆どの手はOKだが、最後の方だけ気を付けないといけないゲーム
 - 考察できれば勝ち
+- 構築系という典型にした方が良いか？
 ### 例題
-- [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
 
 # 読解が難しい問題
 - 添え字多すぎ問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)

@@ -38,7 +38,6 @@ using cd = complex<double>;
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
 #define Out(x) {cout << (x) << endl;}
-#define Outd(x) {printf("%.10f", x); cout<<endl;}
 #define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -126,27 +125,53 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl L(N), R(N);
+    LONG(N, A, B, C);
+    vl X(3);
+    X[0] = A, X[1] = B, X[2] = C;
+    vc ans;
+    VS(S, N);
     rep (i, N) {
-        LONG(l, r);
-        L[i] = l, R[i] = r;
-    }
-    double nall = 1;
-    double ans = 0;
-    rep (i, N) { nall *= R[i] - L[i] + 1; }
-    rep (j, N) rep (i, j) {
-        double nume = 0;
-        repk(k, L[i], R[i]+1) {
-            ll nr = max(k - L[j], 0LL);
-            chmin(nr, R[j] - L[j] + 1);
-            nume += nr;
+        string s = S[i];
+        ll a = s[0] - 'A';
+        ll b = s[1] - 'A';
+        ll n1 = (1<<a) | (1<<b);
+        if (X[a] == 0 && X[b] == 0) PNo
+        if (X[a]==0) { 
+            X[a]++; X[b]--;
+            ans.push_back(a+'A');
+            continue;
         }
-        nume /= (R[i]-L[i]+1);
-        nume /= (R[j]-L[j]+1);
-        ans += nume;
+        if (X[b]==0) { 
+            X[a]--; X[b]++;
+            ans.push_back(b+'A');
+            continue;
+        }
+        if (i==N-1) {
+            X[a]++; X[b]--;
+            ans.push_back(a+'A');
+            continue;
+        }
+        string s2 = S[i+1];
+        ll a2 = s2[0] - 'A';
+        ll b2 = s2[1] - 'A';
+        ll n2 = (1<<a2) | (1<<b2);
+        ll n = n1 & n2;
+        rep (k, 3) {
+            if (n>>k&1) {
+                X[k]++;
+                ans.push_back(k+'A');
+                rep (m, 3) {
+                    if (m==k) continue;
+                    if (n1>>m&1) X[m]--;
+                }
+                break;
+            }
+        }
     }
-    Outd(ans)
+    puts("Yes");
+    rep(i, N){
+        Out(ans[i])
+    }
     
 }
 
