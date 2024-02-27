@@ -247,5 +247,61 @@
       "    return ret;",
       "}"
     ]
+  },
+  "Snippet(manhattan_dist)": {
+    "prefix": "manhattan_dist",
+    "body": [
+      "//! Calculate Manhattan distance",
+      "long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {",
+      "    long long ret = 0;",
+      "    ret += abs(p1.first - p2.first);",
+      "    ret += abs(p1.second - p2.second);",
+      "    return ret;",
+      "}"
+    ]
+  },
+  "Snippet(euclid_dist)": {
+    "prefix": "euclid_dist",
+    "body": [
+      "//! Calculate Euclid distance",
+      "//! input type = long long",
+      "//! output type = double",
+      "double euclid_dist(pair<long long,long long> p1, pair<long long,long long> p2) {",
+      "    double ret = 0;",
+      "    ret += (p1.first - p2.first) * (p1.first - p2.first);",
+      "    ret += (p1.second - p2.second) * (p1.second - p2.second);",
+      "    ret = sqrt(ret);",
+      "    return ret;",
+      "}"
+    ]
+  },
+  "Snippet(euclid_distd)": {
+    "prefix": "euclid_distd",
+    "body": [
+      "//! Calculate Euclid distance",
+      "//! input type = double",
+      "//! output type = double",
+      "double euclid_distd(pair<double,double> p1, pair<double,double> p2) {",
+      "    double ret = 0;",
+      "    ret += (p1.first - p2.first) * (p1.first - p2.first);",
+      "    ret += (p1.second - p2.second) * (p1.second - p2.second);",
+      "    ret = sqrt(ret);",
+      "    return ret;",
+      "}"
+    ]
+  },
+  "Snippet(euclid_dist2)": {
+    "prefix": "euclid_dist2",
+    "body": [
+      "//! Calculate Euclid distance^2",
+      "//! input type = long long",
+      "//! output type = long long",
+      "long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {",
+      "    double ret = 0;",
+      "    ret += (p1.first - p2.first) * (p1.first - p2.first);",
+      "    ret += (p1.second - p2.second) * (p1.second - p2.second);",
+      "    return ret;",
+      "}"
+    ]
   }
 }

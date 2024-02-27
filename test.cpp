@@ -130,31 +130,14 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C);
-    vector<tuple<ll,ll,ll>> events;
-    rep (i, N) {
-        LONG(a, b, c);
-        events.emplace_back(a, c, 1);
-        events.emplace_back(b+1, c, 0);
-    }
-    sort(all(events));
-    ll day = -1;
-    ll cost = 0;
-    ll ans = 0;
-    for(auto [d, c, t]: events) {
-        ll len = d - day;
-        if (cost < C) {
-            ans += cost * len;
-        } else {
-            ans += C * len;
+    LONG(X);
+    ll M = 1000;
+    repk (a, -M, M) repk(b, -M, M) {
+        if (a*a*a*a*a - b*b*b*b*b == X) {
+            printf("%lld %lld\n", a, b);
+            return 0;
         }
-        if (t == 1) cost += c;
-        else cost -= c;
-        day = d;
     }
-    Out(ans)
-
-
     
 }
 
