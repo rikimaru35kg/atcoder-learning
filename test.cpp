@@ -91,6 +91,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T1,typename T2> inline void debug_view(map<T1,vector<T2>> &mp){cerr<<"----"<<endl;for(auto [k,v]: mp){cerr<<k<<": ";debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2,typename T3> inline void debug_view(map<pair<T1,T2>,T3> &mp){cerr << "----" << endl;for(auto [p,v]: mp){cerr<<'{'<<p.first<<' '<<p.second<<'}'<<": "<<v<<endl;} cerr<<"--------"<<endl;}
 #define deb(var) {cerr << #var << ": "; debugb_view(var);}
 template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl;}
@@ -122,61 +123,69 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! Crop the rectangle that completely surrounds the specified
-//! character c.
-//! The rectangle just fits the character c area.
-//! (= The rectangle is selected so that the size is minimum.)
-vector<string> crop(vector<string> &field, char c='#') {
-    long long h = field.size();
-    long long w = field[0].size();
-    long long i_min = h, i_max = -1;
-    long long j_min = w, j_max = -1;
-    for(long long i=0; i<h; ++i) {
-        for(long long j=0; j<w; ++j) {
-            if (field[i][j] == c) {
-                i_min = min(i_min, i); i_max = max(i_max, i);
-                j_min = min(j_min, j); j_max = max(j_max, j);
-            }
-        }
-    }
-    vector<string> ret;
-    for(long long i=i_min; i<=i_max; ++i) {
-        ret.push_back(field[i].substr(j_min, j_max-j_min+1));
-    }
-    return ret;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(HA, WA); VS(A, HA);
-    LONG(HB, WB); VS(B, HB);
-    LONG(HX, WX); VS(X, HX);
-    vs CA = crop(A);
-    vs CB = crop(B);
-    HA = SIZE(CA), WA = SIZE(CA[0]);
-    HB = SIZE(CB), WB = SIZE(CB[0]);
-    vp pos;
-    rep (i, HX) rep(j, WX) pos.emplace_back(i, j);
-    auto overlay = [&](vs &a, vs &b, ll si, ll sj) {
-        rep (i, SIZE(a)) rep (j, SIZE(a[0])) {
-            char &c = b[si+i][sj+j];
-            if (c=='#') continue;
-            c = a[i][j];
+    LONG(N); VL(A, N); VL(B, N);
+    map<ll,unordered_set<ll>> mp;
+    vl cnt(N+1);
+    rep (i, N) { cnt[A[i]]++; }
+    rep (i, N) { cnt[B[i]]++; }
+    rep (i, N+1) {
+        if (cnt[i]==0) continue;
+        if (cnt[i]>N) PNo
+        mp[cnt[i]].insert(i);
+    }
+    puts("Yes");
+    vvl idx(N+1);
+    rep (i, N) { idx[A[i]].push_back(i); }
+
+    unordered_map<ll,ll> cnta, cntb;
+    rep (i, N) cnta[A[i]]++;
+    rep (i, N) cntb[B[i]]++;
+
+    auto update=[&](auto &mp, auto &cnta, ll x) {
+        if (SIZE(mp[cnt[x]])==1) {
+            mp.erase(cnt[x]);
+        } else {
+            mp[cnt[x]].erase(x);
+        }
+        cnt[x]--;
+        if (cnt[x]!=0) {
+            mp[cnt[x]].insert(x);
+        }
+        cnta[x]--;
+        if (cnta[x]==0) {
+            cnta.erase(x);
         }
     };
-    for (auto [i, j]: pos) for (auto [k, l]: pos) {
-        vs tmp(HX, string(WX, '.'));
-        if (i+HA>HX || j+WA>WX) continue;
-        if (k+HB>HX || l+WB>WX) continue;
-        overlay(CA, tmp, i, j);
-        overlay(CB, tmp, k, l);
-        if (X == tmp) {
-            de(tmp)
-            PYes
+
+    vl ans(N);
+    rep (i, N) {
+        auto it = mp.end(); --it;
+        auto &st = it->second;
+        ll x = *st.begin();
+        ll y;
+        if (cnta.count(x)) {
+            for (auto [k, v]: cntb) {
+                if (k == x) continue;
+                y = k; break;
+            }
+        } else {
+            for (auto [k, v]: cnta) {
+                if (k == x) continue;
+                y = k; swap(x, y); break;
+            }
         }
+        ll z = idx[x].back();
+        idx[x].pop_back();
+        ans[z] = y;
+        update(mp, cnta, x);
+        update(mp, cntb, y);
     }
-    PNo
+    print_vec(ans)
+
     
 }
 

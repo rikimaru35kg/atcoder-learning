@@ -1059,12 +1059,19 @@
 - !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
 
 # 読解が難しい問題
+### 例題
 - 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 # 実装が重い問題
+### 例題
 - !復習価値低 シート重ね合わせ（実装工夫すればすっきり書ける） [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
-- 考察も難しいが実装も難しい [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
+# ホール（Hall）の結婚定理
+- 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
+- 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
+- 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
+### 例題
+- !要復習 数列マッチング（実装難） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 # 実装テクニック
 
