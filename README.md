@@ -781,6 +781,7 @@
 - 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
 - !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
 - !復習価値低 基本 [D - Wizard in Maze](https://atcoder.jp/contests/abc176/tasks/abc176_d)
+- !復習価値中 壁破壊 [https://atcoder.jp/contests/abc213/tasks/abc213_e](https://atcoder.jp/contests/abc213/tasks/abc213_e)
 
 ## ダイクストラ法（Dijkstra）
 - 下記を繰り返していくことで、全頂点の距離を更新していき、最短経路を求める

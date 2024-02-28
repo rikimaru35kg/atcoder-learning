@@ -108,51 +108,60 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
-const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
-const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
+const vi di8 = {-1, 0, 1, 1, 0, -1, -2, -2};
+const vi dj8 = {1, 1, 0, -1, -2, -2, -1, 0};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvl from(N);
-    rep (i, M) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
-    }
-    vm dp(N);
-    dp[0] = 1;
-    rep (i, K) {
-        vm p(N);
-        swap(p, dp);
-        mint tot = 0;
-        rep (j, N) tot += p[j];
-        rep (j, N) {
-            dp[j] = tot - p[j];
-            for (auto nv: from[j]) {
-                dp[j] -= p[nv];
+    LONG(H, W);
+    VS(S, H);
+    vvl dist(H, vl(W, INF));
+    deque<Pr> deq;
+    auto push = [&](ll i, ll j, ll d, bool front) {
+        if (dist[i][j] <= d) return;
+        dist[i][j] = d;
+        if (front) deq.emplace_front(i, j);
+        else deq.emplace_back(i, j);
+    };
+    push(0, 0, 0, true);
+    while (deq.size()) {
+        auto [i, j] = deq.front(); deq.pop_front();
+        rep (k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if (!isin(ni, nj, H, W)) continue;
+            if (S[ni][nj] == '.') push(ni, nj, dist[i][j], true);
+        }
+        rep (k, 8) {
+            ll ni = i + di8[k];
+            ll nj = j + dj8[k];
+            if (!isin(ni, nj, H, W)) continue;
+            rep (a, 2) rep (b, 2) {
+                ll ni2 = ni + a;
+                ll nj2 = nj + b;
+                if (!isin(ni2, nj2, H, W)) continue;
+                push(ni2, nj2, dist[i][j]+1, false);
             }
         }
     }
-    Out(dp[0].val())
-
+    Out(dist[H-1][W-1]);
     
 }
 
