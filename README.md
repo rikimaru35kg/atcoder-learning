@@ -565,6 +565,13 @@
 ### 例題
 - !要復習 全2頂点間最大辺の総和問題 [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
+## グラフに関する問題の計算量見積り
+- ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
+- 各辺は確定頂点からしか呼ばれる事はなく、各辺は2頂点としか繋がっていない為、高々2回しか呼ばれない
+- グラフを用いたDPなどでも、同じ議論は成り立つので、計算量はO(NM)ではなくO(N+M)かもしれない事に注意せよ
+### 例題
+- [E - Safety Journey](https://atcoder.jp/contests/abc212/tasks/abc212_e)
+
 # 動的計画法（DP）
 
 ## 一般的なこと
