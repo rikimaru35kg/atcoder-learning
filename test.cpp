@@ -130,14 +130,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X);
-    ll M = 1000;
-    repk (a, -M, M) repk(b, -M, M) {
-        if (a*a*a*a*a - b*b*b*b*b == X) {
-            printf("%lld %lld\n", a, b);
-            return 0;
+    LONG(Q);
+    multiset<ll> st;
+    ll add = 0;
+    rep (i, Q) {
+        LONG(t);
+        if (t == 1) {
+            LONG(x);
+            st.insert(x-add);
+        } else if (t==2) {
+            LONG(x);
+            add += x;
+        } else {
+            ll x = *st.begin();
+            printf("%lld\n", x+add);
+            st.erase(st.begin());
         }
     }
+
     
 }
 
