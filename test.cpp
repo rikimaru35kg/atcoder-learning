@@ -115,48 +115,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-int solve(){
-    LONG(N);
-    VP(span, N);
-    sort(allr(span));
-    multiset<ll> rs;
-    ll t = 0;
-    while (span.size() || rs.size()) {
-        de(t)de(span)de(rs)
-        while (span.size() && span.back().first == t) {
-            rs.insert(span.back().second);
-            span.pop_back();
-        }
-        if (!rs.size()) {
-            t = span.back().first;
-            continue;
-        }
-        ll r = *rs.begin();
-        if (r < t) PNo
-        rs.erase(rs.begin());
-        ++t;
-    }
-    PYes
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(_, T){
-        solve();
+    STRING(S);
+    ll N = SIZE(S);
+    vm dp(N+1);
+    dp[0] = 1;
+    ll M = 26;
+    vvl next(N+1, vl(M, N));
+    rep (i, N) { next[i][S[i]-'a'] = i; }
+    repr (i, N-1) {
+        rep (j, M) { chmin(next[i][j], next[i+1][j]); }
     }
+    rep(i, N) {
+        rep (j, M) {
+            ll ni = next[i][j];
+            if (i != 0) if (ni == i) ni = next[i+1][j];
+            if (ni == N) continue;
+            dp[ni+1] += dp[i];
+        }
+        de(dp)
+    }
+    mint ans = 0;
+    rep (i, N) ans += dp[i+1];
+    Out(ans.val())
+
     
 }
 

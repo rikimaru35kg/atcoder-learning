@@ -640,11 +640,13 @@
 
 ## 文字列の部分列
 - SがTのある要素を抜き取って並べたものであるとき、SはTの部分列という。連続していなくてもよい。連続している場合は部分文字列という。
-- 部分列であるかどうかの判定は、Tのidxを用意し、Sの各文字に対して文字が一致するまでidxを進める（範囲外アクセス注意）
+- 部分列であるかどうかの判定は、Tのidxを用意し、Sの各文字に対して文字が一致するまでidxを進める（前から貪欲に判定）
 - idxが最後まで進んだら一致しなかったという事でアウト。
+- なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
 - !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
-- !要復習 部分列そのものの問題ではないが、部分列は先頭から貪欲に取れば判定できる性質を利用 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
+- !要復習 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
+- !要復習 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
 
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという
