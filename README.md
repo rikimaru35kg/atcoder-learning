@@ -388,10 +388,11 @@
 - 自明な貪欲は簡単だが非自明な貪欲は思いつくのが難しい
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
 - 2つ以上の変数がある場合、1つに減らせれば貪欲な選択ができる（区間スケジューリングはその代表例）
-- 区間スケジューリング類似問題は、何らかの形で範囲の形として表せれば、解法が思いつきやすい
+- 区間スケジューリング類似問題は、何らかの形で範囲の形として表せれば、解法が思いつきやすい。あるいは範囲を考える問題では貪欲法を疑ってみると良い
 - 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
 - !復習価値中（実装難しめ） キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
+- !復習価値中 区間ボール入れ [E - Packing Under Range Regulations](https://atcoder.jp/contests/abc214/tasks/abc214_e)
 - !要復習 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 - !要復習 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 

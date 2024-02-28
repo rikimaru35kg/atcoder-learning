@@ -108,8 +108,8 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
-const vi di8 = {-1, 0, 1, 1, 0, -1, -2, -2};
-const vi dj8 = {1, 1, 0, -1, -2, -2, -1, 0};
+const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
+const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
@@ -126,42 +126,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+int solve(){
+    LONG(N);
+    VP(span, N);
+    sort(allr(span));
+    multiset<ll> rs;
+    ll t = 0;
+    while (span.size() || rs.size()) {
+        de(t)de(span)de(rs)
+        while (span.size() && span.back().first == t) {
+            rs.insert(span.back().second);
+            span.pop_back();
+        }
+        if (!rs.size()) {
+            t = span.back().first;
+            continue;
+        }
+        ll r = *rs.begin();
+        if (r < t) PNo
+        rs.erase(rs.begin());
+        ++t;
+    }
+    PYes
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    vvl dist(H, vl(W, INF));
-    deque<Pr> deq;
-    auto push = [&](ll i, ll j, ll d, bool front) {
-        if (dist[i][j] <= d) return;
-        dist[i][j] = d;
-        if (front) deq.emplace_front(i, j);
-        else deq.emplace_back(i, j);
-    };
-    push(0, 0, 0, true);
-    while (deq.size()) {
-        auto [i, j] = deq.front(); deq.pop_front();
-        rep (k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            if (!isin(ni, nj, H, W)) continue;
-            if (S[ni][nj] == '.') push(ni, nj, dist[i][j], true);
-        }
-        rep (k, 8) {
-            ll ni = i + di8[k];
-            ll nj = j + dj8[k];
-            if (!isin(ni, nj, H, W)) continue;
-            rep (a, 2) rep (b, 2) {
-                ll ni2 = ni + a;
-                ll nj2 = nj + b;
-                if (!isin(ni2, nj2, H, W)) continue;
-                push(ni2, nj2, dist[i][j]+1, false);
-            }
-        }
+    LONG(T);
+    rep(_, T){
+        solve();
     }
-    Out(dist[H-1][W-1]);
     
 }
 
