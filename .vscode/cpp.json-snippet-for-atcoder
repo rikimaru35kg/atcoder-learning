@@ -347,5 +347,61 @@
       "#endif",
       "};"
     ]
+  },
+  "Snippet(prime_factorization)": {
+    "prefix": "prime_factorization",
+    "body": [
+      "//! eg) 360 = 2^3 * 3^2 * 5^1;",
+      "//! primes = {(2,3), (3,2), (5,1)}",
+      "vector<pair<long long, long long>> prime_factorization (long long n) {",
+      "    vector<pair<long long, long long>> primes;",
+      "    if (n <= 1) return primes;",
+      "    for (long long k=2; k*k<=n; ++k) {",
+      "        if (n % k != 0) continue;",
+      "        primes.emplace_back(k, 0);",
+      "        while(n % k == 0) {",
+      "            n /= k;",
+      "            primes.back().second++;",
+      "        }",
+      "    }",
+      "    if (n != 1) primes.emplace_back(n, 1);",
+      "    return primes;",
+      "}"
+    ]
+  },
+  "Snippet(sieve)": {
+    "prefix": "sieve",
+    "body": [
+      "class Sieve {",
+      "    long long n;",
+      "    vector<long long> sieve;",
+      "public:",
+      "    Sieve (long long n): n(n), sieve(n+1) {",
+      "        for (long long i=2; i<=n; ++i) {",
+      "            if (sieve[i] != 0) continue;",
+      "            sieve[i] = i;",
+      "            for (long long k=i*i; k<=n; k+=i) {",
+      "                if (sieve[k] == 0) sieve[k] = i;",
+      "            }",
+      "        }",
+      "    }",
+      "    bool is_prime(long long k) {",
+      "        if (k <= 1 || k > n) return false;",
+      "        if (sieve[k] == k) return true;",
+      "        return false;",
+      "    }",
+      "    vector<pair<long long,long long>> factorize(long long k) {",
+      "        vector<pair<long long,long long>> ret;",
+      "        if (k <= 1 || k > n) return ret;",
+      "        ret.emplace_back(sieve[k], 0);",
+      "        while (k != 1) {",
+      "            if (ret.back().first == sieve[k]) ++ret.back().second;",
+      "            else ret.emplace_back(sieve[k], 1);",
+      "            k /= sieve[k];",
+      "        }",
+      "        return ret;",
+      "    }",
+      "};"
+    ]
   }
 }
