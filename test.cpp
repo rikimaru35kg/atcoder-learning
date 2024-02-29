@@ -115,44 +115,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    vl indeg(N);
-    rep (i, M) {
-        LONG(k);
-        VLM(a, k);
-        rep (j, k-1) from[a[j]].push_back(a[j+1]);
-        rep (j, k-1) indeg[a[j+1]]++;
+    LONG(N);
+    vp AB(N);
+    rep (i, N) {
+        LONG(a);
+        AB[i].first = a;
     }
-    queue<ll> que;
-    rep (i, N) if (indeg[i]==0) que.push(i);
-    vl topol;
-    while(que.size()){
-        ll v = que.front(); que.pop();
-        topol.push_back(v);
-        for (auto nv: from[v]) {
-            indeg[nv]--;
-            if(indeg[nv] == 0) que.push(nv);
+    rep (i, N) {
+        LONG(b);
+        AB[i].second = b;
+    }
+    sort(all(AB));
+    ll M = 5000;
+    vm dp(M+1, 1);
+    mint ans = 0;
+    rep (i, N) {
+        auto [a, b] = AB[i];
+        if (a-b>=0) ans += dp[a-b];
+
+        repr (j, M+1) {
+            if (j+b > M) continue;
+            dp[j+b] += p[j];
         }
     }
-    if(SIZE(topol)==N) PYes PNo
+    Out(ans.val())
     
-
 }
 
 // ### test.cpp ###
