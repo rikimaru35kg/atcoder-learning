@@ -130,33 +130,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(pos, N);
-    sort(all(pos));
-
-    auto f = [&](ll d) {
-        ll mn = INF, mx = -INF;
-        ll j = 0;
-        rep (i, N) {
-            auto [x, y] = pos[i];
-            while (pos[j].first <= x-d) {
-                chmin(mn, pos[j].second);
-                chmax(mx, pos[j].second);
-                ++j;
-            }
-            if (mx - y >= d) return true;
-            if (y - mn >= d) return true;
-        }
-        return false;
-    };
-    ll l = 0, r = INF;
-    while (r-l>1) {
-        ll m = (l + r) / 2;
-        if (f(m)) l = m;
-        else r = m;
+    LONG(N, M);
+    vvl from(N);
+    vl indeg(N);
+    rep (i, M) {
+        LONG(k);
+        VLM(a, k);
+        rep (j, k-1) from[a[j]].push_back(a[j+1]);
+        rep (j, k-1) indeg[a[j+1]]++;
     }
-    Out(l)
+    queue<ll> que;
+    rep (i, N) if (indeg[i]==0) que.push(i);
+    vl topol;
+    while(que.size()){
+        ll v = que.front(); que.pop();
+        topol.push_back(v);
+        for (auto nv: from[v]) {
+            indeg[nv]--;
+            if(indeg[nv] == 0) que.push(nv);
+        }
+    }
+    if(SIZE(topol)==N) PYes PNo
     
+
 }
 
 // ### test.cpp ###
