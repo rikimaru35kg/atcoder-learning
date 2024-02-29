@@ -115,45 +115,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp AB(N);
-    rep (i, N) {
-        LONG(a);
-        AB[i].first = a;
+    LONG(N, M);
+    vvp from(N+1);
+    rep (i, M) {
+        LONG(l, r, x); --l;
+        from[l].emplace_back(r, r-l-x);
     }
-    rep (i, N) {
-        LONG(b);
-        AB[i].second = b;
-    }
-    sort(all(AB));
-    ll M = 5000;
-    vm dp(M+1, 1);
-    mint ans = 0;
-    rep (i, N) {
-        auto [a, b] = AB[i];
-        if (a-b>=0) ans += dp[a-b];
-
-        repr (j, M+1) {
-            if (j+b > M) continue;
-            dp[j+b] += p[j];
+    rep (i, N) from[i].emplace_back(i+1, 1);
+    rep (i, N) from[i+1].emplace_back(i, 0);
+    vl dist(N+1, INF);
+    priority_queue<Pr,vp,greater<Pr>> pque;
+    auto push = [&](ll v, ll d) {
+        if (dist[v] <= d) return;
+        dist[v] = d;
+        pque.emplace(d, v);
+    };
+    push(0, 0);
+    while(pque.size()) {
+        auto [d, v] = pque.top(); pque.pop();
+        if (dist[v] != d) continue;
+        for (auto [nv, c]: from[v]) {
+            ll nd = d + c;
+            push(nv, nd);
         }
     }
-    Out(ans.val())
+    de(dist)
+    vl ans(N);
+    rep (i, N) {
+        ans[i] = 1 - (dist[i+1] - dist[i]);
+    }
+    print_vec(ans)
     
 }
 
