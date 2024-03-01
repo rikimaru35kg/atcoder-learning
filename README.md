@@ -682,6 +682,7 @@
 - !復習価値中 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - !復習価値中 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !要復習 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
+- !要復習 ペア選び（高難易度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
