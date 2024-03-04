@@ -732,6 +732,14 @@
 - !復習価値低 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 - !要復習 典型90からの出題だが難しい [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 
+## 全方位木DP
+- まず木DPで下向き部分木の求めたい値を求める
+- 再度DFS(BFS)する際に、潜り先の値を引いた物を渡してやる事で、逆向きの求めたい値を渡せる
+- 親からの逆向きの値を貰ってしまえば、全辺の合計値が求まる
+- 実装は難し目なのでライブラリ使用を推奨
+### 例題
+- !要復習 距離総和を全頂点について求める（チャレンジ問題） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
+
 ## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
 - ただし、i=0以外ににも始点がある場合、遡るのを途中でやめなければならない
