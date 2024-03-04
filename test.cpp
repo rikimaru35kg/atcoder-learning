@@ -119,96 +119,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-// Rerooting (snuke code + small modification)
-// https://youtu.be/zG1L4vYuGrg?t=7092
-struct Rerooting {
-    struct DP {
-        // edit here (necessary data)
-        ll x, t;
-        DP(): x(0), t(0) {}  // edit here (initialization)
-        DP operator+(const DP &a) const {
-            // edit here
-            DP ret;
-            ret.x = x + a.x;
-            ret.t = t + a.t;
-            return ret;
-        }
-        DP goto_root() const {
-            // edit here
-            DP ret;
-            ret.t = t + 1;
-            ret.x = x + t;
-            return ret;
-        }
-    };
-
-    int n;
-    vector<vector<int>> to;  // 隣接リスト  
-    vector<vector<DP>> dp; // 頂点vから辺iで繋がる頂点からのdp値 
-    vector<DP> ans;  // 頂点vからの求めたい値 
-    Rerooting(int n) : n(n), to(n), dp(n), ans(n) {}  // constructor
-    void addEdge(int a, int b) {
-        to[a].push_back(b);
-        to[b].push_back(a);
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    void init() { dfs(0); bfs(0); }
-
-    DP dfs(int v, int p=-1) {  // 下向きのみ先に計算 
-        DP dpSum;  // 下向きdpの合計 
-        int deg = to[v].size();
-        dp[v].resize(deg);
-        for (int i=0; i<deg; ++i) {
-            int u = to[v][i];
-            if (u == p) continue;
-            dp[v][i] = dfs(u, v);  // uからのdpをdp[v][i]として保存（下向き） 
-                                   // 頂点uからの値であり、vはまだ含まれていない事に注意 
-            dpSum = dpSum + dp[v][i];
-        }
-        return dpSum.goto_root();  // vを根として見たときのDPに変換してreturn
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
     }
-    void bfs(int v, const DP &dpP=DP(), int p=-1) {  // 全方位 
-        int deg = to[v].size();
-        for (int i=0; i<deg; ++i) {
-            if (to[v][i] == p) dp[v][i] = dpP;  // 親から上向きのdp
-        }
-        vector<DP> dpSumL(deg+1), dpSumR(deg+1);  // 累積和 
-        for (int i=0; i<deg; ++i) dpSumL[i+1] = dpSumL[i] + dp[v][i];
-        for (int i=deg-1; i>=0; --i) dpSumR[i] = dpSumR[i+1] + dp[v][i];
-        ans[v] = dpSumL[deg].goto_root();  // 全足しして根をvとしたものに変換 
-
-        for (int i=0; i<deg; ++i) {  // 下の頂点に潜るループ 
-            int u = to[v][i];
-            if (u == p) continue;
-            DP d = dpSumL[i] + dpSumR[i+1];  // remove dp[v][i]
-            bfs(u, d.goto_root(), v);  // d.goto_root()は、頂点vを根としたときの上側dpの値 
-        }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
     }
-    DP get(int v) {return ans[v];}
-    // clip < ***.cppでの文字化け注意! 
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
 };
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    Rerooting data(N);
-    rep (i, N-1) {
-        LONGM(u, v);
-        data.addEdge(u, v);
+    LONG(N); VL(A, N);
+    CoordinateCompression cc;
+    rep (i, N) cc.add(A[i]);
+    ll M = cc.size();
+    cc.print();
+    fenwick_tree<mint> tree(M);
+    mint ans = 0;
+    mint two = 1, itwo = 1;
+    rep (i, N) {
+        ll x = cc(A[i]);
+        ans += two * tree.sum(0, x+1);
+        two *= 2;
+        itwo /= 2;
+        tree.add(x, itwo);
     }
-    data.init();
-    rep (i, N) Out(data.get(i).x);
+    Out(ans.val())
+
     
 }
 

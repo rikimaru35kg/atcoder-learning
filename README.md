@@ -351,6 +351,7 @@
 - !復習価値中 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
 
 ## 連続部分列問題
+- 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
 - キーワード：連続部分列は累積和！（もしくは尺取り法）
 - 和がKとなる連続部分列が存在するかどうかは、累積和をsetに入れておけば判定可能。S[i]+KとなるS[j]が存在するのであれば、[i,j)の和はKという事
 - 連続部分列の和がある値Kとなる個数を求めるには、Sr-Sl=Kとなれば良いので、Slをmap[Sl]=（Slとなる個数）としておけば高速に求められる
@@ -366,6 +367,7 @@
 - !復習価値高 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 - 連続部分文字列がMOD Pで0になる個数 その1 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
 - !復習価値中 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
+- !要復習 [E - LEQ](https://atcoder.jp/contests/abc221/submissions/me)
 
 ## 区間和がxの倍数
 - 区間和がxの倍数になるとは、[l,r)の累積和Sr-Sl≡0（mod x）、つまりSr≡Slなので、累積和（mod x）が等しければ良い
