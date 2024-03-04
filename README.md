@@ -941,6 +941,7 @@
 - !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
 - !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- !要復習 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
@@ -1142,6 +1143,7 @@
 ## 実装テクニック（その他）
 - ACLのdsu.size(v)はint型なので、そのまま掛け算に使うとオーバーフローして危険
 - ACLのmintはdouble型をキャストできないので注意（eg. (mint)(1e8)などとすると壊れる）
+- set<ll,greater<ll>>とすると降順setが構築可能
 - 区間[l,r)の一方だけに制限値処理をすると危険（たとえばchmax(l,x)などとするとl>rになりうる）。制限値処理は同時にかける（できればclampで）
 - 下桁から処理するwhile文（例えばwhile(x>0){x/=10}）は、x==0のコーナーケースに注意！一度も処理されない
 - multisetでfor文やcountは計算量の面で危険
