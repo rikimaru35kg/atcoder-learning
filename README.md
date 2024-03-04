@@ -996,6 +996,7 @@
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
 ### 例題
 - !復習価値中 寿司おいしさ+種類数ボーナス最大化 [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
+- !要復習 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 
 ## 偶奇に注目
 - 隣り合う要素を反転できる場合、実は任意の2要素を反転できる事と等しい

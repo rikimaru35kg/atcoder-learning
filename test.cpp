@@ -119,42 +119,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    vm g(N);
-    mint two = 2;
-    rep1 (h, N-1) {
-        g[h] = g[h-1];
-        if (h > D) continue;
-        ll hl = h;
-        ll hr = D - hl;
-        if (hr > h) continue;
-        mint l = two.pow(max(hl-1, 0LL));
-        mint r = two.pow(max(hr-1, 0LL));
-        mint now = l * r;
-        if (hl!=hr) now *= 2;
-        g[h] += now;
+    LONG(N);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    vm f(N);
-    rep1 (h, N-1) {
-        f[h] = 2*f[h-1];
-        f[h] += g[h];
-    }
-    Out((f[N-1]*2).val())
+    vl size(N);
+    vl ans(N);
+    auto dfs1 = [&](auto f, ll v, ll p=-1) -> void {
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            f(f, nv, v);
+            size[v] += size[nv];
+            ans[v] += ans[nv] + size[nv];
+        }
+        size[v]++;
+    };
+    dfs1(dfs1, 0);
+    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
+        for (auto nv: from[v]){
+            if (nv == p) continue;
+            ans[nv] = ans[v] + (N-size[nv]) - size[nv];
+            f(f, nv, v);
+        }
+    };
+    dfs2(dfs2, 0);
+    rep(i, N) Out(ans[i])
     
 }
 
