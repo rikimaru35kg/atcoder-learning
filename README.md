@@ -477,6 +477,12 @@
 - !復習価値高 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
 - !要復習 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
 
+## 完全二分木
+- 全ての葉が同じ深さを持ち、葉以外の全ての頂点が子を二つ持つ二分木を完全二分木と呼ぶ
+- 再帰的な構造を持っている為、高さhの関数f[h]はf[h-1]を用いて計算できる事が多い
+### 例題
+- !要復習 距離Dとなるパスの個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
+
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
 

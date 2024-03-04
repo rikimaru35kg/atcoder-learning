@@ -119,107 +119,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+int main () {
+    // ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    LONG(N, D);
+    vm g(N);
+    mint two = 2;
+    rep1 (h, N-1) {
+        g[h] = g[h-1];
+        if (h > D) continue;
+        ll hl = h;
+        ll hr = D - hl;
+        if (hr > h) continue;
+        mint l = two.pow(max(hl-1, 0LL));
+        mint r = two.pow(max(hr-1, 0LL));
+        mint now = l * r;
+        if (hl!=hr) now *= 2;
+        g[h] += now;
+    }
+    vm f(N);
+    rep1 (h, N-1) {
+        f[h] = 2*f[h-1];
+        f[h] += g[h];
+    }
+    Out((f[N-1]*2).val())
+    
+}
 
 // ### test.cpp ###
-struct Node {
-    int maximum;
-    int second_maximum;
-};
-
-void buildTree(vector<int>& nums, vector<Node>& tree, int start, int end, int treeNode) {
-    if (start == end) {
-        tree[treeNode].maximum = nums[start];
-        tree[treeNode].second_maximum = INT_MIN;
-        return;
-    }
-
-    int mid = (start + end) / 2;
-    buildTree(nums, tree, start, mid, 2 * treeNode);
-    buildTree(nums, tree, mid + 1, end, 2 * treeNode + 1);
-
-    tree[treeNode].maximum = max(tree[2 * treeNode].maximum, tree[2 * treeNode + 1].maximum);
-    tree[treeNode].second_maximum = min(max(tree[2 * treeNode].maximum, tree[2 * treeNode + 1].second_maximum),
-                                         max(tree[2 * treeNode + 1].maximum, tree[2 * treeNode].second_maximum));
-}
-
-void updateTree(vector<int>& nums, vector<Node>& tree, int start, int end, int treeNode, int idx, int value) {
-    if (start == end) {
-        nums[idx] = value;
-        tree[treeNode].maximum = value;
-        return;
-    }
-
-    int mid = (start + end) / 2;
-    if (idx > mid) {
-        updateTree(nums, tree, mid + 1, end, 2 * treeNode + 1, idx, value);
-    } else {
-        updateTree(nums, tree, start, mid, 2 * treeNode, idx, value);
-    }
-
-    tree[treeNode].maximum = max(tree[2 * treeNode].maximum, tree[2 * treeNode + 1].maximum);
-    tree[treeNode].second_maximum = min(max(tree[2 * treeNode].maximum, tree[2 * treeNode + 1].second_maximum),
-                                         max(tree[2 * treeNode + 1].maximum, tree[2 * treeNode].second_maximum));
-}
-
-int query(vector<Node>& tree, int start, int end, int treeNode, int left, int right) {
-    // No overlap
-    if (right < start || left > end) {
-        return 0;
-    }
-    // Complete overlap
-    if (left <= start && right >= end) {
-        return (tree[treeNode].second_maximum == tree[treeNode].maximum) ? 1 : 0;
-    }
-    // Partial overlap
-    int mid = (start + end) / 2;
-    int leftCount = query(tree, start, mid, 2 * treeNode, left, right);
-    int rightCount = query(tree, mid + 1, end, 2 * treeNode + 1, left, right);
-    return leftCount + rightCount;
-}
-
-int main() {
-    LONG(N, Q);
-    VI(nums, N);
-    int n = nums.size();
-    vector<Node> tree(4 * n);
-
-    buildTree(nums, tree, 0, n - 1, 1);
-    rep (i, Q) {
-        LONG(t);
-        if (t==1) {
-            LONG(p, x); --p;
-            updateTree(nums, tree, 0, n - 1, 1, p, x);
-        } else {
-            LONG(l, r); --l; --r;
-            int result = query(tree, 0, n - 1, 1, l, r);
-            Out(result)
-        }
-    }
-
-    // // Example query
-    // int left = 1; // starting index of the interval
-    // int right = 6; // ending index of the interval
-
-    // int result = query(tree, 0, n - 1, 1, left, right);
-    // cout << "Number of occurrences of the second largest element in the interval: " << result << endl;
-
-    // // Updating the array, for example, changing nums[3] to 8
-    // updateTree(nums, tree, 0, n - 1, 1, 3, 8);
-
-    // // Example query after update
-    // result = query(tree, 0, n - 1, 1, left, right);
-    // cout << "Number of occurrences of the second largest element in the interval after update: " << result << endl;
-
-    return 0;
-}
