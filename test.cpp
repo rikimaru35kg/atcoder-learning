@@ -83,9 +83,9 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin 
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-inline ll percent(ll a, ll b) {return (a%b+b)%b;}
-inline ll slash(ll a, ll b) {return (a-percent(a,b))/b; }
-inline ll divceil(ll a, ll b) {return slash(a+b-1, b); }
+inline ll Percent(ll a, ll b) {return (a%b+b)%b;}
+inline ll Div(ll a, ll b) {return (a-Percent(a,b))/b; }
+inline ll Divceil(ll a, ll b) {return Div(a+b-1, b); }
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
@@ -119,8 +119,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -131,13 +131,65 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+struct S { ll mn; };
+S op(S a, S b) {
+    return {min(a.mn, b.mn)};
+}
+S e() { return {INF};}
+using F = ll;
+S mapping(F f, S x) {
+    return {x.mn + f};
+} 
+F composition(F f, F g) { return f+g; }
+F id() {return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Out(divceil(-5, 3))
-    Out(divceil(-10, 3))
-    Out(divceil(-8, 3))
-    Out(divceil(-6, 3))
+    LONG(N, Q);
+    STRING(STR);
+    vector<S> v(N+1, {0});
+    ll now = 0;
+    rep (i, N) {
+        int x = 1;
+        if (STR[i]==')') x = -1;
+        now += x;
+        v[i+1].mn = now;
+    }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    auto print = [&](){
+        #ifdef __DEBUG
+        vl vec;
+        rep(i, N+1) vec.push_back(seg.get(i).mn);
+        print_vec(vec);
+        #endif
+    };
+    print();
+    rep(i, Q) {
+        LONG(t, l, r); --l; --r;
+        if (t==1) {
+            {
+                ll x = 0;
+                if (STR[l]=='(') x -= 1; else x += 1;
+                if (STR[r]=='(') x += 1; else x -= 1;
+                seg.apply(l+1, N+1, x);
+            }
+            {
+                ll x = 0;
+                if (STR[r]=='(') x -= 1; else x += 1;
+                if (STR[l]=='(') x += 1; else x -= 1;
+                seg.apply(r+1, N+1, x);
+            }
+            swap(STR[l], STR[r]);
+        } else {
+            auto mn = seg.prod(l, r+1);
+            auto ml = seg.prod(l, l+1);
+            auto mr = seg.prod(r+1, r+2);
+            if (ml.mn==mr.mn && mn.mn>=ml.mn) puts("Yes");
+            else puts("No");
+        }
+        print();
+    }
     
 }
 

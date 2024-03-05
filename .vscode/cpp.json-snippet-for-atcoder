@@ -473,5 +473,12 @@
       "    // clip < ***.cppでの文字化け注意! ",
       "};"
     ]
-  }
+  },
+  "Snippet(lazy_segtree)": {
+    "prefix": "lazy_segtree",
+    "body": [
+      "vector<S> v(N, {})"
+      "lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);"
+    ]
+  },
 }
