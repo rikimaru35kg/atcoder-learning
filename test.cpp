@@ -134,6 +134,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    Out(divceil(-5, 3))
+    Out(divceil(-10, 3))
+    Out(divceil(-8, 3))
+    Out(divceil(-6, 3))
     
 }
 

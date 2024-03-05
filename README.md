@@ -471,7 +471,7 @@
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !要復習（惜しかった!） 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - !復習価値中 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
-- !要復習 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
+- !要復習 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
@@ -529,6 +529,7 @@
 - 有向グラフの閉路判定は、トポロジカルソートができなければ閉路ありと判定可能（ソート済み配列のsize != N、ただしこの判定方式はBFS式でソートした場合のみ）
 - DAGであっても、DFSの計算量が発散する事はありえる（同じ経路を重複して数えてしまう場合）ので、同じ頂点を何度も探索しないようにする事
 ### 例題
+- 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
 - !復習価値中 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
 - !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
 
