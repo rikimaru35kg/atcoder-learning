@@ -119,8 +119,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -131,65 +131,33 @@ using namespace atcoder;
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-struct S { ll mn; };
-S op(S a, S b) {
-    return {min(a.mn, b.mn)};
-}
-S e() { return {INF};}
-using F = ll;
-S mapping(F f, S x) {
-    return {x.mn + f};
-} 
-F composition(F f, F g) { return f+g; }
-F id() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    STRING(STR);
-    vector<S> v(N+1, {0});
-    ll now = 0;
+    LONG(H, W, N);
+    vl maxr(H, -1), maxc(W, -1);
+    map<Pr,ll> idx;
+    map<ll,vp,greater<ll>> nums;
     rep (i, N) {
-        int x = 1;
-        if (STR[i]==')') x = -1;
-        now += x;
-        v[i+1].mn = now;
+        LONGM(r, c); LONG(a);
+        idx[{r,c}] = i;
+        nums[a].emplace_back(r, c);
     }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    auto print = [&](){
-        #ifdef __DEBUG
-        vl vec;
-        rep(i, N+1) vec.push_back(seg.get(i).mn);
-        print_vec(vec);
-        #endif
-    };
-    print();
-    rep(i, Q) {
-        LONG(t, l, r); --l; --r;
-        if (t==1) {
-            {
-                ll x = 0;
-                if (STR[l]=='(') x -= 1; else x += 1;
-                if (STR[r]=='(') x += 1; else x -= 1;
-                seg.apply(l+1, N+1, x);
-            }
-            {
-                ll x = 0;
-                if (STR[r]=='(') x -= 1; else x += 1;
-                if (STR[l]=='(') x += 1; else x -= 1;
-                seg.apply(r+1, N+1, x);
-            }
-            swap(STR[l], STR[r]);
-        } else {
-            auto mn = seg.prod(l, r+1);
-            auto ml = seg.prod(l, l+1);
-            auto mr = seg.prod(r+1, r+2);
-            if (ml.mn==mr.mn && mn.mn>=ml.mn) puts("Yes");
-            else puts("No");
+    vl dist(N);
+    for (auto [a, vec]: nums) {
+        de(a)de(vec)
+        for (auto [r, c]: vec) {
+            ll now = max(maxr[r], maxc[c]) + 1;
+            chmax(dist[idx[{r, c}]], now);
         }
-        print();
+        for (auto [r, c]: vec) {
+            chmax(maxr[r], dist[idx[{r,c}]]);
+            chmax(maxc[c], dist[idx[{r,c}]]);
+        }
+        de(dist)
+        de(maxr)de(maxc)
     }
+    rep (i, N) Out(dist[i])
     
 }
 

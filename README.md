@@ -528,10 +528,12 @@
 - DFS式: あるいはDFSの帰りがけ順を求め、その逆順としても良い（行きがけ順でseen配列を管理して、再度訪れないようにする事）
 - 有向グラフの閉路判定は、トポロジカルソートができなければ閉路ありと判定可能（ソート済み配列のsize != N、ただしこの判定方式はBFS式でソートした場合のみ）
 - DAGであっても、DFSの計算量が発散する事はありえる（同じ経路を重複して数えてしまう場合）ので、同じ頂点を何度も探索しないようにする事
+- DAGはサイクルがないので、後ろから辿ると最長経路問題を解くことが可能
 ### 例題
 - 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
 - !復習価値中 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
 - !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
+! 要復習 マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 
 ## Functional graph
 - 全頂点からの出次数が1のグラフをfunctional graphと呼ぶ
