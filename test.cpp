@@ -119,45 +119,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, N);
-    vl maxr(H, -1), maxc(W, -1);
-    map<Pr,ll> idx;
-    map<ll,vp,greater<ll>> nums;
+    STRING(S);
+    reverse(all(S));
+    ll N = SIZE(S);
+    if (N==1) {
+        Out(S[0]-'0')
+        return 0;
+    }
+    mint ans = 0;
+    mint c = mint(2).pow(N-1);
     rep (i, N) {
-        LONGM(r, c); LONG(a);
-        idx[{r,c}] = i;
-        nums[a].emplace_back(r, c);
+        int x = S[i] - '0';
+        ans += x * c;
+        c *= 10;
+        c /= 2;
+        c += mint(2).pow(N-2);
     }
-    vl dist(N);
-    for (auto [a, vec]: nums) {
-        de(a)de(vec)
-        for (auto [r, c]: vec) {
-            ll now = max(maxr[r], maxc[c]) + 1;
-            chmax(dist[idx[{r, c}]], now);
-        }
-        for (auto [r, c]: vec) {
-            chmax(maxr[r], dist[idx[{r,c}]]);
-            chmax(maxc[c], dist[idx[{r,c}]]);
-        }
-        de(dist)
-        de(maxr)de(maxc)
-    }
-    rep (i, N) Out(dist[i])
+    Out(ans.val())
     
 }
 

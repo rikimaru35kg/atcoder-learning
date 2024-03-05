@@ -533,7 +533,7 @@
 - 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
 - !復習価値中 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
 - !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
-! 要復習 マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
+! 要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 
 ## Functional graph
 - 全頂点からの出次数が1のグラフをfunctional graphと呼ぶ
@@ -1094,6 +1094,7 @@
 - !要復習 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 - !要復習 駒置きコストの総和（難しいが良問） [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
+- !要復習 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 
 ## 殆どOKなゲーム
 - 殆どの手はOKだが、最後の方だけ気を付けないといけないゲーム
