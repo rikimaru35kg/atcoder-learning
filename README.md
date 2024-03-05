@@ -462,6 +462,7 @@
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
 - xの最遠点yの最遠点zとすると、yとzの距離が直径となる
+- 任意の頂点vからの最遠点は、yかzのどちらかである
 - ある要素からの部分木サイズをxとすると、上側部分木のサイズは(N-x)と求まる
 - 連結とは限らない閉路を含まないグラフを森という（木が幾つも含まれたグラフ）
 - 森の連結成分数は頂点数 - 辺の数
@@ -470,6 +471,7 @@
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !要復習（惜しかった!） 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - !復習価値中 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
+- !要復習 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
@@ -734,7 +736,7 @@
 - !復習価値低 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 - !要復習 典型90からの出題だが難しい [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 
-## 全方位木DP
+## 全方位木DP（難しい全方位は青コーダーになるには不要と思われる）
 - まず木DPで下向き部分木の求めたい値を求める
 - 再度DFS(BFS)する際に、潜り先の値を引いた物を渡してやる事で、逆向きの求めたい値を渡せる
 - 親からの逆向きの値を貰ってしまえば、全辺の合計値が求まる

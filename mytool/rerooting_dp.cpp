@@ -3,6 +3,7 @@ using namespace std;
 
 // Rerooting (snuke code + small modification)
 // https://youtu.be/zG1L4vYuGrg?t=7092
+// 注意: 辺や頂点に情報がある場合は使えない!!! 
 struct Rerooting {
     struct DP {
         // edit here (necessary data)
