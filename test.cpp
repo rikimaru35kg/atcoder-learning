@@ -119,38 +119,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+using p2 = pair<Pr,Pr>;
+
+bool comppr (Pr x, Pr y) {
+    auto [a, b] = x;
+    auto [c, d] = y;
+    return b*c < a*d;
+}
+bool comp(p2 x, p2 y) {
+    return comppr(x.first, y.first);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    reverse(all(S));
-    ll N = SIZE(S);
-    if (N==1) {
-        Out(S[0]-'0')
-        return 0;
-    }
-    mint ans = 0;
-    mint c = mint(2).pow(N-1);
+    LONG(N);
+    vector<p2> plot(N);
     rep (i, N) {
-        int x = S[i] - '0';
-        ans += x * c;
-        c *= 10;
-        c /= 2;
-        c += mint(2).pow(N-2);
+        LONG(x, y);
+        plot[i].first = {x-1, y};
+        plot[i].second = {x, y-1};
     }
-    Out(ans.val())
+    sort(allr(plot), comp);
+    ll ans = 0;
+    while (plot.size()) {
+        auto [p1, p2] = plot.back(); plot.pop_back();
+        ++ans;
+        while (plot.size() && comppr(plot.back().second, p1)) plot.pop_back();
+    }
+    Out(ans)
+
     
 }
 
