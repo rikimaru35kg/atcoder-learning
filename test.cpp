@@ -130,36 +130,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using p2 = pair<Pr,Pr>;
-
-bool comppr (Pr x, Pr y) {
-    auto [a, b] = x;
-    auto [c, d] = y;
-    return b*c < a*d;
-}
-bool comp(p2 x, p2 y) {
-    return comppr(x.first, y.first);
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<p2> plot(N);
-    rep (i, N) {
-        LONG(x, y);
-        plot[i].first = {x-1, y};
-        plot[i].second = {x, y-1};
-    }
-    sort(allr(plot), comp);
-    ll ans = 0;
-    while (plot.size()) {
-        auto [p1, p2] = plot.back(); plot.pop_back();
-        ++ans;
-        while (plot.size() && comppr(plot.back().second, p1)) plot.pop_back();
-    }
-    Out(ans)
-
     
 }
 

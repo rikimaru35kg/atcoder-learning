@@ -516,12 +516,6 @@
 ### 例題
 - !要復習 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
-## なもり木（pseudo tree）
-- 頂点数と辺の数が一致する（実際は木ではない）
-- 閉ループがただ一つ存在する
-- functional graph（任意の頂点に対して出次数が1の有向グラフが描ける）
-- UnionFind木を作成後、各辺・各頂点に対して親にカウントしていき、一致していればなもり木である
-
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
 - DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
 - その順番であれば逆戻りのない並べ方に変える事をトポロジカルソートと呼ぶ
@@ -536,10 +530,15 @@
 - !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
 ! 要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 
-## Functional graph
-- 全頂点からの出次数が1のグラフをfunctional graphと呼ぶ
-- functional graphは必ずなもり木の形となる（というよりどこから辿ってもサイクルに流入するグラフ）
+## なもりグラフ（pseudo tree）とFunctional graph
+- 頂点数と辺の数が一致する（実際は木ではない）
+- 閉ループがただ一つ存在する
+- functional graph（任意の頂点に対して出次数が1の有向グラフが描ける）
+- UnionFind木を作成後、各辺・各頂点に対して親にカウントしていき、一致していればなもりグラフである
+- functional graphは必ずなもりグラフの形となる（というよりどこから辿ってもサイクルに流入するグラフ）
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
+### 例題
+- 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
 
 ## 強連結成分分解（SCC[Strongly Connected Components]分解）
 - 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
