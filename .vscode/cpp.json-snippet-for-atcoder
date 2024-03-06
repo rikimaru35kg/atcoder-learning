@@ -477,8 +477,21 @@
   "Snippet(lazy_segtree)": {
     "prefix": "lazy_segtree",
     "body": [
-      "vector<S> v(N, {})"
+      "vector<S> v(N, {});"
       "lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);"
     ]
+  },
+  "Snippet(binary_search)": {
+    "prefix": "binary_search",
+    "body": [
+      "long long binary_search (long long ok, long long ng, auto f) {",
+      "    while (llabs(ok-ng) > 1) {",
+      "        long long m = (ok + ng) / 2;",
+      "        if (f(m)) ok = m;",
+      "        else ng = m;",
+      "    }",
+      "    return ok;",
+      "}",
+    ],
   },
 }

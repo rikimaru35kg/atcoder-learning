@@ -130,10 +130,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, K); VL(A, N);
+
+    auto f = [&](ll x) {
+        ll cnt = 0;
+        rep (i, N) { cnt += min(x, A[i]); }
+        return cnt/K >= x;
+    };
+    ll ans = binary_search(0, INF, f);
+    Out(ans)
     
 }
 
