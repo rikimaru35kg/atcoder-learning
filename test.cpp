@@ -134,19 +134,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S); LONG(K);
-    ll N = SIZE(S);
-    vl cnt(N+1);
+    LONG(N, D);
+    vp walls;
     rep (i, N) {
-        int x = 0;
-        if (S[i]=='.') x = 1;
-        cnt[i+1] = cnt[i] + x;
+        LONG(l, r);
+        walls.emplace_back(r, l);
     }
-    ll r = 0;
+    sort(all(walls));
     ll ans = 0;
-    rep (l, N) {
-        while (r<N && cnt[r+1] - cnt[l] <= K) { ++r; }
-        chmax(ans, r-l);
+    ll t = -INF;
+    for (auto [r, l]: walls) {
+        if (l <= t) continue;
+        de(t)de(l)de(r)
+        ++ans;
+        t = r + D - 1;
+        de(t)
     }
     Out(ans)
     
