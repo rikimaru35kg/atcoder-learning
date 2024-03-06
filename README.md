@@ -1007,6 +1007,7 @@
 ### 例題
 - !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - !復習価値低 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+- !要復習 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）

@@ -134,21 +134,13 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    vp walls;
-    rep (i, N) {
-        LONG(l, r);
-        walls.emplace_back(r, l);
-    }
-    sort(all(walls));
+    LONG(N);
     ll ans = 0;
-    ll t = -INF;
-    for (auto [r, l]: walls) {
-        if (l <= t) continue;
-        de(t)de(l)de(r)
-        ++ans;
-        t = r + D - 1;
-        de(t)
+    for (ll i=1; i<=N;) {
+        ll x = N/i;
+        ll num = N/x - N/(x+1);
+        ans += num * x;
+        i += num;
     }
     Out(ans)
     
