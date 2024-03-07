@@ -950,6 +950,7 @@
 - xに等しい値が存在する場合の実装に注意
 ### 例題
 - !復習価値低 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
+- !復習価値中 基本 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - !要復習 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 - !要復習 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
 
