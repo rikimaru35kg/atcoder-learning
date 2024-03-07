@@ -131,71 +131,29 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,vl> mp;
-    CoordinateCompression cc;
-    VL(A, N); VL(B, N);
-    rep (i, N) {
-        mp[A[i]].push_back(B[i]);
-        cc.add(B[i]);
-    }
-    ll M = cc.size();
-    fenwick_tree<int> bit(M);
-    ll ans = 0;
-    for (auto [a, vec]: mp) {
-        for (auto b: vec) {
-            b = cc(b);
-            bit.add(b, 1);
+    LONG(H, W, K);
+    LONG(x1, y1, x2, y2);
+    vvm dp(2, vm(2));
+    dp[x1==x2][y1==y2] = 1;
+    rep (_, K) {
+        vvm p(2, vm(2));
+        swap(p, dp);
+        rep (j, 2) {
+            dp[0][j] += p[0][j] * (H-2);
+            dp[1][j] += p[0][j];
+            dp[0][j] += p[1][j] * (H-1);
         }
-        for (auto b: vec) {
-            b = cc(b);
-            ans += bit.sum(b, M);
+        rep (i, 2) {
+            dp[i][0] += p[i][0] * (W-2);
+            dp[i][1] += p[i][0];
+            dp[i][0] += p[i][1] * (W-1);
         }
     }
-    Out(ans)
+    mint ans = dp[1][1];
+    Out(ans.val())
     
 }
 

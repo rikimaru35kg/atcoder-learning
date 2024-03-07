@@ -1235,3 +1235,4 @@
 
 # 上記以外でもう一度解くべき問題（＝間違えた問題）
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
+- [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
