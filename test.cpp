@@ -64,6 +64,7 @@ using cd = complex<double>;
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
+#define abs(x) llabs(x)
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -134,21 +135,19 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    VL(A, N); VL(B, N);
-    vl dp(1<<N, INF);
-    dp[0] = 0;
-    rep (s, 1<<N) {
-        rep(i, N) {
-            if (s>>i&1) continue;
-            ll num = pcnt(s);
-            ll ms = s>>(i+1);
-            ll nflip = pcnt(ms);
-            ll ns = s | 1<<i;
-            chmin(dp[ns], dp[s] + nflip*Y + llabs(B[num]-A[i])*X);
-        }
+    LONG(N, K); VL(A, N);
+    ll sum = 0;
+    ll ans = 0;
+    map<ll,ll> mp;
+    mp[0] = 1;
+    rep (i, N) {
+        sum += A[i];
+        de(sum)
+        ans += mp[sum-K];
+        de(ans)
+        mp[sum]++;
     }
-    Out(dp[(1<<N)-1])
+    Out(ans)
     
 }
 
