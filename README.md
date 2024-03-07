@@ -1235,6 +1235,7 @@
 - 分野別　初中級者が解くべき過去問精選 100 問: （問1,10,17,18,24-25,28,32,34-38,44-46,48-49,53,56,60,64,66,68,70,82,85,92,94はatcoderでないためスキップ。52,75,84は難しい為スキップ） ->後ほど全問解いたon2024/1/23
 - 1問: [N Slimes](https://atcoder.jp/contests/dp/tasks/dp_n) -> 後ほどEDPC Sまで全問
 
-# 上記以外でもう一度解くべき問題（＝間違えた問題）
+# 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
+- [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
