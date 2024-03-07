@@ -735,6 +735,7 @@
 - !要復習 XOR（ちゃんと考えないとハマる） [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
 - !要復習 XOR2 [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - !復習価値中 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
+- !復習価値中 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
 
 ## 木DP
 - DFSをしながら部分木に対する処理を実行していく
@@ -1000,7 +1001,7 @@
 ### 例題
 - !復習価値中 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 
-## 実は計算量がlogに落ちる問題
+## 計算量がlog(N)やsqrt(N)に落ちる問題
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（一般的なマージテク）
