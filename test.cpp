@@ -119,41 +119,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    LONG(x1, y1, x2, y2);
-    vvm dp(2, vm(2));
-    dp[x1==x2][y1==y2] = 1;
-    rep (_, K) {
-        vvm p(2, vm(2));
-        swap(p, dp);
-        rep (j, 2) {
-            dp[0][j] += p[0][j] * (H-2);
-            dp[1][j] += p[0][j];
-            dp[0][j] += p[1][j] * (H-1);
-        }
-        rep (i, 2) {
-            dp[i][0] += p[i][0] * (W-2);
-            dp[i][1] += p[i][0];
-            dp[i][0] += p[i][1] * (W-1);
+    LONG(N, X, Y);
+    VL(A, N); VL(B, N);
+    vl dp(1<<N, INF);
+    dp[0] = 0;
+    rep (s, 1<<N) {
+        rep(i, N) {
+            if (s>>i&1) continue;
+            ll num = pcnt(s);
+            ll ms = s>>(i+1);
+            ll nflip = pcnt(ms);
+            ll ns = s | 1<<i;
+            chmin(dp[ns], dp[s] + nflip*Y + llabs(B[num]-A[i])*X);
         }
     }
-    mint ans = dp[1][1];
-    Out(ans.val())
+    Out(dp[(1<<N)-1])
     
 }
 

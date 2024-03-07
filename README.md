@@ -722,6 +722,7 @@
 - !要復習 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
 - !復習価値中 bit DPである事を見抜くのが難しい [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
 - !要復習 bit DPである事を見抜くのが難しい2 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
+- !要復習 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 
 ## 桁DP（Digit DP）
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
