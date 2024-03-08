@@ -990,13 +990,20 @@
 - !要復習 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 
-# 行列累乗
+# 行列
+
+## 行列累乗
 - 行列累乗でも繰り返し2乗法が使える
 - 隣接行列（辺のコストは全て1）をK乗すると、要素(i,j)はiからjへ長さKで辿り着けるパスの個数となる
 - こうなる理由はEDPC R - Walkの解説参照
 - Nが50以下（本当？100ぐらいでも大丈夫な気がするが…）、Kがかなり大きい（10^9～10^18）の場合、行列累乗が使える可能性あり
 ### 例題
 - !復習価値高 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
+
+## 掃き出し方
+- 基底を次々に追加する実装が分かりやすい
+### 例題
+- !要復習 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
 
 # その他典型
 ## ヒストグラム最大長方形（スパン）

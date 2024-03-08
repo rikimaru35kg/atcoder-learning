@@ -131,77 +131,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-void solve1(ll N, vl &A) {
-    auto f = [&](double x) {
-        vd dp(2, -INF);
-        dp[1] = 0;
-        rep (i, N) {
-            vd p(2, -INF);
-            swap(p, dp);
-            if(p[0]!=-INF) chmax(dp[1], p[0] + A[i] - x);
-            if(p[1]!=-INF) chmax(dp[0], p[1]);
-            if(p[1]!=-INF) chmax(dp[1], p[1] + A[i] - x);
-        }
-        double fin = max(dp[0], dp[1]);
-        if (fin >= 0) return true;
-        return false;
-    };
-    double l = 0, r = 1e9+10;
-    rep(_, 100) {
-        double m = (l+r)/2;
-        if (f(m)) l = m;
-        else r = m;
-    }
-    printf("%.10f\n", l);
-}
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
-
-void solve2(ll N, vl &A) {
-    auto f = [&](ll x) {
-        vl B = A;
-        rep (i, N) {
-            if (B[i] >= x) B[i] = 1;
-            else B[i] = 0;
-        }
-        auto vecp = run_length_encoding(B);
-
-        ll cnt1 = 0, cnt0 = 0;
-        for (auto [z, n]: vecp) {
-            if (z==1) cnt1 += n;
-            else cnt0 += n/2;
-        }
-        if (cnt1 > cnt0) return true;
-        else return false;
-    };
-    ll ans = binary_search(0, INF, f);
-    Out(ans)
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    solve1(N, A);
-    solve2(N, A);
+    LONG(N); VL(C, (1<<N)-1);
+    vp p;
+    rep1 (i, (1<<N)-1) { p.emplace_back(C[i-1], i); }
+    sort(all(p));
+    ll ans = 0;
+    vl base(N);
+    for (auto [c, x]: p) {
+        de(x)
+        rep (i, N) { if (x>>i&1) x ^= base[i]; }
+        if (x == 0) continue;
+        ans += c;
+        rep (i, N) {
+            if (x>>i&1) {
+                base[i] = x;
+                break;
+            }
+        }
+        de(base)
+    }
+    Out(ans)
     
 }
 
