@@ -494,4 +494,21 @@
       "}",
     ],
   },
+  "Snippet(run_length_encoding)": {
+    "prefix": "run_length_encoding",
+    "body": [
+      "vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {",
+      "    vector<pair<long long,long long>> ret;",
+      "    long long last_num = v[0]+1;",
+      "    for (auto x: v) {",
+      "        if (x != last_num) ret.emplace_back(x, 1);",
+      "        else ++ret.back().second;",
+      "        last_num = x;",
+      "    }",
+      "    return ret;",
+      "}",
+      "",
+    ],
+    "description": "Your description.",
+  },
 }

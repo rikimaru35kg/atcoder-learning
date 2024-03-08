@@ -12,7 +12,7 @@ vector<pair<char,long long>> run_length_encoding(string &s) {
     return ret;
 }
 
-vector<pair<long long,long long>> run_length_encoding(vector<long long> v) {
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
     vector<pair<long long,long long>> ret;
     long long last_num = v[0]+1;
     for (auto x: v) {
