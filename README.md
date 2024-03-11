@@ -617,6 +617,7 @@
 - 特に、一つずつの遷移ではないDPが苦手なので、何を状態にできるかよく考えること
 ### 例題
 - !要復習 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
+- !要復習 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 
 ## DP実装特殊系問題
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
@@ -704,7 +705,7 @@
 - !復習価値中 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - !復習価値中 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !要復習 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
-- !要復習 ペア選び（高難易度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f)
+- !要復習 ペア選び（高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
@@ -937,6 +938,13 @@
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
 ### 例題
 - !復習価値低 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
+
+## 双方向リスト
+- 要素の前後関係だけ保持するリスト
+- ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
+- 指定要素の削除もO(1)
+### 例題
+- !要復習 基本 [https://atcoder.jp/contests/abc344/tasks/abc344_f](https://atcoder.jp/contests/abc344/tasks/abc344_e)
 
 
 # 2変数問題
