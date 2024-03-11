@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### try.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -131,47 +131,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using ms = multiset<ll, greater<ll>>;
 
+using ms = multiset<ll, greater<ll>>;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(X, N);
-    ll M = 20;
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    vvp query(N);
-    rep (i, Q) {
-        LONGM(v, k);
-        query[v].emplace_back(k, i);
-    }
-    vl ans(Q);
-    auto dfs = [&](auto f, ll v, ll p=-1) -> ms {
-        ms ret;
-        ret.insert(X[v]);
-        for (auto nv: from[v]) {
-            if (p==nv) continue;
-            ms st = f(f, nv, v);
-            for (auto x: st) ret.insert(x);
-            while(SIZE(ret)>M) {
-                ret.erase(--ret.end());
-            }
-        }
-        for (auto [k, i]: query[v]) {
-            auto it = ret.begin();
-            rep(j, k) ++it;
-            ans[i] = *it;
-        }
-        return ret;
-    };
-    dfs(dfs, 0);
-    for (auto x: ans) Out(x)
+    ms st;
+    st.insert(1);
+    st.insert(1);
+    st.insert(1);
+    st.insert(1);
+    st.insert(2);
+    auto it = --st.end();
+    st.erase(it);
+    // Out(*st.begin())
+    // st.erase(st.end());
+    // Out(*st.begin())
+
     
 }
 
-// ### test.cpp ###
+// ### try.cpp ###
