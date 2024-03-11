@@ -122,38 +122,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvvm dp(M+2, vvm(M+2, vm(M+2)));
-    dp[M+1][M+1][M+1] = 1;
-    rep (i, N) {
-        vvvm p(M+2, vvm(M+2, vm(M+2)));
-        swap(p, dp);
-        rep1 (a, M+1) rep1(b, M+1) rep1 (c, M+1) {
-            rep1 (x, M) {
-                if (x<=a) dp[x][b][c] += p[a][b][c];
-                else if (x<=b) dp[a][x][c] += p[a][b][c];
-                else if (x<=c) dp[a][b][x] += p[a][b][c];
-            }
-        }
+    LONG(N, Q);
+    dsu uf(N+1);
+    rep (i, Q) {
+        LONG(l, r); --l;
+        uf.merge(l, r);
     }
-    mint ans = 0;
-    rep1 (a, M) rep1(b, M) rep1 (c, M) {
-        ans += dp[a][b][c];
-    }
-    Out(ans.val())
+    if (uf.same(0, N)) PYes PNo
     
 }
 
