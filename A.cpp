@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### A.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -135,27 +135,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(C, (1<<N)-1);
-    vp p;
-    rep1 (i, (1<<N)-1) { p.emplace_back(C[i-1], i); }
-    sort(all(p));
-    ll ans = 0;
-    vl base(N);
-    for (auto [c, x]: p) {
-        de(x)
-        rep (i, N) { if (x>>i&1) x ^= base[i]; }
-        if (x == 0) continue;
-        ans += c;
-        rep (i, N) {
-            if (x>>i&1) {
-                base[i] = x;
-                break;
-            }
-        }
-        de(base)
+    STRING(S);
+    ll  N = SIZE(S);
+    ll l = -1, r = -1;
+    rep (i, N) {
+        if (l == -1 && S[i] == '|') l = i;
+        if (l != -1 && S[i] == '|') r = i;
+    }
+    string ans;
+    rep (i, N) {
+        if (i>=l && i<=r) continue;
+        ans.push_back(S[i]);
     }
     Out(ans)
     
 }
 
-// ### test.cpp ###
+// ### A.cpp ###
