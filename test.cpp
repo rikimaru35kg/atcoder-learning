@@ -41,8 +41,8 @@ using cd = complex<double>;
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
-#define Out(x) {cout << (x) << endl;}
-#define Outd(x) {printf("%.10f",x);cout<<endl;}
+#define Out(x) {cout << (x) << '\n';}
+#define Outd(x) {printf("%.10f",x);cout<<'\n';}
 #define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -132,31 +132,52 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-void solve() {
-    LONG(N, M);
-    ll a = 0, b = 0;
-    ll ans = -INF;
-    rep (i, N) {
-        LONG(x, y);
-        if (i==0) chmax(ans, a + x);
-        if (i!=0 && x<0 && b>=0) {
-            ll k = b/(-x);
-            chmin(k, y);
-            ll _a = a + b*k + x*k*(k+1)/2;
-            chmax(ans, _a);
-        }
-        a += b*y + x*y*(y+1)/2;
-        b += x*y;
-        chmax(ans, a);
-    }
-    Out(ans)
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep (i, T) solve();
+    LONG(Q);
+    multiset<ll> st;
+    rep (i, Q) {
+        LONG(t);
+        if (t==1) {
+            LONG(x);
+            st.insert(x);
+        } else if (t==2) {
+            LONG(x, k);
+            if (SIZE(st)<k) Out(-1)
+            else {
+                auto it = st.upper_bound(x);
+                bool ok = true;
+                rep (j, k) {
+                    if (it==st.begin()) {
+                        ok = false;
+                        break;
+                    }
+                    --it;
+                }
+                if (!ok) Out(-1)
+                else Out(*it)
+            }
+        } else {
+            LONG(x, k);
+            if (SIZE(st)<k) Out(-1)
+            else {
+                auto it = st.lower_bound(x);
+                if (it == st.end()) {Out(-1) continue;}
+                bool ok = true;
+                rep (j, k-1) {
+                    ++it;
+                    if (it == st.end()) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (!ok) Out(-1)
+                else Out(*it)
+            }
+        }
+        de(st)
+    }
     
 }
 

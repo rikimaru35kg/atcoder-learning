@@ -1196,6 +1196,12 @@
 - 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる
 - 構造体定義の直下でvectorのサイズを定義すると理由不明だがエラーが出る。初期値関連はコンストラクタで初期化する必要がある
 
+## set/multiset
+- set.lower_bound(x), set.upper_bound(x)が使えるが、範囲外に注意する事
+- まずit == set.end()となったら範囲外。後ろに進めるのはit!=st.end()の時、前に進めるのはit!=set.begin()の時、最終的にit!=set.end()である事にも注意したい
+### 例題
+- [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
+
 ## TLE(Time Limit Exceeded)
 - 要素数Nの初期化はO(N)の計算量が必要なことに注意！（次数が3以下のグラフを距離3までBFSする際、BFSのループ回数は少ないが、visited(N)としてしまうとO(N)かかるので注意）
 
