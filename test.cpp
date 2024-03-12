@@ -132,37 +132,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+void solve() {
+    LONG(N, M);
+    ll a = 0, b = 0;
+    ll ans = -INF;
+    rep (i, N) {
+        LONG(x, y);
+        if (i==0) chmax(ans, a + x);
+        if (i!=0 && x<0 && b>=0) {
+            ll k = b/(-x);
+            chmin(k, y);
+            ll _a = a + b*k + x*k*(k+1)/2;
+            chmax(ans, _a);
+        }
+        a += b*y + x*y*(y+1)/2;
+        b += x*y;
+        chmax(ans, a);
+    }
+    Out(ans)
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep (i, N-1) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
-    }
-    vp ans(N);
-    ll leaf = 0;
-    auto dfs = [&](auto f, ll v, ll p=-1) -> Pr {
-        ll mn = INF, mx = -INF;
-        for (auto nv: from[v]) {
-            if (nv == p) continue;
-            auto [a, b] = f(f, nv, v);
-            chmin(mn, a);
-            chmax(mx, b);
-        }
-        if (mn == INF) {
-            ++leaf;
-            ans[v] = {leaf, leaf};
-            return {leaf, leaf};
-        } else {
-            ans[v] = {mn, mx};
-            return {mn, mx};
-        }
-    };
-    dfs(dfs, 0);
-    for (auto [a, b]: ans) printf("%lld %lld\n", a, b);
+    LONG(T);
+    rep (i, T) solve();
     
 }
 

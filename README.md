@@ -1272,3 +1272,4 @@
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
 - [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
+- [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
