@@ -120,8 +120,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -131,46 +131,62 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-using ms = multiset<ll, greater<ll>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(X, N);
-    ll M = 20;
-    vvl from(N);
-    rep (i, N-1) {
+    LONG(N, M);
+    VL(D, N);
+    if (accumulate(all(D), 0LL) != 2*(N-1)) {
+        Out(-1) return 0;
+    }
+    dsu uf(N);
+    rep(i, M) {
         LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    vvp query(N);
-    rep (i, Q) {
-        LONGM(v, k);
-        query[v].emplace_back(k, i);
-    }
-    vl ans(Q);
-    auto dfs = [&](auto f, ll v, ll p=-1) -> ms {
-        ms ret;
-        ret.insert(X[v]);
-        for (auto nv: from[v]) {
-            if (p==nv) continue;
-            ms st = f(f, nv, v);
-            for (auto x: st) ret.insert(x);
-            while(SIZE(ret)>M) {
-                ret.erase(--ret.end());
-            }
+        if (uf.same(a, b)) {
+            Out(-1) return 0;
         }
-        for (auto [k, i]: query[v]) {
-            auto it = ret.begin();
-            rep(j, k) ++it;
-            ans[i] = *it;
+        uf.merge(a, b);
+        D[a]--; D[b]--;
+        if (D[a]<0 || D[b]<0) {Out(-1) return 0;}
+    }
+    vvp itdeg(N);
+    vl ndeg(N);
+    rep (i, N) {
+        if (D[i]==0) continue;
+        ll l = uf.leader(i);
+        itdeg[l].emplace_back(i, D[i]);
+        ndeg[l] += D[i];
+    }
+    queue<ll> que;
+    vl mdegs;
+    rep (i, N) {
+        if (ndeg[i]==1) que.push(i);
+        if (ndeg[i]>1) mdegs.push_back(i);
+    }
+    vp ans;
+    while(que.size()) {
+        ll l = que.front(); que.pop();
+        ll cl;
+        bool both1 = false;
+        if (SIZE(mdegs)) cl = mdegs.back();
+        else {cl = que.front(); que.pop(); both1 = true;}
+        auto [v, _] = itdeg[l].back();
+        auto [cv, d] = itdeg[cl].back();
+        ans.emplace_back(v, cv);
+        if (d >= 2) itdeg[cl].back().second--;
+        if (d == 1) itdeg[cl].pop_back();
+        ndeg[cl]--;
+        if (ndeg[cl]==1 && !both1) {
+            que.push(cl); mdegs.pop_back();
         }
-        return ret;
-    };
-    dfs(dfs, 0);
-    for (auto x: ans) Out(x)
+    }
+    if (SIZE(ans)!=N-M-1) {Out(-1)}
+    else {
+        for (auto [a, b]: ans) {
+            printf("%lld %lld\n", a+1, b+1);
+        }
+    }
     
 }
 
