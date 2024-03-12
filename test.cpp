@@ -120,8 +120,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -135,58 +135,34 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(D, N);
-    if (accumulate(all(D), 0LL) != 2*(N-1)) {
-        Out(-1) return 0;
+    LONG(N);
+    vvl from(N);
+    rep (i, N-1) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    dsu uf(N);
-    rep(i, M) {
-        LONGM(a, b);
-        if (uf.same(a, b)) {
-            Out(-1) return 0;
+    vp ans(N);
+    ll leaf = 0;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> Pr {
+        ll mn = INF, mx = -INF;
+        for (auto nv: from[v]) {
+            if (nv == p) continue;
+            auto [a, b] = f(f, nv, v);
+            chmin(mn, a);
+            chmax(mx, b);
         }
-        uf.merge(a, b);
-        D[a]--; D[b]--;
-        if (D[a]<0 || D[b]<0) {Out(-1) return 0;}
-    }
-    vvp itdeg(N);
-    vl ndeg(N);
-    rep (i, N) {
-        if (D[i]==0) continue;
-        ll l = uf.leader(i);
-        itdeg[l].emplace_back(i, D[i]);
-        ndeg[l] += D[i];
-    }
-    queue<ll> que;
-    vl mdegs;
-    rep (i, N) {
-        if (ndeg[i]==1) que.push(i);
-        if (ndeg[i]>1) mdegs.push_back(i);
-    }
-    vp ans;
-    while(que.size()) {
-        ll l = que.front(); que.pop();
-        ll cl;
-        bool both1 = false;
-        if (SIZE(mdegs)) cl = mdegs.back();
-        else {cl = que.front(); que.pop(); both1 = true;}
-        auto [v, _] = itdeg[l].back();
-        auto [cv, d] = itdeg[cl].back();
-        ans.emplace_back(v, cv);
-        if (d >= 2) itdeg[cl].back().second--;
-        if (d == 1) itdeg[cl].pop_back();
-        ndeg[cl]--;
-        if (ndeg[cl]==1 && !both1) {
-            que.push(cl); mdegs.pop_back();
+        if (mn == INF) {
+            ++leaf;
+            ans[v] = {leaf, leaf};
+            return {leaf, leaf};
+        } else {
+            ans[v] = {mn, mx};
+            return {mn, mx};
         }
-    }
-    if (SIZE(ans)!=N-M-1) {Out(-1)}
-    else {
-        for (auto [a, b]: ans) {
-            printf("%lld %lld\n", a+1, b+1);
-        }
-    }
+    };
+    dfs(dfs, 0);
+    for (auto [a, b]: ans) printf("%lld %lld\n", a, b);
     
 }
 
