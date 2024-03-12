@@ -744,6 +744,7 @@
 - !要復習 XOR2 [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - !復習価値中 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 - !復習価値中 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
+- !復習価値中 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
 ## 木DP
 - DFSをしながら部分木に対する処理を実行していく
