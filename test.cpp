@@ -135,48 +135,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    STRING(S);
+    vl A;
+    for (auto c: S) {
+        ll x = c - 'A';
+        A.push_back(x);
+    }
     LONG(Q);
-    multiset<ll> st;
     rep (i, Q) {
-        LONG(t);
-        if (t==1) {
-            LONG(x);
-            st.insert(x);
-        } else if (t==2) {
-            LONG(x, k);
-            if (SIZE(st)<k) Out(-1)
-            else {
-                auto it = st.upper_bound(x);
-                bool ok = true;
-                rep (j, k) {
-                    if (it==st.begin()) {
-                        ok = false;
-                        break;
-                    }
-                    --it;
-                }
-                if (!ok) Out(-1)
-                else Out(*it)
-            }
-        } else {
-            LONG(x, k);
-            if (SIZE(st)<k) Out(-1)
-            else {
-                auto it = st.lower_bound(x);
-                if (it == st.end()) {Out(-1) continue;}
-                bool ok = true;
-                rep (j, k-1) {
-                    ++it;
-                    if (it == st.end()) {
-                        ok = false;
-                        break;
-                    }
-                }
-                if (!ok) Out(-1)
-                else Out(*it)
-            }
+        LONG(t, k);
+        --k;
+        ll st = k;
+        rep(i, t) {
+            st>>=1;
+            if (st==0) break;
         }
-        de(st)
+        ll two = 1;
+        rep (i, t) {
+            two <<= 1;
+            if (two >= k) break;
+        }
+        k -= two*st;
+        ll nk = pcnt(k);
+        de(i)de(st)de(nk)de(A[st])
+        ll ans = A[st] + nk + t%3;
+        ans %= 3;
+        de(ans)
+        char c = ans + 'A';
+        Out(c)
     }
     
 }
