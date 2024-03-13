@@ -120,54 +120,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-    LONG(Q);
-    vl L(Q), R(Q), X(Q);
-    rep (i, Q) {
-        LONG(l, r); --l;
-        LONGM(x);
-        L[i] = l, R[i] = r;
-        X[i] = x;
+    LONG(N, M, K, S, T, X);
+    --S; --T; --X;
+    vvl from(N);
+    rep (i, M) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    vl qis(Q);
-    iota(all(qis), 0);
-    ll D = max(ll(N/sqrt(Q)), 1LL);
-    sort(all(qis), [&](ll i, ll j){
-        ll hi = R[i]/D, hj = R[j]/D;
-        if (hi==hj) return L[i] < L[j];
-        else return hi < hj;
-    });
-    ll l = 0, r = 0;
-    vl cnt(N);
-    auto add = [&](ll i, ll x=1) {
-        cnt[A[i]] += x;
-    };
-    auto del = [&](ll i) {add(i, -1);};
-    vl ansv(Q);
-    for (auto i: qis) {
-        while (l<L[i]) { del(l); ++l; }
-        while (l>L[i]) { --l; add(l); }
-        while (r<R[i]) { add(r); ++r; }
-        while (r>R[i]) { --r; del(r);}
-        ansv[i] = cnt[X[i]];
+    vvm dp(N, vm(2));
+    dp[S][0] = 1;
+    rep (i, K) {
+        vvm p(N, vm(2));
+        swap(p, dp);
+        rep(v, N) rep(z, 2) {
+            for (auto nv: from[v]){
+                ll nz = z;
+                if (nv == X) nz = 1 - z;
+                dp[nv][nz] += p[v][z];
+            }
+        }
     }
-    for (auto x: ansv) Out(x)
+    Out(dp[T][0].val())
+
     
 }
 

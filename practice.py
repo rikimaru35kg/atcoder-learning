@@ -30,13 +30,13 @@ INF = int(3e18)
 from collections import deque
 
 def main():
-    deq = deque()
-    Q = inint()
-    for _ in range(Q):
-        t,x = inints()
-        if (t==1): deq.appendleft(x)
-        if (t==2): deq.append(x)
-        if (t==3): print(deq[x-1])
+    N, X = inints()
+    S = input()
+    for c in S:
+        if (c=='L'): X = 2*X
+        if (c=='R'): X = 2*X + 1
+        if (c=='U'): X = X//2
+    print(X)
 
 if __name__ == '__main__':
     main()

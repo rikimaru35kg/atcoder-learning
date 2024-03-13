@@ -120,44 +120,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-using S = map<ll,ll>;
-S op(S a, S b) {
-    if (SIZE(a)>SIZE(b)) swap(a, b);
-    for (auto [k,v]: a) b[k] += v;
-    return b;
-}
-S e() {return S();}
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    segtree<S,op,e> seg(N);
-    rep(i, N) {
-        S mp; mp[A[i]] = 1;
-        seg.set(i, mp);
+    LONG(N, M);
+    vvl dist(N, vl(N, INF));
+    vector<t3> edges;
+    rep(i, N) dist[i][i] = 0;
+    rep (i, M) {
+        LONGM(a, b); LONG(c);
+        dist[a][b] = c;
+        dist[b][a] = c;
+        edges.emplace_back(a, b, c);
     }
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        ll ans = 0;
-        S s = seg.prod(l, r);
-        for (auto [k, v]: s) {
-            ans += v/2;
+    rep(k, N) rep(i, N) rep(j, N) {
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
+    }
+    ll ans = 0;
+    for (auto [a, b, c]: edges) {
+        rep (k, N) {
+            if (k == a || k == b) continue;
+            if (dist[a][b] == dist[a][k] + dist[k][b]) {
+                ++ans;
+                break;
+            }
         }
-        Out(ans)
     }
+    Out(ans)
+    
 }
 
 // ### test.cpp ###

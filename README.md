@@ -502,6 +502,7 @@
 - 全ての葉が同じ深さを持ち、葉以外の全ての頂点が子を二つ持つ二分木を完全二分木と呼ぶ
 - 再帰的な構造を持っている為、高さhの関数f[h]はf[h-1]を用いて計算できる事が多い
 ### 例題
+- 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
 - !要復習 距離Dとなるパスの個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
 
 ## パスグラフ
