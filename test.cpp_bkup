@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -124,38 +120,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+using S = map<ll,ll>;
+S op(S a, S b) {
+    if (SIZE(a)>SIZE(b)) swap(a, b);
+    for (auto [k,v]: a) b[k] += v;
+    return b;
+}
+S e() {return S();}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    
+    LONG(N); VL(A, N);
+    segtree<S,op,e> seg(N);
+    rep(i, N) {
+        S mp; mp[A[i]] = 1;
+        seg.set(i, mp);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        ll ans = 0;
+        S s = seg.prod(l, r);
+        for (auto [k, v]: s) {
+            ans += v/2;
+        }
+        Out(ans)
+    }
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### test.cpp ###

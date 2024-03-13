@@ -375,7 +375,13 @@
 - !復習価値高 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 - 連続部分文字列がMOD Pで0になる個数 その1 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
 - !復習価値中 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
-- !要復習 [E - LEQ](https://atcoder.jp/contests/abc221/submissions/me)
+- !要復習 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
+
+## Mo's Algorithm
+- 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
+- クエリ[l,r)を座標上にプロットし、sqrt(Q)個に分割（すなわち高さをN/sqrt(Q)に分割）し、各分割ブロックごとに小さい順に辿って行けば良い
+### 例題
+- [G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 
 ## 区間和がxの倍数
 - 区間和がxの倍数になるとは、[l,r)の累積和Sr-Sl≡0（mod x）、つまりSr≡Slなので、累積和（mod x）が等しければ良い

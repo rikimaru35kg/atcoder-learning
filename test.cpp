@@ -120,69 +120,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-void solve() {
-    LONG(N); STRING(S);
-    ll M = 26;
-    vm dp(2);
-    dp[0] = 1; //dp[1] free:
-    ll _N = N;
-    if (N%2==0) N/=2;
-    else N = N/2+1;
-    rep (i, N) {
-        vm p(2);
-        swap(p, dp);
-        ll x = S[i] - 'A';
-        rep(j, 2) rep(k, 2) rep (a, M) {
-            if (j==0 && k==0) {
-                if (a==x) dp[k] += p[j];
-            }
-            if (j==0 && k==1) {
-                if (a<x) dp[k] += p[j];
-            }
-            if (j==1 && k==0) continue;
-            if (j==1 && k==1) {
-                dp[k] += p[j];
-            }
-        }
-    }
-    mint ans = dp[1];
-    bool ok = true;
-    rep (i, _N/2) {
-        ll l, r;
-        if (_N%2==0) {
-            l = _N/2-1-i;
-            r = _N/2+i;
-        } else {
-            l = _N/2-1-i;
-            r = _N/2+1+i;
-        }
-        if (_N==6) {de(l)de(r)}
-        if (S[l] < S[r]) break;
-        if (S[l] == S[r]) continue;
-        if (S[l] > S[r]) ok = false;
-    }
-    de(ok)
-    if (ok) ++ans;
-    Out(ans.val())
-
-}
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N);
+    VLM(A, N);
+    LONG(Q);
+    vl L(Q), R(Q), X(Q);
+    rep (i, Q) {
+        LONG(l, r); --l;
+        LONGM(x);
+        L[i] = l, R[i] = r;
+        X[i] = x;
+    }
+    vl qis(Q);
+    iota(all(qis), 0);
+    ll D = max(ll(N/sqrt(Q)), 1LL);
+    sort(all(qis), [&](ll i, ll j){
+        ll hi = R[i]/D, hj = R[j]/D;
+        if (hi==hj) return L[i] < L[j];
+        else return hi < hj;
+    });
+    ll l = 0, r = 0;
+    vl cnt(N);
+    auto add = [&](ll i, ll x=1) {
+        cnt[A[i]] += x;
+    };
+    auto del = [&](ll i) {add(i, -1);};
+    vl ansv(Q);
+    for (auto i: qis) {
+        while (l<L[i]) { del(l); ++l; }
+        while (l>L[i]) { --l; add(l); }
+        while (r<R[i]) { add(r); ++r; }
+        while (r>R[i]) { --r; del(r);}
+        ansv[i] = cnt[X[i]];
+    }
+    for (auto x: ansv) Out(x)
     
 }
 
