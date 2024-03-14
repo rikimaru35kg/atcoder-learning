@@ -132,43 +132,80 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+//! BE CAREFUL ABOUT OVERFLOW!
+//! repeated usage of +/* leads to overflowing
+struct Frac {
+    ll p, q;  // p/q: p over q
+    Frac(ll a, ll b) {
+        if (b == 0) {
+            q = 0;
+            if (a < 0) p = -1;  // -inf
+            else p = 1;  // inf
+            return;
+        }
+        ll g = gcd(a, b);
+        p = a/g; q = b/g;
+        if (q<0) {p=-p; q=-q;}
+    }
+    Frac operator+(const Frac &rhs) {
+        if (q == 0) return *this;
+        if (rhs.q == 0) return rhs;
+        if (rhs.p > INF/q) {
+            de(p)de(q)de(rhs.p)de(rhs.q)
+        }
+        return Frac(q*rhs.p + p*rhs.q, q*rhs.q);
+    }
+    Frac operator*(const Frac &rhs) {
+        if (q == 0) return *this;
+        if (rhs.q == 0) return rhs;
+        return Frac(p*rhs.p, q*rhs.q);
+    }
+    bool operator==(const Frac &rhs) {
+        if (p==rhs.p && q==rhs.q) return true;
+        else return false;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    VL(A, N);
-    A.push_back(INF);
+    LONG(N, K);
+    vl X(N), Y(N);
+    rep (i, N) cin >> X[i] >> Y[i];
+    unordered_map<ll,ll> xmap, ymap;
+    rep(i, N) {
+        xmap[X[i]]++;
+        ymap[Y[i]]++;
+    }
+    if (K==1) {
+        puts("Infinity"); return 0;
+    }
+    set<t4> st;
+    map<t3,ll> mp;
     ll ans = 0;
-    auto calc = [&](vl v) {
-        ll N = SIZE(v);
-        ll r = 0;
-        ll nx = 0, ny = 0;
-        rep (l, N) {
-            while (r<N && (nx==0 || ny==0)) {
-                if (v[r]==X) ++nx;
-                if (v[r]==Y) ++ny;
-                ++r;
+    rep (i, N) rep(j, i) {
+        if (X[i] == X[j]) {
+            if (st.count({X[i],0,0,0})) continue;
+            st.emplace(X[i],0,0,0);
+            if (xmap[X[i]]>=K) {
+                ++ans;
             }
-            if (nx && ny) { ans += N - r + 1; }
-            // if (r==l) {
-            //     ++r;
-            //     continue;
-            // }
-            if (v[l] == X) --nx;
-            if (v[l] == Y) --ny;
-        }
-    };
-    vl vec;
-    rep(i, N+1) {
-        if (A[i]<Y || A[i]>X) {
-            calc(vec);
-            vec = vl();
             continue;
         }
-        vec.push_back(A[i]);
+        Frac a(Y[j]-Y[i], X[j]-X[i]);
+        ll b = -a.p*X[i]+a.q*Y[i];
+        if(mp.count({a.p, a.q, b})) continue;
+        mp[{a.p, a.q, b}]++;
+        ll cnt = 0;
+        rep (k, N) {
+            if (a.q*Y[k] == a.p*X[k] + b) ++cnt;
+        }
+        if (cnt>=K) ++ans;
     }
+    // for (auto [k, v]: mp) {
+    //     if (K*(K-1)/2 <= v) ++ans;
+    // }
     Out(ans)
-
     
 }
 
