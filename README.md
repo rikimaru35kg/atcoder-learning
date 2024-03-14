@@ -851,6 +851,7 @@
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
 ### 例題
 - !復習価値高 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
+- !要復習 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
 
 ## ダイクストラ＋ポテンシャル法
 - ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる

@@ -120,43 +120,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K, S, T, X);
-    --S; --T; --X;
-    vvl from(N);
+    LONG(N, M);
+    vvb edge(N, vb(N));
     rep (i, M) {
         LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
+        edge[u][v] = true;
+        edge[v][u] = true;
     }
-    vvm dp(N, vm(2));
-    dp[S][0] = 1;
-    rep (i, K) {
-        vvm p(N, vm(2));
-        swap(p, dp);
-        rep(v, N) rep(z, 2) {
-            for (auto nv: from[v]){
-                ll nz = z;
-                if (nv == X) nz = 1 - z;
-                dp[nv][nz] += p[v][z];
-            }
+    vvl dist(1<<N, vl(N, INF));
+    queue<Pr> que;
+    auto push = [&](ll s, ll v, ll d) {
+        if (dist[s][v] != INF) return;
+        dist[s][v] = d;
+        que.emplace(s, v);
+    };
+    rep (i, N) push(1<<i, i, 1);
+    while(que.size()) {
+        auto [s, v] = que.front(); que.pop();
+        ll d = dist[s][v];
+        rep (nv, N) {
+            if (!edge[v][nv]) continue;
+            ll ns = s^(1<<nv);
+            push(ns, nv, d+1);
         }
     }
-    Out(dp[T][0].val())
+    ll ans = 0;
+    rep (s, 1<<N) {
+        if (s==0) continue;
+        ll now = INF;
+        rep (i, N) {
+            chmin(now, dist[s][i]);
+        }
+        ans += now;
+    }
+    Out(ans)
 
     
 }
