@@ -120,94 +120,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl ifrom(N);
-    SCC scc(N);
-    rep (i, M) {
-        LONGM(u, v);
-        ifrom[v].push_back(u);
-        scc.add_edge(u, v);
-    }
-    vvl groups = scc.scc();
-    ll ans = 0;
-    vb visited(N);
-    auto dfs = [&](auto f, ll v) -> void {
-        ++ans;
-        visited[v] = true;
-        for (auto nv: ifrom[v]) {
-            if (visited[nv]) continue;
-            f(f, nv);
-        }
-    };
-    for (auto g: groups) {
-        if (SIZE(g)==1) continue;
-        for (auto v: g) {
-            if (visited[v]) continue;
-            dfs(dfs, v);
+    LONG(N, L);
+    vector<bitset<26>> bits(N);
+    VS(S, N);
+    rep (i, N) {
+        rep (j, SIZE(S[i])) {
+            int x = S[i][j] - 'a';
+            bits[i][x] = 1;
         }
     }
-    Out(ans)
+    mint ans = 0;
+    rep(s, 1<<N) {
+        if (s==0) continue;
+        ll num = pcnt(s);
+        bitset<26> bnow(string(26, '1'));
+        rep (i, N) { if (s>>i&1) bnow &= bits[i]; }
+        mint m = bnow.count();
+        ll coef = 1;
+        if (num%2==0) coef = -1;
+        ans += (mint)coef * m.pow(L);
+    }
+    Out(ans.val())
     
 }
 

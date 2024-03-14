@@ -131,34 +131,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    map<ll,vp> mp;
-    VL(A, N); VL(B, N);
-    rep (i, N) {
-        mp[A[i]].emplace_back(0, B[i]);
+    LONG(N);
+    auto f = [&](ll a, ll b) {
+        return a*a*a+a*a*b+a*b*b+b*b*b;
+    };
+    ll b = 1e6;
+    ll ans = INF;
+    rep (a, (ll)1e6+1) {
+        while (b>0 && f(a,b-1)>=N) --b;
+        chmin(ans, f(a, b));
     }
-    VL(C, M); VL(D, M);
-    rep (i, M) {
-        mp[C[i]].emplace_back(1, D[i]);
-    }
-    // for (auto [k, _]: mp) { sort(all(mp[k])); }
-    multiset<ll> st;
-    for (auto [x, v]: mp) {
-        for (auto [t, y]: v) {
-            if (t==0) st.insert(y);
-            else {
-                auto it = st.upper_bound(y);
-                if (it == st.begin()) continue;
-                --it;
-                st.erase(it);
-            }
-        }
-    }
-    if (SIZE(st) == 0) PYes PNo
+    Out(ans)
     
 }
 
