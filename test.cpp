@@ -120,42 +120,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    vector<bitset<26>> bits(N);
-    VS(S, N);
-    rep (i, N) {
-        rep (j, SIZE(S[i])) {
-            int x = S[i][j] - 'a';
-            bits[i][x] = 1;
+    LONG(N, X, Y);
+    VL(A, N);
+    A.push_back(INF);
+    ll ans = 0;
+    auto calc = [&](vl v) {
+        ll N = SIZE(v);
+        ll r = 0;
+        ll nx = 0, ny = 0;
+        rep (l, N) {
+            while (r<N && (nx==0 || ny==0)) {
+                if (v[r]==X) ++nx;
+                if (v[r]==Y) ++ny;
+                ++r;
+            }
+            if (nx && ny) { ans += N - r + 1; }
+            // if (r==l) {
+            //     ++r;
+            //     continue;
+            // }
+            if (v[l] == X) --nx;
+            if (v[l] == Y) --ny;
         }
+    };
+    vl vec;
+    rep(i, N+1) {
+        if (A[i]<Y || A[i]>X) {
+            calc(vec);
+            vec = vl();
+            continue;
+        }
+        vec.push_back(A[i]);
     }
-    mint ans = 0;
-    rep(s, 1<<N) {
-        if (s==0) continue;
-        ll num = pcnt(s);
-        bitset<26> bnow(string(26, '1'));
-        rep (i, N) { if (s>>i&1) bnow &= bits[i]; }
-        mint m = bnow.count();
-        ll coef = 1;
-        if (num%2==0) coef = -1;
-        ans += (mint)coef * m.pow(L);
-    }
-    Out(ans.val())
+    Out(ans)
+
     
 }
 

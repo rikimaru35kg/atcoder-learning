@@ -131,29 +131,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    auto f = [&](ll a, ll b) {
-        return a*a*a+a*a*b+a*b*b+b*b*b;
-    };
-    ll b = 1e6;
-    ll ans = INF;
-    rep (a, (ll)1e6+1) {
-        while (b>0 && f(a,b-1)>=N) --b;
-        chmin(ans, f(a, b));
+    LONG(Q);
+    queue<Pr> que;
+    rep(i, Q) {
+        LONG(t);
+        if (t==1) {
+            LONG(x, c);
+            que.emplace(x, c);
+        } else {
+            ll ans = 0;
+            LONG(c);
+            while (que.size() && que.front().second <= c) {
+                auto [x, c0] = que.front(); que.pop();
+                ans += x*c0;
+                c -= c0;
+            }
+            if (c!=0) {
+                auto [x, c0] = que.front();
+                ans += x * c;
+                que.front().second -= c;
+            }
+            Out(ans)
+        }
     }
-    Out(ans)
     
 }
 
