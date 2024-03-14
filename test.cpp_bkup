@@ -120,44 +120,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K, S, T, X);
-    --S; --T; --X;
-    vvl from(N);
-    rep (i, M) {
-        LONGM(u, v);
-        from[u].push_back(v);
-        from[v].push_back(u);
+    LONG(N, M);
+    map<ll,vp> mp;
+    VL(A, N); VL(B, N);
+    rep (i, N) {
+        mp[A[i]].emplace_back(0, B[i]);
     }
-    vvm dp(N, vm(2));
-    dp[S][0] = 1;
-    rep (i, K) {
-        vvm p(N, vm(2));
-        swap(p, dp);
-        rep(v, N) rep(z, 2) {
-            for (auto nv: from[v]){
-                ll nz = z;
-                if (nv == X) nz = 1 - z;
-                dp[nv][nz] += p[v][z];
+    VL(C, M); VL(D, M);
+    rep (i, M) {
+        mp[C[i]].emplace_back(1, D[i]);
+    }
+    // for (auto [k, _]: mp) { sort(all(mp[k])); }
+    multiset<ll> st;
+    for (auto [x, v]: mp) {
+        for (auto [t, y]: v) {
+            if (t==0) st.insert(y);
+            else {
+                auto it = st.upper_bound(y);
+                if (it == st.begin()) continue;
+                --it;
+                st.erase(it);
             }
         }
     }
-    Out(dp[T][0].val())
-
+    if (SIZE(st) == 0) PYes PNo
     
 }
 

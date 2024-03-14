@@ -561,8 +561,10 @@
 - 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
 - 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
 - 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
+- SCC後、強連結成分毎に見るとトポロジカル順に並べたDAGになっている
 ### 例題
 - !復習価値中 基本 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
+- !復習価値低 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
 
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ
@@ -979,7 +981,7 @@
 - 1次元の大小判定はソートすれば可能だが2次元だと難しい場合に使えるテクニック
 - xの小さい順に走査し、存在するか判定。存在しなければyの値をためていく
 - こうすることで、xについての大小判定を気にする必要がなくなる
-- xに等しい値が存在する場合の実装に注意
+- xに等しい値が存在する場合の実装に注意（同時に処理するならmap<int,vi>的な実装が必要）
 ### 例題
 - !復習価値低 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 - !復習価値中 基本 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)

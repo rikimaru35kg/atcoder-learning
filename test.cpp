@@ -132,44 +132,82 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+struct SCC {
+    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
+    void add_edge (long long a, long long b) {
+        from[a].push_back(b);
+        ifrom[b].push_back(a);
+    }
+    vector<vector<long long>> scc () {
+        vector<vector<long long>> group;
+        back_num.clear();
+        selected.assign(n, false);
+        for (long long i=0; i < n; ++i) {
+            if (!selected[i]) dfs1(i);
+        }
+        selected.assign(n, false);
+        for (long long i=n-1; i >= 0; --i) {
+            long long x = back_num[i];
+            if (selected[x]) continue;
+            vector<long long> emp;
+            dfs2(x, emp);
+            group.push_back(emp);
+        }
+        return group;
+    }
+private:
+    long long n;
+    vector<vector<long long>> from, ifrom;
+    vector<long long> back_num;
+    vector<bool> selected;
+    void dfs1 (long long x) {
+        selected[x] = true;
+        for (auto y: from[x]) {
+            if (selected[y]) continue;
+            dfs1(y);
+        }
+        back_num.push_back(x);
+    }
+    void dfs2 (long long x, vector<long long> &vec) {
+        selected[x] = true;
+        vec.push_back(x);
+        for (auto y: ifrom[x]) {
+            if (selected[y]) continue;
+            dfs2(y, vec);
+        }
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvb edge(N, vb(N));
+    vvl ifrom(N);
+    SCC scc(N);
     rep (i, M) {
         LONGM(u, v);
-        edge[u][v] = true;
-        edge[v][u] = true;
+        ifrom[v].push_back(u);
+        scc.add_edge(u, v);
     }
-    vvl dist(1<<N, vl(N, INF));
-    queue<Pr> que;
-    auto push = [&](ll s, ll v, ll d) {
-        if (dist[s][v] != INF) return;
-        dist[s][v] = d;
-        que.emplace(s, v);
-    };
-    rep (i, N) push(1<<i, i, 1);
-    while(que.size()) {
-        auto [s, v] = que.front(); que.pop();
-        ll d = dist[s][v];
-        rep (nv, N) {
-            if (!edge[v][nv]) continue;
-            ll ns = s^(1<<nv);
-            push(ns, nv, d+1);
-        }
-    }
+    vvl groups = scc.scc();
     ll ans = 0;
-    rep (s, 1<<N) {
-        if (s==0) continue;
-        ll now = INF;
-        rep (i, N) {
-            chmin(now, dist[s][i]);
+    vb visited(N);
+    auto dfs = [&](auto f, ll v) -> void {
+        ++ans;
+        visited[v] = true;
+        for (auto nv: ifrom[v]) {
+            if (visited[nv]) continue;
+            f(f, nv);
         }
-        ans += now;
+    };
+    for (auto g: groups) {
+        if (SIZE(g)==1) continue;
+        for (auto v: g) {
+            if (visited[v]) continue;
+            dfs(dfs, v);
+        }
     }
     Out(ans)
-
     
 }
 
