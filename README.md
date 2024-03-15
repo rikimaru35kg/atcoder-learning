@@ -1164,11 +1164,10 @@
 - !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - !要復習 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 
-## 殆どOKなゲーム
-- 殆どの手はOKだが、最後の方だけ気を付けないといけないゲーム
-- 考察できれば勝ち
-- 構築系という典型にした方が良いか？
+## 構築系問題
+- 構築させる問題
 ### 例題
+- !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
 - !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
 
 # 読解が難しい問題
