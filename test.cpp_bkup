@@ -40,7 +40,6 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
-#define Pdame {puts("-1"); return 0;}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -106,6 +105,7 @@ template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl
 template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
+#define deb(var) {}
 #endif
 const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
@@ -136,31 +136,32 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    mint::set_mod(P);
-    vvm dp(N, vm(2));
-    dp[0][0] = 1;
-    dp[1][1] = 1;
-    rep (i, N-1) {
-        vvm p(N, vm(2));
-        swap(p, dp);
-        rep(j, N) rep(k, 2) {
-            if (k==0) {
-                dp[j][k] += p[j][k];
-                if (j+1<N) dp[j+1][k] += 3*p[j][k];
-                if (j+2<N) dp[j+2][1-k] += 2*p[j][k];
-            } else {
-                dp[j][1-k] += p[j][k]; //0
-                if (j+1<N) dp[j+1][k] += p[j][k]; //1
+    LONG(N, K);
+    vl alpha(N);
+    rep (i, N) {
+        STRING(s);
+        for(auto c: s) { alpha[i] |= 1<<(c-'a'); }
+    }
+
+    ll ans = 0;
+    rep(s, 1<<N) {
+        ll now = 0;
+        deb(s)
+        rep (a, 26) {
+            ll cnt = 0;
+            rep (i, N) {
+                if (~s>>i&1) continue;
+                if (alpha[i]>>a&1) ++cnt;
+
+            }
+            if (cnt == K) {
+                ++now;
+                de(a)
             }
         }
+        chmax(ans, now);
     }
-    vm ans;
-    rep1 (i, N-1) ans.push_back(dp[i][0]);
     Out(ans);
-    vl a(5);
-    iota(all(a), 0);
-    Out(a);
     
 }
 
