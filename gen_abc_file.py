@@ -109,6 +109,7 @@ template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl
 template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
+#define deb(var) {}
 #endif
 const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
