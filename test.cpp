@@ -98,6 +98,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T1,typename T2> inline void debug_view(unordered_map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,vector<T2>> &mp){cerr<<"----"<<endl;for(auto [k,v]: mp){cerr<<k<<": ";debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2,typename T3> inline void debug_view(map<pair<T1,T2>,T3> &mp){cerr << "----" << endl;for(auto [p,v]: mp){cerr<<'{'<<p.first<<' '<<p.second<<'}'<<": "<<v<<endl;} cerr<<"--------"<<endl;}
 #define deb(var) {cerr << #var << ": "; debugb_view(var);}
@@ -133,44 +134,49 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
+long long mersenne(long long mn, long long mx) {
+    static mt19937_64 mt64(0);
+    uniform_int_distribution<long long> get(mn, mx);
+    return get(mt64);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl T(N), Y(N);
-    rep (i, N) cin >> T[i] >> Y[i];
-    reverse(all(T)); reverse(all(Y));
-    ll ans = -INF;
-    priority_queue<ll> pque;
-    ll ksum = 0;
-    ll plus = 0;
-    auto resize = [&]() {
-        while (pque.size() > K) {
-            ksum -= pque.top();
-            pque.pop();
-        }
-    };
-    auto add = [&](ll x) {
-        pque.push(x);
-        ksum += x;
-        resize();
-    };
-    rep (i, N) {
-        if (K<0) break;
-        ll t = T[i], y = Y[i];
-        if (t == 1) {
-            y += plus;
-            y -= ksum;
-            chmax(ans, y);
-            --K;
-            resize();
-        } else {
-            plus += y;
-            if (y<0) add(y);
-        }
+    LONG(N); VL(A, N); VL(B, N);
+    LONG(Q);
+    vl X(Q), Y(Q);
+    rep (i, Q) cin >> X[i] >> Y[i];
+    rep (i, Q) --X[i], --Y[i];
+    vl sta(N), stb(N);
+    unordered_map<ll,ll> rnd;
+    rep(i, N) {
+        ll x = mersenne(1, INF);
+        rnd[A[i]] = x;
     }
-    if (K>=0) chmax(ans, plus-ksum);
-    Out(ans);
+    rep(i, N) {
+        ll x = mersenne(1, INF);
+        rnd[B[i]] = x;
+    }
+    de(rnd)
+    auto makernd = [&](vl &A, vl &sta) {
+        unordered_set<ll> st;
+        ll val = 0;
+        rep (i, N) {
+            if (st.size() && st.count(A[i])) {
+                sta[i] = val; continue;
+            }
+            val ^= rnd[A[i]];
+            sta[i] = val;
+            st.insert(A[i]);
+        }
+    };
+    makernd(A, sta); makernd(B, stb);
+    de(sta)de(stb)
+    rep (i, Q) {
+        if (sta[X[i]] == stb[Y[i]]) puts("Yes");
+        else puts("No");
+    }
     
 }
 

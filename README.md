@@ -1185,6 +1185,13 @@
 ### 例題
 - !復習価値中 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 
+# Zoblist hash
+- 集合同士をO(1)で比較可能
+- 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
+- メルセンヌツイスターで乱数を発生させると良い
+### 例題
+- [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
+
 ### 例題
 - 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
