@@ -978,6 +978,12 @@
 ### 例題
 - !要復習 基本 [https://atcoder.jp/contests/abc344/tasks/abc344_f](https://atcoder.jp/contests/abc344/tasks/abc344_e)
 
+## 小さい方からK個の和/max
+- 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる
+- 要素追加、削除の関数を用意しておくと実装が楽になる
+### 例題
+- !要復習 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
+もう少し簡単な問題も例題に挙げられると良いのだが・・・
 
 # 2変数問題
 

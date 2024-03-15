@@ -133,34 +133,43 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    map<ll,ll> mp;
-    rep(i, N) {
-        mp[A[i]]++;
-    }
-    ll ans = 0;
-    for (auto [k, v]: mp) {
-        vl divs = listup_divisor(k);
-        for (auto x: divs) {
-            ll y = k / x;
-            ans += mp[y]*mp[x]*v;
+    LONG(N, K);
+    vl T(N), Y(N);
+    rep (i, N) cin >> T[i] >> Y[i];
+    reverse(all(T)); reverse(all(Y));
+    ll ans = -INF;
+    priority_queue<ll> pque;
+    ll ksum = 0;
+    ll plus = 0;
+    auto resize = [&]() {
+        while (pque.size() > K) {
+            ksum -= pque.top();
+            pque.pop();
+        }
+    };
+    auto add = [&](ll x) {
+        pque.push(x);
+        ksum += x;
+        resize();
+    };
+    rep (i, N) {
+        if (K<0) break;
+        ll t = T[i], y = Y[i];
+        if (t == 1) {
+            y += plus;
+            y -= ksum;
+            chmax(ans, y);
+            --K;
+            resize();
+        } else {
+            plus += y;
+            if (y<0) add(y);
         }
     }
+    if (K>=0) chmax(ans, plus-ksum);
     Out(ans);
     
 }

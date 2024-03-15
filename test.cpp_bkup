@@ -133,33 +133,33 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl alpha(N);
-    rep (i, N) {
-        STRING(s);
-        for(auto c: s) { alpha[i] |= 1<<(c-'a'); }
+    LONG(N); VL(A, N);
+    map<ll,ll> mp;
+    rep(i, N) {
+        mp[A[i]]++;
     }
-
     ll ans = 0;
-    rep(s, 1<<N) {
-        ll now = 0;
-        deb(s)
-        rep (a, 26) {
-            ll cnt = 0;
-            rep (i, N) {
-                if (~s>>i&1) continue;
-                if (alpha[i]>>a&1) ++cnt;
-
-            }
-            if (cnt == K) {
-                ++now;
-                de(a)
-            }
+    for (auto [k, v]: mp) {
+        vl divs = listup_divisor(k);
+        for (auto x: divs) {
+            ll y = k / x;
+            ans += mp[y]*mp[x]*v;
         }
-        chmax(ans, now);
     }
     Out(ans);
     
