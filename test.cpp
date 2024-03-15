@@ -136,18 +136,43 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W);
-    vl A;
-    ll hun = 1;
-    rep (i, 3) {
-        rep1(x, 99) {
-            A.push_back(hun*x);
+    LONG(N);
+    VS(S, N);
+    ll ans = INF;
+    rep (x, 10) {
+        vvl a(N);
+        rep (i, N) rep(j, 10) {
+            if (S[i][j]-'0' == x) a[i].push_back(j);
         }
-        hun *= 100;
+        rep (i, N) {
+            ll K = SIZE(a[i]);
+            rep1 (j, 100) rep (k, K) {
+                a[i].push_back(a[i][k]+10*j);
+            }
+        }
+        de(x)de(a)
+
+        rep(i, N) reverse(all(a[i]));
+        ll t = -1;
+        vb used(N);
+        ll cnt = 0;
+        while (cnt < N) {
+            Pr mnt = {INF, -1};
+            rep(i, N) {
+                if (used[i]) continue;
+                while(a[i].back()<=t) a[i].pop_back();
+                chmin(mnt, {a[i].back(), i});
+            }
+            ll z = mnt.second;
+            used[z] = true;
+            a[z].pop_back();
+            if (x==0) de(mnt)
+            t = mnt.first;
+            ++cnt;
+        }
+        chmin(ans, t);
     }
-    A.push_back((ll)1e6);
-    Out(SIZE(A));
-    Out(A);
+    Out(ans);
     
 }
 

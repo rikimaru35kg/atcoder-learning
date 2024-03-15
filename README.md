@@ -1316,3 +1316,4 @@
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
 - [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
+- 解けたけど実装グダグダだったので・・・ [C - Slot Strategy](https://atcoder.jp/contests/abc252/tasks/abc252_c)
