@@ -41,9 +41,6 @@ using cd = complex<double>;
 #define PYes {puts("Yes"); return 0;}
 #define PNo {puts("No"); return 0;}
 #define Pdame {puts("-1"); return 0;}
-#define Out(x) {cout << (x) << '\n';}
-#define Outd(x) {printf("%.10f",x);cout<<'\n';}
-#define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -65,6 +62,9 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
+inline void Out(double x) {printf("%.10f",x);cout<<'\n';}
+template<typename T> inline void Out(T x) {cout<<x<<'\n';}
+template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -120,92 +120,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
-
-//! BE CAREFUL ABOUT OVERFLOW!
-//! repeated usage of +/* leads to overflowing
-struct Frac {
-    ll p, q;  // p/q: p over q
-    Frac(ll a, ll b) {
-        if (b == 0) {
-            q = 0;
-            if (a < 0) p = -1;  // -inf
-            else p = 1;  // inf
-            return;
-        }
-        ll g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q == 0) return *this;
-        if (rhs.q == 0) return rhs;
-        if (rhs.p > INF/q) {
-            de(p)de(q)de(rhs.p)de(rhs.q)
-        }
-        return Frac(q*rhs.p + p*rhs.q, q*rhs.q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q == 0) return *this;
-        if (rhs.q == 0) return rhs;
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    bool operator==(const Frac &rhs) {
-        if (p==rhs.p && q==rhs.q) return true;
-        else return false;
-    }
-};
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl X(N), Y(N);
-    rep (i, N) cin >> X[i] >> Y[i];
-    unordered_map<ll,ll> xmap, ymap;
-    rep(i, N) {
-        xmap[X[i]]++;
-        ymap[Y[i]]++;
-    }
-    if (K==1) {
-        puts("Infinity"); return 0;
-    }
-    set<t4> st;
-    map<t3,ll> mp;
-    ll ans = 0;
-    rep (i, N) rep(j, i) {
-        if (X[i] == X[j]) {
-            if (st.count({X[i],0,0,0})) continue;
-            st.emplace(X[i],0,0,0);
-            if (xmap[X[i]]>=K) {
-                ++ans;
+    LONG(N, P);
+    mint::set_mod(P);
+    vvm dp(N, vm(2));
+    dp[0][0] = 1;
+    dp[1][1] = 1;
+    rep (i, N-1) {
+        vvm p(N, vm(2));
+        swap(p, dp);
+        rep(j, N) rep(k, 2) {
+            if (k==0) {
+                dp[j][k] += p[j][k];
+                if (j+1<N) dp[j+1][k] += 3*p[j][k];
+                if (j+2<N) dp[j+2][1-k] += 2*p[j][k];
+            } else {
+                dp[j][1-k] += p[j][k]; //0
+                if (j+1<N) dp[j+1][k] += p[j][k]; //1
             }
-            continue;
         }
-        Frac a(Y[j]-Y[i], X[j]-X[i]);
-        ll b = -a.p*X[i]+a.q*Y[i];
-        if(mp.count({a.p, a.q, b})) continue;
-        mp[{a.p, a.q, b}]++;
-        ll cnt = 0;
-        rep (k, N) {
-            if (a.q*Y[k] == a.p*X[k] + b) ++cnt;
-        }
-        if (cnt>=K) ++ans;
     }
-    // for (auto [k, v]: mp) {
-    //     if (K*(K-1)/2 <= v) ++ans;
-    // }
-    Out(ans)
+    vm ans;
+    rep1 (i, N-1) ans.push_back(dp[i][0]);
+    Out(ans);
+    vl a(5);
+    iota(all(a), 0);
+    Out(a);
     
 }
 
