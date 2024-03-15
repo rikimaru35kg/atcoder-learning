@@ -1307,6 +1307,12 @@
 - 1問: [N Slimes](https://atcoder.jp/contests/dp/tasks/dp_n) -> 後ほどEDPC Sまで全問
 
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
+
+## ACできたがグダった問題
+- [C - Slot Strategy](https://atcoder.jp/contests/abc252/tasks/abc252_c)
+- [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
+
+## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
@@ -1316,4 +1322,3 @@
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
 - [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
-- 解けたけど実装グダグダだったので・・・ [C - Slot Strategy](https://atcoder.jp/contests/abc252/tasks/abc252_c)
