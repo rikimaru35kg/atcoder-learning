@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### C.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -140,23 +136,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    STRING(S);
+    ll M = 26;
+    vl cnt(M);
+    for (auto c: S) {
+        int x = c - 'a';
+        cnt[x]++;
+    }
+    ll ans = 0;
+    rep (i, M) rep(j, i) {
+        ans += cnt[i] * cnt[j];
+    }
+    rep (i, M) {
+        if (cnt[i]>=2) {
+            ans++;
+            break;
+        }
+    }
+    Out(ans);
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### C.cpp ###

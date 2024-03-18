@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### D.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -140,23 +136,52 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, H, W);
+    vl A(N), B(N);
+    rep(i, N) cin >> A[i] >> B[i];
+    vl perm(N);
+    iota(all(perm), 0);
+    // vl f = {1,3,4,0,2};
+    rep(s, 1<<N) {
+    do {
+        // if (perm == f && s==8) {
+        //     cout << "";
+        // }
+        vvi field(H, vi(W));
+        bool ok = true;
+        ll cnt = 0;
+        rep (i, N) {
+            ll j = perm[i];
+            ll a = A[j], b = B[j];
+            if (s>>j&1) swap(a, b);
+            ll si = 0, sj = 0;
+            bool firm = false;
+            rep(r, H) {
+                if (firm) break;
+                rep(c, W) {
+                    if (field[r][c]==1) continue;
+                    si = r, sj = c;
+                    firm = true;
+                    break;
+                }
+            }
+            repk(r, si, si+a) repk (c, sj, sj+b) {
+                if (!isin(r, c, H, W)) { ok = false; break; }
+                if (field[r][c] == 1) {ok = false; break;}
+                field[r][c] = 1;
+                ++cnt;
+            }
+            if (!ok) break;
+            if (cnt == H*W) {
+                de(perm)de(s)
+                PYes
+            }
+        }
+
+    } while(next_permutation(all(perm)));
+    }
+    PNo
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### D.cpp ###

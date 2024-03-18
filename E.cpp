@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### E.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -137,26 +133,46 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+struct Top2 {
+    Pr a, b;
+    Top2(Pr a={-INF,-1}, Pr b={-INF,-2}): a(a),b(b) {}
+    void add(Pr x) {
+        if (b<x) swap(b, x);
+        if (a<b) swap(a, b);
+        if (a.second == b.second) swap(b, x);
+    }
+    ll get(ll c) {
+        auto [v1, c1] = a;
+        auto [v2, c2] = b;
+        if (c!=c1) return v1;
+        else return v2;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, K);
+    vl C(N), V(N);
+    rep(i, N) cin >> C[i] >> V[i];
+    vector<Top2> dp(K+1);
+    dp[0] = Top2({0,-1});
+    rep (i, N) {
+        vector<Top2> p(K+1);
+        swap(p, dp);
+        rep (j, K+1) {
+            if (j+1<=K) {
+                dp[j+1].add(p[j].a);
+                dp[j+1].add(p[j].b);
+            }
+            if (p[j].get(C[i]) == -INF) continue;
+            dp[j].add({p[j].get(C[i])+V[i], C[i]});
+        }
+    }
+    ll ans = dp[K].a.first;
+    if (ans == -INF) ans = -1;
+    Out(ans);
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### E.cpp ###

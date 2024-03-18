@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### F.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -124,8 +120,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -140,23 +136,54 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M, K);
+    if (K%2==1) PNo
+    vector<t3> edges;
+    dsu uf(N);
+    vvp from(N);
+    rep (i, M) {
+        LONGM(u, v);
+        edges.emplace_back(i, u, v);
+        from[u].emplace_back(v, i);
+        from[v].emplace_back(u, i);
+        uf.merge(u, v);
+    }
+
+    vb used(N);
+    vl ans;
+    ll cnt = 0;
+    auto dfs = [&](auto f, ll v, ll b) -> void {
+        used[v] = true;
+        for (auto [nv, i]: from[v]) {
+            if (used[nv]) continue;
+            if (b==0) {
+                ans.push_back(i+1);
+                cnt += 2;
+            }
+            f(f, nv, 1-b);
+            b = 1 - b;
+        }
+    };
+    rep (i, N) {
+        if (used[i]) continue;
+        dfs(dfs, i, 0);
+    }
+    if (cnt < K) PNo
+    puts("Yes");
+    Out(K/2);
+    rep(i, K/2) {
+        printf("%lld ", ans[i]);
+    }
+    cout << '\n';
+
+    // ll psize = 0;
+    // rep(i, N) {
+    //     if (i!=uf.leader(i)) continue;
+    //     psize += uf.size(i)/2*2;
+    // }
+    // if (psize < K) PNo
+
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### F.cpp ###
