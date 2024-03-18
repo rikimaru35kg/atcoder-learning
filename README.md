@@ -596,12 +596,6 @@
 ### 例題
 - !要復習 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 
-## 非連結グラフ
-- 連結成分ごとに考えると見通しが良くなる
-- 連結成分の全域木を考えると見通しが良くなる事がある
-### 例題
-- [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
-
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
 - 前準備として、2^k個だけ進むグラフ辺を作っておく（kは0以上で、2^kがn以上となるkまで）
@@ -933,6 +927,17 @@
 - 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
 - !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
+
+
+## 全域木
+- 無向グラフから全域木を構成すると見通しが良くなる事がある
+- 全域木を構成するにはMSTの他、DFS木、BFS木、最短経路木などがある
+- DFS木の後退辺（未使用辺）は必ず祖先の関係になる
+- BFS木の未使用辺は必ず祖先の関係にならない
+### 例題
+- [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
+- [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
+- [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 # IMOS法
 - 重なり領域の累積はいもす法を用いて解決
