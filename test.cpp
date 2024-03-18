@@ -122,42 +122,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-using S = mint;
-S op(S a, S b) {return a+b;}
+// using mint = modint;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+using S = ll;
+S op(S a, S b) {return gcd(a, b);}
 S e() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    segtree<S,op,e> seg(M+1);
-    rep1 (i, M) seg.set(i, 1);
-    rep(i, N-1) {
-        segtree<S,op,e> segp(M+1);
-        swap(seg, segp);
-        rep1 (j, M) {
-            ll l = max(j - K + 1, 1LL);
-            ll r = min(j + K, M + 1);
-            mint al = segp.all_prod();
-            mint x = 0;
-            if (l<r) x = segp.prod(l, r);
-            seg.set(j, seg.get(j)+al-x);
-        }
+    LONG(N, Q);
+    VL(A, N);
+    VL(B, N);
+    segtree<S,op,e> sega(N), segb(N);
+    rep (i, N-1) {
+        sega.set(i, A[i+1] - A[i]);
+        segb.set(i, B[i+1] - B[i]);
     }
-    mint ans = 0;
-    rep1 (i, M) ans += seg.get(i);
-    Out(ans.val());
+    rep (i, Q) {
+        LONGM(h1, h2, w1, w2);
+        ll g = 0;
+        g = gcd(g, A[h1]+B[w1]);
+        g = gcd(g, sega.prod(h1, h2));
+        g = gcd(g, segb.prod(w1, w2));
+        Out(g);
+    }
     
 }
 

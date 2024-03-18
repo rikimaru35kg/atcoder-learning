@@ -103,6 +103,7 @@
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
 ### 例題
 - !復習価値高 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
+- !要復習 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
 
 ## 約数全列挙
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
