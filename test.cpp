@@ -136,32 +136,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vector from(N, vector<t3>());
-    rep(i, M) {
-        LONGM(a, b, c);
-        from[a].emplace_back(b, c, i);
-        from[b].emplace_back(a, c, i);
+    LONG(N, L); VL(A, N);
+    priority_queue<Pr,vp,greater<Pr>> pque;
+    rep (i, N) { pque.push({A[i],i}); }
+    ll sum = accumulate(all(A), 0LL);
+    if (L-sum>0) pque.push({L-sum,N});
+    ll ans = 0;
+    vp path;
+    while(pque.size() >= 2) {
+        Pr a = pque.top(); pque.pop();
+        Pr b = pque.top(); pque.pop();
+        ans += a.first + b.first;
+        path.emplace_back(a.second, b.second);
+        pque.push({a.first+b.first, a.second});
     }
-    priority_queue<Pr,vector<Pr>,greater<Pr>> pque;
-    vl org(N, -1);
-    vl dist(N, INF);
-    auto push = [&](ll v, ll d, ll ei) {
-        if (dist[v] <= d) return;
-        dist[v] = d;
-        pque.emplace(d, v);
-        org[v] = ei;
-    };
-    push(0, 0, -1);
-    while(pque.size()) {
-        auto [d, v] = pque.top(); pque.pop();
-        if (dist[v] != d) continue;
-        for(auto[nv, c, i]: from[v]) {
-            push(nv, d+c, i);
-        }
-    }
-    vl ans;
-    repk(i, 1, N) ans.push_back(org[i]+1);
+    reverse(all(path));
+    de(path)
     Out(ans);
     
 }

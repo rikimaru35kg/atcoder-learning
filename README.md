@@ -928,7 +928,6 @@
 - !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
 
-
 ## 全域木
 - 無向グラフから全域木を構成すると見通しが良くなる事がある
 - 全域木を構成するにはMSTの他、DFS木、BFS木、最短経路木などがある
@@ -1075,11 +1074,16 @@
 ## 計算量がlog(N)やsqrt(N)に落ちる問題
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
-- 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（一般的なマージテク）
 ### 例題
 - !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
-- !復習価値低 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - !要復習 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
+
+## マージテク
+- 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
+- 二分木を下（葉）から足していく際、総和=Σ頂点のコスト*高さとなるので、葉が決まっている際に最小和を求めるためには、小さい順にマージしていけばよい
+### 例題
+- !復習価値低 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+- !要復習 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）

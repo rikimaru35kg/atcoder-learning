@@ -120,58 +120,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    ll ans = INF;
-    rep (x, 10) {
-        vvl a(N);
-        rep (i, N) rep(j, 10) {
-            if (S[i][j]-'0' == x) a[i].push_back(j);
-        }
-        rep (i, N) {
-            ll K = SIZE(a[i]);
-            rep1 (j, 100) rep (k, K) {
-                a[i].push_back(a[i][k]+10*j);
-            }
-        }
-        de(x)de(a)
-
-        rep(i, N) reverse(all(a[i]));
-        ll t = -1;
-        vb used(N);
-        ll cnt = 0;
-        while (cnt < N) {
-            Pr mnt = {INF, -1};
-            rep(i, N) {
-                if (used[i]) continue;
-                while(a[i].back()<=t) a[i].pop_back();
-                chmin(mnt, {a[i].back(), i});
-            }
-            ll z = mnt.second;
-            used[z] = true;
-            a[z].pop_back();
-            if (x==0) de(mnt)
-            t = mnt.first;
-            ++cnt;
-        }
-        chmin(ans, t);
+    LONG(N, M);
+    vector from(N, vector<t3>());
+    rep(i, M) {
+        LONGM(a, b, c);
+        from[a].emplace_back(b, c, i);
+        from[b].emplace_back(a, c, i);
     }
+    priority_queue<Pr,vector<Pr>,greater<Pr>> pque;
+    vl org(N, -1);
+    vl dist(N, INF);
+    auto push = [&](ll v, ll d, ll ei) {
+        if (dist[v] <= d) return;
+        dist[v] = d;
+        pque.emplace(d, v);
+        org[v] = ei;
+    };
+    push(0, 0, -1);
+    while(pque.size()) {
+        auto [d, v] = pque.top(); pque.pop();
+        if (dist[v] != d) continue;
+        for(auto[nv, c, i]: from[v]) {
+            push(nv, d+c, i);
+        }
+    }
+    vl ans;
+    repk(i, 1, N) ans.push_back(org[i]+1);
     Out(ans);
     
 }
