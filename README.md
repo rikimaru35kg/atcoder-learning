@@ -596,6 +596,12 @@
 ### 例題
 - !要復習 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 
+## 非連結グラフ
+- 連結成分ごとに考えると見通しが良くなる
+- 連結成分の全域木を考えると見通しが良くなる事がある
+### 例題
+- [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
+
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
 - 前準備として、2^k個だけ進むグラフ辺を作っておく（kは0以上で、2^kがn以上となるkまで）
@@ -1197,6 +1203,7 @@
 # 実装が重い問題
 ### 例題
 - !復習価値低 シート重ね合わせ（実装工夫すればすっきり書ける） [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
+- !復習価値低 タイル置き（実装工夫すればそんなに大変ではない） [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 
