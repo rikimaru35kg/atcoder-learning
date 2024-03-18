@@ -826,6 +826,7 @@
 - 遷移するときのループ分をO(1)で実施する
 - 累積和やセグメント木が使える
 ### 例題
+- !復習価値中 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
 - !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
