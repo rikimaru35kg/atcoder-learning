@@ -914,6 +914,7 @@
 - 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 - 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
+- 仮想頂点を設ける事で、見通しが良くなる場合あり
 ### 例題
 - !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
@@ -921,6 +922,7 @@
 - !要復習 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !要復習 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
+- !要復習 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
 
 ## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう

@@ -133,59 +133,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-//! Calculate Manhattan distance
-long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += abs(p1.first - p2.first);
-    ret += abs(p1.second - p2.second);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vt3 jump;
-    rep (i, N) {
-        LONG(x, y, p);
-        jump.emplace_back(x, y, p);
+    ll M = 9;
+    ll mn = INF;
+    vl C(M);
+    rep (i, M) {
+        LONG(c);
+        C[i] = c;
+        chmin(mn, c);
     }
-    auto f = [&](ll s)->bool {
-        vb used(N);
-        ll cnt = 0;
-        auto dfs = [&](auto f, ll v) -> void {
-            used[v] = true;
-            ++cnt;
-            rep(nv, N) {
-                if (nv==v) continue;
-                if (used[nv]) continue;
-                auto [x1, y1, p] = jump[v];
-                auto [x2, y2, p2] = jump[nv];
-                ll d = manhattan_dist({x1,y1},{x2,y2});
-                if (p*s < d) continue;
-                f(f, nv);
+    ll digit = N/mn;
+    ll rem = N%mn;
+    string ans;
+    rep (i, digit) {
+        repr(j, 9) {
+            if (mn+rem>=C[j]) {
+                ans += j+1 + '0';
+                rem -= C[j]-mn;
+                break;
             }
-        };
-        rep(i, N) {
-            used = vb(N);
-            cnt = 0;
-            dfs(dfs, i);
-            if (cnt==N) return true;
         }
-        return false;
-    };
-    ll ans = binary_search(1e10, 0, f);
+    }
     Out(ans);
-
     
 }
 

@@ -98,6 +98,7 @@ template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr <<
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T1,typename T2> inline void debug_view(unordered_map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,vector<T2>> &mp){cerr<<"----"<<endl;for(auto [k,v]: mp){cerr<<k<<": ";debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2,typename T3> inline void debug_view(map<pair<T1,T2>,T3> &mp){cerr << "----" << endl;for(auto [p,v]: mp){cerr<<'{'<<p.first<<' '<<p.second<<'}'<<": "<<v<<endl;} cerr<<"--------"<<endl;}
 #define deb(var) {cerr << #var << ": "; debugb_view(var);}
@@ -136,28 +137,48 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 9;
-    ll mn = INF;
-    vl C(M);
-    rep (i, M) {
-        LONG(c);
-        C[i] = c;
-        chmin(mn, c);
-    }
-    ll digit = N/mn;
-    ll rem = N%mn;
-    string ans;
-    rep (i, digit) {
-        repr(j, 9) {
-            if (mn+rem>=C[j]) {
-                ans += j+1 + '0';
-                rem -= C[j]-mn;
-                break;
-            }
+    LONG(N, M);
+    vvl from(N+1);
+    rep(i, M) {
+        LONG(u, v); --v;
+        if (u==0) {
+            from[N].push_back(v);
+            from[v].push_back(N);
+        } else {
+            --u;
+            from[u].push_back(v);
+            from[v].push_back(u);
         }
     }
-    Out(ans);
+    vl dist0(N+1, INF), distN(N+1, INF);
+    auto bfs = [&](ll sv, vl &dist) {
+        queue<ll> que;
+        auto push = [&](ll v, ll d) {
+            if (dist[v] <= d) return;
+            dist[v] = d;
+            que.emplace(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ll d = dist[v];
+            for (auto nv: from[v]) {
+                push(nv, d+1);
+            }
+        }
+    };
+    bfs(0, dist0);
+    bfs(N-1, distN);
+    vl vec;
+    rep(i, N) {
+        ll ans = dist0[N-1];
+        chmin(ans, dist0[i] + distN[N]);
+        chmin(ans, dist0[N] + distN[i]);
+        if(i==1) {de(dist0[i])de(distN[N])de(dist0[N])de(distN[i])de(ans)}
+        ch1(ans);
+        vec.push_back(ans);
+    }
+    Out(vec);
     
 }
 
