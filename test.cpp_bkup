@@ -136,38 +136,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    LONG(Q);
-    set<ll> used;
-    auto bfs = [&](ll sv, ll k) -> ll {
-        ll ret = 0;
-        queue<Pr> que;
-        que.emplace(sv, 0);
-        used.insert(sv);
-        while(que.size()) {
-            auto [v, d] = que.front(); que.pop();
-            if (d>k) break;
-            ret += v+1;
-            for (auto nv: from[v]) {
-                if (used.count(nv)) continue;
-                que.emplace(nv, d+1);
-                used.insert(nv);
-            }
-        }
-        return ret;
-    };
-    rep(i, Q) {
-        LONG(x, k); --x;
-        used = set<ll>();
-        ll ans = bfs(x, k);
-        Out(ans);
-    }
     
 }
 
