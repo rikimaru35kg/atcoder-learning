@@ -133,66 +133,29 @@ inline void debug_view(mint e){cerr << e.val() << endl;}
 inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vl deg(N);
-    rep(i, M) {
-        LONGM(u, v);
-        deg[u] ^= 1;
-        deg[v] ^= 1;
+    LONG(N); VL(A, N-1);
+    reverse(all(A));
+    vm dp(N);
+    dp[0] = 0;
+    vm ds(N+1);
+    rep(i, N-1) {
+        mint now = 0;
+        // rep(j, A[i]) {
+        //     now += dp[i-j];
+        // }
+        now += ds[i+1] - ds[i-A[i]+1];
+        now /= (A[i]+1);
+        now++;
+        now *= (A[i]+1);
+        now /= A[i];
+        dp[i+1] = now;
+        ds[i+2] = ds[i+1] + dp[i+1];
     }
-    ll even = 0, odd = 0;
-    rep(i, N) {
-        if (deg[i]) odd++;
-        else even++;
-    }
-    ll MOD = 998244353;
-    Combination comb(N, MOD);
-    mint ans = 0;
-    for(int i=0; i<=K; i+=2) {
-        ans += comb(odd, i) * comb(even, K-i);
-    }
-    Out(ans.val());
+    Out(dp[N-1].val());
     
 }
 

@@ -121,39 +121,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    mint ans = 0;
-    rep1(m, N) {
-        vvm dp(m+1, vm(m));
-        dp[0][0] = 1;
-        rep(i, N) {
-            vvm p(m+1, vm(m));
-            swap(p, dp);
-            rep(j, m+1) rep(k, m) {
-                dp[j][k] += p[j][k];
-                if(j<m) dp[j+1][(k+A[i])%m] += p[j][k];
-            }
-        }
-        ans += dp[m][0];
+    LONG(N, L, R);
+    VL(A, N);
+    vl dp(3, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl p(3, INF);
+        swap(p, dp);
+        if(p[0] != INF) chmin(dp[0], p[0]+L);
+        if(p[0] != INF) chmin(dp[1], p[0]+A[i]);
+        if(p[0] != INF) chmin(dp[2], p[0]+R);
+        if(p[1] != INF) chmin(dp[1], p[1]+A[i]);
+        if(p[1] != INF) chmin(dp[2], p[1]+R);
+        if(p[2] != INF) chmin(dp[2], p[2]+R);
     }
+    ll ans = INF;
+    chmin(ans, dp[0]);
+    chmin(ans, dp[1]);
+    chmin(ans, dp[2]);
+    Out(ans);
     
-    Out(ans.val());
 }
 
 // ### test.cpp ###
