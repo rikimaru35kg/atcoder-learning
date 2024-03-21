@@ -35,7 +35,7 @@ double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
 //! input type = long long
 //! output type = long long
 long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    double ret = 0;
+    long long ret = 0;
     ret += (p1.first - p2.first) * (p1.first - p2.first);
     ret += (p1.second - p2.second) * (p1.second - p2.second);
     return ret;
