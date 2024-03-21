@@ -137,40 +137,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl A(N), B(N);
-    rep(i, N) cin>>A[i]>>B[i];
-    vvl v2i(M+1);
-    rep(i, N) {
-        v2i[A[i]].push_back(i);
-        v2i[B[i]].push_back(i);
+    LONG(S, T, M);
+    vvl from(S);
+    vvl tvpair(T, vl(T, -1));
+    rep(i, M) {
+        LONGM(u, v);
+        v -= S;
+        from[u].push_back(v);
     }
-    vl f(M+2);
-    ll r = 1;
-    vl cnt(N);
-    ll sel = 0;
-    rep1(l, M) {
-        while(sel < N && r<=M) {
-            for (auto i: v2i[r]) {
-                if (cnt[i]==0) ++sel;
-                cnt[i]++;
+    rep(v, S) {
+        sort(all(from[v]));
+        ll N = SIZE(from[v]);
+        rep(i, N) rep(j, i) {
+            ll a = from[v][j], b = from[v][i];
+            if (tvpair[a][b] == -1) {
+                tvpair[a][b] = v;
+            } else {
+                vl ans;
+                ans.push_back(v+1);
+                ans.push_back(tvpair[a][b]+1);
+                ans.push_back(a+S+1);
+                ans.push_back(b+S+1);
+                Out(ans);
+                return 0;
             }
-            ++r;
-        }
-        if(sel==N) {
-            de(l)de(r)de(M-l+1)
-            f[r-l]++;
-            f[M-l+2]--;
-        }
-        for (auto i: v2i[l]) {
-            cnt[i]--;
-            if(cnt[i]==0) --sel;
         }
     }
-    rep(i, M+1) f[i+1] += f[i];
-    vl ans;
-    rep1(i, M) ans.push_back(f[i]);
-    Out(ans);
+    Out(-1);
     
 }
 

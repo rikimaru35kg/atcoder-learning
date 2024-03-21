@@ -1357,3 +1357,4 @@
 - [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
 - [E - Addition and Multiplication 2](https://atcoder.jp/contests/abc257/tasks/abc257_e)
+- [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)

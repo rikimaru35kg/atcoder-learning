@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,34 +137,39 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VLM(P, N);
-    set<ll> field;
-    dsu uf(N);
-    vl turn(N, -1);
+    LONG(N, M);
+    vl A(N), B(N);
+    rep(i, N) cin>>A[i]>>B[i];
+    vvl v2i(M+1);
     rep(i, N) {
-        ll p = P[i];
-        if (SIZE(field)) {
-            auto it = field.lower_bound(p);
-            if (it == field.end()) {
-                field.insert(p);
-            } else {
-                ll x = *it;
-                uf.merge(p, x);
-                field.erase(x);
-                field.insert(p);
+        v2i[A[i]].push_back(i);
+        v2i[B[i]].push_back(i);
+    }
+    vl f(M+2);
+    ll r = 1;
+    vl cnt(N);
+    ll sel = 0;
+    rep1(l, M) {
+        while(sel < N && r<=M) {
+            for (auto i: v2i[r]) {
+                if (cnt[i]==0) ++sel;
+                cnt[i]++;
             }
-        } else {
-            field.insert(p);
+            ++r;
         }
-        if (uf.size(p) == K) {
-            field.erase(p);
-            turn[uf.leader(p)] = i+1;
+        if(sel==N) {
+            de(l)de(r)de(M-l+1)
+            f[r-l]++;
+            f[M-l+2]--;
+        }
+        for (auto i: v2i[l]) {
+            cnt[i]--;
+            if(cnt[i]==0) --sel;
         }
     }
-    vl ans(N, -1);
-    rep (i, N) {
-        ans[P[i]] = turn[uf.leader(P[i])];
-    }
+    rep(i, M+1) f[i+1] += f[i];
+    vl ans;
+    rep1(i, M) ans.push_back(f[i]);
     Out(ans);
     
 }
