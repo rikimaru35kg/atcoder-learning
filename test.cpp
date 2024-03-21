@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -134,47 +134,37 @@ using namespace atcoder;
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    LONG(sx, sy, tx, ty);
-    vl X(N), Y(N), R(N);
-    rep(i, N) cin >> X[i] >> Y[i] >> R[i];
-    dsu uf(N+2);
-    rep(i, N) rep(j, i) {
-        ll d2 = euclid_dist2({X[i],Y[i]}, {X[j],Y[j]});
-        ll r2p = (R[i]+R[j])*(R[i]+R[j]);
-        ll r2m = (R[i]-R[j])*(R[i]-R[j]);
-        if (d2 <= r2p && d2 >= r2m) {
-            uf.merge(i, j);
+    vvp pe(N);
+    map<ll,ll> mx, cnt;
+    rep (i, N) {
+        LONG(M);
+        rep(j, M) {
+            LONG(p, e);
+            pe[i].emplace_back(p, e);
+            chmax(mx[p], e);
         }
     }
     rep(i, N) {
-        ll d2 = euclid_dist2({X[i],Y[i]}, {sx,sy});
-        ll r2 = R[i]*R[i];
-        if (d2==r2) {
-            uf.merge(i, N);
+        for (auto [p, e]: pe[i]) {
+            if (mx[p] == e) cnt[p]++;
         }
     }
+    ll ans = 0;
     rep(i, N) {
-        ll d2 = euclid_dist2({X[i],Y[i]}, {tx,ty});
-        ll r2 = R[i]*R[i];
-        if (d2==r2) {
-            uf.merge(i, N+1);
+        for (auto [p, e]: pe[i]) {
+            if (mx[p] == e && cnt[p] == 1) {
+                ++ans;
+                break;
+            }
         }
     }
-    if (uf.same(N, N+1)) PYes PNo
+    if (ans < N) ++ans;
+    Out(ans);
+
     
 }
 

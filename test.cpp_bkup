@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -134,47 +134,47 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    char last_char = s[0]+1;
-    for (auto c: s) {
-        if (c != last_char) ret.emplace_back(c, 1);
-        else ++ret.back().second;
-        last_char = c;
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
     return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S, T);
-    auto vs = run_length_encoding(S);
-    auto vt = run_length_encoding(T);
-    ll N = SIZE(vs);
-    ll M = SIZE(vt);
-    if (N!=M) PNo
-    rep(i, N) {
-        auto [c1, n1] = vs[i];
-        auto [c2, n2] = vt[i];
-        de(c1)de(n1)de(c2)de(n2)
-        if (c1!=c2) PNo
-        if (n1 > n2) PNo
-        if (n1 == n2) continue;
-        if (n1==1) PNo;
+    LONG(N);
+    LONG(sx, sy, tx, ty);
+    vl X(N), Y(N), R(N);
+    rep(i, N) cin >> X[i] >> Y[i] >> R[i];
+    dsu uf(N+2);
+    rep(i, N) rep(j, i) {
+        ll d2 = euclid_dist2({X[i],Y[i]}, {X[j],Y[j]});
+        ll r2p = (R[i]+R[j])*(R[i]+R[j]);
+        ll r2m = (R[i]-R[j])*(R[i]-R[j]);
+        if (d2 <= r2p && d2 >= r2m) {
+            uf.merge(i, j);
+        }
     }
-    PYes
+    rep(i, N) {
+        ll d2 = euclid_dist2({X[i],Y[i]}, {sx,sy});
+        ll r2 = R[i]*R[i];
+        if (d2==r2) {
+            uf.merge(i, N);
+        }
+    }
+    rep(i, N) {
+        ll d2 = euclid_dist2({X[i],Y[i]}, {tx,ty});
+        ll r2 = R[i]*R[i];
+        if (d2==r2) {
+            uf.merge(i, N+1);
+        }
+    }
+    if (uf.same(N, N+1)) PYes PNo
     
 }
 
