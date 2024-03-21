@@ -137,34 +137,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvp pe(N);
-    map<ll,ll> mx, cnt;
-    rep (i, N) {
-        LONG(M);
-        rep(j, M) {
-            LONG(p, e);
-            pe[i].emplace_back(p, e);
-            chmax(mx[p], e);
-        }
-    }
+    LONG(N, M);
+    vl A(N), B(N);
+    rep(i, N) cin>>A[i]>>B[i];
+    vvl v2i(M+1);
     rep(i, N) {
-        for (auto [p, e]: pe[i]) {
-            if (mx[p] == e) cnt[p]++;
-        }
+        v2i[A[i]].push_back(i);
+        v2i[B[i]].push_back(i);
     }
-    ll ans = 0;
-    rep(i, N) {
-        for (auto [p, e]: pe[i]) {
-            if (mx[p] == e && cnt[p] == 1) {
-                ++ans;
-                break;
+    vl f(M+2);
+    ll r = 1;
+    vl cnt(N);
+    ll sel = 0;
+    rep1(l, M) {
+        while(sel < N && r<=M) {
+            for (auto i: v2i[r]) {
+                if (cnt[i]==0) ++sel;
+                cnt[i]++;
             }
+            ++r;
+        }
+        if(sel==N) {
+            de(l)de(r)de(M-l+1)
+            f[r-l]++;
+            f[M-l+2]--;
+        }
+        for (auto i: v2i[l]) {
+            cnt[i]--;
+            if(cnt[i]==0) --sel;
         }
     }
-    if (ans < N) ++ans;
+    rep(i, M+1) f[i+1] += f[i];
+    vl ans;
+    rep1(i, M) ans.push_back(f[i]);
     Out(ans);
-
     
 }
 

@@ -331,6 +331,7 @@
 - !復習価値低 尺取りでなくても解ける [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
 - !復習価値中 尺取りでなくても解ける [D - Impartial Gift](https://atcoder.jp/contests/abc302/tasks/abc302_d)
 - !要復習 最大値X最小値Yとなる区間の総数 [E - Max Min](https://atcoder.jp/contests/abc247/tasks/abc247_e)
+- !要復習 交差1の数列が全要素を包含するか（snuke氏考察はオーバーキル） [E - At Least One](https://atcoder.jp/contests/abc260/tasks/abc260_e)
 
 ## 半分全列挙
 - N=40程度のとき、2^NはTLEするが2^(N/2)であればTLEしない事を利用
