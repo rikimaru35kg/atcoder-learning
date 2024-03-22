@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,42 +137,55 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VL(R, H);
-    VL(C, W);
-    VS(_A, H);
-    vvl A(H, vl(W));
-    rep(i, H) rep(j, W) if (_A[i][j]=='1') A[i][j] = 1;
-
-    vector dp(H, vvvl(W, vvl(2, vl(2, INF))));
-    rep(k, 2) rep(l, 2) {
-        dp[0][0][k][l] = 0;
-        if (k) dp[0][0][k][l] += R[0];
-        if (l) dp[0][0][k][l] += C[0];
+    LONG(N);
+    vvl from(N);
+    vp edges;
+    rep(i, N) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
+        edges.emplace_back(u, v);
     }
-    rep(i, H) rep(j, W) rep(k, 2) rep(l, 2) {
-        // right
-        if (j+1<W) {
-            ll p = dp[i][j][k][l];
-            int x = A[i][j], y = A[i][j+1];
-            if (k) x ^= 1, y ^= 1;
-            if (l) x ^= 1;
-            if(x==y) chmin(dp[i][j+1][k][0], p);
-            else chmin(dp[i][j+1][k][1], p + C[j+1]);
+    vb used(N), finished(N);
+    vl stck;
+    ll pos = -1;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> bool {
+        used[v] = true;
+        stck.push_back(v);
+        for (auto nv: from[v]) {
+            if (nv==p) continue;
+            if (finished[nv]) continue;
+            if (used[nv]) {
+                pos = nv;
+                de(v)de(nv)
+                return true;
+            }
+            if(f(f, nv, v)) return true;
         }
-        // down
-        if (i+1<H) {
-            ll p = dp[i][j][k][l];
-            int x = A[i][j], y = A[i+1][j];
-            if (k) x ^= 1;
-            if (l) x ^= 1, y ^= 1;
-            if(x==y) chmin(dp[i+1][j][0][l], p);
-            else chmin(dp[i+1][j][1][l], p + R[i+1]);
-        }
+        finished[v] = true;
+        stck.pop_back();
+        used[v] = false;
+        return false;
+    };
+    dfs(dfs, 0);
+    set<ll> cs;
+    while(stck.size()) {
+        cs.insert(stck.back());
+        ll now = stck.back();
+        stck.pop_back();
+        if (now == pos) break;
     }
-    ll ans = INF;
-    rep(k, 2) rep(l, 2) chmin(ans, dp[H-1][W-1][k][l]);
-    Out(ans);
+    dsu uf(N);
+    for (auto [u, v]: edges){
+        if (cs.count(u) && cs.count(v)) continue;
+        uf.merge(u, v);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(x, y);
+        if (uf.same(x, y)) puts("Yes");
+        else puts("No");
+    }
     
 }
 

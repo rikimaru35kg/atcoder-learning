@@ -486,6 +486,7 @@
 - サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいるsnuke式の場合、自己ループがある場合は要注意
 - サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
 ### 例題
+- 基本 [F - Well-defined Path Queries on a Namori](https://atcoder.jp/contests/abc266/tasks/abc266_f)
 - !復習価値中 単純なfunctional graphだが、サイクル検出の難しさを考えさせられる良問 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
 - !復習価値中 自己ループありのfunctional graph [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
 - !復習価値低 ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
@@ -1348,6 +1349,7 @@
 ## ACできたがグダった問題
 - [C - Slot Strategy](https://atcoder.jp/contests/abc252/tasks/abc252_c)
 - [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
+- [E - Throwing the Die](https://atcoder.jp/contests/abc266/tasks/abc266_e)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
