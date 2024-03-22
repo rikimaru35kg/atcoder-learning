@@ -500,11 +500,13 @@
 - 連結とは限らない閉路を含まないグラフを森という（木が幾つも含まれたグラフ）
 - 森の連結成分数は頂点数 - 辺の数
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
+- ある頂点から与えれた距離の頂点を素早く見つけるには、直径の端点からのパスだけ記録して置けば良い（最も遠い点はどちらかの端点になるはずなので）
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !要復習（惜しかった!） 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - !復習価値中 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 - !要復習 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
+- !要復習 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ

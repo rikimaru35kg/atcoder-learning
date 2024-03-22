@@ -133,56 +133,49 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vl cost(N);
+    LONG(N);
     vvl from(N);
-    rep(i, M) {
-        LONGM(u, v);
-        cost[u] += A[v];
-        cost[v] += A[u];
-        from[u].push_back(v);
-        from[v].push_back(u);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    auto f = [&](ll x) {
-        vl c = cost;
-        queue<ll> que;
-        vb erased(N);
-        ll cnt = 0;
-        rep(i, N) if(c[i] <= x) {
-            que.push(i);
-            erased[i] = true;
+    auto dfs = [&](auto f, ll v, ll d=0, ll p=-1) -> Pr {
+        Pr far(d, v);
+        for (auto nv: from[v]) if(nv != p) {
+            chmax(far, f(f, nv, d+1, v));
         }
-        while(que.size()) {
-            ll v = que.front(); que.pop();
-            cnt++;
-            for (auto nv: from[v]) {
-                if(erased[nv]) continue;
-                c[nv] -= A[v];
-                if(c[nv] <= x) {
-                    que.push(nv);
-                    erased[nv] = true;
-                }
-            }
-        }
-        de(x)de(cnt)
-        if (cnt == N) return true;
-        else return false;
+        return far;
     };
-    ll ans = binary_search(INF, -1, f);
-    Out(ans);
+    ll a = dfs(dfs, 0).second;
+    ll b = dfs(dfs, a).second;
+    vvp qs(N);
+    LONG(Q);
+    vl ans(Q, -1);
+    rep(i, Q) {
+        LONGM(u); LONG(k);
+        qs[u].emplace_back(i, k);
+    }
+    vl vs;
+    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
+        vs.push_back(v);
+        for (auto [i, k]: qs[v]) {
+            ll j = SIZE(vs)-1-k;
+            if (j<0) continue;
+            ans[i] = vs[j]+1;
+        }
+        for(auto nv: from[v]) if(p != nv) {
+            f(f, nv, v);
+        }
+        vs.pop_back();
+    };
+    dfs2(dfs2, a);
+    dfs2(dfs2, b);
+    for(auto v: ans) Out(v);
     
 }
 

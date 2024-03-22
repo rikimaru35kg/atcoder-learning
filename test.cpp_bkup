@@ -133,23 +133,55 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
     VL(A, N);
-    vl dp(M+1, -INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl p(M+1, -INF);
-        swap(p, dp);
-        rep(j, M+1) {
-            chmax(dp[j], p[j]);
-            if(j<M) chmax(dp[j+1], p[j] + (j+1)*A[i]);
-        }
+    vl cost(N);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(u, v);
+        cost[u] += A[v];
+        cost[v] += A[u];
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
-    ll ans = dp[M];
+    auto f = [&](ll x) {
+        vl c = cost;
+        queue<ll> que;
+        vb erased(N);
+        ll cnt = 0;
+        rep(i, N) if(c[i] <= x) {
+            que.push(i);
+            erased[i] = true;
+        }
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            cnt++;
+            for (auto nv: from[v]) {
+                if(erased[nv]) continue;
+                c[nv] -= A[v];
+                if(c[nv] <= x) {
+                    que.push(nv);
+                    erased[nv] = true;
+                }
+            }
+        }
+        de(x)de(cnt)
+        if (cnt == N) return true;
+        else return false;
+    };
+    ll ans = binary_search(INF, -1, f);
     Out(ans);
     
 }
