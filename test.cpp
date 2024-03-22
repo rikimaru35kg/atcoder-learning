@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -133,59 +133,56 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(N, M);
+    VL(A, N);
+    vl cost(N);
     vvl from(N);
-    vp edges;
-    rep(i, N) {
+    rep(i, M) {
         LONGM(u, v);
+        cost[u] += A[v];
+        cost[v] += A[u];
         from[u].push_back(v);
         from[v].push_back(u);
-        edges.emplace_back(u, v);
     }
-    vb used(N), finished(N);
-    vl stck;
-    ll pos = -1;
-    auto dfs = [&](auto f, ll v, ll p=-1) -> bool {
-        used[v] = true;
-        stck.push_back(v);
-        for (auto nv: from[v]) {
-            if (nv==p) continue;
-            if (finished[nv]) continue;
-            if (used[nv]) {
-                pos = nv;
-                de(v)de(nv)
-                return true;
-            }
-            if(f(f, nv, v)) return true;
+    auto f = [&](ll x) {
+        vl c = cost;
+        queue<ll> que;
+        vb erased(N);
+        ll cnt = 0;
+        rep(i, N) if(c[i] <= x) {
+            que.push(i);
+            erased[i] = true;
         }
-        finished[v] = true;
-        stck.pop_back();
-        used[v] = false;
-        return false;
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            cnt++;
+            for (auto nv: from[v]) {
+                if(erased[nv]) continue;
+                c[nv] -= A[v];
+                if(c[nv] <= x) {
+                    que.push(nv);
+                    erased[nv] = true;
+                }
+            }
+        }
+        de(x)de(cnt)
+        if (cnt == N) return true;
+        else return false;
     };
-    dfs(dfs, 0);
-    set<ll> cs;
-    while(stck.size()) {
-        cs.insert(stck.back());
-        ll now = stck.back();
-        stck.pop_back();
-        if (now == pos) break;
-    }
-    dsu uf(N);
-    for (auto [u, v]: edges){
-        if (cs.count(u) && cs.count(v)) continue;
-        uf.merge(u, v);
-    }
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(x, y);
-        if (uf.same(x, y)) puts("Yes");
-        else puts("No");
-    }
+    ll ans = binary_search(INF, -1, f);
+    Out(ans);
     
 }
 
