@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -138,27 +138,25 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vp pos;
-    rep (i, N) {
-        LONG(x, y);
-        pos.emplace_back(x, y);
-    }
-    dsu uf(N);
-    rep(x, N) rep(y, x) {
-        auto [i, j] = pos[x];
-        auto [ni, nj] = pos[y];
-        if (ni==i-1 && nj == j-1) uf.merge(x, y);
-        if (ni==i-1 && nj == j) uf.merge(x, y);
-        if (ni==i && nj == j-1) uf.merge(x, y);
-        if (ni==i && nj == j+1) uf.merge(x, y);
-        if (ni==i+1 && nj == j) uf.merge(x, y);
-        if (ni==i+1 && nj == j+1) uf.merge(x, y);
-    }
-    ll ans = 0;
-    rep(i, N) {
-        if (i==uf.leader(i)) ++ans;
-    }
-    Out(ans);
+    auto bi = [&](bool col) -> ll {
+        ll l = 0, r = N;
+        while (r-l>1) {
+            ll m = (r+l)/2;
+            ll a = 1, b = N, c = l+1, d = m;
+            if (!col) swap(a, c), swap(b, d);
+            printf("? %lld %lld %lld %lld", a, b, c, d);
+            cout << endl;
+            LONG(t);
+            if(t==-1) return 0;
+            if (t == m-l) l = m;
+            else r = m;
+        }
+        return l+1;
+    };
+    ll x = bi(false), y = bi(true);
+    printf("! %lld %lld", x, y);
+    cout << endl;
+
     
 }
 

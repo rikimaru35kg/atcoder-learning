@@ -121,9 +121,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -137,26 +137,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    auto bi = [&](bool col) -> ll {
-        ll l = 0, r = N;
-        while (r-l>1) {
-            ll m = (r+l)/2;
-            ll a = 1, b = N, c = l+1, d = m;
-            if (!col) swap(a, c), swap(b, d);
-            printf("? %lld %lld %lld %lld", a, b, c, d);
-            cout << endl;
-            LONG(t);
-            if(t==-1) return 0;
-            if (t == m-l) l = m;
-            else r = m;
-        }
-        return l+1;
+    LONG(N, M, Q);
+    auto sum2 = [&](ll h, ll w, mint a) -> mint {
+        mint ret = 0;
+        ret = a + (a+(h-1)*2*M+(w-1)*2);
+        ret *= h;
+        ret *= w;
+        ret /= 2;
+        return ret;
     };
-    ll x = bi(false), y = bi(true);
-    printf("! %lld %lld", x, y);
-    cout << endl;
-
+    auto sum =[&] (ll x, ll y)->mint {
+        mint ret = 0;
+        ret += sum2((x+1)/2, (y+1)/2, 1);
+        ret += sum2(x/2, y/2, M+2);
+        return ret;
+    };
+    rep (i, Q) {
+        LONG(A, B, C, D);
+        --A, --C;
+        mint ans = sum(B, D);
+        ans -= sum(A, D);
+        ans -= sum(B, C);
+        ans += sum(A, C);
+        Out(ans.val());
+    }
     
 }
 

@@ -1368,3 +1368,4 @@
 - [E - Addition and Multiplication 2](https://atcoder.jp/contests/abc257/tasks/abc257_e)
 - [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 - [F - Monochromatic Path](https://atcoder.jp/contests/abc264/tasks/abc264_f)
+- [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
