@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -133,55 +133,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vl cost(N);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(u, v);
-        cost[u] += A[v];
-        cost[v] += A[u];
-        from[u].push_back(v);
-        from[v].push_back(u);
+    LONG(N);
+    vp pos;
+    rep (i, N) {
+        LONG(x, y);
+        pos.emplace_back(x, y);
     }
-    auto f = [&](ll x) {
-        vl c = cost;
-        queue<ll> que;
-        vb erased(N);
-        ll cnt = 0;
-        rep(i, N) if(c[i] <= x) {
-            que.push(i);
-            erased[i] = true;
-        }
-        while(que.size()) {
-            ll v = que.front(); que.pop();
-            cnt++;
-            for (auto nv: from[v]) {
-                if(erased[nv]) continue;
-                c[nv] -= A[v];
-                if(c[nv] <= x) {
-                    que.push(nv);
-                    erased[nv] = true;
-                }
-            }
-        }
-        de(x)de(cnt)
-        if (cnt == N) return true;
-        else return false;
-    };
-    ll ans = binary_search(INF, -1, f);
+    dsu uf(N);
+    rep(x, N) rep(y, x) {
+        auto [i, j] = pos[x];
+        auto [ni, nj] = pos[y];
+        if (ni==i-1 && nj == j-1) uf.merge(x, y);
+        if (ni==i-1 && nj == j) uf.merge(x, y);
+        if (ni==i && nj == j-1) uf.merge(x, y);
+        if (ni==i && nj == j+1) uf.merge(x, y);
+        if (ni==i+1 && nj == j) uf.merge(x, y);
+        if (ni==i+1 && nj == j+1) uf.merge(x, y);
+    }
+    ll ans = 0;
+    rep(i, N) {
+        if (i==uf.leader(i)) ++ans;
+    }
     Out(ans);
     
 }

@@ -1352,6 +1352,8 @@
 - [C - Slot Strategy](https://atcoder.jp/contests/abc252/tasks/abc252_c)
 - [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
 - [E - Throwing the Die](https://atcoder.jp/contests/abc266/tasks/abc266_e)
+- [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
+- [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

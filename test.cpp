@@ -138,44 +138,25 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    auto dfs = [&](auto f, ll v, ll d=0, ll p=-1) -> Pr {
-        Pr far(d, v);
-        for (auto nv: from[v]) if(nv != p) {
-            chmax(far, f(f, nv, d+1, v));
+    auto bi = [&](bool col) -> ll {
+        ll l = 0, r = N;
+        while (r-l>1) {
+            ll m = (r+l)/2;
+            ll a = 1, b = N, c = l+1, d = m;
+            if (!col) swap(a, c), swap(b, d);
+            printf("? %lld %lld %lld %lld", a, b, c, d);
+            cout << endl;
+            LONG(t);
+            if(t==-1) return 0;
+            if (t == m-l) l = m;
+            else r = m;
         }
-        return far;
+        return l+1;
     };
-    ll a = dfs(dfs, 0).second;
-    ll b = dfs(dfs, a).second;
-    vvp qs(N);
-    LONG(Q);
-    vl ans(Q, -1);
-    rep(i, Q) {
-        LONGM(u); LONG(k);
-        qs[u].emplace_back(i, k);
-    }
-    vl vs;
-    auto dfs2 = [&](auto f, ll v, ll p=-1) -> void {
-        vs.push_back(v);
-        for (auto [i, k]: qs[v]) {
-            ll j = SIZE(vs)-1-k;
-            if (j<0) continue;
-            ans[i] = vs[j]+1;
-        }
-        for(auto nv: from[v]) if(p != nv) {
-            f(f, nv, v);
-        }
-        vs.pop_back();
-    };
-    dfs2(dfs2, a);
-    dfs2(dfs2, b);
-    for(auto v: ans) Out(v);
+    ll x = bi(false), y = bi(true);
+    printf("! %lld %lld", x, y);
+    cout << endl;
+
     
 }
 
