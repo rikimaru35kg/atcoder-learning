@@ -471,6 +471,7 @@
 - 頂点を1度だけ訪れれば良い場合は、行きがけ順で探索済みの頂点は再探索不要
 - 合計距離Kでゴールにたどり着く迷路問題など、ループを許容し同じ地点での再探索がありうる場合は、頂点以外の情報（距離など）もセットで状態として管理し、状態が同じものは再探索しないようにする
 ### 例題
+- 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 - !復習価値中 バックトラック (072 - Loop Railway Plan（★4）)[https://atcoder.jp/contests/typical90/tasks/typical90_bt]
 - !要復習 お堀 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)

@@ -121,9 +121,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -137,30 +137,25 @@ using mint = modint;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q);
-    auto sum2 = [&](ll h, ll w, mint a) -> mint {
-        mint ret = 0;
-        ret = a + (a+(h-1)*2*M+(w-1)*2);
-        ret *= h;
-        ret *= w;
-        ret /= 2;
-        return ret;
-    };
-    auto sum =[&] (ll x, ll y)->mint {
-        mint ret = 0;
-        ret += sum2((x+1)/2, (y+1)/2, 1);
-        ret += sum2(x/2, y/2, M+2);
-        return ret;
-    };
-    rep (i, Q) {
-        LONG(A, B, C, D);
-        --A, --C;
-        mint ans = sum(B, D);
-        ans -= sum(A, D);
-        ans -= sum(B, C);
-        ans += sum(A, C);
-        Out(ans.val());
+    LONG(N, X, Y); --X; --Y;
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(u, v);
+        from[u].push_back(v);
+        from[v].push_back(u);
     }
+    vl ans;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> bool {
+        ans.push_back(v+1);
+        if (v == Y) return true;
+        for(auto nv: from[v]) if (nv != p) {
+            if(f(f, nv, v)) return true;
+        }
+        ans.pop_back();
+        return false;
+    };
+    dfs(dfs, X);
+    Out(ans);
     
 }
 
