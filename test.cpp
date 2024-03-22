@@ -121,41 +121,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N-1);
-    reverse(all(A));
-    vm dp(N);
-    dp[0] = 0;
-    vm ds(N+1);
-    rep(i, N-1) {
-        mint now = 0;
-        // rep(j, A[i]) {
-        //     now += dp[i-j];
-        // }
-        now += ds[i+1] - ds[i-A[i]+1];
-        now /= (A[i]+1);
-        now++;
-        now *= (A[i]+1);
-        now /= A[i];
-        dp[i+1] = now;
-        ds[i+2] = ds[i+1] + dp[i+1];
+    LONG(H, W);
+    VL(R, H);
+    VL(C, W);
+    VS(_A, H);
+    vvl A(H, vl(W));
+    rep(i, H) rep(j, W) if (_A[i][j]=='1') A[i][j] = 1;
+
+    vector dp(H, vvvl(W, vvl(2, vl(2, INF))));
+    rep(k, 2) rep(l, 2) {
+        dp[0][0][k][l] = 0;
+        if (k) dp[0][0][k][l] += R[0];
+        if (l) dp[0][0][k][l] += C[0];
     }
-    Out(dp[N-1].val());
+    rep(i, H) rep(j, W) rep(k, 2) rep(l, 2) {
+        // right
+        if (j+1<W) {
+            ll p = dp[i][j][k][l];
+            int x = A[i][j], y = A[i][j+1];
+            if (k) x ^= 1, y ^= 1;
+            if (l) x ^= 1;
+            if(x==y) chmin(dp[i][j+1][k][0], p);
+            else chmin(dp[i][j+1][k][1], p + C[j+1]);
+        }
+        // down
+        if (i+1<H) {
+            ll p = dp[i][j][k][l];
+            int x = A[i][j], y = A[i+1][j];
+            if (k) x ^= 1;
+            if (l) x ^= 1, y ^= 1;
+            if(x==y) chmin(dp[i+1][j][0][l], p);
+            else chmin(dp[i+1][j][1][l], p + R[i+1]);
+        }
+    }
+    ll ans = INF;
+    rep(k, 2) rep(l, 2) chmin(ans, dp[H-1][W-1][k][l]);
+    Out(ans);
     
 }
 

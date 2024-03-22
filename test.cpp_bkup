@@ -137,24 +137,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L, R);
-    VL(A, N);
-    vl dp(3, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl p(3, INF);
-        swap(p, dp);
-        if(p[0] != INF) chmin(dp[0], p[0]+L);
-        if(p[0] != INF) chmin(dp[1], p[0]+A[i]);
-        if(p[0] != INF) chmin(dp[2], p[0]+R);
-        if(p[1] != INF) chmin(dp[1], p[1]+A[i]);
-        if(p[1] != INF) chmin(dp[2], p[1]+R);
-        if(p[2] != INF) chmin(dp[2], p[2]+R);
+    STRING(S);
+    string atc = "atcoder";
+    map<char,int> mp;
+    ll idx = 0;
+    ll N = SIZE(atc);
+    for (auto c: atc) {
+        mp[c] = idx;
+        ++idx;
     }
-    ll ans = INF;
-    chmin(ans, dp[0]);
-    chmin(ans, dp[1]);
-    chmin(ans, dp[2]);
+    de(mp)
+    ll ans = 0;
+    repr(i, N) {
+        rep(j, i) {
+            if (mp[S[j]]>mp[S[i]])++ans;
+        }
+    }
     Out(ans);
     
 }
