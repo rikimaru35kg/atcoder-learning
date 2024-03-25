@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -133,34 +133,49 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+struct Edge {
+    ll a, b, c;
+    Edge(ll a, ll b , ll c): a(a), b(b), c(c) {}
+    bool operator < (const Edge &o) const {
+        return c < o.c;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VL(A, N);
-    auto judge = [&](ll x) -> ll {
-        ll sum = 0;
-        rep(i, N) { 
-            sum += min(A[i], x);
+    LONG(N, M);
+    VL(X, N); VL(Y, N);
+    vector<Edge> edges;
+    rep(i, M) {
+        LONGM(a, b); LONG(z);
+        edges.emplace_back(a, b, z);
+    }
+    ll ans = INF;
+
+    rep(xi, 2) rep(yi, 2) {
+        ll nn = N;
+        vector<Edge> nedges = edges;
+        if (xi) {
+            rep(i, N) nedges.emplace_back(i, nn, X[i]);
+            ++nn;
         }
-        if (sum > K) return -1;
-        else return sum;
-    };
-    ll l = 0, r = INF;
-    while(r-l>1) {
-        ll m = (l+r) / 2;
-        ll y = judge(m);
-        if (y==-1) r = m;
-        else l = m;
+        if (yi) {
+            rep(i, N) nedges.emplace_back(i, nn, Y[i]);
+            ++nn;
+        }
+        dsu uf(nn);
+        ll now = 0;
+        sort(all(nedges));
+        for (auto [a, b, c]: nedges) {
+            if (uf.same(a, b)) continue;
+            uf.merge(a, b);
+            now += c;
+        }
+        if(uf.size(0) != nn) continue;
+        chmin(ans, now);
     }
-    ll rem = K - judge(l);
-    de(l)de(rem)
-    rep(i, N) {A[i] = max(A[i]-l, 0LL);}
-    rep(i, N) {
-        if (rem==0) break;
-        if(A[i]) {A[i]--; rem--;}
-    }
-    Out(A);
+    Out(ans);
     
 }
 
