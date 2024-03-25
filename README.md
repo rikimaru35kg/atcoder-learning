@@ -1156,8 +1156,9 @@
 ## クエリ先読み
 - クエリを先読みすると楽に処理できる事がある
 ### 例題
-- !復習価値高 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
+- !復習価値高 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+- !復習価値高 [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
 
 ## XY独立に考える
 ### 例題
