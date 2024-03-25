@@ -1361,6 +1361,7 @@
 - [E - Throwing the Die](https://atcoder.jp/contests/abc266/tasks/abc266_e)
 - [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
+- [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

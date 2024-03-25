@@ -137,6 +137,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M);
+    VL(A, N);
+    vvl event(M);
+    rep(i, N) {
+        ll a = A[i];
+        a += (i+1);
+        ll l = 0;
+        if (a < 0) l = Divceil(-a, i+1);
+        ll r = Div(N-a, i+1);
+        chmin(r, M-1);
+        if (l>r) continue;
+        for (int k=l; k<=r; ++k) event[k].push_back(a+k*(i+1));
+
+    }
+    de(event)
+    rep(i, M) {
+        ll z = SIZE(event[i]);
+        vb exst(z);
+        for(auto x: event[i]) {
+            if (x<z) exst[x] = true;
+        }
+        ll ans = 0;
+        rep(j, z) {
+            if (!exst[j]) break;
+            if (exst[j]) ++ans;
+        }
+        Out(ans);
+    }
     
 }
 
