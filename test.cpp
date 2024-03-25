@@ -137,38 +137,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VVL(A, N, N);
-    auto f = [&](vvl &A) -> vvl {
-        vvl ret(N);
-        ret[0].push_back(A[0][0]);
-        rep(i, N-1) {
-            vvl pret(N);
-            swap(pret, ret);
-            rep (j, i+1) {
-                for (auto x: pret[j]) {
-                    ret[j].push_back(x^A[j][i+1-j]);
-                    ret[j+1].push_back(x^A[j+1][i-j]);
-                }
-            }
-        }
-        return ret;
-    };
-    vvl d1 = f(A);
-    auto rev = [&]() {
-        reverse(all(A));
-        rep(i, N) reverse(all(A[i]));
-    };
-    rev();
-    vvl d2 = f(A);
-    rev();
-    reverse(all(d2));
-    ll ans = 0;
-    rep(i, N) {
-        unordered_map<ll,ll> mp;
-        for(auto x: d1[i]) mp[x]++;
-        for(auto x: d2[i]) ans += mp[x^A[i][N-1-i]];
-    }
-    Out(ans);
     
 }
 

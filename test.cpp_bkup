@@ -133,30 +133,79 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvp from(N);
-    vt3 edges;
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        edges.emplace_back(a, b, c);
-        from[a].emplace_back(b, c);
+    LONG(N, M);
+    ll sm = sqrt(M)+10;
+    vvl from(N*N);
+    rep(i, N) rep(j, N) {
+        {
+            ll r = j + sm, l = j - sm;
+            repk (k, i, N) {
+                while(r-1>=j && euclid_dist2({i,j},{k,r-1})>=M) --r;
+                while(l+1<=j && euclid_dist2({i,j},{k,l+1})>=M) ++l;
+                if (r<=N-1 && euclid_dist2({i,j},{k,r})==M) {
+                    from[i*N+j].push_back(k*N+r);
+                }
+                if (l>=0 && euclid_dist2({i,j},{k,l})==M) {
+                    from[i*N+j].push_back(k*N+l);
+                }
+            }
+        }
+        {
+            ll r = j + sm, l = j - sm;
+            for (int k=i-1; k>=0; --k) {
+                while(r-1>=j && euclid_dist2({i,j},{k,r-1})>=M) --r;
+                while(l+1<=j && euclid_dist2({i,j},{k,l+1})>=M) ++l;
+                if (r<=N-1 && euclid_dist2({i,j},{k,r})==M) {
+                    from[i*N+j].push_back(k*N+r);
+                }
+                if (l>=0 && euclid_dist2({i,j},{k,l})==M) {
+                    from[i*N+j].push_back(k*N+l);
+                }
+            }
+        }
     }
-    VLM(E, K);
-    vl dist(N, INF);
-    dist[0] = 0;
-    rep(i, K) {
-        auto [a, b, c] = edges[E[i]];
-        if (dist[a] == INF) continue;
-        chmin(dist[b], dist[a] + c);
-        de(dist)
+    rep(i, N*N) sort(all(from[i]));
+    rep(i, N*N) {
+        from[i].erase(unique(all(from[i])), from[i].end());
     }
-    ll ans = dist[N-1];
-    ch1(ans);
-    Out(ans);
+    vvl dist(N, vl(N, INF));
+    queue<ll> que;
+    auto push = [&](ll i, ll j, ll d) {
+        if(dist[i][j]!=INF) return;
+        dist[i][j] = d;
+        que.push(N*i+j);
+    };
+    push(0, 0, 0);
+    while(que.size()) {
+        ll id = que.front(); que.pop();
+        ll i = id/N, j = id%N;
+        ll d = dist[i][j];
+        for (auto nid: from[id]) {
+            ll ni = nid/N, nj = nid%N;
+            push(ni, nj, d+1);
+        }
+    }
+    rep(i, N) {
+        rep(j, N) {
+            ll ans = dist[i][j];
+            ch1(ans);
+            printf("%lld ", ans);
+        }
+        cout << endl;
+    }
     
 }
 
