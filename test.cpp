@@ -123,7 +123,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 // #include <atcoder/all>
 // using namespace atcoder;
-// using mint = modint;
+// using mint = modint988244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -133,50 +133,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll N = 9;
-    VS(S, N);
-
-    ll ans = 0;
-    auto calc = [&](vl vec) {
-        set<ll> st;
-        rep(i, 4) rep(j, i) {
-            ll x1 = vec[i]/N, y1 = vec[i]%N;
-            ll x2 = vec[j]/N, y2 = vec[j]%N;
-            st.insert(euclid_dist2({x1,y1}, {x2,y2}));
+    LONG(N, M);
+    VL(A, N);
+    vvl dp(M+1, vl(2, INF));
+    dp[0][1] = 0;
+    rep(i, N) {
+        vvl pdp(M+1, vl(2, INF));
+        swap(dp, pdp);
+        ll a = A[i];
+        rep(j, M+1) rep(k, 2) {
+            // erabu
+            if(j+a<=M) chmin(dp[j+a][1], pdp[j][k]);
+            // !erabu
+            if(i==3 && j==2 && k==0) {
+                cout<<"";
+            }
+            ll cost = 0;
+            if(k==1) cost = 1;
+            chmin(dp[j][0], pdp[j][k]+cost);
         }
-        if(st.size()!=2) return;
-        ll sm = *st.begin(), lg = *st.rbegin();
-        if (lg == sm*2) ans++;
-    };
-    auto dfs = [&](auto f, ll i, vl vec={}) {
-        if (SIZE(vec)==4) {
-            // calc;
-            calc(vec);
-            return;
-        }
-        repk (j, i, N*N) {
-            ll x = j/N, y = j%N;
-            if (S[x][y] != '#') continue;
-            vec.push_back(j);
-            f(f, j+1, vec);
-            vec.pop_back();
-        }
-    };
-    dfs(dfs, 0);
-    Out(ans);
+    }
+    rep1(i, M) {
+        ll ans = min(dp[i][0], dp[i][1]);
+        ch1(ans);
+        Out(ans);
+    }
     
 }
 

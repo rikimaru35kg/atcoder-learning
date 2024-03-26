@@ -121,47 +121,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+#ifdef __DEBUG
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, x, y);
-    vl Xs, Ys;
-    LONG(a);
-    x -= a;
-    rep(i, N-1) {
-        LONG(z);
-        if (i%2==0) Ys.push_back(z);
-        else Xs.push_back(z);
-    }
-    ll M = 10000;
-    auto calc = [&](vl &Xs, ll x) -> bool {
-        bitset<20010> dp;
-        dp[M] = 1;
-        for (auto xx: Xs) {
-            bitset<20010> p;
-            swap(p, dp);
-            dp |= p<<xx;
-            dp |= p>>xx;
-        }
-        if (!dp[x+M]) return false;
-        return true;
+    LONG(N, M, K);
+    auto nxt = [&](ll x, ll dx) {
+        ll ret = x + dx;
+        if (ret <= N) return ret;
+        ret = N - (ret-N);
+        return ret;
     };
-    if(!calc(Xs, x)) PNo;
-    if(!calc(Ys, y)) PNo;
-    PYes
+    vm dp(N+1);
+    dp[0] = 1;
+    mint invm = mint(M).inv();
+    rep(_, K) {
+        vm pdp(N+1);
+        swap(pdp, dp);
+        rep(i, N+1) rep1 (j, M) {
+            if (i == N) dp[i] += pdp[i] * invm;
+            else dp[nxt(i, j)] += pdp[i] * invm; 
+        }
+    }
+    de(dp)
+    Out(dp[N].val());
     
 }
 
