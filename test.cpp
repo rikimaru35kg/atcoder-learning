@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,6 +137,50 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, Q);
+    dsu uf(N+Q);
+    vl box(N+Q, -1);
+    vl lead(N+Q, -1);
+    rep(i, N) box[i] = i;
+    rep(i, N) lead[i] = i;
+    ll k = N;
+    rep(i, Q) {
+        LONG(t);
+        if (t==1) {
+            LONGM(X, Y);
+            if (lead[Y] == -1) continue;
+            if (lead[X] == -1) {
+                ll nl = uf.leader(lead[Y]);
+                box[nl] = X;
+                lead[X] = nl;
+                lead[Y] = -1;
+                continue;
+            }
+            uf.merge(lead[X], lead[Y]);
+            ll nl = uf.leader(lead[X]);
+            box[nl] = X;
+            lead[X] = nl;
+            lead[Y] = -1;
+        }
+        if (t==2) {
+            LONGM(X);
+            if (lead[X] == -1) {
+                box[k] = X;
+                lead[X] = k;
+                ++k;
+                continue;
+            }
+            uf.merge(lead[X], k);
+            ll nl = uf.leader(k);
+            box[nl] = X;
+            lead[X] = nl;
+            ++k;
+        }
+        if (t==3) {
+            LONGM(X);
+            Out(box[uf.leader(X)]+1);
+        }
+    }
     
 }
 

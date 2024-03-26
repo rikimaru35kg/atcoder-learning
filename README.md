@@ -1368,6 +1368,7 @@
 - [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+- [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

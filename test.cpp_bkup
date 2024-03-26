@@ -121,37 +121,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = *max_element(all(A));
-    fenwick_tree<ll> num(M+1), sum(M+1);
-    mint csum = 0;
-    rep(i, N) {
-        ll a = A[i];
-        csum += a;
-        csum += 2*a*num.sum(0, a+1);
-        csum += 2*sum.sum(a+1, M+1);
-        mint n2 = (i+1)*(i+1);
-        Out((csum/n2).val());
-
-        num.add(a, 1);
-        sum.add(a, a);
+    LONG(N, M);
+    VLM(A, M);
+    vl p(N);
+    iota(all(p), 0);
+    reverse(all(A));
+    rep(i, M) { swap(p[A[i]], p[A[i]+1]);}
+    reverse(all(A));
+    ll cp = 0;
+    rep(i, M) {
+        swap(p[A[i]], p[A[i]+1]);
+        Out(p[cp]+1);
+        if (A[i] == cp) ++cp;
+        else if(A[i]+1 == cp) --cp;
     }
+
     
 }
 
