@@ -1014,6 +1014,11 @@
 - !要復習 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 もう少し簡単な問題も例題に挙げられると良いのだが・・・
 
+## 永続データ構造
+- push_back()とpop_back()は木構造で書ける
+### 例題
+- !要復習 [E - Notebook](https://atcoder.jp/contests/abc273/tasks/abc273_e)
+
 # 2変数問題
 
 ## 1変数固定

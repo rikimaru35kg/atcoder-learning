@@ -133,79 +133,102 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll sm = sqrt(M)+10;
-    vvl from(N*N);
-    rep(i, N) rep(j, N) {
-        {
-            ll r = j + sm, l = j - sm;
-            repk (k, i, N) {
-                while(r-1>=j && euclid_dist2({i,j},{k,r-1})>=M) --r;
-                while(l+1<=j && euclid_dist2({i,j},{k,l+1})>=M) ++l;
-                if (r<=N-1 && euclid_dist2({i,j},{k,r})==M) {
-                    from[i*N+j].push_back(k*N+r);
-                }
-                if (l>=0 && euclid_dist2({i,j},{k,l})==M) {
-                    from[i*N+j].push_back(k*N+l);
-                }
-            }
-        }
-        {
-            ll r = j + sm, l = j - sm;
-            for (int k=i-1; k>=0; --k) {
-                while(r-1>=j && euclid_dist2({i,j},{k,r-1})>=M) --r;
-                while(l+1<=j && euclid_dist2({i,j},{k,l+1})>=M) ++l;
-                if (r<=N-1 && euclid_dist2({i,j},{k,r})==M) {
-                    from[i*N+j].push_back(k*N+r);
-                }
-                if (l>=0 && euclid_dist2({i,j},{k,l})==M) {
-                    from[i*N+j].push_back(k*N+l);
-                }
-            }
-        }
-    }
-    rep(i, N*N) sort(all(from[i]));
-    rep(i, N*N) {
-        from[i].erase(unique(all(from[i])), from[i].end());
-    }
-    vvl dist(N, vl(N, INF));
-    queue<ll> que;
-    auto push = [&](ll i, ll j, ll d) {
-        if(dist[i][j]!=INF) return;
-        dist[i][j] = d;
-        que.push(N*i+j);
-    };
-    push(0, 0, 0);
-    while(que.size()) {
-        ll id = que.front(); que.pop();
-        ll i = id/N, j = id%N;
-        ll d = dist[i][j];
-        for (auto nid: from[id]) {
-            ll ni = nid/N, nj = nid%N;
-            push(ni, nj, d+1);
-        }
-    }
+    LONG(H, W, si, sj);
+    LONG(N);
+    unordered_map<ll,vl> row, col;
     rep(i, N) {
-        rep(j, N) {
-            ll ans = dist[i][j];
-            ch1(ans);
-            printf("%lld ", ans);
-        }
-        cout << endl;
+        LONG(r, c);
+        row[r].push_back(c);
+        col[c].push_back(r);
     }
+    for(auto [k, v]: row) sort(all(row[k]));
+    for(auto [k, v]: col) sort(all(col[k]));
+    ll ci = si, cj = sj;
+    LONG(Q);
+
+    auto move = [&](ll cx, ll dx, vl &vec, ll edge) {
+        ll lx;
+        ll ret = cx + dx;
+        if (dx>=0) {
+            auto [idx, y] = lowbou(vec, cx);
+            lx = y;
+            chmin(ret, lx-1);
+            chmin(ret, edge);
+        } else {
+            auto [idx, y] = lowbou_r(vec, cx);
+            lx = y;
+            chmax(ret, lx+1);
+            chmax(ret, edge);
+        }
+        return ret;
+    };
+    rep(i, Q) {
+        CHAR(c); LONG(dx);
+        if(c=='R') cj = move(cj, dx, row[ci], W);
+        if(c=='L') cj = move(cj, -dx, row[ci], 1);
+        if(c=='D') ci = move(ci, dx, col[cj], H);
+        if(c=='U') ci = move(ci, -dx, col[cj], 1);
+        printf("%lld %lld\n", ci, cj);
+    }
+
     
 }
 
