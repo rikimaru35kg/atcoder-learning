@@ -133,102 +133,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, si, sj);
-    LONG(N);
-    unordered_map<ll,vl> row, col;
-    rep(i, N) {
-        LONG(r, c);
-        row[r].push_back(c);
-        col[c].push_back(r);
+    LONG(N, x, y);
+    vl Xs, Ys;
+    LONG(a);
+    x -= a;
+    rep(i, N-1) {
+        LONG(z);
+        if (i%2==0) Ys.push_back(z);
+        else Xs.push_back(z);
     }
-    for(auto [k, v]: row) sort(all(row[k]));
-    for(auto [k, v]: col) sort(all(col[k]));
-    ll ci = si, cj = sj;
-    LONG(Q);
-
-    auto move = [&](ll cx, ll dx, vl &vec, ll edge) {
-        ll lx;
-        ll ret = cx + dx;
-        if (dx>=0) {
-            auto [idx, y] = lowbou(vec, cx);
-            lx = y;
-            chmin(ret, lx-1);
-            chmin(ret, edge);
-        } else {
-            auto [idx, y] = lowbou_r(vec, cx);
-            lx = y;
-            chmax(ret, lx+1);
-            chmax(ret, edge);
+    ll M = 10000;
+    auto calc = [&](vl &Xs, ll x) -> bool {
+        bitset<20010> dp;
+        dp[M] = 1;
+        for (auto xx: Xs) {
+            bitset<20010> p;
+            swap(p, dp);
+            dp |= p<<xx;
+            dp |= p>>xx;
         }
-        return ret;
+        if (!dp[x+M]) return false;
+        return true;
     };
-    rep(i, Q) {
-        CHAR(c); LONG(dx);
-        if(c=='R') cj = move(cj, dx, row[ci], W);
-        if(c=='L') cj = move(cj, -dx, row[ci], 1);
-        if(c=='D') ci = move(ci, dx, col[cj], H);
-        if(c=='U') ci = move(ci, -dx, col[cj], 1);
-        printf("%lld %lld\n", ci, cj);
-    }
-
+    if(!calc(Xs, x)) PNo;
+    if(!calc(Ys, y)) PNo;
+    PYes
     
 }
 

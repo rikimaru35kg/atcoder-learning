@@ -133,36 +133,50 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vp org;
-    ll v = 0;
-    org.emplace_back(v, -1);
-    unordered_map<ll,ll> note;
-    LONG(Q);
-    rep(_, Q) {
-        STRING(s);
-        if (s=="ADD") {
-            LONG(x);
-            org.emplace_back(v, x);
-            v = SIZE(org)-1;
+    ll N = 9;
+    VS(S, N);
+
+    ll ans = 0;
+    auto calc = [&](vl vec) {
+        set<ll> st;
+        rep(i, 4) rep(j, i) {
+            ll x1 = vec[i]/N, y1 = vec[i]%N;
+            ll x2 = vec[j]/N, y2 = vec[j]%N;
+            st.insert(euclid_dist2({x1,y1}, {x2,y2}));
         }
-        if (s=="DELETE") {
-            v = org[v].first;
+        if(st.size()!=2) return;
+        ll sm = *st.begin(), lg = *st.rbegin();
+        if (lg == sm*2) ans++;
+    };
+    auto dfs = [&](auto f, ll i, vl vec={}) {
+        if (SIZE(vec)==4) {
+            // calc;
+            calc(vec);
+            return;
         }
-        if (s=="SAVE") {
-            LONG(y);
-            note[y] = v;
+        repk (j, i, N*N) {
+            ll x = j/N, y = j%N;
+            if (S[x][y] != '#') continue;
+            vec.push_back(j);
+            f(f, j+1, vec);
+            vec.pop_back();
         }
-        if (s=="LOAD") {
-            LONG(z);
-            v = note[z];
-        }
-        printf("%lld ", org[v].second);
-    }
-    cout<<endl;
+    };
+    dfs(dfs, 0);
+    Out(ans);
     
 }
 
