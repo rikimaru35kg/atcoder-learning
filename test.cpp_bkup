@@ -137,26 +137,21 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    auto nxt = [&](ll x, ll dx) {
-        ll ret = x + dx;
-        if (ret <= N) return ret;
-        ret = N - (ret-N);
-        return ret;
-    };
-    vm dp(N+1);
-    dp[0] = 1;
-    mint invm = mint(M).inv();
-    rep(_, K) {
-        vm pdp(N+1);
-        swap(pdp, dp);
-        rep(i, N+1) rep1 (j, M) {
-            if (i == N) dp[i] += pdp[i] * invm;
-            else dp[nxt(i, j)] += pdp[i] * invm; 
-        }
+    LONG(N); VL(A, N);
+    ll M = *max_element(all(A));
+    fenwick_tree<ll> num(M+1), sum(M+1);
+    mint csum = 0;
+    rep(i, N) {
+        ll a = A[i];
+        csum += a;
+        csum += 2*a*num.sum(0, a+1);
+        csum += 2*sum.sum(a+1, M+1);
+        mint n2 = (i+1)*(i+1);
+        Out((csum/n2).val());
+
+        num.add(a, 1);
+        sum.add(a, a);
     }
-    de(dp)
-    Out(dp[N].val());
     
 }
 

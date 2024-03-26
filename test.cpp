@@ -123,7 +123,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 // #include <atcoder/all>
 // using namespace atcoder;
-// using mint = modint988244353;
+// using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -137,31 +137,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vvl dp(M+1, vl(2, INF));
-    dp[0][1] = 0;
-    rep(i, N) {
-        vvl pdp(M+1, vl(2, INF));
-        swap(dp, pdp);
-        ll a = A[i];
-        rep(j, M+1) rep(k, 2) {
-            // erabu
-            if(j+a<=M) chmin(dp[j+a][1], pdp[j][k]);
-            // !erabu
-            if(i==3 && j==2 && k==0) {
-                cout<<"";
-            }
-            ll cost = 0;
-            if(k==1) cost = 1;
-            chmin(dp[j][0], pdp[j][k]+cost);
-        }
-    }
-    rep1(i, M) {
-        ll ans = min(dp[i][0], dp[i][1]);
-        ch1(ans);
-        Out(ans);
-    }
     
 }
 
