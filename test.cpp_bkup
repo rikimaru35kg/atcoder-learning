@@ -121,41 +121,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-#ifdef __DEBUG
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// #ifdef __DEBUG
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    mint::set_mod(M);
+    LONG(N, M, K);
     VL(A, N);
-    vt3 edges;
-    rep(i, N) rep(j, i) {
-        mint p = mint(A[i]).pow(A[j]);
-        p += mint(A[j]).pow(A[i]);
-        edges.emplace_back(p.val(), i, j);
+    multiset<ll> Ks, nKs;
+    ll sum = 0;
+    auto add=[&](ll x) {
+        Ks.insert(x);
+        sum += x;
+        while(SIZE(Ks)>K) {
+            ll mx = *Ks.rbegin();
+            sum -= mx;
+            Ks.erase(--Ks.end());
+            nKs.insert(mx);
+        }
+    };
+    auto del = [&](ll x) {
+        if (nKs.find(x) != nKs.end()) {
+            nKs.erase(nKs.find(x)); return;
+        }
+        Ks.erase(Ks.find(x));
+        sum -= x;
+        ll mn = *nKs.begin();
+        nKs.erase(nKs.begin());
+        add(mn);
+    };
+    rep(i, M) add(A[i]);
+    rep(i, N-M+1) {
+        Out(sum);
+        if(i==N-M) break;
+        add(A[i+M]);
+        del(A[i]);
     }
-    sort(all(edges));
-    dsu uf(N);
-    ll ans = 0;
-    while(edges.size()) {
-        auto [c, i, j] = edges.back(); edges.pop_back();
-        if(uf.same(i, j)) continue;
-        uf.merge(i, j);
-        ans += c;
-    }
-    Out(ans);
     
 }
 

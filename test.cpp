@@ -137,35 +137,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp spans;
-    map<Pr,ll> mp;
-    ll idx = 0;
-    for(int w=1; w<=N; w<<=1) {
-        rep(l, N) {
-            ll r = l+w;
-            if(r>N) break;
-            spans.emplace_back(l, r);
-            mp[{l,r}] = idx;
-            ++idx;
+    LONG(N); VL(A, N);
+    auto f=[&](auto f, vl &a, ll k) -> ll {
+        if (k==-1) return 0;
+        vl ones, zeros;
+        for (auto x: a) {
+            if (x>>k&1) ones.push_back(x);
+            else zeros.push_back(x);
         }
-    }
-    ll M = SIZE(spans);
-    printf("%lld", M); cout<<endl;
-    for (auto [l, r]: spans) {
-        printf("%lld %lld", l+1, r);
-        cout<<endl;
-    }
-    LONG(Q);
-    rep(_, Q) {
-        LONGM(l, r); ++r;
-        int w=1;
-        while(w*2 <= r-l) w<<=1;
-        ll s1 = mp[{l,l+w}];
-        ll s2 = mp[{r-w,r}];
-        printf("%lld %lld", s1+1, s2+1);
-        cout<<endl;
-    }
+        ll ret;
+        if (SIZE(ones)==0) ret = f(f, zeros, k-1);
+        else if (SIZE(zeros)==0) ret = f(f, ones, k-1);
+        else {
+            ret = min(f(f, ones, k-1), f(f, zeros, k-1)) + (1<<k);
+        }
+        de(k)de(ret)
+        return ret;
+    };
+    Out(f(f, A, 30));
     
 }
 
