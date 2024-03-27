@@ -137,50 +137,49 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    dsu uf(N+Q);
-    vl box(N+Q, -1);
-    vl lead(N+Q, -1);
-    rep(i, N) box[i] = i;
-    rep(i, N) lead[i] = i;
-    ll k = N;
+    LONG(N, M, Q);
+    vvp from(N);
+    dsu uf(N);
+    rep(i, M ) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, -c);
+        uf.merge(a, b);
+    }
+    vb used(N);
+    vl pots(N, -INF);
+    auto dfs = [&](auto f, ll v, ll pot=0, ll p=-1) -> bool {
+        pots[v] = pot;
+        used[v] = true;
+        for (auto [nv, c]: from[v]) if (nv!=p) {
+            if (used[nv]) {
+                if (pots[nv] == pot+c) {
+                    // bool b = f(f, nv, pot+c, v);
+                    // if (!b) return false;
+                }
+                else{
+                    pots[uf.leader(v)] = INF;
+                    return false;
+                }
+            } else {
+                bool b = f(f, nv, pot+c, v);
+                if (!b) return false;
+            }
+        }
+        return true;
+    };
+    rep(i, N) if (!used[i]) {
+        dfs(dfs, i);
+    }
     rep(i, Q) {
-        LONG(t);
-        if (t==1) {
-            LONGM(X, Y);
-            if (lead[Y] == -1) continue;
-            if (lead[X] == -1) {
-                ll nl = uf.leader(lead[Y]);
-                box[nl] = X;
-                lead[X] = nl;
-                lead[Y] = -1;
-                continue;
-            }
-            uf.merge(lead[X], lead[Y]);
-            ll nl = uf.leader(lead[X]);
-            box[nl] = X;
-            lead[X] = nl;
-            lead[Y] = -1;
-        }
-        if (t==2) {
-            LONGM(X);
-            if (lead[X] == -1) {
-                box[k] = X;
-                lead[X] = k;
-                ++k;
-                continue;
-            }
-            uf.merge(lead[X], k);
-            ll nl = uf.leader(k);
-            box[nl] = X;
-            lead[X] = nl;
-            ++k;
-        }
-        if (t==3) {
-            LONGM(X);
-            Out(box[uf.leader(X)]+1);
+        LONGM(x, y);
+        if (!uf.same(x, y)) puts("nan");
+        else if (pots[uf.leader(x)]==INF) puts("inf");
+        else {
+            Out(pots[y]-pots[x]);
         }
     }
+
     
 }
 
