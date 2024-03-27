@@ -1020,6 +1020,12 @@
 ### 例題
 - !要復習 [E - Notebook](https://atcoder.jp/contests/abc273/tasks/abc273_e)
 
+## Sparse Table
+- 全ての区間を二つの区間の和集合で表せる
+- RMQにO(1)で回答可能（ただし構築にはsegtreeよりもメモリ消費が大きい）
+### 例題
+- !要復習 Sparse Tableの考え方 [F - Union of Two Sets](https://atcoder.jp/contests/abc282/tasks/abc282_f)
+
 # 2変数問題
 
 ## 1変数固定

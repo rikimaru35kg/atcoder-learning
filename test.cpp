@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,49 +137,35 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q);
-    vvp from(N);
-    dsu uf(N);
-    rep(i, M ) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, -c);
-        uf.merge(a, b);
-    }
-    vb used(N);
-    vl pots(N, -INF);
-    auto dfs = [&](auto f, ll v, ll pot=0, ll p=-1) -> bool {
-        pots[v] = pot;
-        used[v] = true;
-        for (auto [nv, c]: from[v]) if (nv!=p) {
-            if (used[nv]) {
-                if (pots[nv] == pot+c) {
-                    // bool b = f(f, nv, pot+c, v);
-                    // if (!b) return false;
-                }
-                else{
-                    pots[uf.leader(v)] = INF;
-                    return false;
-                }
-            } else {
-                bool b = f(f, nv, pot+c, v);
-                if (!b) return false;
-            }
-        }
-        return true;
-    };
-    rep(i, N) if (!used[i]) {
-        dfs(dfs, i);
-    }
-    rep(i, Q) {
-        LONGM(x, y);
-        if (!uf.same(x, y)) puts("nan");
-        else if (pots[uf.leader(x)]==INF) puts("inf");
-        else {
-            Out(pots[y]-pots[x]);
+    LONG(N);
+    vp spans;
+    map<Pr,ll> mp;
+    ll idx = 0;
+    for(int w=1; w<=N; w<<=1) {
+        rep(l, N) {
+            ll r = l+w;
+            if(r>N) break;
+            spans.emplace_back(l, r);
+            mp[{l,r}] = idx;
+            ++idx;
         }
     }
-
+    ll M = SIZE(spans);
+    printf("%lld", M); cout<<endl;
+    for (auto [l, r]: spans) {
+        printf("%lld %lld", l+1, r);
+        cout<<endl;
+    }
+    LONG(Q);
+    rep(_, Q) {
+        LONGM(l, r); ++r;
+        int w=1;
+        while(w*2 <= r-l) w<<=1;
+        ll s1 = mp[{l,l+w}];
+        ll s2 = mp[{r-w,r}];
+        printf("%lld %lld", s1+1, s2+1);
+        cout<<endl;
+    }
     
 }
 

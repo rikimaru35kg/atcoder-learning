@@ -123,7 +123,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -137,14 +137,25 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    vm dp(N+1);
-    dp[0] = 0;
-    dp[1] = 1;
-    repk(h, 2, N+1) {
-        dp[h] = (P*(dp[h-2]) + (100-P)*dp[h-1])/100 + 1;
+    LONG(N, M);
+    mint::set_mod(M);
+    VL(A, N);
+    vt3 edges;
+    rep(i, N) rep(j, i) {
+        mint p = mint(A[i]).pow(A[j]);
+        p += mint(A[j]).pow(A[i]);
+        edges.emplace_back(p.val(), i, j);
     }
-    Out(dp[N].val());
+    sort(all(edges));
+    dsu uf(N);
+    ll ans = 0;
+    while(edges.size()) {
+        auto [c, i, j] = edges.back(); edges.pop_back();
+        if(uf.same(i, j)) continue;
+        uf.merge(i, j);
+        ans += c;
+    }
+    Out(ans);
     
 }
 
