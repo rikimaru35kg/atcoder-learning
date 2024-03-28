@@ -92,6 +92,7 @@ template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
@@ -121,8 +122,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,29 +138,25 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vl ps = {4, 9, 5, 7, 11, 13, 17, 19, 23};
-    // vl ps = {2, 3};
-    ll M = accumulate(all(ps), 0LL);
-    cout << M << endl;
-    vl a;
-    for (auto p: ps) {
-        ll si = a.size();
-        rep(i, p) a.push_back(si+(i+1)%p);
+    STRING(S, T);
+    ll N = SIZE(S), M = SIZE(T);
+    unordered_set<ll> ngs;
+    rep (i, M) {
+        if(S[N-M+i] == '?') continue;
+        if(T[i] == '?') continue;
+        if (S[N-M+i] != T[i]) ngs.insert(i);
     }
-    rep(i, M) {
-        printf("%lld ", a[i]+1);
-    }
-    cout<<endl;
-    VLM(B, M);
-    ll si = 0;
-    vl rs;
-    for (auto p: ps) {
-        rs.push_back(B[si]-si);
-        si += p;
-    }
-    ll ans = crt(rs, ps).first;
-    Out(ans);
+    de(ngs)
+    rep(x, M+1) {
+        if (SIZE(ngs)==0) puts("Yes");
+        else puts("No");
 
+        if (x==M) break;
+        if (T[x] == '?') ngs.erase(x);
+        else if (S[x] == '?') ngs.erase(x);
+        else if (T[x] == S[x]) ngs.erase(x);
+        else if (T[x] != S[x]) ngs.insert(x);
+    }
     
 }
 

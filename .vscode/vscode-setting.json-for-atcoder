@@ -20,4 +20,9 @@
         "raspi": "linux"
     },
     "remote.autoForwardPortsSource": "hybrid",
+    "update.mode": "manual",
+    "extensions.autoUpdate": false,
+    "editor.tokenColorCustomizations": {
+        "numbers": "#2ee116"
+    },
 }
