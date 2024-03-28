@@ -137,27 +137,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll ans = 0;
-    ll MX = 1e6;
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+    LONG(N);
+    vs S, T;
+    map<string,ll> mp;
+    rep(i, N) {
+        STRING(s, t);
+        S.push_back(s);
+        T.push_back(t);
+        mp[s] = 0; mp[t]=0;
     }
-    vb used(N);
-    auto dfs = [&](auto f, ll v) -> void {
-        ++ans; if (ans>=MX) return;
-        used[v]=true;
-        for (auto nv: from[v]) if(!used[nv]) {
-            f(f, nv);
-            if(ans>=MX) return;
+    ll idx = 0;
+    for (auto [s, _]: mp) {
+        mp[s] = idx;
+        ++idx;
+    }
+    ll M = SIZE(mp);
+    vvl from(M);
+    rep(i, N) {
+        from[mp[S[i]]].push_back(mp[T[i]]);
+    }
+    vb seen(M);
+    vb finished(M);
+    auto dfs = [&](auto f, ll v) -> bool {
+        seen[v] = true;
+        for (auto nv: from[v]) {
+            if (finished[nv]) continue;
+            if (seen[nv]) return false;
+            bool b = f(f, nv);
+            if (!b) return false;
         }
-        used[v]=false;
+        seen[v] = false;
+        finished[v] = true;
+        return true;
     };
-    dfs(dfs,0);
-    Out(ans);
+    rep(i, M) if (!finished[i]) {
+        bool b = dfs(dfs, i);
+        if (!b) PNo
+    }
+    PYes
 
     
 }

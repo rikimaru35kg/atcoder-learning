@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -133,51 +133,26 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-struct RollingHash {
-    long long hash = 0, n = 0;
-    long long size, base, mod, pow, ibase;
-    RollingHash (long long size, long long base=37, long long mod=1e9+7)
-      : size(size), base(base), mod(mod) {
-        pow = modpow(base, size);
-        ibase = modpow(base, size-2);
-    }
-    void forward(char add, char del=0) {
-        hash = (hash*base + add) % mod; hash = (hash + mod) % mod;
-        ++n; if (n<=size) return;
-        n = size;
-        hash -= pow*del % mod; hash = (hash + mod) % mod;
-    }
-    long long modpow(long long a, long long b) {
-        if (b==0) return 1;
-        a %= mod;
-        long long f = modpow(a, b/2);
-        if (b%2==0)  return f*f % mod;
-        else return f*f%mod * a%mod;
-    }
-    long long val() {return hash;}
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(T);
-    RollingHash rh1(N), rh2(N);
+    LONG(N);
+    VL(A, N);
+    vl dp(N+1, -1);
+    dp[0] = 0;
+    vl S(N+1);
+    rep(i, N) S[i+1] = S[i] + A[i];
     rep(i, N) {
-        rh1.forward(T[i+N]);
-        rh2.forward(T[N-1-i]);
-    }
-    rep(i, N) {
-        if (rh1.val()==rh2.val()) {
-            string ans = T.substr(i+1, N);
-            reverse(all(ans));
-            Out(ans); return 0;
+        if (dp[i]==-1) continue;
+        repk(j, i+1, N+1) {
+            ll span = j-i-1;
+            ll pro = S[span/2]*2;
+            if (span%2==1) pro += A[span/2];
+            chmax(dp[j], dp[i]+pro);
         }
-        rh1.backward(T[i], T[i+N]);
-        rh2.forward(T[i+N], T[i]);
-        de(rh1.val())
-        de(rh2.val())
     }
-    Out(-1);
+    Out(dp[N]);
     
 }
 
