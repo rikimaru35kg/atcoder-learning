@@ -17,6 +17,16 @@
 ### 例題
 - 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
 
+## Z-algorhythm（Zアルゴリズム）
+- 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
+- 全探索だとO(N^2)だが、工夫することでO(N)に落とす
+- 探索済み部分文字列の中で、最も右まで探索した部分文字列のインデックス[from,last)を記憶しておくのがミソ
+- どこまで探索を省略できるかで頭が混乱しがちなので、かつっぱ氏のyoutubeを見ると理解できる
+- コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
+### 例題
+- !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+- !要復習 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
+
 ## ランレングス圧縮（Run Length Encoding）
 - 連続する文字が何個あるかという情報に書き換える事をランレングス圧縮という
 ### 例題
@@ -720,15 +730,6 @@
 - !復習価値中 LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
 - !要復習 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
 - !要復習 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
-
-## Z-algorhythm（Zアルゴリズム）
-- 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
-- 全探索だとO(N^2)だが、工夫することでO(N)に落とす
-- 探索済み部分文字列の中で、最も右まで探索した部分文字列のインデックス[from,last)を記憶しておくのがミソ
-- どこまで探索を省略できるかで頭が混乱しがちなので、かつっぱ氏のyoutubeを見ると理解できる
-- コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
-### 例題
-- !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）

@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,24 +137,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    auto f=[&](auto f, vl &a, ll k) -> ll {
-        if (k==-1) return 0;
-        vl ones, zeros;
-        for (auto x: a) {
-            if (x>>k&1) ones.push_back(x);
-            else zeros.push_back(x);
-        }
-        ll ret;
-        if (SIZE(ones)==0) ret = f(f, zeros, k-1);
-        else if (SIZE(zeros)==0) ret = f(f, ones, k-1);
-        else {
-            ret = min(f(f, ones, k-1), f(f, zeros, k-1)) + (1<<k);
-        }
-        de(k)de(ret)
-        return ret;
-    };
-    Out(f(f, A, 30));
+    LONG(N); STRING(T);
+    string t1 = T.substr(0, N);
+    string t2 = T.substr(N);
+    reverse(all(t2));
+    string A = t1+t2;
+    string B = t2+t1;
+    auto z1 = z_algorithm(A);
+    auto z2 = z_algorithm(B);
+    rep1(k, N) {
+        de(k)
+        if(z1[2*N-k] != k) continue;
+        if(k!=N && z2[N+k] != N-k) continue;
+        string ans = t1.substr(0, k);
+        ans += T.substr(N+k);
+        Out(ans);
+        Out(k);
+        return 0;
+    }
+    Out(-1);
     
 }
 

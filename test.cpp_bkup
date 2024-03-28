@@ -137,37 +137,28 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    VL(A, N);
-    multiset<ll> Ks, nKs;
-    ll sum = 0;
-    auto add=[&](ll x) {
-        Ks.insert(x);
-        sum += x;
-        while(SIZE(Ks)>K) {
-            ll mx = *Ks.rbegin();
-            sum -= mx;
-            Ks.erase(--Ks.end());
-            nKs.insert(mx);
-        }
-    };
-    auto del = [&](ll x) {
-        if (nKs.find(x) != nKs.end()) {
-            nKs.erase(nKs.find(x)); return;
-        }
-        Ks.erase(Ks.find(x));
-        sum -= x;
-        ll mn = *nKs.begin();
-        nKs.erase(nKs.begin());
-        add(mn);
-    };
-    rep(i, M) add(A[i]);
-    rep(i, N-M+1) {
-        Out(sum);
-        if(i==N-M) break;
-        add(A[i+M]);
-        del(A[i]);
+    ll ans = 0;
+    ll MX = 1e6;
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
+    vb used(N);
+    auto dfs = [&](auto f, ll v) -> void {
+        ++ans; if (ans>=MX) return;
+        used[v]=true;
+        for (auto nv: from[v]) if(!used[nv]) {
+            f(f, nv);
+            if(ans>=MX) return;
+        }
+        used[v]=false;
+    };
+    dfs(dfs,0);
+    Out(ans);
+
     
 }
 
