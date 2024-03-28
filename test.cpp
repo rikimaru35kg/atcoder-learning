@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,22 +137,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    vl dp(N+1, -1);
-    dp[0] = 0;
-    vl S(N+1);
-    rep(i, N) S[i+1] = S[i] + A[i];
-    rep(i, N) {
-        if (dp[i]==-1) continue;
-        repk(j, i+1, N+1) {
-            ll span = j-i-1;
-            ll pro = S[span/2]*2;
-            if (span%2==1) pro += A[span/2];
-            chmax(dp[j], dp[i]+pro);
-        }
+    vl ps = {4, 9, 5, 7, 11, 13, 17, 19, 23};
+    // vl ps = {2, 3};
+    ll M = accumulate(all(ps), 0LL);
+    cout << M << endl;
+    vl a;
+    for (auto p: ps) {
+        ll si = a.size();
+        rep(i, p) a.push_back(si+(i+1)%p);
     }
-    Out(dp[N]);
+    rep(i, M) {
+        printf("%lld ", a[i]+1);
+    }
+    cout<<endl;
+    VLM(B, M);
+    ll si = 0;
+    vl rs;
+    for (auto p: ps) {
+        rs.push_back(B[si]-si);
+        si += p;
+    }
+    ll ans = crt(rs, ps).first;
+    Out(ans);
+
     
 }
 

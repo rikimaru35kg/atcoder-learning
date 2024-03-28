@@ -185,12 +185,13 @@
 - !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
-- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題
+- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ t%LCM(C, D)を求める問題とも言える）
 - 式変形により拡張ユークリッドの互除法で解ける
 - ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
 - s==0の場合は解なし
 ### 例題
 - !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
+- !要復習 インタラクティブ [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数

@@ -137,45 +137,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vs S, T;
-    map<string,ll> mp;
-    rep(i, N) {
-        STRING(s, t);
-        S.push_back(s);
-        T.push_back(t);
-        mp[s] = 0; mp[t]=0;
-    }
-    ll idx = 0;
-    for (auto [s, _]: mp) {
-        mp[s] = idx;
-        ++idx;
-    }
-    ll M = SIZE(mp);
-    vvl from(M);
-    rep(i, N) {
-        from[mp[S[i]]].push_back(mp[T[i]]);
-    }
-    vb seen(M);
-    vb finished(M);
-    auto dfs = [&](auto f, ll v) -> bool {
-        seen[v] = true;
-        for (auto nv: from[v]) {
-            if (finished[nv]) continue;
-            if (seen[nv]) return false;
-            bool b = f(f, nv);
-            if (!b) return false;
+    LONG(N); VL(A, N);
+    VS(S, N);
+    vvp dist(N, vp(N, {INF, 0}));
+    rep(i, N) dist[i][i] = {0, -A[i]};
+    rep(i, N) rep(j, N) {
+        if (S[i][j] == 'Y') {
+            dist[i][j] = {1, -A[i]-A[j]};
         }
-        seen[v] = false;
-        finished[v] = true;
-        return true;
-    };
-    rep(i, M) if (!finished[i]) {
-        bool b = dfs(dfs, i);
-        if (!b) PNo
     }
-    PYes
-
+    rep(k, N) rep(i, N) rep(j, N) {
+        Pr nd = dist[i][k] + dist[k][j];
+        nd.second += A[k];
+        chmin(dist[i][j], nd);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(a, b);
+        auto [n, c] = dist[a][b];
+        if (n==INF) puts("Impossible");
+        else printf("%lld %lld\n", n, -c);
+    }
     
 }
 
