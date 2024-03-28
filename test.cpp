@@ -133,27 +133,49 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+struct RollingHash {
+    long long hash = 0, n = 0;
+    long long size, base, mod, pow, ibase;
+    RollingHash (long long size, long long base=37, long long mod=1e9+7)
+      : size(size), base(base), mod(mod) {
+        pow = modpow(base, size);
+        ibase = modpow(base, size-2);
+    }
+    void forward(char add, char del=0) {
+        hash = (hash*base + add) % mod; hash = (hash + mod) % mod;
+        ++n; if (n<=size) return;
+        n = size;
+        hash -= pow*del % mod; hash = (hash + mod) % mod;
+    }
+    long long modpow(long long a, long long b) {
+        if (b==0) return 1;
+        a %= mod;
+        long long f = modpow(a, b/2);
+        if (b%2==0)  return f*f % mod;
+        else return f*f%mod * a%mod;
+    }
+    long long val() {return hash;}
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N); STRING(T);
-    string t1 = T.substr(0, N);
-    string t2 = T.substr(N);
-    reverse(all(t2));
-    string A = t1+t2;
-    string B = t2+t1;
-    auto z1 = z_algorithm(A);
-    auto z2 = z_algorithm(B);
-    rep1(k, N) {
-        de(k)
-        if(z1[2*N-k] != k) continue;
-        if(k!=N && z2[N+k] != N-k) continue;
-        string ans = t1.substr(0, k);
-        ans += T.substr(N+k);
-        Out(ans);
-        Out(k);
-        return 0;
+    RollingHash rh1(N), rh2(N);
+    rep(i, N) {
+        rh1.forward(T[i+N]);
+        rh2.forward(T[N-1-i]);
+    }
+    rep(i, N) {
+        if (rh1.val()==rh2.val()) {
+            string ans = T.substr(i+1, N);
+            reverse(all(ans));
+            Out(ans); return 0;
+        }
+        rh1.backward(T[i], T[i+N]);
+        rh2.forward(T[i+N], T[i]);
+        de(rh1.val())
+        de(rh2.val())
     }
     Out(-1);
     
