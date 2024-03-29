@@ -1205,12 +1205,12 @@
 ### 例題
 - !復習価値高 [E - Rotate and Flip](https://atcoder.jp/contests/abc189/tasks/abc189_e)
 
-# 関数の形のまま考える
+## 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
 ### 例題
 - 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
-## 組合せ数減らし
+## 組合せ数減らし（主客転倒）
 - 全組合せを列挙するとTLEする場合、演算（maxやΣなど）の順番を入れ替える事で探索量が減るケースあり
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
@@ -1219,6 +1219,7 @@
 - !要復習 駒置きコストの総和（難しいが良問） [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - !要復習 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
+- !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 
 ## 構築系問題
 - 構築させる問題

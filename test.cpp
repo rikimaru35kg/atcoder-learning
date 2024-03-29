@@ -133,23 +133,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-void solve() {
-    LONG(N, D, K);
-    --K;
-    ll g = gcd(N, D);
-    ll num = N/g;
-    ll cyclenum = K / num;
-    K %= num;
-    ll si = cyclenum;
-    ll ans = (si + K*D) % N;
-    Out(ans);
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(_, T) solve();
+    LONG(N);
+    VLM(A, N);
+    vl cnt(N);
+    rep(i, N) cnt[A[i]]++;
+    auto nc2=[&](ll x) ->ll {
+        return x*(x-1)/2;
+    };
+    ll ans = 0;
+    ll same = 0;
+    rep(x, N) same += nc2(cnt[x]);
+    auto del=[&](ll x) {
+        same -= nc2(cnt[x]);
+        cnt[x]--;
+        same += nc2(cnt[x]);
+    };
+    rep(l, N/2) {
+        ll r = N-1-l;
+        de(same)
+        ans += nc2(r-l+1);
+        ans -= same;
+        de(ans)
+        del(A[l]);
+        del(A[r]);
+    }
+    Out(ans);
+
     
 }
 
