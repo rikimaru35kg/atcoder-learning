@@ -3,7 +3,7 @@
 
 # 数や文字の扱い
 
-## 文字列操作
+## 文字列
 - S.substr(開始位置, 長さ)で部分文字列を取得可能
 - regex_match(S, regex("正規表現"))で一致性を確認可能
 - ただし正規表現は遅い。計算量がシビアな問題ではなるべく使わない
@@ -14,8 +14,10 @@
 - tolower(c)、toupper(c)で小文字、大文字変換が可能
 - scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
 - 文字コードを扱うときは一旦開始文字（eg A, a）からの差分値とし、最後に開始文字からの差分値で求める。('C' + 20) % 26などとすると空白文字となってしまうので要注意！
+- 文字列の数列は、辞書順に並べるとtrie木の構造となり、前後の文字列と比較するだけでLCAが分かる
 ### 例題
 - 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
+- !要復習 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 
 ## Z-algorhythm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム

@@ -92,7 +92,6 @@ template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
-template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
@@ -138,25 +137,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S, T);
-    ll N = SIZE(S), M = SIZE(T);
-    unordered_set<ll> ngs;
-    rep (i, M) {
-        if(S[N-M+i] == '?') continue;
-        if(T[i] == '?') continue;
-        if (S[N-M+i] != T[i]) ngs.insert(i);
+    LONG(N);
+    VS(S, N);
+    vector<pair<string,ll>> strs;
+    rep(i, N) {
+        strs.emplace_back(S[i], i);
     }
-    de(ngs)
-    rep(x, M+1) {
-        if (SIZE(ngs)==0) puts("Yes");
-        else puts("No");
-
-        if (x==M) break;
-        if (T[x] == '?') ngs.erase(x);
-        else if (S[x] == '?') ngs.erase(x);
-        else if (T[x] == S[x]) ngs.erase(x);
-        else if (T[x] != S[x]) ngs.insert(x);
+    sort(all(strs));
+    vl ans(N);
+    auto comp =[&](ll i, ll j) {
+        auto [s0, i0] = strs[i];
+        ll n0 = SIZE(s0);
+        auto [s1, i1] = strs[j];
+        ll n1 = SIZE(s1);
+        ll mx = 0;
+        rep(k, min(n0, n1)) {
+            if (s0[k] == s1[k]) ++mx;
+            else break;
+        }
+        chmax(ans[i0], mx);
+        chmax(ans[i1], mx);
+    };
+    rep (i, N) {
+        // ushiro to hikaku
+        if (i) comp(i, i-1);
+        // mae to hikaku
+        if (i!=N-1) comp(i, i+1);
     }
+    for (auto x: ans) Out(x);
     
 }
 
