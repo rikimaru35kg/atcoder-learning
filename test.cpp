@@ -133,38 +133,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+void solve() {
+    LONG(N, D, K);
+    --K;
+    ll g = gcd(N, D);
+    ll num = N/g;
+    ll cyclenum = K / num;
+    K %= num;
+    ll si = cyclenum;
+    ll ans = (si + K*D) % N;
+    Out(ans);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    vector<pair<string,ll>> strs;
-    rep(i, N) {
-        strs.emplace_back(S[i], i);
-    }
-    sort(all(strs));
-    vl ans(N);
-    auto comp =[&](ll i, ll j) {
-        auto [s0, i0] = strs[i];
-        ll n0 = SIZE(s0);
-        auto [s1, i1] = strs[j];
-        ll n1 = SIZE(s1);
-        ll mx = 0;
-        rep(k, min(n0, n1)) {
-            if (s0[k] == s1[k]) ++mx;
-            else break;
-        }
-        chmax(ans[i0], mx);
-        chmax(ans[i1], mx);
-    };
-    rep (i, N) {
-        // ushiro to hikaku
-        if (i) comp(i, i-1);
-        // mae to hikaku
-        if (i!=N-1) comp(i, i+1);
-    }
-    for (auto x: ans) Out(x);
+    LONG(T);
+    rep(_, T) solve();
     
 }
 

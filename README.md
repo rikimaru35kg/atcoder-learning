@@ -881,6 +881,7 @@
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
 ### 例題
+- 基本 [E - Swap Place](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - !復習価値高 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 - !要復習 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
 
@@ -1157,6 +1158,7 @@
 - 不変量に着目すると解ける問題あり
 ### 例題
 - !復習価値高 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
+- !要復習 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
 
 ## マンハッタン距離
 - 45度回転（して√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)がマンハッタン距離となる
