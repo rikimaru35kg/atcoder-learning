@@ -121,9 +121,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -137,32 +137,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-    vl cnt(N);
-    rep(i, N) cnt[A[i]]++;
-    auto nc2=[&](ll x) ->ll {
-        return x*(x-1)/2;
-    };
-    ll ans = 0;
-    ll same = 0;
-    rep(x, N) same += nc2(cnt[x]);
-    auto del=[&](ll x) {
-        same -= nc2(cnt[x]);
-        cnt[x]--;
-        same += nc2(cnt[x]);
-    };
-    rep(l, N/2) {
-        ll r = N-1-l;
-        de(same)
-        ans += nc2(r-l+1);
-        ans -= same;
-        de(ans)
-        del(A[l]);
-        del(A[r]);
+    LONG(A, X, M);
+    if (A==1) {
+        Out(X%M);
+        return 0;
     }
-    Out(ans);
-
+    mint::set_mod(M);
+    auto f = [&](auto f, ll x) -> ll {
+        if (x==0) return 0;
+        mint ret = 0;
+        if (x%2==1) {
+            --x;
+            ret = mint(A).pow(x);
+        }
+        ll y = f(f, x/2);
+        ret += y + mint(A).pow(x/2) * y;
+        return ret.val();
+    };
+    Out(f(f, X));
     
 }
 
