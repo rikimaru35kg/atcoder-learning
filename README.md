@@ -308,7 +308,6 @@
 - lower_boundの第4引数にgreater<ll>()を指定すると降順ソート列のx以下となるイテレータを返すようになる（upperはx未満）
 - 最小値の最大化を二分探索で求められる事が多いのは、最小値（正確には下界）=Xが成立となるかどうかを貪欲法で求められる事が多いから
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
-- 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
 - 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
 - !復習価値中 二分探索の基本 [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
@@ -317,10 +316,18 @@
 - !要復習 小数の扱いが難しい [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - !復習価値中 混乱しがちな実装だが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
 - !復習価値高 頭が混乱するが良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
-- !要復習 平均＆中央値最大化（良問） [E - Average and Median](https://atcoder.jp/contests/abc236/tasks/abc236_e)
-- !要復習 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - !復習価値中 ひねりあり [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 - !要復習 有名問題（暗記必須） [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
+
+## 二分探索による平均最大化
+- 分母と分子に変数がある場合の最大値を求めたい場合、答えを決め打つと二分探索に持ち込める場合あり
+- 平均最大化はその典型例
+- 最短経路問題でsum(bi)/sum(ci)（bi,ciは各辺に割りつけられた価値とコスト）を最大化せよという問題の場合、コストが単純でないので普通に解けない。こんな時に答えXを決め打ちし、それ以上になるかどうかという問題に置き換えると、sum(bi-X*ci)>=0と変形できるので二分探索を使うことができる（なお、この問題は平均最大化という有名テクニック）
+### 例題
+- !要復習 平均＆中央値最大化（良問） [E - Average and Median](https://atcoder.jp/contests/abc236/tasks/abc236_e)
+- !要復習 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
+- !復習価値低 砂糖水濃度最大化 [F - Sugar Water 2](https://atcoder.jp/contests/abc294/tasks/abc294_f)
+
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。

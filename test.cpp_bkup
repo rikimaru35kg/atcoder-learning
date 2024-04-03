@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -137,18 +137,29 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    dsu uf(N);
-    ll X = 0, Y = N;
-    rep(i, M) {
-        LONGM(a); CHAR(b);
-        LONGM(c); CHAR(d);
-        if (uf.same(a, c)) ++X;
-        else --Y;
-        uf.merge(a, c);
+    LONG(L, N1, N2);
+    vp V1, V2;
+    rep(i, N1) {
+        LONG(v, l);
+        V1.emplace_back(v, l);
     }
-    printf("%lld %lld\n", X, Y-X);
-
+    rep(i, N2) {
+        LONG(v, l);
+        V2.emplace_back(v, l);
+    }
+    reverse(all(V1)); reverse(all(V2));
+    ll i1 = 0, i2 = 0;
+    ll ans = 0;
+    while(V1.size() && V2.size()) {
+        auto [v1, l1] = V1.back();
+        auto [v2, l2] = V2.back();
+        ll st = max(i1, i2);
+        ll ed = min(i1+l1, i2+l2);
+        if (v1==v2)  ans += max(ed -st, 0LL);
+        if (i1+l1 < i2+l2) V1.pop_back(), i1 += l1;
+        else V2.pop_back(), i2 += l2;
+    }
+    Out(ans);
     
 }
 

@@ -121,9 +121,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
@@ -133,28 +133,53 @@ using mint = modint;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+double binary_search (double ok, double ng, auto f) {
+    rep(_, 100) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A, X, M);
-    if (A==1) {
-        Out(X%M);
-        return 0;
+    LONG(N, M, K);
+    vpd AB, CD;
+    rep(i, N) {
+        DOUBLE(a, b);
+        AB.emplace_back(a, b);
     }
-    mint::set_mod(M);
-    auto f = [&](auto f, ll x) -> ll {
-        if (x==0) return 0;
-        mint ret = 0;
-        if (x%2==1) {
-            --x;
-            ret = mint(A).pow(x);
+    rep(i, M) {
+        DOUBLE(a, b);
+        CD.emplace_back(a, b);
+    }
+    auto f = [&](double z) {
+        ll cnt = 0;
+        vd x(N), y(M);
+        rep(i, N) {
+            auto [a, b] = AB[i];
+            x[i] = a*(1-z) - z*b;
         }
-        ll y = f(f, x/2);
-        ret += y + mint(A).pow(x/2) * y;
-        return ret.val();
+        rep(i, M) {
+            auto [a, b] = CD[i];
+            y[i] = a*(1-z) - z*b;
+        }
+        sort(all(x));
+        sort(all(y));
+        ll r = M;
+        rep(i, N) {
+            while (r>0 && x[i]+y[r-1]>=0) --r;
+            cnt += M-r;
+        }
+        if (cnt>=K) return true;
+        else return false;
     };
-    Out(f(f, X));
+    double ans = binary_search(0.0, 1.0, f);
+    Out(ans*100);
+
+
     
 }
 
