@@ -133,33 +133,53 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+double binary_search (double ok, double ng, auto f) {
+    rep(_, 100) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L, N1, N2);
-    vp V1, V2;
-    rep(i, N1) {
-        LONG(v, l);
-        V1.emplace_back(v, l);
+    LONG(N, M, K);
+    vpd AB, CD;
+    rep(i, N) {
+        DOUBLE(a, b);
+        AB.emplace_back(a, b);
     }
-    rep(i, N2) {
-        LONG(v, l);
-        V2.emplace_back(v, l);
+    rep(i, M) {
+        DOUBLE(a, b);
+        CD.emplace_back(a, b);
     }
-    reverse(all(V1)); reverse(all(V2));
-    ll i1 = 0, i2 = 0;
-    ll ans = 0;
-    while(V1.size() && V2.size()) {
-        auto [v1, l1] = V1.back();
-        auto [v2, l2] = V2.back();
-        ll st = max(i1, i2);
-        ll ed = min(i1+l1, i2+l2);
-        if (v1==v2)  ans += max(ed -st, 0LL);
-        if (i1+l1 < i2+l2) V1.pop_back(), i1 += l1;
-        else V2.pop_back(), i2 += l2;
-    }
-    Out(ans);
+    auto f = [&](double z) {
+        ll cnt = 0;
+        vd x(N), y(M);
+        rep(i, N) {
+            auto [a, b] = AB[i];
+            x[i] = a*(1-z) - z*b;
+        }
+        rep(i, M) {
+            auto [a, b] = CD[i];
+            y[i] = a*(1-z) - z*b;
+        }
+        sort(all(x));
+        sort(all(y));
+        ll r = M;
+        rep(i, N) {
+            while (r>0 && x[i]+y[r-1]>=0) --r;
+            cnt += M-r;
+        }
+        if (cnt>=K) return true;
+        else return false;
+    };
+    double ans = binary_search(0.0, 1.0, f);
+    Out(ans*100);
+
+
     
 }
 

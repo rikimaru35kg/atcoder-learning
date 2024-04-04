@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -133,53 +133,75 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-double binary_search (double ok, double ng, auto f) {
-    rep(_, 100) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+
+using S = int;
+S op(S a, S b) {return min(a, b);}
+S e() {return 1001001001;}
+
+struct LCA {
+    int n, idx=0;
+    vector<int> et, in;
+    vector<long long> depth;
+    struct Edge {
+        int to, id;
+        long long w;
+    };
+    vector<vector<Edge>> from;
+    segtree<S,op,e> rmq;
+    LCA(long long n): n(n) {
+        from.resize(n);
+        in.resize(n);
+        depth.resize(n);
     }
-    return ok;
-}
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w, idx);
+        from[b].emplace_back(a, w, idx);
+        ++idx;
+    };
+    void euler_tour(int v=0) {
+        dfs(v);
+        rmq = segtree<S,op,e>(et.size());
+        for(int i=0; i<(int)et.size(); ++i) {
+            rmq.set(i, in[et[i]]);
+        }
+    }
+    void dfs(int v, long long d=0, int p=-1) {
+        in[v] = et.size();
+        depth[v] = d;
+        et.push_back(v);
+        for(auto [nv, w, id]: from[v]) if (nv != p) {
+            dfs(nv, d+w, v);
+            et.push_back(v);
+        }
+    }
+    int lca(int a, int b) {
+        int l = in[a], r = in[b];
+        if (l > r) swap(l, r);
+        return et[rmq.prod(l, r+1)];
+    }
+    long long dist(int a, int b) {
+        long long ret = 0;
+        int c = lca(a, b);
+        if (a!=c) ret += depth[a] - depth[c];
+        if (b!=c) ret += depth[b] - depth[c];
+        return ret;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vpd AB, CD;
-    rep(i, N) {
-        DOUBLE(a, b);
-        AB.emplace_back(a, b);
+    LONG(N);
+    LCA lca(N);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(w);
+        lca.add_edge(a, b, w);
     }
-    rep(i, M) {
-        DOUBLE(a, b);
-        CD.emplace_back(a, b);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t, x, y);
     }
-    auto f = [&](double z) {
-        ll cnt = 0;
-        vd x(N), y(M);
-        rep(i, N) {
-            auto [a, b] = AB[i];
-            x[i] = a*(1-z) - z*b;
-        }
-        rep(i, M) {
-            auto [a, b] = CD[i];
-            y[i] = a*(1-z) - z*b;
-        }
-        sort(all(x));
-        sort(all(y));
-        ll r = M;
-        rep(i, N) {
-            while (r>0 && x[i]+y[r-1]>=0) --r;
-            cnt += M-r;
-        }
-        if (cnt>=K) return true;
-        else return false;
-    };
-    double ans = binary_search(0.0, 1.0, f);
-    Out(ans*100);
-
-
+    lca.euler_tour();
     
 }
 
