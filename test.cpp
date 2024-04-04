@@ -127,8 +127,9 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
+// inline void Out(mint e) {cout << e.val() << '\n';}
 // inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// #ifdef __DEBUG
 // inline void debug_view(mint e){cerr << e.val() << endl;}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
@@ -137,16 +138,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L, R);
-    VL(A, N);
-    int win = 0;
+    LONG(N);
+    map<ll,ll> mpr, mpc;
+    map<ll,vl> r2cs, c2rs;
+    vt3 pos;
     rep(i, N) {
-        ll x = A[i]%(L+R);
-        ll y = x/L;
-        win ^= y;
+        LONG(r, c, x);
+        mpr[r] += x;
+        mpc[c] += x;
+        r2cs[r].push_back(c);
+        c2rs[c].push_back(r);
+        pos.emplace_back(r, c, x);
     }
-    if (win) puts("First");
-    else puts("Second");
+    ll ans = 0;
+    for (auto [r, c, x]: pos) {
+        ll now = 0;
+        now += mpr[r];
+        now += mpc[c];
+        now -= x;
+        chmax(ans, now);
+    }
+    multiset<ll> st;
+    for (auto [c, x]: mpc) {
+        st.insert(x);
+    }
+    for (auto [r, v]: r2cs) {
+        for (auto c: v) {
+            ll x = mpc[c];
+            st.erase(st.find(x));
+        }
+        if (st.size()) {
+            ll mx = *st.rbegin();
+            chmax(ans, mx + mpr[r]);
+        }
+        for (auto c: v) {
+            ll x = mpc[c];
+            st.insert(x);
+        }
+    }
+    Out(ans);
     
 }
 

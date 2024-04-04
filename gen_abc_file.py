@@ -131,8 +131,9 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
 // using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
+// inline void Out(mint e) {cout << e.val() << '\n';}
 // inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// #ifdef __DEBUG
 // inline void debug_view(mint e){cerr << e.val() << endl;}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
