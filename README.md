@@ -1035,6 +1035,19 @@
 - !要復習 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 もう少し簡単な問題も例題に挙げられると良いのだが・・・
 
+# セグメントツリー（Segment tree）
+- atcoder libraryで使える
+- 区間更新・加算、区間min・max・和取得などができる（遅延評価セグメントツリー）
+- モノイドであればセグ木にのる
+- セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
+### 例題
+- 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
+- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
+- !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
+- !要復習 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける
 ### 例題
@@ -1071,19 +1084,6 @@
 - min{f(i,j)}を求める問題でf(i,j)=g(i)+h(j)なら、min(g(i)+h(j))=min(g(i))+min(h(j))と選択肢を分離できる
 ### 例題
 - !要復習 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
-
-# セグメントツリー（Segment tree）
-- atcoder libraryで使える
-- 区間更新・加算、区間min・max・和取得などができる（遅延評価セグメントツリー）
-- モノイドであればセグ木にのる
-- セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
-### 例題
-- 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
-- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
-- !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
-- !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
-- !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
-- !要復習 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
@@ -1254,6 +1254,14 @@
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
 ### 例題
 - !復習価値中 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
+
+## NIMとgrundy数
+- NIMは残り山の石の個数のxorが0なら負け、非0なら勝
+- xor=0からはxor!=0にしか遷移できないし、xor!=0なら最上位bitが立つ山を選んで下位bitが全て0になるように取り除けばxor=0に遷移可能
+- NIMでは石の数がgrundy数だが、一般には遷移先のMEX（非負非除最小整数）が各山のgrundy数となる
+- NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
+### 例題
+- !要復習 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 
 ## Zoblist hash
 - 集合同士をO(1)で比較可能
