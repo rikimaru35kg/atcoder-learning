@@ -1241,27 +1241,34 @@
 - !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
 - !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
 
-# 読解が難しい問題
-# ホール（Hall）の結婚定理
+## ホール（Hall）の結婚定理
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
 - 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
 - !要復習 数列マッチング（実装難） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
-# まとめて処理する
+## まとめて処理する
 - 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
 ### 例題
 - !復習価値中 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 
-# Zoblist hash
+## Zoblist hash
 - 集合同士をO(1)で比較可能
 - 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
 - メルセンヌツイスターで乱数を発生させると良い
 ### 例題
-- [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
+- !要復習 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
 
+## 偶置換・奇置換
+- 順列を置換した回数で分類（順列である必要はないが重複要素があっては駄目）
+- サイクル個数の偶奇と置換の偶奇は一対一対応する（N=偶数なら一致、N=奇数なら逆）
+- 重複要素のある数列は偶置換でも奇置換でもあると見なせる
+### 例題
+- !要復習 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+
+## 読解が難しい問題
 ### 例題
 - 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
