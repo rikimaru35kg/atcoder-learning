@@ -1424,3 +1424,4 @@
 - [D - Root M Leaper](https://atcoder.jp/contests/abc272/tasks/abc272_d)
 - [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
+- [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)

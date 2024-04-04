@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -133,30 +133,45 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-
-bool f(vl v) {
-    ll N = v.size();
-    dsu uf(N);
-    rep(i, N) uf.merge(i, v[i]);
-    int ret = 0;
-    rep(i, N) if(i==uf.leader(i)) ret ^= 1;
-    if (ret) return true;
-    else return false;
-}
+struct State {
+    vl v; ll cost;
+    State(vl v, ll cost): v(v), cost(cost) {};
+    bool operator<(const State &o) const {
+        if (cost != o.cost) return cost < o.cost;
+        ll N = SIZE(v);
+        rep(i, N) {
+            if (v[i] != o.v[i]) return v[i] < o.v[i];
+        }
+        return false;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N); VLM(B, N);
-    vl a = A, b = B;
-    sort(all(a)); sort(all(b));
-    if (a!=b) PNo
+    LONG(N, K);
+    VL(A, N);
     set<ll> st;
-    rep(i, N) st.insert(a[i]);
-    if (st.size()!=N) PYes
-    de(f(A))
-    de(f(B))
-    if (f(A)==f(B)) PYes PNo
+    priority_queue<ll,vl,greater<ll>> que;
+    auto push = [&](ll p) {
+        if (!st.count(p)) {
+            st.insert(p);
+            que.push(p);
+        }
+    };
+    push(0);
+    ll cnt = 0;
+    while(true) {
+        ll p = que.top(); que.pop();
+        if(cnt==K) {
+            Out(p);
+            return 0;
+        }
+        ++cnt;
+        rep(i, N) {
+            push(p+A[i]);
+        }
+    }
     
 }
 
