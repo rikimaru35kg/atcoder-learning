@@ -139,34 +139,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S); LONG(N);
-    ll M = SIZE(S);
-    auto s2num = [&](string s) {
-        ll n = SIZE(s);
-        ll ret = 0;
-        rep(i, n) ret = ret*2 + s[i]-'0';
-        return ret;
-    };
-    auto f= [&](string s) {
-        ll n = SIZE(s);
-        rep(i, n) if (s[i]=='?') s[i]='0';
-        ll num = s2num(s);
-        if (num<=N) return true;
-        else return false;
-    };
-
-    if(!f(S)) {
-        Out(-1); return 0;
-    }
-    rep(i, M) {
-        if (S[i]=='?') {
-            S[i]='1';
-            if (!f(S)) S[i]='0';
+    LONG(N, M);
+    vvl from(N+M);
+    rep(n, N) {
+        LONG(A);
+        rep(j, A) {
+            LONGM(m);
+            from[n+M].push_back(m);
+            from[m].push_back(n+M);
         }
     }
-    ll ans = s2num(S);
+    queue<ll> que;
+    vl dist(N+M, -1);
+    auto push = [&](ll v, ll d) {
+        if (dist[v] != -1) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    de(from)
+    push(0, 0);
+    while(que.size()) {
+        ll v = que.front(); que.pop();
+        for (auto nv: from[v]) {
+            push(nv, dist[v]+1);
+        }
+    }
+    ll ans = dist[M-1];
+    de(dist)
+    ans = (ans-2)/2;
     Out(ans);
-
+    
 }
 
 // ### test.cpp ###

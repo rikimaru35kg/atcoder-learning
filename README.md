@@ -963,11 +963,12 @@
 - !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
 
-## 仮想頂点を設ける
+## 仮想頂点（超頂点）を設ける
 - 仮想頂点を設ける事で、見通しが良くなる場合あり
 ### 例題
 - !要復習 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
 - !要復習 手段が複数ある最小全域木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
+- !要復習 [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
 
 ## 全域木
 - 無向グラフから全域木を構成すると見通しが良くなる事がある
