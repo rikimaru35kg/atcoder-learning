@@ -121,49 +121,112 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// inline void Out(mint e) {cout << e.val() << '\n';}
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, A, B, P, Q);
-    --A, --B;
-    vvvm prb(N, vvm(N, vm(2)));
-    vvvb mem(N, vvb(N, vb(2)));
-    auto f = [&](auto f, ll x, ll y, bool taka) -> mint {
-        if (x==N-1) return 1;
-        if (y==N-1) return 0;
-        if(mem[x][y][taka]) return prb[x][y][taka];
-        mint ret = 0;
-        if (taka) {
-            rep1(i, P) {
-                mint p = f(f, min(x+i,N-1), y, !taka);
-                ret += p;
-            }
-            ret /= P;
-        } else {
-            rep1(i, Q) {
-                mint p = f(f, x, min(y+i, N-1), !taka);
-                ret += p;
-            }
-            ret /= Q;
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+    }
+    LONG(K);
+    if (K==0) {
+        string ans;
+        rep(i, N) ans.push_back('1');
+        puts("Yes");
+        Out(ans);
+        return 0;
+    }
+    vl color(N, -1);
+    auto white = [&](ll v) -> bool {
+        if (color[v]==-1) {
+            color[v] = 0;
+            return true;
         }
-        mem[x][y][taka] = true;
-        return prb[x][y][taka] = ret;
+        if (color[v]==1) return false;
+        return true;
     };
-    Out(f(f, A, B, true));
+    auto bfs = [&](ll sv, ll td) -> bool {
+        queue<ll> que;
+        vl dist(N, INF);
+        auto push = [&](ll v, ll d) {
+            if (dist[v] != INF) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            ll d = dist[v];
+            if (d<td) {
+                if(!white(v)) return false;
+            }
+            if (d==td) continue;
+            for (auto nv: from[v]) {
+                push(nv, d+1);
+            }
+        }
+        return true;
+    };
+    vp query;
+    rep(i, K) {
+        LONG(p, d); --p;
+        query.emplace_back(p, d);
+        if(!bfs(p, d)) PNo
+    }
+    vb ok(K);
+    auto bfs2 = [&](ll sv, ll td, ll k) {
+        queue<ll> que;
+        vl dist(N, INF);
+        auto push = [&](ll v, ll d) {
+            if (dist[v] != INF) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            ll d = dist[v];
+            if (d==td && color[v]!=0) {
+                color[v] = 1;
+                ok[k] = true;
+                return;
+            }
+            for (auto nv: from[v]) {
+                push(nv, d+1);
+            }
+        }
+    };
+    rep(i, K) {
+        auto [p, d] = query[i];
+        bfs2(p, d, i);
+    }
+    rep(i, K) {
+        if (!ok[i]) PNo
+    }
+    puts("Yes");
+    string ans;
+    rep(i, N) {
+        if(color[i]==1 || color[i]==-1) ans.push_back('1');
+        else ans.push_back('0');
+    }
+    Out(ans);
     
 }
 

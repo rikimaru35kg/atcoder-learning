@@ -1414,6 +1414,7 @@
 - [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
+- [C - Cross](https://atcoder.jp/contests/abc300/tasks/abc300_c)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

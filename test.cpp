@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -138,46 +138,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,ll> mpr, mpc;
-    map<ll,vl> r2cs, c2rs;
-    vt3 pos;
-    rep(i, N) {
-        LONG(r, c, x);
-        mpr[r] += x;
-        mpc[c] += x;
-        r2cs[r].push_back(c);
-        c2rs[c].push_back(r);
-        pos.emplace_back(r, c, x);
-    }
-    ll ans = 0;
-    for (auto [r, c, x]: pos) {
-        ll now = 0;
-        now += mpr[r];
-        now += mpc[c];
-        now -= x;
-        chmax(ans, now);
-    }
-    multiset<ll> st;
-    for (auto [c, x]: mpc) {
-        st.insert(x);
-    }
-    for (auto [r, v]: r2cs) {
-        for (auto c: v) {
-            ll x = mpc[c];
-            st.erase(st.find(x));
+    LONG(H, W);
+    VS(C, H);
+    vvb visited(H, vb(W));
+    ll N = min(H, W);
+    auto trys = [&](ll i, ll j) -> ll {
+        ll ret = 0;
+        ll size = 0;
+        repk(k, j+1, W) {
+            if(C[i][k]=='.') continue;
+            size = k-j+1;
+            ret = (k-j)/2;
+            break;
         }
-        if (st.size()) {
-            ll mx = *st.rbegin();
-            chmax(ans, mx + mpr[r]);
+        rep(z, size) {
+            rep(k, 8) {
+                ll x = i+z+di8[k];
+                ll y = j+z+dj8[k];
+                if (!isin(x, y, H, W)) continue;
+                visited[x][y] = true;
+            }
+            rep(k, 8) {
+                ll x = i+z+di8[k];
+                ll y = j+size-1-z+dj8[k];
+                if (!isin(x, y, H, W)) continue;
+                visited[x][y] = true;
+            }
         }
-        for (auto c: v) {
-            ll x = mpc[c];
-            st.insert(x);
-        }
+        return ret;
+    };
+    vl ans(N);
+    rep(i, H) rep(j, W) {
+        if (C[i][j]=='.') continue;
+        if (visited[i][j]) continue;
+        ll s = trys(i, j);
+        de(i)de(j)de(s)
+        ans[s-1]++;
     }
     Out(ans);
-    
 }
 
 // ### test.cpp ###
