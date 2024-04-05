@@ -92,6 +92,7 @@ template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
@@ -134,70 +135,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll Z = 1e6;
-    Sieve sieve(Z);
-    LONG(N);
-    vl ps;
-    vl cnt(Z+10);
-    rep(x, Z+1) {
-        if (sieve.is_prime(x)) {
-            ps.push_back(x);
-            cnt[x]++;
-        }
-    }
-    rep(i, Z+1) cnt[i+1] += cnt[i];
-
-    ll ans=0;
-    ll M = SIZE(ps);
-    rep(i, M) {
-        ll a = ps[i];
-        if (a*a*a*a*a>N) break;
-        repk(j, i+1, M) {
-            ll c = ps[j];
-            if (a*a*a*c*c>N) break;
-            if(a==2&&c==5){
-                cout<<"";
-            }
-            ll mx = min(c-1, N/a/a/c/c);
-            ll mn = a+1;
-            if(mx<mn) continue;
-            ans += cnt[mx] - cnt[mn-1];
-            // de(a)de(c)de(cnt[mx])de(cnt[mn-1])
-        }
+    LONG(N, M, K);
+    STRING(S);
+    ll x = 0;
+    rep(i, N) if(S[i]=='x') ++x;
+    vl cum(2*N+1);
+    rep(i, N) if (S[i]=='x') cum[i+1] = 1, cum[i+1+N] = 1;
+    rep(i, 2*N) cum[i+1] += cum[i];
+    ll ans = 0;
+    rep(l, N) {
+        auto f = [&](ll i) {
+            ll cnt = 0;
+            ll span = i-l;
+            ll cycle = span/N;
+            cnt += cycle * x;
+            i %= N;
+            if (i<l) i+=N;
+            cnt += cum[i] - cum[l];
+            if (cnt <= K) return true;
+            else return false;
+        };
+        ll r = binary_search(l, N*M+1, f);
+        chmax(ans, r-l);
     }
     Out(ans);
     

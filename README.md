@@ -133,6 +133,7 @@
 - N以下の約数の個数を全列挙するには、a=1~N、b=1~N/aとすればO(NlogN)で全列挙可能
 - なお、約数の個数は非常に小さいので、約数全列挙できるならば、全約数のループを回す事は容易
 - 約数の個数がそれ以下のどの自然数よりも多いものを高度合成数というが、10^9以下で1344個、10^18で約10^5個の約数を持つ
+- ただし、10^18の約数（あるいは約数の個数）を全列挙するとTLEするので要注意！
 - オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
 ### 例題
 - !復習価値中 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
@@ -1436,3 +1437,4 @@
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
 - [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
+- [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)

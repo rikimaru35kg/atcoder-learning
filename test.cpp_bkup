@@ -92,6 +92,7 @@ template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
@@ -123,59 +124,71 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/all>
 using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// inline void Out(mint e) {cout << e.val() << '\n';}
-// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(C, H);
-    vvb visited(H, vb(W));
-    ll N = min(H, W);
-    auto trys = [&](ll i, ll j) -> ll {
-        ll ret = 0;
-        ll size = 0;
-        repk(k, j+1, W) {
-            if(C[i][k]=='.') continue;
-            size = k-j+1;
-            ret = (k-j)/2;
-            break;
+    LONG(N);
+    unordered_set<ll> st;
+    auto f = [&](auto f, ll x) {
+        if (st.count(x)) return;
+        st.insert(x);
+        if(x==1) {
+            st.insert(x);
+            return;
         }
-        rep(z, size) {
-            rep(k, 8) {
-                ll x = i+z+di8[k];
-                ll y = j+z+dj8[k];
-                if (!isin(x, y, H, W)) continue;
-                visited[x][y] = true;
-            }
-            rep(k, 8) {
-                ll x = i+z+di8[k];
-                ll y = j+size-1-z+dj8[k];
-                if (!isin(x, y, H, W)) continue;
-                visited[x][y] = true;
-            }
+        repk(k, 2, 7) {
+            if (x%k!=0) continue;
+            f(f, x/k);
         }
-        return ret;
     };
-    vl ans(N);
-    rep(i, H) rep(j, W) {
-        if (C[i][j]=='.') continue;
-        if (visited[i][j]) continue;
-        ll s = trys(i, j);
-        de(i)de(j)de(s)
-        ans[s-1]++;
+    f(f, N);
+    map<ll,mint> dp;
+    dp[1] = 1;
+    mint inv5 = mint(5).inv();
+    while(true) {
+        auto it = dp.begin();
+        auto [k, v] = *it;
+        if (k>=N) break;
+        repk(i, 2, 7) {
+            if (!st.count(k*i)) continue;
+            dp[k*i] += v*inv5;
+        }
+        dp.erase(it);
+        if (SIZE(dp)==0) {
+            Out(0); return 0;
+        }
     }
-    Out(ans);
+    auto it = dp.begin();
+    auto [k, v] = *it;
+    if (k!=N) {
+        Out(0); return 0;
+    }
+    Out(v);
+    
 }
 
 // ### test.cpp ###
