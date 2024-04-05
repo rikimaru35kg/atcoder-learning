@@ -122,72 +122,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// inline void Out(mint e) {cout << e.val() << '\n';}
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
+    return ok;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    unordered_set<ll> st;
-    auto f = [&](auto f, ll x) {
-        if (st.count(x)) return;
-        st.insert(x);
-        if(x==1) {
-            st.insert(x);
-            return;
-        }
-        repk(k, 2, 7) {
-            if (x%k!=0) continue;
-            f(f, x/k);
-        }
-    };
-    f(f, N);
-    map<ll,mint> dp;
-    dp[1] = 1;
-    mint inv5 = mint(5).inv();
-    while(true) {
-        auto it = dp.begin();
-        auto [k, v] = *it;
-        if (k>=N) break;
-        repk(i, 2, 7) {
-            if (!st.count(k*i)) continue;
-            dp[k*i] += v*inv5;
-        }
-        dp.erase(it);
-        if (SIZE(dp)==0) {
-            Out(0); return 0;
-        }
+    LONG(N, M, K);
+    STRING(S);
+    ll x = 0;
+    rep(i, N) if(S[i]=='x') ++x;
+    vl cum(2*N+1);
+    rep(i, N) if (S[i]=='x') cum[i+1] = 1, cum[i+1+N] = 1;
+    rep(i, 2*N) cum[i+1] += cum[i];
+    ll ans = 0;
+    rep(l, N) {
+        auto f = [&](ll i) {
+            ll cnt = 0;
+            ll span = i-l;
+            ll cycle = span/N;
+            cnt += cycle * x;
+            i %= N;
+            if (i<l) i+=N;
+            cnt += cum[i] - cum[l];
+            if (cnt <= K) return true;
+            else return false;
+        };
+        ll r = binary_search(l, N*M+1, f);
+        chmax(ans, r-l);
     }
-    auto it = dp.begin();
-    auto [k, v] = *it;
-    if (k!=N) {
-        Out(0); return 0;
-    }
-    Out(v);
+    Out(ans);
     
 }
 

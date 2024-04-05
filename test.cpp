@@ -135,43 +135,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    STRING(S);
-    ll x = 0;
-    rep(i, N) if(S[i]=='x') ++x;
-    vl cum(2*N+1);
-    rep(i, N) if (S[i]=='x') cum[i+1] = 1, cum[i+1+N] = 1;
-    rep(i, 2*N) cum[i+1] += cum[i];
-    ll ans = 0;
-    rep(l, N) {
-        auto f = [&](ll i) {
-            ll cnt = 0;
-            ll span = i-l;
-            ll cycle = span/N;
-            cnt += cycle * x;
-            i %= N;
-            if (i<l) i+=N;
-            cnt += cum[i] - cum[l];
-            if (cnt <= K) return true;
-            else return false;
-        };
-        ll r = binary_search(l, N*M+1, f);
-        chmax(ans, r-l);
+    STRING(S); LONG(N);
+    ll M = SIZE(S);
+    auto s2num = [&](string s) {
+        ll n = SIZE(s);
+        ll ret = 0;
+        rep(i, n) ret = ret*2 + s[i]-'0';
+        return ret;
+    };
+    auto f= [&](string s) {
+        ll n = SIZE(s);
+        rep(i, n) if (s[i]=='?') s[i]='0';
+        ll num = s2num(s);
+        if (num<=N) return true;
+        else return false;
+    };
+
+    if(!f(S)) {
+        Out(-1); return 0;
     }
+    rep(i, M) {
+        if (S[i]=='?') {
+            S[i]='1';
+            if (!f(S)) S[i]='0';
+        }
+    }
+    ll ans = s2num(S);
     Out(ans);
-    
+
 }
 
 // ### test.cpp ###
