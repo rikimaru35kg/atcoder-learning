@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -134,48 +134,73 @@ using namespace atcoder;
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(C, H);
-    vvb visited(H, vb(W));
-    ll N = min(H, W);
-    auto trys = [&](ll i, ll j) -> ll {
-        ll ret = 0;
-        ll size = 0;
-        repk(k, j+1, W) {
-            if(C[i][k]=='.') continue;
-            size = k-j+1;
-            ret = (k-j)/2;
-            break;
+    ll Z = 1e6;
+    Sieve sieve(Z);
+    LONG(N);
+    vl ps;
+    vl cnt(Z+10);
+    rep(x, Z+1) {
+        if (sieve.is_prime(x)) {
+            ps.push_back(x);
+            cnt[x]++;
         }
-        rep(z, size) {
-            rep(k, 8) {
-                ll x = i+z+di8[k];
-                ll y = j+z+dj8[k];
-                if (!isin(x, y, H, W)) continue;
-                visited[x][y] = true;
+    }
+    rep(i, Z+1) cnt[i+1] += cnt[i];
+
+    ll ans=0;
+    ll M = SIZE(ps);
+    rep(i, M) {
+        ll a = ps[i];
+        if (a*a*a*a*a>N) break;
+        repk(j, i+1, M) {
+            ll c = ps[j];
+            if (a*a*a*c*c>N) break;
+            if(a==2&&c==5){
+                cout<<"";
             }
-            rep(k, 8) {
-                ll x = i+z+di8[k];
-                ll y = j+size-1-z+dj8[k];
-                if (!isin(x, y, H, W)) continue;
-                visited[x][y] = true;
-            }
+            ll mx = min(c-1, N/a/a/c/c);
+            ll mn = a+1;
+            if(mx<mn) continue;
+            ans += cnt[mx] - cnt[mn-1];
+            // de(a)de(c)de(cnt[mx])de(cnt[mn-1])
         }
-        return ret;
-    };
-    vl ans(N);
-    rep(i, H) rep(j, W) {
-        if (C[i][j]=='.') continue;
-        if (visited[i][j]) continue;
-        ll s = trys(i, j);
-        de(i)de(j)de(s)
-        ans[s-1]++;
     }
     Out(ans);
+    
 }
 
 // ### test.cpp ###

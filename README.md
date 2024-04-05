@@ -1435,3 +1435,4 @@
 - [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
 - [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)
+- [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)

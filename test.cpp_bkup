@@ -121,8 +121,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
+#include <atcoder/all>
+using namespace atcoder;
 // using mint = modint998244353;
 // using vm = vector<mint>;
 // using vvm = vector<vector<mint>>;
@@ -138,96 +138,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
-    LONG(K);
-    if (K==0) {
-        string ans;
-        rep(i, N) ans.push_back('1');
-        puts("Yes");
-        Out(ans);
-        return 0;
-    }
-    vl color(N, -1);
-    auto white = [&](ll v) -> bool {
-        if (color[v]==-1) {
-            color[v] = 0;
-            return true;
+    LONG(H, W);
+    VS(C, H);
+    vvb visited(H, vb(W));
+    ll N = min(H, W);
+    auto trys = [&](ll i, ll j) -> ll {
+        ll ret = 0;
+        ll size = 0;
+        repk(k, j+1, W) {
+            if(C[i][k]=='.') continue;
+            size = k-j+1;
+            ret = (k-j)/2;
+            break;
         }
-        if (color[v]==1) return false;
-        return true;
-    };
-    auto bfs = [&](ll sv, ll td) -> bool {
-        queue<ll> que;
-        vl dist(N, INF);
-        auto push = [&](ll v, ll d) {
-            if (dist[v] != INF) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            ll v = que.front(); que.pop();
-            ll d = dist[v];
-            if (d<td) {
-                if(!white(v)) return false;
+        rep(z, size) {
+            rep(k, 8) {
+                ll x = i+z+di8[k];
+                ll y = j+z+dj8[k];
+                if (!isin(x, y, H, W)) continue;
+                visited[x][y] = true;
             }
-            if (d==td) continue;
-            for (auto nv: from[v]) {
-                push(nv, d+1);
+            rep(k, 8) {
+                ll x = i+z+di8[k];
+                ll y = j+size-1-z+dj8[k];
+                if (!isin(x, y, H, W)) continue;
+                visited[x][y] = true;
             }
         }
-        return true;
+        return ret;
     };
-    vp query;
-    rep(i, K) {
-        LONG(p, d); --p;
-        query.emplace_back(p, d);
-        if(!bfs(p, d)) PNo
-    }
-    vb ok(K);
-    auto bfs2 = [&](ll sv, ll td, ll k) {
-        queue<ll> que;
-        vl dist(N, INF);
-        auto push = [&](ll v, ll d) {
-            if (dist[v] != INF) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            ll v = que.front(); que.pop();
-            ll d = dist[v];
-            if (d==td && color[v]!=0) {
-                color[v] = 1;
-                ok[k] = true;
-                return;
-            }
-            for (auto nv: from[v]) {
-                push(nv, d+1);
-            }
-        }
-    };
-    rep(i, K) {
-        auto [p, d] = query[i];
-        bfs2(p, d, i);
-    }
-    rep(i, K) {
-        if (!ok[i]) PNo
-    }
-    puts("Yes");
-    string ans;
-    rep(i, N) {
-        if(color[i]==1 || color[i]==-1) ans.push_back('1');
-        else ans.push_back('0');
+    vl ans(N);
+    rep(i, H) rep(j, W) {
+        if (C[i][j]=='.') continue;
+        if (visited[i][j]) continue;
+        ll s = trys(i, j);
+        de(i)de(j)de(s)
+        ans[s-1]++;
     }
     Out(ans);
-    
 }
 
 // ### test.cpp ###
