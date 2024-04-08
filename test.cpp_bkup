@@ -139,28 +139,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<unordered_set<ll>> from(N);
-    ll ans = N;
-    rep(_, Q) {
-        LONG(t);
-        if (t==1) {
-            LONGM(a, b);
-            if (SIZE(from[a]) == 0) --ans;
-            if (SIZE(from[b]) == 0) --ans;
-            from[a].insert(b);
-            from[b].insert(a);
-        } else {
-            LONGM(v);
-            for (auto nv: from[v]) {
-                from[nv].erase(v);
-                if (SIZE(from[nv])==0) ++ans;
-            }
-            if(SIZE(from[v])>0) ++ans;
-            from[v].clear();
-        }
-        Out(ans);
+    LONG(N);
+    vvl from(N);
+    vl deg(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+        deg[a]++;
+        deg[b]++;
     }
+    ll rem = N;
+    vl ans;
+    rep(i, N) if(deg[i]>=3) {
+        ans.push_back(SIZE(from[i]));
+        rem -= SIZE(from[i])+1;
+    }
+    rep(i, rem/3) ans.push_back(2);
+    sort(all(ans));
+    Out(ans);
     
 }
 

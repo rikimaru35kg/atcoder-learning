@@ -519,19 +519,26 @@
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
-- xの最遠点yの最遠点zとすると、yとzの距離が直径となる
-- 任意の頂点vからの最遠点は、yかzのどちらかである
 - ある要素からの部分木サイズをxとすると、上側部分木のサイズは(N-x)と求まる
 - 連結とは限らない閉路を含まないグラフを森という（木が幾つも含まれたグラフ）
 - 森の連結成分数は頂点数 - 辺の数
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
-- ある頂点から与えれた距離の頂点を素早く見つけるには、直径の端点からのパスだけ記録して置けば良い（最も遠い点はどちらかの端点になるはずなので）
 ### 例題
-- 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !要復習（惜しかった!） 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - !復習価値中 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 - !要復習 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
+
+## 木の直径、重心
+- xの最遠点yの最遠点zとすると、yとzの距離が直径となる
+- 任意の頂点vからの最遠点は、yかzのどちらかである
+- ある頂点から与えれた距離の頂点を素早く見つけるには、直径の端点からのパスだけ記録して置けば良い（最も遠い点はどちらかの端点になるはずなので）
+- 辺を移動する際、移動先部分木のサイズが移動前部分木のサイズより大きいなら移動、を繰り返すことで重心に辿り着ける
+- 言い換えると、移動先部分木サイズが総和/2より大きければ移動すれば良い
+- 実装ではDFS全探索中に、全部分木サイズが総和/2以下であれば重心としてメモすれば良い
+### 例題
+- 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !要復習 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
+- !要復習 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ

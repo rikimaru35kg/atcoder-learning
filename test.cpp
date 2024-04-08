@@ -139,34 +139,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N+M);
-    rep(n, N) {
-        LONG(A);
-        rep(j, A) {
-            LONGM(m);
-            from[n+M].push_back(m);
-            from[m].push_back(n+M);
-        }
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    queue<ll> que;
-    vl dist(N+M, -1);
-    auto push = [&](ll v, ll d) {
-        if (dist[v] != -1) return;
-        dist[v] = d;
-        que.push(v);
+    VL(C, N);
+    ll Call = accumulate(all(C), 0LL);
+    vl cog;
+    vl ws(N);
+    auto dfs1 = [&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = C[v];
+        ll mx = 0;
+        for (auto nv: from[v]) if (p!=nv) {
+            ll tmp = f(f, nv, v);
+            chmax(mx, tmp);
+            ret += tmp;
+        }
+        chmax(mx, Call-ret);
+        if (mx<=Call/2) cog.push_back(v);
+        return ws[v] = ret;
     };
-    de(from)
-    push(0, 0);
-    while(que.size()) {
-        ll v = que.front(); que.pop();
-        for (auto nv: from[v]) {
-            push(nv, dist[v]+1);
+    dfs1(dfs1, 0);
+    ll ans = 0;
+    de(cog)
+    auto dfs3 = [&](auto f, ll v, ll d=0, ll p=-1) -> void {
+        ans += d*C[v];
+        for (auto nv: from[v]) if(p!=nv) {
+            f(f, nv, d+1, v);
         }
-    }
-    ll ans = dist[M-1];
-    de(dist)
-    ans = (ans-2)/2;
+    };
+    dfs3(dfs3, cog[0]);
     Out(ans);
     
 }
