@@ -538,7 +538,7 @@
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !要復習 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
-- !要復習 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
+- !要復習 木の重心（超簡単な全方位木DPの練習にも） [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ

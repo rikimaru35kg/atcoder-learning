@@ -147,31 +147,27 @@ int main () {
         from[b].push_back(a);
     }
     VL(C, N);
-    ll Call = accumulate(all(C), 0LL);
-    vl cog;
+    ll tot = accumulate(all(C), 0LL);
+    ll st = 0;
     vl ws(N);
-    auto dfs1 = [&](auto f, ll v, ll p=-1) -> ll {
+    auto dfs1 = [&](auto f, ll v, ll d=0, ll p=-1) -> ll {
         ll ret = C[v];
-        ll mx = 0;
-        for (auto nv: from[v]) if (p!=nv) {
-            ll tmp = f(f, nv, v);
-            chmax(mx, tmp);
-            ret += tmp;
+        st += d*C[v];
+        for(auto nv: from[v]) if (nv!=p) {
+            ret += f(f, nv, d+1, v);
         }
-        chmax(mx, Call-ret);
-        if (mx<=Call/2) cog.push_back(v);
         return ws[v] = ret;
     };
     dfs1(dfs1, 0);
-    ll ans = 0;
-    de(cog)
-    auto dfs3 = [&](auto f, ll v, ll d=0, ll p=-1) -> void {
-        ans += d*C[v];
-        for (auto nv: from[v]) if(p!=nv) {
-            f(f, nv, d+1, v);
+    ll ans = INF;
+    auto dfs = [&](auto f, ll v, ll now, ll p=-1) -> void {
+        for (auto nv: from[v]) if(nv!=p) {
+            ll nxt = now - ws[nv] + (tot-ws[nv]);
+            chmin(ans, nxt);
+            f(f, nv, nxt, v);
         }
     };
-    dfs3(dfs3, cog[0]);
+    dfs(dfs, 0, st);
     Out(ans);
     
 }

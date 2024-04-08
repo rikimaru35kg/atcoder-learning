@@ -141,22 +141,37 @@ int main () {
     cin.tie(nullptr);
     LONG(N);
     vvl from(N);
-    vl deg(N);
     rep(i, N-1) {
         LONGM(a, b);
         from[a].push_back(b);
         from[b].push_back(a);
-        deg[a]++;
-        deg[b]++;
     }
-    ll rem = N;
-    vl ans;
-    rep(i, N) if(deg[i]>=3) {
-        ans.push_back(SIZE(from[i]));
-        rem -= SIZE(from[i])+1;
-    }
-    rep(i, rem/3) ans.push_back(2);
-    sort(all(ans));
+    VL(C, N);
+    ll Call = accumulate(all(C), 0LL);
+    vl cog;
+    vl ws(N);
+    auto dfs1 = [&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = C[v];
+        ll mx = 0;
+        for (auto nv: from[v]) if (p!=nv) {
+            ll tmp = f(f, nv, v);
+            chmax(mx, tmp);
+            ret += tmp;
+        }
+        chmax(mx, Call-ret);
+        if (mx<=Call/2) cog.push_back(v);
+        return ws[v] = ret;
+    };
+    dfs1(dfs1, 0);
+    ll ans = 0;
+    de(cog)
+    auto dfs3 = [&](auto f, ll v, ll d=0, ll p=-1) -> void {
+        ans += d*C[v];
+        for (auto nv: from[v]) if(p!=nv) {
+            f(f, nv, d+1, v);
+        }
+    };
+    dfs3(dfs3, cog[0]);
     Out(ans);
     
 }
