@@ -122,52 +122,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// inline void Out(mint e) {cout << e.val() << '\n';}
-// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+    STRING(S);
+    vl divs = listup_divisor(N, true);
+    divs.pop_back();
+    ll M = SIZE(divs);
+    mint ans = 0;
+    vm f(N);
+    rep(i, M) {
+        mint now = 1;
+        ll d = divs[i];
+        rep(j, d) {
+            mint two = 2;
+            for (int k=j; k<N; k+=d) {
+                if (S[k]=='.') two = 1;
+            }
+            now *= two;
+        }
+        de(d)de(now)
+        vl ds = listup_divisor(d, true);
+        ds.pop_back();
+        for (auto d: ds) {
+            now -= f[d];
+        }
+        f[d] = now;
+        ans += now;
     }
-    VL(C, N);
-    ll tot = accumulate(all(C), 0LL);
-    ll st = 0;
-    vl ws(N);
-    auto dfs1 = [&](auto f, ll v, ll d=0, ll p=-1) -> ll {
-        ll ret = C[v];
-        st += d*C[v];
-        for(auto nv: from[v]) if (nv!=p) {
-            ret += f(f, nv, d+1, v);
-        }
-        return ws[v] = ret;
-    };
-    dfs1(dfs1, 0);
-    ll ans = INF;
-    auto dfs = [&](auto f, ll v, ll now, ll p=-1) -> void {
-        for (auto nv: from[v]) if(nv!=p) {
-            ll nxt = now - ws[nv] + (tot-ws[nv]);
-            chmin(ans, nxt);
-            f(f, nv, nxt, v);
-        }
-    };
-    dfs(dfs, 0, st);
     Out(ans);
     
 }
