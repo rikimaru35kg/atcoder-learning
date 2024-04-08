@@ -136,94 +136,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, H);
-    LONG(N);
-    vp cakes;
+    LONG(N); VL(A, N);
+    STRING(S);
+    vvl dp(8, vl(3));
+    dp[0][0] = 1;
+    ll ans = 0;
     rep(i, N) {
-        LONG(p, q);
-        cakes.emplace_back(p, q);
+        char c = S[i];
+        vvl pdp(8, vl(3));
+        swap(pdp, dp);
+        rep(s, 8) rep(j, 3) {
+            if (pdp[s][j]==0) continue;
+            dp[s][j] += pdp[s][j];
+            ll x = 1;
+            if (c=='E') x = 2;
+            if (c=='X') x = 3;
+            if (x==j+1) {
+                if (x!=3) dp[s|1<<A[i]][x] += pdp[s][j];
+                else {
+                    ll mex = 0;
+                    ll ns = s|1<<A[i];
+                    rep(k, 3) {
+                        if (ns>>k&1) mex++;
+                        else break;
+                    }
+                    ans += mex * pdp[s][j];
+                }
+            }
+        }
+        de(dp)
     }
-    LONG(na);
-    vl A(na+2);
-    rep(i, na) cin >> A[i+1];
-    A[na+1] = W;
-    LONG(nb);
-    vl B(nb+2);
-    rep(i, nb) cin >> B[i+1];
-    B[nb+1] = H;
-
-    map<Pr,ll> mp;
-    rep(i, N) {
-        auto [p, q] = cakes[i];
-        auto [nx, x] = lowbou_r(A, p);
-        auto [ny, y] = lowbou_r(B, q);
-        mp[{x, y}]++;
-    }
-    ll mn = INF, mx = -INF;
-    for (auto [k,v]: mp) {
-        chmin(mn, v);
-        chmax(mx, v);
-    }
-    if (SIZE(mp)<(na+1)*(nb+1)) mn = 0;
-    printf("%lld %lld\n", mn, mx);
+    Out(ans);
     
 }
 
