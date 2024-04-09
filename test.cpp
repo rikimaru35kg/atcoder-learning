@@ -139,27 +139,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(P, N);
-    sort(all(P));
-    vp coupon(M);
-    rep(i, M) cin>>coupon[i].first;
-    rep(i, M) cin>>coupon[i].second;
-    sort(allr(coupon));
-
+    LONG(N);
+    STRING(S);
+    vl dp(2);
     ll ans = 0;
-    multiset<ll> st;
-    for (auto p: P) {
-        while(coupon.size() && coupon.back().first<=p) {
-            auto [l, d] = coupon.back(); coupon.pop_back();
-            st.insert(d);
+    rep(i, N) {
+        int x = S[i] - '0';
+        vl pdp(2);
+        swap(pdp, dp);
+        rep(j, 2) {
+            ll y = (x&j)^1;
+            dp[y] += pdp[j];
         }
-        ans += p;
-        if (st.size()) {
-            auto x = *st.rbegin();
-            ans -= x;
-            st.erase(st.find(x));
-        }
+        dp[x]++;
+        ans += dp[1];
     }
     Out(ans);
     
