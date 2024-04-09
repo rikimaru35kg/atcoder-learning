@@ -122,37 +122,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// inline void Out(mint e) {cout << e.val() << '\n';}
-// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vl dp(2);
-    ll ans = 0;
+    LONG(N); VL(A, N);
+    ll M = 10;
+
+    vm dp(1<<(M+1));
+    dp[1] = 1;
     rep(i, N) {
-        int x = S[i] - '0';
-        vl pdp(2);
+        ll a = A[i];
+        vm pdp(1<<(M+1));
         swap(pdp, dp);
-        rep(j, 2) {
-            ll y = (x&j)^1;
-            dp[y] += pdp[j];
+        rep(s, 1<<(M+1)) {
+            if (pdp[s]==0) continue;
+            rep1(j, min(a,M)) {
+                ll ns = (s|s<<j) & ((1<<(M+1))-1);
+                dp[ns] += pdp[s] / a;
+            }
+            dp[s] += max(0LL, a-M) * pdp[s] / a;
         }
-        dp[x]++;
-        ans += dp[1];
+    }
+    mint ans = 0;
+    rep(s, 1<<(M+1)) {
+        if (s>>M&1) ans += dp[s];
     }
     Out(ans);
     

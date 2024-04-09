@@ -880,6 +880,12 @@
 - !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
+## DP in DP
+- DPの結果をDPの状態として持つようなDPがある
+- 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^10でOK）
+### 例題
+- !要復習 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
+
 # 最短経路問題
 
 ## 01-BFS
