@@ -122,54 +122,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// inline void Out(mint e) {cout << e.val() << '\n';}
-// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vd C(N);
-    vl P(N);
-    vvl S(N);
-    rep(i, N) {
-        DOUBLE(c); C[i] = c;
-        LONG(p); P[i] = p;
-        rep(j, p) {
-            LONG(s);
-            S[i].push_back(s);
-        }
+    LONG(N);
+    vvl from(2*N-1);
+    vl grpi(2*N-1);
+    iota(all(grpi), 0);
+    ll cv = N;
+    dsu uf(2*N-1);
+    rep(i, N-1) {
+        LONGM(p, q);
+        p = uf.leader(p); q = uf.leader(q);
+        from[cv].push_back(grpi[p]);
+        from[cv].push_back(grpi[q]);
+        uf.merge(p, q);
+        ll l = uf.leader(p);
+        grpi[l] = cv;
+        ++cv;
     }
-    vd dp(M+1, INF);
-    dp[0] = 0;
-    rep1(i, M) {
-        double exp = INF;
-        rep(j, N) {
-            double now = 0;
-            double numer = P[j];
-            rep(k, P[j]) {
-                if (S[j][k]==0) now += C[j], numer--;
-                else now += (C[j]+dp[max(0LL,i-S[j][k])]);
-            }
-            now /= numer;
-            chmin(exp, now);
+    vl sizes(2*N-1);
+    auto dfs0 =[&](auto f, ll v) -> ll {
+        ll ret = 0;
+        if(SIZE(from[v])==0) ret++;
+        for (auto nv: from[v]) {
+            ret += f(f, nv);
         }
-        dp[i] = exp;
-    }
-    de(dp)
-    Out(dp[M]);
-    
+        return sizes[v] = ret;
+    };
+    dfs0(dfs0, 2*N-2);
+    vm ans(2*N-1);
+    auto dfs = [&](auto f, ll v, mint ex=0) -> void {
+        ans[v] = ex;
+        ll sum = 0;
+        for(auto nv: from[v]) { sum += sizes[nv];}
+        for(auto nv: from[v]) { 
+            f(f, nv, ex+mint(sizes[nv])/(sum));
+        }
+    };
+    dfs(dfs, 2*N-2);
+    rep(i, N) printf("%d ", ans[i].val());
+    cout << endl;
+
+
 }
 
 // ### test.cpp ###
