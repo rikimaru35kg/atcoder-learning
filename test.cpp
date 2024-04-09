@@ -122,44 +122,105 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// inline void Out(mint e) {cout << e.val() << '\n';}
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
+
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 10;
-
-    vm dp(1<<(M+1));
-    dp[1] = 1;
+    LONG(N, M);
+    vl A, B, C;
     rep(i, N) {
-        ll a = A[i];
-        vm pdp(1<<(M+1));
-        swap(pdp, dp);
-        rep(s, 1<<(M+1)) {
-            if (pdp[s]==0) continue;
-            rep1(j, min(a,M)) {
-                ll ns = (s|s<<j) & ((1<<(M+1))-1);
-                dp[ns] += pdp[s] / a;
-            }
-            dp[s] += max(0LL, a-M) * pdp[s] / a;
-        }
+        LONG(t, x);
+        if (t==0) { A.push_back(x); }
+        if (t==1) { B.push_back(x); }
+        if (t==2) { C.push_back(x); }
     }
-    mint ans = 0;
-    rep(s, 1<<(M+1)) {
-        if (s>>M&1) ans += dp[s];
+    sort(allr(A)); sort(allr(B)); sort(allr(C));
+    vl Sa(SIZE(A)+1);
+    rep(i, SIZE(A)) Sa[i+1] = Sa[i] + A[i];
+    vl Sb(SIZE(B)+1);
+    rep(i, SIZE(B)) Sb[i+1] = Sb[i] + B[i];
+    vl Sc(SIZE(C)+1);
+    rep(i, SIZE(C)) Sc[i+1] = Sc[i] + C[i];
+    ll ans = 0;
+    rep(i, SIZE(B)+1) {
+        ll now = 0;
+        now += Sb[i];
+        ll rem = M - i;
+        auto [n, x] = lowbou(Sc, i);
+        if (n==SIZE(Sc)) continue;
+        rem -= n;
+        if(rem<0) continue;
+        now += Sa[min(rem, SIZE(Sa)-1)];
+        chmax(ans, now);
+        de(i)de(now)
     }
     Out(ans);
     
