@@ -140,17 +140,42 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    sort(allr(A));
-    ll sum = accumulate(all(A), 0LL);
-    ll q = sum/N;
-    ll r = sum%N;
-    ll ans = 0;
-    rep(i, N) {
-        if(i<r) ans += abs(q+1-A[i]);
-        else ans += abs(q-A[i]);
+    STRING(S);
+    bool cap = false;
+    set<ll> st;
+    rep(i, N) st.insert(i);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t, x);--x;
+        CHAR(c);
+        if (t==1) {
+            S[x] = c;
+            st.insert(x);
+        }
+        if (t==2) {
+            cap = false;
+            st.clear();
+        }
+        if (t==3) {
+            cap = true;
+            st.clear();
+        }
     }
-    ans /= 2;
+    string ans;
+    de(st)
+    de(cap)
+    de(S)
+    rep(i, N) {
+        char c = S[i];
+        char cu = S[i];
+        char cl = S[i];
+        ll chg = 'A' - 'a';
+        if (cu>='a' && cu<='z') cu += chg;
+        if (cl>='A' && cl<='Z') cl -= chg;
+        if (st.count(i)) ans.push_back(c);
+        else if (cap) ans.push_back(cu);
+        else ans.push_back(cl);
+    }
     Out(ans);
     
 }

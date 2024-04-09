@@ -244,6 +244,7 @@
 ### 例題
 - !要復習 期待値としてもDPとしても良問 [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 - !要復習 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
+- !復習価値高 [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 
 # ソート
 

@@ -139,39 +139,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl A(N);
-    vl reply(N);
-    int sum = 0;
-    auto inq=[&](vl &qs) {
-        printf("?");
-        for (auto x: qs) printf(" %lld", x);
-        cout << endl;
-        int ret = 0;
-        cin >> ret;
-        return ret;
-    };
-    rep(i, K+1) {
-        vl qs;
-        rep(j, K+1) if(j!=i) qs.push_back(j+1);
-        reply[i] = inq(qs);
-        sum ^= reply[i];
+    LONG(N, M);
+    vd C(N);
+    vl P(N);
+    vvl S(N);
+    rep(i, N) {
+        DOUBLE(c); C[i] = c;
+        LONG(p); P[i] = p;
+        rep(j, p) {
+            LONG(s);
+            S[i].push_back(s);
+        }
     }
-    rep(i, K+1) {
-        A[i] = reply[i]^sum;
+    vd dp(M+1, INF);
+    dp[0] = 0;
+    rep1(i, M) {
+        double exp = INF;
+        rep(j, N) {
+            double now = 0;
+            double numer = P[j];
+            rep(k, P[j]) {
+                if (S[j][k]==0) now += C[j], numer--;
+                else now += (C[j]+dp[max(0LL,i-S[j][k])]);
+            }
+            now /= numer;
+            chmin(exp, now);
+        }
+        dp[i] = exp;
     }
-    int base = 0;
-    rep(i, K-1) base ^= A[i];
-    repk(i, K+1, N) {
-        vl qs;
-        rep(j, K-1) qs.push_back(j+1);
-        qs.push_back(i+1);
-        reply[i] = inq(qs);
-        A[i] = base^reply[i];
-    }
-    printf("!");
-    for (auto x: A) printf(" %lld", x);
-    cout << endl;
+    de(dp)
+    Out(dp[M]);
+    
 }
 
 // ### test.cpp ###
