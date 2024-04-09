@@ -122,63 +122,80 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// #include <atcoder/all>
+// using namespace atcoder;
+// using mint = modint998244353;
+// using vm = vector<mint>;
+// using vvm = vector<vector<mint>>;
+// using vvvm = vector<vector<vector<mint>>>;
+// inline void Out(mint e) {cout << e.val() << '\n';}
+// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+// #ifdef __DEBUG
+// inline void debug_view(mint e){cerr << e.val() << endl;}
+// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+// #endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(2*N-1);
-    vl grpi(2*N-1);
-    iota(all(grpi), 0);
-    ll cv = N;
-    dsu uf(2*N-1);
-    rep(i, N-1) {
-        LONGM(p, q);
-        p = uf.leader(p); q = uf.leader(q);
-        from[cv].push_back(grpi[p]);
-        from[cv].push_back(grpi[q]);
-        uf.merge(p, q);
-        ll l = uf.leader(p);
-        grpi[l] = cv;
-        ++cv;
+    LONG(H, W);
+    VS(C, H);
+    vector<unordered_map<char,ll>> mpr(H), mpc(W);
+    rep(i, H) rep(j, W) {
+        char c = C[i][j];
+        mpr[i][c]++;
+        mpc[j][c]++;
     }
-    vl sizes(2*N-1);
-    auto dfs0 =[&](auto f, ll v) -> ll {
-        ll ret = 0;
-        if(SIZE(from[v])==0) ret++;
-        for (auto nv: from[v]) {
-            ret += f(f, nv);
+    unordered_set<ll> rows, cols;
+    rep(i, H) rows.insert(i);
+    rep(i, W) cols.insert(i);
+    while(rows.size()>=2 || cols.size()>=2) {
+        vl ers, ecs;
+        if (SIZE(cols) >= 2) {
+            for(auto r: rows) { if (SIZE(mpr[r])==1) ers.push_back(r); }
         }
-        return sizes[v] = ret;
-    };
-    dfs0(dfs0, 2*N-2);
-    vm ans(2*N-1);
-    auto dfs = [&](auto f, ll v, mint ex=0) -> void {
-        ans[v] = ex;
-        ll sum = 0;
-        for(auto nv: from[v]) { sum += sizes[nv];}
-        for(auto nv: from[v]) { 
-            f(f, nv, ex+mint(sizes[nv])/(sum));
+        if (SIZE(rows) >= 2) {
+            for(auto c: cols) { if (SIZE(mpc[c])==1) ecs.push_back(c); }
         }
-    };
-    dfs(dfs, 2*N-2);
-    rep(i, N) printf("%d ", ans[i].val());
-    cout << endl;
-
-
+        if(SIZE(ers)==0 && SIZE(ecs)==0) break;
+        for (auto r: ers) rows.erase(r);
+        for (auto c: ecs) cols.erase(c);
+        auto del = [&](unordered_map<char,ll> &mp, ll i, ll j) {
+            char c = C[i][j];
+            mp[c]--;
+            if(mp[c]==0) mp.erase(c);
+        };
+        for (auto r: ers) {
+            for(auto c: cols) {
+                del(mpc[c], r, c);
+            }
+        }
+        for (auto c: ecs) {
+            for(auto r: rows) {
+                del(mpr[r], r, c);
+            }
+        }
+        // de(rows)de(cols)
+        // for(auto r: rows) {
+        //     de(r)de(mpr[r])
+        // }
+        // for(auto c: cols) {
+        //     de(c)de(mpc[c])
+        // }
+        // de("----------")
+        // rep(i, H) {
+        //     if (!rows.count(i)) continue;
+        //     string tmp;
+        //     rep(j, W) {
+        //         if(cols.count(j)) tmp.push_back(C[i][j]);
+        //     }
+        //     de(tmp)
+        // }
+    }
+    ll ans = rows.size() * cols.size();
+    Out(ans);
+    
 }
 
 // ### test.cpp ###
