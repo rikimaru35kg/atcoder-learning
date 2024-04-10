@@ -888,6 +888,12 @@
 ### 例題
 - !要復習 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 
+## 戻すDP
+- 可換な操作であればDPテーブルを戻すことが可能
+- 部分和問題は可換（形式的べき級数FPSで考えれば明らか）
+### 例題
+- !要復習 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
+
 # 最短経路問題
 
 ## 01-BFS
