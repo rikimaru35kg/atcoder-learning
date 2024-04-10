@@ -65,7 +65,7 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
-inline void Out(double x) {printf("%.10f",x);cout<<'\n';}
+inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }

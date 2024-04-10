@@ -1468,3 +1468,4 @@
 - [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
 - [F - Cans and Openers](https://atcoder.jp/contests/abc312/tasks/abc312_f)
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
+- [F - Shortcuts](https://atcoder.jp/contests/abc315/tasks/abc315_f)
