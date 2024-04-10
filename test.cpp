@@ -136,65 +136,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+void solve() {
+    LONG(N, X, K);
+    auto f = [&](ll x, ll d) -> ll {
+        if(x>N) return 0;
+        ll l = x, r = x;
+        rep(i, d) {
+            l<<=1;
+            r<<=1;
+            ++r;
+            if (l>N) return 0;
+        }
+        chmin(r, N);
+        return r-l+1;
+    };
+    ll ans = 0;
+    ans += f(X, K);
+    while(X>1 && K>=2) {
+        ll y = X^1;
+        ans += f(y, K-2);
+        X>>=1;
+        K--;
+    }
+    if (X!=1 && K==1) {
+        ans += 1;
+    }
+    Out(ans);
+
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    VVL(C, 3, 3);
-    double ans = 0;
-    vvb visited(3, vb(3));
-    vl row(3), col(3);
-    ll rd = 0, ru = 0;
-    double num=0;
-    auto f = [&](auto f, ll cnt, ll ga=0) -> void {
-        if (cnt==9) {
-            num++;
-            if (ga==0) ++ans;
-            return;
-        }
-        rep(i, 3) rep(j, 3) {
-            if (visited[i][j]) continue;
-            visited[i][j] = true;
-            row[i]++;
-            col[j]++;
-            if(i==j) rd++;
-            if(i+j==2) ru++;
-            ll pga=ga;
-            if (!ga && row[i]==2) {
-                unordered_set<ll> st;
-                rep(k, 3) if (visited[i][k]) st.insert(C[i][k]);
-                if (SIZE(st)==1) ga = 1;
-            }
-            if (!ga && col[j]==2) {
-                unordered_set<ll> st;
-                rep(k, 3) if (visited[k][j]) st.insert(C[k][j]);
-                if (SIZE(st)==1) {
-                    ga = 1;
-                }
-            }
-            if (!ga && rd==2) {
-                unordered_set<ll> st;
-                rep(k, 3) if (visited[k][k]) st.insert(C[k][k]);
-                if (SIZE(st)==1) ga = 1;
-
-            }
-            if (!ga && ru==2) {
-                unordered_set<ll> st;
-                rep(k, 3) if (visited[k][2-k]) st.insert(C[k][2-k]);
-                if (SIZE(st)==1) ga = 1;
-            }
-            // if (!pga && ga) {de(visited)de(i)de(j)}
-            f(f, cnt+1, ga);
-            visited[i][j] = false;
-            row[i]--;
-            col[j]--;
-            if(i==j) rd--;
-            if(i+j==2) ru--;
-            ga = pga;
-        }
-    };
-    f(f,0);
-    ans /= num;
-    Out(ans);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 

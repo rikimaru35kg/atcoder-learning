@@ -571,6 +571,7 @@
 ### 例題
 - 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
 - !要復習 距離Dとなるパスの個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
+- !要復習 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
@@ -1311,7 +1312,7 @@
 - !復習価値低 タイル置き（実装工夫すればそんなに大変ではない） [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 - !要復習 トーナメント（入力部の実装が大変） [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
-- !復習価値高 がっかりビンゴ [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
+- !復習価値高 がっかりビンゴ（実装方針によっては沼る） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 
