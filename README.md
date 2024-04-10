@@ -1311,6 +1311,7 @@
 - !復習価値低 タイル置き（実装工夫すればそんなに大変ではない） [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 - !要復習 トーナメント（入力部の実装が大変） [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
+- !復習価値高 がっかりビンゴ [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 

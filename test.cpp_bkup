@@ -61,7 +61,7 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
-inline void Out(double x) {printf("%.10f",x);cout<<'\n';}
+inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -136,31 +136,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+using mym = unordered_map<ll,ll>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    rep(i, N) {
-        LONG(c);
-        rep(j, c) {
-            LONGM(p);
-            from[i].push_back(p);
-        }
-    }
-    vb visited(N);
-    vl books;
-    auto dfs = [&](auto f, ll v) -> void {
-        visited[v] = true;
-        for (auto nv: from[v]) {
-            if (visited[nv]) continue;
-            f(f, nv);
-        }
-        books.push_back(v+1);
+    VL(A, N);
+    mym mpl, mpr;
+    rep(i, N) mpr[A[i]]++;
+    ll ans = 0, now = 0;
+    auto add = [&](mym &mp1, mym &mp2, ll x) {
+        now -= mp1[x] * mp2[x];
+        mp1[x]++;
+        now += mp1[x] * mp2[x];
     };
-    dfs(dfs, 0);
-    books.pop_back();
-    Out(books);
+    auto del = [&](mym &mp1, mym &mp2, ll x) {
+        now -= mp1[x] * mp2[x];
+        mp1[x]--;
+        now += mp1[x] * mp2[x];
+        if (mp1[x]==0) mp1.erase(x);
+    };
+    rep(i, N) {
+        del(mpr, mpl, A[i]);
+        ans += now - mpr[A[i]]*mpl[A[i]];
+        add(mpl, mpr, A[i]);
+    }
+    Out(ans);
     
 }
 

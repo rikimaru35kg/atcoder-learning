@@ -61,7 +61,7 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
-inline void Out(double x) {printf("%.10f",x);cout<<'\n';}
+inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -136,51 +136,64 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vpd pos;
-    rep(i, N) {
-        DOUBLE(x, y);
-        pos.emplace_back(x, y);
-    }
-    ll M = 25;
-    vvd dist(N, vd(N));
-    rep(j, N) rep(i, j) {
-        dist[i][j] = euclid_distd(pos[i], pos[j]);
-    }
-    vvd dp(N, vd(M, INF));
-    dp[0][0] = 0;
-    rep(i, N-1) {
-        rep(j, M) rep(k, M) {
-            if (i+k+1<N && j+k<M) {
-                chmin(dp[i+k+1][j+k], dp[i][j] + dist[i][i+k+1]);
-            }
+    VVL(C, 3, 3);
+    double ans = 0;
+    vvb visited(3, vb(3));
+    vl row(3), col(3);
+    ll rd = 0, ru = 0;
+    double num=0;
+    auto f = [&](auto f, ll cnt, ll ga=0) -> void {
+        if (cnt==9) {
+            num++;
+            if (ga==0) ++ans;
+            return;
         }
-    }
-    vd two(M);
-    double now = 1;
-    rep1(i, M-1) {
-        two[i] = now;
-        now *= 2;
-    }
-    double ans = INF;
-    rep(i, M) {
-        double now = dp[N-1][i] + two[i];
-        chmin(ans, now);
-    }
+        rep(i, 3) rep(j, 3) {
+            if (visited[i][j]) continue;
+            visited[i][j] = true;
+            row[i]++;
+            col[j]++;
+            if(i==j) rd++;
+            if(i+j==2) ru++;
+            ll pga=ga;
+            if (!ga && row[i]==2) {
+                unordered_set<ll> st;
+                rep(k, 3) if (visited[i][k]) st.insert(C[i][k]);
+                if (SIZE(st)==1) ga = 1;
+            }
+            if (!ga && col[j]==2) {
+                unordered_set<ll> st;
+                rep(k, 3) if (visited[k][j]) st.insert(C[k][j]);
+                if (SIZE(st)==1) {
+                    ga = 1;
+                }
+            }
+            if (!ga && rd==2) {
+                unordered_set<ll> st;
+                rep(k, 3) if (visited[k][k]) st.insert(C[k][k]);
+                if (SIZE(st)==1) ga = 1;
+
+            }
+            if (!ga && ru==2) {
+                unordered_set<ll> st;
+                rep(k, 3) if (visited[k][2-k]) st.insert(C[k][2-k]);
+                if (SIZE(st)==1) ga = 1;
+            }
+            // if (!pga && ga) {de(visited)de(i)de(j)}
+            f(f, cnt+1, ga);
+            visited[i][j] = false;
+            row[i]--;
+            col[j]--;
+            if(i==j) rd--;
+            if(i+j==2) ru--;
+            ga = pga;
+        }
+    };
+    f(f,0);
+    ans /= num;
     Out(ans);
     
 }
