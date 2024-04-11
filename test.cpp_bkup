@@ -136,97 +136,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
-//! Rotate field by +/-90deg
-vector<string> rot90(vector<string> &field, bool clockwise=true) {
-    long long h = field.size();
-    long long w = field[0].size();
-    vector<string> ret(w, string(h, ' '));
-    for (long long i=0; i<h; ++i) {
-        for (long long j=0; j<w; ++j) {
-            if (clockwise) ret[j][h-1-i] = field[i][j];
-            else ret[w-1-j][i] = field[i][j];
-        }
-    }
-    return ret;
-}
-
-//! Crop the rectangle that completely surrounds the specified
-//! character c.
-//! The rectangle just fits the character c area.
-//! (= The rectangle is selected so that the size is minimum.)
-vector<string> crop(vector<string> &field, char c='#') {
-    long long h = field.size();
-    long long w = field[0].size();
-    long long i_min = h, i_max = -1;
-    long long j_min = w, j_max = -1;
-    for(long long i=0; i<h; ++i) {
-        for(long long j=0; j<w; ++j) {
-            if (field[i][j] == c) {
-                i_min = min(i_min, i); i_max = max(i_max, i);
-                j_min = min(j_min, j); j_max = max(j_max, j);
-            }
-        }
-    }
-    vector<string> ret;
-    for(long long i=i_min; i<=i_max; ++i) {
-        ret.push_back(field[i].substr(j_min, j_max-j_min+1));
-    }
-    return ret;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vvs P(3);
-    rep(i, 3) {
-        VS(p, 4);
-        P[i] = p;
+    LONG(N, K, P);
+    vvl A(N, vl(K));
+    vl C(N);
+    rep(i, N) {
+        LONG(c);
+        C[i] = c;
+        VL(tmp, K);
+        A[i] = tmp;
     }
-    vvs q(3);
-    rep(i, 3) {
-        q[i] = crop(P[i]);
-    }
-    ll M = 16;
-    auto draw = [&](vs &f, vs &s, ll p) -> bool {
-        ll si = p/4, sj = p%4;
-        ll h = size(s), w = size(s[0]);
-        rep(i, h) rep(j, w) {
-            ll ni = si + i, nj = sj + j;
-            if (!isin(ni, nj, 4, 4)) return false;
-            if (s[i][j]!='#') continue;
-            if (f[ni][nj]=='#') return false;
-            f[ni][nj] = '#';
-        }
-        return true;
-    };
-    auto filled = [&](vs &f) -> bool {
-        int cnt = 0;
-        rep(i, 4) rep(j, 4) {
-            if(f[i][j]=='#') cnt++;
-        }
-        if (cnt==16) return true;
-        return false;
-    };
-    rep(ai, 4) rep(bi, 4) rep(ci, 4) {
-        vvs nq = q;
-        rep(i, ai) nq[0] = rot90(nq[0]);
-        rep(i, bi) nq[1] = rot90(nq[1]);
-        rep(i, ci) nq[2] = rot90(nq[2]);
-        rep(p1, M) rep(p2, M) rep(p3, M) {
-            vs field(4, string(4, '.'));
-            bool ok = true;
-            if (ai==1 && bi==0 && ci==1) {
-                if (p1==2 && p2==0 && p3==8) {
-                    cout <<"";
-                }
+    map<vl,ll> dp;
+    vl state(K);
+    dp[state] = 0;
+    rep(i, N) {
+        map<vl,ll> pdp = dp;
+        for (auto [s, v]: pdp) {
+            vl ns = s;
+            rep(j, K) {
+                ns[j] += A[i][j];
+                chmin(ns[j], P);
             }
-            if (!draw(field, nq[0], p1)) ok = false;
-            if (!draw(field, nq[1], p2)) ok = false;
-            if (!draw(field, nq[2], p3)) ok = false;
-            if (ok && filled(field)) PYes
+            if(dp.count(ns)) chmin(dp[ns], pdp[s] + C[i]);
+            else dp[ns] = pdp[s] + C[i];
         }
     }
-    PNo
+    vl goal(K, P);
+    ll ans = dp[goal];
+    if (ans==0) ans = -1;
+    Out(ans);
+    
 }
 
 // ### test.cpp ###
