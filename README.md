@@ -1322,6 +1322,7 @@
 - !要復習 トーナメント（入力部の実装が大変） [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
 - !復習価値高 がっかりビンゴ（実装方針によっては沼る） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
+- !復習価値高 ABCパズル（実装方針間違えるとありえないぐらい沼る） [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 

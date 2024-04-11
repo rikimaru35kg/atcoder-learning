@@ -143,33 +143,73 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(D, N);
-    vl L(2), C(2), K(2);
-    rep(i, 2) cin >> L[i] >> C[i] >> K[i];
-
-    vl dp(K[0]+1, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(K[0]+1, INF);
-        swap(pdp, dp);
-        rep(j, K[0]+1) {
-            if (pdp[j]==INF) continue;
-            rep(x, K[0]+1) {
-                ll d = D[i] - x*L[0];
-                ll y = Divceil(d, L[1]);
-                chmax(y, 0LL);
-                if (j+x<=K[0]) chmin(dp[j+x], pdp[j] + y);
+    STRING(R, C);
+    vs s(N, string(N, '.'));
+    bool ans = false;
+    vs anss;
+    auto dfs = [&](auto f, ll i, ll j, ll used) -> void {
+        if (ans) return;
+        if (i==N) {
+            auto judge2 = [&]()->bool {
+                rep(k, N) {
+                    ll u=0;
+                    rep(m, N) {
+                        int shft = s[m][k]-'A';
+                        if (s[m][k]=='.') continue;
+                        if (u>>shft&1) return false;
+                        u |= 1<<shft;
+                    }
+                    if (u!=7) return false;
+                }
+                return true;
+            };
+            if (!judge2()) return;
+            ans = true;
+            anss = s;
+            return;
+        }
+        if (j==3) {
+            //next row
+            f(f, i+1, 0, 0);
+            return;
+        }
+        auto judge = [&]()->bool {
+            rep(k, N) {
+                ll m = 0;
+                while(m<N && s[m][k]=='.') ++m;
+                if (m!=N && s[m][k] != C[k]) return false;
+            }
+            return true;
+        };
+        if (!judge()) return;
+        if (j==0) {
+            char c = R[i];
+            rep(k, N-2) {
+                s[i][k] = c;
+                f(f, i, j+1, used|1<<(c-'A'));
+                s[i][k] = '.';
+            }
+        } else {
+            ll fst = 0;
+            while(s[i][fst]=='.') fst++;
+            while(s[i][fst]!='.') fst++;
+            rep(k, 3) {
+                if (used>>k&1) continue;
+                repk(m, fst, 5) {
+                    if (s[i][m]!='.') continue;
+                    s[i][m] = k+'A';
+                    f(f, i, j+1, used|1<<k);
+                    s[i][m] = '.';
+                }
             }
         }
-    }
-    ll ans = INF;
-    rep(i, K[0]+1) {
-        ll j = dp[i];
-        if (j>K[1]) continue;
-        chmin(ans, i*C[0] + j*C[1]);
-    }
-    ch1(ans);
-    Out(ans);
+    };
+    dfs(dfs, 0, 0, 0);
+    if (!ans) PNo
+    puts("Yes");
+    for (auto x: anss) Out(x);
+
+    
 }
 
 // ### test.cpp ###
