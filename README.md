@@ -1451,6 +1451,7 @@
 - [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
 - [C - Cross](https://atcoder.jp/contests/abc300/tasks/abc300_c)
 - [D - Bitmask](https://atcoder.jp/contests/abc301/tasks/abc301_d)
+- [D - Merge Slimes](https://atcoder.jp/contests/abc323/tasks/abc323_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
