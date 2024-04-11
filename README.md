@@ -874,6 +874,7 @@
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する
 - 累積和やセグメント木が使える
+- あるいは状態量を減らす事で高速化できる事もある（DP値がboolなら状態量を1つ減らせるはず）
 ### 例題
 - !復習価値中 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
 - !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
@@ -881,6 +882,7 @@
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
+- !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
@@ -1358,7 +1360,7 @@
 
 ## 構造体
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
-- 構造体にbool operater < (const &Struct s) {return x < s.x}などとすると、構造体同士の演算が定義できる。
+- 構造体にbool operater < (const Struct &s) {return x < s.x}などとすると、構造体同士の演算が定義できる。
 - ただし、priority_queueに使うときは2点注意が必要。(1)bool operator>（greater<MYSTRUCT>なので） (2){}の前にconstと書かないとエラーが出る（理由不明） -> 恐らくだが、greater<MYSTRUCT>と書く場合はconst記述が必要。そうしないと内部で定義してあるoperater>と型が完全一致しないのでエラーが出るのではないか
 - お行儀の悪い書き方としては、operator<を逆向き"<"で定義してしまうやり方あり。こうすればpriority_que<MYSTRUCT>と定義するだけでよくなり実装は楽
 - 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる

@@ -139,39 +139,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
-double binary_search (double ok, double ng, auto f) {
-    rep(_, 200) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(u, v); LONG(b, c);
-        from[u].emplace_back(v, b, c);
-    }
-    auto f = [&](double x) {
-        vd dp(N, -INF);
-        dp[0] = 0;
-        rep(i, N) {
-            for (auto [nv, b, c]: from[i]) {
-                chmax(dp[nv], dp[i] + b - x*c);
+    LONG(N);
+    VL(D, N);
+    vl L(2), C(2), K(2);
+    rep(i, 2) cin >> L[i] >> C[i] >> K[i];
+
+    vl dp(K[0]+1, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(K[0]+1, INF);
+        swap(pdp, dp);
+        rep(j, K[0]+1) {
+            if (pdp[j]==INF) continue;
+            rep(x, K[0]+1) {
+                ll d = D[i] - x*L[0];
+                ll y = Divceil(d, L[1]);
+                chmax(y, 0LL);
+                if (j+x<=K[0]) chmin(dp[j+x], pdp[j] + y);
             }
         }
-        if (dp[N-1]>=0) return true;
-        else return false;
-    };
-    double ans = binary_search(0, INF, f);
+    }
+    ll ans = INF;
+    rep(i, K[0]+1) {
+        ll j = dp[i];
+        if (j>K[1]) continue;
+        chmin(ans, i*C[0] + j*C[1]);
+    }
+    ch1(ans);
     Out(ans);
-
-    
 }
 
 // ### test.cpp ###

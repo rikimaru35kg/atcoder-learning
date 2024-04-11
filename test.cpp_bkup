@@ -28,6 +28,8 @@ using t3 = tuple<ll,ll,ll>;
 using t4 = tuple<ll,ll,ll,ll>;
 using vt3 = vector<t3>;
 using vt4 = vector<t4>;
+using vvt3 = vector<vector<t3>>;
+using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
@@ -137,13 +139,42 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+struct V {
+    ll d, v, train;
+    bool operator<(const V &o) const {
+        if (d==o.d) {
+            if (v==o.v) {
+                return train > o.train;
+            } else return v > o.v;
+        } else return d > o.d;
+    }
+};
 
 int main () {
-    // ios::sync_with_stdio(false);
+    ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep
+    LONG(N, A, B, C);
+    VVL(D, N, N);
+    vvl dist(N, vl(2, INF));
+    dist[0][0] = 0;
+    vvb fixed(N, vb(2));
+    rep(_, N*N*2) {
+        t3 info = {INF,-1,-1};
+        rep(i, N) rep(j, 2) if(!fixed[i][j]) {
+            chmin(info, t3(dist[i][j], i, j));
+        }
+        auto [d, v, train] = info;
+        if (v==-1) break;
+        fixed[v][train] = true;
+        rep(nv, N) {
+            if (v==nv) continue;
+            if (train==0) chmin(dist[nv][0], d+A*D[v][nv]);
+            chmin(dist[nv][1], d+D[v][nv]*B+C);
+        }
+    }
+    de(dist)
+    ll ans = min(dist[N-1][0], dist[N-1][1]);
+    Out(ans);
     
 }
 
