@@ -28,6 +28,8 @@ using t3 = tuple<ll,ll,ll>;
 using t4 = tuple<ll,ll,ll,ll>;
 using vt3 = vector<t3>;
 using vt4 = vector<t4>;
+using vvt3 = vector<vector<t3>>;
+using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
@@ -137,39 +139,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 // #endif
 
+double binary_search (double ok, double ng, auto f) {
+    rep(_, 200) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,ll> slimes;
-    set<ll> rems;
-    rep(i, N) {
-        LONG(s, c);
-        slimes[s] += c;
-        rems.insert(s);
+    LONG(N, M);
+    vvt3 from(N);
+    rep(i, M) {
+        LONGM(u, v); LONG(b, c);
+        from[u].emplace_back(v, b, c);
     }
-    ll ans = 0;
-    while(rems.size()) {
-        auto it = rems.begin();
-        ll s = *it;
-        ll c = slimes[s];
-        rems.erase(it);
-        if (s>(ll)1e9) {
-            while(c) {
-                if (c%2==1) ++ans;
-                c >>= 1;
-            }
-        } else {
-            if (c%2) ++ans;
-            if (c>=2) {
-                slimes[2*s] += c/2;
-                slimes[s] %= 2;
-                rems.insert(2*s);
+    auto f = [&](double x) {
+        vd dp(N, -INF);
+        dp[0] = 0;
+        rep(i, N) {
+            for (auto [nv, b, c]: from[i]) {
+                chmax(dp[nv], dp[i] + b - x*c);
             }
         }
-    }
-    de(slimes)
+        if (dp[N-1]>=0) return true;
+        else return false;
+    };
+    double ans = binary_search(0, INF, f);
     Out(ans);
+
     
 }
 

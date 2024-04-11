@@ -1452,6 +1452,7 @@
 - [C - Cross](https://atcoder.jp/contests/abc300/tasks/abc300_c)
 - [D - Bitmask](https://atcoder.jp/contests/abc301/tasks/abc301_d)
 - [D - Merge Slimes](https://atcoder.jp/contests/abc323/tasks/abc323_d)
+- [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
@@ -1479,3 +1480,4 @@
 - [F - Cans and Openers](https://atcoder.jp/contests/abc312/tasks/abc312_f)
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 - [F - Shortcuts](https://atcoder.jp/contests/abc315/tasks/abc315_f)
+- [F - Push and Carry](https://atcoder.jp/contests/abc323/tasks/abc323_f)
