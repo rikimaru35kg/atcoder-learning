@@ -128,34 +128,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VD(P, N);
-    reverse(all(P));
-    double ans = -INF;
-    vd nines(N+1);
-    double d = 1;
-    rep(i, N+1) {
-        nines[i] = d;
-        d *= 0.9;
-    }
-    vd dp(N+1, -INF);
-    dp[0] = 0;
+    STRING(S);
+    ll N = SIZE(S);
+    string ans;
     rep(i, N) {
-        vd pdp(N+1, -INF);
-        swap(pdp, dp);
-        rep(j, N+1) {
-            if(pdp[j]==-INF) continue;
-            chmax(dp[j], pdp[j]);
-            if(j<N) chmax(dp[j+1], pdp[j] + P[i]*nines[j]);
+        ll m = SIZE(ans);
+        if (m>=2 && S[i]=='C') {
+            if (ans[m-1]=='B' && ans[m-2]=='A') {
+                rep(j, 2) ans.pop_back();
+            } else {
+                ans.push_back(S[i]);
+            }
+        } else {
+            ans.push_back(S[i]);
         }
-    }
-    double numer = 1;
-    rep1(k, N) {
-        double now = dp[k] / numer - 1200/sqrt(k);
-        // de(k)de(now)de(numer)de(dp[k])
-        chmax(ans, now);
-        if (k==N) break;
-        numer += nines[k];
     }
     Out(ans);
     

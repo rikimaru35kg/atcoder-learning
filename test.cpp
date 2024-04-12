@@ -139,33 +139,41 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-using S = ll;
-S op(S a, S b) {return max(a, b);}
-S e() {return 0;}
-using F = ll;
-S mapping(F f, S x) {return x+f;}
-F composition(F f, F g) {return f+g;}
-F id() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D, W);
-    ll Mx = 4e5+10;
-    vvp events(Mx);
-    rep(i, N) {
-        LONG(t, x);
-        events[t].emplace_back(x, 1);
-        events[t+D].emplace_back(x, -1);
+    LONG(N, M, K);
+    vt3 edges;
+    rep(i, M) {
+        LONGM(u, v); LONG(w);
+        edges.emplace_back(u, v, w);
     }
-    vector<S> v(Mx, 0);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    ll ans = 0;
-    rep(t, Mx) {
-        for (auto [x, y]: events[t]) { seg.apply(x, x+W, y); }
-        ll now = seg.all_prod();
-        chmax(ans, now);
-    }
+    ll ans = INF;
+    vl route;
+    auto dfs = [&](auto f, ll i=0, ll ms=0, ll vs=0, ll w=0, ll z=0) -> void {
+        if (i==N-1) {
+            if (vs!=(1<<N)-1) return;
+            dsu uf(N);
+            rep(j, N-1) {
+                auto [u, v, _w] = edges[route[j]];
+                uf.merge(u, v);
+            }
+            if (uf.size(0) != N) return;
+            chmin(ans, w%K);
+            return;
+        }
+        repk(j, z, M) {
+            if (ms>>j&1) continue;
+            auto [u, v, _w] = edges[j];
+            ll nms = ms|1<<j;
+            ll nvs = vs;
+            nvs |= 1<<u; nvs |= 1<<v;
+            route.push_back(j);
+            f(f, i+1, nms, nvs, w+_w, j+1);
+            route.pop_back();
+        }
+    };
+    dfs(dfs);
     Out(ans);
     
 }
