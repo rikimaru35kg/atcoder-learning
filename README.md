@@ -1047,9 +1047,11 @@
 - 辺を削除する問題は逆順に見てUnion Findをつなぐ問題に書き換えると解ける場合がある
 - Union Findは親に情報を持たせるとデータ管理がしやすい（連結成分のサイズやある点群に繋がっているかなど）
 - Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
+- 発展的な重み付きUnion Findもある
 ### 例題
 - !復習価値低 実装工夫次第 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
+- !要復習 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
 
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
