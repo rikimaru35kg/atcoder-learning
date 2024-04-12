@@ -125,90 +125,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// inline void Out(mint e) {cout << e.val() << '\n';}
-// inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(R, C);
-    vs s(N, string(N, '.'));
-    bool ans = false;
-    vs anss;
-    auto dfs = [&](auto f, ll i, ll j, ll used) -> void {
-        if (ans) return;
-        if (i==N) {
-            auto judge2 = [&]()->bool {
-                rep(k, N) {
-                    ll u=0;
-                    rep(m, N) {
-                        int shft = s[m][k]-'A';
-                        if (s[m][k]=='.') continue;
-                        if (u>>shft&1) return false;
-                        u |= 1<<shft;
-                    }
-                    if (u!=7) return false;
-                }
-                return true;
-            };
-            if (!judge2()) return;
-            ans = true;
-            anss = s;
-            return;
-        }
-        if (j==3) {
-            //next row
-            f(f, i+1, 0, 0);
-            return;
-        }
-        auto judge = [&]()->bool {
-            rep(k, N) {
-                ll m = 0;
-                while(m<N && s[m][k]=='.') ++m;
-                if (m!=N && s[m][k] != C[k]) return false;
-            }
-            return true;
-        };
-        if (!judge()) return;
-        if (j==0) {
-            char c = R[i];
-            rep(k, N-2) {
-                s[i][k] = c;
-                f(f, i, j+1, used|1<<(c-'A'));
-                s[i][k] = '.';
-            }
-        } else {
-            ll fst = 0;
-            while(s[i][fst]=='.') fst++;
-            while(s[i][fst]!='.') fst++;
-            rep(k, 3) {
-                if (used>>k&1) continue;
-                repk(m, fst, 5) {
-                    if (s[i][m]!='.') continue;
-                    s[i][m] = k+'A';
-                    f(f, i, j+1, used|1<<k);
-                    s[i][m] = '.';
-                }
-            }
-        }
-    };
-    dfs(dfs, 0, 0, 0);
-    if (!ans) PNo
-    puts("Yes");
-    for (auto x: anss) Out(x);
-
+    VL(A, N);
+    A.insert(A.begin(), 0LL);
+    if (N==1) {
+        Out(A[1]); return 0;
+    }
+    vm q(N+1), sq(N+2);
+    q[0] = 1;
+    sq[1] = 1;
+    vm dp(N+1);
+    rep1(i, N) {
+        q[i] = sq[i];
+        q[i] /= N;
+        sq[i+1] = sq[i] + q[i];
+        dp[i] = q[i]*A[i];
+    }
+    mint ans = 0;
+    rep1(i, N) ans += dp[i];
+    Out(ans);
     
 }
 
