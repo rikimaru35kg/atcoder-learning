@@ -40,8 +40,8 @@ using cd = complex<double>;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
-#define PYes {puts("Yes"); return 0;}
-#define PNo {puts("No"); return 0;}
+#define PYes {puts("Yes"); exit(0);}
+#define PNo {puts("No"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -125,41 +125,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    A.insert(A.begin(), 0LL);
-    if (N==1) {
-        Out(A[1]); return 0;
+    VD(P, N);
+    reverse(all(P));
+    double ans = -INF;
+    vd nines(N+1);
+    double d = 1;
+    rep(i, N+1) {
+        nines[i] = d;
+        d *= 0.9;
     }
-    vm q(N+1), sq(N+2);
-    q[0] = 1;
-    sq[1] = 1;
-    vm dp(N+1);
-    rep1(i, N) {
-        q[i] = sq[i];
-        q[i] /= N;
-        sq[i+1] = sq[i] + q[i];
-        dp[i] = q[i]*A[i];
+    vd dp(N+1, -INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vd pdp(N+1, -INF);
+        swap(pdp, dp);
+        rep(j, N+1) {
+            if(pdp[j]==-INF) continue;
+            chmax(dp[j], pdp[j]);
+            if(j<N) chmax(dp[j+1], pdp[j] + P[i]*nines[j]);
+        }
     }
-    mint ans = 0;
-    rep1(i, N) ans += dp[i];
+    double numer = 1;
+    rep1(k, N) {
+        double now = dp[k] / numer - 1200/sqrt(k);
+        // de(k)de(now)de(numer)de(dp[k])
+        chmax(ans, now);
+        if (k==N) break;
+        numer += nines[k];
+    }
     Out(ans);
     
 }

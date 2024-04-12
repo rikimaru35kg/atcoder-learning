@@ -44,8 +44,8 @@ using cd = complex<double>;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
-#define PYes {puts("Yes"); return 0;}
-#define PNo {puts("No"); return 0;}
+#define PYes {puts("Yes"); exit(0);}
+#define PNo {puts("No"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
