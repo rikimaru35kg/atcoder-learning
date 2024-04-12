@@ -125,37 +125,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using S = ll;
+S op(S a, S b) {return max(a, b);}
+S e() {return 0;}
+using F = ll;
+S mapping(F f, S x) {return x+f;}
+F composition(F f, F g) {return f+g;}
+F id() {return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VD(P, N);
-    reverse(all(P));
-    double ans = -INF;
-    vd nines(N+1);
-    double d = 1;
-    rep(i, N+1) {
-        nines[i] = d;
-        d *= 0.9;
-    }
-    vd dp(N+1, -INF);
-    dp[0] = 0;
+    LONG(N, D, W);
+    ll Mx = 4e5+10;
+    vvp events(Mx);
     rep(i, N) {
-        vd pdp(N+1, -INF);
-        swap(pdp, dp);
-        rep(j, N+1) {
-            if(pdp[j]==-INF) continue;
-            chmax(dp[j], pdp[j]);
-            if(j<N) chmax(dp[j+1], pdp[j] + P[i]*nines[j]);
-        }
+        LONG(t, x);
+        events[t].emplace_back(x, 1);
+        events[t+D].emplace_back(x, -1);
     }
-    double numer = 1;
-    rep1(k, N) {
-        double now = dp[k] / numer - 1200/sqrt(k);
-        // de(k)de(now)de(numer)de(dp[k])
+    vector<S> v(Mx, 0);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    ll ans = 0;
+    rep(t, Mx) {
+        for (auto [x, y]: events[t]) { seg.apply(x, x+W, y); }
+        ll now = seg.all_prod();
         chmax(ans, now);
-        if (k==N) break;
-        numer += nines[k];
     }
     Out(ans);
     

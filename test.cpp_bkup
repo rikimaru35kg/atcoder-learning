@@ -40,8 +40,8 @@ using cd = complex<double>;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
-#define PYes {puts("Yes"); return 0;}
-#define PNo {puts("No"); return 0;}
+#define PYes {puts("Yes"); exit(0);}
+#define PNo {puts("No"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -128,34 +128,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VLM(A, M); VLM(B, M);
-    vvl from(N);
-    rep(i, M) {
-        from[A[i]].push_back(B[i]);
-        from[B[i]].push_back(A[i]);
+    LONG(N);
+    VD(P, N);
+    reverse(all(P));
+    double ans = -INF;
+    vd nines(N+1);
+    double d = 1;
+    rep(i, N+1) {
+        nines[i] = d;
+        d *= 0.9;
     }
-    vb visited(N);
-    vl color(N, -1);
-    rep(i, N) if (!visited[i]) {
-        color[i] = 0;
-        auto dfs = [&](auto f, ll v) -> void {
-            visited[v] = true;
-            for (auto nv: from[v]) {
-                if (visited[nv]) {
-                    if (color[nv]==color[v]) {
-                        puts("No");
-                        exit(0);
-                    }
-                } else {
-                    color[nv] = color[v]^1;
-                    f(f, nv);
-                }
-            }
-        };
-        dfs(dfs, i);
+    vd dp(N+1, -INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vd pdp(N+1, -INF);
+        swap(pdp, dp);
+        rep(j, N+1) {
+            if(pdp[j]==-INF) continue;
+            chmax(dp[j], pdp[j]);
+            if(j<N) chmax(dp[j+1], pdp[j] + P[i]*nines[j]);
+        }
     }
-    PYes
+    double numer = 1;
+    rep1(k, N) {
+        double now = dp[k] / numer - 1200/sqrt(k);
+        // de(k)de(now)de(numer)de(dp[k])
+        chmax(ans, now);
+        if (k==N) break;
+        numer += nines[k];
+    }
+    Out(ans);
     
 }
 
