@@ -1,50 +1,175 @@
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h: In instantiation of ‘constexpr bool std::greater<_Tp>::operator()(const _Tp&, const _Tp&) const [with _Tp = V]’:
-/usr/include/c++/11/bits/stl_heap.h:209:7:   required from ‘constexpr void std::push_heap(_RAIter, _RAIter, _Compare) [with _RAIter = __gnu_debug::_Safe_iterator<__gnu_cxx::__normal_iterator<V*, std::__cxx1998::vector<V, std::allocator<V> > >, std::__debug::vector<V>, std::random_access_iterator_tag>; _Compare = std::greater<V>]’
-/usr/include/c++/11/bits/stl_queue.h:659:18:   required from ‘void std::priority_queue<_Tp, _Sequence, _Compare>::emplace(_Args&& ...) [with _Args = {long long int&, long long int&, long long int&}; _Tp = V; _Sequence = std::__debug::vector<V>; _Compare = std::greater<V>]’
-test.cpp:162:21:   required from here
-/usr/include/c++/11/bits/stl_function.h:390:20: error: no match for ‘operator>’ (operand types are ‘const V’ and ‘const V’)
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:67,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_iterator.h:538:5: note: candidate: ‘template<class _IteratorL, class _IteratorR>  requires  three_way_comparable_with<_IteratorR, _IteratorL, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const std::reverse_iterator<_IteratorL>&, const std::reverse_iterator<_IteratorR>&)’ (reversed)
-  538 |     operator<=>(const reverse_iterator<_IteratorL>& __x,
+F.cpp: In instantiation of ‘void debug_view(std::__debug::map<T1, T2>&) [with T1 = long long int; T2 = std::__debug::set<long long int>]’:
+F.cpp:183:5:   required from here
+F.cpp:104:134: error: no match for ‘operator<<’ (operand types are ‘std::basic_ostream<char>’ and ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’})
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:108:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::basic_ostream<_CharT, _Traits>::__ostream_type& (*)(std::basic_ostream<_CharT, _Traits>::__ostream_type&)) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  108 |       operator<<(__ostream_type& (*__pf)(__ostream_type&))
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:108:36: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘std::basic_ostream<char>::__ostream_type& (*)(std::basic_ostream<char>::__ostream_type&)’ {aka ‘std::basic_ostream<char>& (*)(std::basic_ostream<char>&)’}
+  108 |       operator<<(__ostream_type& (*__pf)(__ostream_type&))
+      |                  ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/ostream:117:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::basic_ostream<_CharT, _Traits>::__ios_type& (*)(std::basic_ostream<_CharT, _Traits>::__ios_type&)) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>; std::basic_ostream<_CharT, _Traits>::__ios_type = std::basic_ios<char>]’
+  117 |       operator<<(__ios_type& (*__pf)(__ios_type&))
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:117:32: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘std::basic_ostream<char>::__ios_type& (*)(std::basic_ostream<char>::__ios_type&)’ {aka ‘std::basic_ios<char>& (*)(std::basic_ios<char>&)’}
+  117 |       operator<<(__ios_type& (*__pf)(__ios_type&))
+      |                  ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/ostream:127:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::ios_base& (*)(std::ios_base&)) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  127 |       operator<<(ios_base& (*__pf) (ios_base&))
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:127:30: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘std::ios_base& (*)(std::ios_base&)’
+  127 |       operator<<(ios_base& (*__pf) (ios_base&))
+      |                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+/usr/include/c++/11/ostream:166:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  166 |       operator<<(long __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:166:23: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘long int’
+  166 |       operator<<(long __n)
+      |                  ~~~~~^~~
+/usr/include/c++/11/ostream:170:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  170 |       operator<<(unsigned long __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:170:32: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘long unsigned int’
+  170 |       operator<<(unsigned long __n)
+      |                  ~~~~~~~~~~~~~~^~~
+/usr/include/c++/11/ostream:174:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(bool) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  174 |       operator<<(bool __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:174:23: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘bool’
+  174 |       operator<<(bool __n)
+      |                  ~~~~~^~~
+In file included from /usr/include/c++/11/ostream:829,
+                 from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/bits/ostream.tcc:91:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(short int) [with _CharT = char; _Traits = std::char_traits<char>]’
+   91 |     basic_ostream<_CharT, _Traits>::
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/ostream.tcc:92:22: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘short int’
+   92 |     operator<<(short __n)
+      |                ~~~~~~^~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:181:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(short unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  181 |       operator<<(unsigned short __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:181:33: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘short unsigned int’
+  181 |       operator<<(unsigned short __n)
+      |                  ~~~~~~~~~~~~~~~^~~
+In file included from /usr/include/c++/11/ostream:829,
+                 from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/bits/ostream.tcc:105:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(int) [with _CharT = char; _Traits = std::char_traits<char>]’
+  105 |     basic_ostream<_CharT, _Traits>::
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/ostream.tcc:106:20: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘int’
+  106 |     operator<<(int __n)
+      |                ~~~~^~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:192:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  192 |       operator<<(unsigned int __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:192:31: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘unsigned int’
+  192 |       operator<<(unsigned int __n)
+      |                  ~~~~~~~~~~~~~^~~
+/usr/include/c++/11/ostream:201:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long long int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  201 |       operator<<(long long __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:201:28: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘long long int’
+  201 |       operator<<(long long __n)
+      |                  ~~~~~~~~~~^~~
+/usr/include/c++/11/ostream:205:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long long unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  205 |       operator<<(unsigned long long __n)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:205:37: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘long long unsigned int’
+  205 |       operator<<(unsigned long long __n)
+      |                  ~~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/11/ostream:220:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(double) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  220 |       operator<<(double __f)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:220:25: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘double’
+  220 |       operator<<(double __f)
+      |                  ~~~~~~~^~~
+/usr/include/c++/11/ostream:224:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(float) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  224 |       operator<<(float __f)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:224:24: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘float’
+  224 |       operator<<(float __f)
+      |                  ~~~~~~^~~
+/usr/include/c++/11/ostream:232:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long double) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  232 |       operator<<(long double __f)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:232:30: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘long double’
+  232 |       operator<<(long double __f)
+      |                  ~~~~~~~~~~~~^~~
+/usr/include/c++/11/ostream:245:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(const void*) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
+  245 |       operator<<(const void* __p)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:245:30: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘const void*’
+  245 |       operator<<(const void* __p)
+      |                  ~~~~~~~~~~~~^~~
+/usr/include/c++/11/ostream:250:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::nullptr_t) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>; std::nullptr_t = std::nullptr_t]’
+  250 |       operator<<(nullptr_t)
+      |       ^~~~~~~~
+/usr/include/c++/11/ostream:250:18: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘std::nullptr_t’
+  250 |       operator<<(nullptr_t)
+      |                  ^~~~~~~~~
+In file included from /usr/include/c++/11/ostream:829,
+                 from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/bits/ostream.tcc:119:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(std::basic_ostream<_CharT, _Traits>::__streambuf_type*) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__streambuf_type = std::basic_streambuf<char>]’
+  119 |     basic_ostream<_CharT, _Traits>::
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/ostream.tcc:120:34: note:   no known conversion for argument 1 from ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} to ‘std::basic_ostream<char>::__streambuf_type*’ {aka ‘std::basic_streambuf<char>*’}
+  120 |     operator<<(__streambuf_type* __sbin)
+      |                ~~~~~~~~~~~~~~~~~~^~~~~~
+In file included from /usr/include/c++/11/regex:63,
+                 from stdc++.h:110:
+/usr/include/c++/11/bits/regex.h:1671:5: note: candidate: ‘template<class _Ch_type, class _Ch_traits, class _Bi_iter> std::basic_ostream<_CharT, _Traits>& std::__cxx11::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__cxx11::sub_match<_Bi_iter>&)’
+ 1671 |     operator<<(basic_ostream<_Ch_type, _Ch_traits>& __os,
       |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_iterator.h:538:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:67,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_iterator.h:1596:5: note: candidate: ‘template<class _IteratorL, class _IteratorR>  requires  three_way_comparable_with<_IteratorR, _IteratorL, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const std::move_iterator<_IteratorL>&, const std::move_iterator<_IteratorR>&)’ (reversed)
- 1596 |     operator<=>(const move_iterator<_IteratorL>& __x,
+/usr/include/c++/11/bits/regex.h:1671:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::__cxx11::sub_match<_Bi_iter>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/bitset:1595,
+                 from stdc++.h:66:
+/usr/include/c++/11/debug/bitset:408:5: note: candidate: ‘template<class _CharT, class _Traits, long unsigned int _Nb> std::basic_ostream<_CharT, _Traits>& std::__debug::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__debug::bitset<_Nb>&)’
+  408 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_iterator.h:1596:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::move_iterator<_IteratorL>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
+/usr/include/c++/11/debug/bitset:408:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::__debug::bitset<_Nb>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:45:
+/usr/include/c++/11/cstddef:126:5: note: candidate: ‘template<class _IntegerType> constexpr std::__byte_op_t<_IntegerType> std::operator<<(std::byte, _IntegerType)’
+  126 |     operator<<(byte __b, _IntegerType __shift) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/11/cstddef:126:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘std::operator<< <std::char_traits<char> >((* & std::cerr.std::basic_ostream<char>::operator<<(((type)k))), 32)’ (type ‘std::basic_ostream<char>’) to type ‘std::byte’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
 In file included from /usr/include/c++/11/bits/basic_string.h:48,
                  from /usr/include/c++/11/string:55,
                  from /usr/include/c++/11/bits/locale_classes.h:40,
@@ -55,19 +180,13 @@ In file included from /usr/include/c++/11/bits/basic_string.h:48,
                  from /usr/include/c++/11/complex:45,
                  from /usr/include/c++/11/ccomplex:39,
                  from stdc++.h:54:
-/usr/include/c++/11/string_view:556:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(std::basic_string_view<_CharT, _Traits>, std::__type_identity_t<std::basic_string_view<_CharT, _Traits> >)’ (reversed)
-  556 |     operator<=>(basic_string_view<_CharT, _Traits> __x,
+/usr/include/c++/11/string_view:667:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::basic_string_view<_CharT, _Traits>)’
+  667 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
-/usr/include/c++/11/string_view:556:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘V’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
+/usr/include/c++/11/string_view:667:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::__debug::set<long long int>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
 In file included from /usr/include/c++/11/string:55,
                  from /usr/include/c++/11/bits/locale_classes.h:40,
                  from /usr/include/c++/11/bits/ios_base.h:41,
@@ -77,519 +196,13 @@ In file included from /usr/include/c++/11/string:55,
                  from /usr/include/c++/11/complex:45,
                  from /usr/include/c++/11/ccomplex:39,
                  from stdc++.h:54:
-/usr/include/c++/11/bits/basic_string.h:6276:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’ (reversed)
- 6276 |     operator<=>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+/usr/include/c++/11/bits/basic_string.h:6531:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 6531 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
-/usr/include/c++/11/bits/basic_string.h:6276:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/functional:54,
-                 from /usr/include/c++/11/pstl/glue_algorithm_defs.h:13,
-                 from /usr/include/c++/11/algorithm:74,
-                 from stdc++.h:65:
-/usr/include/c++/11/tuple:1557:5: note: candidate: ‘template<class ... _Tps, class ... _Ups> constexpr std::common_comparison_category_t<decltype (std::__detail::__synth3way(declval<_Tps&>(), declval<_Ups&>()))...> std::operator<=>(const std::tuple<_Tps ...>&, const std::tuple<_Args2 ...>&)’ (reversed)
- 1557 |     operator<=>(const tuple<_Tps...>& __t, const tuple<_Ups...>& __u)
-      |     ^~~~~~~~
-/usr/include/c++/11/tuple:1557:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::tuple<_Tps ...>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/locale_conv.h:41,
-                 from /usr/include/c++/11/locale:43,
-                 from /usr/include/c++/11/iomanip:43,
-                 from stdc++.h:72:
-/usr/include/c++/11/bits/unique_ptr.h:895:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep>  requires  three_way_comparable_with<typename std::unique_ptr<_Tp, _Dp>::pointer, typename std::unique_ptr<_Up, _Ep>::pointer, std::partial_ordering> std::compare_three_way_result_t<typename std::unique_ptr<_Tp, _Dp>::pointer, typename std::unique_ptr<_Up, _Ep>::pointer> std::operator<=>(const std::unique_ptr<_Tp, _Dp>&, const std::unique_ptr<_Up, _Ep>&)’ (reversed)
-  895 |     operator<=>(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/unique_ptr.h:895:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/locale_conv.h:41,
-                 from /usr/include/c++/11/locale:43,
-                 from /usr/include/c++/11/iomanip:43,
-                 from stdc++.h:72:
-/usr/include/c++/11/bits/unique_ptr.h:903:5: note: candidate: ‘template<class _Tp, class _Dp>  requires  three_way_comparable<typename std::unique_ptr<_Tp, _Dp>::pointer, std::partial_ordering> std::compare_three_way_result_t<typename std::unique_ptr<_Tp, _Dp>::pointer> std::operator<=>(const std::unique_ptr<_Tp, _Dp>&, std::nullptr_t)’ (reversed)
-  903 |     operator<=>(const unique_ptr<_Tp, _Dp>& __x, nullptr_t)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/unique_ptr.h:903:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/shared_ptr.h:53,
-                 from /usr/include/c++/11/memory:77,
-                 from stdc++.h:82:
-/usr/include/c++/11/bits/shared_ptr_base.h:1422:5: note: candidate: ‘template<class _Tp, class _Up, __gnu_cxx::_Lock_policy _Lp> std::strong_ordering std::operator<=>(const std::__shared_ptr<_Tp1, _Lp>&, const std::__shared_ptr<_Tp2, _Lp>&)’ (reversed)
- 1422 |     operator<=>(const __shared_ptr<_Tp, _Lp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/shared_ptr_base.h:1422:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__shared_ptr<_Tp1, _Lp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/shared_ptr.h:53,
-                 from /usr/include/c++/11/memory:77,
-                 from stdc++.h:82:
-/usr/include/c++/11/bits/shared_ptr_base.h:1428:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> std::strong_ordering std::operator<=>(const std::__shared_ptr<_Tp, _Lp>&, std::nullptr_t)’ (reversed)
- 1428 |     operator<=>(const __shared_ptr<_Tp, _Lp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/shared_ptr_base.h:1428:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/memory:77,
-                 from stdc++.h:82:
-/usr/include/c++/11/bits/shared_ptr.h:449:5: note: candidate: ‘template<class _Tp, class _Up> std::strong_ordering std::operator<=>(const std::shared_ptr<_Tp>&, const std::shared_ptr<_Tp>&)’ (reversed)
-  449 |     operator<=>(const shared_ptr<_Tp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/shared_ptr.h:449:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::shared_ptr<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/memory:77,
-                 from stdc++.h:82:
-/usr/include/c++/11/bits/shared_ptr.h:455:5: note: candidate: ‘template<class _Tp> std::strong_ordering std::operator<=>(const std::shared_ptr<_Tp>&, std::nullptr_t)’ (reversed)
-  455 |     operator<=>(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/shared_ptr.h:455:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::shared_ptr<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/11/optional:1096:5: note: candidate: ‘template<class _Tp, class _Up>  requires  three_way_comparable_with<_Up, _Tp, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const std::optional<_Tp>&, const std::optional<_Up>&)’ (reversed)
- 1096 |     operator<=>(const optional<_Tp>& __x, const optional<_Up>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/optional:1096:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::optional<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/11/optional:1111:5: note: candidate: ‘template<class _Tp> constexpr std::strong_ordering std::operator<=>(const std::optional<_Tp>&, std::nullopt_t)’ (reversed)
- 1111 |     operator<=>(const optional<_Tp>& __x, nullopt_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/11/optional:1111:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::optional<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/11/optional:1253:5: note: candidate: ‘template<class _Tp, class _Up>  requires !(__is_optional_v<_Up>) && (three_way_comparable_with<_Tp, _Up, std::partial_ordering>) constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const std::optional<_Tp>&, const _Up&)’ (reversed)
- 1253 |     operator<=>(const optional<_Tp>& __x, const _Up& __v)
-      |     ^~~~~~~~
-/usr/include/c++/11/optional:1253:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::optional<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/regex:63,
-                 from stdc++.h:110:
-/usr/include/c++/11/bits/regex.h:1244:5: note: candidate: ‘template<class _Bi_iter, class _Ch_traits, class _Alloc> auto std::__cxx11::operator<=>(const std::__cxx11::sub_match<_BiIter>&, std::__cxx11::__sub_match_string<_Bi_iter, _Ch_traits, _Ch_alloc>&)’ (reversed)
- 1244 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/regex.h:1244:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/regex:63,
-                 from stdc++.h:110:
-/usr/include/c++/11/bits/regex.h:1412:5: note: candidate: ‘template<class _Bi_iter> auto std::__cxx11::operator<=>(const std::__cxx11::sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type*)’ (reversed)
- 1412 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/regex.h:1412:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/regex:63,
-                 from stdc++.h:110:
-/usr/include/c++/11/bits/regex.h:1585:5: note: candidate: ‘template<class _Bi_iter> auto std::__cxx11::operator<=>(const std::__cxx11::sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type&)’ (reversed)
- 1585 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/regex.h:1585:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:64,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_pair.h:473:5: note: candidate: ‘template<class _T1, class _T2> constexpr std::common_comparison_category_t<decltype (std::__detail::__synth3way(declval<_T1&>(), declval<_T1&>())), decltype (std::__detail::__synth3way(declval<_T2&>(), declval<_T2&>()))> std::operator<=>(const std::pair<_T1, _T2>&, const std::pair<_T1, _T2>&)’ (rewritten)
-  473 |     operator<=>(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_pair.h:473:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::pair<_T1, _T2>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:67,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_iterator.h:554:5: note: candidate: ‘template<class _Iterator>  requires  three_way_comparable<_Iterator, std::partial_ordering> constexpr std::compare_three_way_result_t<_Iterator, _Iterator> std::operator<=>(const std::reverse_iterator<_IteratorL>&, const std::reverse_iterator<_IteratorL>&)’ (rewritten)
-  554 |     operator<=>(const reverse_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_iterator.h:554:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:67,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_iterator.h:1655:5: note: candidate: ‘template<class _Iterator>  requires  three_way_comparable<_Iterator, std::partial_ordering> constexpr std::compare_three_way_result_t<_Iterator, _Iterator> std::operator<=>(const std::move_iterator<_IteratorL>&, const std::move_iterator<_IteratorL>&)’ (rewritten)
- 1655 |     operator<=>(const move_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_iterator.h:1655:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::move_iterator<_IteratorL>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/basic_string.h:48,
-                 from /usr/include/c++/11/string:55,
-                 from /usr/include/c++/11/bits/locale_classes.h:40,
-                 from /usr/include/c++/11/bits/ios_base.h:41,
-                 from /usr/include/c++/11/ios:42,
-                 from /usr/include/c++/11/istream:38,
-                 from /usr/include/c++/11/sstream:38,
-                 from /usr/include/c++/11/complex:45,
-                 from /usr/include/c++/11/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/11/string_view:549:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(std::basic_string_view<_CharT, _Traits>, std::basic_string_view<_CharT, _Traits>)’ (rewritten)
-  549 |     operator<=>(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/11/string_view:549:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘V’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/string:55,
-                 from /usr/include/c++/11/bits/locale_classes.h:40,
-                 from /usr/include/c++/11/bits/ios_base.h:41,
-                 from /usr/include/c++/11/ios:42,
-                 from /usr/include/c++/11/istream:38,
-                 from /usr/include/c++/11/sstream:38,
-                 from /usr/include/c++/11/complex:45,
-                 from /usr/include/c++/11/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/11/bits/basic_string.h:6262:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&, const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&)’ (rewritten)
- 6262 |     operator<=>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/basic_string.h:6262:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/tuple:39,
-                 from /usr/include/c++/11/functional:54,
-                 from /usr/include/c++/11/pstl/glue_algorithm_defs.h:13,
-                 from /usr/include/c++/11/algorithm:74,
-                 from stdc++.h:65:
-/usr/include/c++/11/array:282:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr std::__detail::__synth3way_t<_T1> std::operator<=>(const std::array<_Tp, _Nm>&, const std::array<_Tp, _Nm>&)’ (rewritten)
-  282 |     operator<=>(const array<_Tp, _Nm>& __a, const array<_Tp, _Nm>& __b)
-      |     ^~~~~~~~
-/usr/include/c++/11/array:282:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::array<_Tp, _Nm>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/queue:64,
-                 from stdc++.h:86:
-/usr/include/c++/11/bits/stl_queue.h:392:5: note: candidate: ‘template<class _Tp, class _Seq>  requires  three_way_comparable<_Seq, std::partial_ordering> std::compare_three_way_result_t<_Seq> std::operator<=>(const std::queue<_Tp, _Seq>&, const std::queue<_Tp, _Seq>&)’ (rewritten)
-  392 |     operator<=>(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_queue.h:392:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::queue<_Tp, _Seq>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/stack:61,
-                 from stdc++.h:89:
-/usr/include/c++/11/bits/stl_stack.h:367:5: note: candidate: ‘template<class _Tp, class _Seq>  requires  three_way_comparable<_Seq, std::partial_ordering> std::compare_three_way_result_t<_Seq> std::operator<=>(const std::stack<_Tp, _Seq>&, const std::stack<_Tp, _Seq>&)’ (rewritten)
-  367 |     operator<=>(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_stack.h:367:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::stack<_Tp, _Seq>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:133:
-/usr/include/c++/11/variant:1246:5: note: candidate: ‘template<class ... _Types>  requires (three_way_comparable<_Types, std::partial_ordering> && ...) constexpr std::common_comparison_category_t<typename std::__detail::__cmp3way_res_impl<_Types, _Types>::type ...> std::operator<=>(const std::variant<_Types ...>&, const std::variant<_Types ...>&)’ (rewritten)
- 1246 |     operator<=>(const variant<_Types...>& __v, const variant<_Types...>& __w)
-      |     ^~~~~~~~
-/usr/include/c++/11/variant:1246:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::variant<_Types ...>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/regex:63,
-                 from stdc++.h:110:
-/usr/include/c++/11/bits/regex.h:1072:5: note: candidate: ‘template<class _BiIter> auto std::__cxx11::operator<=>(const std::__cxx11::sub_match<_BiIter>&, const std::__cxx11::sub_match<_BiIter>&)’ (rewritten)
- 1072 |     operator<=>(const sub_match<_BiIter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/regex.h:1072:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/vector:76,
-                 from /usr/include/c++/11/functional:62,
-                 from /usr/include/c++/11/pstl/glue_algorithm_defs.h:13,
-                 from /usr/include/c++/11/algorithm:74,
-                 from stdc++.h:65:
-/usr/include/c++/11/debug/vector:748:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const std::__debug::vector<_Tp, _Alloc>&, const std::__debug::vector<_Tp, _Alloc>&)’ (rewritten)
-  748 |     operator<=>(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/vector:748:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::vector<_Tp, _Alloc>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/deque:72,
-                 from stdc++.h:68:
-/usr/include/c++/11/debug/deque:669:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const std::__debug::deque<_Tp, _Allocator>&, const std::__debug::deque<_Tp, _Allocator>&)’ (rewritten)
-  669 |     operator<=>(const deque<_Tp, _Alloc>& __x, const deque<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/deque:669:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::deque<_Tp, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/list:67,
-                 from stdc++.h:79:
-/usr/include/c++/11/debug/list:924:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const std::__debug::list<_Tp, _Allocator>&, const std::__debug::list<_Tp, _Allocator>&)’ (rewritten)
-  924 |     operator<=>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/list:924:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::list<_Tp, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/debug/map:43,
-                 from /usr/include/c++/11/map:67,
-                 from stdc++.h:81:
-/usr/include/c++/11/debug/map.h:756:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> std::__detail::__synth3way_t<std::pair<const _Key, _Tp> > std::__debug::operator<=>(const std::__debug::map<_Key, _Tp, _Compare, _Allocator>&, const std::__debug::map<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
-  756 |     operator<=>(const map<_Key, _Tp, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/map.h:756:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::map<_Key, _Tp, _Compare, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/debug/map:44,
-                 from /usr/include/c++/11/map:67,
-                 from stdc++.h:81:
-/usr/include/c++/11/debug/multimap.h:637:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> std::__detail::__synth3way_t<std::pair<const _Key, _Tp> > std::__debug::operator<=>(const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>&, const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
-  637 |     operator<=>(const multimap<_Key, _Tp, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/multimap.h:637:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/debug/set:41,
-                 from /usr/include/c++/11/set:67,
-                 from stdc++.h:87:
-/usr/include/c++/11/debug/set.h:619:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const std::__debug::set<_Key, _Compare, _Allocator>&, const std::__debug::set<_Key, _Compare, _Allocator>&)’ (rewritten)
-  619 |     operator<=>(const set<_Key, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/set.h:619:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::set<_Key, _Compare, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/debug/set:42,
-                 from /usr/include/c++/11/set:67,
-                 from stdc++.h:87:
-/usr/include/c++/11/debug/multiset.h:608:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const std::__debug::multiset<_Key, _Compare, _Allocator>&, const std::__debug::multiset<_Key, _Compare, _Allocator>&)’ (rewritten)
-  608 |     operator<=>(const multiset<_Key, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/multiset.h:608:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::multiset<_Key, _Compare, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/forward_list:43,
-                 from stdc++.h:104:
-/usr/include/c++/11/debug/forward_list:862:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const std::__debug::forward_list<_Tp, _Allocator>&, const std::__debug::forward_list<_Tp, _Allocator>&)’ (rewritten)
-  862 |     operator<=>(const forward_list<_Tp, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/11/debug/forward_list:862:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::__debug::forward_list<_Tp, _Allocator>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
+/usr/include/c++/11/bits/basic_string.h:6531:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
 In file included from /usr/include/c++/11/bits/ios_base.h:46,
                  from /usr/include/c++/11/ios:42,
                  from /usr/include/c++/11/istream:38,
@@ -597,324 +210,735 @@ In file included from /usr/include/c++/11/bits/ios_base.h:46,
                  from /usr/include/c++/11/complex:45,
                  from /usr/include/c++/11/ccomplex:39,
                  from stdc++.h:54:
-/usr/include/c++/11/system_error:261:3: note: candidate: ‘std::strong_ordering std::operator<=>(const std::error_code&, const std::error_code&)’ (rewritten)
-  261 |   operator<=>(const error_code& __lhs, const error_code& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/11/system_error:261:33: note:   no known conversion for argument 1 from ‘const V’ to ‘const std::error_code&’
-  261 |   operator<=>(const error_code& __lhs, const error_code& __rhs) noexcept
-      |               ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/11/system_error:387:3: note: candidate: ‘std::strong_ordering std::operator<=>(const std::error_condition&, const std::error_condition&)’ (rewritten)
-  387 |   operator<=>(const error_condition& __lhs,
-      |   ^~~~~~~~
-/usr/include/c++/11/system_error:387:38: note:   no known conversion for argument 1 from ‘const V’ to ‘const std::error_condition&’
-  387 |   operator<=>(const error_condition& __lhs,
-      |               ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/11/system_error:279:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::error_code&)’
+  279 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const error_code& __e)
+      |     ^~~~~~~~
+/usr/include/c++/11/system_error:279:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const std::error_code&’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:513:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, _CharT)’
+  513 |     operator<<(basic_ostream<_CharT, _Traits>& __out, _CharT __c)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:513:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   deduced conflicting types for parameter ‘_CharT’ (‘char’ and ‘std::__debug::set<long long int>’)
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:518:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, char)’
+  518 |     operator<<(basic_ostream<_CharT, _Traits>& __out, char __c)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:518:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:524:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, char)’
+  524 |     operator<<(basic_ostream<char, _Traits>& __out, char __c)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:524:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:530:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, signed char)’
+  530 |     operator<<(basic_ostream<char, _Traits>& __out, signed char __c)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:530:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘signed char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:535:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, unsigned char)’
+  535 |     operator<<(basic_ostream<char, _Traits>& __out, unsigned char __c)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:535:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘unsigned char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:544:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, wchar_t)’ (deleted)
+  544 |     operator<<(basic_ostream<char, _Traits>&, wchar_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:544:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘wchar_t’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:549:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, char8_t)’ (deleted)
+  549 |     operator<<(basic_ostream<char, _Traits>&, char8_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:549:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘char8_t’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:554:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, char16_t)’ (deleted)
+  554 |     operator<<(basic_ostream<char, _Traits>&, char16_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:554:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘char16_t’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:558:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, char32_t)’ (deleted)
+  558 |     operator<<(basic_ostream<char, _Traits>&, char32_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:558:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘char32_t’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:564:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(std::basic_ostream<wchar_t, _Traits>&, char8_t)’ (deleted)
+  564 |     operator<<(basic_ostream<wchar_t, _Traits>&, char8_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:564:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘wchar_t’ and ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:569:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(std::basic_ostream<wchar_t, _Traits>&, char16_t)’ (deleted)
+  569 |     operator<<(basic_ostream<wchar_t, _Traits>&, char16_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:569:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘wchar_t’ and ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:573:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(std::basic_ostream<wchar_t, _Traits>&, char32_t)’ (deleted)
+  573 |     operator<<(basic_ostream<wchar_t, _Traits>&, char32_t) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:573:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘wchar_t’ and ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:594:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const _CharT*)’
+  594 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const _CharT* __s)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:594:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘const _CharT*’ and ‘std::__debug::set<long long int>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/ostream:829,
+                 from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/bits/ostream.tcc:321:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const char*)’
+  321 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/ostream.tcc:321:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const char*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:611:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const char*)’
+  611 |     operator<<(basic_ostream<char, _Traits>& __out, const char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:611:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const char*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:624:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const signed char*)’
+  624 |     operator<<(basic_ostream<char, _Traits>& __out, const signed char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:624:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const signed char*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:629:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const unsigned char*)’
+  629 |     operator<<(basic_ostream<char, _Traits>& __out, const unsigned char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:629:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const unsigned char*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:638:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const wchar_t*)’ (deleted)
+  638 |     operator<<(basic_ostream<char, _Traits>&, const wchar_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:638:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const wchar_t*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:643:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const char8_t*)’ (deleted)
+  643 |     operator<<(basic_ostream<char, _Traits>&, const char8_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:643:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const char8_t*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:648:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const char16_t*)’ (deleted)
+  648 |     operator<<(basic_ostream<char, _Traits>&, const char16_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:648:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const char16_t*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:652:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const char32_t*)’ (deleted)
+  652 |     operator<<(basic_ostream<char, _Traits>&, const char32_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:652:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const char32_t*’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:658:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(std::basic_ostream<wchar_t, _Traits>&, const char8_t*)’ (deleted)
+  658 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char8_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:658:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘wchar_t’ and ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:663:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(std::basic_ostream<wchar_t, _Traits>&, const char16_t*)’ (deleted)
+  663 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char16_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:663:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘wchar_t’ and ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:667:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(std::basic_ostream<wchar_t, _Traits>&, const char32_t*)’ (deleted)
+  667 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char32_t*) = delete;
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:667:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   mismatched types ‘wchar_t’ and ‘char’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/istream:39,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/ostream:750:5: note: candidate: ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&)’
+  750 |     operator<<(_Ostream&& __os, const _Tp& __x)
+      |     ^~~~~~~~
+/usr/include/c++/11/ostream:750:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/11/ostream: In substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::__debug::set<long long int>]’:
+F.cpp:104:134:   required from ‘void debug_view(std::__debug::map<T1, T2>&) [with T1 = long long int; T2 = std::__debug::set<long long int>]’
+F.cpp:183:5:   required from here
+/usr/include/c++/11/ostream:750:5: error: template constraint failure for ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&&’
+/usr/include/c++/11/ostream:750:5: note: constraints not satisfied
+/usr/include/c++/11/ostream: In substitution of ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&& [with _Os = std::basic_ostream<char>&; _Tp = std::__debug::set<long long int>]’:
+/usr/include/c++/11/ostream:750:5:   required by substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::__debug::set<long long int>]’
+F.cpp:104:134:   required from ‘void debug_view(std::__debug::map<T1, T2>&) [with T1 = long long int; T2 = std::__debug::set<long long int>]’
+F.cpp:183:5:   required from here
+/usr/include/c++/11/ostream:717:13:   required for the satisfaction of ‘__derived_from_ios_base<_Os>’ [with _Os = std::basic_ostream<char, std::char_traits<char> >&]
+/usr/include/c++/11/ostream:717:39: note: the expression ‘is_class_v<_Tp> [with _Tp = std::basic_ostream<char, std::char_traits<char> >&]’ evaluated to ‘false’
+  717 |     concept __derived_from_ios_base = is_class_v<_Tp>
+      |                                       ^~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+F.cpp: In instantiation of ‘void debug_view(std::__debug::map<T1, T2>&) [with T1 = long long int; T2 = std::__debug::set<long long int>]’:
+F.cpp:183:5:   required from here
+/usr/include/c++/11/complex:555:5: note: candidate: ‘template<class _Tp, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::complex<_Tp>&)’
+  555 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const complex<_Tp>& __x)
+      |     ^~~~~~~~
+/usr/include/c++/11/complex:555:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::complex<_Tp>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/bits/locale_conv.h:41,
+                 from /usr/include/c++/11/locale:43,
+                 from /usr/include/c++/11/iomanip:43,
+                 from stdc++.h:72:
+/usr/include/c++/11/bits/unique_ptr.h:1003:5: note: candidate: ‘template<class _CharT, class _Traits, class _Tp, class _Dp> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::unique_ptr<_Up, _Ep>&) requires requires{std::operator<<::__os << std::operator<<::__p->get();}’
+ 1003 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/unique_ptr.h:1003:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::unique_ptr<_Up, _Ep>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:79:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Resetiosflags)’
+   79 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Resetiosflags __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:79:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘std::_Resetiosflags’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:109:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setiosflags)’
+  109 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setiosflags __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:109:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘std::_Setiosflags’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:143:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setbase)’
+  143 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setbase __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:143:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘std::_Setbase’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:178:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setfill<_CharT>)’
+  178 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setfill<_CharT> __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:178:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::__debug::set<long long int>’ is not derived from ‘std::_Setfill<_CharT>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:208:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setprecision)’
+  208 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setprecision __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:208:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘std::_Setprecision’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:238:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setw)’
+  238 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setw __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:238:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘std::_Setw’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:311:5: note: candidate: ‘template<class _CharT, class _Traits, class _MoneyT> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Put_money<_MoneyT>)’
+  311 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_money<_MoneyT> __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:311:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::__debug::set<long long int>’ is not derived from ‘std::_Put_money<_MoneyT>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:72:
+/usr/include/c++/11/iomanip:363:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Put_time<_CharT>)’
+  363 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_time<_CharT> __f)
+      |     ^~~~~~~~
+/usr/include/c++/11/iomanip:363:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::__debug::set<long long int>’ is not derived from ‘std::_Put_time<_CharT>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/memory:77,
+                 from stdc++.h:82:
+/usr/include/c++/11/bits/shared_ptr.h:70:5: note: candidate: ‘template<class _Ch, class _Tr, class _Tp, __gnu_cxx::_Lock_policy _Lp> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__shared_ptr<_Tp, _Lp>&)’
+   70 |     operator<<(std::basic_ostream<_Ch, _Tr>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/shared_ptr.h:70:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/11/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const std::_Expr<_Dom2, typename _Dom2::value_type>&)’
+  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::basic_ostream<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/11/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::basic_ostream<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/11/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const typename _Dom::value_type&, const std::_Expr<_Dom1, typename _Dom1::value_type>&)’
+  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/11/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const std::valarray<typename _Dom::value_type>&)’
+  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::basic_ostream<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/11/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const std::valarray<typename _Dom::value_type>&, const std::_Expr<_Dom1, typename _Dom1::value_type>&)’
+  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:95:
+/usr/include/c++/11/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const std::valarray<_Tp>&, const std::valarray<_Tp>&)’
+ 1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/valarray:1194:1: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::basic_ostream<char>’ is not derived from ‘const std::valarray<_Tp>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:95:
+/usr/include/c++/11/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const std::valarray<_Tp>&, const typename std::valarray<_Tp>::value_type&)’
+ 1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/valarray:1194:1: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::basic_ostream<char>’ is not derived from ‘const std::valarray<_Tp>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:95:
+/usr/include/c++/11/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const typename std::valarray<_Tp>::value_type&, const std::valarray<_Tp>&)’
+ 1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/valarray:1194:1: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::valarray<_Tp>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:49,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.h:1309:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __w, class _UIntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>&)’
+ 1309 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.h:1309:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:901:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::uniform_int_distribution<_IntType>&)’
+  901 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:901:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::uniform_int_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:959:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::uniform_real_distribution<_IntType>&)’
+  959 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:959:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::uniform_real_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2144:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::cauchy_distribution<_RealType>&)’
+ 2144 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2144:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::cauchy_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1020:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::bernoulli_distribution&)’
+ 1020 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1020:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘const std::bernoulli_distribution&’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1101:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::geometric_distribution<_IntType>&)’
+ 1101 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1101:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::geometric_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1753:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::exponential_distribution<_RealType>&)’
+ 1753 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1753:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::exponential_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2538:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::weibull_distribution<_RealType>&)’
+ 2538 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2538:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::weibull_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2612:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::extreme_value_distribution<_RealType>&)’
+ 2612 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2612:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::extreme_value_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:154:5: note: candidate: ‘template<class _UIntType, _UIntType __a, _UIntType __c, _UIntType __m, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::linear_congruential_engine<_UIntType, __a, __c, __m>&)’
+  154 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:154:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::linear_congruential_engine<_UIntType, __a, __c, __m>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:474:5: note: candidate: ‘template<class _UIntType1, long unsigned int __w1, long unsigned int __n1, long unsigned int __m1, long unsigned int __r1, _UIntType1 __a1, long unsigned int __u1, _UIntType1 __d1, long unsigned int __s1, _UIntType1 __b1, long unsigned int __t1, _UIntType1 __c1, long unsigned int __l1, _UIntType1 __f1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>&)’
+  474 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:474:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:628:5: note: candidate: ‘template<class _UIntType, long unsigned int __w, long unsigned int __s, long unsigned int __r, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>&)’
+  628 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:628:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:696:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __p, long unsigned int __r, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::discard_block_engine<_RandomNumberEngine, __p, __r>&)’
+  696 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:696:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::discard_block_engine<_RandomNumberEngine, __p, __r>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:857:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __k, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::shuffle_order_engine<_RandomNumberEngine, __k>&)’
+  857 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:857:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::shuffle_order_engine<_RandomNumberEngine, __k>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1215:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::negative_binomial_distribution<_IntType>&)’
+ 1215 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1215:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::negative_binomial_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1425:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::poisson_distribution<_IntType>&)’
+ 1425 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1425:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::poisson_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1691:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::binomial_distribution<_IntType>&)’
+ 1691 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1691:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::binomial_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1919:5: note: candidate: ‘template<class _RealType1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::normal_distribution<_RealType>&)’
+ 1919 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1919:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::normal_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:1986:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::lognormal_distribution<_RealType>&)’
+ 1986 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:1986:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::lognormal_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2058:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::chi_squared_distribution<_RealType>&)’
+ 2058 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2058:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::chi_squared_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2219:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::fisher_f_distribution<_RealType>&)’
+ 2219 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2219:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::fisher_f_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2293:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::student_t_distribution<_RealType>&)’
+ 2293 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2293:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::student_t_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2462:5: note: candidate: ‘template<class _RealType1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::gamma_distribution<_RealType>&)’
+ 2462 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2462:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::gamma_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2748:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::discrete_distribution<_IntType>&)’
+ 2748 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2748:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::discrete_distribution<_IntType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:2970:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::piecewise_constant_distribution<_RealType>&)’
+ 2970 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:2970:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::piecewise_constant_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from /usr/include/c++/11/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/11/bits/random.tcc:3176:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::piecewise_linear_distribution<_RealType>&)’
+ 3176 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/11/bits/random.tcc:3176:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::piecewise_linear_distribution<_RealType>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
 In file included from stdc++.h:113:
-/usr/include/c++/11/thread:62:3: note: candidate: ‘std::strong_ordering std::operator<=>(std::thread::id, std::thread::id)’ (rewritten)
-   62 |   operator<=>(thread::id __x, thread::id __y) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/11/thread:62:26: note:   no known conversion for argument 1 from ‘const V’ to ‘std::thread::id’
-   62 |   operator<=>(thread::id __x, thread::id __y) noexcept
-      |               ~~~~~~~~~~~^~~
-In file included from stdc++.h:133:
-/usr/include/c++/11/variant:1269:3: note: candidate: ‘constexpr std::strong_ordering std::operator<=>(std::monostate, std::monostate)’ (rewritten)
- 1269 |   operator<=>(monostate, monostate) noexcept { return strong_ordering::equal; }
-      |   ^~~~~~~~
-/usr/include/c++/11/variant:1269:15: note:   no known conversion for argument 1 from ‘const V’ to ‘std::monostate’
- 1269 |   operator<=>(monostate, monostate) noexcept { return strong_ordering::equal; }
-      |               ^~~~~~~~~
-In file included from stdc++.h:142:
-/usr/include/c++/11/coroutine:144:3: note: candidate: ‘constexpr std::strong_ordering std::__n4861::operator<=>(std::__n4861::coroutine_handle<void>, std::__n4861::coroutine_handle<void>)’ (rewritten)
-  144 |   operator<=>(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/11/coroutine:144:34: note:   no known conversion for argument 1 from ‘const V’ to ‘std::__n4861::coroutine_handle<void>’
-  144 |   operator<=>(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |               ~~~~~~~~~~~~~~~~~~~^~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:67,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_iterator.h:516:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator>(const std::reverse_iterator<_IteratorL>&, const std::reverse_iterator<_IteratorR>&) requires requires{{std::operator>::__x->base() < std::operator>::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
-  516 |     operator>(const reverse_iterator<_IteratorL>& __x,
+/usr/include/c++/11/thread:92:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::thread::id)’
+   92 |     operator<<(basic_ostream<_CharT, _Traits>& __out, thread::id __id)
       |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_iterator.h:516:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/stl_algobase.h:67,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_iterator.h:1627:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator>(const std::move_iterator<_IteratorL>&, const std::move_iterator<_IteratorR>&) requires requires{{std::operator>::__y->base() < std::operator>::__x->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
- 1627 |     operator>(const move_iterator<_IteratorL>& __x,
+/usr/include/c++/11/thread:92:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   cannot convert ‘v’ (type ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’}) to type ‘std::thread::id’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~
+In file included from stdc++.h:66:
+/usr/include/c++/11/bitset:1540:5: note: candidate: ‘template<class _CharT, class _Traits, long unsigned int _Nb> std::basic_ostream<_CharT, _Traits>& std::__cxx1998::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__cxx1998::bitset<_Nb>&)’
+ 1540 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_iterator.h:1627:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::move_iterator<_IteratorL>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/locale_conv.h:41,
-                 from /usr/include/c++/11/locale:43,
-                 from /usr/include/c++/11/iomanip:43,
-                 from stdc++.h:72:
-/usr/include/c++/11/bits/unique_ptr.h:846:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep> bool std::operator>(const std::unique_ptr<_Tp, _Dp>&, const std::unique_ptr<_Up, _Ep>&)’
-  846 |     operator>(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/unique_ptr.h:846:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/locale_conv.h:41,
-                 from /usr/include/c++/11/locale:43,
-                 from /usr/include/c++/11/iomanip:43,
-                 from stdc++.h:72:
-/usr/include/c++/11/bits/unique_ptr.h:853:5: note: candidate: ‘template<class _Tp, class _Dp> bool std::operator>(const std::unique_ptr<_Tp, _Dp>&, std::nullptr_t)’
-  853 |     operator>(const unique_ptr<_Tp, _Dp>& __x, nullptr_t)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/unique_ptr.h:853:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/bits/locale_conv.h:41,
-                 from /usr/include/c++/11/locale:43,
-                 from /usr/include/c++/11/iomanip:43,
-                 from stdc++.h:72:
-/usr/include/c++/11/bits/unique_ptr.h:862:5: note: candidate: ‘template<class _Tp, class _Dp> bool std::operator>(std::nullptr_t, const std::unique_ptr<_Tp, _Dp>&)’
-  862 |     operator>(nullptr_t, const unique_ptr<_Tp, _Dp>& __x)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/unique_ptr.h:862:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/queue:64,
-                 from stdc++.h:86:
-/usr/include/c++/11/bits/stl_queue.h:374:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator>(const std::queue<_Tp, _Seq>&, const std::queue<_Tp, _Seq>&)’
-  374 |     operator>(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_queue.h:374:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::queue<_Tp, _Seq>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/stack:61,
-                 from stdc++.h:89:
-/usr/include/c++/11/bits/stl_stack.h:349:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator>(const std::stack<_Tp, _Seq>&, const std::stack<_Tp, _Seq>&)’
-  349 |     operator>(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/11/bits/stl_stack.h:349:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::stack<_Tp, _Seq>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/11/bits/valarray_after.h:420:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__greater, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__greater, typename _Dom1::value_type>::result_type> std::operator>(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const std::_Expr<_Dom2, typename _Dom2::value_type>&)’
-  420 |     _DEFINE_EXPR_BINARY_OPERATOR(>, struct std::__greater)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/valarray_after.h:420:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/11/bits/valarray_after.h:420:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__greater, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__greater, typename _Dom1::value_type>::result_type> std::operator>(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
-  420 |     _DEFINE_EXPR_BINARY_OPERATOR(>, struct std::__greater)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/valarray_after.h:420:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/11/bits/valarray_after.h:420:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__greater, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__greater, typename _Dom1::value_type>::result_type> std::operator>(const typename _Dom::value_type&, const std::_Expr<_Dom1, typename _Dom1::value_type>&)’
-  420 |     _DEFINE_EXPR_BINARY_OPERATOR(>, struct std::__greater)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/valarray_after.h:420:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/11/bits/valarray_after.h:420:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__greater, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__greater, typename _Dom1::value_type>::result_type> std::operator>(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const std::valarray<typename _Dom::value_type>&)’
-  420 |     _DEFINE_EXPR_BINARY_OPERATOR(>, struct std::__greater)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/valarray_after.h:420:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from /usr/include/c++/11/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/11/bits/valarray_after.h:420:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__greater, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__greater, typename _Dom1::value_type>::result_type> std::operator>(const std::valarray<typename _Dom::value_type>&, const std::_Expr<_Dom1, typename _Dom1::value_type>&)’
-  420 |     _DEFINE_EXPR_BINARY_OPERATOR(>, struct std::__greater)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/valarray_after.h:420:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:95:
-/usr/include/c++/11/valarray:1201:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__greater, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__greater, _Tp>::result_type> std::operator>(const std::valarray<_Tp>&, const std::valarray<_Tp>&)’
- 1201 | _DEFINE_BINARY_OPERATOR(>, __greater)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/valarray:1201:1: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::valarray<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:95:
-/usr/include/c++/11/valarray:1201:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__greater, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__greater, _Tp>::result_type> std::operator>(const std::valarray<_Tp>&, const typename std::valarray<_Tp>::value_type&)’
- 1201 | _DEFINE_BINARY_OPERATOR(>, __greater)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/valarray:1201:1: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::valarray<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:95:
-/usr/include/c++/11/valarray:1201:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__greater, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__greater, _Tp>::result_type> std::operator>(const typename std::valarray<_Tp>::value_type&, const std::valarray<_Tp>&)’
- 1201 | _DEFINE_BINARY_OPERATOR(>, __greater)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/valarray:1201:1: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::valarray<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/11/optional:1071:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_gt_t<_Tp, _Up> std::operator>(const std::optional<_Tp>&, const std::optional<_Up>&)’
- 1071 |     operator>(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/11/optional:1071:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::optional<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/11/optional:1209:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_gt_t<_Tp, _Up> std::operator>(const std::optional<_Tp>&, const _Up&)’
- 1209 |     operator>(const optional<_Tp>& __lhs, const _Up& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/11/optional:1209:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::optional<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/11/optional:1215:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_gt_t<_Up, _Tp> std::operator>(const _Up&, const std::optional<_Tp>&)’
- 1215 |     operator>(const _Up& __lhs, const optional<_Tp>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/11/optional:1215:5: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::optional<_Tp>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
-In file included from stdc++.h:133:
-/usr/include/c++/11/variant:1235:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator>(const std::variant<_Types ...>&, const std::variant<_Types ...>&)’
- 1235 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(>, greater)
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/variant:1235:3: note:   template argument deduction/substitution failed:
-In file included from /usr/include/c++/11/debug/functions.h:32,
-                 from /usr/include/c++/11/debug/debug.h:133,
-                 from /usr/include/c++/11/bits/stl_algobase.h:69,
-                 from /usr/include/c++/11/bits/specfun.h:45,
-                 from /usr/include/c++/11/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/11/bits/stl_function.h:390:20: note:   ‘const V’ is not derived from ‘const std::variant<_Types ...>’
-  390 |       { return __x > __y; }
-      |                ~~~~^~~~~
+/usr/include/c++/11/bitset:1540:5: note:   template argument deduction/substitution failed:
+F.cpp:104:134: note:   ‘std::tuple_element<1, std::pair<const long long int, std::__debug::set<long long int> > >::type’ {aka ‘std::__debug::set<long long int>’} is not derived from ‘const std::__cxx1998::bitset<_Nb>’
+  104 | template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+      |                                                                                                                     ~~~~~~~~~~~~~~~~~^~~~

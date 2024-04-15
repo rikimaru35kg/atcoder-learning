@@ -34,6 +34,17 @@
 ### 例題
 - 交互列を塊と見て圧縮する場合もある 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 
+## ローリングハッシュ（Rolling Hash）
+- 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する
+- ハッシュが一致すれば同一文字列と判定できる
+- 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せる
+- (hash,x^n)はモノイドなのでセグ木にも乗せられる
+- ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
+- 衝突確率を下げる為、mintsを導入すると良い（2つの素数でmodを取った値を保持）
+- 衝突確率があるので、ロリハを使わなくても解けるなら使わない方が良い
+### 例題
+- [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+
 ## ビット操作
 - &や|等のビット演算子は==よりも優先順位が低いことに注意。ビットシフトも含め、ビット操作はとにかく括弧で囲め！
 - ビット操作にはビット列bitsetが便利
@@ -162,6 +173,7 @@
 - ライブラリprime_factorizationとして保存した
 - 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
 - エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
+- X<=10^16の素因数の個数は高々13個（2*3*5*...*41）
 ### 例題
 - !復習価値中（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - !復習価値低 素因数分解というよりnが大きいときのnCrの求め方が肝 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
@@ -1137,6 +1149,7 @@
 - !要復習 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !要復習 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
+- !要復習 最大公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
 
 # 行列
 
@@ -1371,6 +1384,8 @@
 - お行儀の悪い書き方としては、operator<を逆向き"<"で定義してしまうやり方あり。こうすればpriority_que<MYSTRUCT>と定義するだけでよくなり実装は楽
 - 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる
 - 構造体定義の直下でvectorのサイズを定義すると理由不明だがエラーが出る。初期値関連はコンストラクタで初期化する必要がある
+- しかしながら、プログラム中で大量の構造体が使われる場合、vectorを使ってしまうと宣言時に領域を異常に確保してしまうからか、容易にTLEする。サイズが決まっている場合はint d[N]などと配列で準備する必要があるっぽい。正確には理解できていない（例えばこの問題[F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)）
+- 上記はもしかすると動的に確保する領域が散らばったり衝突したりして、アクセスが遅くなっているのかもしれない。あるいは構造体など関係なく、そもそも大量のvectorを定義してしまうと遅くなってしまうのかもしれない
 
 ## set/multiset
 - set.lower_bound(x), set.upper_bound(x)が使えるが、範囲外に注意する事

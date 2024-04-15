@@ -125,60 +125,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-struct WeightedUnionFind {
-    vector<long long> p, num, diff;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
+int NP = 2;
+vector<ll> ps = {998244353, 1000000007, 1000000009, 1000000021, 1000000033};
+// vector<ll> ps = {998244353, 1000000007};
+struct mints {
+    vl d;
+    mints(ll x=0) {
+        d.reserve(NP);
+        rep(i, NP) d.push_back(x%ps[i]);
     }
-    bool merge (long long x, long long y, long long w) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) return w == 0;
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
+    mints operator+ (mints o) const {
+        rep(i, NP) o.d[i] = (d[i] + o.d[i]) % ps[i];
+        return o;
+    }
+    mints operator* (mints o) const {
+        rep(i, NP) o.d[i] = (d[i] * o.d[i]) % ps[i];
+        return o;
+    }
+    mints operator- (const mints &o) const {
+        mints ret;
+        rep(i, NP) ret.d[i] = (d[i] - o.d[i] + ps[i]) % ps[i];
+        return ret;
+    }
+    bool operator== (const mints &o) const {
+        rep(i, NP) if(d[i]!=o.d[i]) return false;
         return true;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
 };
+
+struct S {
+    mints h, d;
+    S() {}
+    S(mints h, mints d): h(h), d(d) {}
+};
+S op(S a, S b) {
+    return S(a.h + b.h*a.d, a.d*b.d);
+}
+S e() {return S(0,1);}
+
+#include <atcoder/all>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vl ans;
-    LONG(N, Q);
-    WeightedUnionFind uf(N);
-    rep(i, Q) {
-        LONG(a, b, d); --a; --b;
-        if (i==13) {
-            cout<<"";
-        }
-        if(!uf.merge(a, b, d)) continue;
-        ans.push_back(i+1);
+    LONG(N, Q); STRING(STR);
+    segtree<S,op,e> segf(N), segr(N);
+    ll x = 12345;
+    rep(i, N) {
+        segf.set(i, S(STR[i], x));
+        segr.set(N-1-i, S(STR[i], x));
     }
-    Out(ans);
+    rep(_, Q) {
+        LONG(t);
+        if (t==1) {
+            LONGM(y); CHAR(c);
+            segf.set(y, S(c, x));
+            segr.set(N-1-y, S(c, x));
+        } else {
+            LONG(l, r); --l;
+            S sf = segf.prod(l, r);
+            S sr = segr.prod(N-r, N-l);
+            if (sf.h == sr.h) puts("Yes");
+            else puts("No");
+        }
+    }
     
 }
 

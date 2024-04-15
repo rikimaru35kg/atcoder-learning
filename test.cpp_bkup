@@ -128,20 +128,42 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    string ans;
+    LONG(N, M, L);
+    vp A, B;
     rep(i, N) {
-        ll m = SIZE(ans);
-        if (m>=2 && S[i]=='C') {
-            if (ans[m-1]=='B' && ans[m-2]=='A') {
-                rep(j, 2) ans.pop_back();
-            } else {
-                ans.push_back(S[i]);
-            }
-        } else {
-            ans.push_back(S[i]);
+        LONG(a);
+        A.emplace_back(a, i);
+    }
+    rep(i, M) {
+        LONG(b);
+        B.emplace_back(b, i);
+    }
+    sort(allr(A)); sort(allr(B));
+    set<Pr> st;
+    rep(i, L) {
+        LONGM(c, d);
+        st.insert({c, d});
+    }
+    queue<Pr> que;
+    set<Pr> used;
+    auto push = [&](ll i, ll j) {
+        if (!used.count({i, j})) {
+            que.emplace(i, j);
+            used.emplace(i, j);
         }
+    };
+    push(0, 0);
+    ll ans = 0;
+    while(que.size()) {
+        auto [i, j] = que.front(); que.pop();
+        auto [a, ai] = A[i];
+        auto [b, bi] = B[j];
+        if(!st.count({ai, bi})) {
+            chmax(ans, a+b);
+            continue;
+        }
+        if(i<N) push(i+1, j);
+        if(j<M) push(i, j+1);
     }
     Out(ans);
     
