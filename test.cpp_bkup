@@ -64,6 +64,7 @@ using cd = complex<double>;
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
+template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -85,9 +86,10 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin 
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-inline ll Percent(ll a, ll b) {return (a%b+b)%b;}
-inline ll Div(ll a, ll b) {return (a-Percent(a,b))/b; }
-inline ll Divceil(ll a, ll b) {return Div(a+b-1, b); }
+inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
@@ -125,6 +127,15 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Vertex {
+    ll a, d, v;
+    Vertex(ll a, ll d, ll v): a(a), d(d), v(v) {};
+    bool operator<(const Vertex &o) const {
+        if(a != o.a) return a > o.a;
+        return d < o.d;
+    };
+};
+
 #include <atcoder/all>
 using namespace atcoder;
 using mint = modint998244353;
@@ -142,24 +153,46 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvm dp(N+1, vm(N+1));
-    vvb mem(N+1, vb(N+1));
-    mint twoi = mint(2).inv();
-    auto f = [&](auto f, ll N, ll i) -> mint {
-        if (mem[N][i]) return dp[N][i];
-        if (N==1) return 1;
-        mint ret;
-        if(i>2) ret += f(f, N, i-1) * twoi;
-        if(i==1) ret += f(f, N, N) * twoi;
-        if(i>1) ret += f(f, N-1, i-1) * twoi;
-        ret *= mint(2).pow(N);
-        ret /= mint(2).pow(N) - 1;
-        mem[N][i] = true;
-        return dp[N][i] = ret;
+    LONG(N, M); VL(A, N);
+    vvl from(N);
+    vp inp;
+    dsu uf(N);
+    rep(i, M) {
+        LONGM(a, b);
+        inp.emplace_back(a, b);
+        if(A[a]==A[b]) uf.merge(a, b);
+    }
+    rep(i, M) {
+        auto [a, b] = inp[i];
+        a = uf.leader(a); b = uf.leader(b);
+        if(A[a]<A[b]) from[a].push_back(b);
+        if(A[b]<A[a]) from[b].push_back(a);
+    }
+    vl dist(N, -1);
+    priority_queue<Vertex> pque;
+    vb used(N);
+    auto push = [&](ll v, ll d) {
+        v = uf.leader(v);
+        if (dist[v] >= d) return;
+        if(used[v]) return;
+        dist[v] = d;
+        pque.emplace(A[v], d, v);
     };
-    f(f, N, 1);
-    Out(dp[N][1]);
+    push(0, 0);
+    while(pque.size()) {
+        auto [a, d, v] = pque.top(); pque.pop();
+        used[v] = true;
+        for (auto nv: from[v]) {
+            push(nv, d+1);
+        }
+    }
+    de(dist)
+    ll f = uf.leader(N-1);
+    ll ans = dist[f];
+    if(ans==-1) ans = 0;
+    else ++ans;
+    Out(ans);
+
     
 }
 

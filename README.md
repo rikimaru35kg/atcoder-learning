@@ -889,6 +889,7 @@
 - 遷移するときのループ分をO(1)で実施する
 - 累積和やセグメント木が使える
 - あるいは状態量を減らす事で高速化できる事もある（DP値がboolなら状態量を1つ減らせるはず）
+- 平方分割を組み合わせて遷移を減らすこともある
 ### 例題
 - !復習価値中 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
 - !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
@@ -897,6 +898,7 @@
 - !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
+- !要復習 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある

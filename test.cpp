@@ -64,6 +64,7 @@ using cd = complex<double>;
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
+template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -126,13 +127,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(a, b);
-    de(Percent(a,b))
-    de(Div(a,b))
-    de(Divceil(a,b))
+    ll D = 400;
+    LONG(N); VL(A, N);
+    vvm s(D, vm(N));
+    vm dp(N);
+    dp[0] = 1;
+    rep(i, N) {
+        rep(j, D) dp[i] += s[j][i];
+        rep(j, D) {
+            if(i+j<N) s[j][i+j] += s[j][i];
+        }
+        if(A[i]<D) {
+            if(i+A[i]<N) s[A[i]][i+A[i]] += dp[i];
+        } else {
+            for(int j=i+A[i]; j<N; j+=A[i]) {
+                dp[j] += dp[i];
+            }
+        }
+    }
+    mint ans = 0;
+    rep(i, N) ans += dp[i];
+    Out(ans);
     
 }
 

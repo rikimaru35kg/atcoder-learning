@@ -68,6 +68,7 @@ using cd = complex<double>;
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
+template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
