@@ -1086,7 +1086,7 @@
 
 # セグメントツリー（Segment tree）
 - atcoder libraryで使える
-- 区間更新・加算、区間min・max・和取得などができる（遅延評価セグメントツリー）
+- 一点更新、区間min・max・和取得などができる（遅延評価セグメントツリー）
 - モノイドであればセグ木にのる
 - セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
 ### 例題
@@ -1096,8 +1096,18 @@
 - !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
 - !要復習 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+
+## 遅延伝播セグメントツリー（Lazy segment tree）
+- セグメント木に加え、区間更新が可能
+- 上側更新はO(logN)だが、下側更新は計算量が多いので、更新は最大区間で止めて必要になった時に下側に伝播させる
+- 更新（＝作用）を組み合わせられる必要があるので、作用素モノイドが必要
+- 作用素モノイドは結合律に加え、合成できる事が必要
+- なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
+### 例題
 - !要復習 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
 - !要復習 高難度 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
+- !要復習 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
+
 
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける

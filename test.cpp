@@ -125,71 +125,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-int NP = 2;
-vector<ll> ps = {998244353, 1000000007, 1000000009, 1000000021, 1000000033};
-// vector<ll> ps = {998244353, 1000000007};
-struct mints {
-    vl d;
-    mints(ll x=0) {
-        d.reserve(NP);
-        rep(i, NP) d.push_back(x%ps[i]);
-    }
-    mints operator+ (mints o) const {
-        rep(i, NP) o.d[i] = (d[i] + o.d[i]) % ps[i];
-        return o;
-    }
-    mints operator* (mints o) const {
-        rep(i, NP) o.d[i] = (d[i] * o.d[i]) % ps[i];
-        return o;
-    }
-    mints operator- (const mints &o) const {
-        mints ret;
-        rep(i, NP) ret.d[i] = (d[i] - o.d[i] + ps[i]) % ps[i];
-        return ret;
-    }
-    bool operator== (const mints &o) const {
-        rep(i, NP) if(d[i]!=o.d[i]) return false;
-        return true;
-    }
-};
-
-struct S {
-    mints h, d;
-    S() {}
-    S(mints h, mints d): h(h), d(d) {}
-};
-S op(S a, S b) {
-    return S(a.h + b.h*a.d, a.d*b.d);
-}
-S e() {return S(0,1);}
-
 #include <atcoder/all>
 using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using S = mint;
+S op(S a, S b) {return 0;}
+S e() {return 100;}
+struct F {
+    mint a, b;
+    F(mint a, mint b): a(a), b(b) {};
+};
+S mapping(F f, S x) {
+    return f.a*x + f.b;
+}
+F composition(F f, F g) {
+    return F(f.a*g.a, f.a*g.b + f.b);
+}
+F id() {return F(1,0);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q); STRING(STR);
-    segtree<S,op,e> segf(N), segr(N);
-    ll x = 12345;
+    LONG(N, M);
+    VL(A, N);
+    vm init(N);
+    rep(i, N) init[i] = A[i];
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    rep(_, M) {
+        LONG(l, r, x); --l;
+        mint p = mint(1)/(r-l);
+        seg.apply(l, r, F(1-p, p*x));
+    }
+    vm ans;
     rep(i, N) {
-        segf.set(i, S(STR[i], x));
-        segr.set(N-1-i, S(STR[i], x));
+        ans.push_back(seg.get(i));
     }
-    rep(_, Q) {
-        LONG(t);
-        if (t==1) {
-            LONGM(y); CHAR(c);
-            segf.set(y, S(c, x));
-            segr.set(N-1-y, S(c, x));
-        } else {
-            LONG(l, r); --l;
-            S sf = segf.prod(l, r);
-            S sr = segr.prod(N-r, N-l);
-            if (sf.h == sr.h) puts("Yes");
-            else puts("No");
-        }
-    }
+    Out(ans);
     
 }
 

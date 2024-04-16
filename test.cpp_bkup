@@ -128,45 +128,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, L);
-    vp A, B;
-    rep(i, N) {
-        LONG(a);
-        A.emplace_back(a, i);
+    LONG(N, D);
+    VD(W, N);
+    double ave = 0;
+    rep(i, N) ave += W[i];
+    ave /= D;
+    vd ws(1<<N);
+    rep(s, 1<<N) {
+        rep(i, N) if(s>>i&1) ws[s]+=W[i];
     }
-    rep(i, M) {
-        LONG(b);
-        B.emplace_back(b, i);
-    }
-    sort(allr(A)); sort(allr(B));
-    set<Pr> st;
-    rep(i, L) {
-        LONGM(c, d);
-        st.insert({c, d});
-    }
-    queue<Pr> que;
-    set<Pr> used;
-    auto push = [&](ll i, ll j) {
-        if (!used.count({i, j})) {
-            que.emplace(i, j);
-            used.emplace(i, j);
-        }
+    auto p2=[&](double s) ->double{
+        return s*s;
     };
-    push(0, 0);
-    ll ans = 0;
-    while(que.size()) {
-        auto [i, j] = que.front(); que.pop();
-        auto [a, ai] = A[i];
-        auto [b, bi] = B[j];
-        if(!st.count({ai, bi})) {
-            chmax(ans, a+b);
-            continue;
+    vvd dp(D+1, vd(1<<N, INF));
+    dp[0][(1<<N)-1] = 0;
+    rep(i, D) for(ll s=(1<<N)-1; s>=0; --s) {
+        for(ll t=s; t>=0; t=(t-1)&s) {
+            chmin(dp[i+1][t], dp[i][s]+ p2(ws[s^t]-ave));
+            if(t==0) break;
         }
-        if(i<N) push(i+1, j);
-        if(j<M) push(i, j+1);
     }
+    double ans = dp[D][0];
+    ans /= D;
     Out(ans);
-    
 }
 
 // ### test.cpp ###
