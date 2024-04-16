@@ -1489,6 +1489,8 @@
 - [D - Merge Slimes](https://atcoder.jp/contests/abc323/tasks/abc323_d)
 - [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - [E - Modulo MST](https://atcoder.jp/contests/abc328/tasks/abc328_e)
+- [D - Pyramid](https://atcoder.jp/contests/abc336/tasks/abc336_d)
+- [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

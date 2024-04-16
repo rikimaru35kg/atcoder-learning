@@ -127,43 +127,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll D = 400;
-    LONG(N); VL(A, N);
-    vvm s(D, vm(N));
-    vm dp(N);
-    dp[0] = 1;
-    rep(i, N) {
-        rep(j, D) dp[i] += s[j][i];
-        rep(j, D) {
-            if(i+j<N) s[j][i+j] += s[j][i];
-        }
-        if(A[i]<D) {
-            if(i+A[i]<N) s[A[i]][i+A[i]] += dp[i];
-        } else {
-            for(int j=i+A[i]; j<N; j+=A[i]) {
-                dp[j] += dp[i];
-            }
-        }
+    LONG(N);
+    ll d = 0;
+    ll _N = N;
+    vl ns;
+    while(_N) {
+        d++;
+        ns.push_back(_N%10);
+        _N /= 10;
     }
-    mint ans = 0;
-    rep(i, N) ans += dp[i];
+    reverse(all(ns));
+
+    ll ten = 1;
+    rep(i, d-1) ten *= 10;
+
+    ll M = 140;
+    ll ans = 0;
+    rep1(k, M) {
+        vvvl dp(k, vvl(k+1, vl(2)));
+        dp[0][0][0] = 1;
+        ll _ten = ten;
+        rep(i, d) {
+            vvvl pdp(k, vvl(k+1, vl(2)));
+            swap(pdp, dp);
+            rep(m, k) rep(z, k+1) rep(x, 10) {
+                if (z+x>k) continue;
+                if (pdp[m][z][0]==0 && pdp[m][z][1]==0) continue;
+                ll nm = (m+_ten*x)%k;
+                if (x<ns[i]) dp[nm][z+x][1] += pdp[m][z][0];
+                if (x==ns[i]) dp[nm][z+x][0] += pdp[m][z][0];
+                dp[nm][z+x][1] += pdp[m][z][1];
+            }
+            _ten /= 10;
+        }
+        ans += max(dp[0][k][0] + dp[0][k][1], 0LL);
+    }
     Out(ans);
     
 }
