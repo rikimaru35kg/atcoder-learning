@@ -85,9 +85,10 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin 
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-inline ll Percent(ll a, ll b) {return (a%b+b)%b;}
-inline ll Div(ll a, ll b) {return (a-Percent(a,b))/b; }
-inline ll Divceil(ll a, ll b) {return Div(a+b-1, b); }
+inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
@@ -125,53 +126,13 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-using S = mint;
-S op(S a, S b) {return 0;}
-S e() {return 100;}
-struct F {
-    mint a, b;
-    F(mint a, mint b): a(a), b(b) {};
-};
-S mapping(F f, S x) {
-    return f.a*x + f.b;
-}
-F composition(F f, F g) {
-    return F(f.a*g.a, f.a*g.b + f.b);
-}
-F id() {return F(1,0);}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vm init(N);
-    rep(i, N) init[i] = A[i];
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-    rep(_, M) {
-        LONG(l, r, x); --l;
-        mint p = mint(1)/(r-l);
-        seg.apply(l, r, F(1-p, p*x));
-    }
-    vm ans;
-    rep(i, N) {
-        ans.push_back(seg.get(i));
-    }
-    Out(ans);
+    LONG(a, b);
+    de(Percent(a,b))
+    de(Div(a,b))
+    de(Divceil(a,b))
     
 }
 

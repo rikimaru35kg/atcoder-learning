@@ -125,32 +125,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    VD(W, N);
-    double ave = 0;
-    rep(i, N) ave += W[i];
-    ave /= D;
-    vd ws(1<<N);
-    rep(s, 1<<N) {
-        rep(i, N) if(s>>i&1) ws[s]+=W[i];
-    }
-    auto p2=[&](double s) ->double{
-        return s*s;
+    LONG(N);
+    vvm dp(N+1, vm(N+1));
+    vvb mem(N+1, vb(N+1));
+    mint twoi = mint(2).inv();
+    auto f = [&](auto f, ll N, ll i) -> mint {
+        if (mem[N][i]) return dp[N][i];
+        if (N==1) return 1;
+        mint ret;
+        if(i>2) ret += f(f, N, i-1) * twoi;
+        if(i==1) ret += f(f, N, N) * twoi;
+        if(i>1) ret += f(f, N-1, i-1) * twoi;
+        ret *= mint(2).pow(N);
+        ret /= mint(2).pow(N) - 1;
+        mem[N][i] = true;
+        return dp[N][i] = ret;
     };
-    vvd dp(D+1, vd(1<<N, INF));
-    dp[0][(1<<N)-1] = 0;
-    rep(i, D) for(ll s=(1<<N)-1; s>=0; --s) {
-        for(ll t=s; t>=0; t=(t-1)&s) {
-            chmin(dp[i+1][t], dp[i][s]+ p2(ws[s^t]-ave));
-            if(t==0) break;
-        }
-    }
-    double ans = dp[D][0];
-    ans /= D;
-    Out(ans);
+    f(f, N, 1);
+    Out(dp[N][1]);
+    
 }
 
 // ### test.cpp ###
