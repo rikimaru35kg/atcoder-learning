@@ -812,6 +812,7 @@
 - !復習価値中 bit DPである事を見抜くのが難しい [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
 - !要復習 bit DPである事を見抜くのが難しい2 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 - !要復習 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
+- !要復習 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 
 ## 桁DP（Digit DP）
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく

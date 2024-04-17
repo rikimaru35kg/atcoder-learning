@@ -130,24 +130,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(Q, N); VL(A, N); VL(B, N);
-    ll ans = 0;
-    rep(a, 1e6+10) {
-        vl nq = Q;
-        bool ok = true;
-        rep(i, N) {
-            nq[i] -= a*A[i];
-            ok &= nq[i]>=0;
-        }
-        if(!ok) break;
-        ll b = INF;
-        rep(i, N) {
-            if(B[i]==0) continue;
-            chmin(b, nq[i]/B[i]);
-        }
-        chmax(ans, a+b);
+    LONG(N, M);
+    vvl dist(N, vl(N, INF));
+    rep(i, N) dist[i][i] = 0;
+    rep(i, M) {
+        LONGM(u, v); LONG(w);
+        dist[u][v] = w;
     }
+    rep(k,N)rep(i,N)rep(j,N) {
+        if(dist[i][k]==INF || dist[k][j]==INF) continue;
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
+    }
+    vvl dp(1<<N, vl(N, INF));
+    rep(i, N) dp[1<<i][i] = 0;
+    rep(s, 1<<N) rep(i, N) {
+        if(~s>>i&1) continue;
+        if(dp[s][i]==INF) continue;
+        rep(j, N) {
+            if (s>>j&1) continue;
+            if(dist[i][j]==INF) continue;
+            ll ns = s|1<<j;
+            chmin(dp[ns][j], dp[s][i] + dist[i][j]);
+        }
+    }
+    de(dist)
+    ll ans = INF;
+    rep(i, N) chmin(ans, dp[(1<<N)-1][i]);
+    if(ans==INF) PNo
     Out(ans);
     
 }
