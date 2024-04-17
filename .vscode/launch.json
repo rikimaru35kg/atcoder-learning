@@ -8,14 +8,23 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
+      // ENABLE THIS LINE IF YOU WANTS TO USE EXTERNAL FILE AS INPUT.
       // "args": ["<", "${fileDirname}/in"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-    //   "program": "${fileDirname}/${fileBasenameNoExtension}",
+      //   "program": "${fileDirname}/${fileBasenameNoExtension}",
       "program": "${fileDirname}/a.out",
       "internalConsoleOptions": "openOnSessionStart",
-      "MIMode": "gdb",
+      // this linux block is needed to show contents of vectors.
+      "linux": {
+          "MIMode": "gdb",
+          "setupCommands": [
+              { "text": "-enable-pretty-printing", "description": "enable pretty printing", "ignoreFailures": true },
+              { "text": "handle SIGPIPE nostop noprint pass", "description": "ignore SIGPIPE", "ignoreFailures": true }  
+          ]
+      },
+      // "MIMode": "gdb",
       "preLaunchTask": "C/C++: g++ build active file",
       "miDebuggerPath": "/usr/bin/gdb",
       "externalConsole": false

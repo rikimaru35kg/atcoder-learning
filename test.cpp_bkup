@@ -131,41 +131,23 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    ll d = 0;
-    ll _N = N;
-    vl ns;
-    while(_N) {
-        d++;
-        ns.push_back(_N%10);
-        _N /= 10;
-    }
-    reverse(all(ns));
-
-    ll ten = 1;
-    rep(i, d-1) ten *= 10;
-
-    ll M = 140;
-    ll ans = 0;
-    rep1(k, M) {
-        vvvl dp(k, vvl(k+1, vl(2)));
-        dp[0][0][0] = 1;
-        ll _ten = ten;
-        rep(i, d) {
-            vvvl pdp(k, vvl(k+1, vl(2)));
-            swap(pdp, dp);
-            rep(m, k) rep(z, k+1) rep(x, 10) {
-                if (z+x>k) continue;
-                if (pdp[m][z][0]==0 && pdp[m][z][1]==0) continue;
-                ll nm = (m+_ten*x)%k;
-                if (x<ns[i]) dp[nm][z+x][1] += pdp[m][z][0];
-                if (x==ns[i]) dp[nm][z+x][0] += pdp[m][z][0];
-                dp[nm][z+x][1] += pdp[m][z][1];
-            }
-            _ten /= 10;
+    ll M = 1;
+    while((1<<M)<N) ++M;
+    cout<<M<<endl;
+    ll k = 1<<(M-1);
+    rep(i, M) {
+        vl js;
+        rep(p, N) {
+            if((p/k)%2!=0) js.push_back(p+1);
         }
-        ans += max(dp[0][k][0] + dp[0][k][1], 0LL);
+        cout<<SIZE(js);
+        rep(j, SIZE(js)) cout<<' '<<js[j];
+        cout<<endl;
+        k >>= 1;
     }
-    Out(ans);
+    STRING(S);
+    ll ls = stoll(S, 0, 2);
+    Out(ls+1);
     
 }
 

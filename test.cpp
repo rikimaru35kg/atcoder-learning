@@ -130,44 +130,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    VS(S, H);
-    auto cnt = [&](vs &s) -> ll {
-        ll h = SIZE(s), w = SIZE(s[0]);
-        de(h)de(w)
-        if (w < K) return INF;
-        ll ret = INF;
-        rep(i, h) {
-            ll cnto = 0, cntx = 0;
-            rep(j, K) {
-                if(s[i][j] == 'o') ++cnto;
-                if(s[i][j] == 'x') ++cntx;
-            }
-            rep(l, w-K+1) {
-                ll r = l + K;
-                if (cntx == 0) { chmin(ret, K - cnto); }
-                if (s[i][l] == 'o') --cnto;
-                if (s[i][l] == 'x') --cntx;
-                if (r >= w) break;
-                if (s[i][r] == 'o') ++cnto;
-                if (s[i][r] == 'x') ++cntx;
-            }
+    LONG(N);
+    VL(Q, N); VL(A, N); VL(B, N);
+    ll ans = 0;
+    rep(a, 1e6+10) {
+        vl nq = Q;
+        bool ok = true;
+        rep(i, N) {
+            nq[i] -= a*A[i];
+            ok &= nq[i]>=0;
         }
-        return ret;
-    };
-    ll ans = INF;
-    rep(ri, 2) {
-        chmin(ans, cnt(S));
-        ll h = SIZE(S), w = SIZE(S[0]);
-        vs ns(w, string(h, '.'));
-        rep(i, w) rep(j, h)  {
-            ns[i][j] = S[j][i];
+        if(!ok) break;
+        ll b = INF;
+        rep(i, N) {
+            if(B[i]==0) continue;
+            chmin(b, nq[i]/B[i]);
         }
-        S = ns;
+        chmax(ans, a+b);
     }
-    ch1(ans);
     Out(ans);
-
     
 }
 
