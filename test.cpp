@@ -130,42 +130,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll d = 0;
-    ll _N = N;
-    vl ns;
-    while(_N) {
-        d++;
-        ns.push_back(_N%10);
-        _N /= 10;
-    }
-    reverse(all(ns));
-
-    ll ten = 1;
-    rep(i, d-1) ten *= 10;
-
-    ll M = 140;
-    ll ans = 0;
-    rep1(k, M) {
-        vvvl dp(k, vvl(k+1, vl(2)));
-        dp[0][0][0] = 1;
-        ll _ten = ten;
-        rep(i, d) {
-            vvvl pdp(k, vvl(k+1, vl(2)));
-            swap(pdp, dp);
-            rep(m, k) rep(z, k+1) rep(x, 10) {
-                if (z+x>k) continue;
-                if (pdp[m][z][0]==0 && pdp[m][z][1]==0) continue;
-                ll nm = (m+_ten*x)%k;
-                if (x<ns[i]) dp[nm][z+x][1] += pdp[m][z][0];
-                if (x==ns[i]) dp[nm][z+x][0] += pdp[m][z][0];
-                dp[nm][z+x][1] += pdp[m][z][1];
+    LONG(H, W, K);
+    VS(S, H);
+    auto cnt = [&](vs &s) -> ll {
+        ll h = SIZE(s), w = SIZE(s[0]);
+        de(h)de(w)
+        if (w < K) return INF;
+        ll ret = INF;
+        rep(i, h) {
+            ll cnto = 0, cntx = 0;
+            rep(j, K) {
+                if(s[i][j] == 'o') ++cnto;
+                if(s[i][j] == 'x') ++cntx;
             }
-            _ten /= 10;
+            rep(l, w-K+1) {
+                ll r = l + K;
+                if (cntx == 0) { chmin(ret, K - cnto); }
+                if (s[i][l] == 'o') --cnto;
+                if (s[i][l] == 'x') --cntx;
+                if (r >= w) break;
+                if (s[i][r] == 'o') ++cnto;
+                if (s[i][r] == 'x') ++cntx;
+            }
         }
-        ans += max(dp[0][k][0] + dp[0][k][1], 0LL);
+        return ret;
+    };
+    ll ans = INF;
+    rep(ri, 2) {
+        chmin(ans, cnt(S));
+        ll h = SIZE(S), w = SIZE(S[0]);
+        vs ns(w, string(h, '.'));
+        rep(i, w) rep(j, h)  {
+            ns[i][j] = S[j][i];
+        }
+        S = ns;
     }
+    ch1(ans);
     Out(ans);
+
     
 }
 

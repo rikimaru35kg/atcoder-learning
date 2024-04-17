@@ -130,28 +130,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl lft(N), rht(N);
-    rep(ri, 2) {
-        lft[0] = 1;
-        repk(i, 1, N-1) {
-            if(A[i]>lft[i-1]) {
-                lft[i] = lft[i-1]+1;
-            } else if (A[i] == lft[i-1]) {
-                lft[i] = lft[i-1];
-            } else {
-                lft[i] = A[i];
-            }
-        }
-        reverse(all(A));
-        swap(lft, rht);
+    LONG(N);
+    ll d = 0;
+    ll _N = N;
+    vl ns;
+    while(_N) {
+        d++;
+        ns.push_back(_N%10);
+        _N /= 10;
     }
-    vl cp = rht;
-    rep(i, N) rht[i] = cp[N-1-i];
-    ll ans = 1;
-    rep(i, N) {
-        ll mn = min(lft[i], rht[i]);
-        chmax(ans, mn);
+    reverse(all(ns));
+
+    ll ten = 1;
+    rep(i, d-1) ten *= 10;
+
+    ll M = 140;
+    ll ans = 0;
+    rep1(k, M) {
+        vvvl dp(k, vvl(k+1, vl(2)));
+        dp[0][0][0] = 1;
+        ll _ten = ten;
+        rep(i, d) {
+            vvvl pdp(k, vvl(k+1, vl(2)));
+            swap(pdp, dp);
+            rep(m, k) rep(z, k+1) rep(x, 10) {
+                if (z+x>k) continue;
+                if (pdp[m][z][0]==0 && pdp[m][z][1]==0) continue;
+                ll nm = (m+_ten*x)%k;
+                if (x<ns[i]) dp[nm][z+x][1] += pdp[m][z][0];
+                if (x==ns[i]) dp[nm][z+x][0] += pdp[m][z][0];
+                dp[nm][z+x][1] += pdp[m][z][1];
+            }
+            _ten /= 10;
+        }
+        ans += max(dp[0][k][0] + dp[0][k][1], 0LL);
     }
     Out(ans);
     
