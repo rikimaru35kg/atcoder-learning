@@ -127,22 +127,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl A(2*N);
+    LONG(N, D);
+    VL(A, N);
+    ll M = 1e6;
+    segtree<S,op,e> seg(M);
     rep(i, N) {
-        LONGM(a, b);
-        A[a] = i, A[b] = i;
+        ll a = A[i];
+        ll l = a - D, r = a + D + 1;
+        chmax(l, 0LL); chmin(r, M);
+        ll mx = seg.prod(l, r) + 1;
+        seg.set(a, mx);
     }
-    vl stck;
-    rep(i, N*2) {
-        if(!stck.size()) stck.push_back(A[i]);
-        else if (stck.back() == A[i]) stck.pop_back();
-        else stck.push_back(A[i]);
-    }
-    if(stck.size()==0) PNo PYes
+    ll ans = seg.all_prod();
+    Out(ans);
     
 }
 

@@ -30,13 +30,23 @@ INF = int(3e18)
 from collections import deque
 
 def main():
-    N, X = inints()
-    S = input()
-    for c in S:
-        if (c=='L'): X = 2*X
-        if (c=='R'): X = 2*X + 1
-        if (c=='U'): X = X//2
-    print(X)
+    N = inint()
+    A = []
+    dct = {}
+    for i in range(N):
+        a = inint()
+        A.append(a)
+        if(a in dct.keys()): dct[a] += 1
+        else: dct[a] = 1
+    import itertools as itt
+    ans = 0
+    for i,j in itt.product(range(N),range(N)):
+        b = A[i] * A[j]
+        if(b not in dct.keys()): continue
+        ans += dct[b]
+    print(ans)
+
+
 
 if __name__ == '__main__':
     main()

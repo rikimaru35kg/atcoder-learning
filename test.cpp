@@ -130,34 +130,46 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
-    rep(i, M) {
-        LONGM(u, v); LONG(w);
-        dist[u][v] = w;
-    }
-    rep(k,N)rep(i,N)rep(j,N) {
-        if(dist[i][k]==INF || dist[k][j]==INF) continue;
-        chmin(dist[i][j], dist[i][k] + dist[k][j]);
-    }
-    vvl dp(1<<N, vl(N, INF));
-    rep(i, N) dp[1<<i][i] = 0;
-    rep(s, 1<<N) rep(i, N) {
-        if(~s>>i&1) continue;
-        if(dp[s][i]==INF) continue;
-        rep(j, N) {
-            if (s>>j&1) continue;
-            if(dist[i][j]==INF) continue;
-            ll ns = s|1<<j;
-            chmin(dp[ns][j], dp[s][i] + dist[i][j]);
+    LONG(N); VS(S, N);
+    ll M = 10;
+    vl ps;
+    ll st = 1e9;
+    auto isprime=[&](ll p) {
+        for (ll x=2; x*x<=p; ++x) {
+            if (p%x==0) return false;
         }
+        return true;
+    };
+    while(SIZE(ps)<M) {
+        if (isprime(st)) ps.push_back(st);
+        ++st;
     }
-    de(dist)
-    ll ans = INF;
-    rep(i, N) chmin(ans, dp[(1<<N)-1][i]);
-    if(ans==INF) PNo
+    auto getp=[&](string s, ll p) -> ll {
+        ll ret = 0;
+        ll n = SIZE(s);
+        rep(i, n) {
+            ll x = s[i] - '0';
+            ret = (ret*10 + x) % p;
+        }
+        return ret;
+    };
+    vvl A(N, vl(M));
+    rep(i, N) rep(j, M) {
+        A[i][j] = getp(S[i], ps[j]);
+    }
+    map<vl,ll> mp;
+    rep(i, N) { mp[A[i]]++; }
+
+    ll ans = 0;
+    rep(i, N) rep(j, N) {
+        vl C(M);
+        rep(k, M) {
+            C[k] = A[i][k] * A[j][k] % ps[k];
+        }
+        ans += mp[C];
+    }
     Out(ans);
+
     
 }
 
