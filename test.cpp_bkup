@@ -127,34 +127,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    ll lc = lcm(N, M);
-
-    auto f = [&](ll x) -> bool {
-        ll cnt = 0;
-        cnt += x/N;
-        cnt += x/M;
-        cnt -= 2*(x/lc);
-        de(x)de(cnt)
-        if(cnt>=K) return true;
-        else return false;
+    LONG(N, T);
+    map<ll,ll> mp;
+    mp[0] = N;
+    vl A(N);
+    auto add = [&](ll i, ll ad=1) {
+        mp[A[i]] += ad;
+        if(mp[A[i]]==0) mp.erase(A[i]);
     };
-    de(f(9))
-
-    ll ans = binary_search(INF, 0, f);
-    Out(ans);
+    auto del = [&](ll i) { add(i, -1); };
+    rep(i, T) {
+        LONG(a, b); --a;
+        del(a);
+        A[a] += b;
+        add(a);
+        Out(SIZE(mp));
+    }
     
 }
 

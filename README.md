@@ -1394,7 +1394,8 @@
 - 2次元配列をIDに変える場合は x * W + yでhash化すれば良い。ただし、Wはyの範囲であることに注意！
 - 隣接行列などは、Nが大きいとMLE（あるいは初期化時にTLE）するので要注意
 - vec.size()はunsignedなので、それ同士を引き算してもマイナスにならない（SIZEマクロでll型に変更推奨）
-- 数列各要素を±のどちらかにして総和を求める問題は、dp[i][j]=｛iまで見て総和がjになればtrue｝とするのが定石だが、dp[i]=bitsetとすると、dp[i+1] |= dp[i]<<A[i]、dp[i+1] |= dp[i]>>A[i]でOKなのでいちいちループを回さずに済むので楽（https://www.youtube.com/watch?v=tNyPYIhy9MsのE問題解説コードが参考になる）
+- 数列各要素を±のどちらかにして総和を求める問題は、dp[i][j]=｛iまで見て総和がjになればtrue｝とするのが定石だが、dp[i]=bitsetとすると、dp[i+1] |= dp[i]<<A[i]、dp[i+1] |= dp[i]>>A[i]でOKなのでいちいちループを回さずに済むので楽（[こちら](https://www.youtube.com/watch?v=tNyPYIhy9Ms)のE問題解説コードが参考になる）
+- vectorを大量に定義すると実行時間制限の厳しい問題ではTLEする可能性あり。長さ固定ならstructを定義する等した方がよい（[TLEする例](https://atcoder.jp/contests/abc343/submissions/52479159)）
 
 ## 構造体
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
@@ -1501,6 +1502,7 @@
 - [E - Modulo MST](https://atcoder.jp/contests/abc328/tasks/abc328_e)
 - [D - Pyramid](https://atcoder.jp/contests/abc336/tasks/abc336_d)
 - [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
+- [C - Many Replacement](https://atcoder.jp/contests/abc342/tasks/abc342_c)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

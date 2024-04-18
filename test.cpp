@@ -127,62 +127,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    STRING(S);
-    fenwick_tree<ll> ft(N+1);
-    rep(i, N-1) {
-        if(S[i]!=S[i+1]) ft.add(i+1, 0);
-        else ft.add(i+1, 1);
-    }
-    auto rev = [&](ll i) {
-        ll x = ft.sum(i,i+1);
-        if(x==0) ft.add(i, 1);
-        else ft.add(i, -1);
-    };
-    auto dprint=[&](){
-    #ifdef __DEBUG
-        rep(i, N) {
-            cerr<<   <<' ';
+    LONG(V1, V2, V3);
+    // if(V1 != 7*7*7*3 - 2*V2 - 3*V3) PNo
+
+    auto get = [&](vl &v) {
+        ll n = SIZE(v);
+        ll lx = -INF, rx = INF;
+        rep(i, n) {
+            chmax(lx, v[i]);
+            chmin(rx, v[i]);
         }
-        cerr<<endl;
-    #endif
+        return max(rx+7-lx,0LL);
     };
-    rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(l, r); --l;
-            rev(l); rev(r);
-        } else {
-            LONGM(l, r);
-            if(l==r) {
-                puts("Yes");
-                continue;
+
+    ll x1=0, y1=0, z1=0;
+    repk(x2, -7, 8) repk(y2, -7, 8) repk(z2, -7, 8) 
+    repk(x3, -7, 8) repk(y3, -7, 8) repk(z3, -7, 8) {
+        vl xs = {x1, x2, x3};
+        vl ys = {y1, y2, y3};
+        vl zs = {z1, z2, z3};
+        ll v1=0, v2=0, v3 = 0;
+        { //v3
+            v3 = get(xs)*get(ys)*get(zs);
+            if (v3 != V3) continue;
+        }
+        { //v2
+            repk (i, 1, 3) rep(j, i) {
+                v2 += get({xs[i],xs[j]}) * get({ys[i],ys[j]}) * get({zs[i],zs[j]});
             }
-            ll x = ft.sum(l+1, r+1);
-            if(x==0) puts("Yes");
-            else puts("No");
+            v2 -= 3*v3;
+            if(v2 != V2) continue;
         }
-        print();
+        { //v1
+            v1 = 1029 - 2*v2 - 3*v3;
+            if (v1 == V1) {
+                puts("Yes");
+                vl ans;
+                rep(i, 3) {
+                    ans.push_back(xs[i]);
+                    ans.push_back(ys[i]);
+                    ans.push_back(zs[i]);
+                }
+                Out(ans);
+                return 0;
+            }
+        }
     }
-
-
+    PNo
     
 }
 
