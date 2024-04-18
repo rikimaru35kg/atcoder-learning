@@ -127,49 +127,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+class SpanBIT {
+    long long size;
+    vector<long long> bit;
+    void _add (long long i, long long x) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
+        ++i;
+        for (; i<size; i+=i&-i) bit[i] += x;
+    }
+    long long _sum (long long i) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
+        ++i;
+        long long ret = 0;
+        for (; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+public:
+    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    void add (long long l, long long r, long long x) { // [l,r)
+        if(l<=r) {_add(l, x); _add(r, -x);}
+        else {
+            _add(l, x); _add(size-2, -x);
+            _add(0, x); _add(r, -x);
+        }
+    }
+    long long get (long long i) {
+        return _sum(i);
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VS(S, N);
-    ll M = 10;
-    vl ps;
-    ll st = 1e9;
-    auto isprime=[&](ll p) {
-        for (ll x=2; x*x<=p; ++x) {
-            if (p%x==0) return false;
-        }
-        return true;
-    };
-    while(SIZE(ps)<M) {
-        if (isprime(st)) ps.push_back(st);
-        ++st;
-    }
-    auto getp=[&](string s, ll p) -> ll {
-        ll ret = 0;
-        ll n = SIZE(s);
-        rep(i, n) {
-            ll x = s[i] - '0';
-            ret = (ret*10 + x) % p;
-        }
-        return ret;
-    };
-    vvl A(N, vl(M));
-    rep(i, N) rep(j, M) {
-        A[i][j] = getp(S[i], ps[j]);
-    }
-    map<vl,ll> mp;
-    rep(i, N) { mp[A[i]]++; }
+    LONG(N, M);
+    VL(A, N); VL(B, M);
 
-    ll ans = 0;
-    rep(i, N) rep(j, N) {
-        vl C(M);
-        rep(k, M) {
-            C[k] = A[i][k] * A[j][k] % ps[k];
-        }
-        ans += mp[C];
+    SpanBIT ft(N);
+    rep(i, N) { ft.add(i, i+1, A[i]); }
+    rep(i, M) {
+        ll b = B[i];
+        ll n = ft.get(b);
+        ft.add(b, b+1, -n);
+
+        ll c = n/N;
+        ft.add(0, N, c);
+
+        ll rem = n%N;
+        ll l = (b+1)%N, r = (b+rem+1)%N;
+        ft.add(l, r, 1);
+    }
+    vl ans;
+    rep(i, N) {
+        ll x = ft.get(i);
+        ans.push_back(x);
     }
     Out(ans);
-
     
 }
 
