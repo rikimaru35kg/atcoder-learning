@@ -1395,7 +1395,7 @@
 - 隣接行列などは、Nが大きいとMLE（あるいは初期化時にTLE）するので要注意
 - vec.size()はunsignedなので、それ同士を引き算してもマイナスにならない（SIZEマクロでll型に変更推奨）
 - 数列各要素を±のどちらかにして総和を求める問題は、dp[i][j]=｛iまで見て総和がjになればtrue｝とするのが定石だが、dp[i]=bitsetとすると、dp[i+1] |= dp[i]<<A[i]、dp[i+1] |= dp[i]>>A[i]でOKなのでいちいちループを回さずに済むので楽（[こちら](https://www.youtube.com/watch?v=tNyPYIhy9Ms)のE問題解説コードが参考になる）
-- vectorを大量に定義すると実行時間制限の厳しい問題ではTLEする可能性あり。長さ固定ならstructを定義する等した方がよい（[TLEする例](https://atcoder.jp/contests/abc343/submissions/52479159)）
+- vectorを大量に定義すると実行時間制限の厳しい問題ではTLEする可能性あり。特に長さの短いvectorだと何回も定義しがちなので注意。長さ固定ならstructを定義する等した方がよい（[TLEする例](https://atcoder.jp/contests/abc343/submissions/52479159)）
 
 ## 構造体
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
@@ -1532,3 +1532,4 @@
 - [F - Shortcuts](https://atcoder.jp/contests/abc315/tasks/abc315_f)
 - [F - Push and Carry](https://atcoder.jp/contests/abc323/tasks/abc323_f)
 - [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
+- [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)

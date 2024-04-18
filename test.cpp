@@ -130,53 +130,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(V1, V2, V3);
-    // if(V1 != 7*7*7*3 - 2*V2 - 3*V3) PNo
-
-    auto get = [&](vl &v) {
-        ll n = SIZE(v);
-        ll lx = -INF, rx = INF;
-        rep(i, n) {
-            chmax(lx, v[i]);
-            chmin(rx, v[i]);
+    STRING(T);
+    ll M = SIZE(T);
+    LONG(N);
+    vvs S(N);
+    rep(i, N) {
+        LONG(a);
+        rep(j, a) {
+            STRING(_str);
+            S[i].push_back(_str);
         }
-        return max(rx+7-lx,0LL);
-    };
-
-    ll x1=0, y1=0, z1=0;
-    repk(x2, -7, 8) repk(y2, -7, 8) repk(z2, -7, 8) 
-    repk(x3, -7, 8) repk(y3, -7, 8) repk(z3, -7, 8) {
-        vl xs = {x1, x2, x3};
-        vl ys = {y1, y2, y3};
-        vl zs = {z1, z2, z3};
-        ll v1=0, v2=0, v3 = 0;
-        { //v3
-            v3 = get(xs)*get(ys)*get(zs);
-            if (v3 != V3) continue;
-        }
-        { //v2
-            repk (i, 1, 3) rep(j, i) {
-                v2 += get({xs[i],xs[j]}) * get({ys[i],ys[j]}) * get({zs[i],zs[j]});
-            }
-            v2 -= 3*v3;
-            if(v2 != V2) continue;
-        }
-        { //v1
-            v1 = 1029 - 2*v2 - 3*v3;
-            if (v1 == V1) {
-                puts("Yes");
-                vl ans;
-                rep(i, 3) {
-                    ans.push_back(xs[i]);
-                    ans.push_back(ys[i]);
-                    ans.push_back(zs[i]);
-                }
-                Out(ans);
-                return 0;
+    }
+    vl dp(M+1, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        ll a = SIZE(S[i]);
+        repr(j, M+1) {
+            rep(k, a) {
+                ll m = SIZE(S[i][k]);
+                if (j+m>M) continue;
+                if (T.substr(j, m) != S[i][k]) continue;
+                chmin(dp[j+m], dp[j]+1);
             }
         }
     }
-    PNo
+    ll ans = dp[M];
+    ch1(ans);
+    Out(ans);
+
     
 }
 
