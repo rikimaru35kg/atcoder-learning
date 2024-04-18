@@ -19,10 +19,11 @@ struct BidirectionalList {
     }
     void add_head(long long x) { add_next(-ninf, x); }
     void add_tail(long long x) { add_prev(ninf, x); }
-    void erase(long long x) {
+    pair<long long,long long> erase(long long x) {
         auto [p, n] = mp[x];
         mp[p].second = n; mp[n].first = p;
         mp.erase(x);
+        return {p, n};
     }
     pair<long long,long long> get(long long x) { return mp[x]; }
     void print() {
@@ -32,8 +33,8 @@ struct BidirectionalList {
             vec.push_back(next);
             next = mp[next].second;
         }
-        for (int i=0; i<SIZE(vec); ++i) {
-            cout << vec[i] << (i==SIZE(vec)-1?'\n':' ');
+        for (int i=0; i<(int)vec.size(); ++i) {
+            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
         }
     }
 };

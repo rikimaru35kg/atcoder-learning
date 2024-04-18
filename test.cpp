@@ -127,37 +127,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct BidirectionalList {
+    const long long ninf = (long long)3e18;
+    unordered_map<long long,pair<long long,long long>> mp;
+    BidirectionalList () {
+        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
+    }
+    void add_next(long long x, long long y) {  // put y after x
+        auto [p, n] = mp[x];
+        mp[x].second = y; mp[n].first = y;
+        mp[y] = {x, n};
+    }
+    void add_prev(long long x, long long y) {  // put y before x
+        auto [p, n] = mp[x];
+        mp[x].first = y; mp[p].second = y;
+        mp[y] = {p, x};
+    }
+    void add_head(long long x) { add_next(-ninf, x); }
+    void add_tail(long long x) { add_prev(ninf, x); }
+    pair<long long,long long> erase(long long x) {
+        auto [p, n] = mp[x];
+        mp[p].second = n; mp[n].first = p;
+        mp.erase(x);
+        return {p, n};
+    }
+    pair<long long,long long> get(long long x) { return mp[x]; }
+    void print() {
+        long long next = mp[-ninf].second;
+        vector<long long> vec;
+        while (next != ninf) {
+            vec.push_back(next);
+            next = mp[next].second;
+        }
+        for (int i=0; i<(int)vec.size(); ++i) {
+            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
+        }
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(T);
-    ll M = SIZE(T);
     LONG(N);
-    vvs S(N);
+    BidirectionalList blst;
     rep(i, N) {
         LONG(a);
-        rep(j, a) {
-            STRING(_str);
-            S[i].push_back(_str);
+        blst.add_tail(a);
+    }
+    LONG(Q);
+    rep(_, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x, y);
+            blst.add_next(x, y);
+        } else{
+            LONG(x);
+            blst.erase(x);
         }
     }
-    vl dp(M+1, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        ll a = SIZE(S[i]);
-        repr(j, M+1) {
-            rep(k, a) {
-                ll m = SIZE(S[i][k]);
-                if (j+m>M) continue;
-                if (T.substr(j, m) != S[i][k]) continue;
-                chmin(dp[j+m], dp[j]+1);
-            }
-        }
-    }
-    ll ans = dp[M];
-    ch1(ans);
-    Out(ans);
-
+    blst.print();
     
 }
 
