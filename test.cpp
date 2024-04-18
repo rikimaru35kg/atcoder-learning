@@ -141,61 +141,48 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-class SpanBIT {
-    long long size;
-    vector<long long> bit;
-    void _add (long long i, long long x) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    long long _sum (long long i) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
-        ++i;
-        long long ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    void add (long long l, long long r, long long x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
-        }
-    }
-    long long get (long long i) {
-        return _sum(i);
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N); VL(B, M);
-
-    SpanBIT ft(N);
-    rep(i, N) { ft.add(i, i+1, A[i]); }
-    rep(i, M) {
-        ll b = B[i];
-        ll n = ft.get(b);
-        ft.add(b, b+1, -n);
-
-        ll c = n/N;
-        ft.add(0, N, c);
-
-        ll rem = n%N;
-        ll l = (b+1)%N, r = (b+rem+1)%N;
-        ft.add(l, r, 1);
+    LONG(N, Q);
+    STRING(S);
+    fenwick_tree<ll> ft(N+1);
+    rep(i, N-1) {
+        if(S[i]!=S[i+1]) ft.add(i+1, 0);
+        else ft.add(i+1, 1);
     }
-    vl ans;
-    rep(i, N) {
-        ll x = ft.get(i);
-        ans.push_back(x);
+    auto rev = [&](ll i) {
+        ll x = ft.sum(i,i+1);
+        if(x==0) ft.add(i, 1);
+        else ft.add(i, -1);
+    };
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, N) {
+            cerr<<   <<' ';
+        }
+        cerr<<endl;
+    #endif
+    };
+    rep(_, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(l, r); --l;
+            rev(l); rev(r);
+        } else {
+            LONGM(l, r);
+            if(l==r) {
+                puts("Yes");
+                continue;
+            }
+            ll x = ft.sum(l+1, r+1);
+            if(x==0) puts("Yes");
+            else puts("No");
+        }
+        print();
     }
-    Out(ans);
+
+
     
 }
 

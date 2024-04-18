@@ -893,4 +893,30 @@
       "};",
     ],
   },
+  "extgcd (Snippet)": {
+    "prefix": "extgcd",
+    "body": [
+      "//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)"
+      "//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!"
+      "tuple<long long,long long,long long> extgcd(long long a, long long b) {",
+      "    if (b == 0) return make_tuple(a, 1, 0);",
+      "    auto [g, x, y] = extgcd(b, a%b);",
+      "    return make_tuple(g, y, x - a/b*y);",
+      "}",
+      "",
+    ],
+  },
+  "dprint (Snippet)": {
+    "prefix": "dprint",
+    "body": [
+      "    auto dprint=[&](){",
+      "#ifdef __DEBUG",
+      "        rep(i, N) {",
+      "            cerr<<   <<' ';",
+      "        }",
+      "        cerr<<endl;",
+      "#endif",
+      "    };",
+    ],
+  },
 }

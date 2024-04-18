@@ -127,32 +127,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvp from(N);
-    rep(i, N-1) {
-        LONG(a, b, x); --x;
-        from[i].emplace_back(i+1, a);
-        from[i].emplace_back(x, b);
-    }
-    pq pque;
-    vl dist(N, INF);
-    auto push = [&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        pque.emplace(d, v);
+    LONG(N, M, K);
+    ll lc = lcm(N, M);
+
+    auto f = [&](ll x) -> bool {
+        ll cnt = 0;
+        cnt += x/N;
+        cnt += x/M;
+        cnt -= 2*(x/lc);
+        de(x)de(cnt)
+        if(cnt>=K) return true;
+        else return false;
     };
-    push(0, 0);
-    while(pque.size()) {
-        auto [d, v] = pque.top(); pque.pop();
-        if(dist[v] != d) continue;
-        for (auto [nv, c]: from[v]) {
-            push(nv, d+c);
-        }
-    }
-    ll ans = dist[N-1];
+    de(f(9))
+
+    ll ans = binary_search(INF, 0, f);
     Out(ans);
     
 }
