@@ -127,72 +127,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct MD {
-    ll n, pnow;
-    MD(ll n=INF,ll pnow=0): n(n),pnow(pnow) {}
-    void add(ll pmx, ll cost, ll p) {
-        chmax(pmx, p);
-        if (pnow-cost>=0) {
-            pnow -= cost;
-        } else {
-            cost -= pnow;
-            pnow = 0;
-            ll num = Divceil(cost, pmx);
-            pnow = pmx*num - cost;
-            n += num;
-        }
-        ++n;
+struct B {
+    ll v, c;
+    B(ll v, ll c): v(v), c(c) {}
+};
+struct D {
+    B d1, d2;
+    D(B d1=B(-INF,-1), B d2=B(-INF,-2)):d1(d1),d2(d2){}
+    void add(B o) {
+        if (d2.v < o.v) swap(d2, o);
+        if (d1.v < d2.v) swap(d1, d2);
+        if (d1.c == d2.c) d2 = o;
     }
-    bool operator<(const MD &o) {
-        if (n!=o.n) return n<o.n;
-        return pnow>o.pnow;
+    void merge(const D &o) {
+        d1 = o.d1;
+        d2 = o.d2;
+    }
+    ll get(ll c) {
+        if (d1.c!=c) return d1.v;
+        else return d2.v;
     }
 };
-
-using vms = vector<MD>;
-using vvms = vector<vector<MD>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvms dp(N*N, vms(N*N));
-    dp[0][0] = MD(0, 0);
-    VVL(P, N, N);
-    VVL(R, N, N-1);
-    VVL(D, N-1, N);
-    rep(i, N) rep(j, N) {
-        ll id = i*N + j;
-        rep(k, N*N) {
-            if (dp[id][k].n==INF) continue;
-            ll pi = k/N, pj = k%N;
-            ll pmx = P[pi][pj];
-            if(j!=N-1) {//right
-                ll cost = R[i][j];
-                ll p = P[i][j];
-                ll nk = k;
-                if(p > pmx) nk = id;
-                MD nd = dp[id][k];
-                nd.add(pmx, cost, p);
-                if (nd < dp[id+1][nk]) dp[id+1][nk] = nd;
-            }
-            if(i==1&&j==1&&k==3) {
-                cout<<"";
-            }
-            if(i!=N-1) {//down
-                ll cost = D[i][j];
-                ll p = P[i][j];
-                ll nk = k;
-                if(p > pmx) nk = id;
-                MD nd = dp[id][k];
-                nd.add(pmx, cost, p);
-                if (nd < dp[id+N][nk]) dp[id+N][nk] = nd;
-            }
+    LONG(N, K);
+    vl C(N), V(N);
+    rep(i, N) cin>> C[i] >> V[i];
+    vector<D> dp(K+1);
+    dp[0] = D(B(0,-1), B(-INF,-2));
+    rep(i, N) {
+        vector<D> pdp(K+1);
+        swap(pdp, dp);
+        rep(j, K+1) {
+            if (j<K) dp[j+1].merge(pdp[j]);
+            if (pdp[j].get(C[i]) == -INF) continue;
+            dp[j].add(B(pdp[j].get(C[i])+V[i], C[i]));
         }
     }
-    ll ans = INF;
-    rep(k, N*N) chmin(ans, dp[N*N-1][k].n);
+    ll ans = dp[K].d1.v;
+    if (ans == -INF) ans = -1;
     Out(ans);
+    
     
 }
 

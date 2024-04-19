@@ -1,4 +1,0 @@
-test.cpp: In function ‘int main()’:
-test.cpp:179:8: warning: variable ‘ans’ set but not used [-Wunused-but-set-variable]
-  179 |     MD ans = dp[N-1][N-1];
-      |        ^~~

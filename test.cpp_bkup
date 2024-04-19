@@ -127,65 +127,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct BidirectionalList {
-    const long long ninf = (long long)3e18;
-    unordered_map<long long,pair<long long,long long>> mp;
-    BidirectionalList () {
-        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
-    }
-    void add_next(long long x, long long y) {  // put y after x
-        auto [p, n] = mp[x];
-        mp[x].second = y; mp[n].first = y;
-        mp[y] = {x, n};
-    }
-    void add_prev(long long x, long long y) {  // put y before x
-        auto [p, n] = mp[x];
-        mp[x].first = y; mp[p].second = y;
-        mp[y] = {p, x};
-    }
-    void add_head(long long x) { add_next(-ninf, x); }
-    void add_tail(long long x) { add_prev(ninf, x); }
-    pair<long long,long long> erase(long long x) {
-        auto [p, n] = mp[x];
-        mp[p].second = n; mp[n].first = p;
-        mp.erase(x);
-        return {p, n};
-    }
-    pair<long long,long long> get(long long x) { return mp[x]; }
-    void print() {
-        long long next = mp[-ninf].second;
-        vector<long long> vec;
-        while (next != ninf) {
-            vec.push_back(next);
-            next = mp[next].second;
-        }
-        for (int i=0; i<(int)vec.size(); ++i) {
-            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
-        }
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    BidirectionalList blst;
+    LONG(N, H, W);
+    vp tiles;
     rep(i, N) {
-        LONG(a);
-        blst.add_tail(a);
+        LONG(a, b);
+        tiles.emplace_back(a, b);
     }
-    LONG(Q);
-    rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x, y);
-            blst.add_next(x, y);
-        } else{
-            LONG(x);
-            blst.erase(x);
+
+    auto check = [&](vvb f) {
+        bool ret = true;
+        rep(i, H) rep(j, W) {
+            ret &= f[i][j];
         }
-    }
-    blst.print();
+        return ret;
+    };
+    auto fill = [&](vvb &f, ll ti, ll tj, ll a, ll b) {
+        rep(i, a) rep(j, b) {
+            ll si = ti + i, sj = tj + j;
+            if (!isin(si, sj, H, W)) return false;
+            if (f[si][sj]) return false;
+            f[si][sj] = true;
+        }
+        return true;
+    };
+
+    auto dfs=[&](auto f, ll st, vvb &field) -> void {
+        deb(st)de(field)
+        if (check(field)) PYes
+        if (st==(1<<N)-1) return;
+        ll ti=0, tj=0;
+        rep(i, H) {
+            bool done = false;
+            rep(j, W) {
+                if(!field[i][j]) {
+                    ti = i, tj = j;
+                    done = true;
+                    break;
+                }
+            }
+            if(done) break;
+        }
+        rep(i, N) {
+            if (st>>i&1) continue;
+            auto [a, b] = tiles[i];
+            rep(ri, 2) {
+                vvb nf = field;
+                if(fill(nf, ti, tj, a, b)) f(f, st|1<<i, nf);
+                swap(a, b);
+            }
+        }
+    };
+    vvb field(H, vb(W));
+    dfs(dfs, 0, field);
+    PNo
     
 }
 

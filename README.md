@@ -1362,10 +1362,10 @@
 - この時、実はTop2のみ持てば良い事が分かる
 - Top1と同じ色であればTop2をベースに更新すれば良いし、異なる色であればTop1をベースに更新する
 - 更新の実装は結構大変なので、2つの関数を持つstruct Top2を定義すると良い
-- 関数(1) 色が与えられたとき、異なる色での最大値を返す（i番目におけるp[j]からの最大ペアを求める為）
+- 関数(1) 色が与えられたとき、異なる色での最大値を返す（i番目におけるpdp[j]からの最大ペアを求める為）
 - 関数(2) 新しい（色、値）のペアが来た際、Top2を更新する（入替する）
 ### 例題
-- [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
+- !要復習 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
 ## ローリングハッシュ（Rolling Hash）
 - 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する
