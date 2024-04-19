@@ -689,10 +689,6 @@
 - 過去に選んだ番号の集合（bit）と最後に選んだ番号を同時に状態として保持する場合などは、初期化が難しい場合あり（何も選んでいないというdpの枠が作れない為）。このようなときは、そのとき初めて選んだ場合という事でiのループで毎回1増やすなどする（例: E - Chain Contestant）
 - dpテーブルをpとswapする場合、pの要素を全部なめているか要注意！（dp(N+1)のとき、p[N]からの遷移を忘れずに！！rep(i, N)とすると遷移がなくなるので）
 - 初期値を-INFにする場合は要注意。足されて正の値になったら元も子もない。-1を初期値にして処理しないようにした方が無難かもしれない
-### 例題
-- !復習価値中 計算量改善の考察1つ [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
-- !要復習 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
-- !復習価値中 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 
 ## カエル型DP
 - カエルが1~Kマスジャンプできるとき、最後のマスに到達する場合の数を求める問題
@@ -700,7 +696,6 @@
 - 特に、一つずつの遷移ではないDPが苦手なので、何を状態にできるかよく考えること
 ### 例題
 - !要復習 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
-- !要復習 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 
 ## DP実装特殊系問題
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
@@ -889,6 +884,15 @@
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !要復習 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
+
+## 状態を工夫するDP
+- 状態を工夫する事でDPに落とし込める問題
+- 問題ごとに考察が必要
+### 例題
+- !復習価値中 計算量改善の考察1つ [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
+- !要復習 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
+- !復習価値中 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
+- !要復習 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある

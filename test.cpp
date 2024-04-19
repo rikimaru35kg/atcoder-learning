@@ -127,65 +127,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct BidirectionalList {
-    const long long ninf = (long long)3e18;
-    unordered_map<long long,pair<long long,long long>> mp;
-    BidirectionalList () {
-        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
-    }
-    void add_next(long long x, long long y) {  // put y after x
-        auto [p, n] = mp[x];
-        mp[x].second = y; mp[n].first = y;
-        mp[y] = {x, n};
-    }
-    void add_prev(long long x, long long y) {  // put y before x
-        auto [p, n] = mp[x];
-        mp[x].first = y; mp[p].second = y;
-        mp[y] = {p, x};
-    }
-    void add_head(long long x) { add_next(-ninf, x); }
-    void add_tail(long long x) { add_prev(ninf, x); }
-    pair<long long,long long> erase(long long x) {
-        auto [p, n] = mp[x];
-        mp[p].second = n; mp[n].first = p;
-        mp.erase(x);
-        return {p, n};
-    }
-    pair<long long,long long> get(long long x) { return mp[x]; }
-    void print() {
-        long long next = mp[-ninf].second;
-        vector<long long> vec;
-        while (next != ninf) {
-            vec.push_back(next);
-            next = mp[next].second;
+struct MD {
+    ll n, pnow;
+    MD(ll n=INF,ll pnow=0): n(n),pnow(pnow) {}
+    void add(ll pmx, ll cost, ll p) {
+        chmax(pmx, p);
+        if (pnow-cost>=0) {
+            pnow -= cost;
+        } else {
+            cost -= pnow;
+            pnow = 0;
+            ll num = Divceil(cost, pmx);
+            pnow = pmx*num - cost;
+            n += num;
         }
-        for (int i=0; i<(int)vec.size(); ++i) {
-            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
-        }
+        ++n;
+    }
+    bool operator<(const MD &o) {
+        if (n!=o.n) return n<o.n;
+        return pnow>o.pnow;
     }
 };
+
+using vms = vector<MD>;
+using vvms = vector<vector<MD>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    BidirectionalList blst;
-    rep(i, N) {
-        LONG(a);
-        blst.add_tail(a);
-    }
-    LONG(Q);
-    rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x, y);
-            blst.add_next(x, y);
-        } else{
-            LONG(x);
-            blst.erase(x);
+    vvms dp(N*N, vms(N*N));
+    dp[0][0] = MD(0, 0);
+    VVL(P, N, N);
+    VVL(R, N, N-1);
+    VVL(D, N-1, N);
+    rep(i, N) rep(j, N) {
+        ll id = i*N + j;
+        rep(k, N*N) {
+            if (dp[id][k].n==INF) continue;
+            ll pi = k/N, pj = k%N;
+            ll pmx = P[pi][pj];
+            if(j!=N-1) {//right
+                ll cost = R[i][j];
+                ll p = P[i][j];
+                ll nk = k;
+                if(p > pmx) nk = id;
+                MD nd = dp[id][k];
+                nd.add(pmx, cost, p);
+                if (nd < dp[id+1][nk]) dp[id+1][nk] = nd;
+            }
+            if(i==1&&j==1&&k==3) {
+                cout<<"";
+            }
+            if(i!=N-1) {//down
+                ll cost = D[i][j];
+                ll p = P[i][j];
+                ll nk = k;
+                if(p > pmx) nk = id;
+                MD nd = dp[id][k];
+                nd.add(pmx, cost, p);
+                if (nd < dp[id+N][nk]) dp[id+N][nk] = nd;
+            }
         }
     }
-    blst.print();
+    ll ans = INF;
+    rep(k, N*N) chmin(ans, dp[N*N-1][k].n);
+    Out(ans);
     
 }
 
