@@ -1,0 +1,121 @@
+test.cpp: In function ‘int main()’:
+test.cpp:143:27: error: ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >, std::__debug::vector<std::pair<long long int, long long int> > >::value_type’ {aka ‘class std::__debug::vector<std::pair<long long int, long long int> >’} has no member named ‘second’
+  143 |             timing.back().second = i;
+      |                           ^~~~~~
+In file included from /usr/include/c++/11/ext/alloc_traits.h:34,
+                 from /usr/include/c++/11/bits/basic_string.h:40,
+                 from /usr/include/c++/11/string:55,
+                 from /usr/include/c++/11/bits/locale_classes.h:40,
+                 from /usr/include/c++/11/bits/ios_base.h:41,
+                 from /usr/include/c++/11/ios:42,
+                 from /usr/include/c++/11/istream:38,
+                 from /usr/include/c++/11/sstream:38,
+                 from /usr/include/c++/11/complex:45,
+                 from /usr/include/c++/11/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/11/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >]’:
+/usr/include/c++/11/bits/vector.tcc:115:30:   required from ‘std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__cxx1998::vector<_Tp, _Alloc>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+/usr/include/c++/11/debug/vector:510:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Allocator = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__debug::vector<_Tp, _Allocator>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+test.cpp:146:32:   required from here
+/usr/include/c++/11/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(std::__debug::vector<std::pair<long long int, long long int> >*&, long long int&, long long int&)’
+  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
+      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/bits/stl_iterator.h:85,
+                 from /usr/include/c++/11/bits/stl_algobase.h:67,
+                 from /usr/include/c++/11/bits/specfun.h:45,
+                 from /usr/include/c++/11/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/11/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
+   94 |     construct_at(_Tp* __location, _Args&&... __args)
+      |     ^~~~~~~~~~~~
+/usr/include/c++/11/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/11/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}]’:
+/usr/include/c++/11/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >]’
+/usr/include/c++/11/bits/vector.tcc:115:30:   required from ‘std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__cxx1998::vector<_Tp, _Alloc>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+/usr/include/c++/11/debug/vector:510:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Allocator = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__debug::vector<_Tp, _Allocator>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+test.cpp:146:32:   required from here
+/usr/include/c++/11/bits/stl_construct.h:96:17: error: no matching function for call to ‘std::__debug::vector<std::pair<long long int, long long int> >::vector(long long int&, long long int&)’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/vector:76,
+                 from /usr/include/c++/11/functional:62,
+                 from /usr/include/c++/11/pstl/glue_algorithm_defs.h:13,
+                 from /usr/include/c++/11/algorithm:74,
+                 from stdc++.h:65:
+/usr/include/c++/11/debug/vector:201:9: note: candidate: ‘template<class _InputIterator, class> std::__debug::vector<_Tp, _Allocator>::vector(_InputIterator, _InputIterator, const _Allocator&) [with _InputIterator = _InputIterator; <template-parameter-2-2> = <template-parameter-1-2>; _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >]’
+  201 |         vector(_InputIterator __first, _InputIterator __last,
+      |         ^~~~~~
+/usr/include/c++/11/debug/vector:201:9: note:   template argument deduction/substitution failed:
+In file included from /usr/include/c++/11/bits/stl_algobase.h:65,
+                 from /usr/include/c++/11/bits/specfun.h:45,
+                 from /usr/include/c++/11/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/11/bits/stl_iterator_base_types.h: In substitution of ‘template<class _InIter> using _RequireInputIter = std::__enable_if_t<std::is_convertible<typename std::iterator_traits< <template-parameter-1-1> >::iterator_category, std::input_iterator_tag>::value> [with _InIter = long long int]’:
+/usr/include/c++/11/debug/vector:197:9:   required by substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}]’
+/usr/include/c++/11/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >]’
+/usr/include/c++/11/bits/vector.tcc:115:30:   required from ‘std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__cxx1998::vector<_Tp, _Alloc>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+/usr/include/c++/11/debug/vector:510:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Allocator = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__debug::vector<_Tp, _Allocator>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+test.cpp:146:32:   required from here
+/usr/include/c++/11/bits/stl_iterator_base_types.h:249:11: error: no type named ‘iterator_category’ in ‘struct std::iterator_traits<long long int>’
+  249 |     using _RequireInputIter =
+      |           ^~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/vector:76,
+                 from /usr/include/c++/11/functional:62,
+                 from /usr/include/c++/11/pstl/glue_algorithm_defs.h:13,
+                 from /usr/include/c++/11/algorithm:74,
+                 from stdc++.h:65:
+/usr/include/c++/11/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}]’:
+/usr/include/c++/11/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = std::__debug::vector<std::pair<long long int, long long int> >; _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >]’
+/usr/include/c++/11/bits/vector.tcc:115:30:   required from ‘std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__cxx1998::vector<_Tp, _Alloc>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+/usr/include/c++/11/debug/vector:510:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = std::__debug::vector<std::pair<long long int, long long int> >; _Allocator = std::allocator<std::__debug::vector<std::pair<long long int, long long int> > >; std::__debug::vector<_Tp, _Allocator>::reference = std::__debug::vector<std::pair<long long int, long long int> >&]’
+test.cpp:146:32:   required from here
+/usr/include/c++/11/debug/vector:235:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>::_Base_ref) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >]’
+  235 |       vector(_Base_ref __x)
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:235:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/11/debug/vector:227:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::initializer_list<_Tp>, const allocator_type&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; std::__debug::vector<_Tp, _Allocator>::allocator_type = std::allocator<std::pair<long long int, long long int> >]’
+  227 |       vector(initializer_list<value_type> __l,
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:227:43: note:   no known conversion for argument 1 from ‘long long int’ to ‘std::initializer_list<std::pair<long long int, long long int> >’
+  227 |       vector(initializer_list<value_type> __l,
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/11/debug/vector:219:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>&&, const allocator_type&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; std::__debug::vector<_Tp, _Allocator>::allocator_type = std::allocator<std::pair<long long int, long long int> >]’
+  219 |       vector(vector&& __x, const allocator_type& __a)
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:219:23: note:   no known conversion for argument 1 from ‘long long int’ to ‘std::__debug::vector<std::pair<long long int, long long int> >&&’
+  219 |       vector(vector&& __x, const allocator_type& __a)
+      |              ~~~~~~~~~^~~
+/usr/include/c++/11/debug/vector:216:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const std::__debug::vector<_Tp, _Allocator>&, const allocator_type&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; std::__debug::vector<_Tp, _Allocator>::allocator_type = std::allocator<std::pair<long long int, long long int> >]’
+  216 |       vector(const vector& __x, const allocator_type& __a)
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:216:28: note:   no known conversion for argument 1 from ‘long long int’ to ‘const std::__debug::vector<std::pair<long long int, long long int> >&’
+  216 |       vector(const vector& __x, const allocator_type& __a)
+      |              ~~~~~~~~~~~~~~^~~
+/usr/include/c++/11/debug/vector:214:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>&&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >]’
+  214 |       vector(vector&&) = default;
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:214:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/11/debug/vector:213:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const std::__debug::vector<_Tp, _Allocator>&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >]’
+  213 |       vector(const vector&) = default;
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:213:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/11/debug/vector:185:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>::size_type, std::__type_identity_t<_Tp>&, const _Allocator&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; std::__debug::vector<_Tp, _Allocator>::size_type = long unsigned int; std::__type_identity_t<_Tp> = std::pair<long long int, long long int>]’
+  185 |       vector(size_type __n, const __type_identity_t<_Tp>& __value,
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:185:59: note:   no known conversion for argument 2 from ‘long long int’ to ‘std::__type_identity_t<std::pair<long long int, long long int> >&’ {aka ‘const std::pair<long long int, long long int>&’}
+  185 |       vector(size_type __n, const __type_identity_t<_Tp>& __value,
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+/usr/include/c++/11/debug/vector:182:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>::size_type, const _Allocator&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; std::__debug::vector<_Tp, _Allocator>::size_type = long unsigned int]’
+  182 |       vector(size_type __n, const _Allocator& __a = _Allocator())
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:182:47: note:   no known conversion for argument 2 from ‘long long int’ to ‘const std::allocator<std::pair<long long int, long long int> >&’
+  182 |       vector(size_type __n, const _Allocator& __a = _Allocator())
+      |                             ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/debug/vector:177:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const _Allocator&) [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >]’
+  177 |       vector(const _Allocator& __a) _GLIBCXX_NOEXCEPT
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:177:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/11/debug/vector:173:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector() [with _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >]’
+  173 |       vector() = default;
+      |       ^~~~~~
+/usr/include/c++/11/debug/vector:173:7: note:   candidate expects 0 arguments, 2 provided

@@ -67,6 +67,7 @@ inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
+template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -130,59 +131,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, H, W);
-    vp tiles;
-    rep(i, N) {
-        LONG(a, b);
-        tiles.emplace_back(a, b);
+    STRING(S, T);
+    ll N = SIZE(S); ll M = SIZE(T);
+
+    repr(l, N-M+1) {
+        bool ok = true;
+        rep(i, M) {
+            if (S[l+i] == '?') continue;
+            if (S[l+i] != T[i]) ok = false;
+        }
+        if(ok) {
+            rep(i, M) {
+                S[l+i] = T[i];
+            }
+            rep(i, N) {
+                if (S[i]=='?') S[i]='a';
+            }
+            Out(S);
+            return 0;
+        }
     }
-
-    auto check = [&](vvb f) {
-        bool ret = true;
-        rep(i, H) rep(j, W) {
-            ret &= f[i][j];
-        }
-        return ret;
-    };
-    auto fill = [&](vvb &f, ll ti, ll tj, ll a, ll b) {
-        rep(i, a) rep(j, b) {
-            ll si = ti + i, sj = tj + j;
-            if (!isin(si, sj, H, W)) return false;
-            if (f[si][sj]) return false;
-            f[si][sj] = true;
-        }
-        return true;
-    };
-
-    auto dfs=[&](auto f, ll st, vvb &field) -> void {
-        deb(st)de(field)
-        if (check(field)) PYes
-        if (st==(1<<N)-1) return;
-        ll ti=0, tj=0;
-        rep(i, H) {
-            bool done = false;
-            rep(j, W) {
-                if(!field[i][j]) {
-                    ti = i, tj = j;
-                    done = true;
-                    break;
-                }
-            }
-            if(done) break;
-        }
-        rep(i, N) {
-            if (st>>i&1) continue;
-            auto [a, b] = tiles[i];
-            rep(ri, 2) {
-                vvb nf = field;
-                if(fill(nf, ti, tj, a, b)) f(f, st|1<<i, nf);
-                swap(a, b);
-            }
-        }
-    };
-    vvb field(H, vb(W));
-    dfs(dfs, 0, field);
-    PNo
+    puts("UNRESTORABLE");
     
 }
 

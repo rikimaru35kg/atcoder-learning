@@ -1343,6 +1343,7 @@
 ### 例題
 - !復習価値低 シート重ね合わせ（実装工夫すればすっきり書ける） [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
 - !復習価値低 タイル置き（実装工夫すればそんなに大変ではない） [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
+- !復習価値中 電車最大移動距離（実装工夫すればすっきり） [D - AtCoder Express](https://atcoder.jp/contests/abc076/tasks/abc076_d)
 - !要復習 トーナメント（入力部の実装が大変） [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
 - !復習価値高 がっかりビンゴ（実装方針によっては沼る） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
@@ -1365,7 +1366,7 @@
 - 関数(1) 色が与えられたとき、異なる色での最大値を返す（i番目におけるpdp[j]からの最大ペアを求める為）
 - 関数(2) 新しい（色、値）のペアが来た際、Top2を更新する（入替する）
 ### 例題
-- !要復習 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
+- !要復習 色が隣合わないようにK個選んだ時の価値総和最大値（実装難） [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
 ## ローリングハッシュ（Rolling Hash）
 - 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する
@@ -1537,3 +1538,4 @@
 - [F - Push and Carry](https://atcoder.jp/contests/abc323/tasks/abc323_f)
 - [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
 - [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
+- [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)

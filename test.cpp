@@ -67,6 +67,7 @@ inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
+template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -127,50 +128,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct B {
-    ll v, c;
-    B(ll v, ll c): v(v), c(c) {}
-};
-struct D {
-    B d1, d2;
-    D(B d1=B(-INF,-1), B d2=B(-INF,-2)):d1(d1),d2(d2){}
-    void add(B o) {
-        if (d2.v < o.v) swap(d2, o);
-        if (d1.v < d2.v) swap(d1, d2);
-        if (d1.c == d2.c) d2 = o;
-    }
-    void merge(const D &o) {
-        d1 = o.d1;
-        d2 = o.d2;
-    }
-    ll get(ll c) {
-        if (d1.c!=c) return d1.v;
-        else return d2.v;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl C(N), V(N);
-    rep(i, N) cin>> C[i] >> V[i];
-    vector<D> dp(K+1);
-    dp[0] = D(B(0,-1), B(-INF,-2));
+    LONG(N); VL(T,N); VL(V,N);
+    ll tall = accumulate(all(T), 0LL) + 1;
+    tall = 2*tall-1;
+    vd spd(tall);
+    vd smax(tall, INF);
+    vl St(N+1);
+    rep(i, N) St[i+1] = St[i] + T[i];
+
     rep(i, N) {
-        vector<D> pdp(K+1);
-        swap(pdp, dp);
-        rep(j, K+1) {
-            if (j<K) dp[j+1].merge(pdp[j]);
-            if (pdp[j].get(C[i]) == -INF) continue;
-            dp[j].add(B(pdp[j].get(C[i])+V[i], C[i]));
-        }
+        ll si = St[i]*2, ei = St[i+1]*2;
+        repk(j, si, ei+1) { chmin(smax[j], (double)V[i]); }
     }
-    ll ans = dp[K].d1.v;
-    if (ans == -INF) ans = -1;
+
+    rep(i, tall-1) { spd[i+1] = min(spd[i]+0.5, smax[i+1]); }
+    spd.back()=0;
+    repr(i, tall-1) { spd[i] = min({spd[i], spd[i+1]+0.5, smax[i]}); }
+
+    double ans = 0;
+    rep(i, tall-1) { ans += (spd[i]+spd[i+1])/4.0; }
     Out(ans);
-    
-    
 }
 
 // ### test.cpp ###
