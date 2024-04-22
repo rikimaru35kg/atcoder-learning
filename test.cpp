@@ -128,42 +128,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) return w == 0;
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        return true;
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    WeightedUnionFind uf(N);
-    rep(i, M) {
-        LONGM(l, r); LONG(d);
-        bool b = uf.merge(r, l, d);
-        if(!b) PNo
+    LONG(H, W);
+    VS(S, H);
+    queue<Pr> que;
+    vvl dist(H, vl(W, INF));
+    auto push = [&](ll i, ll j, ll d) {
+        if(dist[i][j]!=INF) return;
+        dist[i][j] = d;
+        que.emplace(i, j);
+    };
+    push(0, 0, 1);
+    while(que.size()) {
+        auto [i, j] = que.front(); que.pop();
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni, nj, H, W)) continue;
+            if (S[ni][nj]=='#') continue;
+            push(ni, nj, dist[i][j]+1);
+        }
     }
-    PYes
+    if(dist.back().back() == INF) {
+        Out(-1); return 0;
+    }
+    ll ans = H*W - dist.back().back();
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='#') --ans;
+    }
+    Out(ans);
     
 }
 

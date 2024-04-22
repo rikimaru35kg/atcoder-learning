@@ -1547,3 +1547,4 @@
 - [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
 - [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
 - [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
+- [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
