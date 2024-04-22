@@ -131,26 +131,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(T,N); VL(V,N);
-    ll tall = accumulate(all(T), 0LL) + 1;
-    tall = 2*tall-1;
-    vd spd(tall);
-    vd smax(tall, INF);
-    vl St(N+1);
-    rep(i, N) St[i+1] = St[i] + T[i];
-
-    rep(i, N) {
-        ll si = St[i]*2, ei = St[i+1]*2;
-        repk(j, si, ei+1) { chmin(smax[j], (double)V[i]); }
+    LONG(K);
+    vvp from(K);
+    rep(i, K) {
+        from[i].emplace_back((i+1)%K, 1);
+        from[i].emplace_back(i*10%K, 0);
     }
-
-    rep(i, tall-1) { spd[i+1] = min(spd[i]+0.5, smax[i+1]); }
-    spd.back()=0;
-    repr(i, tall-1) { spd[i] = min({spd[i], spd[i+1]+0.5, smax[i]}); }
-
-    double ans = 0;
-    rep(i, tall-1) { ans += (spd[i]+spd[i+1])/4.0; }
-    Out(ans);
+    deque<ll> deq;
+    vl dist(K, INF);
+    auto push = [&](ll v, ll d, bool fr) {
+        if (dist[v]<=d) return;
+        dist[v] = d;
+        if(fr) deq.push_front(v);
+        else deq.push_back(v);
+    };
+    push(1, 1, true);
+    while(deq.size()) {
+        auto v = deq.front(); deq.pop_front();
+        for(auto [nv, c]: from[v]) {
+            if(c) push(nv, dist[v]+1, false);
+            else push(nv, dist[v], true);
+        }
+    }
+    Out(dist[0]);
+    
 }
 
 // ### test.cpp ###

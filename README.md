@@ -101,6 +101,13 @@
 ### 例題
 - !復習価値高 snuke氏の拡張ユークリッド解説動画が神 [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
 
+## 最小桁和
+- 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる
+- この時、+1した回数に1を加えると、桁和になる
+- 最小桁和を求めたい場合、グラフを作って01-BFSすれば最小桁和を求める事ができる
+### 例題
+- !要復習 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
+
 ## 有理数
 - 有理数を小数で扱うと誤差が出てしまう
 - 分母が必ず正の既約分数とし、分母と分子をそれぞれ保存すれば有理数を一対一で表せる
@@ -1343,7 +1350,6 @@
 ### 例題
 - !復習価値低 シート重ね合わせ（実装工夫すればすっきり書ける） [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
 - !復習価値低 タイル置き（実装工夫すればそんなに大変ではない） [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
-- !復習価値中 電車最大移動距離（実装工夫すればすっきり） [D - AtCoder Express](https://atcoder.jp/contests/abc076/tasks/abc076_d)
 - !要復習 トーナメント（入力部の実装が大変） [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
 - !復習価値高 がっかりビンゴ（実装方針によっては沼る） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
@@ -1508,6 +1514,7 @@
 - [D - Pyramid](https://atcoder.jp/contests/abc336/tasks/abc336_d)
 - [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
 - [C - Many Replacement](https://atcoder.jp/contests/abc342/tasks/abc342_c)
+- [D - AtCoder Express](https://atcoder.jp/contests/abc076/tasks/abc076_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
