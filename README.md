@@ -1067,6 +1067,7 @@
 - !復習価値低 実装工夫次第 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - !要復習 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
+- !復習価値低 重み付きUnion Findの練習にどうぞ [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる

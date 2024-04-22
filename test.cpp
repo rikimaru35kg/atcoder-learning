@@ -128,32 +128,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) return w == 0;
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        return true;
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    vvp from(K);
-    rep(i, K) {
-        from[i].emplace_back((i+1)%K, 1);
-        from[i].emplace_back(i*10%K, 0);
+    LONG(N, M);
+    WeightedUnionFind uf(N);
+    rep(i, M) {
+        LONGM(l, r); LONG(d);
+        bool b = uf.merge(r, l, d);
+        if(!b) PNo
     }
-    deque<ll> deq;
-    vl dist(K, INF);
-    auto push = [&](ll v, ll d, bool fr) {
-        if (dist[v]<=d) return;
-        dist[v] = d;
-        if(fr) deq.push_front(v);
-        else deq.push_back(v);
-    };
-    push(1, 1, true);
-    while(deq.size()) {
-        auto v = deq.front(); deq.pop_front();
-        for(auto [nv, c]: from[v]) {
-            if(c) push(nv, dist[v]+1, false);
-            else push(nv, dist[v], true);
-        }
-    }
-    Out(dist[0]);
+    PYes
     
 }
 
