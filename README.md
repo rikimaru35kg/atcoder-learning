@@ -1311,6 +1311,7 @@
 ### 例題
 - !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
 - !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- !要復習 [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
 
 ## ホール（Hall）の結婚定理
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
@@ -1553,3 +1554,4 @@
 - [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
 - [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
 - 解説は動画ではなく[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2018/09/08/195000)で [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
+- [D - Binomial Coefficients](https://atcoder.jp/contests/abc094/tasks/arc095_b)

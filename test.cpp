@@ -128,36 +128,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
     }
-    return ok;
-}
-
-void solve() {
-    LONG(a, b);
-    if(a==b) {
-        Out(2*a-2); return;
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
     }
-    auto f = [&](ll x) ->bool {
-        ll y = x/2 * (x/2+1);
-        if (x%2)  y =(x+1)/2 * (x+1)/2;
-        if(y>=a*b) return false;
-        return true;
-    };
-    ll ans = binary_search(0, 2e9, f);
-    Out(ans-1);
-
-}
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(_, Q) solve();
+    LONG(N);
+    Sieve sieve(55555);
+    vl ans;
+    for(int i=11; N>0; i+=10) {
+        if(sieve.is_prime(i)) ans.push_back(i) , --N;
+    }
+    Out(ans);
     
 }
 

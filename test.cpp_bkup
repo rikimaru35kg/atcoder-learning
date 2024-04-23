@@ -128,68 +128,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-void solve() {
-    LONG(a, b);
-    if(a>b) swap(a, b);
-    auto g=[&](ll a1, ll a2, ll n) {
-        if(n==0) return 0LL;
-        auto gf = [&](ll m) {
-            return (a1+m) * (a2-m);
-        };
-        ll l = 0, r = n-1;
-        while(r-l>2) {
-            ll m1 = (2*l+r)/3;
-            ll m2 = (l+2*r)/3;
-            if(gf(m1)>gf(m2)) r = m2;
-            else l = m1;
-        }
-        ll ret = 0;
-        repk(j, l, r+1) chmax(ret, gf(j));
-        return ret;
-    };
-    auto f = [&](ll x) -> bool {
-        if (x<a) {
-            return true;
-        } else if (x<b) {
-            ll mx = 0;
-            chmax(mx, g(1, x, a-1));
-            chmax(mx, g(a+1, x-(a-1), x-(a-1)));
-            if (mx>=a*b) return false;
-            else return true;
-        } else {
-            ll mx = 0;
-            if (a-1 < x+1-b) {
-                chmax(mx, g(1, x+1, a-1));
-                chmax(mx, g(a+1, x+1-(a-1), (x+1-b)-(a-1)));
-                chmax(mx, g(1+(x+1-b), b-1, b-1));
-            } else {
-                chmax(mx, g(1, x+1, x+1-b));
-                chmax(mx, g(1+(x+1-b), b-1, (a-1)-(x+1-b)));
-                chmax(mx, g(a+1, x+1-(a-1)-1, x+1-a));
-            }
-            if (mx>=a*b) return false;
-            else return true;
-        }
-    };
-    ll ans = binary_search(0, INF, f);
-    Out(ans);
-
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(_, Q) solve();
+    LONG(N, C);
+    vl X(N), V(N);
+    rep(i, N) cin >> X[i] >>V[i];
+    vl Sf(N+1), Sr(N+1);
+    rep(i, N) Sf[i+1] = Sf[i] + V[i];
+    rep(i, N) Sr[i+1] = Sr[i] + V[N-1-i];
+    rep(i, N) Sf[i+1] -= X[i];
+    rep(i, N) Sr[i+1] -= (C-X[N-1-i]);
+
+    auto gmax=[&](vl &Sf, vl &mxf) {
+        Pr mx = {0, 0};
+        rep(i, N+1) {
+            chmax(mx, {Sf[i], i});
+            mxf[i] = mx.second;
+        }
+    };
+    vl mxf(N+1), mxr(N+1);
+    gmax(Sf, mxf);
+    gmax(Sr, mxr);
+    ll ans = 0;
+    chmax(ans, *max_element(all(Sf)));
+    chmax(ans, *max_element(all(Sr)));
+    rep(i, N) {
+        ll v = Sr[i+1] - (C-X[N-1-i]);
+        ll j = mxf[N-1-i];
+        v += Sf[j];
+        chmax(ans, v);
+    }
+    rep(i, N) {
+        ll v = Sf[i+1] - X[i];
+        ll j = mxr[N-1-i];
+        v += Sr[j];
+        chmax(ans, v);
+    }
+    Out(ans);
     
 }
 
