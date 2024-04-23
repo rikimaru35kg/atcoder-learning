@@ -1552,3 +1552,4 @@
 - [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
 - [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
 - [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
+- 解説は動画ではなく[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2018/09/08/195000)で [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)

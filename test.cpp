@@ -128,87 +128,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
+    return ok;
 }
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
+
+void solve() {
+    LONG(a, b);
+    if(a==b) {
+        Out(2*a-2); return;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
+    auto f = [&](ll x) ->bool {
+        ll y = x/2 * (x/2+1);
+        if (x%2)  y =(x+1)/2 * (x+1)/2;
+        if(y>=a*b) return false;
+        return true;
+    };
+    ll ans = binary_search(0, 2e9, f);
+    Out(ans-1);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N); VL(B, N);
-    auto f =[&](vl &v, ll x) -> ll {
-        auto [n, y] = uppbou_r(v, x);
-        return n+1;
-    };
-    ll ans = 0;
-    rep(k, 30) { //kth-bit
-        vl a = A, b = B;
-        rep(i, N) {
-            a[i] = A[i] % (1<<(k+1));
-            b[i] = B[i] % (1<<(k+1));
-        }
-        sort(all(b));
-        ll now = 0;
-        rep(i, N) {
-            now += f(b, (1<<(k+1))-a[i]) - f(b, (1*(1<<k))-a[i])
-                  +f(b, (1<<(k+2))-a[i]) - f(b, (3*(1<<k))-a[i]);
-        }
-        if (now%2==1) ans |= 1<<k;
-        de(k)de(now)
-    }
-    Out(ans);
+    LONG(Q);
+    rep(_, Q) solve();
     
 }
 

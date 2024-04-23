@@ -128,33 +128,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+void solve() {
+    LONG(a, b);
+    if(a>b) swap(a, b);
+    auto g=[&](ll a1, ll a2, ll n) {
+        if(n==0) return 0LL;
+        auto gf = [&](ll m) {
+            return (a1+m) * (a2-m);
+        };
+        ll l = 0, r = n-1;
+        while(r-l>2) {
+            ll m1 = (2*l+r)/3;
+            ll m2 = (l+2*r)/3;
+            if(gf(m1)>gf(m2)) r = m2;
+            else l = m1;
+        }
+        ll ret = 0;
+        repk(j, l, r+1) chmax(ret, gf(j));
+        return ret;
+    };
+    auto f = [&](ll x) -> bool {
+        if (x<a) {
+            return true;
+        } else if (x<b) {
+            ll mx = 0;
+            chmax(mx, g(1, x, a-1));
+            chmax(mx, g(a+1, x-(a-1), x-(a-1)));
+            if (mx>=a*b) return false;
+            else return true;
+        } else {
+            ll mx = 0;
+            if (a-1 < x+1-b) {
+                chmax(mx, g(1, x+1, a-1));
+                chmax(mx, g(a+1, x+1-(a-1), (x+1-b)-(a-1)));
+                chmax(mx, g(1+(x+1-b), b-1, b-1));
+            } else {
+                chmax(mx, g(1, x+1, x+1-b));
+                chmax(mx, g(1+(x+1-b), b-1, (a-1)-(x+1-b)));
+                chmax(mx, g(a+1, x+1-(a-1)-1, x+1-a));
+            }
+            if (mx>=a*b) return false;
+            else return true;
+        }
+    };
+    ll ans = binary_search(0, INF, f);
+    Out(ans);
+
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vt3 ps;
-    rep(i, N) {
-        LONG(a, b);
-        ps.emplace_back(a, 1, b);
-    }
-    rep(i, N) {
-        LONG(a, b);
-        ps.emplace_back(a, 0, b);
-    }
-    sort(all(ps));
-    set<ll> ys;
-    ll ans = 0;
-    for(auto [x, c, y]: ps) {
-        if(c==1) ys.insert(y);
-        else {
-            auto it = ys.lower_bound(y);
-            if(it==ys.begin()) continue;
-            --it;
-            ++ans;
-            ys.erase(it);
-        }
-    }
-    Out(ans);
+    LONG(Q);
+    rep(_, Q) solve();
     
 }
 
