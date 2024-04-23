@@ -131,40 +131,13 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C);
-    vl X(N), V(N);
-    rep(i, N) cin >> X[i] >>V[i];
-    vl Sf(N+1), Sr(N+1);
-    rep(i, N) Sf[i+1] = Sf[i] + V[i];
-    rep(i, N) Sr[i+1] = Sr[i] + V[N-1-i];
-    rep(i, N) Sf[i+1] -= X[i];
-    rep(i, N) Sr[i+1] -= (C-X[N-1-i]);
-
-    auto gmax=[&](vl &Sf, vl &mxf) {
-        Pr mx = {0, 0};
-        rep(i, N+1) {
-            chmax(mx, {Sf[i], i});
-            mxf[i] = mx.second;
-        }
-    };
-    vl mxf(N+1), mxr(N+1);
-    gmax(Sf, mxf);
-    gmax(Sr, mxr);
+    LONG(N); VL(A, N);
+    rep(i, N) A[i] -= (i+1);
+    sort(all(A));
+    ll bi = N/2;
+    ll b = A[bi];
     ll ans = 0;
-    chmax(ans, *max_element(all(Sf)));
-    chmax(ans, *max_element(all(Sr)));
-    rep(i, N) {
-        ll v = Sr[i+1] - (C-X[N-1-i]);
-        ll j = mxf[N-1-i];
-        v += Sf[j];
-        chmax(ans, v);
-    }
-    rep(i, N) {
-        ll v = Sf[i+1] - X[i];
-        ll j = mxr[N-1-i];
-        v += Sr[j];
-        chmax(ans, v);
-    }
+    rep(i, N) ans += abs(b-A[i]);
     Out(ans);
     
 }
