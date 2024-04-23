@@ -128,35 +128,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    queue<Pr> que;
-    vvl dist(H, vl(W, INF));
-    auto push = [&](ll i, ll j, ll d) {
-        if(dist[i][j]!=INF) return;
-        dist[i][j] = d;
-        que.emplace(i, j);
+    LONG(N);
+    VL(A, N); VL(B, N);
+    auto f =[&](vl &v, ll x) -> ll {
+        auto [n, y] = uppbou_r(v, x);
+        return n+1;
     };
-    push(0, 0, 1);
-    while(que.size()) {
-        auto [i, j] = que.front(); que.pop();
-        rep(k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            if(!isin(ni, nj, H, W)) continue;
-            if (S[ni][nj]=='#') continue;
-            push(ni, nj, dist[i][j]+1);
+    ll ans = 0;
+    rep(k, 30) { //kth-bit
+        vl a = A, b = B;
+        rep(i, N) {
+            a[i] = A[i] % (1<<(k+1));
+            b[i] = B[i] % (1<<(k+1));
         }
-    }
-    if(dist.back().back() == INF) {
-        Out(-1); return 0;
-    }
-    ll ans = H*W - dist.back().back();
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='#') --ans;
+        sort(all(b));
+        ll now = 0;
+        rep(i, N) {
+            now += f(b, (1<<(k+1))-a[i]) - f(b, (1*(1<<k))-a[i])
+                  +f(b, (1<<(k+2))-a[i]) - f(b, (3*(1<<k))-a[i]);
+        }
+        if (now%2==1) ans |= 1<<k;
+        de(k)de(now)
     }
     Out(ans);
     

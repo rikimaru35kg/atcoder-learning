@@ -131,21 +131,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    VVL(C, 3, 3);
-    ll a = C[0][0];
-    ll b = C[0][1];
-    ll c = C[0][2];
-    ll d = C[1][0];
-    ll e = C[1][1];
-    ll f = C[1][2];
-    ll g = C[2][0];
-    ll h = C[2][1];
-    ll i = C[2][2];
-    if(b+d-a!=e) PNo
-    if(c+d-a!=f) PNo
-    if(b+g-a!=h) PNo
-    if(c+g-a!=i) PNo
-    PYes
+    LONG(N);
+    vt3 ps;
+    rep(i, N) {
+        LONG(a, b);
+        ps.emplace_back(a, 1, b);
+    }
+    rep(i, N) {
+        LONG(a, b);
+        ps.emplace_back(a, 0, b);
+    }
+    sort(all(ps));
+    set<ll> ys;
+    ll ans = 0;
+    for(auto [x, c, y]: ps) {
+        if(c==1) ys.insert(y);
+        else {
+            auto it = ys.lower_bound(y);
+            if(it==ys.begin()) continue;
+            --it;
+            ++ans;
+            ys.erase(it);
+        }
+    }
+    Out(ans);
     
 }
 
