@@ -70,6 +70,7 @@ using cd = complex<double>;
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
+inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }

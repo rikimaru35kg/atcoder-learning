@@ -66,6 +66,7 @@ using cd = complex<double>;
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
+inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -128,85 +129,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
+//! Delete rows and columns that only include character c.
+vector<string> crop_out(vector<string> &field, char c='.') {
+    long long h = field.size();
+    long long w = field[0].size();
+    vector<bool> rows(h), cols(w); 
+    for(long long i=0; i<h; ++i) {
+        for(long long j=0; j<w; ++j) {
+            if (field[i][j] != c) {
+                rows[i] = true;
+                cols[j] = true;
+            }
+        }
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
+    vector<string> ret;
+    for(long long i=0; i<h; ++i) {
+        if (!rows[i]) continue;
+        ret.push_back("");
+        for(long long j=0; j<w; ++j) {
+            if (cols[j]) ret.back() += field[i][j];
+        }
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl S(N+1);
-    rep(i, N) S[i+1] = S[i] + A[i];
-    ll ans = INF;
-    repk(i, 2, N-1) {
-        ll sl = S[i];
-        auto [nl, xl] = lowbou(S, sl/2);
-        nl = clamp(nl, 1LL, i-1);
-        if(nl>1 && 2*abs(2*S[nl-1]-sl) < 2*abs(2*S[nl]-sl)) --nl;
-        ll sr = S[N]-S[i];
-        auto [nr, xr] = lowbou(S, sl+sr/2);
-        nr = clamp(nr, i+1, N-1);
-        if(nr>i+1 && 2*abs(2*(S[nr-1]-sl)-sr) < 2*abs(2*(S[nr]-sl)-sr)) --nr;
-        ll mn = INF, mx = -INF;
-        chmin(mn, S[nl]); chmax(mx, S[nl]);
-        chmin(mn, S[i]-S[nl]); chmax(mx, S[i]-S[nl]);
-        chmin(mn, S[nr]-S[i]); chmax(mx, S[nr]-S[i]);
-        chmin(mn, S[N]-S[nr]); chmax(mx, S[N]-S[nr]);
-        chmin(ans, mx-mn);
-        de(nl)de(i)de(nr)
-    }
+    LONG(H, W);
+    VS(S, H);
+    vs ans = crop_out(S);
     Out(ans);
     
 }
