@@ -66,6 +66,7 @@ using cd = complex<double>;
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
+inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -131,18 +132,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q);
-    vvl S(N, vl(N));
-    rep(i, M) {
-        LONGM(l, r);
-        S[l][r]++;
+    LONG(N, K);
+    VL(X, N);
+    ll ans = INF;
+    rep(ri, 2) {
+        rep(i, N-K+1) {
+            ll now = 0;
+            now += abs(0 - X[i]);
+            now += abs(X[i] - X[i+K-1]);
+            chmin(ans, now);
+        }
+        // rep(i, N) X[i] = -X[i];
+        reverse(all(X));
     }
-    rep(i, N) rep(j, N-1) S[i][j+1] += S[i][j];
-    repr(i, N-1) rep(j, N) S[i][j] += S[i+1][j];
-    rep(_, Q) {
-        LONGM(p, q);
-        Out(S[p][q]);
-    }
+    Out(ans);
     
 }
 

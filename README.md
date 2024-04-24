@@ -340,6 +340,7 @@
 - !復習価値高 頭が混乱するが良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
 - !復習価値中 ひねりあり [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 - !要復習 有名問題（暗記必須） [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
+- !要復習 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
 
 ## 二分探索による平均最大化
 - 分母と分子に変数がある場合の最大値を求めたい場合、答えを決め打つと二分探索に持ち込める場合あり
@@ -349,7 +350,6 @@
 - !要復習 平均＆中央値最大化（良問） [E - Average and Median](https://atcoder.jp/contests/abc236/tasks/abc236_e)
 - !要復習 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - !復習価値低 砂糖水濃度最大化 [F - Sugar Water 2](https://atcoder.jp/contests/abc294/tasks/abc294_f)
-
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
