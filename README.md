@@ -1521,6 +1521,7 @@
 - [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
 - [C - Many Replacement](https://atcoder.jp/contests/abc342/tasks/abc342_c)
 - [D - AtCoder Express](https://atcoder.jp/contests/abc076/tasks/abc076_d)
+- [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

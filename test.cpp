@@ -137,28 +137,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, K);
-    if (K>=1<<M || (M==1&&K==1)) {
-        Out(-1); return 0;
-    }
-    if (M==0) {
-        printf("0 0\n");
-        return 0;
-    }
-    if (M==1) {
-        printf("0 0 1 1\n");
-        return 0;
-    }
-    deque<ll> ans;
-    ans.push_back(K);
-    rep(i, 1<<M) {
-        if(i!=K) {
-            ans.push_back(i);
-            ans.push_front(i);
-        }
-    }
-    ans.push_back(K);
-    Out(ans);
     
 }
 
