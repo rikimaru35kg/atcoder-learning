@@ -63,6 +63,7 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
+#define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
@@ -96,6 +97,7 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
+template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
@@ -132,25 +134,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    auto cnt = [&](ll m) ->ll{
-        ll ret = 0;
-        ll q = N/K, r = N%K;
-        ret += q;
-        if (r>=m) ++ret;
-        if(m==0) --ret;
-        return ret;
+    LONG(X, Y, Z, K);
+    VL(A, X); VL(B, Y); VL(C, Z);
+    sort(allr(A)); sort(allr(B)); sort(allr(C));
+
+    priority_queue<pair<ll,t3>> que;
+    vl ans;
+    set<t3> st;
+    auto push = [&](ll ai, ll bi, ll ci) {
+        if(st.count({ai,bi,ci})) return;
+        st.emplace(ai,bi,ci);
+        ll x = A[ai]+B[bi]+C[ci];
+        t3 t = {ai,bi,ci};
+        que.emplace(make_pair(x,t));
     };
-    ll ans = 0;
-    rep1(a, N) {
-        ll ma = a % K;
-        ll mb = (K - ma) % K;
-        ll mc = (K - ma) % K;
-        if ((mb + mc)%K != 0) continue;
-        ll tmp = cnt(mb) * cnt(mc);
-        ans += tmp;
+    push(0,0,0);
+    ll cnt = 0;
+    while(SIZE(ans)<K) {
+        auto [x, t3] = que.top(); que.pop();
+        auto [ai,bi,ci] = t3;
+        ++cnt;
+        ans.push_back(A[ai] + B[bi] + C[ci]);
+        if(ai<X-1) push(ai+1,bi,ci);
+        if(bi<Y-1) push(ai,bi+1,ci);
+        if(ci<Z-1) push(ai,bi,ci+1);
     }
-    Out(ans);
+    sort(allr(ans));
+    for(auto x: ans) Out(x);
     
 }
 
