@@ -1113,6 +1113,7 @@
 - なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
 ### 例題
 - !要復習 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
+- !要復習 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - !要復習 高難度 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
 - !要復習 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
 

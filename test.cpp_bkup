@@ -134,68 +134,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Use this class if n >= 1e7 && r <= 1e6
-class Combination2 {
-    long long mod;
-public:
-    Combination2 (long long mod): mod(mod) {}
-    long long operator()(long long n, long long r) {
-        r = min(n-r , r);
-        long long r_fact = 1;
-        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
-        long long r_fact_inv = modpow(r_fact, mod-2, mod);
-        long long ret = r_fact_inv;
-        for (long long i=0; i<r; ++i) (ret *= (n-i)) %= mod;
-        return ret;
-    }
-    long long modpow(long long a, long long b, long long mod) {
-        long long ret = 1;
-        a %= mod;
-        while (b > 0) {
-            if ((b & 1) == 1) ret = ret * a % mod;
-            a = a * a % mod;
-            b = (b >> 1);
-        }
-        return ret;
-    }
-};
-
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    Combination2 comb(1e9+7);
-    mint ans = 0;
-    rep(ri, 2) {
-        mint now = 0;
-        now = M*M;
-        now /= 2;
-        now *= M-1;
-        mint n2 = M;
-        n2 *= M-1;
-        n2 *= 2*M-1;
-        n2 /= 6;
-        now -= n2;
-
-        now *= N;
-        now *= N;
-        now *= comb(N*M-2, K-2);
-        ans += now;
-        swap(N, M);
+    LONG(N, K);
+    VL(V, N);
+    // vl Sl(N+1), Sr(N+1);
+    // rep(i, N) Sl[i+1] = Sl[i] + V[i];
+    // repr(i, N) Sr[i] = Sr[i+1] + V[i];
+    ll ans = 0;
+    rep(l, N+1) {
+        rep(r, N+1) {
+            if(l+r>N || l+r>K) break;
+            multiset<ll> st;
+            auto del=[&]() {
+                if (!st.size()) return;
+                if (*st.begin()<0) st.erase(st.begin());
+            };
+            rep(i, l) st.insert(V[i]);
+            rep(i, r) st.insert(V[N-1-i]);
+            ll rem = K - (l+r);
+            rep(i, rem) del();
+            ll now = 0;
+            for(auto x:st) now += x;
+            chmax(ans, now);
+        }
     }
     Out(ans);
     
