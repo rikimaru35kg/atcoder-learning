@@ -96,7 +96,8 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
-template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
+template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
@@ -133,12 +134,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    ll cnt = 0;
-    rep(i, N) {if(S[i]=='0') ++cnt;}
-    cnt = min(cnt, N-cnt);
-    Out(cnt*2);
     
 }
 

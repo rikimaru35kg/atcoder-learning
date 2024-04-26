@@ -68,6 +68,8 @@ inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
+template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop();} cout<<endl;}
+template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
@@ -96,9 +98,10 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
-template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
+template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
+template<typename T> inline void debug_view(deque<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop_front();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
@@ -134,33 +137,28 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y, Z, K);
-    VL(A, X); VL(B, Y); VL(C, Z);
-    sort(allr(A)); sort(allr(B)); sort(allr(C));
-
-    priority_queue<pair<ll,t3>> que;
-    vl ans;
-    set<t3> st;
-    auto push = [&](ll ai, ll bi, ll ci) {
-        if(st.count({ai,bi,ci})) return;
-        st.emplace(ai,bi,ci);
-        ll x = A[ai]+B[bi]+C[ci];
-        t3 t = {ai,bi,ci};
-        que.emplace(make_pair(x,t));
-    };
-    push(0,0,0);
-    ll cnt = 0;
-    while(SIZE(ans)<K) {
-        auto [x, t3] = que.top(); que.pop();
-        auto [ai,bi,ci] = t3;
-        ++cnt;
-        ans.push_back(A[ai] + B[bi] + C[ci]);
-        if(ai<X-1) push(ai+1,bi,ci);
-        if(bi<Y-1) push(ai,bi+1,ci);
-        if(ci<Z-1) push(ai,bi,ci+1);
+    LONG(M, K);
+    if (K>=1<<M || (M==1&&K==1)) {
+        Out(-1); return 0;
     }
-    sort(allr(ans));
-    for(auto x: ans) Out(x);
+    if (M==0) {
+        printf("0 0\n");
+        return 0;
+    }
+    if (M==1) {
+        printf("0 0 1 1\n");
+        return 0;
+    }
+    deque<ll> ans;
+    ans.push_back(K);
+    rep(i, 1<<M) {
+        if(i!=K) {
+            ans.push_back(i);
+            ans.push_front(i);
+        }
+    }
+    ans.push_back(K);
+    Out(ans);
     
 }
 
