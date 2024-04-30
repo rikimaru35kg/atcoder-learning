@@ -1,4 +1,4 @@
-// ### E.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -63,6 +63,7 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
+#define uset unordered_set
 #define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
@@ -138,32 +139,32 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vp evens, odds;
+    ll M = 1e5+10;
+    vvl from(2*M);
     rep(i, N) {
-        LONG(x,y);
-        ll a = Div(x+y, 2), b = Div(x-y, 2);
-        if((x+y)%2) odds.emplace_back(a, b);
-        else evens.emplace_back(a,b);
+        LONG(x, y); y+=M;
+        from[x].push_back(y);
+        from[y].push_back(x);
     }
-    ll ans = 0;
-    auto adds=[&](vp pos) ->ll {
-        ll M = SIZE(pos);
-        vl x, y;
-        rep(i, M) {
-            x.push_back(pos[i].first);
-            y.push_back(pos[i].second);
+    ll a = 0, b = 0;
+    vb used(2*M);
+    auto dfs = [&](auto f, ll v) -> void {
+        if(v>=M) ++b;
+        else ++a;
+        used[v] = true;
+        for(auto nv: from[v]) if(!used[nv]) {
+            f(f, nv);
         }
-        sort(all(x)); sort(all(y));
-        ll ret = 0;
-        rep(i, M-1) {
-            ret += (x[i+1] - x[i]) * (i+1) * (M-1-i);
-            ret += (y[i+1] - y[i]) * (i+1) * (M-1-i);
-        }
-        return ret;
     };
-    ans += adds(odds);
-    ans += adds(evens);
+    ll ans = 0;
+    rep(i, M) if(!used[i]){
+        if(SIZE(from[i])==0) continue;
+        a = 0, b = 0;
+        dfs(dfs, i);
+        ans += a*b;
+    }
+    ans -= N;
     Out(ans);
 }
 
-// ### E.cpp ###
+// ### test.cpp ###

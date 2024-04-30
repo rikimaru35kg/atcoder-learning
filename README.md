@@ -1530,6 +1530,7 @@
 - [D - AtCoder Express](https://atcoder.jp/contests/abc076/tasks/abc076_d)
 - [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
 - [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
+- [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
