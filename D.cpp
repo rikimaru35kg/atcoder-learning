@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### D.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -67,7 +63,6 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
-#define uset unordered_set
 #define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
@@ -139,26 +134,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(H, W);
+    VS(S, H);
+    vvb oks(H, vb(W));
+    rep(i, H) rep(j, W) {
+        if (S[i][j]=='#') continue;
+        bool ok = true;
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni,nj,H,W)) continue;
+            if (S[ni][nj]=='#') ok = false;
+        }
+        if(!ok) continue;
+        oks[i][j]=true;
+    }
+    ll cnt = 0;
+    rep(i, H) rep(j, W) if(oks[i][j]) ++cnt;
+    if(cnt==0) {
+        Out(1); return 0;
+    }
+
+    ll ans = 0;
+    vvb used(H, vb(W));
+    unordered_set<ll> st;
+    auto dfs = [&](auto f, ll v) -> void {
+        st.insert(v);
+        ll i = v/W, j = v%W;
+        if(used[i][j]) return;
+        used[i][j] = true;
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            ll nid = ni*W + nj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='#') continue;
+            if(used[ni][nj]) continue;
+            if(!oks[ni][nj]) st.insert(nid);
+            else f(f, nid);
+        }
+    };
+    rep(i, H) rep(j, W) {
+        if (!oks[i][j]) continue;
+        if (used[i][j]) continue;
+        st = unordered_set<ll>();
+        dfs(dfs, i*W+j);
+        chmax(ans, SIZE(st));
+    }
+    Out(ans);
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### D.cpp ###

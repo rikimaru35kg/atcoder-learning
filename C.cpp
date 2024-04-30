@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### C.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -67,7 +63,6 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) __builtin_popcountll(x)
 #define abs(x) llabs(x)
-#define uset unordered_set
 #define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
@@ -142,23 +137,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N); VL(A, N);
+    vl stck;
+    rep(i, N) {
+        ll x = A[i];
+        de(stck)
+        if(!stck.size() || (stck.size()&&stck.back()!=x)) {
+            stck.push_back(x);
+            continue;
+        }
+        while (stck.size() && stck.back()==x) {
+            stck.pop_back();
+            x++;
+        }
+        stck.push_back(x);
+    }
+    de(stck)
+    Out(stck.size());
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### C.cpp ###

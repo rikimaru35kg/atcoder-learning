@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### D.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -134,34 +134,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(V, N);
-    // vl Sl(N+1), Sr(N+1);
-    // rep(i, N) Sl[i+1] = Sl[i] + V[i];
-    // repr(i, N) Sr[i] = Sr[i+1] + V[i];
-    ll ans = 0;
-    rep(l, N+1) {
-        rep(r, N+1) {
-            if(l+r>N || l+r>K) break;
-            multiset<ll> st;
-            auto del=[&]() {
-                if (!st.size()) return;
-                if (*st.begin()<0) st.erase(st.begin());
-            };
-            rep(i, l) st.insert(V[i]);
-            rep(i, r) st.insert(V[N-1-i]);
-            ll rem = K - (l+r);
-            rep(i, rem) del();
-            ll now = 0;
-            for(auto x:st) now += x;
-            chmax(ans, now);
+    LONG(H, W);
+    VS(S, H);
+    // '.'マスでありかつ隣接マスに'#'がないマスをokマスとして数える
+    vvb oks(H, vb(W));
+    rep(i, H) rep(j, W) {
+        if (S[i][j]=='#') continue;
+        bool ok = true;
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni,nj,H,W)) continue;
+            if (S[ni][nj]=='#') ok = false;
         }
+        if(!ok) continue;
+        oks[i][j]=true;
+    }
+    // 1つも上記okマスがない場合は1を出力して終了
+    ll cnt = 0;
+    rep(i, H) rep(j, W) if(oks[i][j]) ++cnt;
+    if(cnt==0) {
+        Out(1); return 0;
+    }
+    // okマスからdfsしていけるマスのid(=i*W+j）をstに突っ込む
+    // (stのサイズ=自由度)
+    ll ans = 0;
+    vvb used(H, vb(W));
+    unordered_set<ll> st;
+    auto dfs = [&](auto f, ll v) -> void {
+        st.insert(v);
+        ll i = v/W, j = v%W;
+        used[i][j] = true;
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            ll nid = ni*W + nj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='#') continue;
+            if(used[ni][nj]) continue;
+            if(!oks[ni][nj]) st.insert(nid);
+            else f(f, nid);
+        }
+    };
+    // okマスかつ未探索マスからdfs
+    rep(i, H) rep(j, W) {
+        if (!oks[i][j]) continue;
+        if (used[i][j]) continue;
+        //===== ↓ここが問題の箇所 =====//
+        // st.clear();  // <-- これだとTLEする
+        st = unordered_set<ll>();  // <-- こっちだとTLEしない
+        //===== ↑ここが問題の箇所 =====//
+        dfs(dfs, i*W+j);
+        chmax(ans, SIZE(st));
     }
     Out(ans);
-    
 }
 
-// ### test.cpp ###
+// ### D.cpp ###
