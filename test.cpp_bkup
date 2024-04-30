@@ -139,32 +139,20 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    ll M = 1e5+10;
-    vvl from(2*M);
+    VL(A, N);
+    ll c = 0;
     rep(i, N) {
-        LONG(x, y); y+=M;
-        from[x].push_back(y);
-        from[y].push_back(x);
+        c = 2*A[i]-c;
     }
-    ll a = 0, b = 0;
-    vb used(2*M);
-    auto dfs = [&](auto f, ll v) -> void {
-        if(v>=M) ++b;
-        else ++a;
-        used[v] = true;
-        for(auto nv: from[v]) if(!used[nv]) {
-            f(f, nv);
-        }
-    };
-    ll ans = 0;
-    rep(i, M) if(!used[i]){
-        if(SIZE(from[i])==0) continue;
-        a = 0, b = 0;
-        dfs(dfs, i);
-        ans += a*b;
+    ll x = c/2;
+    vl ans;
+    rep(i, N) {
+        ans.push_back(x);
+        if(i==N-1) break;
+        x = 2*A[i]-x;
     }
-    ans -= N;
     Out(ans);
+    
 }
 
 // ### test.cpp ###

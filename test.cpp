@@ -134,6 +134,7 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+
 #include <atcoder/all>
 using namespace atcoder;
 using mint = modint1000000007;
@@ -189,14 +190,26 @@ public:
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Combination comb(1e4, 1e9+7);
+    Combination comb(1e5, 1e9+7);
     LONG(N, K);
-    rep1(i, K) {
-        mint ans = 0;
-        ans = comb(N-K+1, i);
-        ans *= comb(K-1, i-1);
-        Out(ans);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
+    mint ans = K;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ll size = SIZE(from[v]);
+        if(p==-1) ans *= comb.nPr(K-1, size);
+        else ans *= comb.nPr(K-2, size-1);
+        de(v)de(ans)
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+        }
+    };
+    dfs(dfs, 0);
+    Out(ans);
     
 }
 
