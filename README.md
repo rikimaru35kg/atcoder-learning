@@ -1572,3 +1572,4 @@
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
 - [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
+- [ D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)

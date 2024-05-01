@@ -1,4 +1,5 @@
 // ### test.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -142,41 +143,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<queue<ll>> ques(N);
-    rep(i, N) rep(j, N-1) {
-        LONGM(a);
-        ques[i].push(a);
+    LONG(N, K); STRING(S);
+    ll lr = 0, rl = 0;
+    ll ans = 0;
+    rep(i, N-1) {
+        if(S[i]=='L' && S[i+1]=='R') lr++;
+        if(S[i]=='R' && S[i+1]=='L') rl++;
+        if(S[i]==S[i+1]) ++ans;
     }
-    set<Pr> match;
-    auto check=[&](ll i) {
-        if(ques[i].size()==0) return;
-        ll j = ques[i].front();
-        if(ques[j].size()==0) return;
-        if (ques[j].front() != i) return;
-        if(i>j) swap(i, j);
-        match.emplace(i, j);
-    };
-    rep(i, N) {
-        check(i);
-    }
-    ll day=0;
-    while(match.size()) {
-        de(match)de(day)
-        set<Pr> pmatch;
-        swap(pmatch, match);
-        for(auto [i, j]: pmatch) {
-            ques[i].pop();
-            ques[j].pop();
-        }
-        for(auto [i, j]: pmatch) {
-            check(i);
-            check(j);
-        }
-        ++day;
-    }
-    rep(i, N) { if(ques[i].size()) Pm1 }
-    Out(day);
+    de(lr)de(rl)
+    ll cnt = min({K,lr,rl});
+    de(cnt)
+    K -= cnt;
+    rl -= cnt; lr -= cnt;
+    ans += 2*cnt;
+    de(ans)
+    if(K>0 && lr>0 && S[0]=='L') ++ans, --K, lr--;
+    if(K>0 && rl>0 && S[0]=='R') ++ans, --K, rl--;
+    if(K>0 && rl>0 && S[N-1]=='R') ++ans, --K, rl--;
+    if(K>0 && lr>0 && S[N-1]=='L') ++ans, --K, lr--;
+    Out(ans);
     
 }
 

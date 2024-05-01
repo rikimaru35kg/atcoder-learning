@@ -101,6 +101,7 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(deque<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop_front();}cerr << endl;}
@@ -141,6 +142,41 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N);
+    vector<queue<ll>> ques(N);
+    rep(i, N) rep(j, N-1) {
+        LONGM(a);
+        ques[i].push(a);
+    }
+    set<Pr> match;
+    auto check=[&](ll i) {
+        if(ques[i].size()==0) return;
+        ll j = ques[i].front();
+        if(ques[j].size()==0) return;
+        if (ques[j].front() != i) return;
+        if(i>j) swap(i, j);
+        match.emplace(i, j);
+    };
+    rep(i, N) {
+        check(i);
+    }
+    ll day=0;
+    while(match.size()) {
+        de(match)de(day)
+        set<Pr> pmatch;
+        swap(pmatch, match);
+        for(auto [i, j]: pmatch) {
+            ques[i].pop();
+            ques[j].pop();
+        }
+        for(auto [i, j]: pmatch) {
+            check(i);
+            check(j);
+        }
+        ++day;
+    }
+    rep(i, N) { if(ques[i].size()) Pm1 }
+    Out(day);
     
 }
 
