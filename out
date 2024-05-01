@@ -1,11 +1,7 @@
-test.cpp: In function ‘int main()’:
-test.cpp:138:24: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
-  138 |     if (K>=1<<M || M==1&&K==1) {
-      |                    ~~~~^~~~~~
-test.cpp: In instantiation of ‘void debug_view(T) [with T = std::__debug::deque<long long int>]’:
-test.cpp:158:5:   required from here
-test.cpp:98:55: error: no match for ‘operator<<’ (operand types are ‘std::ostream’ {aka ‘std::basic_ostream<char>’} and ‘std::__debug::deque<long long int>’)
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp: In instantiation of ‘void debug_view(T) [with T = std::pair<long long int, long long int>]’:
+test.cpp:186:9:   required from here
+test.cpp:103:55: error: no match for ‘operator<<’ (operand types are ‘std::ostream’ {aka ‘std::basic_ostream<char>’} and ‘std::pair<long long int, long long int>’)
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -15,37 +11,37 @@ In file included from /usr/include/c++/11/istream:39,
 /usr/include/c++/11/ostream:108:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::basic_ostream<_CharT, _Traits>::__ostream_type& (*)(std::basic_ostream<_CharT, _Traits>::__ostream_type&)) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   108 |       operator<<(__ostream_type& (*__pf)(__ostream_type&))
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:108:36: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘std::basic_ostream<char>::__ostream_type& (*)(std::basic_ostream<char>::__ostream_type&)’ {aka ‘std::basic_ostream<char>& (*)(std::basic_ostream<char>&)’}
+/usr/include/c++/11/ostream:108:36: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘std::basic_ostream<char>::__ostream_type& (*)(std::basic_ostream<char>::__ostream_type&)’ {aka ‘std::basic_ostream<char>& (*)(std::basic_ostream<char>&)’}
   108 |       operator<<(__ostream_type& (*__pf)(__ostream_type&))
       |                  ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/ostream:117:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::basic_ostream<_CharT, _Traits>::__ios_type& (*)(std::basic_ostream<_CharT, _Traits>::__ios_type&)) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>; std::basic_ostream<_CharT, _Traits>::__ios_type = std::basic_ios<char>]’
   117 |       operator<<(__ios_type& (*__pf)(__ios_type&))
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:117:32: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘std::basic_ostream<char>::__ios_type& (*)(std::basic_ostream<char>::__ios_type&)’ {aka ‘std::basic_ios<char>& (*)(std::basic_ios<char>&)’}
+/usr/include/c++/11/ostream:117:32: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘std::basic_ostream<char>::__ios_type& (*)(std::basic_ostream<char>::__ios_type&)’ {aka ‘std::basic_ios<char>& (*)(std::basic_ios<char>&)’}
   117 |       operator<<(__ios_type& (*__pf)(__ios_type&))
       |                  ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/ostream:127:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::ios_base& (*)(std::ios_base&)) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   127 |       operator<<(ios_base& (*__pf) (ios_base&))
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:127:30: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘std::ios_base& (*)(std::ios_base&)’
+/usr/include/c++/11/ostream:127:30: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘std::ios_base& (*)(std::ios_base&)’
   127 |       operator<<(ios_base& (*__pf) (ios_base&))
       |                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
 /usr/include/c++/11/ostream:166:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   166 |       operator<<(long __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:166:23: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘long int’
+/usr/include/c++/11/ostream:166:23: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘long int’
   166 |       operator<<(long __n)
       |                  ~~~~~^~~
 /usr/include/c++/11/ostream:170:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   170 |       operator<<(unsigned long __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:170:32: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘long unsigned int’
+/usr/include/c++/11/ostream:170:32: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘long unsigned int’
   170 |       operator<<(unsigned long __n)
       |                  ~~~~~~~~~~~~~~^~~
 /usr/include/c++/11/ostream:174:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(bool) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   174 |       operator<<(bool __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:174:23: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘bool’
+/usr/include/c++/11/ostream:174:23: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘bool’
   174 |       operator<<(bool __n)
       |                  ~~~~~^~~
 In file included from /usr/include/c++/11/ostream:829,
@@ -57,7 +53,7 @@ In file included from /usr/include/c++/11/ostream:829,
 /usr/include/c++/11/bits/ostream.tcc:91:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(short int) [with _CharT = char; _Traits = std::char_traits<char>]’
    91 |     basic_ostream<_CharT, _Traits>::
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/ostream.tcc:92:22: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘short int’
+/usr/include/c++/11/bits/ostream.tcc:92:22: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘short int’
    92 |     operator<<(short __n)
       |                ~~~~~~^~~
 In file included from /usr/include/c++/11/istream:39,
@@ -68,7 +64,7 @@ In file included from /usr/include/c++/11/istream:39,
 /usr/include/c++/11/ostream:181:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(short unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   181 |       operator<<(unsigned short __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:181:33: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘short unsigned int’
+/usr/include/c++/11/ostream:181:33: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘short unsigned int’
   181 |       operator<<(unsigned short __n)
       |                  ~~~~~~~~~~~~~~~^~~
 In file included from /usr/include/c++/11/ostream:829,
@@ -80,7 +76,7 @@ In file included from /usr/include/c++/11/ostream:829,
 /usr/include/c++/11/bits/ostream.tcc:105:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(int) [with _CharT = char; _Traits = std::char_traits<char>]’
   105 |     basic_ostream<_CharT, _Traits>::
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/ostream.tcc:106:20: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘int’
+/usr/include/c++/11/bits/ostream.tcc:106:20: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘int’
   106 |     operator<<(int __n)
       |                ~~~~^~~
 In file included from /usr/include/c++/11/istream:39,
@@ -91,49 +87,49 @@ In file included from /usr/include/c++/11/istream:39,
 /usr/include/c++/11/ostream:192:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   192 |       operator<<(unsigned int __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:192:31: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘unsigned int’
+/usr/include/c++/11/ostream:192:31: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘unsigned int’
   192 |       operator<<(unsigned int __n)
       |                  ~~~~~~~~~~~~~^~~
 /usr/include/c++/11/ostream:201:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long long int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   201 |       operator<<(long long __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:201:28: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘long long int’
+/usr/include/c++/11/ostream:201:28: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘long long int’
   201 |       operator<<(long long __n)
       |                  ~~~~~~~~~~^~~
 /usr/include/c++/11/ostream:205:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long long unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   205 |       operator<<(unsigned long long __n)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:205:37: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘long long unsigned int’
+/usr/include/c++/11/ostream:205:37: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘long long unsigned int’
   205 |       operator<<(unsigned long long __n)
       |                  ~~~~~~~~~~~~~~~~~~~^~~
 /usr/include/c++/11/ostream:220:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(double) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   220 |       operator<<(double __f)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:220:25: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘double’
+/usr/include/c++/11/ostream:220:25: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘double’
   220 |       operator<<(double __f)
       |                  ~~~~~~~^~~
 /usr/include/c++/11/ostream:224:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(float) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   224 |       operator<<(float __f)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:224:24: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘float’
+/usr/include/c++/11/ostream:224:24: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘float’
   224 |       operator<<(float __f)
       |                  ~~~~~~^~~
 /usr/include/c++/11/ostream:232:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long double) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   232 |       operator<<(long double __f)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:232:30: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘long double’
+/usr/include/c++/11/ostream:232:30: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘long double’
   232 |       operator<<(long double __f)
       |                  ~~~~~~~~~~~~^~~
 /usr/include/c++/11/ostream:245:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(const void*) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>]’
   245 |       operator<<(const void* __p)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:245:30: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘const void*’
+/usr/include/c++/11/ostream:245:30: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘const void*’
   245 |       operator<<(const void* __p)
       |                  ~~~~~~~~~~~~^~~
 /usr/include/c++/11/ostream:250:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::nullptr_t) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__ostream_type = std::basic_ostream<char>; std::nullptr_t = std::nullptr_t]’
   250 |       operator<<(nullptr_t)
       |       ^~~~~~~~
-/usr/include/c++/11/ostream:250:18: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘std::nullptr_t’
+/usr/include/c++/11/ostream:250:18: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘std::nullptr_t’
   250 |       operator<<(nullptr_t)
       |                  ^~~~~~~~~
 In file included from /usr/include/c++/11/ostream:829,
@@ -145,7 +141,7 @@ In file included from /usr/include/c++/11/ostream:829,
 /usr/include/c++/11/bits/ostream.tcc:119:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(std::basic_ostream<_CharT, _Traits>::__streambuf_type*) [with _CharT = char; _Traits = std::char_traits<char>; std::basic_ostream<_CharT, _Traits>::__streambuf_type = std::basic_streambuf<char>]’
   119 |     basic_ostream<_CharT, _Traits>::
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/11/bits/ostream.tcc:120:34: note:   no known conversion for argument 1 from ‘std::__debug::deque<long long int>’ to ‘std::basic_ostream<char>::__streambuf_type*’ {aka ‘std::basic_streambuf<char>*’}
+/usr/include/c++/11/bits/ostream.tcc:120:34: note:   no known conversion for argument 1 from ‘std::pair<long long int, long long int>’ to ‘std::basic_ostream<char>::__streambuf_type*’ {aka ‘std::basic_streambuf<char>*’}
   120 |     operator<<(__streambuf_type* __sbin)
       |                ~~~~~~~~~~~~~~~~~~^~~~~~
 In file included from /usr/include/c++/11/regex:63,
@@ -154,8 +150,8 @@ In file included from /usr/include/c++/11/regex:63,
  1671 |     operator<<(basic_ostream<_Ch_type, _Ch_traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/regex.h:1671:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::__cxx11::sub_match<_Bi_iter>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::__cxx11::sub_match<_Bi_iter>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/bitset:1595,
                  from stdc++.h:66:
@@ -163,16 +159,16 @@ In file included from /usr/include/c++/11/bitset:1595,
   408 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/debug/bitset:408:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::__debug::bitset<_Nb>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::__debug::bitset<_Nb>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:45:
 /usr/include/c++/11/cstddef:126:5: note: candidate: ‘template<class _IntegerType> constexpr std::__byte_op_t<_IntegerType> std::operator<<(std::byte, _IntegerType)’
   126 |     operator<<(byte __b, _IntegerType __shift) noexcept
       |     ^~~~~~~~
 /usr/include/c++/11/cstddef:126:5: note:   template argument deduction/substitution failed:
-test.cpp:98:50: note:   cannot convert ‘std::cerr’ (type ‘std::ostream’ {aka ‘std::basic_ostream<char>’}) to type ‘std::byte’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:50: note:   cannot convert ‘std::cerr’ (type ‘std::ostream’ {aka ‘std::basic_ostream<char>’}) to type ‘std::byte’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ^~~~
 In file included from /usr/include/c++/11/bits/basic_string.h:48,
                  from /usr/include/c++/11/string:55,
@@ -188,8 +184,8 @@ In file included from /usr/include/c++/11/bits/basic_string.h:48,
   667 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/string_view:667:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/string:55,
                  from /usr/include/c++/11/bits/locale_classes.h:40,
@@ -204,8 +200,8 @@ In file included from /usr/include/c++/11/string:55,
  6531 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/basic_string.h:6531:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/bits/ios_base.h:46,
                  from /usr/include/c++/11/ios:42,
@@ -218,8 +214,8 @@ In file included from /usr/include/c++/11/bits/ios_base.h:46,
   279 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const error_code& __e)
       |     ^~~~~~~~
 /usr/include/c++/11/system_error:279:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const std::error_code&’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const std::error_code&’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -230,8 +226,8 @@ In file included from /usr/include/c++/11/istream:39,
   513 |     operator<<(basic_ostream<_CharT, _Traits>& __out, _CharT __c)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:513:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   deduced conflicting types for parameter ‘_CharT’ (‘char’ and ‘std::__debug::deque<long long int>’)
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   deduced conflicting types for parameter ‘_CharT’ (‘char’ and ‘std::pair<long long int, long long int>’)
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -242,8 +238,8 @@ In file included from /usr/include/c++/11/istream:39,
   518 |     operator<<(basic_ostream<_CharT, _Traits>& __out, char __c)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:518:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -254,8 +250,8 @@ In file included from /usr/include/c++/11/istream:39,
   524 |     operator<<(basic_ostream<char, _Traits>& __out, char __c)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:524:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -266,8 +262,8 @@ In file included from /usr/include/c++/11/istream:39,
   530 |     operator<<(basic_ostream<char, _Traits>& __out, signed char __c)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:530:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘signed char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘signed char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -278,8 +274,8 @@ In file included from /usr/include/c++/11/istream:39,
   535 |     operator<<(basic_ostream<char, _Traits>& __out, unsigned char __c)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:535:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘unsigned char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘unsigned char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -290,8 +286,8 @@ In file included from /usr/include/c++/11/istream:39,
   544 |     operator<<(basic_ostream<char, _Traits>&, wchar_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:544:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘wchar_t’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘wchar_t’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -302,8 +298,8 @@ In file included from /usr/include/c++/11/istream:39,
   549 |     operator<<(basic_ostream<char, _Traits>&, char8_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:549:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘char8_t’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘char8_t’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -314,8 +310,8 @@ In file included from /usr/include/c++/11/istream:39,
   554 |     operator<<(basic_ostream<char, _Traits>&, char16_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:554:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘char16_t’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘char16_t’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -326,8 +322,8 @@ In file included from /usr/include/c++/11/istream:39,
   558 |     operator<<(basic_ostream<char, _Traits>&, char32_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:558:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘char32_t’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘char32_t’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -338,8 +334,8 @@ In file included from /usr/include/c++/11/istream:39,
   564 |     operator<<(basic_ostream<wchar_t, _Traits>&, char8_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:564:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘wchar_t’ and ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘wchar_t’ and ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -350,8 +346,8 @@ In file included from /usr/include/c++/11/istream:39,
   569 |     operator<<(basic_ostream<wchar_t, _Traits>&, char16_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:569:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘wchar_t’ and ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘wchar_t’ and ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -362,8 +358,8 @@ In file included from /usr/include/c++/11/istream:39,
   573 |     operator<<(basic_ostream<wchar_t, _Traits>&, char32_t) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:573:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘wchar_t’ and ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘wchar_t’ and ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -374,8 +370,8 @@ In file included from /usr/include/c++/11/istream:39,
   594 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const _CharT* __s)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:594:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘const _CharT*’ and ‘std::__debug::deque<long long int>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘const _CharT*’ and ‘std::pair<long long int, long long int>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/ostream:829,
                  from /usr/include/c++/11/istream:39,
@@ -387,8 +383,8 @@ In file included from /usr/include/c++/11/ostream:829,
   321 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const char* __s)
       |     ^~~~~~~~
 /usr/include/c++/11/bits/ostream.tcc:321:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const char*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const char*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -399,8 +395,8 @@ In file included from /usr/include/c++/11/istream:39,
   611 |     operator<<(basic_ostream<char, _Traits>& __out, const char* __s)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:611:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const char*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const char*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -411,8 +407,8 @@ In file included from /usr/include/c++/11/istream:39,
   624 |     operator<<(basic_ostream<char, _Traits>& __out, const signed char* __s)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:624:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const signed char*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const signed char*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -423,8 +419,8 @@ In file included from /usr/include/c++/11/istream:39,
   629 |     operator<<(basic_ostream<char, _Traits>& __out, const unsigned char* __s)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:629:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const unsigned char*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const unsigned char*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -435,8 +431,8 @@ In file included from /usr/include/c++/11/istream:39,
   638 |     operator<<(basic_ostream<char, _Traits>&, const wchar_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:638:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const wchar_t*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const wchar_t*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -447,8 +443,8 @@ In file included from /usr/include/c++/11/istream:39,
   643 |     operator<<(basic_ostream<char, _Traits>&, const char8_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:643:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const char8_t*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const char8_t*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -459,8 +455,8 @@ In file included from /usr/include/c++/11/istream:39,
   648 |     operator<<(basic_ostream<char, _Traits>&, const char16_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:648:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const char16_t*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const char16_t*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -471,8 +467,8 @@ In file included from /usr/include/c++/11/istream:39,
   652 |     operator<<(basic_ostream<char, _Traits>&, const char32_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:652:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const char32_t*’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const char32_t*’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -483,8 +479,8 @@ In file included from /usr/include/c++/11/istream:39,
   658 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char8_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:658:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘wchar_t’ and ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘wchar_t’ and ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -495,8 +491,8 @@ In file included from /usr/include/c++/11/istream:39,
   663 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char16_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:663:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘wchar_t’ and ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘wchar_t’ and ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -507,8 +503,8 @@ In file included from /usr/include/c++/11/istream:39,
   667 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char32_t*) = delete;
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:667:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   mismatched types ‘wchar_t’ and ‘char’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   mismatched types ‘wchar_t’ and ‘char’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/istream:39,
                  from /usr/include/c++/11/sstream:38,
@@ -519,29 +515,29 @@ In file included from /usr/include/c++/11/istream:39,
   750 |     operator<<(_Ostream&& __os, const _Tp& __x)
       |     ^~~~~~~~
 /usr/include/c++/11/ostream:750:5: note:   template argument deduction/substitution failed:
-/usr/include/c++/11/ostream: In substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::__debug::deque<long long int>]’:
-test.cpp:98:55:   required from ‘void debug_view(T) [with T = std::__debug::deque<long long int>]’
-test.cpp:158:5:   required from here
+/usr/include/c++/11/ostream: In substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::pair<long long int, long long int>]’:
+test.cpp:103:55:   required from ‘void debug_view(T) [with T = std::pair<long long int, long long int>]’
+test.cpp:186:9:   required from here
 /usr/include/c++/11/ostream:750:5: error: template constraint failure for ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&&’
 /usr/include/c++/11/ostream:750:5: note: constraints not satisfied
-/usr/include/c++/11/ostream: In substitution of ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&& [with _Os = std::basic_ostream<char>&; _Tp = std::__debug::deque<long long int>]’:
-/usr/include/c++/11/ostream:750:5:   required by substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::__debug::deque<long long int>]’
-test.cpp:98:55:   required from ‘void debug_view(T) [with T = std::__debug::deque<long long int>]’
-test.cpp:158:5:   required from here
+/usr/include/c++/11/ostream: In substitution of ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&& [with _Os = std::basic_ostream<char>&; _Tp = std::pair<long long int, long long int>]’:
+/usr/include/c++/11/ostream:750:5:   required by substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::pair<long long int, long long int>]’
+test.cpp:103:55:   required from ‘void debug_view(T) [with T = std::pair<long long int, long long int>]’
+test.cpp:186:9:   required from here
 /usr/include/c++/11/ostream:717:13:   required for the satisfaction of ‘__derived_from_ios_base<_Os>’ [with _Os = std::basic_ostream<char, std::char_traits<char> >&]
 /usr/include/c++/11/ostream:717:39: note: the expression ‘is_class_v<_Tp> [with _Tp = std::basic_ostream<char, std::char_traits<char> >&]’ evaluated to ‘false’
   717 |     concept __derived_from_ios_base = is_class_v<_Tp>
       |                                       ^~~~~~~~~~~~~~~
 In file included from /usr/include/c++/11/ccomplex:39,
                  from stdc++.h:54:
-test.cpp: In instantiation of ‘void debug_view(T) [with T = std::__debug::deque<long long int>]’:
-test.cpp:158:5:   required from here
+test.cpp: In instantiation of ‘void debug_view(T) [with T = std::pair<long long int, long long int>]’:
+test.cpp:186:9:   required from here
 /usr/include/c++/11/complex:555:5: note: candidate: ‘template<class _Tp, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::complex<_Tp>&)’
   555 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const complex<_Tp>& __x)
       |     ^~~~~~~~
 /usr/include/c++/11/complex:555:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::complex<_Tp>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::complex<_Tp>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/bits/locale_conv.h:41,
                  from /usr/include/c++/11/locale:43,
@@ -551,72 +547,72 @@ In file included from /usr/include/c++/11/bits/locale_conv.h:41,
  1003 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/unique_ptr.h:1003:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::unique_ptr<_Up, _Ep>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::unique_ptr<_Up, _Ep>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:79:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Resetiosflags)’
    79 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Resetiosflags __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:79:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘std::_Resetiosflags’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘std::_Resetiosflags’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:109:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setiosflags)’
   109 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setiosflags __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:109:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘std::_Setiosflags’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘std::_Setiosflags’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:143:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setbase)’
   143 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setbase __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:143:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘std::_Setbase’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘std::_Setbase’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:178:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setfill<_CharT>)’
   178 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setfill<_CharT> __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:178:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘std::_Setfill<_CharT>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::_Setfill<_CharT>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:208:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setprecision)’
   208 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setprecision __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:208:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘std::_Setprecision’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘std::_Setprecision’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:238:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Setw)’
   238 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setw __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:238:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘std::_Setw’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘std::_Setw’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:311:5: note: candidate: ‘template<class _CharT, class _Traits, class _MoneyT> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Put_money<_MoneyT>)’
   311 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_money<_MoneyT> __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:311:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘std::_Put_money<_MoneyT>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::_Put_money<_MoneyT>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:72:
 /usr/include/c++/11/iomanip:363:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::_Put_time<_CharT>)’
   363 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_time<_CharT> __f)
       |     ^~~~~~~~
 /usr/include/c++/11/iomanip:363:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘std::_Put_time<_CharT>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::_Put_time<_CharT>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/memory:77,
                  from stdc++.h:82:
@@ -624,8 +620,8 @@ In file included from /usr/include/c++/11/memory:77,
    70 |     operator<<(std::basic_ostream<_Ch, _Tr>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/shared_ptr.h:70:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/valarray:603,
                  from stdc++.h:95:
@@ -633,8 +629,8 @@ In file included from /usr/include/c++/11/valarray:603,
   413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/valarray:603,
                  from stdc++.h:95:
@@ -642,8 +638,8 @@ In file included from /usr/include/c++/11/valarray:603,
   413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/valarray:603,
                  from stdc++.h:95:
@@ -651,8 +647,8 @@ In file included from /usr/include/c++/11/valarray:603,
   413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/valarray:603,
                  from stdc++.h:95:
@@ -660,8 +656,8 @@ In file included from /usr/include/c++/11/valarray:603,
   413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/valarray:603,
                  from stdc++.h:95:
@@ -669,32 +665,32 @@ In file included from /usr/include/c++/11/valarray:603,
   413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:95:
 /usr/include/c++/11/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const std::valarray<_Tp>&, const std::valarray<_Tp>&)’
  1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
       | ^~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/valarray:1194:1: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::valarray<_Tp>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::valarray<_Tp>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:95:
 /usr/include/c++/11/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const std::valarray<_Tp>&, const typename std::valarray<_Tp>::value_type&)’
  1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
       | ^~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/valarray:1194:1: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::valarray<_Tp>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::valarray<_Tp>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:95:
 /usr/include/c++/11/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const typename std::valarray<_Tp>::value_type&, const std::valarray<_Tp>&)’
  1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
       | ^~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/11/valarray:1194:1: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::valarray<_Tp>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::valarray<_Tp>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:49,
                  from stdc++.h:108:
@@ -702,8 +698,8 @@ In file included from /usr/include/c++/11/random:49,
  1309 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.h:1309:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -711,8 +707,8 @@ In file included from /usr/include/c++/11/random:51,
   901 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:901:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::uniform_int_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::uniform_int_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -720,8 +716,8 @@ In file included from /usr/include/c++/11/random:51,
   959 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:959:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::uniform_real_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::uniform_real_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -729,8 +725,8 @@ In file included from /usr/include/c++/11/random:51,
  2144 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2144:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::cauchy_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::cauchy_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -738,8 +734,8 @@ In file included from /usr/include/c++/11/random:51,
  1020 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1020:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘const std::bernoulli_distribution&’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘const std::bernoulli_distribution&’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -747,8 +743,8 @@ In file included from /usr/include/c++/11/random:51,
  1101 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1101:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::geometric_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::geometric_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -756,8 +752,8 @@ In file included from /usr/include/c++/11/random:51,
  1753 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1753:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::exponential_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::exponential_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -765,8 +761,8 @@ In file included from /usr/include/c++/11/random:51,
  2538 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2538:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::weibull_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::weibull_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -774,8 +770,8 @@ In file included from /usr/include/c++/11/random:51,
  2612 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2612:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::extreme_value_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::extreme_value_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -783,8 +779,8 @@ In file included from /usr/include/c++/11/random:51,
   154 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:154:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::linear_congruential_engine<_UIntType, __a, __c, __m>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::linear_congruential_engine<_UIntType, __a, __c, __m>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -792,8 +788,8 @@ In file included from /usr/include/c++/11/random:51,
   474 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:474:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -801,8 +797,8 @@ In file included from /usr/include/c++/11/random:51,
   628 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:628:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -810,8 +806,8 @@ In file included from /usr/include/c++/11/random:51,
   696 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:696:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::discard_block_engine<_RandomNumberEngine, __p, __r>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::discard_block_engine<_RandomNumberEngine, __p, __r>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -819,8 +815,8 @@ In file included from /usr/include/c++/11/random:51,
   857 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:857:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::shuffle_order_engine<_RandomNumberEngine, __k>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::shuffle_order_engine<_RandomNumberEngine, __k>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -828,8 +824,8 @@ In file included from /usr/include/c++/11/random:51,
  1215 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1215:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::negative_binomial_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::negative_binomial_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -837,8 +833,8 @@ In file included from /usr/include/c++/11/random:51,
  1425 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1425:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::poisson_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::poisson_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -846,8 +842,8 @@ In file included from /usr/include/c++/11/random:51,
  1691 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1691:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::binomial_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::binomial_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -855,8 +851,8 @@ In file included from /usr/include/c++/11/random:51,
  1919 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1919:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::normal_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::normal_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -864,8 +860,8 @@ In file included from /usr/include/c++/11/random:51,
  1986 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:1986:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::lognormal_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::lognormal_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -873,8 +869,8 @@ In file included from /usr/include/c++/11/random:51,
  2058 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2058:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::chi_squared_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::chi_squared_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -882,8 +878,8 @@ In file included from /usr/include/c++/11/random:51,
  2219 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2219:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::fisher_f_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::fisher_f_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -891,8 +887,8 @@ In file included from /usr/include/c++/11/random:51,
  2293 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2293:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::student_t_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::student_t_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -900,8 +896,8 @@ In file included from /usr/include/c++/11/random:51,
  2462 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2462:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::gamma_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::gamma_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -909,8 +905,8 @@ In file included from /usr/include/c++/11/random:51,
  2748 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2748:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::discrete_distribution<_IntType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::discrete_distribution<_IntType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -918,8 +914,8 @@ In file included from /usr/include/c++/11/random:51,
  2970 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:2970:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::piecewise_constant_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::piecewise_constant_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from /usr/include/c++/11/random:51,
                  from stdc++.h:108:
@@ -927,22 +923,14 @@ In file included from /usr/include/c++/11/random:51,
  3176 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
       |     ^~~~~~~~
 /usr/include/c++/11/bits/random.tcc:3176:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::piecewise_linear_distribution<_RealType>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:55: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::piecewise_linear_distribution<_RealType>’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                  ~~~~~^~~~
 In file included from stdc++.h:113:
 /usr/include/c++/11/thread:92:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::thread::id)’
    92 |     operator<<(basic_ostream<_CharT, _Traits>& __out, thread::id __id)
       |     ^~~~~~~~
 /usr/include/c++/11/thread:92:5: note:   template argument deduction/substitution failed:
-test.cpp:98:58: note:   cannot convert ‘e’ (type ‘std::__debug::deque<long long int>’) to type ‘std::thread::id’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
+test.cpp:103:58: note:   cannot convert ‘e’ (type ‘std::pair<long long int, long long int>’) to type ‘std::thread::id’
+  103 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
       |                                                          ^
-In file included from stdc++.h:66:
-/usr/include/c++/11/bitset:1540:5: note: candidate: ‘template<class _CharT, class _Traits, long unsigned int _Nb> std::basic_ostream<_CharT, _Traits>& std::__cxx1998::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__cxx1998::bitset<_Nb>&)’
- 1540 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/11/bitset:1540:5: note:   template argument deduction/substitution failed:
-test.cpp:98:55: note:   ‘std::__debug::deque<long long int>’ is not derived from ‘const std::__cxx1998::bitset<_Nb>’
-   98 | template<typename T> inline void debug_view(T e){cerr << e << endl;}
-      |                                                  ~~~~~^~~~

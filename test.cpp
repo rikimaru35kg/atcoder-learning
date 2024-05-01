@@ -101,6 +101,7 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
+template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
@@ -140,28 +141,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+const long long b = 12345;
+const long long MX = 3;
+const long long ps[MX] = {1000000007, 1000000021, 1000000033};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = x%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i] + x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i] - x.data[i] + ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i] * x.data[i] % ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); STRING(S);
-    ll lr = 0, rl = 0;
-    ll ans = 0;
-    rep(i, N-1) {
-        if(S[i]=='L' && S[i+1]=='R') lr++;
-        if(S[i]=='R' && S[i+1]=='L') rl++;
-        if(S[i]==S[i+1]) ++ans;
-    }
-    de(lr)de(rl)
-    ll cnt = min({K,lr,rl});
-    de(cnt)
-    K -= cnt;
-    rl -= cnt; lr -= cnt;
-    ans += 2*cnt;
-    de(ans)
-    if(K>0 && lr>0 && S[0]=='L') ++ans, --K, lr--;
-    if(K>0 && rl>0 && S[0]=='R') ++ans, --K, rl--;
-    if(K>0 && rl>0 && S[N-1]=='R') ++ans, --K, rl--;
-    if(K>0 && lr>0 && S[N-1]=='L') ++ans, --K, lr--;
+    LONG(N);
+    STRING(S);
+    auto f = [&](long long w) -> bool {
+        mints roh(0);
+        map<mints,vl> mp;
+        rep(i, N) {
+            roh *= b;
+            roh += S[i];
+            if(i>=w) roh -= mints(b).pow(w) * S[i-w];
+            if(i>=w-1) mp[roh].push_back(i);
+        }
+        for(auto [rh, v]: mp) {
+            if(SIZE(v)<=1) continue;
+            if(v.back()-v[0]>=w) {
+            rh.print();
+                return true;
+            }
+        }
+        return false;
+    };
+    ll ans = binary_search(0, N, f);
     Out(ans);
     
 }

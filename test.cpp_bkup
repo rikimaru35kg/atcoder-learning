@@ -1,4 +1,5 @@
 // ### test.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -139,44 +140,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<queue<ll>> ques(N);
-    rep(i, N) rep(j, N-1) {
-        LONGM(a);
-        ques[i].push(a);
-    }
-    set<Pr> match;
-    auto check=[&](ll i) {
-        if(ques[i].size()==0) return;
-        ll j = ques[i].front();
-        if(ques[j].size()==0) return;
-        if (ques[j].front() != i) return;
-        if(i>j) swap(i, j);
-        match.emplace(i, j);
-    };
+    LONG(N); STRING(S);
+    ll ans = 0;
     rep(i, N) {
-        check(i);
-    }
-    ll day=0;
-    while(match.size()) {
-        de(match)de(day)
-        set<Pr> pmatch;
-        swap(pmatch, match);
-        for(auto [i, j]: pmatch) {
-            ques[i].pop();
-            ques[j].pop();
+        string s = S.substr(i);
+        ll M = SIZE(s);
+        auto z = z_algorithm(s);
+        ll now = 0;
+        rep1(j, M-1) {
+            chmax(now, min(j, (ll)z[j]));
         }
-        for(auto [i, j]: pmatch) {
-            check(i);
-            check(j);
-        }
-        ++day;
+        chmax(ans, now);
     }
-    rep(i, N) { if(ques[i].size()) Pm1 }
-    Out(day);
+    Out(ans);
+
     
 }
 
