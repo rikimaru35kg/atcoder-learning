@@ -42,6 +42,7 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -100,12 +101,15 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(deque<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop_front();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(set<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(multiset<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 inline void debug_view(vector<string> &v){cerr << "----" << endl; for(auto s: v) debug_view(s);}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
@@ -135,81 +139,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Combination comb(1e5, 1e9+7);
-    LONG(N, K);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+    LONG(N);
+    vector<queue<ll>> ques(N);
+    rep(i, N) rep(j, N-1) {
+        LONGM(a);
+        ques[i].push(a);
     }
-    mint ans = K;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ll size = SIZE(from[v]);
-        if(p==-1) ans *= comb.nPr(K-1, size);
-        else ans *= comb.nPr(K-2, size-1);
-        de(v)de(ans)
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-        }
+    set<Pr> match;
+    auto check=[&](ll i) {
+        if(ques[i].size()==0) return;
+        ll j = ques[i].front();
+        if(ques[j].size()==0) return;
+        if (ques[j].front() != i) return;
+        if(i>j) swap(i, j);
+        match.emplace(i, j);
     };
-    dfs(dfs, 0);
-    Out(ans);
+    rep(i, N) {
+        check(i);
+    }
+    ll day=0;
+    while(match.size()) {
+        de(match)de(day)
+        set<Pr> pmatch;
+        swap(pmatch, match);
+        for(auto [i, j]: pmatch) {
+            ques[i].pop();
+            ques[j].pop();
+        }
+        for(auto [i, j]: pmatch) {
+            check(i);
+            check(j);
+        }
+        ++day;
+    }
+    rep(i, N) { if(ques[i].size()) Pm1 }
+    Out(day);
     
 }
 

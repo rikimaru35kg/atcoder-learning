@@ -629,7 +629,8 @@
 - 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
 - !復習価値中 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
 - !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
-! 要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
+- ! 要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
+- !要復習 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
@@ -1570,3 +1571,4 @@
 - [D - Equal Cut](https://atcoder.jp/contests/abc102/tasks/arc100_b)
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
+- [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)

@@ -3,6 +3,7 @@ import sys
 import glob
 
 filehead = r"""
+// ### test.cpp ###
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -46,6 +47,7 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -104,12 +106,15 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(deque<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop_front();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(set<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(multiset<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 inline void debug_view(vector<string> &v){cerr << "----" << endl; for(auto s: v) debug_view(s);}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}

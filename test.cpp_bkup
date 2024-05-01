@@ -42,6 +42,7 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -104,8 +105,10 @@ template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
 template<typename T> inline void debug_view(deque<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop_front();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(set<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(multiset<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 inline void debug_view(vector<string> &v){cerr << "----" << endl; for(auto s: v) debug_view(s);}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
@@ -138,20 +141,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll c = 0;
-    rep(i, N) {
-        c = 2*A[i]-c;
-    }
-    ll x = c/2;
-    vl ans;
-    rep(i, N) {
-        ans.push_back(x);
-        if(i==N-1) break;
-        x = 2*A[i]-x;
-    }
-    Out(ans);
     
 }
 
