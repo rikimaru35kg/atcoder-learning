@@ -141,83 +141,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long b = 12345;
-const long long MX = 3;
-const long long ps[MX] = {1000000007, 1000000021, 1000000033};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = x%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i] + x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i] - x.data[i] + ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i] * x.data[i] % ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    auto f = [&](long long w) -> bool {
-        mints roh(0);
-        map<mints,vl> mp;
-        rep(i, N) {
-            roh *= b;
-            roh += S[i];
-            if(i>=w) roh -= mints(b).pow(w) * S[i-w];
-            if(i>=w-1) mp[roh].push_back(i);
-        }
-        for(auto [rh, v]: mp) {
-            if(SIZE(v)<=1) continue;
-            if(v.back()-v[0]>=w) {
-            rh.print();
-                return true;
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
+    }
+    auto bfs = [&](ll sv) -> vl {
+        vl dist(N, INF), pre(N, -1);
+        queue<ll> que;
+        auto push = [&](ll v, ll d, ll p) {
+            if(dist[v]!=INF) return;
+            dist[v] = d;
+            que.emplace(v);
+            pre[v] = p;
+        };
+        push(sv, 0, -1);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                push(nv, dist[v]+1, v);
             }
         }
-        return false;
+        Pr best = {INF, -1};
+        rep(v, N) {
+            if(v==sv) continue;
+            bool ok = false;
+            for(auto nv:from[v]) {
+                if(nv==sv) ok = true;
+            }
+            if(!ok) continue;
+            best = min(best, Pr(dist[v], v));
+        }
+        if(best.second==-1) return vl(N+1);
+        vl ret;
+        ll v = best.second;
+        while(v!=-1) {
+            ret.push_back(v);
+            v = pre[v];
+        }
+        return ret;
     };
-    ll ans = binary_search(0, N, f);
-    Out(ans);
+    vl ans(N+1);
+    rep(i, N) {
+        vl v = bfs(i);
+        de(i)de(v)
+        if(SIZE(ans)>SIZE(v)) ans = v;
+    }
+    if(SIZE(ans)==N+1) Pm1
+    Out(SIZE(ans));
+    for(auto v: ans) Out(v+1);
+
     
 }
 

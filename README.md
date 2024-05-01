@@ -533,12 +533,15 @@
 - 再帰関数の途中でリターンする場合、必ずfinishedをtrueにするのを忘れずに！（サイクルが複数ある場合は必須）
 - サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいるsnuke式の場合、自己ループがある場合は要注意
 - サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
+- 最小サイクルや最大サイクルを見つけたい場合はDFSではなくBFSを用いる（全始点を試す必要あり）
+- この時、始点からの距離を通常通り記録しておき、始点への辺を持つ頂点の中で最小距離の物が最小サイクルを構成する（ただしこの始点に対する最小サイクルしか見つからない）
 ### 例題
 - 基本 [F - Well-defined Path Queries on a Namori](https://atcoder.jp/contests/abc266/tasks/abc266_f)
 - !復習価値中 サイクル検出のみ（サイクル部復元なし） [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
 - !復習価値中 自己ループありのfunctional graph [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
 - !復習価値低 ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
 - !復習価値高 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
+- !要復習 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
@@ -1396,8 +1399,8 @@
 - 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せる
 - (hash,x^n)はモノイドなのでセグ木にも乗せられる
 - ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
-- 衝突確率を下げる為、mintsを導入すると良い（2つの素数でmodを取った値を保持）
-- 衝突確率があるので、ロリハを使わなくても解けるなら使わない方が良い
+- 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
+- 衝突確率があるので、ロリハを使わなくても解けるなら使わない方が良いかも
 ### 例題
 - [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
 
@@ -1534,6 +1537,7 @@
 - [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
 - [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+- [D - Disjoint Set of Common Divisors](https://atcoder.jp/contests/abc142/tasks/abc142_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

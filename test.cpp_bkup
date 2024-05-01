@@ -101,6 +101,7 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
+template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
@@ -140,37 +141,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    ll ans = 0;
-    rep(i, N) {
-        string s = S.substr(i);
-        ll M = SIZE(s);
-        auto z = z_algorithm(s);
-        ll now = 0;
-        rep1(j, M-1) {
-            chmax(now, min(j, (ll)z[j]));
+    LONG(N, M);
+    vl key(M);
+    vl A(M);
+    rep(i, M) {
+        LONG(a, b);
+        A[i] = a;
+        rep(j, b) {
+            LONGM(c);
+            key[i] |= 1<<c;
         }
-        chmax(ans, now);
     }
+    vl dp(1<<N, INF);
+    dp[0] = 0;
+    rep(i, M) {
+        vl pdp(1<<N, INF);
+        swap(pdp, dp);
+        rep(s, 1<<N) {
+            chmin(dp[s], pdp[s]);
+            ll ns = s | key[i];
+            chmin(dp[ns], pdp[s] + A[i]);
+        }
+    }
+    ll ans = dp.back();
+    ch1(ans);
     Out(ans);
-
     
 }
 
