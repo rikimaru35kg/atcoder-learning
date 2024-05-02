@@ -43,6 +43,7 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
@@ -144,15 +145,28 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    if(N%2 || N<=2) { Out(0); return 0; }
-    N /= 2;
-    ll ans = 0;
-    while(N) {
-        ans += N / 5;
-        N /= 5;
+    LONG(N, M);
+    VL(A, N);
+    rep(i, N) A[i] /= 2;
+    set<ll> cnts;
+    rep(i, N) {
+        ll a = A[i];
+        ll cnt=0;
+        while(a%2==0) {
+            ++cnt;
+            a/=2;
+        }
+        cnts.insert(cnt);
     }
+    if(SIZE(cnts)>=2) Pm0
+    ll l = 1;
+    rep(i, N) {
+        l = lcm(l, A[i]);
+    }
+    de(l)
+    ll ans = M / l - M/(l*2);
     Out(ans);
+
     
 }
 
