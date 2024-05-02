@@ -1458,6 +1458,8 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- unordered_set.clear()は遅いので、st = unordered_set<ll>()とすべき（stdlibc++のバグで過去の最大要素数だけ計算量がかかってしまう）
+- bitset = 1<<xなどとするとオーバーフローするので代入できない。bitset<10000>(1)<<xなどとすると良い
 - ACLのdsu.size(v)はint型なので、そのまま掛け算に使うとオーバーフローして危険
 - ACLのmintはdouble型をキャストできないので注意（eg. (mint)(1e8)などとすると壊れる）
 - set<ll,greater<ll>>とすると降順setが構築可能
@@ -1584,3 +1586,4 @@
 - [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
 - [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 - [ D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+- [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)

@@ -63,7 +63,7 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) __builtin_popcountll(x)
+#define pcnt(x) (ll)__builtin_popcountll(x)
 #define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
@@ -141,20 +141,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+using bs = bitset<26000>;
+using vbs = vector<bs>;
+using vvbs = vector<vbs>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    vl S(N+1);
-    rep(i, N) S[i+1] = (S[i] + A[i]) % K;
-    rep(i, N+1) S[i] = Percent(S[i] - i, K);
-    map<ll,ll> mp;
-    ll ans = 0;
-    rep(i, N+1) {
-        ans += mp[S[i]];
-        mp[S[i]]++;
-        if(i>=K-1) mp[S[i-(K-1)]]--;
+    LONG(H, W);
+    VVL(A, H, W);
+    VVL(B, H, W);
+    vvl C(H, vl(W));
+    rep(i, H) rep(j, W) { C[i][j] = abs(A[i][j] - B[i][j]); }
+
+    ll M = 13000;
+    vvbs dp(H, vbs(W));
+    dp[0][0] |= bs(1)<<(M+C[0][0]);
+    dp[0][0] |= bs(1)<<(M-C[0][0]);
+    rep(i, H) rep(j, W) {
+        if (i<H-1) {
+            dp[i+1][j] |= dp[i][j]<<C[i+1][j];
+            dp[i+1][j] |= dp[i][j]>>C[i+1][j];
+        }
+        if (j<W-1) {
+            dp[i][j+1] |= dp[i][j]<<C[i][j+1];
+            dp[i][j+1] |= dp[i][j]>>C[i][j+1];
+        }
+        de("~~~~~~~~~~~~~")
+        de(i)de(j)
+        repk(k, M-10, M+10) de(dp[i][j][k])
+    }
+    ll ans = INF;
+    rep(i, 2*M) {
+        if (dp[H-1][W-1][i]) chmin(ans, abs(i-M));
     }
     Out(ans);
     

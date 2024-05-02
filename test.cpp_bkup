@@ -63,7 +63,7 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) __builtin_popcountll(x)
+#define pcnt(x) (ll)__builtin_popcountll(x)
 #define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
@@ -144,27 +144,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvp from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b, i);
-    }
-    vl color(N-1);
-    auto dfs = [&](auto f, ll v, ll pc=-1, ll p=-1) -> void {
-        ll c = 1;
-        for(auto [nv, i]: from[v]) if(nv!=p) {
-            if (c==pc) ++c;
-            color[i] = c;
-            f(f, nv, c, v);
-            ++c;
+    LONG(N); VL(A, N);
+    ll M = 60;
+    ll ans = 0;
+    ll two = 1;
+    rep(i, M) {
+        ll zero = 0, one = 0;
+        rep(j, N) {
+            if(A[j]>>i&1) ++one;
+            else ++zero;
         }
-    };
-    dfs(dfs, 0);
-    ll K = 0;
-    rep(i, N-1) chmax(K, color[i]);
-    Out(K);
-    for(auto c: color) Out(c);
+        ans += one*zero * two;
+        two *= 2;
+    }
+    ll mod = 1e9+7;
+    Out(ans%mod);
     
 }
 
