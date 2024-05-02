@@ -141,74 +141,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-    }
-    auto bfs = [&](ll sv) -> vl {
-        vl dist(N, INF), pre(N, -1);
-        queue<ll> que;
-        auto push = [&](ll v, ll d, ll p) {
-            if(dist[v]!=INF) return;
-            dist[v] = d;
-            que.emplace(v);
-            pre[v] = p;
-        };
-        push(sv, 0, -1);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto nv: from[v]) {
-                push(nv, dist[v]+1, v);
-            }
-        }
-        Pr best = {INF, -1};
-        rep(v, N) {
-            if(v==sv) continue;
-            bool ok = false;
-            for(auto nv:from[v]) {
-                if(nv==sv) ok = true;
-            }
-            if(!ok) continue;
-            best = min(best, Pr(dist[v], v));
-        }
-        if(best.second==-1) return vl(N+1);
-        vl ret;
-        ll v = best.second;
-        while(v!=-1) {
-            ret.push_back(v);
-            v = pre[v];
-        }
-        return ret;
-    };
-    vl ans(N+1);
+    LONG(N, T);
+    vp AB;
     rep(i, N) {
-        vl v = bfs(i);
-        de(i)de(v)
-        if(SIZE(ans)>SIZE(v)) ans = v;
+        LONG(a, b);
+        AB.emplace_back(a, b);
     }
-    if(SIZE(ans)==N+1) Pm1
-    Out(SIZE(ans));
-    for(auto v: ans) Out(v+1);
-
+    sort(all(AB));
+    vl dp(T+1);
+    rep(i, N) {
+        vl pdp(T+1);
+        swap(pdp, dp);
+        auto [a, b] = AB[i];
+        rep(j, T+1) {
+            chmax(dp[j], pdp[j]);
+            if (j==T) continue;
+            chmax(dp[min(j+a,T)], pdp[j]+b);
+        }
+    }
+    ll ans = dp[T];
+    Out(ans);
     
 }
 

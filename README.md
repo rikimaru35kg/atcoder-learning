@@ -911,6 +911,11 @@
 - !復習価値中 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !要復習 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 
+## 貪欲＋DP
+- 貪欲しやすいように事前準備してからDPする必要のある問題あり
+### 例題
+- !要復習 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
+
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^10でOK）
@@ -1538,6 +1543,8 @@
 - [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
 - [D - Disjoint Set of Common Divisors](https://atcoder.jp/contests/abc142/tasks/abc142_d)
+- [D - Triangles](https://atcoder.jp/contests/abc143/tasks/abc143_d)
+- [D - Water Bottle](https://atcoder.jp/contests/abc144/tasks/abc144_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
