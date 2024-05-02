@@ -141,41 +141,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using bs = bitset<26000>;
-using vbs = vector<bs>;
-using vvbs = vector<vbs>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(A, H, W);
-    VVL(B, H, W);
-    vvl C(H, vl(W));
-    rep(i, H) rep(j, W) { C[i][j] = abs(A[i][j] - B[i][j]); }
-
-    ll M = 13000;
-    vvbs dp(H, vbs(W));
-    dp[0][0] |= bs(1)<<(M+C[0][0]);
-    dp[0][0] |= bs(1)<<(M-C[0][0]);
-    rep(i, H) rep(j, W) {
-        if (i<H-1) {
-            dp[i+1][j] |= dp[i][j]<<C[i+1][j];
-            dp[i+1][j] |= dp[i][j]>>C[i+1][j];
-        }
-        if (j<W-1) {
-            dp[i][j+1] |= dp[i][j]<<C[i][j+1];
-            dp[i][j+1] |= dp[i][j]>>C[i][j+1];
-        }
-        de("~~~~~~~~~~~~~")
-        de(i)de(j)
-        repk(k, M-10, M+10) de(dp[i][j][k])
+    LONG(N, vt, va); --vt; --va;
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
-    ll ans = INF;
-    rep(i, 2*M) {
-        if (dp[H-1][W-1][i]) chmin(ans, abs(i-M));
+    vb exst(N);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        exst[v] = true;
+        for(auto nv: from[v]) if(nv!=p) {
+            if(nv==va) continue;
+            f(f, nv, v);
+        }
+    };
+    dfs(dfs, vt);
+    vl dist(N, -1);
+    auto dfs2=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
+        dist[v] = d;
+        for (auto nv: from[v]) if(nv!=p) {
+            if(!exst[nv]) continue;
+            f(f, nv, d+1, v);
+        }
+    };
+    dfs2(dfs2, va);
+    ll vs = vt;
+    ll d = dist[vt];
+    ll limitd = (d+1)/2;
+    if (d%2==0) limitd = (d+2)/2;
+    while(dist[vs]>limitd) {
+        for(auto nv: from[vs]) {
+            if(dist[vs]<dist[nv]) continue;
+            vs = nv;
+        }
+    }
+    de(vs)
+    ll dmax = dist[vs];
+    auto dfs3=[&](auto f, ll v) -> void {
+        chmax(dmax, dist[v]);
+        for(auto nv: from[v]) {
+            if(dist[nv]<dist[v]) continue;
+            f(f, nv);
+        }
+    };
+    dfs3(dfs3, vs);
+    ll ans = 0;
+    ll dt = d, da = 0;
+    while(true) {
+        if (dt<dmax) ++dt;
+        else --dt;
+        if(dt==da) break;
+        da++;
+        ++ans;
+        if(dt==da) break;
     }
     Out(ans);
+
+
     
 }
 

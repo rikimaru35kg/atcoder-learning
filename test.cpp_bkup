@@ -144,21 +144,15 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 60;
+    LONG(N);
+    if(N%2 || N<=2) { Out(0); return 0; }
+    N /= 2;
     ll ans = 0;
-    ll two = 1;
-    rep(i, M) {
-        ll zero = 0, one = 0;
-        rep(j, N) {
-            if(A[j]>>i&1) ++one;
-            else ++zero;
-        }
-        ans += one*zero * two;
-        two *= 2;
+    while(N) {
+        ans += N / 5;
+        N /= 5;
     }
-    ll mod = 1e9+7;
-    Out(ans%mod);
+    Out(ans);
     
 }
 
