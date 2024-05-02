@@ -144,25 +144,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, T);
-    vp AB;
-    rep(i, N) {
-        LONG(a, b);
-        AB.emplace_back(a, b);
+    LONG(N, K);
+    VL(A, N);
+    vl S(N+1);
+    rep(i, N) S[i+1] = (S[i] + A[i]) % K;
+    rep(i, N+1) S[i] = Percent(S[i] - i, K);
+    map<ll,ll> mp;
+    ll ans = 0;
+    rep(i, N+1) {
+        ans += mp[S[i]];
+        mp[S[i]]++;
+        if(i>=K-1) mp[S[i-(K-1)]]--;
     }
-    sort(all(AB));
-    vl dp(T+1);
-    rep(i, N) {
-        vl pdp(T+1);
-        swap(pdp, dp);
-        auto [a, b] = AB[i];
-        rep(j, T+1) {
-            chmax(dp[j], pdp[j]);
-            if (j==T) continue;
-            chmax(dp[min(j+a,T)], pdp[j]+b);
-        }
-    }
-    ll ans = dp[T];
     Out(ans);
     
 }
