@@ -94,8 +94,8 @@ alias l='ls -CF'
 
 # My aliases ----------------------------------
 # Atcoder
-alias g='g++ -std=gnu++20 -O2 -D_GLIBCXX_DEBUG -Wall -Wextra -I/opt/ac-library -D__DEBUG'
-alias gno='g++ -std=gnu++20 -O2 -I/opt/ac-library'
+alias g='g++ -std=gnu++2b -O2 -D_GLIBCXX_DEBUG -Wall -Wextra -I/opt/ac-library -D__DEBUG'
+alias gno='g++ -std=gnu++2b -O2 -I/opt/ac-library'
 alias a='./a.out'
 alias abc='python3 gen_abc_file.py'
 alias clip='/mnt/c/WINDOWS/system32/clip.exe'
@@ -114,7 +114,7 @@ alias gc='git commit -m'
 alias gp='git push'
 # Terminal operations
 alias cl='clear'
-alias cps='cp /mnt/c/Users/rikim/AppData/Roaming/Code/User/snippets/cpp.json .vscode/'
+alias cps='cp /mnt/c/Users/rikim/AppData/Roaming/Code/User/snippets/cpp.json .vscode/cpp.json-snippet-for-atcoder'
 # --------------------------------------------
 
 # Add an "alert" alias for long running commands.  Use like so:

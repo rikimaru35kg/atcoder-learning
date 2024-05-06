@@ -1,3 +1,35 @@
-5
-52 67 72 25 79
-
+namespace for_debugging{
+    struct subscript_and_location{
+        int sub;
+        std::source_location loc;
+        subscript_and_location(int sub_,std::source_location loc_=std::source_location::current()){
+            sub=sub_;
+            loc=loc_;
+        }
+        void check_out_of_range(size_t sz){
+            if(sub<0||(int)sz<=sub){
+                std::clog << loc.file_name() << ":(" << loc.line() << ":" << loc.column() << "):" << loc.function_name() << std::endl;
+                std::clog << "out of range: subscript = " << sub << ", vector_size = " << sz << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    };
+}
+namespace std{
+    template<class T,class Allocator=std::allocator<T>> class vector_for_debugging:public std::vector<T,Allocator>{
+        using std::vector<T,Allocator>::vector;
+        public:
+            [[nodiscard]] constexpr std::vector<T,Allocator>::reference operator[](for_debugging::subscript_and_location n) noexcept(!std::is_same<T,bool>::value){
+                n.check_out_of_range(this->size());
+                return std::vector<T,Allocator>::operator[](n.sub);
+            }
+            [[nodiscard]] constexpr std::vector<T,Allocator>::const_reference operator[](for_debugging::subscript_and_location n) const noexcept(!std::is_same<T,bool>::value){
+                n.check_out_of_range(this->size());
+                return std::vector<T,Allocator>::operator[](n.sub);
+            }
+    };
+    namespace pmr{
+        template<class T> using vector_for_debugging=std::vector_for_debugging<T,std::pmr::polymorphic_allocator<T>>;
+    }
+}
+#define vector vector_for_debugging
