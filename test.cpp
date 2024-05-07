@@ -1,6 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#ifdef VDE
+#ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
         int sub;
@@ -137,7 +137,11 @@ inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
+#define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
+#define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
+template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
+template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -181,6 +185,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(H, W);
+    VS(S, H);
+    ll HW = H*W;
+    vvl dist(HW, vl(HW, INF));
+    rep(i, HW) dist[i][i] = 0;
+    rep(i1, H) rep(j1, W) {
+        rep(k, 4) {
+            ll i2 = i1 + di[k];
+            ll j2 = j1 + dj[k];
+            if (!isin(i2,j2,H,W)) continue;
+            if (S[i1][j1]=='#' || S[i2][j2]=='#') { continue; }
+            ll id1 = i1 * W + j1;
+            ll id2 = i2 * W + j2;
+            dist[id1][id2] = 1;
+            dist[id2][id1] = 1;
+        }
+    }
+    de(dist)
+    rep(k,HW){
+        rep(i,HW)rep(j,HW) {
+            chmin(dist[i][j], dist[i][k]+dist[k][j]);
+        }
+    }
+    ll1 ans = 0;
+    rep(i,HW) rep(j,HW) if(i!=j) {
+        auto skip=[&](ll i) {
+            ll i1=i/W, j1=i%W;
+            if(S[i1][j1]=='#') return true;
+            return false;
+        };
+        if(skip(i) || skip(j)) continue;
+        chmax(ans, dist[i][j]);
+    }
+    Out(ans);
     
 }
 

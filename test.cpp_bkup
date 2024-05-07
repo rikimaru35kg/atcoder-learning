@@ -181,8 +181,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vl A(2);
-    A[2] = 5;
     
 }
 

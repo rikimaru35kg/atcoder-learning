@@ -25,4 +25,6 @@
     "editor.tokenColorCustomizations": {
         "numbers": "#2ee116"
     },
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "'Anonymous Pro', monospace",
 }
