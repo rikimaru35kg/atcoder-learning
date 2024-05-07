@@ -95,6 +95,7 @@ using cd = complex<double>;
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
+#define VPD(pvec, n) vpd pvec; input_pvecd(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
@@ -126,6 +127,7 @@ inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.pus
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
+inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {double a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
@@ -182,42 +184,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    ll HW = H*W;
-    vvl dist(HW, vl(HW, INF));
-    rep(i, HW) dist[i][i] = 0;
-    rep(i1, H) rep(j1, W) {
-        rep(k, 4) {
-            ll i2 = i1 + di[k];
-            ll j2 = j1 + dj[k];
-            if (!isin(i2,j2,H,W)) continue;
-            if (S[i1][j1]=='#' || S[i2][j2]=='#') { continue; }
-            ll id1 = i1 * W + j1;
-            ll id2 = i2 * W + j2;
-            dist[id1][id2] = 1;
-            dist[id2][id1] = 1;
-        }
-    }
-    de(dist)
-    rep(k,HW){
-        rep(i,HW)rep(j,HW) {
-            chmin(dist[i][j], dist[i][k]+dist[k][j]);
-        }
-    }
-    ll1 ans = 0;
-    rep(i,HW) rep(j,HW) if(i!=j) {
-        auto skip=[&](ll i) {
-            ll i1=i/W, j1=i%W;
-            if(S[i1][j1]=='#') return true;
-            return false;
+    LONG(N);
+    VPD(pos, N);
+    double xl = 0, xr = 1000;
+    auto f = [&](double xm) -> double {
+        auto g = [&](double y, double x) -> double {
+            double mx = 0;
+            rep(k, N) { chmax(mx, euclid_distd(pos[k], {x,y})); }
+            return mx;
         };
-        if(skip(i) || skip(j)) continue;
-        chmax(ans, dist[i][j]);
+        double yl = 0, yr = 1000;
+        rep(i, 100) {
+            double ym1 = (2*yl+yr)/3.0;
+            double ym2 = (yl+2*yr)/3.0;
+            if(g(ym1,xm)<g(ym2,xm)) yr = ym2;
+            else yl = ym1;
+        }
+        return g(yl,xm);
+    };
+    rep(i, 100) {
+        double xm1 = (2*xl+xr)/3.0;
+        double xm2 = (xl+2*xr)/3.0;
+        if(f(xm1)<f(xm2)) xr = xm2;
+        else xl = xm1;
     }
+    double ans = f(xl);
     Out(ans);
     
 }
