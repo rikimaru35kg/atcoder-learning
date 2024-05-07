@@ -360,7 +360,7 @@
 ### 例題
 - 基本 [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
 - 基本 double型の三分探索 [B - ムーアの法則](https://atcoder.jp/contests/arc054/tasks/arc054_b)
-- !復習価値中 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
+- !復習価値高 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
 
 ## 尺取り法（Two-pointer approach）
 - 単調性があるときに使用可能
@@ -1548,7 +1548,6 @@
 - [D - Triangles](https://atcoder.jp/contests/abc143/tasks/abc143_d)
 - [D - Water Bottle](https://atcoder.jp/contests/abc144/tasks/abc144_d)
 - [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
-- [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
@@ -1590,3 +1589,4 @@
 - [ D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
 - [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
+- [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)

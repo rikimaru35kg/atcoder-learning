@@ -95,6 +95,7 @@ using cd = complex<double>;
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
+#define VPD(pvec, n) vpd pvec; input_pvecd(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
@@ -126,6 +127,7 @@ inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.pus
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
+inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {double a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
@@ -182,71 +184,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    Combination comb(N, 1e9+7);
-    sort(all(A));
-    mint mx = 0, mn = 0;
-    rep(i, N) {
-        mx += A[i] * comb(i, K-1);
-        mn += A[i] * comb(N-1-i, K-1);
+    LONG(N);
+    VPD(pos, N);
+    double xl = 0, xr = 1000;
+    auto f = [&](double xm) -> double {
+        auto g = [&](double y, double x) -> double {
+            double mx = 0;
+            rep(k, N) { chmax(mx, euclid_distd(pos[k], {x,y})); }
+            return mx;
+        };
+        double yl = 0, yr = 1000;
+        rep(i, 100) {
+            double ym1 = (2*yl+yr)/3.0;
+            double ym2 = (yl+2*yr)/3.0;
+            if(g(ym1,xm)<g(ym2,xm)) yr = ym2;
+            else yl = ym1;
+        }
+        return g(yl,xm);
+    };
+    rep(i, 100) {
+        double xm1 = (2*xl+xr)/3.0;
+        double xm2 = (xl+2*xr)/3.0;
+        if(f(xm1)<f(xm2)) xr = xm2;
+        else xl = xm1;
     }
-    Out(mx - mn);
+    double ans = f(xl);
+    Out(ans);
     
 }
 

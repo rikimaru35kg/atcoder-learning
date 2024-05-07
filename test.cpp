@@ -184,45 +184,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VPD(pos, N);
-    double xl = 0, xr = 1000;
-    auto f = [&](double xm) -> double {
-        auto g = [&](double y, double x) -> double {
-            double mx = 0;
-            rep(k, N) { chmax(mx, euclid_distd(pos[k], {x,y})); }
-            return mx;
-        };
-        double yl = 0, yr = 1000;
-        rep(i, 100) {
-            double ym1 = (2*yl+yr)/3.0;
-            double ym2 = (yl+2*yr)/3.0;
-            if(g(ym1,xm)<g(ym2,xm)) yr = ym2;
-            else yl = ym1;
+    vvl cnt(10, vl(10));
+    rep1(i, N) {
+        ll x = i;
+        vl nums;
+        while(x) {
+            nums.push_back(x%10);
+            x /= 10;
         }
-        return g(yl,xm);
-    };
-    rep(i, 100) {
-        double xm1 = (2*xl+xr)/3.0;
-        double xm2 = (xl+2*xr)/3.0;
-        if(f(xm1)<f(xm2)) xr = xm2;
-        else xl = xm1;
+        ll md = nums.back(), ld = nums[0];
+        if(md==0 || ld==0) continue;
+        cnt[md][ld]++;
     }
-    double ans = f(xl);
+    ll ans = 0;
+    rep1(x, 9) rep1(y, 9) {
+        ans += cnt[x][y] * cnt[y][x];
+    }
     Out(ans);
     
 }
