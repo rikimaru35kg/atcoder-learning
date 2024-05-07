@@ -1458,6 +1458,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- dpとpdpを用意する際、サイズの指定で間違う事が多いので、edp=dp（空）としておいて、以降ｈpdp=edpとする（サイズの指定が1箇所で済む）
 - unordered_set.clear()は遅いので、st = unordered_set<ll>()とすべき（stdlibc++のバグで過去の最大要素数だけ計算量がかかってしまう）
 - bitset = 1<<xなどとするとオーバーフローするので代入できない。bitset<10000>(1)<<xなどとすると良い
 - ACLのdsu.size(v)はint型なので、そのまま掛け算に使うとオーバーフローして危険
@@ -1590,3 +1591,4 @@
 - [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
+- [ E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)

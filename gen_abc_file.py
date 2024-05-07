@@ -173,6 +173,8 @@ template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl
 template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
+#define de2(var1,var2) {}
+#define de3(var1,var2,var3) {}
 #define deb(var) {}
 #endif
 const ll INF = 3e18;

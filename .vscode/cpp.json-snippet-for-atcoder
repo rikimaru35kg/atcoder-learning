@@ -926,7 +926,7 @@
       "    long long mod;",
       "public:",
       "    Combination2 (long long mod): mod(mod) {}",
-      "    long long nCr (long long n, long long r) {",
+      "    long long operator()(long long n, long long r) {",
       "        r = min(n-r , r);",
       "        long long r_fact = 1;",
       "        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;",

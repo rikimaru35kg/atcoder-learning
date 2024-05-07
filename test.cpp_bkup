@@ -169,6 +169,8 @@ template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl
 template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
+#define de2(var1,var2) {}
+#define de3(var1,var2,var3) {}
 #define deb(var) {}
 #endif
 const ll INF = 3e18;
@@ -184,45 +186,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
+//! Use this class if n >= 1e7 && r <= 1e6
+class Combination2 {
+    long long mod;
+public:
+    Combination2 (long long mod): mod(mod) {}
+    long long operator()(long long n, long long r) {
+        r = min(n-r , r);
+        long long r_fact = 1;
+        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
+        long long r_fact_inv = modpow(r_fact, mod-2, mod);
+        long long ret = r_fact_inv;
+        for (long long i=0; i<r; ++i) (ret *= (n-i)) %= mod;
+        return ret;
+    }
+    long long modpow(long long a, long long b, long long mod) {
+        long long ret = 1;
+        a %= mod;
+        while (b > 0) {
+            if ((b & 1) == 1) ret = ret * a % mod;
+            a = a * a % mod;
+            b = (b >> 1);
+        }
+        return ret;
+    }
+};
+
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VPD(pos, N);
-    double xl = 0, xr = 1000;
-    auto f = [&](double xm) -> double {
-        auto g = [&](double y, double x) -> double {
-            double mx = 0;
-            rep(k, N) { chmax(mx, euclid_distd(pos[k], {x,y})); }
-            return mx;
-        };
-        double yl = 0, yr = 1000;
-        rep(i, 100) {
-            double ym1 = (2*yl+yr)/3.0;
-            double ym2 = (yl+2*yr)/3.0;
-            if(g(ym1,xm)<g(ym2,xm)) yr = ym2;
-            else yl = ym1;
-        }
-        return g(yl,xm);
-    };
-    rep(i, 100) {
-        double xm1 = (2*xl+xr)/3.0;
-        double xm2 = (xl+2*xr)/3.0;
-        if(f(xm1)<f(xm2)) xr = xm2;
-        else xl = xm1;
-    }
-    double ans = f(xl);
+    LONG(N, a, b);
+    mint ans = mint(2).pow(N)-1;
+    Combination2 comb(1e9+7);
+    ans -= comb(N,a);
+    ans -= comb(N,b);
     Out(ans);
     
 }
