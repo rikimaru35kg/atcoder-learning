@@ -186,31 +186,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    if (N%2==1) {
-        vp ans;
-        ll l = 1, r = N;
-        rep(i, M) {
-            ans.emplace_back(l, r);
-            ++l, --r;
+    LONG(N, S);
+    VL(A, N);
+    vm dp(S+1);
+    vm edp = dp;
+    mint ans = 0;
+    dp[0]= 1;
+    rep(i, N) {
+        vm pdp = edp;
+        swap(pdp, dp);
+        rep(j, S+1) {
+            dp[j] += 2*pdp[j];
+            if(j+A[i]<=S) dp[j+A[i]] += pdp[j];
         }
-        Out(ans);
-        return 0;
     }
-    vp ans;
-    ll l = 1, r = N;
-    bool done = false;
-    rep(i, M) {
-        ans.emplace_back(l, r);
-        ++l, --r;
-        if(!done && r-l<=N/2) ++l, done=true;
-    }
+    ans = dp[S];
     Out(ans);
-
-
     
 }
 

@@ -189,8 +189,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    
+    LONG(N);
+    VP(AB, N);
+    if(N%2==0) {
+        vl mins, maxs;
+        rep(i, N) {
+            auto [a , b] = AB[i];
+            mins.emplace_back(2*a);
+            maxs.emplace_back(2*b);
+        }
+        sort(all(mins)); sort(all(maxs));
+        ll mn = (mins[N/2]+mins[N/2-1])/2;
+        ll mx = (maxs[N/2]+maxs[N/2-1])/2;
+        ll ans = mx-mn+1;
+        Out(ans);
+
+    } else {
+        vl mins, maxs;
+        rep(i, N) {
+            auto [a , b] = AB[i];
+            mins.emplace_back(a);
+            maxs.emplace_back(b);
+        }
+        sort(all(mins)); sort(all(maxs));
+        ll mn = mins[N/2], mx = maxs[N/2];
+        ll ans = mx-mn+1;
+        Out(ans);
+    }
     
 }
 

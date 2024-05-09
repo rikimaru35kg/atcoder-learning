@@ -728,6 +728,7 @@
 ### 例題
 - !復習価値低 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
 - !要復習 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
+- !要復習 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
 - !要復習 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
 ## 部分集合の部分集合DP
@@ -1593,4 +1594,5 @@
 - [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
-- [ E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
