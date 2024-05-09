@@ -57,7 +57,6 @@
 - この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは2）
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- !要復習 構築系問題 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
 - !要復習 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - !復習価値低 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - !要復習 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
@@ -1329,7 +1328,9 @@
 ### 例題
 - !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
 - !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- !要復習 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
 - !要復習 [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
+- !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
 
 ## ホール（Hall）の結婚定理
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
@@ -1378,6 +1379,7 @@
 - !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
 - !復習価値高 がっかりビンゴ（実装方針によっては沼る） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
 - !復習価値高 ABCパズル（実装方針間違えるとありえないぐらい沼る） [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
+- !復習価値中 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 
