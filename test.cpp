@@ -186,24 +186,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    VS(C, H);
-    ll ans = 0;
-    rep(hs, 1<<H) rep(ws, 1<<W) {
-        ll cnt = 0;
-        rep(i, H) rep(j, W) {
-            if(hs>>i&1 && ws>>j&1 && C[i][j] =='#') {
-                ++cnt;
-            }
-        }
-        if (cnt==K) {
-            ++ans;
-        }
+    LONG(N, K);
+    VL(A, N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p),[&](ll i, ll j){
+        return abs(A[i]) > abs(A[j]);
+    });
+    ll minus=0, plus=0;
+    rep(i, N) {
+        if(A[i]>=0) plus++;
+        else minus++;
     }
-    Out(ans);
+    bool upd = true;
+    ll _K = K;
+    while(_K>0 && upd) {
+        upd = false;
+        if(_K>=2 && minus>=2) {
+            _K-=2; minus-=2;
+            upd = true;
+            continue;
+        }
+        if(plus) plus--, _K--, upd = true;
+    }
+    if (_K>0) {
+        reverse(all(p));
+        mint ans = 1;
+        rep(j, K) {
+            ll i = p[j];
+            ans *= A[i];
+        }
+        Out(ans);
+        return 0;
+    }
+    vl vplus, vminus;
+    rep(i, N) {
+        if(A[i]<0) vminus.push_back(-A[i]);
+        else vplus.push_back(A[i]);
+    }
+    sort(allr(vminus)); sort(allr(vplus));
+    if(K%2==1) {
+        vl vec;
+        for(ll i=1; i<SIZE(vminus); i+=2) {
+            vec.push_back(vminus[i]*vminus[i-1]);
+        }
+        for(ll i=2; i<SIZE(vplus); i+=2) {
+            vec.push_back(vplus[i]*vplus[i-1]);
+        }
+        sort(allr(vec));
+        mint ans = 1;
+        ans *= vplus[0];
+        rep(i, (K-1)/2) ans *= vec[i];
+        Out(ans);
+    } else {
+        vl vec;
+        for(ll i=1; i<SIZE(vminus); i+=2) {
+            vec.push_back(vminus[i]*vminus[i-1]);
+        }
+        for(ll i=1; i<SIZE(vplus); i+=2) {
+            vec.push_back(vplus[i]*vplus[i-1]);
+        }
+        sort(allr(vec));
+        mint ans = 1;
+        rep(i, K/2) ans *= vec[i];
+        Out(ans);
+    }
+
     
 }
 
