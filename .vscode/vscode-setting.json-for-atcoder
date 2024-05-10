@@ -23,7 +23,18 @@
     "update.mode": "manual",
     "extensions.autoUpdate": false,
     "editor.tokenColorCustomizations": {
-        "numbers": "#2ee116"
+        "numbers": "#2ee116",
+        "[Default Dark Modern]": {
+            "textMateRules": [
+            {
+                    "scope": "keyword.operator.bitwise",
+                    "settings": {
+                        "foreground": "#ff7700",
+                        // "fontStyle": "bold"
+                    }
+                }
+            ]
+        }
     },
     "files.autoSave": "afterDelay",
     "editor.fontFamily": "'Anonymous Pro', monospace",
