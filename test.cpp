@@ -1,4 +1,4 @@
-// ### C.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -186,82 +186,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    sort(all(A));
-    vl S(N+1);
-    rep(i, N) S[i+1] = S[i] + A[i];
-    ll sum = 0;
-    rep (i, N) {
-        sum += A[i]*(N-1-i);
-        sum += S[N] - S[i+1];
+    LONG(N, K);
+    VLM(P, N); VL(C, N);
+    vl to(N);
+    rep(i, N) { to[i] = P[i]; }
+    vvl dist(N, vl(N, INF));
+    vvl point(N, vl(N, 0));
+    auto bfs = [&](ll sv) {
+        queue<ll> que;
+        auto push = [&](ll v, ll d, ll p) {
+            if(dist[sv][v] <= d) return;
+            dist[sv][v] = d;
+            que.push(v);
+            point[sv][v] = p;
+        };
+        push(sv, 0, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ll nv = to[v];
+            push(nv, dist[sv][v]+1, point[sv][v]+C[nv]);
+        }
+    };
+    rep(i, N) bfs(i);
+    scc_graph scc(N);
+    rep(i, N) scc.add_edge(i, to[i]);
+    vvi groups = scc.scc();
+    vl cycle(N, -INF);
+    vl csize(N, -1);
+    for(auto gr: groups) {
+        ll sum = 0;
+        for(auto v: gr) sum += C[v];
+        if(sum>0) { 
+            for(auto v: gr) {
+                cycle[v] = sum;
+                csize[v] = SIZE(gr);
+            }
+        }
     }
-    ll cnt = 0;
-    ll M = 1e8;
-    rep(i, N) {
-        auto [n, x] = lowbou(A, M-A[i]);
-        chmax(n, i+1);
-        cnt += N - n;
+    ll ans = -INF;
+    // de(dist)
+    // de(point)
+    rep(i, N) rep(j, N) {
+        if(i==j) {
+            if(cycle[j]<=0) continue;
+            ll now = cycle[j] * (K/csize[j]);
+            chmax(ans, now);
+            continue;
+        }
+        if(dist[i][j]>K) continue;
+        ll now = point[i][j];
+        ll rem = K - dist[i][j];
+        if(cycle[j]>0) now += cycle[j] * (rem/csize[j]);
+        chmax(ans, now);
     }
-    Out(sum-cnt*M);
+    Out(ans);
     
 }
 
-// ### C.cpp ###
+// ### test.cpp ###

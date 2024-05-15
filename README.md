@@ -1562,6 +1562,7 @@
 - [D - Water Bottle](https://atcoder.jp/contests/abc144/tasks/abc144_d)
 - [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
 - [D - Alter Altar](https://atcoder.jp/contests/abc174/tasks/abc174_d)
+- [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
