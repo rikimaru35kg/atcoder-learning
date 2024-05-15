@@ -14,10 +14,17 @@
 - tolower(c)、toupper(c)で小文字、大文字変換が可能
 - scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
 - 文字コードを扱うときは一旦開始文字（eg A, a）からの差分値とし、最後に開始文字からの差分値で求める。('C' + 20) % 26などとすると空白文字となってしまうので要注意！
-- 文字列の数列は、辞書順に並べるとtrie木の構造となり、前後の文字列と比較するだけでLCAが分かる
 ### 例題
 - 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
+
+## LCP（Longest Common Prefix）
+- Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
+- LCP（Longest Common Prefix）はTrie木のLCAまでの深さとなる
+- 文字列の数列は、辞書順に並べるとtrie木の構造となり、前後の文字列と比較するだけでLCAが分かる
+- 文字列を辞書順に並べた場合、S[i]とS[j]のLCPは区間minで求まる
+### 例題
 - !要復習 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
+- 復習価値高 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 
 ## Z-algorhythm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
@@ -901,6 +908,7 @@
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !要復習 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
+- !要復習 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
 
 ## 状態を工夫するDP
 - 状態を工夫する事でDPに落とし込める問題

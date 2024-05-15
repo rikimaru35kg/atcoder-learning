@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### C.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -186,36 +186,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+pair<long long,long long> lowbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+pair<long long,long long> uppbou(vector<long long> &a, long long x) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (long long)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (long long)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    ll M = 1e6;
-    mint::set_mod(K);
-    mint cur = 0;
-    rep(i, M) {
-        cur = cur * 10 + 7; 
-        if(cur==0) {
-            Out(i+1);
-            return 0;
-        }
+    LONG(N); VL(A, N);
+    sort(all(A));
+    vl S(N+1);
+    rep(i, N) S[i+1] = S[i] + A[i];
+    ll sum = 0;
+    rep (i, N) {
+        sum += A[i]*(N-1-i);
+        sum += S[N] - S[i+1];
     }
-    Out(-1);
+    ll cnt = 0;
+    ll M = 1e8;
+    rep(i, N) {
+        auto [n, x] = lowbou(A, M-A[i]);
+        chmax(n, i+1);
+        cnt += N - n;
+    }
+    Out(sum-cnt*M);
     
 }
 
-// ### test.cpp ###
+// ### C.cpp ###

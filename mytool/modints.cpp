@@ -38,17 +38,12 @@ struct mints {
         }
         return false;
     }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
     void print() const {
         for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
         cerr << '\n';
     }
 };
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
