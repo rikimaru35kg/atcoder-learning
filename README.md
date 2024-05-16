@@ -1390,6 +1390,7 @@
 - !復習価値高 ABCパズル（実装方針間違えるとありえないぐらい沼る） [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
 - !復習価値中 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
 - !要復習 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
+- !要復習（しなくても良い） 考察できても実装難しく諦めた（諦めも肝心） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 

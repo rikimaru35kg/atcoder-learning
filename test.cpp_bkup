@@ -189,14 +189,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, K, D);
-    X = abs(X);
-    if (X/K >= D) {
-        Out(X-K*D); return 0;
+    LONG(N);
+    vl X(N), Y(N);
+    rep(i, N) {
+        LONG(x, y);
+        X[i] = x - y;
+        Y[i] = x + y;
     }
-    ll q = X / D;
-    ll ans = X % D;
-    if ((K-q)%2 == 1) ans = abs(ans - D);
+    sort(all(X));
+    sort(all(Y));
+    ll ans = 0;
+    chmax(ans, X.back() - X[0]);
+    chmax(ans, Y.back() - Y[0]);
     Out(ans);
     
 }
