@@ -1,5 +1,42 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#ifdef __DEBUG_VECTOR
+namespace for_debugging{
+    struct subscript_and_location{
+        int sub;
+        std::source_location loc;
+        subscript_and_location(int sub_,std::source_location loc_=std::source_location::current()){
+            sub=sub_;
+            loc=loc_;
+        }
+        void check_out_of_range(size_t sz){
+            if(sub<0||(int)sz<=sub){
+                std::clog << loc.file_name() << ":(" << loc.line() << ":" << loc.column() << "):" << loc.function_name() << std::endl;
+                std::clog << "out of range: subscript = " << sub << ", vector_size = " << sz << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    };
+}
+namespace std{
+    template<class T,class Allocator=std::allocator<T>> class vector_for_debugging:public std::vector<T,Allocator>{
+        using std::vector<T,Allocator>::vector;
+        public:
+            [[nodiscard]] constexpr std::vector<T,Allocator>::reference operator[](for_debugging::subscript_and_location n) noexcept(!std::is_same<T,bool>::value){
+                n.check_out_of_range(this->size());
+                return std::vector<T,Allocator>::operator[](n.sub);
+            }
+            [[nodiscard]] constexpr std::vector<T,Allocator>::const_reference operator[](for_debugging::subscript_and_location n) const noexcept(!std::is_same<T,bool>::value){
+                n.check_out_of_range(this->size());
+                return std::vector<T,Allocator>::operator[](n.sub);
+            }
+    };
+    namespace pmr{
+        template<class T> using vector_for_debugging=std::vector_for_debugging<T,std::pmr::polymorphic_allocator<T>>;
+    }
+}
+#define vector vector_for_debugging
+#endif
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
@@ -24,6 +61,12 @@ using vvvi = vector<vector<vector<int>>>;
 using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
+using t3 = tuple<ll,ll,ll>;
+using t4 = tuple<ll,ll,ll,ll>;
+using vt3 = vector<t3>;
+using vt4 = vector<t4>;
+using vvt3 = vector<vector<t3>>;
+using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
@@ -34,12 +77,10 @@ using cd = complex<double>;
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
-#define PYes {puts("Yes"); return 0;}
-#define PNo {puts("No"); return 0;}
-#define Pdame {puts("-1"); return 0;}
-#define Out(x) {cout << (x) << endl;}
-#define Outd(x) {printf("%.10f",x);cout<<endl;}
-#define print_vec(vec) {rep (iii, SIZE(vec)) {if(iii==SIZE(vec)-1) cout << vec[iii] << '\n'; else cout << vec[iii] << ' ';}}
+#define PYes {puts("Yes"); exit(0);}
+#define PNo {puts("No"); exit(0);}
+#define Pm0 {puts("0"); exit(0);}
+#define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -54,12 +95,24 @@ using cd = complex<double>;
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
+#define VPD(pvec, n) vpd pvec; input_pvecd(pvec, n)
 #define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) __builtin_popcountll(x)
+#define pcnt(x) (ll)__builtin_popcountll(x)
+#define abs(x) llabs(x)
+#define uset unordered_set
+#define umap unordered_map
+inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
+template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
+template<typename T> inline void Out(T x) {cout<<x<<'\n';}
+inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
+template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop();} cout<<endl;}
+template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
+template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
+template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
 template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
 inline void mi(void) {return;}
@@ -74,23 +127,41 @@ inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.pus
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
+inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {double a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
 inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
 inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
+inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
+#define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
+#define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
-template<typename T> inline void debug_view(pair<T,T> p){cerr << p.first << ' ' << p.second << endl;}
+template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
+template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
+template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
+template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
 template<typename T> inline void debug_view(queue<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop();}cerr << endl;}
+template<typename T> inline void debug_view(deque<T> q){while(!q.empty()) {cerr << q.front() << " "; q.pop_front();}cerr << endl;}
 template<typename T> inline void debug_view(set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(set<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(unordered_set<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(multiset<T> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
+template<typename T> inline void debug_view(multiset<T,greater<T>> s){for(auto x:s){cerr << x << ' ';}cerr << endl;}
 template<typename T> inline void debug_view(vector<pair<T,T>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
+inline void debug_view(vector<string> &v){cerr << "----" << endl; for(auto s: v) debug_view(s);}
 template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
 template<typename T> inline void debug_view(vector<vector<pair<T,T>>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T> inline void debug_view(vector<vector<T>> &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
+template<typename T1,typename T2> inline void debug_view(unordered_map<T1,T2> &mp){cerr << "----" << endl;for(auto [k,v]: mp){cerr << k << ' ' << v << endl;} cerr << "--------" << endl;}
 template<typename T1,typename T2> inline void debug_view(map<T1,vector<T2>> &mp){cerr<<"----"<<endl;for(auto [k,v]: mp){cerr<<k<<": ";debug_view(v);} cerr << "--------" << endl;}
 template<typename T1,typename T2,typename T3> inline void debug_view(map<pair<T1,T2>,T3> &mp){cerr << "----" << endl;for(auto [p,v]: mp){cerr<<'{'<<p.first<<' '<<p.second<<'}'<<": "<<v<<endl;} cerr<<"--------"<<endl;}
 #define deb(var) {cerr << #var << ": "; debugb_view(var);}
@@ -98,6 +169,9 @@ template<typename T> inline void debugb_view(T e){bitset<20> b(e); cerr<<b<<endl
 template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;for(auto e: v){debugb_view(e);}}
 #else
 #define de(var) {}
+#define de2(var1,var2) {}
+#define de3(var1,var2,var3) {}
+#define deb(var) {}
 #endif
 const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
@@ -112,80 +186,80 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/all>
-// using namespace atcoder;
-// using mint = modint998244353;
-// using vm = vector<mint>;
-// using vvm = vector<vector<mint>>;
-// using vvvm = vector<vector<vector<mint>>>;
-// #ifdef __DEBUG
-// inline void debug_view(mint e){cerr << e.val() << endl;}
-// inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-// inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-// #endif
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+template<typename T>
+class SpanBIT {
+    long long size;
+    vector<T> bit;
+    void _add (long long i, T x) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
+        ++i;
+        for (; i<size; i+=i&-i) bit[i] += x;
+    }
+    T _sum (long long i) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
+        ++i;
+        T ret = 0;
+        for (; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+public:
+    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    void add (long long l, long long r, T x) { // [l,r)
+        if(l<=r) {_add(l, x); _add(r, -x);}
+        else {
+            _add(l, x); _add(size-2, -x);
+            _add(0, x); _add(r, -x);
+        }
+    }
+    T get (long long i) {
+        return _sum(i);
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
-    map<ll,unordered_set<ll>> mp;
-    vl cnt(N+1);
-    rep (i, N) { cnt[A[i]]++; }
-    rep (i, N) { cnt[B[i]]++; }
-    rep (i, N+1) {
-        if (cnt[i]==0) continue;
-        if (cnt[i]>N) PNo
-        mp[cnt[i]].insert(i);
+    LONG(N, K);
+    vb exist(N+1);
+    rep(i, K) {
+        LONG(l, r);
+        repk(j, l, r+1) exist[j] = true;
     }
-    puts("Yes");
-    vvl idx(N+1);
-    rep (i, N) { idx[A[i]].push_back(i); }
-
-    unordered_map<ll,ll> cnta, cntb;
-    rep (i, N) cnta[A[i]]++;
-    rep (i, N) cntb[B[i]]++;
-
-    auto update=[&](auto &mp, auto &cnta, ll x) {
-        if (SIZE(mp[cnt[x]])==1) {
-            mp.erase(cnt[x]);
-        } else {
-            mp[cnt[x]].erase(x);
-        }
-        cnt[x]--;
-        if (cnt[x]!=0) {
-            mp[cnt[x]].insert(x);
-        }
-        cnta[x]--;
-        if (cnta[x]==0) {
-            cnta.erase(x);
-        }
-    };
-
-    vl ans(N);
-    rep (i, N) {
-        auto it = mp.end(); --it;
-        auto &st = it->second;
-        ll x = *st.begin();
-        ll y;
-        if (cnta.count(x)) {
-            for (auto [k, v]: cntb) {
-                if (k == x) continue;
-                y = k; break;
-            }
-        } else {
-            for (auto [k, v]: cnta) {
-                if (k == x) continue;
-                y = k; swap(x, y); break;
-            }
-        }
-        ll z = idx[x].back();
-        idx[x].pop_back();
-        ans[z] = y;
-        update(mp, cnta, x);
-        update(mp, cntb, y);
+    ll r = 0;
+    vp span;
+    rep1(l, N) {
+        r = l;
+        if (!exist[l]) continue;
+        while(r<N+1 && exist[r]) ++r;
+        span.emplace_back(l, r);
+        l = r;
     }
-    print_vec(ans)
-
+    ll M = SIZE(span);
+    SpanBIT<mint> dp(N);
+    dp.add(0, 1, 1);
+    rep(i, N-1) {
+        rep(j, M) {
+            auto [_l, _r] = span[j];
+            ll l = i+_l, r = i+_r;
+            chmin(l, N); chmin(r, N);
+            dp.add(l, r, dp.get(i));
+        }
+    }
+    Out(dp.get(N-1));
     
 }
 

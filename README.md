@@ -1346,7 +1346,7 @@
 - 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
-- !要復習 数列マッチング（実装難） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
+- !要復習（だがしなくても良い） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 ## まとめて処理する
 - 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
@@ -1390,7 +1390,6 @@
 - !復習価値高 ABCパズル（実装方針間違えるとありえないぐらい沼る） [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
 - !復習価値中 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
 - !要復習 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
-- !要復習（しなくても良い） 考察できても実装難しく諦めた（諦めも肝心） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム
 

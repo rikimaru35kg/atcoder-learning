@@ -32,37 +32,38 @@ struct BIT {
     }
 };
 
+template<typename T>
 class SpanBIT {
     long long size;
-    vector<long long> bit;
-    void _add (long long i, long long x) {
+    vector<T> bit;
+    void _add (long long i, T x) {
         if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
         ++i;
         for (; i<size; i+=i&-i) bit[i] += x;
     }
-    long long _sum (long long i) {
+    T _sum (long long i) {
         if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
         ++i;
-        long long ret = 0;
+        T ret = 0;
         for (; i>0; i-=i&-i) ret += bit[i];
         return ret;
     }
 public:
     SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    void add (long long l, long long r, long long x) { // [l,r)
+    void add (long long l, long long r, T x) { // [l,r)
         if(l<=r) {_add(l, x); _add(r, -x);}
         else {
             _add(l, x); _add(size-2, -x);
             _add(0, x); _add(r, -x);
         }
     }
-    long long get (long long i) {
+    T get (long long i) {
         return _sum(i);
     }
 };
 
 int main () {
-    SpanBIT bit(5);
+    SpanBIT<int> bit(5);
     bit.add(0, 5, 3);
     for(int i=0; i<5; ++i) cout << bit.get(i) << endl;
 
