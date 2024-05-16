@@ -34,7 +34,7 @@ struct WeightedUnionFind {
         diff[x] += diff[y];
         return p[x];
     }
-    bool merge (long long x, long long y, long long w) {   // x - y = w
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
         leader(x); leader(y);  // path compression, -> diff will be based on root.
         w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
         x = leader(x); y = leader(y);

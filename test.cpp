@@ -186,80 +186,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-template<typename T>
-class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff;
+    vector<unordered_map<ll,ll>> cls;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0), cls(n) {}
+    void insert(ll x, ll c) {
+        cls[x][c]++;
     }
-    T _sum (long long i) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) return w == 0;
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        for(auto [k, v]: cls[x]) {
+            cls[y][k] += v;
         }
+        return true;
     }
-    T get (long long i) {
-        return _sum(i);
-    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vb exist(N+1);
-    rep(i, K) {
-        LONG(l, r);
-        repk(j, l, r+1) exist[j] = true;
-    }
-    ll r = 0;
-    vp span;
-    rep1(l, N) {
-        r = l;
-        if (!exist[l]) continue;
-        while(r<N+1 && exist[r]) ++r;
-        span.emplace_back(l, r);
-        l = r;
-    }
-    ll M = SIZE(span);
-    SpanBIT<mint> dp(N);
-    dp.add(0, 1, 1);
-    rep(i, N-1) {
-        rep(j, M) {
-            auto [_l, _r] = span[j];
-            ll l = i+_l, r = i+_r;
-            chmin(l, N); chmin(r, N);
-            dp.add(l, r, dp.get(i));
+    LONG(N, Q);
+    VL(C, N);
+    WeightedUnionFind uf(N);
+    rep(i, N) { uf.insert(i, C[i]); }
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(a, b);
+            uf.merge(a, b);
+        } else {
+            LONG(x, y); --x;
+            x = uf.leader(x);
+            ll ans = uf.cls[x][y];
+            Out(ans);
         }
     }
-    Out(dp.get(N-1));
     
 }
 
