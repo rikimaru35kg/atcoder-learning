@@ -186,20 +186,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
+}
+
+void solve() {
+    LONG(N, S, K);
+    auto [g, x, y] = extgcd(K, N);
+    if (S%g !=0) {
+        Out(-1); return;
+    }
+    x *= -S/g;
+    x = Percent(x, N/g);
+    Out(x);
+
+}
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    sort(all(A));
-    ll ans = 0;
-    rep(i, N) ans -= A[i]*(N-1-i);
-    ll sum = 0;
-    repr(i, N) {
-        ans += sum;
-        sum += A[i];
+    LONG(T);
+    rep(_, T) {
+        solve();
     }
-    Out(ans);
-
     
 }
 

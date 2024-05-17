@@ -425,6 +425,7 @@
 - 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
 ### 例題
 - !復習価値中 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
+- !要復習 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い

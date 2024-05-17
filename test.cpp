@@ -186,35 +186,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-void solve() {
-    LONG(N, S, K);
-    auto [g, x, y] = extgcd(K, N);
-    if (S%g !=0) {
-        Out(-1); return;
+struct POS {
+    ll x, y;
+    POS(ll x, ll y): x(x),y(y){}
+    bool operator<(const POS &o) const {
+        if(x!=o.x) return x<o.x;
+        return y<o.y;
     }
-    x *= -S/g;
-    x = Percent(x, N/g);
-    Out(x);
-
-}
-
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(_, T) {
-        solve();
+    LONG(H, W, M);
+    vector<POS> pos;
+    ll H2 = H, W2 = W; // 1列目、1行目の障害物の位置
+    rep(i, M) {
+        LONG(x, y);
+        pos.emplace_back(x-1, y-1);
+        if(x==1) chmin(W2, y-1);
+        if(y==1) chmin(H2, x-1);
     }
-    
+    vl row(H, W), col(W, H);
+    for(auto[x,y]: pos) {
+        chmin(row[x], y);  // 最初の障害物（各行）
+        chmin(col[y], x);  // 最初の障害物（各列）
+    }
+    ll ans = 0;
+    rep(i, H2) {ans += row[i]; }
+    rep(i, W2) {ans += col[i]; }
+
+    vvl death(H+10); // どこで消えるか
+    rep(i, W2) {
+        ll h = col[i];
+        death[h].push_back(i);
+    }
+    fenwick_tree<ll> tree(W+10);
+    rep(i, W2) tree.add(i, 1);
+    ll sum = 0;
+    rep(i, H2) {
+        for(auto j: death[i]) { tree.add(j, -1); }
+        sum += tree.sum(0, row[i]);
+    }
+    Out(ans-sum);
 }
 
 // ### test.cpp ###
