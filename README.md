@@ -109,7 +109,7 @@
 - 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
 - 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
 ### 例題
-- !復習価値高 snuke氏の拡張ユークリッド解説動画が神 [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- !要復習 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
 
 ## 最小桁和
 - 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる
@@ -214,10 +214,10 @@
 - !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
-- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ t%LCM(C, D)を求める問題とも言える）
+- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
 - 式変形により拡張ユークリッドの互除法で解ける
 - ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
-- s==0の場合は解なし
+- sはLCM(C,D)であり、s==0の場合は解なし
 ### 例題
 - !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
 - !要復習 インタラクティブ [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)

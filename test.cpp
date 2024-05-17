@@ -186,56 +186,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff;
-    vector<unordered_map<ll,ll>> cls;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0), cls(n) {}
-    void insert(ll x, ll c) {
-        cls[x][c]++;
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
+}
+
+void solve() {
+    LONG(N, S, K);
+    auto [g, x, y] = extgcd(K, N);
+    if (S%g !=0) {
+        Out(-1); return;
     }
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) return w == 0;
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        for(auto [k, v]: cls[x]) {
-            cls[y][k] += v;
-        }
-        return true;
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-};
+    x *= -S/g;
+    x = Percent(x, N/g);
+    Out(x);
+
+}
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(C, N);
-    WeightedUnionFind uf(N);
-    rep(i, N) { uf.insert(i, C[i]); }
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(a, b);
-            uf.merge(a, b);
-        } else {
-            LONG(x, y); --x;
-            x = uf.leader(x);
-            ll ans = uf.cls[x][y];
-            Out(ans);
-        }
+    LONG(T);
+    rep(_, T) {
+        solve();
     }
     
 }

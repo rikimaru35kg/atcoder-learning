@@ -177,8 +177,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {0, 1, 1};
-const vi dj = {1, 0, 1};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -186,39 +186,18 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    vvm dp(H, vm(W));
-    vvvm dp1(H, vvm(W, vm(3)));
-    dp[0][0] = 1;
-    rep(i, H) rep(j, W) {
-        if (S[i][j]=='#') { continue; }
-        rep(k, 3) dp[i][j] += dp1[i][j][k];
-        rep(k, 3) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            if(!isin(ni,nj,H,W)) continue;
-            dp1[ni][nj][k] = dp1[i][j][k] + dp[i][j];
-        }
+    LONG(N); VL(A, N);
+    sort(all(A));
+    ll ans = 0;
+    rep(i, N) ans -= A[i]*(N-1-i);
+    ll sum = 0;
+    repr(i, N) {
+        ans += sum;
+        sum += A[i];
     }
-    mint ans = dp[H-1][W-1];
     Out(ans);
 
     
