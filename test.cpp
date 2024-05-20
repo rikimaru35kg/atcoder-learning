@@ -189,13 +189,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vd e(N+1);
-    rep(i, N) {
-        e[i+1] = e[i] + (double)N/(i+1);
+    LONG(A, B, W);
+    W *= 1000;
+    ll mn = INF, mx = 0;
+    rep1(n, (ll)1e6) {
+        ll _mn = n*A, _mx = n*B;
+        if (W>=_mn && W <= _mx) {
+            chmin(mn, n);
+            chmax(mx, n);
+        }
     }
-    de(e)
-    Out(e[N-1]);
+    if(mn==INF) puts("UNSATISFIABLE");
+    else printf("%lld %lld\n", mn, mx);
     
 }
 

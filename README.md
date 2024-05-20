@@ -1568,6 +1568,7 @@
 - [D - Alter Altar](https://atcoder.jp/contests/abc174/tasks/abc174_d)
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 - [D - Journey](https://atcoder.jp/contests/abc194/tasks/abc194_d)
+- [B - Many Oranges](https://atcoder.jp/contests/abc195/tasks/abc195_b)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

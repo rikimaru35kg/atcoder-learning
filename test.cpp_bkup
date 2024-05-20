@@ -186,35 +186,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(_, T) {
-        LONG(X, Y, P, Q);
-        ll ans = INF;
-        repk(a, X, X+Y) repk(b, P, P+Q) {
-            auto tmp = crt({a, b}, {2*(X+Y), P+Q});
-            if(tmp.second!=0) { chmin(ans, tmp.first); 
-            de3(a,b,tmp.first)}
-        }
-        if(ans!=INF) Out(ans);
-        else Out("infinity");
+    LONG(N, M); VL(A, N);
+    vl cnt(N);
+    rep(i, M) cnt[A[i]]++;
+    set<ll> st;
+    rep(i, M+1) st.insert(i);
+    rep(i, M) { st.erase(A[i]); }
+    auto add=[&](ll x, ll c=1) {
+        if(cnt[x]==0) st.erase(x);
+        cnt[x] += c;
+        if(cnt[x]==0) st.insert(x);
+    };
+    auto del=[&](ll x) { add(x, -1); };
+    ll op = INF;
+    rep(i, N+1-M) {
+        ll ans = *st.begin();
+        chmin(op, ans);
+        del(A[i]);
+        if(i+M>=N) break;
+        add(A[i+M]);
     }
+    Out(op);
     
 }
 
