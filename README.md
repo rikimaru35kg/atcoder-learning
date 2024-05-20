@@ -1611,4 +1611,5 @@
 - [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
 - [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
+- [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 

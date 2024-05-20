@@ -107,6 +107,7 @@ alias rm='rm -i'
 alias py='python3'
 alias b='python3 get_binary_number.py'
 alias p='powershell.exe -command "Get-Clipboard" > in; py practice.py < in'
+alias digit='py calc_num_digit.py'
 # My stacksize
 ulimit -s 1048576
 # git operations
