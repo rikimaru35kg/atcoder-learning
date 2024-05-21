@@ -1569,6 +1569,7 @@
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 - [D - Journey](https://atcoder.jp/contests/abc194/tasks/abc194_d)
 - [B - Many Oranges](https://atcoder.jp/contests/abc195/tasks/abc195_b)
+- [D - aab aba baa](https://atcoder.jp/contests/abc202/tasks/abc202_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
