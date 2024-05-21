@@ -189,27 +189,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M); VL(A, N);
-    vl cnt(N);
-    rep(i, M) cnt[A[i]]++;
-    set<ll> st;
-    rep(i, M+1) st.insert(i);
-    rep(i, M) { st.erase(A[i]); }
-    auto add=[&](ll x, ll c=1) {
-        if(cnt[x]==0) st.erase(x);
-        cnt[x] += c;
-        if(cnt[x]==0) st.insert(x);
+    LONG(N); STRING(S);
+    ll flip = 0;
+    auto getij = [&](ll &a, ll &b) {
+        if(flip==0) return;
+        if(a<N) a += N;
+        else a -= N;
+        if(b<N) b += N;
+        else b -= N;
     };
-    auto del=[&](ll x) { add(x, -1); };
-    ll op = INF;
-    rep(i, N+1-M) {
-        ll ans = *st.begin();
-        chmin(op, ans);
-        del(A[i]);
-        if(i+M>=N) break;
-        add(A[i+M]);
+    LONG(Q);
+    rep(_, Q) {
+        LONG(t, a, b); --a, --b;
+        if(t==1) {
+            getij(a, b);
+            swap(S[a], S[b]);
+        } else {
+            flip ^= 1;
+        }
     }
-    Out(op);
+    if(flip==0) Out(S);
+    else{
+        string ans = S.substr(N) + S.substr(0, N);
+        Out(ans);
+    }
     
 }
 

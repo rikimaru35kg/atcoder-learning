@@ -323,8 +323,8 @@
 
 ## 再帰全探索
 - 次に探索する状態へ再帰でつなぐ。自分自身で終了する事も忘れずに
-- 再帰しながら全探索するのではなく、先にオイラーツアーして順番を決めてから再度再帰して全探索する方が良い場合あり
-- 例えば連結無向グラフ（ループあり）の終端処理をしたい場合、終端判定がそもそも難しいので、先にオイラーツアーしておけばその順序で処理をかける事ができる
+- 再帰しながら全探索するのではなく、先にオイラーツアーして順番を決めてから再度再帰して全探索する方が良い場合あり（例えば彩色問題。木なら良いが、ループありだと**異なる順番で**同じ配色を選んでしまう重複あり）
+- 他にも、連結無向グラフ（ループあり）の終端処理をしたい場合、終端判定がそもそも難しいので、先にオイラーツアーしておけばその順序で処理をかける事ができるなど実装上のメリットもある
 ### 例題
 - !要復習 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - !復習価値低 ポリオミオ（Polyomio）の種類数が少ないから解ける [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
@@ -870,7 +870,7 @@
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
 - 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
-- 基本（なぜ青diff？） [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
+- !要復習（なぜ青diff？と言いつつ次はWAした・・・） [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 - !要復習 カードめくり [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 
 ## 円環系DP
@@ -1614,4 +1614,5 @@
 - [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
+- [https://atcoder.jp/contests/abc198/tasks/abc198_c](https://atcoder.jp/contests/abc198/tasks/abc198_c)
 
