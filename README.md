@@ -457,7 +457,7 @@
 - 区間和がxの倍数になるとは、[l,r)の累積和Sr-Sl≡0（mod x）、つまりSr≡Slなので、累積和（mod x）が等しければ良い
 - 累積和が等しい場合の数を全て加算しておけば、貰うDPで一括で足しこめる
 ### 例題
-- !要復習 非常に難しく頭が混乱。DPに慣れた頃に再度解きたい問題 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
+- !要復習 難しく頭が混乱するが、頑張れば解けるので頑張って！ [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 
 ## ある順列P{1,2,...,N}の区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる

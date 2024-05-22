@@ -189,46 +189,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c, d);
-        from[a].emplace_back(b, c, d);
-        from[b].emplace_back(a, c, d);
+    LONG(L, R);
+    vl f(R+1);
+    ll ans = 0;
+    for(ll g=R; g>=2; --g) {
+        f[g] = (R/g - (L-1)/g);
+        f[g] *= f[g];
+        for(ll i=2*g; i<=R; i+=g) { f[g] -= f[i]; }
+        ans += f[g];
     }
-    auto f = [&](ll t, ll c, ll d) {
-        auto g = [&](ll t) {
-            return c + t + d/(t+1);
-        };
-        ll ret = g(t);
-        ll tmp = sqrt(d);
-        ll l = max(tmp-5, t), r = max(tmp+5, t);
-        repk(i, l, r+1) {
-            chmin(ret, g(i));
-        }
-        return ret;
-    };
-    de(f(0, 2, 3))
-    de(f(1, 2, 3))
-    pq pque;
-    vl dist(N, INF);
-    auto push = [&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        pque.emplace(d, v);
-    };
-    push(0, 0);
-    while(pque.size()) {
-        auto [dis, v] = pque.top(); pque.pop();
-        if(dist[v]!=dis) continue;
-        for(auto [nv, c, d]: from[v]) {
-            ll nd = f(dis, c, d);
-            push(nv, nd);
-        }
+    de(ans)
+    for(ll x=L; x<=R; ++x) {
+        if(x==1) continue;
+        ll now = 2*(R/x);
+        now -= 1;
+        ans -= now;
+        de2(x, now);
     }
-    ll ans = dist[N-1];
-    ch1(ans);
     Out(ans);
+    
     
 }
 
