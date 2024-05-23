@@ -692,14 +692,14 @@
 ## グラフその他
 - 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または下の例題（Sum of Maximum Weights）など
 ### 例題
-- !要復習 全2頂点間最大辺の総和問題 [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
+- !要復習 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
 ## グラフに関する問題の計算量見積り
 - ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
 - 各辺は確定頂点からしか呼ばれる事はなく、各辺は2頂点としか繋がっていない為、高々2回しか呼ばれない
 - グラフを用いたDPなどでも、同じ議論は成り立つので、計算量はO(NM)ではなくO(N+M)かもしれない事に注意せよ
 ### 例題
-- [E - Safety Journey](https://atcoder.jp/contests/abc212/tasks/abc212_e)
+- !復習価値高 グラフ上K日旅程の場合の数 [E - Safety Journey](https://atcoder.jp/contests/abc212/tasks/abc212_e)
 
 # 動的計画法（DP）
 
@@ -1572,6 +1572,7 @@
 - [D - aab aba baa](https://atcoder.jp/contests/abc202/tasks/abc202_d)
 - [D - Kth Excluded](https://atcoder.jp/contests/abc205/tasks/abc205_d)
 - 動画解説が本質をついていて良い [D - Number of Shortest paths](https://atcoder.jp/contests/abc211/tasks/abc211_d)
+- [D - Pair of Balls](https://atcoder.jp/contests/abc216/tasks/abc216_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

@@ -186,50 +186,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
+    vector<queue<ll>> pipe(M);
+    vl head(N, -1);
+    queue<Pr> pairs;
     rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vl dist(N, INF);
-    vm dp(N);
-    queue<ll> que;
-    auto push=[&](ll v, ll d, mint n) {
-        if(dist[v]<d) return;
-        dp[v] += n;
-        if(dist[v]==d) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(0, 0, 1);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv:from[v]) {
-            push(nv, dist[v]+1, dp[v]);
+        LONG(K);
+        rep(j, K) {
+            LONGM(a);
+            pipe[i].push(a);
+        }
+        ll c = pipe[i].front();
+        if(head[c] == -1) head[c] = i;
+        else {
+            pairs.emplace(i, head[c]);
         }
     }
-    de(dist)de(dp)
-    mint ans = dp[N-1];
-    Out(ans);
+    auto slide=[&](ll i) {
+        pipe[i].pop();
+        if(pipe[i].size()==0) return;
+        ll c = pipe[i].front();
+        if(head[c] == -1) head[c] = i;
+        else pairs.emplace(i, head[c]);
+    };
+    ll cnt = 0;
+    while(pairs.size()) {
+        ++cnt;
+        auto [i, j] = pairs.front(); pairs.pop();
+        slide(i);
+        slide(j);
+    }
+    if(cnt==N) PYes PNo
     
 }
 

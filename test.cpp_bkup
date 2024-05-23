@@ -186,38 +186,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S); ll N = SIZE(S);
-    string chokudai = "chokudai";
-    ll M = SIZE(chokudai);
-    vm dp(M+1);
-    vm edp = dp;
-    dp[0] = 1;
+    LONG(N);
+    vp pos;
     rep(i, N) {
-        vm pdp = edp;
-        swap(pdp, dp);
-        rep(j, M+1) {
-            dp[j] += pdp[j];
-            if(S[i]==chokudai[j]) dp[j+1] += pdp[j];
-        }
+        LONG(x, y);
+        pos.emplace_back(x, y);
     }
-    mint ans = dp[M];
+    sort(all(pos));
+    auto f = [&](ll d) -> bool {
+        map<ll,vl> wait;
+        // multiset<ll> ys;
+        ll mn = INF, mx = -INF;
+        for(auto [x, y]: pos) {
+            while(wait.size() && wait.begin()->first <= x-d)  {
+                auto [k, v] = *wait.begin();
+                for(auto ty: v) {
+                    chmax(mx, ty);
+                    chmin(mn, ty);
+                }
+                wait.erase(wait.begin());
+            }
+
+            if(mn!=INF && abs(y-mn)>=d) return true;
+            if(mx!=-INF && abs(y-mx)>=d) return true;
+
+            wait[x].push_back(y);
+        }
+        return false;
+    };
+    ll ans = binary_search(0, ll(1e9+10), f);
     Out(ans);
     
 }
