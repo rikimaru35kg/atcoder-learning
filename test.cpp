@@ -202,29 +202,33 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 
 int main () {
     // ios::sync_with_stdio(false);
-    // ===================================================================
-    // 解説はhttps://atcoder.jp/contests/abc207/submissions/49805079に残した
-    // ===================================================================
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl S(N+1);
-    rep(i, N) S[i+1] = S[i] + A[i];
-    vvm dp0(N+1, vm(N+1));  // 愚直計算（デバッグ用）
-    vvm dp(N+1, vm(N+1)), ds(N+1, vm(N+1));
-    dp0[0][0] = 1;
-    dp[0][0] = 1;
-    ds[0][0] = 1;
-    rep(i, N) {
-        for(ll j=N; j>=1; --j) {
-            // rep(k, i+1) {
-            //     if((S[i+1]-S[k])%j==0) dp0[i+1][j] += dp0[k][j-1];
-            // }
-            dp[i+1][j] += ds[j-1][S[i+1]%j];
-            ds[j][S[i+1]%(j+1)] += dp[i+1][j];
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    vl dist(N, INF);
+    vm dp(N);
+    queue<ll> que;
+    auto push=[&](ll v, ll d, mint n) {
+        if(dist[v]<d) return;
+        dp[v] += n;
+        if(dist[v]==d) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    push(0, 0, 1);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto nv:from[v]) {
+            push(nv, dist[v]+1, dp[v]);
         }
     }
-    mint ans = 0;
-    rep1(i, N) ans += dp[N][i];
+    de(dist)de(dp)
+    mint ans = dp[N-1];
     Out(ans);
     
 }

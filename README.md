@@ -1571,6 +1571,7 @@
 - [B - Many Oranges](https://atcoder.jp/contests/abc195/tasks/abc195_b)
 - [D - aab aba baa](https://atcoder.jp/contests/abc202/tasks/abc202_d)
 - [D - Kth Excluded](https://atcoder.jp/contests/abc205/tasks/abc205_d)
+- 動画解説が本質をついていて良い [D - Number of Shortest paths](https://atcoder.jp/contests/abc211/tasks/abc211_d)
 
 ## ACできなかった問題
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)

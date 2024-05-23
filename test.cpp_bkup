@@ -186,28 +186,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L, R);
-    vl f(R+1);
-    ll ans = 0;
-    for(ll g=R; g>=2; --g) {
-        f[g] = (R/g - (L-1)/g);
-        f[g] *= f[g];
-        for(ll i=2*g; i<=R; i+=g) { f[g] -= f[i]; }
-        ans += f[g];
+    STRING(S); ll N = SIZE(S);
+    string chokudai = "chokudai";
+    ll M = SIZE(chokudai);
+    vm dp(M+1);
+    vm edp = dp;
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp = edp;
+        swap(pdp, dp);
+        rep(j, M+1) {
+            dp[j] += pdp[j];
+            if(S[i]==chokudai[j]) dp[j+1] += pdp[j];
+        }
     }
-    de(ans)
-    for(ll x=L; x<=R; ++x) {
-        if(x==1) continue;
-        ll now = 2*(R/x);
-        now -= 1;
-        ans -= now;
-        de2(x, now);
-    }
+    mint ans = dp[M];
     Out(ans);
-    
     
 }
 
