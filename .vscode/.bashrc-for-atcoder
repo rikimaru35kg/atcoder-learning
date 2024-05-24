@@ -100,7 +100,6 @@ alias gno='g++ -std=gnu++2b -O2 -I/opt/ac-library'
 alias a='./a.out'
 alias abc='python3 gen_abc_file.py'
 alias clip='/mnt/c/WINDOWS/system32/clip.exe'
-alias c='clip'
 alias e='powershell.exe -command "Get-Clipboard" > in; a < in'
 alias ee='e 2>/dev/null'
 alias rm='rm -i'
@@ -108,6 +107,9 @@ alias py='python3'
 alias b='python3 get_binary_number.py'
 alias p='powershell.exe -command "Get-Clipboard" > in; py practice.py < in'
 alias digit='py calc_num_digit.py'
+function c(){
+    iconv -t utf16 $1 | clip.exe
+}
 # My stacksize
 ulimit -s 1048576
 # git operations
