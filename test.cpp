@@ -187,9 +187,8 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 const long long b = 12345;
-const long long MX = 2;
-// const long long ps[MX] = {1000000007, 1000000021, 1000000033};
-const long long ps[MX] = {1000000007, 1000000021};
+const long long MX = 3;
+const long long ps[MX] = {1000000007, 1000000021, 1000000033};
 struct mints {
     long long data[MX];
     mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = x%ps[i]; }
@@ -234,56 +233,31 @@ struct mints {
     }
 };
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-struct S {
-    mints h, w;
-    S(ll x, ll w): h(x), w(w) {} 
-    S(mints x, mints w): h(x), w(w) {} 
-    bool operator==(const S &o) {
-        return (h==o.h && w==o.w);
-    }
-};
-S op(S s1, S s2) {
-    return S(s1.h * s2.w + s2.h, s1.w * s2.w);
-}
-S e() {return S(0, 1);}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    STRING(Str);
-    segtree<S,op,e> sl(N), sr(N);
+    LONG(N);
+    VS(A, N);
+    vector<mints> Ah(N);
     rep(i, N) {
-        sl.set(i, S(Str[i], b));
-        sr.set(N-1-i, S(Str[i], b));
+        mints now = 0;
+        rep(j, SIZE(A[i])) {
+            now = now * 10 + (A[i][j]-'0');
+        }
+        Ah[i] = now;
+        now.print();
     }
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(x); CHAR(c);
-            sl.set(x, S(c, b));
-            sr.set(N-1-x, S(c, b));
-        } else {
-            LONG(l, r); --l;
-            if (sl.prod(l, r) == sr.prod(N-r, N-l)) puts("Yes");
-            else puts("No");
+    map<mints,ll> mp;
+    rep(i, N) rep(j, N)  {
+        mp[Ah[i]*Ah[j]]++;
+    }
+    ll ans = 0;
+    rep(i, N) {
+        if (mp.count(Ah[i])) {
+            ans += mp[Ah[i]];
         }
     }
-
+    Out(ans);
     
 }
 

@@ -30,8 +30,9 @@
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
 - 衝突確率を下げる為、素数を多めに用意すると良い
+- 衝突確率はロリハのように基数を自由に選べる場合は1/p。選べない場合はpをランダムに選んだ場合に失敗するガチャと考えて、選択可能なpが何個あるかどうかを考える
 ### 例題
-- [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+- !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
 
 ## LCP（Longest Common Prefix）
 - Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
