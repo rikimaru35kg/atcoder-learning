@@ -186,47 +186,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp pos;
-    rep(i, N) {
-        LONG(x, y);
-        pos.emplace_back(x, y);
+    LONG(N, M);
+    vvp from(N+1);
+    rep(i, N) from[i].emplace_back(i+1, 1);
+    rep(i, N) from[i+1].emplace_back(i, 0);
+    rep(i, M) {
+        LONG(l, r, x); --l;
+        from[l].emplace_back(r, r-l-x);
     }
-    sort(all(pos));
-    auto f = [&](ll d) -> bool {
-        map<ll,vl> wait;
-        // multiset<ll> ys;
-        ll mn = INF, mx = -INF;
-        for(auto [x, y]: pos) {
-            while(wait.size() && wait.begin()->first <= x-d)  {
-                auto [k, v] = *wait.begin();
-                for(auto ty: v) {
-                    chmax(mx, ty);
-                    chmin(mn, ty);
-                }
-                wait.erase(wait.begin());
-            }
-
-            if(mn!=INF && abs(y-mn)>=d) return true;
-            if(mx!=-INF && abs(y-mx)>=d) return true;
-
-            wait[x].push_back(y);
-        }
-        return false;
+    vl dist(N+1, INF);
+    pq pque;
+    auto push = [&](ll v, ll d) {
+        if(dist[v] <= d) return;
+        dist[v] = d;
+        pque.emplace(d, v);
     };
-    ll ans = binary_search(0, ll(1e9+10), f);
+    push(0, 0);
+    while(pque.size()) {
+        auto [d, v] = pque.top(); pque.pop();
+        if(dist[v] != d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
+        }
+    }
+    vl ans(N);
+    rep(i, N) ans[i] = (dist[i+1] - dist[i])^1;
     Out(ans);
     
 }

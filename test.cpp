@@ -186,40 +186,104 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+const long long b = 12345;
+const long long MX = 2;
+// const long long ps[MX] = {1000000007, 1000000021, 1000000033};
+const long long ps[MX] = {1000000007, 1000000021};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = x%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+struct S {
+    mints h, w;
+    S(ll x, ll w): h(x), w(w) {} 
+    S(mints x, mints w): h(x), w(w) {} 
+    bool operator==(const S &o) {
+        return (h==o.h && w==o.w);
+    }
+};
+S op(S s1, S s2) {
+    return S(s1.h * s2.w + s2.h, s1.w * s2.w);
+}
+S e() {return S(0, 1);}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vector<queue<ll>> pipe(M);
-    vl head(N, -1);
-    queue<Pr> pairs;
-    rep(i, M) {
-        LONG(K);
-        rep(j, K) {
-            LONGM(a);
-            pipe[i].push(a);
-        }
-        ll c = pipe[i].front();
-        if(head[c] == -1) head[c] = i;
-        else {
-            pairs.emplace(i, head[c]);
+    LONG(N, Q);
+    STRING(Str);
+    segtree<S,op,e> sl(N), sr(N);
+    rep(i, N) {
+        sl.set(i, S(Str[i], b));
+        sr.set(N-1-i, S(Str[i], b));
+    }
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(x); CHAR(c);
+            sl.set(x, S(c, b));
+            sr.set(N-1-x, S(c, b));
+        } else {
+            LONG(l, r); --l;
+            if (sl.prod(l, r) == sr.prod(N-r, N-l)) puts("Yes");
+            else puts("No");
         }
     }
-    auto slide=[&](ll i) {
-        pipe[i].pop();
-        if(pipe[i].size()==0) return;
-        ll c = pipe[i].front();
-        if(head[c] == -1) head[c] = i;
-        else pairs.emplace(i, head[c]);
-    };
-    ll cnt = 0;
-    while(pairs.size()) {
-        ++cnt;
-        auto [i, j] = pairs.front(); pairs.pop();
-        slide(i);
-        slide(j);
-    }
-    if(cnt==N) PYes PNo
+
     
 }
 

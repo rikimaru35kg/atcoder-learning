@@ -17,6 +17,22 @@
 ### 例題
 - 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
 
+## ローリングハッシュ（Rolling Hash）
+- 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する（AとDのどちらを上位桁にしても問題ない）
+- ハッシュが一致すれば同一文字列と判定できる
+- 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せるが、結構難しい（累積和の差を更にXの累乗で割る必要がある）ので、セグ木推奨
+- (hash,桁数)はモノイドなのでセグ木に乗せられる（hash,x^桁数）とした方が楽かも
+- ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
+- 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
+### 例題
+- !要復習 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+
+## ハッシュで一致判定
+- ロリハと同じように一致判定はハッシュを使うと効率が良い
+- 衝突確率を下げる為、素数を多めに用意すると良い
+### 例題
+- [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+
 ## LCP（Longest Common Prefix）
 - Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
 - LCP（Longest Common Prefix）はTrie木のLCAまでの深さとなる
@@ -1414,23 +1430,6 @@
 ### 例題
 - !要復習 色が隣合わないようにK個選んだ時の価値総和最大値（実装難） [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
-## ローリングハッシュ（Rolling Hash）
-- 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する
-- ハッシュが一致すれば同一文字列と判定できる
-- 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せる
-- (hash,x^n)はモノイドなのでセグ木にも乗せられる
-- ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
-- 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
-- 衝突確率があるので、ロリハを使わなくても解けるなら使わない方が良いかも
-### 例題
-- [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
-
-## ハッシュで一致判定
-- ロリハと同じように一致判定はハッシュを使うと効率が良い
-- 衝突確率を下げる為、素数を多めに用意すると良い
-### 例題
-- [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
-
 # 実装テクニック
 
 ## ラムダ再帰
@@ -1449,11 +1448,12 @@
 - vectorを大量に定義すると実行時間制限の厳しい問題ではTLEする可能性あり。特に長さの短いvectorだと何回も定義しがちなので注意。長さ固定ならstructを定義する等した方がよい（[TLEする例](https://atcoder.jp/contests/abc343/submissions/52479159)）
 
 ## 構造体
+- コンストラクタのメンバ初期化子リスト（:x(x)のやつ）で:x(0)などと書かない事！デフォルト引数でStruct(int x=0): x(x)とすべき。こうしないと常にxは0で初期化される為、xに違う値を入れる場合に対応できず、解決しずらいバグを生み出す要因となる！！（超重要）
 - コンストラクタを定義したのに引数を指定しないとエラーが出る。no matching function for call to 'Struct::Struct()'コンストラクタにデフォルト引数を指定しておけば解決する
 - 構造体にbool operater < (const Struct &s) {return x < s.x}などとすると、構造体同士の演算が定義できる。
 - ただし、priority_queueに使うときは2点注意が必要。(1)bool operator>（greater<MYSTRUCT>なので） (2){}の前にconstと書かないとエラーが出る（理由不明） -> 恐らくだが、greater<MYSTRUCT>と書く場合はconst記述が必要。そうしないと内部で定義してあるoperater>と型が完全一致しないのでエラーが出るのではないか
 - お行儀の悪い書き方としては、operator<を逆向き"<"で定義してしまうやり方あり。こうすればpriority_que<MYSTRUCT>と定義するだけでよくなり実装は楽
-- 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる
+- 自分定義の構造体をN個のvectorにする場合は、初期値を設定しないとエラーになる（ただしコンストラクタがあればOK）
 - 構造体定義の直下でvectorのサイズを定義すると理由不明だがエラーが出る。初期値関連はコンストラクタで初期化する必要がある
 - しかしながら、プログラム中で大量の構造体が使われる場合、vectorを使ってしまうと宣言時に領域を異常に確保してしまうからか、容易にTLEする。サイズが決まっている場合はint d[N]などと配列で準備する必要があるっぽい。正確には理解できていない（例えばこの問題[F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)）
 - 上記はもしかすると動的に確保する領域が散らばったり衝突したりして、アクセスが遅くなっているのかもしれない。あるいは構造体など関係なく、そもそも大量のvectorを定義してしまうと遅くなってしまうのかもしれない
@@ -1573,9 +1573,9 @@
 - [D - Kth Excluded](https://atcoder.jp/contests/abc205/tasks/abc205_d)
 - 動画解説が本質をついていて良い [D - Number of Shortest paths](https://atcoder.jp/contests/abc211/tasks/abc211_d)
 - [D - Pair of Balls](https://atcoder.jp/contests/abc216/tasks/abc216_d)
+- [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
 
 ## ACできなかった問題
-- [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
