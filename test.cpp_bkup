@@ -186,85 +186,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long b = 12345;
-const long long MX = 3;
-const long long ps[MX] = {1000000007, 1000000021, 1000000033};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = x%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    auto f = [&](ll w) -> bool {
-        map<mints,vl> mp;
-        mints roh = 0;
-        mints minus = mints(b).pow(w);
+    LONG(N); VL(A, N);
+    auto f = [&](auto f, vl &A, ll k) -> ll {
+        ll N = SIZE(A);
+        if (k==-1) return 0;
+        ll cnt1 = 0;
+        rep (i, N) { cnt1 += (A[i]>>k&1); }
+        if (cnt1==N || cnt1==0) return f(f, A, k-1);
+
+        vl zeros, ones;
         rep(i, N) {
-            roh = roh * b + S[i];
-            if(i>=w) roh -= minus*S[i-w];
-            mp[roh].push_back(i);
+            if(A[i]>>k&1) ones.push_back(A[i]);
+            else zeros.push_back(A[i]);
         }
-        for(auto [k, v]: mp) {
-            if(SIZE(v)>=2 && v.back() - v[0] >= w) {
-                return true;
-            }
-        }
-        return false;
+        return (1LL<<k) + min(f(f, ones, k-1), f(f, zeros, k-1));
     };
-    ll ans = binary_search(0, N+1, f);
-    Out(ans);
+    Out(f(f, A, 29));
     
 }
 

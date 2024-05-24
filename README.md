@@ -26,6 +26,7 @@
 - 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
 ### 例題
 - !要復習 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+- !要復習 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
 
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
@@ -52,7 +53,6 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
-- !要復習 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
 
 ## ランレングス圧縮（Run Length Encoding）
 - 連続する文字が何個あるかという情報に書き換える事をランレングス圧縮という
@@ -78,12 +78,12 @@
 - XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
 - 木の任意の二頂点間のXORは、根からのXORをそれぞれ求めておき、それのXORを取れば求まる（共通部分のXORは消える為）
 - 和のXORでもビット毎に独立して考えたいが、繰り上がりがあるのが煩わしい
-- k-bit目を考えるなら、x%(2^(k+1))で考えれば無駄な上位桁を排除できる
-- この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは2）
+- k-bit目を考えるなら、x%(2^k)で考えれば無駄な上位桁を排除できる（kは0-indexed）
+- この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは1）
+- この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- !要復習 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
-- !復習価値低 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
+- !復習価値中 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - !要復習 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !要復習 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 
@@ -425,6 +425,7 @@
 - 逆向きに累積和と取れば単調減少（単調増加）となる
 - 和だけでなく、累積XORや累積GCDも考えられる（要するにnow=f(now,x)みたいな形で更新できる演算であれば何でも累積できる。区間を求められるかは別問題だが・・・）
 ### 例題
+- !基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - !要復習 性質を理解していれば解ける [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 
