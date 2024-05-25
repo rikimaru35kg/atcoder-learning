@@ -186,90 +186,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-pair<long long,long long> lowbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-pair<long long,long long> uppbou(vector<long long> &a, long long x) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (long long)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-pair<long long,long long> lowbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-pair<long long,long long> uppbou_r(vector<long long> &a, long long x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (long long)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
-    ll ans = 0;
-    rep(i, 29) {
-        ll T = 1<<i;
-        vl a, b;
-        rep(i, N) {
-            a.push_back(A[i]%(2*T));
-            b.push_back(B[i]%(2*T));
+    LONG(N);
+    ll M = 1;
+    while((1<<M)<N) M++;
+    cout << M << endl;
+    vvl juice(M);
+    rep(i, N) {
+        rep(j, M) {
+            if (i>>j&1) juice[j].push_back(i+1);
         }
-        sort(all(b));
-        ll cnt = 0;
-        rep(i, N) {
-            { // T<= <2*T
-                auto [n1, x1] = lowbou(b, T-a[i]);
-                auto [n2, x2] = uppbou_r(b, 2*T-a[i]);
-                cnt += max(n2-n1+1, 0LL);
-            }
-            { // 3*T<= <4*T
-                auto [n1, x1] = lowbou(b, 3*T-a[i]);
-                auto [n2, x2] = uppbou_r(b, 4*T-a[i]);
-                cnt += max(n2-n1+1, 0LL);
-            }
-        }
-        if(cnt%2==1) ans += 1LL<<i;
     }
-    Out(ans);
+    reverse(all(juice));
+    for(auto js: juice) {
+        printf("%lld", SIZE(js));
+        for(auto j: js) printf(" %lld", j);
+        cout << endl;
+    }
+    STRING(res);
+    ll ans = stoll(res, nullptr, 2);
+    Out(ans+1);
     
 }
 
