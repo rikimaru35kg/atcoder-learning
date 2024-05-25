@@ -91,7 +91,7 @@
 - 2進数を用いると、N桁で2^Nの情報量を表せる
 - Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
 ### 例題
-- !要復習 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
+- !復習価値中 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
 - !復習価値中 [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
 
 ## 整数
