@@ -186,19 +186,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll ans = INF;
-    for(ll a=1; a*a<=M+a-1 && a<=N; ++a) {
-        ll b = Divceil(M, a);
-        if(b>N) continue;
-        chmin(ans, a*b);
+    LONG(N); STRING(S);
+    vl divs = listup_divisor(N, true);
+    divs.pop_back();
+    ll M = SIZE(divs);
+    vvb off(M, vb(N));
+    rep(j, M) {
+        ll d = divs[j];
+        rep(i, N) {
+            if (S[i]=='.') off[j][i%d] = true;
+        }
     }
-    ch1(ans);
+    de(divs)de(off)
+    vm f(M), g(M);
+    mint ans;
+    rep(j, M) {
+        mint now = 1;
+        rep(i, divs[j]) {
+            if(off[j][i]) continue;
+            now *= 2;
+        }
+        f[j] = now;
+    }
+    rep(i, M) {
+        g[i] = f[i];
+        rep(j, i) {
+            if (divs[i]%divs[j]==0) g[i] -= g[j];
+        }
+        de(divs[i])de(g[i])
+        ans += g[i];
+    }
     Out(ans);
-
     
 }
 

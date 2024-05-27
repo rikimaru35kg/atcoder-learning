@@ -184,7 +184,7 @@
 - しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
-- !要復習 [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+- !要復習 バイトシフトテーブル数え上げ [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 
 ## 素数判定
 - sqrt(N)まで試して割れなければ素数である
