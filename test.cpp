@@ -189,38 +189,16 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    unordered_map<ll,ll> cnt;
-    unordered_map<ll,ll> mx;
-    vvp num(N);
-    rep(i, N) {
-        LONG(M);
-        rep(j, M) {
-            LONG(p, e);
-            num[i].emplace_back(p, e);
-            chmax(mx[p], e);
-        }
+    LONG(N, M);
+    ll ans = INF;
+    for(ll a=1; a*a<=M+a-1 && a<=N; ++a) {
+        ll b = Divceil(M, a);
+        if(b>N) continue;
+        chmin(ans, a*b);
     }
-    rep(i, N) {
-        for(auto [p, e]: num[i]) {
-            if(e==mx[p]) ++cnt[p];
-        }
-    }
-    de(mx)de(cnt)
-    ll ans = 0;
-    bool init = true;
-    rep(i, N) {
-        bool yes = false;
-        for(auto [p, e]: num[i]) {
-            if(e==mx[p] && cnt[p]==1)  yes = true;
-        }
-        if(yes) ++ans;
-        else if(init) {
-            ++ans;
-            init = false;
-        }
-    }
+    ch1(ans);
     Out(ans);
+
     
 }
 

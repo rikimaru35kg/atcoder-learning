@@ -170,14 +170,14 @@
 - ただし、10^18の約数（あるいは約数の個数）を全列挙するとTLEするので要注意！
 - オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
 ### 例題
-- !復習価値中 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
-- !復習価値高 約数の個数が少ないが故に解ける問題 [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
+- 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
+- !復習価値中 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 
 ## 積分解（約数類似系）
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
-- !要復習 [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+- !復習価値低 [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
 
 ## 周期系数え上げ
 - 異なる周期であっても最終的に同じ列になるものを同一視しなければならない場合、最小周期で場合分けすれば重複を排除できる

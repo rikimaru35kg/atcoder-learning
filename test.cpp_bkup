@@ -186,42 +186,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-using S = ll;
-S op(S a, S b) {return gcd(a, b);}
-S e() {return 0;}
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N);
-    VL(B, N);
-    segtree<S,op,e> row(N+5), col(N+5);
-    rep(i, N-1) {
-        row.set(i, A[i+1]-A[i]);
-        col.set(i, B[i+1]-B[i]);
+    LONG(N);
+    vl divs = listup_divisor(N);
+    ll ans = 0;
+    for(auto k: divs) {
+        if(k==1) continue;
+        ll n = N;
+        while(n%k==0) n/=k;
+        if ((n-1)%k==0) ++ans;
     }
-    rep(i, Q) {
-        LONGM(h1, h2, w1, w2);
-        ll ans = A[h1] + B[w1];
-        ans = gcd(ans, row.prod(h1, h2));
-        ans = gcd(ans, col.prod(w1, w2));
-        Out(ans);
-    }
+    vl divs2 = listup_divisor(N-1);
+    ans += SIZE(divs2) - 1;
+    Out(ans);
 
     
 }
