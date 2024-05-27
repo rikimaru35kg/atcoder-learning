@@ -152,9 +152,9 @@
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
 ### 例題
-- !復習価値高 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
-- !要復習 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
-- !要復習 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
+- !復習価値中 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
+- !復習価値中 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
+- !復習価値高 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
 
 ## 約数全列挙
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -424,8 +424,8 @@
 - 逆向きに累積和と取れば単調減少（単調増加）となる
 - 和だけでなく、累積XORや累積GCDも考えられる（要するにnow=f(now,x)みたいな形で更新できる演算であれば何でも累積できる。区間を求められるかは別問題だが・・・）
 ### 例題
-- !基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
-- [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
+- 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
+- 基本 [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - !要復習 性質を理解していれば解ける [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 
 ## 2次元累積和

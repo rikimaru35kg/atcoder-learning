@@ -189,43 +189,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    if(K==1) {
-        puts("Infinity"); return 0;
-    }
-    vp pos;
+    LONG(N);
+    unordered_map<ll,ll> cnt;
+    unordered_map<ll,ll> mx;
+    vvp num(N);
     rep(i, N) {
-        LONG(x, y);
-        pos.emplace_back(x, y);
-    }
-    map<t3,ll> mp;
-    rep(i, N) rep(j, i) {
-        auto [x1, y1] = pos[i];
-        auto [x2, y2] = pos[j];
-        ll dx = x2 - x1;
-        ll dy = y2 - y1;
-        ll a=0, b=0, c=0;
-        if(dx==0) b=0, a=1;
-        else if(dy==0) a=0, b=1;
-        else {
-            ll g = gcd(dx, dy);
-            dx /= g, dy /= g;
-            a = -dy, b = dx;
-            if(a<0) a = -a, b = -b;
-        }
-        c = -(a*x1 + b*y1);
-        mp[{a,b,c}] = 0;
-    }
-    rep(i, N) {
-        auto [x, y] = pos[i];
-        for(auto [k,v]: mp) {
-            auto [a, b, c] = k;
-            if(a*x + b*y + c == 0) mp[k]++;
+        LONG(M);
+        rep(j, M) {
+            LONG(p, e);
+            num[i].emplace_back(p, e);
+            chmax(mx[p], e);
         }
     }
+    rep(i, N) {
+        for(auto [p, e]: num[i]) {
+            if(e==mx[p]) ++cnt[p];
+        }
+    }
+    de(mx)de(cnt)
     ll ans = 0;
-    for(auto [k,v]: mp) {
-        if(v>=K) ++ans;
+    bool init = true;
+    rep(i, N) {
+        bool yes = false;
+        for(auto [p, e]: num[i]) {
+            if(e==mx[p] && cnt[p]==1)  yes = true;
+        }
+        if(yes) ++ans;
+        else if(init) {
+            ++ans;
+            init = false;
+        }
     }
     Out(ans);
     
