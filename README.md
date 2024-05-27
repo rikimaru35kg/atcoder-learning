@@ -1049,11 +1049,11 @@
 - 全域木の中で辺の和が最小のものをいう
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
 - 連結頂点の判定はUnion-Find木を用いる
-- Edgeという構造体を定義し、辺の長さで小さい順に並べる。この時、bool operaterで演算を定義しておく
 ### 例題
 - 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
 - !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
+- !要復習 後から辺追加（MSTの構造を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 
 ## 仮想頂点（超頂点）を設ける
 - 仮想頂点を設ける事で、見通しが良くなる場合あり
@@ -1577,6 +1577,8 @@
 - 動画解説が本質をついていて良い [D - Number of Shortest paths](https://atcoder.jp/contests/abc211/tasks/abc211_d)
 - [D - Pair of Balls](https://atcoder.jp/contests/abc216/tasks/abc216_d)
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
+- [E - Clique Connect](https://atcoder.jp/contests/abc352/tasks/abc352_e)
+- [D - Intersecting Intervals](https://atcoder.jp/contests/abc355/tasks/abc355_d)
 
 ## ACできなかった問題
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
