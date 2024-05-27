@@ -198,9 +198,9 @@
 - エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
 - X<=10^16の素因数の個数は高々13個（2*3*5*...*41）
 ### 例題
-- !復習価値中（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
-- !復習価値低 素因数分解というよりnが大きいときのnCrの求め方が肝 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
-- !復習価値高 考察は易 実装工夫すると楽 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
+- 基本（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
+- 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
+- !復習価値中 考察は易 実装工夫すると楽 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 - LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 
 ## 素数全列挙
@@ -1476,6 +1476,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- for(auto x: u) for(auto y: v) {swap(x, y);}とすると何故か壊れる。イテレータがswapされて変なつなぎ変えが発生してしまうのだろうか？？
 - dpとpdpを用意する際、サイズの指定で間違う事が多いので、edp=dp（空）としておいて、以降ｈpdp=edpとする（サイズの指定が1箇所で済む）
 - unordered_set.clear()は遅いので、st = unordered_set<ll>()とすべき（stdlibc++のバグで過去の最大要素数だけ計算量がかかってしまう）
 - bitset = 1<<xなどとするとオーバーフローするので代入できない。bitset<10000>(1)<<xなどとすると良い
