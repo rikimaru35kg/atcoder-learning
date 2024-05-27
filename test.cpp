@@ -186,20 +186,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll N = 5;
-    vl p(N);
-    iota(all(p), 0);
-    ll cnt = 0;
-    for(auto x: p) for(auto y: p) {
-        swap(x, y);
-        de2(x, y);
-        ++cnt;
+    LONG(N); VL(A, N);
+    Sieve sieve(1e6);
+    vl pows(1e6+1);
+    vvp vps(N);
+    rep(i, N) {
+        auto ps = sieve.factorize(A[i]);
+        vps[i] = ps;
+        for(auto [p, n]: ps) chmax(pows[p], n);
     }
+    mint lc = 1;
+    rep(i, 1e6+1) {
+        if (pows[i]==0) continue;
+        lc *= mint(i).pow(pows[i]);
+    }
+    de(lc)
+    mint ans = 0;
+    rep(i, N) {
+        auto ps = vps[i];
+        mint now = lc;
+        for(auto [p, n]: ps) {
+            now /= mint(p).pow(n);
+        }
+        ans += now;
+    }
+    Out(ans);
     
-    de(cnt)
 }
 
 // ### test.cpp ###

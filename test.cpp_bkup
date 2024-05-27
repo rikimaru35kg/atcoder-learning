@@ -186,87 +186,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    Sieve sieve(N);
-    vl ps;
-    rep1(i, N) { if(sieve.is_prime(i)) ps.push_back(i); }
-    auto cnt=[&](ll p) {
-        ll ret = 0;
-        ll _N = N;
-        while(_N) {
-            ret += _N/p;
-            _N /= p;
-        }
-        return ret;
-    };
-
-    ll ans = 0;
-    { // (3,5,5)
-        set<t3> st;
-        for(auto a: ps) for(auto b: ps) for(auto c: ps) {
-            if(a==b || b==c || c==a) continue;
-            ll _b = b, _c = c;  // そのままswap(b,c)とすると何故か壊れる・・・
-            if(_b>_c) swap(_b, _c);
-            if(st.count({a,_b,_c})) continue;
-            if(cnt(a)>=2 && cnt(_b)>=4 && cnt(_c)>=4) {
-                ++ans;
-                st.insert({a,_b,_c});
-            }
-        }
+    ll N = 5;
+    vl p(N);
+    iota(all(p), 0);
+    ll cnt = 0;
+    for(auto x: p) for(auto y: p) {
+        swap(x, y);
+        de2(x, y);
+        ++cnt;
     }
-    { // (15,5)
-        for(auto a: ps) for(auto b: ps) {
-            if(a==b) continue;
-            if(cnt(a)>=14 && cnt(b)>=4) ++ans;
-        }
-    }
-    { // (25,3)
-        for(auto a: ps) for(auto b: ps) {
-            if(a==b) continue;
-            if(cnt(a)>=24 && cnt(b)>=2) ++ans;
-        }
-    }
-    { // (75)
-        for(auto a: ps) {
-            if(cnt(a)>=74) ++ans;
-        }
-    }
-    Out(ans);
     
+    de(cnt)
 }
 
 // ### test.cpp ###
