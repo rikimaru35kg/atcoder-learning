@@ -189,14 +189,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    unordered_map<ll,ll> mem;
-    auto f = [&](auto f, ll x) -> ll {
-        if(x==1) return 0;
-        if(mem.count(x)) return mem[x];
-        return mem[x] = x + f(f, x/2) + f(f, (x+1)/2);
-    };
-    Out(f(f, N));
+    LONG(X, A, D, N);
+    if(D==0) {
+        Out(abs(A-X)); return 0;
+    }
+    X -= A;
+    if(D<0) D = -D, X = -X;
+    if (X <= 0) { Out(abs(X)); return 0; }
+    if (X >= (N-1)*D) { Out(X - (N-1)*D); return 0; }
+    ll ans = INF;
+    chmin(ans, X%D);
+    chmin(ans, D-X%D);
+    Out(ans);
     
 }
 

@@ -102,7 +102,7 @@
 - 負の数を割ったときの余りを0以上b未満にしたい場合、余りが負の場合は+bすれば良い
 - べき乗はpow(x, n)というSTLがあるが、戻り値がdouble型なので要注意！素直に自作pow関数を使うべき（2のn乗なら1LL<<nで十分）
 ### 例題
-- !要復習 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
+- 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
 
 ## 余り
 - c++は余りがマイナスとなる事があるので注意（余りがマイナスなら割る数を足してやると良い）
