@@ -110,24 +110,23 @@
 - A/B = q*M + rであり、A = q*B*M + r*Bなので、M>rである事に注意するとAをB*Mで割った余りはr*Bとなり、Bで割ればrが求まる
 
 ## 1000000007（988244353）関連問題
-- 掛け算や足し算してMODを上回る可能性がある場合はその都度MODで剰余を取る（最後出力するときにも油断してMOD取るのを忘れないように！！）
-- ただし、累積和にMODを取ると途中で減ってしまうので注意！区間和を求める際、MODを取るとマイナスになる事があったり、単純に絶対値を付けられなかったりする
 - MODの割り算は逆元を求めれば良く、modpow(x, MOD-2, MOD)で求まる。MODが素数で使えるフェルマーの小定理を利用したもの
+- フェルマーの小定理: a^(p-1)≡1 (mod p)　、**aとpは互いに素!!!** aがpの倍数なら当然0
 - ちなみにMODが素数でない場合の逆元は拡張ユークリッドの互除法により求まる（ただし互いに素でないと逆元は存在しない）
 - なお、ACLを用いれば素数かどうか気にする事無く逆元が求まる（普通に割る記号でもいけるし、inv()を使っても良い）
 - xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
-- 繰り返し二乗法により高速に累乗が求まる
 ### 例題
-- [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
-- !要復習 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
+- !要復習 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
+- !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
 
 ## ユークリッドの互除法（拡張含む）
 - gcd(a, b) = gcd(b, r) = ... = gcd(b', 0) = b'という古典的アルゴリズム
 - 再帰関数で簡潔に書ける
 - 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
 - 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
+- xの一般解は、特殊解との差から求められる x=x0+i(M/g)
 ### 例題
-- !要復習 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- !復習価値中 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
 
 ## 最小桁和
 - 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる
@@ -143,7 +142,7 @@
 - なお、y=ax+bを標準系として保存したい場合、a=p/qとすると、qy=px+bqとなるので、y切片bではなく分母をかけたbq(=qy-px)を保存すると良い
 - ちなみに傾き∞の場合は(p,q,bq)=(1,0,-x)となり、同一標準形で扱える
 ### 例題
-- !要復習 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
+- !復習価値低 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
 
 ## 最大公約数と最小公倍数
 - 最大公約数は、各素因数の最小指数を選んだもの、最小公倍数は最大指数を選んだものとなる

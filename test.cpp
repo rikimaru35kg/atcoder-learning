@@ -189,17 +189,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, A, D, N);
-    if(D==0) {
-        Out(abs(A-X)); return 0;
+    LONG(N, K);
+    if(K==1) {
+        puts("Infinity"); return 0;
     }
-    X -= A;
-    if(D<0) D = -D, X = -X;
-    if (X <= 0) { Out(abs(X)); return 0; }
-    if (X >= (N-1)*D) { Out(X - (N-1)*D); return 0; }
-    ll ans = INF;
-    chmin(ans, X%D);
-    chmin(ans, D-X%D);
+    vp pos;
+    rep(i, N) {
+        LONG(x, y);
+        pos.emplace_back(x, y);
+    }
+    map<t3,ll> mp;
+    rep(i, N) rep(j, i) {
+        auto [x1, y1] = pos[i];
+        auto [x2, y2] = pos[j];
+        ll dx = x2 - x1;
+        ll dy = y2 - y1;
+        ll a=0, b=0, c=0;
+        if(dx==0) b=0, a=1;
+        else if(dy==0) a=0, b=1;
+        else {
+            ll g = gcd(dx, dy);
+            dx /= g, dy /= g;
+            a = -dy, b = dx;
+            if(a<0) a = -a, b = -b;
+        }
+        c = -(a*x1 + b*y1);
+        mp[{a,b,c}] = 0;
+    }
+    rep(i, N) {
+        auto [x, y] = pos[i];
+        for(auto [k,v]: mp) {
+            auto [a, b, c] = k;
+            if(a*x + b*y + c == 0) mp[k]++;
+        }
+    }
+    ll ans = 0;
+    for(auto [k,v]: mp) {
+        if(v>=K) ++ans;
+    }
     Out(ans);
     
 }

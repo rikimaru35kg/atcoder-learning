@@ -189,14 +189,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    unordered_map<ll,ll> mem;
-    auto f = [&](auto f, ll x) -> ll {
-        if(x==1) return 0;
-        if(mem.count(x)) return mem[x];
-        return mem[x] = x + f(f, x/2) + f(f, (x+1)/2);
+    LONG(K);
+    deque<ll> deq;
+    vl dist(K, INF);
+    auto push = [&](ll v, ll d, bool fr) {
+        if(dist[v] <= d) return;
+        dist[v] = d;
+        if(fr) deq.push_front(v);
+        else deq.push_back(v);
     };
-    Out(f(f, N));
+    push(1, 1, true);
+    while(deq.size()) {
+        auto v = deq.front(); deq.pop_front();
+        ll d = dist[v];
+        push((v+1)%K, d+1, false);
+        push((v*10)%K, d, true);
+    }
+    Out(dist[0]);
     
 }
 
