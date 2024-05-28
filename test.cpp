@@ -186,32 +186,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+struct CAKE {
+    ll i, j, k, x;
+    CAKE(ll i, ll j, ll k, ll x): i(i),j(j),k(k),x(x) {}
+    bool operator<(const CAKE &o) const {
+        return x < o.x;
     }
-    return ok;
-}
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    VL(F, N);
-    sort(all(A));
-    sort(allr(F));
-    auto f = [&](ll x) -> bool {
-        ll cnt = 0;
-        rep(i, N) {
-            cnt += max(A[i] - x/F[i], 0LL);
-        }
-        return cnt <= K;
-    };
-    ll ans = binary_search(INF, -1, f);
-    Out(ans);
+    LONG(X, Y, Z, K);
+    VL(A, X); VL(B, Y); VL(C, Z);
+    sort(allr(A));
+    sort(allr(B));
+    sort(allr(C));
     
 }
 
