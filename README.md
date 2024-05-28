@@ -236,7 +236,7 @@
 - sはLCM(C,D)であり、s==0の場合は解なし
 ### 例題
 - !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
-- !要復習 インタラクティブ [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
+- !要復習 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
