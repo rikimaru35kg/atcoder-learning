@@ -189,21 +189,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L, R);
+    LONG(N, M);
+    vp edges;
+    rep(i, M) {
+        LONG(a, c);
+        edges.emplace_back(c, a);
+    }
+    sort(allr(edges));
     ll ans = 0;
-    vl gcnt(R+1);
-    for(ll g=R; g>=2; g--) {
-        gcnt[g] = (R/g - (L-1)/g);
-        gcnt[g] *= gcnt[g];
-        for(ll x=2*g; x<=R; x+=g) {
-            gcnt[g] -= gcnt[x];
-        }
-        ans += gcnt[g];
+    while(edges.size() && N > 1) {
+        auto [c, a] = edges.back(); edges.pop_back();
+        ll g = gcd(N, a);
+        ll x = N/g;
+        ans += c * (x-1) * g;
+        N = g;
     }
-    for(ll g=max(L,2LL); g<=R; ++g) {
-        ll now = R/g * 2 - 1;
-        ans -= now;
-    }
+    if(N!=1) Pm1
     Out(ans);
     
 }

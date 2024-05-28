@@ -219,16 +219,15 @@
 - その為、f(k)=g(k)-Σf(i*g) (i>=2)とすると重複なく数えられる
 - この時、f(k)はkの降順で求めていけば順次求まる
 - 計算量は調和級数になるのでO(NlogN)
-- メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能
-### 例題
+- メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能 ### 例題
 - !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 
 ## 剰余埋めつくし系
 - DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
 - gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
 ### 例題
-- !復習価値中 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
-- !要復習 最大公約数埋めつくしを考えさせられる良問 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
+- !復習価値中 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
+- !復習価値高 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
 - t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
