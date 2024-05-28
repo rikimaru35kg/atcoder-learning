@@ -216,48 +216,24 @@ public:
         return ret;
     }
 };
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    Sieve sieve(1e6);
-    vl pows(1e6+1);
-    vvp vps(N);
-    rep(i, N) {
-        auto ps = sieve.factorize(A[i]);
-        vps[i] = ps;
-        for(auto [p, n]: ps) chmax(pows[p], n);
+    ll M = 1e6;
+    Sieve sv(M);
+    vl S(M+1);
+    rep(i, M) {
+        if(i%2==0) continue;
+        if(sv.is_prime(i) && sv.is_prime((i+1)/2)) S[i+1] = 1;
     }
-    mint lc = 1;
-    rep(i, 1e6+1) {
-        if (pows[i]==0) continue;
-        lc *= mint(i).pow(pows[i]);
+    rep(i, M) S[i+1] += S[i];
+    LONG(Q);
+    rep(_, Q) {
+        LONG(l, r); ++r;
+        ll ans = S[r] - S[l];
+        Out(ans);
     }
-    de(lc)
-    mint ans = 0;
-    rep(i, N) {
-        auto ps = vps[i];
-        mint now = lc;
-        for(auto [p, n]: ps) {
-            now /= mint(p).pow(n);
-        }
-        ans += now;
-    }
-    Out(ans);
     
 }
 

@@ -208,8 +208,8 @@
 - 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
 - 消す倍数はp^2以上の数でOK（i=p*pからスタートしてi+=pしてループを回す）
 ### 例題
-- !要復習（茶diffなのに解けなかった） [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
-- 篩を使わなくてもぎりぎりTLEはしないが… [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
+- 基本 xと(x+1)/2が素数となる数の個数 [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
+- !復習価値中 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 
 ## 互いに素でない数字組合せの個数数え上げ
 - L<=(x,y)<=Rの二つの数字であり、xもyもkの倍数である組合せの数をg(k)とするとg(k)は簡単に求まるが、最大公約数がkという訳ではない
