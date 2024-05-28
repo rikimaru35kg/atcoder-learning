@@ -186,56 +186,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vl ps = {4,5,7,9,11,13,17,19,23};
-    // vl ps = {4,5};//,7,9,11,13,17,19,23};
-    ll M = accumulate(all(ps), 0LL);
-    vl A(M);
-    ll idx = 0;
-    ll cnt = 0;
-    ll sum = 0;
-    rep(i, M) {
-        ll p = ps[idx];
-        A[i] = sum + (cnt+1)%p + 1;
-        ++cnt;
-        if(cnt==p) {
-            ++idx;
-            cnt = 0;
-            sum += p;
+    LONG(N, M); VL(S, N-1);
+    VL(X, M);
+    ll a = 1, b = 0;
+    map<ll,ll> mp;
+    rep(i, N) {
+        rep(j, M) {
+            ll x = (X[j] - b) * a;
+            mp[x]++;
         }
+        if(i==N-1) break;
+        a = -a;
+        b = S[i] - b;
     }
-    Out(M);
-    rep(i, M) {
-        printf("%lld   ", A[i]);
-        // if(i!=M-1) printf("    ");
+    ll ans = 0;
+    for(auto [k,v]: mp) {
+        chmax(ans, v);
     }
-    cout << endl;
-    VLM(B, M);
-    idx = 0;
-    vl rs;
-    for(auto p: ps) {
-        ll r = B[idx] - idx;
-        rs.push_back(r);
-        idx += p;
-    }
-    auto ans = crt(rs, ps);
-    Out(ans.first);
+    Out(ans);
     
 }
 

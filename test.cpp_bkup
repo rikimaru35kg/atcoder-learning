@@ -185,40 +185,40 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-void solve() {
-    LONG(X, Y, P, Q);
-    ll ans = INF;
-    repk(r1, X, X+Y) repk(r2, P, P+Q) {
-        auto a = crt({r1, r2}, {2*(X+Y), P+Q});
-        if (a.second==0) continue;
-        chmin(ans, a.first);
-    }
-    if(ans==INF) {
-        puts("infinity");
-        return;
-    }
-    Out(ans);
-
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    DOUBLE(_X, _Y, _R);
+    ll M = 10000;
+    ll X = round(_X*M);
+    ll Y = round(_Y*M);
+    ll R = round(_R*M);
+    auto jin = [&](ll x, ll y) {
+        ll dx = x - X, dy = y - Y;
+        return dx*dx + dy*dy <= R*R;
+    };
+    ll ans = 0;
+    {
+        ll sy = Div(Y+R+5*M, M) * M;
+        ll lx = Div(X, M) * M, rx = Divceil(X, M) * M;
+        for(ll y=sy; y>=Y; y-=M) {
+            while(jin(lx, y)) lx -= M;
+            while(jin(rx, y)) rx += M;
+            ans += max((rx - lx)/M - 1, 0LL);
+        }
+    }
+    de(ans)
+    {
+        ll sy = Div(Y-R-5*M, M) * M;
+        ll lx = Div(X, M) * M, rx = Divceil(X, M) * M;
+        for(ll y=sy; y<Y; y+=M) {
+            while(jin(lx, y)) lx -= M;
+            while(jin(rx, y)) rx += M;
+            ans += max((rx - lx)/M - 1, 0LL);
+        }
+    }
+    Out(ans);
     
 }
 

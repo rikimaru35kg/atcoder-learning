@@ -245,7 +245,7 @@
 - 指数をMOD 2するには、素因数分解までは不要で、平方数で割れるだけ割ればよい
 ### 例題
 - 基本 平方数数え上げ [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
-- !復習価値中 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
+- !復習価値低 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
 
 ## 小数
 - 小数点を出力する際はcout << fixed << setprecision(10) << x << endl;などとしないと小数点以下の桁が6桁ぐらいまでしか出力されない（printf("%.10f\n", x)の方が簡単）
@@ -253,13 +253,13 @@
 - 小数を整数に入力したい場合、scnaf("%d.%d", &x, &y)で整数、小数を分離して入力可能
 - double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となっていて桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり）
 ### 例題
-- !要復習 円内格子点の数 [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)
+- !復習価値中 円内格子点の数 [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)
 
 ## 方程式
 - 係数を保存しておくことで文字式を表すことができる。例えばax+bを保存したい場合、aとbを保存しておく
 - 文字式を保存できれば、方程式を解くこともできる。ax+bが保存されていれば、ax+b=cが解ける（x=(c-b)/a）
 ### 例題
-- !復習価値中 基本 [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
+- !要復習 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
 ## MEX（Minimum Excluded value）
 - K個の数のMEXは必ずK以下
