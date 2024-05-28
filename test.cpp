@@ -186,54 +186,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll M = 1e6;
-    Sieve sv(M);
-    vl S(M+1);
-    rep(i, M) {
-        if(i%2==0) continue;
-        if(sv.is_prime(i) && sv.is_prime((i+1)/2)) S[i+1] = 1;
+    LONG(L, R);
+    ll ans = 0;
+    vl gcnt(R+1);
+    for(ll g=R; g>=2; g--) {
+        gcnt[g] = (R/g - (L-1)/g);
+        gcnt[g] *= gcnt[g];
+        for(ll x=2*g; x<=R; x+=g) {
+            gcnt[g] -= gcnt[x];
+        }
+        ans += gcnt[g];
     }
-    rep(i, M) S[i+1] += S[i];
-    LONG(Q);
-    rep(_, Q) {
-        LONG(l, r); ++r;
-        ll ans = S[r] - S[l];
-        Out(ans);
+    for(ll g=max(L,2LL); g<=R; ++g) {
+        ll now = R/g * 2 - 1;
+        ans -= now;
     }
+    Out(ans);
     
 }
 

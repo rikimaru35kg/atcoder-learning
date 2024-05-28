@@ -211,7 +211,7 @@
 - 基本 xと(x+1)/2が素数となる数の個数 [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
 - !復習価値中 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 
-## 互いに素でない数字組合せの個数数え上げ
+## 最大公約数がgとなる数字組合せ数え上げ
 - L<=(x,y)<=Rの二つの数字であり、xもyもkの倍数である組合せの数をg(k)とするとg(k)は簡単に求まるが、最大公約数がkという訳ではない
 - xとyの最大公約数がkである組合せの数をf(k)とすると、f(k)はg(k)をベースに考えると良い
 - g(k)はxとyが2k, 3k, 4k, ...の倍数である組合せもカウントしている
@@ -221,7 +221,7 @@
 - 計算量は調和級数になるのでO(NlogN)
 - メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能
 ### 例題
-- !要復習 [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
+- !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 
 ## 剰余埋めつくし系
 - DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
