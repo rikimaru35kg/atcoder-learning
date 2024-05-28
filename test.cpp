@@ -186,38 +186,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N-1);
-    vm dp(N);
-    vm ds(N+1);
-    for(ll i=N-2; i>=0; --i) {
-        mint now = 0;
-        ll a = A[i];
-        // repk(j, i+1, i+a+1) { now += dp[j]; }
-        now += ds[i+1] - ds[i+a+1];
-        now /= a;
-        now += mint(a+1) / a;
-        dp[i] = now;
-        ds[i] = ds[i+1] + now;
-    }
-    Out(dp[0]);
+    LONG(N, K);
+    VL(A, N);
+    VL(F, N);
+    sort(all(A));
+    sort(allr(F));
+    auto f = [&](ll x) -> bool {
+        ll cnt = 0;
+        rep(i, N) {
+            cnt += max(A[i] - x/F[i], 0LL);
+        }
+        return cnt <= K;
+    };
+    ll ans = binary_search(INF, -1, f);
+    Out(ans);
     
 }
 
