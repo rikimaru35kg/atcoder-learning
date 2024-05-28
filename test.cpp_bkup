@@ -189,36 +189,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(_X, _Y, _R);
-    ll M = 10000;
-    ll X = round(_X*M);
-    ll Y = round(_Y*M);
-    ll R = round(_R*M);
-    auto jin = [&](ll x, ll y) {
-        ll dx = x - X, dy = y - Y;
-        return dx*dx + dy*dy <= R*R;
-    };
-    ll ans = 0;
-    {
-        ll sy = Div(Y+R+5*M, M) * M;
-        ll lx = Div(X, M) * M, rx = Divceil(X, M) * M;
-        for(ll y=sy; y>=Y; y-=M) {
-            while(jin(lx, y)) lx -= M;
-            while(jin(rx, y)) rx += M;
-            ans += max((rx - lx)/M - 1, 0LL);
+    LONG(N, M);
+    vl C(N), P(N);
+    vvl S(N);
+    rep(i, N) {
+        cin >> C[i] >> P[i];
+        rep(j, P[i]) {
+            LONG(s);
+            S[i].push_back(s);
         }
     }
-    de(ans)
-    {
-        ll sy = Div(Y-R-5*M, M) * M;
-        ll lx = Div(X, M) * M, rx = Divceil(X, M) * M;
-        for(ll y=sy; y<Y; y+=M) {
-            while(jin(lx, y)) lx -= M;
-            while(jin(rx, y)) rx += M;
-            ans += max((rx - lx)/M - 1, 0LL);
+    de(C)de(P)de(S)
+    vd dp(M+1, INF);
+    dp[0] = 0;
+    rep1(x, M) {
+        double cost = INF;
+        rep(i, N) {
+            double c = 0;
+            ll zero = 0;
+            rep(j, P[i]) {
+                if (S[i][j]==0) ++zero;
+                else {
+                    ll nx = max(x-S[i][j], 0LL);
+                    c += dp[nx]/P[i];
+                }
+            }
+            c += C[i];
+            c *= (double)P[i]/(P[i]-zero);
+            chmin(cost, c);
         }
+        dp[x] = cost;
     }
-    Out(ans);
+    Out(dp[M]);
     
 }
 

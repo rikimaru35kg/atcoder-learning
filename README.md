@@ -276,10 +276,9 @@
 - あくまで感覚だが、ポイント的なもの（出目の総和など）を状態にもつカエル型DPが多い気がする
 - 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
 ### 例題
-- !復習価値中 [https://atcoder.jp/contests/abc326/tasks/abc326_e](https://atcoder.jp/contests/abc326/tasks/abc326_e)
-- !要復習 期待値としてもDPとしても良問 [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
-- !要復習 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
-- !復習価値高 [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
+- !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
+- !復習価値中 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
+- !復習価値高 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 
 # ソート
 
