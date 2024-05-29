@@ -186,20 +186,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         long long m = (ok + ng) / 2;
@@ -208,42 +194,105 @@ long long binary_search (long long ok, long long ng, auto f) {
     }
     return ok;
 }
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    auto f = [&](ll x) -> bool {
-        vl a(N), S(N+1);
-        rep(i, N) {
-            if(A[i]>=x) a[i]=1;
-            else a[i] = -1;
-        }
-        rep(i, N) S[i+1] = S[i] + a[i];
-        fenwick_tree<ll> tree(2*N+1000);
-        ll M = N+50;
-        auto dprint=[&](){
-        #ifdef __DEBUG
-            repk(i, M-3, M+4) {
-                cerr<< tree.sum(i,i+1)  <<' ';
-            }
-            cerr<<endl;
-        #endif
-        };
-        tree.add(0+M, 1);
+    LONG(N, M, K);
+    vd A(N), B(N);
+    vd C(M), D(M);
+    rep(i, N) {
+        cin >> A[i];
+        LONG(b);
+        B[i] = A[i] + b;
+    }
+    rep(i, M) {
+        cin >> C[i];
+        LONG(d);
+        D[i] = C[i] + d;
+    }
+    auto f = [&](double x) -> bool {
         ll cnt = 0;
+        vd a(N), b(M);
+        rep(i, N) { a[i] = A[i] - B[i]*x; }
+        rep(i, M) { b[i] = C[i] - D[i]*x; }
+        sort(all(a)); sort(all(b));
         rep(i, N) {
-            cnt += tree.sum(0, S[i+1]+M+1);
-            tree.add(S[i+1]+M, 1);
-            // dprint();
+            auto [n, y] = lowbou(b, -a[i]);
+            cnt += M-n;
         }
-        ll tot = N*(N+1)/2;
-        ll thre = (tot+1)/2;
-        return cnt >= thre;
+        return cnt >= K;
     };
-    de(f(30))
-    ll ans = binary_search(0, (ll)1e9+50, f);
-    Out(ans);
+    double ans = binary_search(0, (double)1.1, f);
+    Out(ans*100);
     
 }
 
