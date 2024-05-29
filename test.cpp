@@ -204,95 +204,27 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vd A(N), B(N);
-    vd C(M), D(M);
-    rep(i, N) {
-        cin >> A[i];
-        LONG(b);
-        B[i] = A[i] + b;
-    }
+    LONG(N, M);
+    vvt3 from(N);
     rep(i, M) {
-        cin >> C[i];
-        LONG(d);
-        D[i] = C[i] + d;
+        LONGM(a, b); LONG(bb, c);
+        from[a].emplace_back(b, bb, c);
     }
     auto f = [&](double x) -> bool {
-        ll cnt = 0;
-        vd a(N), b(M);
-        rep(i, N) { a[i] = A[i] - B[i]*x; }
-        rep(i, M) { b[i] = C[i] - D[i]*x; }
-        sort(all(a)); sort(all(b));
+        vd dp(N, -INF);
+        dp[0] = 0;
         rep(i, N) {
-            auto [n, y] = lowbou(b, -a[i]);
-            cnt += M-n;
+            for(auto [nv, b, c]: from[i]) {
+                chmax(dp[nv], dp[i] + b - x*c);
+            }
         }
-        return cnt >= K;
+        return dp[N-1] >= 0;
     };
-    double ans = binary_search(0, (double)1.1, f);
-    Out(ans*100);
+    double ans = binary_search(0, 1e5, f);
+    Out(ans);
     
 }
 
