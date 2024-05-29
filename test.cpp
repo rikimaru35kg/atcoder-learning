@@ -186,22 +186,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct CAKE {
-    ll i, j, k, x;
-    CAKE(ll i, ll j, ll k, ll x): i(i),j(j),k(k),x(x) {}
-    bool operator<(const CAKE &o) const {
-        return x < o.x;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-};
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y, Z, K);
-    VL(A, X); VL(B, Y); VL(C, Z);
-    sort(allr(A));
-    sort(allr(B));
-    sort(allr(C));
+    LONG(N); VL(A, N);
+    auto f = [&](ll x) -> bool {
+        vl a(N), S(N+1);
+        rep(i, N) {
+            if(A[i]>=x) a[i]=1;
+            else a[i] = -1;
+        }
+        rep(i, N) S[i+1] = S[i] + a[i];
+        fenwick_tree<ll> tree(2*N+1000);
+        ll M = N+50;
+        auto dprint=[&](){
+        #ifdef __DEBUG
+            repk(i, M-3, M+4) {
+                cerr<< tree.sum(i,i+1)  <<' ';
+            }
+            cerr<<endl;
+        #endif
+        };
+        tree.add(0+M, 1);
+        ll cnt = 0;
+        rep(i, N) {
+            cnt += tree.sum(0, S[i+1]+M+1);
+            tree.add(S[i+1]+M, 1);
+            // dprint();
+        }
+        ll tot = N*(N+1)/2;
+        ll thre = (tot+1)/2;
+        return cnt >= thre;
+    };
+    de(f(30))
+    ll ans = binary_search(0, (ll)1e9+50, f);
+    Out(ans);
     
 }
 

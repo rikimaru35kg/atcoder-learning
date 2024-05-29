@@ -186,6 +186,7 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         long long m = (ok + ng) / 2;
@@ -194,23 +195,19 @@ long long binary_search (long long ok, long long ng, auto f) {
     }
     return ok;
 }
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
     VL(A, N);
-    VL(F, N);
-    sort(all(A));
-    sort(allr(F));
     auto f = [&](ll x) -> bool {
         ll cnt = 0;
         rep(i, N) {
-            cnt += max(A[i] - x/F[i], 0LL);
+            cnt += min(x, A[i]);
         }
-        return cnt <= K;
+        return cnt/K >= x;
     };
-    ll ans = binary_search(INF, -1, f);
+    ll ans = binary_search(0, INF, f);
     Out(ans);
     
 }

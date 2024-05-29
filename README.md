@@ -353,15 +353,15 @@
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 - 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
-- !復習価値中 二分探索の基本 [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
-- !復習価値高 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
-- !要復習 グラフの辺削除 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
-- !要復習 小数の扱いが難しい [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
+- !復習価値中 丸太切り [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - !復習価値中 混乱しがちな実装だが良問 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
-- !復習価値高 頭が混乱するが良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
-- !復習価値中 ひねりあり [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
+- !復習価値中 中央値の最小値 良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
+- !復習価値高 二分探索の基本 [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
+- !復習価値高 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
+- !復習価値高 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
+- !復習価値高 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
 - !要復習 有名問題（暗記必須） [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
-- !要復習 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
+- !要復習 道路コストP以下が丁度K本の数 [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 
 ## 二分探索による平均最大化
 - 分母と分子に変数がある場合の最大値を求めたい場合、答えを決め打つと二分探索に持ち込める場合あり
