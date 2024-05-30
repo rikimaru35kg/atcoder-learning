@@ -190,45 +190,34 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VLM(A, N);
-    LONG(Q);
-    vp qs;
-    rep(i, Q) {
-        LONG(l, r); --l;
-        qs.emplace_back(l, r);
-    }
-    vl p(Q);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        ll h = max(sqrt(N), 1.0);
-        auto [li, ri] = qs[i];
-        auto [lj, rj] = qs[j];
-        ll hi = ri/h, hj = rj/h;
-        if(hi==hj) return li<lj;
-        else return hi<hj;
-    });
-    vl cnt(N);
-    ll sum = 0;
-    auto add = [&](ll x) {
-        cnt[x]++;
-        if (cnt[x]%2==0) ++sum;
-    };
-    auto del = [&](ll x) {
-        if (cnt[x]%2==0) --sum;
-        cnt[x]--;
-    };
-    ll l = 0, r = 0;
-    vl ans(Q);
-    for(auto i: p) {
-        auto [l0, r0] = qs[i];
-        while(l<l0) del(A[l]), ++l;
-        while(l>l0) --l, add(A[l]);
-        while(r<r0) add(A[r]), ++r;
-        while(r>r0) --r, del(A[r]);
-        ans[i] = sum;
+    VLM(P, N);
+    vl idx(N);
+    rep(i, N) idx[P[i]] = i;
+    set<ll> st;
+    ll ans = 0;
+    de(P)de(idx)
+    for(ll i=N-1; i>=0; --i) {
+        ll j = idx[i];
+        st.insert(j);
+        auto it = st.find(j);
+        vl ls(2, -1), rs(2, N);
+        rep(k, 2) {
+            ++it;
+            if(it==st.end()) break;
+            rs[k] = *it;
+        }
+        it = st.find(j);
+        rep(k, 2) {
+            if(it==st.begin()) break;
+            --it;
+            ls[k] = *it;
+        }
+        ll now = 0;
+        now += (i+1) * (j-ls[0]) * (rs[1]-rs[0]);
+        now += (i+1) * (ls[0]-ls[1]) * (rs[0]-j);
+        ans += now;
     }
     Out(ans);
-
     
 }
 
