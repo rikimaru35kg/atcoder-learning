@@ -189,39 +189,93 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl stck(M);
-    vl cnt(N);
-    ll num = 0;
+    LONG(N, X, Y);
+    vl ys, xs;
     rep(i, N) {
-        LONGM(a, b);
-        stck[a].push_back(i);
-        stck[b].push_back(i);
+        LONG(a);
+        if(i%2==0) ys.push_back(a);
+        else xs.push_back(a);
     }
-    ll r = 0;
-    vl ans(M+2);
-    rep(l, M) {
-        while(r<M && num<N) {
-            for(auto ni: stck[r]) {
-                if(cnt[ni]==0) ++num;
-                cnt[ni]++;
+    if(N==1) {
+        if(ys[0]==Y) {
+            Out("Yes");
+            Out('L');
+        } else if (ys[0]==-Y) {
+            Out("Yes");
+            Out('R');
+        } else {
+            Out("No");
+        }
+        return 0;
+    }
+    auto move=[&](vl &ps, ll t) -> ll {
+        ll N = SIZE(ps);
+        if (N==1) {
+            if (ps[0]==t) {
+                return 1;
+            } else if (ps[0]==-t) {
+                return 0;
+            } else {
+                return INF;
             }
-            ++r;
         }
-        if(num==N) {
-            ans[r-l]++;
-            ans[M-l+1]--;
+        ll ret = INF; // operation line
+        ll M = (N+1)/2;
+        vl vf, vr;
+        rep(i, N) {
+            if(i<M) vf.push_back(ps[i]);
+            else vr.push_back(ps[i]);
         }
-        de2(l, r)
-        de(ans)
-        for(auto ni: stck[l]) {
-            cnt[ni]--;
-            if(cnt[ni]==0) --num;
+        ll nf = SIZE(vf), nr = SIZE(vr);
+        unordered_map<ll,ll> mpf, mpr;
+        rep(s, 1<<nf) {
+            ll sum = 0;
+            rep(i, nf) {
+                if(s>>i&1) sum += vf[i];
+                else sum -= vf[i];
+            }
+            mpf[sum] = s;
         }
+        rep(s, 1<<nr) {
+            ll sum = 0;
+            rep(i, nr) {
+                if(s>>i&1) sum += vr[i];
+                else sum -= vr[i];
+            }
+            mpr[sum] = s;
+        }
+        for(auto [sum,s]: mpf) {
+            if(mpr.count(t-sum)) {
+                ll now = s;
+                now ^= mpr[t-sum]<<M;
+                return now;
+            }
+        }
+        return ret;
+    };
+    ll ox = move(xs, X);
+    ll oy = move(ys, Y);
+    deb(ox)deb(oy)
+    if(ox==INF || oy==INF) PNo
+    puts("Yes");
+    ll dir = 0;
+    string ans;
+    rep(i, N) {
+        ll ndir=0;
+        if (i%2==0) {
+            if((oy>>(i/2))&1) ndir = 1;
+            else ndir = 3;
+        } else {
+            if((ox>>(i/2))&1) ndir = 0;
+            else ndir = 2;
+        }
+        ll dif = (ndir - dir + 4) % 4;
+        if(dif==1) ans += 'L';
+        else ans += 'R';
+        de2(dir, ndir)
+        dir = ndir;
     }
-    rep(i, M) ans[i+1] += ans[i];
-    rep1(i, M) printf("%lld ", ans[i]);
-    Out("");
+    Out(ans);
     
 }
 

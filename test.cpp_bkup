@@ -185,45 +185,38 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+using sp = vector<unordered_map<ll,ll>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    VL(A, N);
-    auto calc=[&](vl &a) -> ll {
-        ll ret = 0;
-        ll r = 0;
-        ll N = SIZE(a);
-        ll mn = 0, mx = 0;
-        rep(l, N) {
-            while(r<N && (mn==0 || mx==0)) {
-                if(a[r]==Y) ++mn;
-                if(a[r]==X) ++mx;
-                ++r;
+    LONG(N);
+    VVL(A, N, N);
+    auto get=[&](vvl A, bool last) -> sp {
+        sp ret(N);
+        auto dfs=[&](auto f, ll i, ll j, ll x) -> void {
+            if(i+j==N-1) {
+                if(last) x = x^A[i][j];
+                ret[j][x]++;
+                return;
             }
-            de2(l,r)
-            if(mn && mx) ret += N-r+1;
-            if(a[l]==Y) --mn;
-            if(a[l]==X) --mx;
-        }
-        de(a)
-        de(ret)
+            x = x^A[i][j];
+            if(i<N-1) f(f, i+1, j, x);
+            if(j<N-1) f(f, i, j+1, x);
+        };
+        dfs(dfs, 0, 0, 0);
         return ret;
     };
-    ll i = 0, ans = 0;
-    while(true) {
-        while(i<N && (A[i]<Y || A[i]>X)) ++i;
-        if(i==N) break;
-        vl a;
-        ll j = i;
-        while(j<N && A[j]>=Y && A[j]<=X) {
-            a.push_back(A[j]);
-            ++j;
+    sp front = get(A, true);
+    reverse(all(A));
+    rep(i, N) reverse(all(A[i]));
+    sp back = get(A, false);
+    ll ans = 0;
+    rep(i, N) {
+        // front[i], back[N-1-i];
+        for(auto [k, v]: front[i]) {
+            ans += v*back[N-1-i][k];
         }
-        ans += calc(a);
-        if(j==N) break;
-        i = j;
     }
     Out(ans);
     

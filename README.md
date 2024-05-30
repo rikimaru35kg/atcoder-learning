@@ -405,8 +405,8 @@
 - その後、問題に応じて上手く組み合わせる事ができるのであれば使えるアルゴリズムである
 - N=10^12程度のとき、10^6に分けるとうまくいくような問題もある（数列の二乗など）
 ### 例題
-- !復習価値低 基本 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
-- !要復習 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
+- 基本 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
+- !復習価値低 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
 - !要復習 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
 - !復習価値中 ロボット移動（実装重め） [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
