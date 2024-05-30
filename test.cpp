@@ -186,43 +186,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    VL(A, N);
-    multiset<ll> stk, strem;
-    ll sum = 0;
-    auto add = [&](ll x) {
-        stk.insert(x);
-        sum += x;
-        if(SIZE(stk)<=K) return;
-        auto it = stk.end(); --it;
-        ll mx = *it;
-        sum -= mx;
-        stk.erase(it);
-        strem.insert(mx);
-    };
-    auto del = [&](ll x) {
-        if(strem.find(x)!=strem.end()) {
-            strem.erase(strem.find(x));
-            return;
+    LONG(N); VL(A, N);
+    CoordinateCompression cc;
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) A[i] = cc(A[i]);
+    mint ans = 0;
+    de(A)
+    fenwick_tree<mint> tree(N+5);
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, N) {
+            cerr<< tree.sum(i,i+1).val()  <<' ';
         }
-        stk.erase(stk.find(x));
-        sum -= x;
-        auto it = strem.begin();
-        ll mn = *it;
-        strem.erase(it);
-        stk.insert(mn);
-        sum += mn;
+        cerr<<endl;
+    #endif
     };
-    rep(i, M) add(A[i]);
-    vl ans;
-    rep(i, N+1-M) {
-        ans.push_back(sum);
-        if(i==N-M) break;
-        add(A[i+M]);
-        del(A[i]);
+    rep(i, N) {
+        mint sum = tree.sum(0, A[i]+1);
+        mint now = 0;
+        if(i)now = sum * mint(2).pow(i-1);
+        dprint();
+        de(now)
+        ans += now;
+        tree.add(A[i], mint(2).inv().pow(i));
     }
     Out(ans);
 

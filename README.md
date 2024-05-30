@@ -392,6 +392,7 @@
 - 例えばwhile(r<N && sum+A[r]<=K)なら、whileを抜けた後はsum+A[r]>Kとなっている（もしくはr==Nかつsum+A[r]<=K）
 - whileを抜けた後に直前の値を参照したいならA[r-1]とする必要がある
 ### 例題
+- 基本 K以上となる個数問題 [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
 - 基本 [076 - Cake Cut（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_bx)
 - 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
 - !復習価値低 XORの性質 [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
@@ -445,14 +446,12 @@
 - 累積和のMODが部分列の長さと一致するという問題でも応用可能。具体的には最初に1ずつ引いた数列にしておけば、累積和を取った時に長さ分の考慮が不要となる（ただしr-lがM以上の場合は数えないようにする）
 - 0-9で構成された連続部分文字列がMOD Pで0になる個数を求める問題は、右から見ていくと良い（左から見ると単純に足していけない、もちろん累積和も、ので）
 ### 例題
-- !復習価値高 なぜか典型解法を忘れていた [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
+- 基本 累積和がMの倍数となる区間の総数 [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
+- 基本 連続部分文字列がMOD Pで0になる個数 その1 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
 - !復習価値低 [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
-- !復習価値高 茶diff？ [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
-- !復習価値低 K以上となる個数問題（尺取りでも二分探索でも） [D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d)
-- !復習価値高 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
-- 連続部分文字列がMOD Pで0になる個数 その1 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
-- !復習価値中 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
-- !要復習 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
+- !復習価値低 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
+- !復習価値中 区間の中でXに一致する個数 [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
+- !復習価値中 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 
 ## Mo's Algorithm
 - 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
@@ -1126,6 +1125,7 @@
 - 個数を保存しておけば、ある値以下の個数を求める事にも使える
 - 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
 ### 例題
+- !復習価値高 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
 - !要復習 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
 ## セグメントツリー（Segment tree）

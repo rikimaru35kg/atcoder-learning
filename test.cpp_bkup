@@ -190,32 +190,17 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    vvi S(4*K+1, vi(4*K+1));
-    rep(i, N) {
-        LONG(x, y); CHAR(c);
-        if (c=='W') x += K;
-        x %= 2*K, y %= 2*K;
-        S[x][y]++;
-        S[x+2*K][y]++;
-        S[x][y+2*K]++;
-        S[x+2*K][y+2*K]++;
-    }
-    rep(i, 4*K) rep(j, 4*K+1) S[i+1][j] += S[i][j];
-    rep(i, 4*K+1) rep(j, 4*K) S[i][j+1] += S[i][j];
+    VL(A, N);
+    vl S(N+1);
+    rep(i, N) S[i+1] = S[i] + A[i];
+    rep(i, N+1) S[i] = (S[i] - i + K*N) % K;
+    unordered_map<ll,ll> mp;
+    mp[0] = 1;
     ll ans = 0;
-    auto calc=[&](ll i, ll j) -> ll {
-        ll now = 0;
-        now += S[i+K][j+K];
-        now -= S[i][j+K];
-        now -= S[i+K][j];
-        now += S[i][j];
-        return now;
-    };
-    rep(i, 2*K) rep(j, 2*K) {
-        ll now = 0;
-        now += calc(i, j);
-        now += calc(i+K, j+K);
-        chmax(ans, now);
+    rep1(i, N) {
+        if(i>=K) mp[S[i-K]]--;
+        ans += mp[S[i]];
+        mp[S[i]]++;
     }
     Out(ans);
     
