@@ -189,18 +189,43 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(P);
-    auto f = [&](double x) -> double {
-        return x + P/pow(2, x/1.5);
+    LONG(N, X, Y);
+    VL(A, N);
+    auto calc=[&](vl &a) -> ll {
+        ll ret = 0;
+        ll r = 0;
+        ll N = SIZE(a);
+        ll mn = 0, mx = 0;
+        rep(l, N) {
+            while(r<N && (mn==0 || mx==0)) {
+                if(a[r]==Y) ++mn;
+                if(a[r]==X) ++mx;
+                ++r;
+            }
+            de2(l,r)
+            if(mn && mx) ret += N-r+1;
+            if(a[l]==Y) --mn;
+            if(a[l]==X) --mx;
+        }
+        de(a)
+        de(ret)
+        return ret;
     };
-    double l = 0, r = INF;
-    rep(_, 300) {
-        double m1 = (2*l+r)/3;
-        double m2 = (l+2*r)/3;
-        if(f(m1)<f(m2)) r = m2;
-        else l = m1;
+    ll i = 0, ans = 0;
+    while(true) {
+        while(i<N && (A[i]<Y || A[i]>X)) ++i;
+        if(i==N) break;
+        vl a;
+        ll j = i;
+        while(j<N && A[j]>=Y && A[j]<=X) {
+            a.push_back(A[j]);
+            ++j;
+        }
+        ans += calc(a);
+        if(j==N) break;
+        i = j;
     }
-    Out(f(l));
+    Out(ans);
     
 }
 

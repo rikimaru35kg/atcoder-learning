@@ -186,45 +186,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(pos, N);
-    auto f=[&](double x, double y) -> double { // farthest dist
-        double ret = 0;
-        rep(i, N) { chmax(ret, euclid_distd({x,y},pos[i])); }
-        return ret;
-    };
-    auto g = [&](double y) -> double { // fixed y, calc min
-        double xl = 0, xr = 1000;
-        rep(_, 300) {
-            double m1 = (2*xl+xr)/3;
-            double m2 = (xl+2*xr)/3;
-            if (f(m1,y)<f(m2,y)) xr = m2;
-            else xl = m1;
-        }
-        return f(xl,y);
-    };
-    double yl = 0, yr = 1000;
-    rep(_, 300) {
-        double m1 = (2*yl+yr)/3;
-        double m2 = (yl+2*yr)/3;
-        if (g(m1)<g(m2)) yr = m2;
-        else yl = m1;
+    LONG(N, M);
+    vvl stck(M);
+    vl cnt(N);
+    ll num = 0;
+    rep(i, N) {
+        LONGM(a, b);
+        stck[a].push_back(i);
+        stck[b].push_back(i);
     }
-    Out(g(yl));
+    ll r = 0;
+    vl ans(M+2);
+    rep(l, M) {
+        while(r<M && num<N) {
+            for(auto ni: stck[r]) {
+                if(cnt[ni]==0) ++num;
+                cnt[ni]++;
+            }
+            ++r;
+        }
+        if(num==N) {
+            ans[r-l]++;
+            ans[M-l+1]--;
+        }
+        de2(l, r)
+        de(ans)
+        for(auto ni: stck[l]) {
+            cnt[ni]--;
+            if(cnt[ni]==0) --num;
+        }
+    }
+    rep(i, M) ans[i+1] += ans[i];
+    rep1(i, M) printf("%lld ", ans[i]);
+    Out("");
     
 }
 
