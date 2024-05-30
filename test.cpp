@@ -186,45 +186,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(bb, c);
-        from[a].emplace_back(b, bb, c);
-    }
-    auto f = [&](double x) -> bool {
-        vd dp(N, -INF);
-        dp[0] = 0;
-        rep(i, N) {
-            for(auto [nv, b, c]: from[i]) {
-                chmax(dp[nv], dp[i] + b - x*c);
-            }
-        }
-        return dp[N-1] >= 0;
+    LONG(N);
+    VP(pos, N);
+    auto f=[&](double x, double y) -> double { // farthest dist
+        double ret = 0;
+        rep(i, N) { chmax(ret, euclid_distd({x,y},pos[i])); }
+        return ret;
     };
-    double ans = binary_search(0, 1e5, f);
-    Out(ans);
+    auto g = [&](double y) -> double { // fixed y, calc min
+        double xl = 0, xr = 1000;
+        rep(_, 300) {
+            double m1 = (2*xl+xr)/3;
+            double m2 = (xl+2*xr)/3;
+            if (f(m1,y)<f(m2,y)) xr = m2;
+            else xl = m1;
+        }
+        return f(xl,y);
+    };
+    double yl = 0, yr = 1000;
+    rep(_, 300) {
+        double m1 = (2*yl+yr)/3;
+        double m2 = (yl+2*yr)/3;
+        if (g(m1)<g(m2)) yr = m2;
+        else yl = m1;
+    }
+    Out(g(yl));
     
 }
 

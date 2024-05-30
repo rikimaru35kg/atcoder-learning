@@ -186,73 +186,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    auto f = [&](double x) -> bool {
-        vd a(N);
-        rep(i, N) a[i] = A[i] - x;
-        vd dp(2, -INF);
-        vd edp = dp;
-        dp[1] = 0;
-        rep(i, N) {
-            vd pdp = edp;
-            swap(pdp, dp);
-            rep(j, 2) rep(k, 2) {
-                if(j==0 && k==0) continue;
-                if(pdp[j]==-INF) continue;
-                double plus = 0;
-                if(k) plus = a[i];
-                chmax(dp[k], pdp[j]+plus);
-            }
-        }
-        double mx = max(dp[0], dp[1]);
-        return mx >= 0;
+    DOUBLE(P);
+    auto f = [&](double x) -> double {
+        return x + P/pow(2, x/1.5);
     };
-    double ave = binary_search(1.0, 1e9, f);
-    Out(ave);
-
-    auto g = [&](ll x) -> bool {
-        vl a(N);
-        rep(i, N) a[i] = A[i]>=x?1:-1;
-        vl dp(2, -INF);
-        vl edp = dp;
-        dp[1] = 0;
-        rep(i, N) {
-            vl pdp = edp;
-            swap(pdp, dp);
-            rep(j, 2) rep(k, 2) {
-                if(j==0 && k==0) continue;
-                if(pdp[j]==-INF) continue;
-                ll plus = 0;
-                if(k) plus = a[i];
-                chmax(dp[k], pdp[j]+plus);
-            }
-        }
-        ll mx = max(dp[0], dp[1]);
-        return mx > 0;
-    };
-    ll med = binary_search(1, (ll)1e9+1, g);
-    Out(med);
+    double l = 0, r = INF;
+    rep(_, 300) {
+        double m1 = (2*l+r)/3;
+        double m2 = (l+2*r)/3;
+        if(f(m1)<f(m2)) r = m2;
+        else l = m1;
+    }
+    Out(f(l));
     
 }
 
