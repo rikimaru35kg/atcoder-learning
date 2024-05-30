@@ -185,38 +185,37 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-using sp = vector<unordered_map<ll,ll>>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VVL(A, N, N);
-    auto get=[&](vvl A, bool last) -> sp {
-        sp ret(N);
-        auto dfs=[&](auto f, ll i, ll j, ll x) -> void {
-            if(i+j==N-1) {
-                if(last) x = x^A[i][j];
-                ret[j][x]++;
-                return;
-            }
-            x = x^A[i][j];
-            if(i<N-1) f(f, i+1, j, x);
-            if(j<N-1) f(f, i, j+1, x);
-        };
-        dfs(dfs, 0, 0, 0);
-        return ret;
-    };
-    sp front = get(A, true);
-    reverse(all(A));
-    rep(i, N) reverse(all(A[i]));
-    sp back = get(A, false);
-    ll ans = 0;
+    LONG(N, K);
+    vvi S(4*K+1, vi(4*K+1));
     rep(i, N) {
-        // front[i], back[N-1-i];
-        for(auto [k, v]: front[i]) {
-            ans += v*back[N-1-i][k];
-        }
+        LONG(x, y); CHAR(c);
+        if (c=='W') x += K;
+        x %= 2*K, y %= 2*K;
+        S[x][y]++;
+        S[x+2*K][y]++;
+        S[x][y+2*K]++;
+        S[x+2*K][y+2*K]++;
+    }
+    rep(i, 4*K) rep(j, 4*K+1) S[i+1][j] += S[i][j];
+    rep(i, 4*K+1) rep(j, 4*K) S[i][j+1] += S[i][j];
+    ll ans = 0;
+    auto calc=[&](ll i, ll j) -> ll {
+        ll now = 0;
+        now += S[i+K][j+K];
+        now -= S[i][j+K];
+        now -= S[i+K][j];
+        now += S[i][j];
+        return now;
+    };
+    rep(i, 2*K) rep(j, 2*K) {
+        ll now = 0;
+        now += calc(i, j);
+        now += calc(i+K, j+K);
+        chmax(ans, now);
     }
     Out(ans);
     

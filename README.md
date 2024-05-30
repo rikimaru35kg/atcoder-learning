@@ -423,7 +423,7 @@
 ### 例題
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
-- !要復習 性質を理解していれば解ける [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
+- 復習価値低 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる
@@ -432,15 +432,7 @@
 ### 例題
 - 基本 [A - 惑星探査 (Planetary Exploration)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho1)
 - 基本 [D - AtCoder Express 2](https://atcoder.jp/contests/abc106/tasks/abc106_d)
-- !復習価値低 [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b) なお、この問題は何も考えずにlong longを使いすぎるとMLEする
-
-## BIT木（Fenwick tree）
-- 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる
-- 個数を保存しておけば、ある値以下の個数を求める事にも使える
-- 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
-### 例題
-- !復習価値中 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
-- !要復習 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
+- !復習価値低 市松模様の最適場所 [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b) なお、この問題は何も考えずにlong longを使いすぎるとMLEする
 
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
@@ -1125,10 +1117,18 @@
 - 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
+- !復習価値低 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
 - !要復習 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 もう少し簡単な問題も例題に挙げられると良いのだが・・・
 
-# セグメントツリー（Segment tree）
+## BIT木（Fenwick tree）
+- 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる
+- 個数を保存しておけば、ある値以下の個数を求める事にも使える
+- 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
+### 例題
+- !要復習 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
+
+## セグメントツリー（Segment tree）
 - atcoder libraryで使える
 - 一点更新、区間min・max・和取得などができる（遅延伝播セグメントツリー）
 - モノイドであればセグ木にのる
