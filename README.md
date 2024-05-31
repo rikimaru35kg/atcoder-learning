@@ -532,8 +532,8 @@
 ### 例題
 - 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
-- !復習価値中 バックトラック (072 - Loop Railway Plan（★4）)[https://atcoder.jp/contests/typical90/tasks/typical90_bt]
-- !要復習 お堀 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
+- !復習価値低 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
+- !要復習 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 
 ## サイクル検出
 - 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）

@@ -189,30 +189,32 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(P, N);
-    VL(L, M);
-    VL(D, M);
-    vp cs;
-    rep(i, M) {
-        cs.emplace_back(L[i], D[i]);
-    }
-    sort(all(P));
-    sort(allr(cs));
-    multiset<ll> usable;
-    ll ans = 0;
-    for(auto p: P) {
-        while(cs.size() && cs.back().first<=p) {
-            auto [l, d] = cs.back(); cs.pop_back();
-            usable.insert(d);
+    LONG(H, W);
+    VS(C, H);
+    vvb used(H, vb(W));
+    ll ans = -1;
+    vp r;
+    auto dfs = [&](auto f, ll si, ll sj, ll i, ll j, ll dist=0) -> void {
+        if (dist>=3 && si==i && sj==j) {
+            de(r)de(dist)
+            chmax(ans, dist); return;
         }
-        if(usable.size()) {
-            auto it = usable.end(); --it;
-            ans += p-*it;
-            usable.erase(it);
-        } else {
-            ans += p;
+        r.emplace_back(i, j);
+        used[i][j] = true;
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni,nj,H,W)) continue;
+            if(C[ni][nj]=='#') continue;
+            if(!(ni==si && nj==sj && dist>=2) && used[ni][nj]) continue;
+            f(f, si,sj, ni, nj, dist+1);
         }
+        used[i][j] = false;
+        r.pop_back();
+    };
+    rep(i, H) rep(j, W) {
+        if(C[i][j]=='#') continue;
+        dfs(dfs, i,j,i,j);
     }
     Out(ans);
     

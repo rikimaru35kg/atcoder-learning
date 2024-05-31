@@ -189,29 +189,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll base = 0;
-    unordered_map<ll,ll> mp;
-    rep(i, N) {
-        mp[i] = A[i];
+    VVL(A, 4, 4);
+    vvi cnt(4, vi(4));
+    vvb used(5, vb(5));
+    auto check=[&]()->bool{
+        rep(i, 4) rep(j, 4) {
+            if (A[i][j] && cnt[i][j]==0) return false;
+        }
+        return true;
+    };
+    ll ans = 0;
+    auto dfs=[&](auto f, ll si, ll sj, ll i, ll j, ll d=0) -> void {
+        if(i==si && j==sj && d!=0) {
+            if(d>=4 && check()) ++ans;
+            return;
+        }
+        if(d!=0) used[i][j] = true;
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni,nj,5,5)) continue;
+            if((used[ni][nj])) continue;
+            auto rev=[&]() {
+                if(ni==i) {
+                    ll mnj = min(j, nj);
+                    repk(mi, i, 4) { cnt[mi][mnj] ^= 1; }
+                }
+            };
+            rev();
+            f(f, si,sj, ni, nj, d+1);
+            rev();
+        }
+        if(d!=0) used[i][j] = false;
+    };
+    rep(i, 5) rep(j, 5) {
+        dfs(dfs,i,j,i,j);
+        used[i][j] = true;
     }
-    LONG(Q);
-    rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            base = x;
-            mp = unordered_map<ll,ll>();
-        }
-        if(t==2) {
-            LONG(i, x); --i;
-            mp[i] += x;
-        }
-        if(t==3) {
-            LONGM(i);
-            Out(base + mp[i]);
-        }
-    }
+    Out(ans/2);
     
 }
 
