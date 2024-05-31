@@ -186,58 +186,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +/* leads to overflowing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b == 0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(q*rhs.p + p*rhs.q, q*rhs.q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    bool operator<(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p < 0;
-    }
-    bool operator==(const Frac &rhs) {
-        if (p==rhs.p && q==rhs.q) return true;
-        else return false;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<pair<Frac,Frac>> span;
-    rep(i, N) {
-        LONG(x, y);
-        span.emplace_back(Frac(y,x-1), Frac(y-1,x));
+    LONG(N, M);
+    VL(P, N);
+    VL(L, M);
+    VL(D, M);
+    vp cs;
+    rep(i, M) {
+        cs.emplace_back(L[i], D[i]);
     }
-    sort(all(span));
-    Frac mx;
-    bool init = true;
+    sort(all(P));
+    sort(allr(cs));
+    multiset<ll> usable;
     ll ans = 0;
-    for(auto [r,l]: span) {
-        if(init) {
-            mx = r;
-            init = false;
-            ++ans;
+    for(auto p: P) {
+        while(cs.size() && cs.back().first<=p) {
+            auto [l, d] = cs.back(); cs.pop_back();
+            usable.insert(d);
+        }
+        if(usable.size()) {
+            auto it = usable.end(); --it;
+            ans += p-*it;
+            usable.erase(it);
         } else {
-            if (l < mx) continue;
-            ++ans;
-            mx = r;
+            ans += p;
         }
     }
     Out(ans);
