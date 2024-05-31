@@ -186,37 +186,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(C, H);
-    vvb used(H, vb(W));
-    ll ans = -1;
-    vp r;
-    auto dfs = [&](auto f, ll si, ll sj, ll i, ll j, ll dist=0) -> void {
-        if (dist>=3 && si==i && sj==j) {
-            de(r)de(dist)
-            chmax(ans, dist); return;
+    LONG(N);
+    vl C(N);
+    scc_graph scc(N);
+    rep(i, N) {
+        LONGM(x);
+        scc.add_edge(i, x);
+    }
+    rep(i, N) cin >> C[i];
+    auto grs = scc.scc();
+    ll ans = 0;
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) continue;
+        ll mn = INF;
+        for(auto v: gr) {
+            chmin(mn, C[v]);
         }
-        r.emplace_back(i, j);
-        used[i][j] = true;
-        rep(k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            if(!isin(ni,nj,H,W)) continue;
-            if(C[ni][nj]=='#') continue;
-            if(!(ni==si && nj==sj && dist>=2) && used[ni][nj]) continue;
-            f(f, si,sj, ni, nj, dist+1);
-        }
-        used[i][j] = false;
-        r.pop_back();
-    };
-    rep(i, H) rep(j, W) {
-        if(C[i][j]=='#') continue;
-        dfs(dfs, i,j,i,j);
+        ans += mn;
     }
     Out(ans);
+
     
 }
 

@@ -549,11 +549,11 @@
 - この時、始点からの距離を通常通り記録しておき、始点への辺を持つ頂点の中で最小距離の物が最小サイクルを構成する（ただしこの始点に対する最小サイクルしか見つからない）
 ### 例題
 - 基本 [F - Well-defined Path Queries on a Namori](https://atcoder.jp/contests/abc266/tasks/abc266_f)
-- !復習価値中 サイクル検出のみ（サイクル部復元なし） [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
-- !復習価値中 自己ループありのfunctional graph [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
-- !復習価値低 ダブリングでもOK [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
-- !復習価値高 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
-- !要復習 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
+- 基本 ユーザー名変更希望 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
+- 基本 黒板ゲーム [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
+- 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
+- !復習価値低 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
+- !復習価値中 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる

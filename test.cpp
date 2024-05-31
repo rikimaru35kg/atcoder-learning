@@ -189,44 +189,49 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    VVL(A, 4, 4);
-    vvi cnt(4, vi(4));
-    vvb used(5, vb(5));
-    auto check=[&]()->bool{
-        rep(i, 4) rep(j, 4) {
-            if (A[i][j] && cnt[i][j]==0) return false;
-        }
-        return true;
-    };
-    ll ans = 0;
-    auto dfs=[&](auto f, ll si, ll sj, ll i, ll j, ll d=0) -> void {
-        if(i==si && j==sj && d!=0) {
-            if(d>=4 && check()) ++ans;
-            return;
-        }
-        if(d!=0) used[i][j] = true;
-        rep(k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            if(!isin(ni,nj,5,5)) continue;
-            if((used[ni][nj])) continue;
-            auto rev=[&]() {
-                if(ni==i) {
-                    ll mnj = min(j, nj);
-                    repk(mi, i, 4) { cnt[mi][mnj] ^= 1; }
-                }
-            };
-            rev();
-            f(f, si,sj, ni, nj, d+1);
-            rev();
-        }
-        if(d!=0) used[i][j] = false;
-    };
-    rep(i, 5) rep(j, 5) {
-        dfs(dfs,i,j,i,j);
-        used[i][j] = true;
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
     }
-    Out(ans/2);
+    auto find=[&](ll sv) -> pair<ll,vl> {
+        vl vs;
+        ll sz = 0;
+        vl dist(N, INF);
+        vl pre(N, -1);
+        queue<ll> que;
+        auto push = [&](ll pv, ll v, ll d) {
+            if(dist[v] != INF) return;
+            dist[v] = d;
+            que.push(v);
+            pre[v] = pv;
+        };
+        push(-1, sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                if(nv==sv) {
+                    sz = dist[v] + 1;
+                    while(v != -1) {
+                        vs.push_back(v);
+                        v = pre[v];
+                    }
+                    return {sz, vs};
+                }
+                push(v, nv, dist[v]+1);
+            }
+        }
+        return {INF, vl()};
+    };
+    Pr mn = {INF, -1};
+    rep(i, N) {
+        auto x = find(i);
+        chmin(mn, {x.first, i});
+    }
+    if(mn.first == INF) Pm1
+    Out(mn.first);
+    for(auto v: find(mn.second).second) Out(v+1);
     
 }
 
