@@ -506,8 +506,8 @@
 - リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
 - 加算型クエリの場合、加算値と加算前の情報を持てば良い
 ### 例題
-- !復習価値低 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
+- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 # グラフ
 

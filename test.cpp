@@ -189,32 +189,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(P, N);
-    VL(L, M);
-    VL(D, M);
-    vp cs;
-    rep(i, M) {
-        cs.emplace_back(L[i], D[i]);
+    LONG(N); VL(A, N);
+    ll base = 0;
+    unordered_map<ll,ll> mp;
+    rep(i, N) {
+        mp[i] = A[i];
     }
-    sort(all(P));
-    sort(allr(cs));
-    multiset<ll> usable;
-    ll ans = 0;
-    for(auto p: P) {
-        while(cs.size() && cs.back().first<=p) {
-            auto [l, d] = cs.back(); cs.pop_back();
-            usable.insert(d);
+    LONG(Q);
+    rep(_, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            base = x;
+            mp = unordered_map<ll,ll>();
         }
-        if(usable.size()) {
-            auto it = usable.end(); --it;
-            ans += p-*it;
-            usable.erase(it);
-        } else {
-            ans += p;
+        if(t==2) {
+            LONG(i, x); --i;
+            mp[i] += x;
+        }
+        if(t==3) {
+            LONGM(i);
+            Out(base + mp[i]);
         }
     }
-    Out(ans);
     
 }
 
