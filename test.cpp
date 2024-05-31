@@ -186,36 +186,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! BE CAREFUL ABOUT OVERFLOWING!
+//! repeated usage of +/* leads to overflowing
+struct Frac {
+    long long p, q;  // p/q: p over q (like y/x: y over x)
+    Frac(long long a=0, long long b=1) {
+        if (b == 0) {
+            p = 1; q = 0;  // inf (no definition of -inf)
+            return;
+        }
+        long long g = gcd(a, b);
+        p = a/g; q = b/g;
+        if (q<0) {p=-p; q=-q;}
+    }
+    Frac operator+(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(q*rhs.p + p*rhs.q, q*rhs.q);
+    }
+    Frac operator*(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(p*rhs.p, q*rhs.q);
+    }
+    bool operator<(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p < 0;
+    }
+    bool operator==(const Frac &rhs) {
+        if (p==rhs.p && q==rhs.q) return true;
+        else return false;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VLM(P, N);
-    vl idx(N);
-    rep(i, N) idx[P[i]] = i;
-    set<ll> st;
+    vector<pair<Frac,Frac>> span;
+    rep(i, N) {
+        LONG(x, y);
+        span.emplace_back(Frac(y,x-1), Frac(y-1,x));
+    }
+    sort(all(span));
+    Frac mx;
+    bool init = true;
     ll ans = 0;
-    de(P)de(idx)
-    for(ll i=N-1; i>=0; --i) {
-        ll j = idx[i];
-        st.insert(j);
-        auto it = st.find(j);
-        vl ls(2, -1), rs(2, N);
-        rep(k, 2) {
-            ++it;
-            if(it==st.end()) break;
-            rs[k] = *it;
+    for(auto [r,l]: span) {
+        if(init) {
+            mx = r;
+            init = false;
+            ++ans;
+        } else {
+            if (l < mx) continue;
+            ++ans;
+            mx = r;
         }
-        it = st.find(j);
-        rep(k, 2) {
-            if(it==st.begin()) break;
-            --it;
-            ls[k] = *it;
-        }
-        ll now = 0;
-        now += (i+1) * (j-ls[0]) * (rs[1]-rs[0]);
-        now += (i+1) * (ls[0]-ls[1]) * (rs[0]-j);
-        ans += now;
     }
     Out(ans);
     
