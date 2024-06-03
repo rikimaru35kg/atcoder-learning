@@ -586,9 +586,8 @@
 - 各頂点を探索している時に、その頂点に対する操作をするのか、あるいは繋がっている全頂点に対する操作（場合の数をかける等）をするのか、色々バリエーションあり
 - 区間をぎっちり詰めたい場合は、葉の個数分だけの区間長になる（この場合は葉のたびにインクリメント）
 ### 例題
-- !復習価値高 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
-- !要復習 木の塗分け問題 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
-- !復習価値高 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
+- !復習価値中 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
+- !復習価値中 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
 
 ## LCA（Lowest Common Ancester）
 - 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した

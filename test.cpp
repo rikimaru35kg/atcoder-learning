@@ -196,31 +196,19 @@ int main () {
         from[a].emplace_back(b);
         from[b].emplace_back(a);
     }
-    VL(C, N);
-    ll tot = accumulate(all(C), 0LL);
-    vl w(N);
-    ll x = -1;
-    auto dfs = [&](auto f, ll v, ll d=0, ll p=-1) -> ll {
-        ll ret = C[v];
-        ll mx = -INF;
-        for(auto nv: from[v]) if (nv != p) {
-            ll tmp = f(f, nv, d+1, v);
-            chmax(mx, tmp);
-            ret += tmp;
+    ll ord = 1;
+    vp ans(N);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ans[v].first = ord;
+        bool init = true;
+        for(auto nv: from[v]) if(nv != p) {
+            if(!init) ++ord;
+            init = false;
+            f(f, nv, v);
         }
-        chmax(mx, tot-ret);
-        if(mx <= tot/2) x = v;
-        return w[v] = ret;
+        ans[v].second = ord;
     };
     dfs(dfs, 0);
-    ll ans = 0;
-    auto dfs2=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
-        ans += d*C[v];
-        for(auto nv: from[v]) if(p!=nv) {
-            f(f, nv, d+1, v);
-        }
-    };
-    dfs2(dfs2, x);
     Out(ans);
     
 }
