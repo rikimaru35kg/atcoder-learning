@@ -186,43 +186,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+void solve() {
+    LONG(N, X, K);
+    ll M = 61;
+    vl two(M+1, 1);
+    rep(i, M) two[i+1] = two[i]<<1;
+    ll ans = 0;
+    auto calc=[&](ll x, ll k) -> ll {
+        if(k>M) return 0;
+        ll ret = 0;
+        ll l=-1, r=-1;
+        if(x<=N/two[k]) l = x*two[k];
+        if(x+1<=(N+1)/two[k]) r = (x+1)*two[k]-1;
+        if(l==-1) {
+            ret = 0;
+        } else if(r==-1) {
+            ret = N-l+1;
+        } else{
+            ret = r-l+1;
+        }
+        return ret;
+    };
+    ans += calc(X, K);
+    ll k = K-2;
+    ll x = X;
+    while(x>1 && k>=0) {
+        ans += calc(x^1, k);
+        --k; x >>= 1;
+    }
+    x = X;
+    rep(i, K) {
+        x /= 2;
+        if(x==0) break;
+    }
+    if(K!=0 && x>0) ++ans;
+    Out(ans);
+
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    vm two(N, 1);
-    rep(i, N-1) {
-        two[i+1] = 2*two[i];
-    }
-    vm g(N+1);
-    rep1(n, N) {
-        mint now = 0;
-        ll l = n-1, r = D-l;
-        if(r>=0 && r<=n-1) {
-            now = two[max(l-1,0LL)] * two[max(r-1,0LL)];
-        }
-        if(l!=r) now *= 2;
-        g[n] = g[n-1] + now;
-    }
-    vm f(N+1);
-    rep1(n, N) {
-        f[n] = 2*f[n-1] + g[n];
-    }
-    Out(f[N]*2);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 
