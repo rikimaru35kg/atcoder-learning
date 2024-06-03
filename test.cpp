@@ -186,30 +186,128 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using S = int;
+S op(S a, S b) {return min(a, b);}
+S e() {return 1001001001;}
+
+// LCA with online cost changes
+struct LCA2 {
+    int n, idx=0;
+    vector<int> et, in, ein, eout;  // EulerTour, in-order, edge-in-order, edge-out-order
+    vector<long long> depth, ws;  // depth, weights
+    struct Edge {
+        int to, id;
+        long long w;
+    };
+    vector<vector<Edge>> from;
+    segtree<S,op,e> rmq;
+    fenwick_tree<long long> tree;
+    LCA2(long long n): n(n) {
+        from.resize(n);
+        in.resize(n);
+        depth.resize(n);
+        ws.resize(n-1);
+        ein.resize(n-1);
+        eout.resize(n-1);
+    }
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w, idx);
+        from[b].emplace_back(a, w, idx);
+        ws[idx] = w;
+        ++idx;
+    };
+    void euler_tour(int v=0) {
+        dfs(v);
+        rmq = segtree<S,op,e>(et.size());
+        tree = fenwick_tree<long long>(et.size());
+        for(int i=0; i<(int)et.size(); ++i) {
+            rmq.set(i, in[et[i]]);
+        }
+        for(int i=0; i<n-1; ++i) {
+            tree.add(ein[i], ws[i]);
+            tree.add(eout[i], -ws[i]);
+        }
+    }
+    void change_cost(int id, long long w) {
+        long long precost = ws[id];
+        long long dif = w - precost;
+        tree.add(ein[id], dif);
+        tree.add(eout[id], -dif);
+        ws[id] = w;
+    }
+    void dfs(int v, long long d=0, int p=-1) {
+        in[v] = et.size();
+        depth[v] = d;
+        et.push_back(v);
+        for(auto [nv, w, id]: from[v]) if (nv != p) {
+            ein[id] = et.size()-1;
+            dfs(nv, d+w, v);
+            eout[id] = et.size()-1;
+            et.push_back(v);
+        }
+    }
+    int lca(int a, int b) {
+        int l = in[a], r = in[b];
+        if (l > r) swap(l, r);
+        return et[rmq.prod(l, r+1)];
+    }
+    long long dist(int a, int b) {
+        long long ret = 0;
+        int c = lca(a, b);
+        if (a!=c) ret += depth[a] - depth[c];
+        if (b!=c) ret += depth[b] - depth[c];
+        return ret;
+    }
+    long long dist_with_changecost(int a, int b) {
+        long long ret = 0;
+        int c = lca(a, b);
+        if (a!=c) ret += tree.sum(in[c], in[a]);
+        if (b!=c) ret += tree.sum(in[c], in[b]);
+        return ret;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
+    vvp from(N);
+    vp edges;
+    LCA2 lca(N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        LONGM(a, b); LONG(w);
+        from[a].emplace_back(b, w);
+        from[b].emplace_back(a, w);
+        edges.emplace_back(a, b);
+        lca.add_edge(a, b, w);
     }
-    ll ord = 1;
-    vp ans(N);
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ans[v].first = ord;
-        bool init = true;
-        for(auto nv: from[v]) if(nv != p) {
-            if(!init) ++ord;
-            init = false;
-            f(f, nv, v);
+    lca.euler_tour();
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(i, w); --i;
+            lca.change_cost(i, w);
+        } else {
+            LONGM(a, b);
+            ll ans = lca.dist_with_changecost(a, b);
+            Out(ans);
         }
-        ans[v].second = ord;
-    };
-    dfs(dfs, 0);
-    Out(ans);
+    }
     
 }
 
