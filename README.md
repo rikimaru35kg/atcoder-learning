@@ -694,10 +694,10 @@
 - 基本 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
 - !復習価値中 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 
-## グラフその他
+## グラフその他（典型手法と名づけるのが難しいのでNoteには未掲載）
 - 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または下の例題（Sum of Maximum Weights）など
 ### 例題
-- !要復習 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
+- !復習価値中 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
 ## グラフに関する問題の計算量見積り
 - ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
