@@ -203,20 +203,18 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vt3 edges;
-    rep(i, N-1) {
-        LONGM(a, b); LONG(w);
-        edges.emplace_back(w, a, b);
+    LONG(N, S); VL(A, N);
+    vm dp(S+1);
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp(S+1);
+        swap(pdp, dp);
+        repr(j, S+1) {
+            dp[j] += 2*pdp[j];
+            if(j+A[i]<=S) dp[j+A[i]] += pdp[j];
+        }
     }
-    sort(all(edges));
-    dsu uf(N);
-    ll ans = 0;
-    for(auto [w, a, b]: edges) {
-        ans += (ll)w * uf.size(a) * uf.size(b);
-        uf.merge(a, b);
-    }
-    Out(ans);
+    Out(dp[S]);
     
 }
 

@@ -186,48 +186,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vm dp(N);
-    dp[0] = 1;
-    mint sum = 1;
-    rep(i, K) {
-        vm pdp(N);
+    LONG(N);
+    VL(A, N);
+    ll M = 1;
+    if (N%2==0) M = 1;
+    else M = 2;
+    vvl dp(2*M+1, vl(2, -INF));
+    vvl edp = dp;
+    dp[M][0] = 0;
+    rep(i, N) {
+        vvl pdp = edp;
         swap(pdp, dp);
-        mint now = 0;
-        rep(v, N) {
-            dp[v] = sum - pdp[v];
-            for(auto nv: from[v]) {
-                dp[v] -= pdp[nv];
-            }
-            now += dp[v];
+        rep(j, 2*M+1) rep(z, 2) rep(k, 2) {
+            if(pdp[j][z]==-INF) continue;
+            if(z==1 && k==1) continue;
+            ll a = 0;
+            if(k==1) a = A[i];
+            ll nj = j - 1;
+            if(k==1) nj = j + 1;
+            if(nj>=0 && nj<=2*M) chmax(dp[nj][k], pdp[j][z] + a);
         }
-        de(dp)
-        swap(now, sum);
     }
-    Out(dp[0]);
+    ll ans = max(dp[1][0], dp[1][1]);
+    Out(ans);
     
 }
 

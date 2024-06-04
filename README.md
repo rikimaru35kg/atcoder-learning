@@ -133,7 +133,7 @@
 - この時、+1した回数に1を加えると、桁和になる
 - 最小桁和を求めたい場合、グラフを作って01-BFSすれば最小桁和を求める事ができる
 ### 例題
-- !要復習 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
+- !復習価値高 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
 
 ## 有理数
 - 有理数を小数で扱うと誤差が出てしまう
@@ -719,14 +719,14 @@
 - dpテーブルをpとswapする場合、pの要素を全部なめているか要注意！（dp(N+1)のとき、p[N]からの遷移を忘れずに！！rep(i, N)とすると遷移がなくなるので）
 - 初期値を-INFにする場合は要注意。足されて正の値になったら元も子もない。-1を初期値にして処理しないようにした方が無難かもしれない
 
-## カエル型DP
+## 飛び飛びDP
 - カエルが1~Kマスジャンプできるとき、最後のマスに到達する場合の数を求める問題
 - 問題設定によってはカエル型であることを見抜くのが難しい
 - 特に、一つずつの遷移ではないDPが苦手なので、何を状態にできるかよく考えること
 ### 例題
 - !要復習 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 
-## DP実装特殊系問題
+## DP実装特殊系問題（典型というわけではないのでNoteには非掲載）
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
 - 実装になれないと混乱しがちなので問題をまとめておく
 ### 例題
@@ -739,10 +739,10 @@
 - 上記は結局、rep(i,N)の毎ループでdp[0]++をしてから普通の部分和問題を解く事に一致する
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
-- !復習価値低 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
-- !要復習 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
-- !要復習 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
-- !要復習 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
+- 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
+- !復習価値中 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
+- !復習価値高 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
+- !復習価値高 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
 ## 部分集合の部分集合DP
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
