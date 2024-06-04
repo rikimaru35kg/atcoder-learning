@@ -189,32 +189,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1e5+5;
-    vvl from(2*M);
-    rep(i, N) {
-        LONG(x, y);
-        from[x].emplace_back(y+M);
-        from[y+M].emplace_back(x);
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONG(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    vb used(2*M);
-    ll xn=0, yn=0;
-    auto dfs=[&](auto f, ll v, ll t=0) -> void {
-        if(t==0) xn++;
-        else yn++;
-        used[v] = true;
-        for(auto nv: from[v]) if(!used[nv]) {
-            f(f, nv, t^1);
+    de(from)
+    vl ord(N, -1), low(N);
+    ll idx = 0;
+    vp ans;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        ord[v] = idx; low[v] = idx;
+        ++idx;
+        for(auto nv: from[v]) if(nv!=p) {
+            if(ord[nv]==-1) {
+                f(f, nv, v);
+            }
+            chmin(low[v], low[nv]);
+            if(low[nv]>ord[v]) {
+                ll a = v, b = nv;
+                if(a>b) swap(a, b);
+                ans.emplace_back(a, b);
+            }
         }
     };
-    ll tot = 0;
-    rep(i, 2*M) {
-        if(used[i]) continue;
-        xn = 0, yn = 0;
-        dfs(dfs, i);
-        tot += xn * yn;
-    }
-    Out(tot-N);
+    dfs(dfs, 0);
+    sort(all(ans));
+    Out(ans);
+
     
 }
 

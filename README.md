@@ -677,7 +677,7 @@
 - !復習価値高 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - !要復習 考察メイン [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 
-## 橋
+## 橋（low-linkが必要なABCの問題に出会っていない為、Noteには未掲載）
 - 取り除くと連結成分が増える辺を橋と呼ぶ
 - low link法を用いるとDFSの計算量O(V+E)で全橋を列挙できる
 - ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
@@ -692,7 +692,7 @@
 - あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
 ### 例題
 - 基本 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
-- !復習価値中 考察1つ [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
+- !復習価値中 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 
 ## グラフその他
 - 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または下の例題（Sum of Maximum Weights）など
