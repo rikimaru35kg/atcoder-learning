@@ -630,7 +630,7 @@
 - 実装方法としては、部分集合tの全列挙は1引いてsとのandを取るを繰り返せば良い
 - 計算量はO(N 2^N + 3^N) 3^18≒4e8（N=18）が限界
 ### 例題
-- !要復習 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
+- !復習価値中 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
 - DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
@@ -642,10 +642,10 @@
 - DAGはサイクルがないので、後ろから辿ると最長経路問題を解くことが可能
 ### 例題
 - 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
-- !復習価値中 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
-- !復習価値中 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
-- ! 要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
-- !要復習 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
+- !基本 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
+- !復習価値低 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
+- !要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
+- !要復習（実装できなかった） 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
@@ -663,8 +663,7 @@
 - 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
 - SCC後、強連結成分毎に見るとトポロジカル順に並べたDAGになっている
 ### 例題
-- !復習価値中 基本 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
-- !復習価値低 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
+- 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ
@@ -1179,6 +1178,7 @@
 - こうすることで、xについての大小判定を気にする必要がなくなる
 - xに等しい値が存在する場合の実装に注意（同時に処理するならmap<int,vi>的な実装が必要）
 ### 例題
+- 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
 - !復習価値低 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 - !復習価値中 基本 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - !要復習 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)

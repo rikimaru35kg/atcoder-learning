@@ -186,25 +186,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    mint ans = mint(99)/100;
-    Out(ans);
+    LONG(N, M);
+    vp choco(N), box(M);
+    vt3 event;
+    rep(i, N) { cin >> choco[i].first; }
+    rep(i, N) { cin >> choco[i].second; }
+    for(auto [x, y]: choco) { event.emplace_back(x, 0, y); }
+    rep(i, M) { cin >> box[i].first; }
+    rep(i, M) { cin >> box[i].second; }
+    for(auto [x, y]: box) { event.emplace_back(x, 1, y); }
+    sort(all(event));
+
+    multiset<ll> st;
+    for(auto [x, t, y]: event) {
+        if(t==0) {
+            st.insert(y);
+        } else {
+            if(st.size()) {
+                auto it = st.upper_bound(y);
+                if(it==st.begin()) continue;
+                --it;
+                st.erase(it);
+            }
+        }
+    }
+    if(st.size()) PNo PYes
     
 }
 
