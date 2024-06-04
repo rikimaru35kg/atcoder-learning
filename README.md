@@ -674,7 +674,7 @@
 - 完全2部グラフはKm,nのように表す
 - XY平面上の格子系問題ではxとyの2部グラフと考えると上手くいくことがある（点を辺に対応させる）e.g. Must Be Rectangular
 ### 例題
-- !要復習 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
+- !復習価値高 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - !要復習 考察メイン [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 
 ## 橋
@@ -683,7 +683,8 @@
 - ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
 - 文による説明は分かりにくい為、[こちらのyoutube参照](https://www.youtube.com/watch?v=iYJqgMKYsdI)
 ### 例題
-- !要復習 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
+- !復習価値中 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
+- 復習価値中 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく

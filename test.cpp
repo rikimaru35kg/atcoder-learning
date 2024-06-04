@@ -190,30 +190,35 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vp choco(N), box(M);
-    vt3 event;
-    rep(i, N) { cin >> choco[i].first; }
-    rep(i, N) { cin >> choco[i].second; }
-    for(auto [x, y]: choco) { event.emplace_back(x, 0, y); }
-    rep(i, M) { cin >> box[i].first; }
-    rep(i, M) { cin >> box[i].second; }
-    for(auto [x, y]: box) { event.emplace_back(x, 1, y); }
-    sort(all(event));
-
-    multiset<ll> st;
-    for(auto [x, t, y]: event) {
-        if(t==0) {
-            st.insert(y);
-        } else {
-            if(st.size()) {
-                auto it = st.upper_bound(y);
-                if(it==st.begin()) continue;
-                --it;
-                st.erase(it);
+    vvl from(N);
+    rep(i, M) {
+        LONG(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    de(from)
+    vl ord(N, -1), low(N);
+    ll idx = 0;
+    vp ans;
+    auto dfs = [&](auto f, ll v, ll p=-1) -> void {
+        ord[v] = idx; low[v] = idx;
+        ++idx;
+        for(auto nv: from[v]) if(nv!=p) {
+            if(ord[nv]==-1) {
+                f(f, nv, v);
+            }
+            chmin(low[v], low[nv]);
+            if(low[nv]>ord[v]) {
+                ll a = v, b = nv;
+                if(a>b) swap(a, b);
+                ans.emplace_back(a, b);
             }
         }
-    }
-    if(st.size()) PNo PYes
+    };
+    dfs(dfs, 0);
+    sort(all(ans));
+    Out(ans);
+
     
 }
 
