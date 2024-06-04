@@ -186,96 +186,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q, X);
-    VL(W, N);
-    ll tot = accumulate(all(W), 0LL);
-    rep(i, N) W.push_back(W[i]);
-    vl S(2*N+1);
-    rep(i, 2*N) S[i+1] = S[i] + W[i];
-    ll M = 45;
-    vvl to(M, vl(N));
-    ll c = X/tot;
-    ll r = X%tot;
-    vl cnt(N);
-    rep(i, N) {
-        auto [n, y] = lowbou(S, r+S[i]);
-        cnt[i] = N*c + n - i;
-        n %= N;
-        to[0][i] = n;
+    LONG(N);
+    vt3 edges;
+    rep(i, N-1) {
+        LONGM(a, b); LONG(w);
+        edges.emplace_back(w, a, b);
     }
-    rep(i, M-1) rep(v, N) {
-        to[i+1][v] = to[i][to[i][v]];
+    sort(all(edges));
+    dsu uf(N);
+    ll ans = 0;
+    for(auto [w, a, b]: edges) {
+        ans += (ll)w * uf.size(a) * uf.size(b);
+        uf.merge(a, b);
     }
-    rep(_, Q) {
-        LONGM(K);
-        ll v = 0;
-        rep(i, M) {
-            if(K>>i&1) v = to[i][v];
-        }
-        Out(cnt[v]);
-    }
+    Out(ans);
     
 }
 
