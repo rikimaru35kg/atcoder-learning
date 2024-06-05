@@ -804,7 +804,7 @@
 - !復習価値小 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - !復習価値高 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - !復習価値高 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
-- !要復習（解説見ても分からないので飛ばしてよい） ペア選び（高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f)
+- !要復習 ペア選び（かなりの高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
@@ -819,13 +819,13 @@
 - なお、遷移の順を単純に考えてBFSで実装する事も可能（下のE-Boosterはそうやって解いた）
 - 最短経路問題はforでも再帰でも解けそうだが、ゲームのように後ろからしか決まらないものは再帰でないと厳しい
 ### 例題
-- !復習価値中 基本 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
+- !復習価値中 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
 - !復習価値中 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
+- !復習価値中 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
 - !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
-- !要復習 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
-- !復習価値中 bit DPである事を見抜くのが難しい [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
-- !要復習 bit DPである事を見抜くのが難しい2 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
-- !要復習 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
+- !復習価値中 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
+- !復習価値中 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
+- !復習価値高 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 - !要復習 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 
 ## 桁DP（Digit DP）

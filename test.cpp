@@ -186,33 +186,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(_A, N);
-    deque<ll> A;
-    rep(i, N) A.push_back(_A[i]);
-    vvl dp(N+1, vl(N+1));
-    rep(i, N) { dp[i][i+1] = A[i]; }
-    ll ans = 0;
+    LONG(N, M);
+    vpd pos;
+    pos.emplace_back(0,0);
+    rep(i, N+M) {
+        DOUBLE(x, y);
+        pos.emplace_back(x, y);
+    }
+    ll N2 = N+M+1;
+    vvd dist(N2, vd(N2));
+    rep(i, N2) rep(j, N2) {
+        dist[i][j] = euclid_distd(pos[i], pos[j]);
+    }
 
-    rep(i, N) {
-        ll now = 0;
-        for(ll w=2; w<=N; ++w) {
-            rep(l, 2*N+1-w) {
-                ll r = l + w;
-                { // left
-                    if(A[l+1]>A[r-1]) chmax(dp[l][r], A[l] + dp[l+2][r]);
-                    else chmax(dp[l][r], A[l] + dp[l+1][r-1]);
-                }
-                { // right
-                    if(A[l]>A[r-2]) chmax(dp[l][r], A[r-1] + dp[l+1][r-1]);
-                    else chmax(dp[l][r], A[r-1] + dp[l][r-2]);
-                }
+    rep(k, N2) rep(i, N2) rep(j, N2) {
+        chmin(dist[i][j], dist[i][k]+dist[k][j]);
+    }
+
+    vvd dp(1<<N2, vd(N2, INF));
+    rep1(i, N2-1) {
+        ll s = 1<<i;
+        double t = euclid_distd({0.0,0.0}, pos[i]);
+        dp[s][i] = t;
+    }
+    rep(s, 1<<N2) {
+        rep(i, N2) {
+            if(~s>>i&1) continue;
+            if(dp[s][i]==INF) continue;
+            ll ntre = pcnt(s>>(N+1));
+            double spd = pow(2, ntre);
+            rep(j, N2) {
+                if(s>>j&1) continue;
+                ll ns = s|1<<j;
+                chmin(dp[ns][j], dp[s][i] + dist[i][j]/spd);
             }
         }
     }
-    rep(i, N) chmax(ans, dp[i][i+N]);
+    double ans = INF;
+    rep(s, 1<<N2) {
+        ll mask = (1<<(N+1))-1;
+        if((mask&s) != mask) continue;
+        chmin(ans, dp[s][0]);
+    }
     Out(ans);
     
 }

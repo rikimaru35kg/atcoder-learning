@@ -186,33 +186,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve(ll N) {
-    VL(W, N);
-    vvl dp(N+1, vl(N+1, 0));
-    for(ll w=2; w<=N; ++w) {
-        rep(l, N+1-w) {
-            ll r = l + w;
-            if(l==0 && r==N) {
-                cout<<"";
-            }
-            repk(m, l+1, r) {
-                chmax(dp[l][r], dp[l][m]+dp[m][r]);
-                if(l==0&&r==N&&dp[l][r]==4) de(m)
-            }
-            if(abs(W[l]-W[r-1])<=1 && dp[l+1][r-1]==r-l-2) chmax(dp[l][r], dp[l+1][r-1]+2);
-        }
-    }
-    Out(dp[0][N]);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    while(true) {
-        LONG(N);
-        if(N==0) return 0;
-        solve(N);
+    LONG(N, X, Y);
+    VL(A, N);
+    VL(B, N);
+    vl dp(1<<N, INF);
+    dp[0] = 0;
+    rep(s, 1<<N) {
+        ll np = pcnt(s);
+        rep(i, N) if(~s>>i&1) {
+            ll shift = pcnt(s>>i);
+            ll cp = i+shift;
+            // ll cost = Y*(cp-np);
+            ll cost = Y*(shift);
+            de2(cp-np, shift)
+            cost += X*abs(B[np]-A[i]);
+            ll ns = s|1<<i;
+            chmin(dp[ns], dp[s]+cost);
+        }
     }
+    Out(dp.back());
     
 }
 
