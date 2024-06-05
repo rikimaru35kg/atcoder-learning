@@ -801,10 +801,10 @@
 - 遷移させるとき、単にdp[l][k]とdp[k][r]と必ず分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できない場合もあるのか、よく考える事（Daruma Otoshiが分割できない良い例）
 ### 例題
 - 基本 [Matrix Chain Multiplication](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_B&lang=ja)
-- !復習価値中 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
-- !復習価値中 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
-- !要復習 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
-- !要復習 ペア選び（高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f)
+- !復習価値小 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
+- !復習価値高 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
+- !復習価値高 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
+- !要復習（解説見ても分からないので飛ばしてよい） ペア選び（高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法

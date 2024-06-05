@@ -186,23 +186,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+void solve(ll N) {
+    VL(W, N);
+    vvl dp(N+1, vl(N+1, 0));
+    for(ll w=2; w<=N; ++w) {
+        rep(l, N+1-w) {
+            ll r = l + w;
+            if(l==0 && r==N) {
+                cout<<"";
+            }
+            repk(m, l+1, r) {
+                chmax(dp[l][r], dp[l][m]+dp[m][r]);
+                if(l==0&&r==N&&dp[l][r]==4) de(m)
+            }
+            if(abs(W[l]-W[r-1])<=1 && dp[l+1][r-1]==r-l-2) chmax(dp[l][r], dp[l+1][r-1]+2);
+        }
+    }
+    Out(dp[0][N]);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    VL(B, M);
-    vvl dp(N+1, vl(M+1, INF));
-    dp[0][0] = 0;
-    rep(i, N+1) rep(j, M+1) {
-        if(i<N && j<M) {
-            if(A[i]==B[j]) chmin(dp[i+1][j+1], dp[i][j]);
-            else chmin(dp[i+1][j+1], dp[i][j]+1);
-        }
-        if(i<N) chmin(dp[i+1][j], dp[i][j]+1);
-        if(j<M) chmin(dp[i][j+1], dp[i][j]+1);
+    while(true) {
+        LONG(N);
+        if(N==0) return 0;
+        solve(N);
     }
-    Out(dp[N][M]);
     
 }
 

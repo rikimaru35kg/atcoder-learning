@@ -186,36 +186,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(S, N); VL(T, M);
-    vvm dp(N+1, vm(M+1));
-    dp[0][0] = 1;
-    rep(i, N+1) rep(j, M+1) {
-        if(i<N && j<M && S[i]==T[j]) {
-            dp[i+1][j+1] += dp[i][j];
+    LONG(N); VL(_A, N);
+    deque<ll> A;
+    rep(i, N) A.push_back(_A[i]);
+    vvl dp(N+1, vl(N+1));
+    rep(i, N) { dp[i][i+1] = A[i]; }
+    ll ans = 0;
+
+    rep(i, N) {
+        ll now = 0;
+        for(ll w=2; w<=N; ++w) {
+            rep(l, 2*N+1-w) {
+                ll r = l + w;
+                { // left
+                    if(A[l+1]>A[r-1]) chmax(dp[l][r], A[l] + dp[l+2][r]);
+                    else chmax(dp[l][r], A[l] + dp[l+1][r-1]);
+                }
+                { // right
+                    if(A[l]>A[r-2]) chmax(dp[l][r], A[r-1] + dp[l+1][r-1]);
+                    else chmax(dp[l][r], A[r-1] + dp[l][r-2]);
+                }
+            }
         }
-        if(i<N) dp[i+1][j] += dp[i][j];
-        if(j<M) dp[i][j+1] += dp[i][j];
-        if(i<N && j<M) dp[i+1][j+1] -= dp[i][j];
     }
-    Out(dp[N][M]);
+    rep(i, N) chmax(ans, dp[i][i+N]);
+    Out(ans);
     
 }
 
