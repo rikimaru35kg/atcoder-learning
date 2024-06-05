@@ -791,8 +791,8 @@
 - 復元するには、dp[i][j]==dp[i-1][j]ならi--、dp[i][j]==dp[i][j-1]ならj--、両方偽なら文字S[i-1]を選択してi--,j--すれば良い
 ### 例題
 - !復習価値中 LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
-- !要復習 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
-- !要復習 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
+- !復習価値中 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
+- !復習価値中 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
 
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）

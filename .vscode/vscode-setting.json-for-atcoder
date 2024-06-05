@@ -38,4 +38,5 @@
     },
     "files.autoSave": "afterDelay",
     "editor.fontFamily": "'Anonymous Pro', monospace",
+    "files.autoSaveDelay": 500,
 }

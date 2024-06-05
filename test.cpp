@@ -203,31 +203,19 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    vl A(N+1);
-    A[0] = -1;
-    rep(i, N) { A[i+1] = S[i]-'a'; }
-    ++N;
-    ll M = 26;
-    vvl nxt(M, vl(N+1, N));
-    rep(i, N) {
-        if(i==0) continue;
-        nxt[A[i]][i] = i;
-    }
-    rep(m, M) repr(i, N-1) { chmin(nxt[m][i], nxt[m][i+1]); }
-    vm dp(N+1);
-    dp[0] = 1;
-    rep(i, N) {
-        rep(m, M) {
-            ll ni = nxt[m][i+1];
-            if(ni==N) continue;
-            dp[ni+1] += dp[i];
+    LONG(N, M);
+    VL(S, N); VL(T, M);
+    vvm dp(N+1, vm(M+1));
+    dp[0][0] = 1;
+    rep(i, N+1) rep(j, M+1) {
+        if(i<N && j<M && S[i]==T[j]) {
+            dp[i+1][j+1] += dp[i][j];
         }
+        if(i<N) dp[i+1][j] += dp[i][j];
+        if(j<M) dp[i][j+1] += dp[i][j];
+        if(i<N && j<M) dp[i+1][j+1] -= dp[i][j];
     }
-    mint ans = 0;
-    rep1(i, N) ans += dp[i];
-    Out(ans);
+    Out(dp[N][M]);
     
 }
 
