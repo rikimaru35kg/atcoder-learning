@@ -748,7 +748,7 @@
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
 - N=15の時、4^N=1e9、3^N=1e7なので、N=15ぐらいのときはこのテクニックが効いてくる
 ### 例題
-- !要復習 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
+- !復習価値高 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
 ## ナップサックDP
 - 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
@@ -776,8 +776,8 @@
 - なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
 - !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
-- !要復習 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
-- !要復習 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
+- !復習価値中 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
+- !復習価値高 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
 
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという

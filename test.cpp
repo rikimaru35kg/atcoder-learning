@@ -186,31 +186,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll M = 1;
-    if (N%2==0) M = 1;
-    else M = 2;
-    vvl dp(2*M+1, vl(2, -INF));
-    vvl edp = dp;
-    dp[M][0] = 0;
+    STRING(S);
+    ll N = SIZE(S);
+    vl A(N+1);
+    A[0] = -1;
+    rep(i, N) { A[i+1] = S[i]-'a'; }
+    ++N;
+    ll M = 26;
+    vvl nxt(M, vl(N+1, N));
     rep(i, N) {
-        vvl pdp = edp;
-        swap(pdp, dp);
-        rep(j, 2*M+1) rep(z, 2) rep(k, 2) {
-            if(pdp[j][z]==-INF) continue;
-            if(z==1 && k==1) continue;
-            ll a = 0;
-            if(k==1) a = A[i];
-            ll nj = j - 1;
-            if(k==1) nj = j + 1;
-            if(nj>=0 && nj<=2*M) chmax(dp[nj][k], pdp[j][z] + a);
+        if(i==0) continue;
+        nxt[A[i]][i] = i;
+    }
+    rep(m, M) repr(i, N-1) { chmin(nxt[m][i], nxt[m][i+1]); }
+    vm dp(N+1);
+    dp[0] = 1;
+    rep(i, N) {
+        rep(m, M) {
+            ll ni = nxt[m][i+1];
+            if(ni==N) continue;
+            dp[ni+1] += dp[i];
         }
     }
-    ll ans = max(dp[1][0], dp[1][1]);
+    mint ans = 0;
+    rep1(i, N) ans += dp[i];
     Out(ans);
     
 }
