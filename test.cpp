@@ -188,52 +188,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VC(C, N);
-    de(C)
-    vl A(N);
-    rep(i, N) A[i] = C[i]-'a'+1;
-    de(A)
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vvm dp(N, vm(4));
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ll a = A[v];
-        dp[v][a] = 1;
-        dp[v][3] = 1;
-        mint tmp=1, tmp2=1;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            dp[v][a] *= (dp[nv][a] + dp[nv][3]);
-            tmp *= (dp[nv][1]+dp[nv][2]+2*dp[nv][3]);
-            tmp2 *= (dp[nv][a] + dp[nv][3]);
-        }
-        dp[v][3] = tmp - tmp2;
-    };
-    dfs(dfs, 0);
-    mint ans = dp[0][3];
-    Out(ans);
     
 }
 

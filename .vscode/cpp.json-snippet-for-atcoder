@@ -1202,4 +1202,14 @@
       "};",
     ],
   },
+  "dfs(Snippet)": {
+    "prefix": "dfssni",
+    "body": [
+      "auto dfs = [&](auto f, ll v, ll p=-1) -> void {",
+      "    for(auto nv: from[v]) if (nv != p) {",
+      "",
+      "    }",
+      "};",
+    ],
+  },
 }

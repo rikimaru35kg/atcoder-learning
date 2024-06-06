@@ -533,6 +533,7 @@
 - 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 - !復習価値低 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
+- !復習価値高 距離総和を全頂点について求める [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - !要復習 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 
 ## サイクル検出
@@ -857,7 +858,7 @@
 - 親からの逆向きの値を貰ってしまえば、全辺の合計値が求まる
 - 実装は難し目なのでライブラリ使用を推奨
 ### 例題
-- !要復習 距離総和を全頂点について求める（チャレンジ問題） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
+- !要復習 距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 
 ## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
@@ -875,8 +876,7 @@
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
 - 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
-- !要復習（なぜ青diff？と言いつつ次はWAした・・・） [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
-- !要復習 カードめくり [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
+- !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 
 ## 円環系DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
@@ -1578,6 +1578,7 @@
 - [D - Intersecting Intervals](https://atcoder.jp/contests/abc355/tasks/abc355_d)
 
 ## ACできなかった問題
+- [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
