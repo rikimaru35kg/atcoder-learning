@@ -96,6 +96,7 @@ using cd = complex<double>;
 #define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
+#define VC(cvec, n) vc cvec; input_cvec(cvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
@@ -127,6 +128,7 @@ inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_b
 inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
+inline void input_cvec(vc &cvec, ll n) {rep (i, n) {char c; cin >> c; cvec.push_back(c);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}

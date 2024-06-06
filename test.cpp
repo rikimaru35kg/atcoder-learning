@@ -92,6 +92,7 @@ using cd = complex<double>;
 #define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
 #define VL(lvec, n) vl lvec; input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
+#define VC(cvec, n) vc cvec; input_cvec(cvec, n)
 #define VS(svec, n) vs svec; input_svec(svec, n)
 #define VD(dvec, n) vd dvec; input_dvec(dvec, n)
 #define VP(pvec, n) vp pvec; input_pvec(pvec, n)
@@ -123,6 +124,7 @@ inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_b
 inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
+inline void input_cvec(vc &cvec, ll n) {rep (i, n) {char c; cin >> c; cvec.push_back(c);}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
 inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
@@ -188,7 +190,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/all>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint1000000007;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -200,42 +202,38 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve() {
-    LONG(N); STRING(S);
-    vl A(N);
-    rep(i, N) A[i] = S[i] - 'A';
-    N = (N+1)/2;
-    vm dp(2);
-    dp[0] = 1;
-    rep(i, N) {
-        ll a = A[i];
-        vm pdp(2);
-        swap(pdp, dp);
-        rep(j, 2) rep(na, 26) {
-            if(j==0 && na>a) continue;
-            ll nj = j;
-            if(na<a) nj = 1;
-            dp[nj] += pdp[j];
-        }
-    }
-    mint ans = dp[1];
-    string T;
-    rep(i, SIZE(S)) {
-        if (i<(SIZE(S)+1)/2) T.push_back(S[i]);
-        else T.push_back(S[SIZE(S)-1-i]);
-    }
-    if(T<=S) ans += dp[0];
-    de(T)
-    de(dp)
-    Out(ans);
-
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N);
+    VC(C, N);
+    de(C)
+    vl A(N);
+    rep(i, N) A[i] = C[i]-'a'+1;
+    de(A)
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    vvm dp(N, vm(4));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ll a = A[v];
+        dp[v][a] = 1;
+        dp[v][3] = 1;
+        mint tmp=1, tmp2=1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            dp[v][a] *= (dp[nv][a] + dp[nv][3]);
+            tmp *= (dp[nv][1]+dp[nv][2]+2*dp[nv][3]);
+            tmp2 *= (dp[nv][a] + dp[nv][3]);
+        }
+        dp[v][3] = tmp - tmp2;
+    };
+    dfs(dfs, 0);
+    mint ans = dp[0][3];
+    Out(ans);
     
 }
 

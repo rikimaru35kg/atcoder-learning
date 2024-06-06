@@ -186,41 +186,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    VL(A, N);
-
-    // 最大硬貨だけは繰り下がりできないので特別扱い（よってN-1まで）
-    vl mx(N-1);  // 各桁（硬貨）ごとに最大支払う意味のある枚数
-    rep(i, N-1) { mx[i] = A[i+1]/A[i]; }
-
-    vl B; //元のXを硬貨毎の枚数に変換した数列
-    ll _X = X;
+    LONG(N);
+    vvl from(N);
     rep(i, N-1) {
-        B.push_back(_X%(A[i+1]/A[i]));
-        _X /= (A[i+1]/A[i]);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-
-    vl dp(2, INF);
-    dp[0] = 0;
-    rep(i, N-1) {
-        vl pdp(2, INF);
-        swap(pdp, dp);
-        rep(j, 2) rep(k, 2) {
-            ll y = B[i];
-            if(j==1) y++;
-            if(k==0) chmin(dp[k], pdp[j]+y);
-            else chmin(dp[k], pdp[j]+mx[i]-y);
+    vvm dp(N, vm(2));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        dp[v][0] = 1, dp[v][1] = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            dp[v][0] *= (dp[nv][0] + dp[nv][1]);
+            dp[v][1] *= dp[nv][0];
         }
-    }
-    ll ans = INF;
-    rep(j, 2) {
-        ll y = _X;
-        if(j==1) ++y;
-        chmin(ans, dp[j]+y);
-    }
+    };
+    dfs(dfs, 0);
+    mint ans = dp[0][0] + dp[0][1];
     Out(ans);
     
 }
