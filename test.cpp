@@ -186,63 +186,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N); STRING(S);
+    vl A(N);
+    rep(i, N) A[i] = S[i] - 'A';
+    N = (N+1)/2;
+    vm dp(2);
+    dp[0] = 1;
+    rep(i, N) {
+        ll a = A[i];
+        vm pdp(2);
+        swap(pdp, dp);
+        rep(j, 2) rep(na, 26) {
+            if(j==0 && na>a) continue;
+            ll nj = j;
+            if(na<a) nj = 1;
+            dp[nj] += pdp[j];
+        }
+    }
+    mint ans = dp[1];
+    string T;
+    rep(i, SIZE(S)) {
+        if (i<(SIZE(S)+1)/2) T.push_back(S[i]);
+        else T.push_back(S[SIZE(S)-1-i]);
+    }
+    if(T<=S) ans += dp[0];
+    de(T)
+    de(dp)
+    Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vpd pos;
-    pos.emplace_back(0,0);
-    rep(i, N+M) {
-        DOUBLE(x, y);
-        pos.emplace_back(x, y);
-    }
-    ll N2 = N+M+1;
-    vvd dist(N2, vd(N2));
-    rep(i, N2) rep(j, N2) {
-        dist[i][j] = euclid_distd(pos[i], pos[j]);
-    }
-
-    rep(k, N2) rep(i, N2) rep(j, N2) {
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
-    }
-
-    vvd dp(1<<N2, vd(N2, INF));
-    rep1(i, N2-1) {
-        ll s = 1<<i;
-        double t = euclid_distd({0.0,0.0}, pos[i]);
-        dp[s][i] = t;
-    }
-    rep(s, 1<<N2) {
-        rep(i, N2) {
-            if(~s>>i&1) continue;
-            if(dp[s][i]==INF) continue;
-            ll ntre = pcnt(s>>(N+1));
-            double spd = pow(2, ntre);
-            rep(j, N2) {
-                if(s>>j&1) continue;
-                ll ns = s|1<<j;
-                chmin(dp[ns][j], dp[s][i] + dist[i][j]/spd);
-            }
-        }
-    }
-    double ans = INF;
-    rep(s, 1<<N2) {
-        ll mask = (1<<(N+1))-1;
-        if((mask&s) != mask) continue;
-        chmin(ans, dp[s][0]);
-    }
-    Out(ans);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 

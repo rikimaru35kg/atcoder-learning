@@ -189,25 +189,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
+    LONG(N, X);
     VL(A, N);
-    VL(B, N);
-    vl dp(1<<N, INF);
+
+    // 最大硬貨だけは繰り下がりできないので特別扱い（よってN-1まで）
+    vl mx(N-1);  // 各桁（硬貨）ごとに最大支払う意味のある枚数
+    rep(i, N-1) { mx[i] = A[i+1]/A[i]; }
+
+    vl B; //元のXを硬貨毎の枚数に変換した数列
+    ll _X = X;
+    rep(i, N-1) {
+        B.push_back(_X%(A[i+1]/A[i]));
+        _X /= (A[i+1]/A[i]);
+    }
+
+    vl dp(2, INF);
     dp[0] = 0;
-    rep(s, 1<<N) {
-        ll np = pcnt(s);
-        rep(i, N) if(~s>>i&1) {
-            ll shift = pcnt(s>>i);
-            ll cp = i+shift;
-            // ll cost = Y*(cp-np);
-            ll cost = Y*(shift);
-            de2(cp-np, shift)
-            cost += X*abs(B[np]-A[i]);
-            ll ns = s|1<<i;
-            chmin(dp[ns], dp[s]+cost);
+    rep(i, N-1) {
+        vl pdp(2, INF);
+        swap(pdp, dp);
+        rep(j, 2) rep(k, 2) {
+            ll y = B[i];
+            if(j==1) y++;
+            if(k==0) chmin(dp[k], pdp[j]+y);
+            else chmin(dp[k], pdp[j]+mx[i]-y);
         }
     }
-    Out(dp.back());
+    ll ans = INF;
+    rep(j, 2) {
+        ll y = _X;
+        if(j==1) ++y;
+        chmin(ans, dp[j]+y);
+    }
+    Out(ans);
     
 }
 
