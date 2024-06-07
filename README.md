@@ -874,7 +874,7 @@
 - DP全般に言える事だが、いかにして状態数を減らせるかが大事（例: D - ABS）。計算量が間に合わないときは、無駄な状態はないかよく考える事
 ### 例題
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
-- 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
+- !復習価値低 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 - !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 
@@ -898,8 +898,8 @@
 - 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
 - LISを求めていく過程で、その要素を最後だと見なした時のLIS長も同時に求まる事も覚えておきたい
 ### 例題
-- !復習価値低 LIS+木の実装 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
-- !復習価値高 LIS+ひねり [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
+- 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
+- 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する
@@ -907,15 +907,15 @@
 - あるいは状態量を減らす事で高速化できる事もある（DP値がboolなら状態量を1つ減らせるはず）
 - 平方分割を組み合わせて遷移を減らすこともある
 ### 例題
-- !復習価値中 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
-- !復習価値高 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
-- !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- !復習価値低 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
+- !復習価値低 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
-- !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
+- !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
+- !復習価値高（想定解と違ったが解けた） 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
+- !復習価値高 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
+- !復習価値高 サイコロゲーム（実装難しい） [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
-- !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
-- !要復習 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
-- !要復習 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
 
 ## 状態を工夫するDP
 - 状態を工夫する事でDPに落とし込める問題

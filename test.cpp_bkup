@@ -188,26 +188,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    vl x(N+1);
-    ll idx = 0;
-    rep1(i, N) {
-        x[i] = x[i-1] + A[idx];
-        if(i%2==0) ++idx;
-    }
-    vl dp(N+1, -INF);
-    dp[0]=0;
-    rep1(i, N) {
-        rep(j, i) {
-            chmax(dp[i], dp[j]+x[i-j-1]);
+    LONG(N); VL(A, N);
+    ll M = sqrt(N);
+    vm dp(N);
+    vvm sky(M+1, vm(N));
+    dp[0] = 1;
+    de(M)
+    mint ans = 0;
+    rep(i, N) {
+        if (i==N-1) {
+            cout << "";
+        }
+        rep(j, M+1) { dp[i] += sky[j][i]; }
+        ans += dp[i];
+        if(i==N-1) break;
+        if (A[i]<=M) {
+            if(i+A[i]<N) sky[A[i]][i+A[i]] += dp[i];
+        } else {
+            for(ll k=i+A[i]; k<N; k+=A[i]) {
+                dp[k] += dp[i];
+            }
+        }
+        rep(j, M+1) {
+            if(i+j<N) sky[j][i+j] += sky[j][i];
         }
         de(dp)
+        de(sky)
     }
-    Out(dp[N]);
+    Out(ans);
     
 }
 

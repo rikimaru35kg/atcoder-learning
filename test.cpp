@@ -188,76 +188,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using S = ll;
+S op(S a, S b) {return max(a, b);}
+S e() { return -INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N); VL(_B, N);
-    vl B(N);
-    rep(i, N) {
-        B[i] = _B[(i-1+N)%N];
-    }
-    ll ans = INF;
-    // rep(pj, 2) {
-    //     vl dp(2, INF);
-    //     vl edp = dp;
-    //     dp[pj] = 0;
-    //     rep(i, N) {
-    //         vl pdp = edp;
-    //         swap(pdp, dp);
-    //         rep(j, 2) {
-    //             // white
-    //             {
-    //                 ll nj = 0;
-    //                 ll val = 0;
-    //                 if (j == 0) val += B[i];
-    //                 chmin(dp[nj], pdp[j] + val);
-    //             }
-    //             // black
-    //             {
-    //                 ll nj = 1;
-    //                 ll val = A[i];
-    //                 if (j==1) val += B[i];
-    //                 chmin(dp[nj], pdp[j] + val);
-    //             }
-    //         }
-    //     }
-    //     chmin(ans, dp[pj]);
-    // }
-    rep(pj, 2) rep(pk, 2) {
-        vvl dp(2, vl(2, INF));
-        vvl edp = dp;
-        dp[pj][pk] = 0;
-        rep(i, N) {
-            vvl pdp = edp;
-            swap(pdp, dp);
-            rep(j, 2) rep(k, 2) {
-                // white
-                {
-                    ll nj = 0;
-                    ll nk = 1;
-                    ll val = 0;
-                    if (j == 0) val += B[i];
-                    chmin(dp[nj][nk], pdp[j][k] + val);
-                }
-                // black
-                {
-                    ll nj = 1;
-                    ll nk = 0;
-                    ll val = A[i];
-                    bool ok = true;
-                    if (j==0) {
-                        nk = 1;
-                    } else {
-                        if (k==0) ok = false;
-                        val += B[i];
-                    }
-                    if(ok) chmin(dp[nj][nk], pdp[j][k] + val);
-                }
-            }
+    LONG(N, C);
+    LONG(M);
+    vl dp(N, -INF);
+    dp[0] = 0;
+    segtree<S,op,e> sp(N), sm(N);
+    sp.set(0, 0);
+    sm.set(0, 0);
+    rep(i, M) {
+        LONG(t, p); --t;
+        ll now = -INF;
+        { // t>j
+            ll l = 0, r = t;
+            chmax(now, sp.prod(l, r) - C*t + p);
         }
-        chmin(ans, dp[pj][pk]);
+        { // t<=j
+            ll l = t, r = N;
+            chmax(now, sm.prod(l, r) + C*t + p);
+        }
+        dp[t] = now;
+        sp.set(t, now + C*t);
+        sm.set(t, now - C*t);
     }
+    ll ans = -INF;
+    rep(i, N) chmax(ans, dp[i]);
     Out(ans);
     
 }
