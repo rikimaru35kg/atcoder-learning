@@ -886,10 +886,10 @@
 - 予言は実際にdpの値に最後の選択値を代入するものではないが、それをベースにdpを遷移させていく（このあたりの概念は分かりにくいので[snuke氏解説動画](https://www.youtube.com/live/lBhn0wg-IS4?feature=shared&t=2853)を参照
 - 円環のどこかに必ず固定できる点があるのであれば、それを1番目かつN+1番目の要素とする事で、円環を固定できる場合あり
 ### 例題
-- !復習価値低 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
-- !要復習 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
-- !要復習 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
-- !要復習 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
+- !復習価値中 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
+- !復習価値中 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
+- !復習価値中 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
+- !要復習（惜しかった） 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
 
 ## LIS 最長増加部分列
 - 単調増加する最長の部分列を特定する手法

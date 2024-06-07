@@ -191,6 +191,74 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N);
+    VL(A, N); VL(_B, N);
+    vl B(N);
+    rep(i, N) {
+        B[i] = _B[(i-1+N)%N];
+    }
+    ll ans = INF;
+    // rep(pj, 2) {
+    //     vl dp(2, INF);
+    //     vl edp = dp;
+    //     dp[pj] = 0;
+    //     rep(i, N) {
+    //         vl pdp = edp;
+    //         swap(pdp, dp);
+    //         rep(j, 2) {
+    //             // white
+    //             {
+    //                 ll nj = 0;
+    //                 ll val = 0;
+    //                 if (j == 0) val += B[i];
+    //                 chmin(dp[nj], pdp[j] + val);
+    //             }
+    //             // black
+    //             {
+    //                 ll nj = 1;
+    //                 ll val = A[i];
+    //                 if (j==1) val += B[i];
+    //                 chmin(dp[nj], pdp[j] + val);
+    //             }
+    //         }
+    //     }
+    //     chmin(ans, dp[pj]);
+    // }
+    rep(pj, 2) rep(pk, 2) {
+        vvl dp(2, vl(2, INF));
+        vvl edp = dp;
+        dp[pj][pk] = 0;
+        rep(i, N) {
+            vvl pdp = edp;
+            swap(pdp, dp);
+            rep(j, 2) rep(k, 2) {
+                // white
+                {
+                    ll nj = 0;
+                    ll nk = 1;
+                    ll val = 0;
+                    if (j == 0) val += B[i];
+                    chmin(dp[nj][nk], pdp[j][k] + val);
+                }
+                // black
+                {
+                    ll nj = 1;
+                    ll nk = 0;
+                    ll val = A[i];
+                    bool ok = true;
+                    if (j==0) {
+                        nk = 1;
+                    } else {
+                        if (k==0) ok = false;
+                        val += B[i];
+                    }
+                    if(ok) chmin(dp[nj][nk], pdp[j][k] + val);
+                }
+            }
+        }
+        chmin(ans, dp[pj][pk]);
+    }
+    Out(ans);
     
 }
 

@@ -191,16 +191,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
+    LONG(N);
     VL(A, N);
-    if (N==1) {
-        ll ans = abs(Y-A[N-1]);
-        Out(ans);
-        return 0;
+    vl x(N+1);
+    ll idx = 0;
+    rep1(i, N) {
+        x[i] = x[i-1] + A[idx];
+        if(i%2==0) ++idx;
     }
-    ll ans = abs(A[N-1]-A[N-2]);
-    chmax(ans, abs(Y-A[N-1]));
-    Out(ans);
+    vl dp(N+1, -INF);
+    dp[0]=0;
+    rep1(i, N) {
+        rep(j, i) {
+            chmax(dp[i], dp[j]+x[i-j-1]);
+        }
+        de(dp)
+    }
+    Out(dp[N]);
     
 }
 
