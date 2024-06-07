@@ -193,8 +193,8 @@ struct Data {
     Data() {}
     Data(ll k, ll p): k(k), p(p) {}
     bool operator<(const Data &o) const {
-        if (k==o.k) return p>o.p;
-        else return k<o.k;
+        if (k<o.k) return true;
+        return p>o.p;
     }
 };
 using vD = vector<Data>;
@@ -233,6 +233,9 @@ int main () {
                 ll ngid = gid;
                 if (P[ni][nj]>P[gi][gj]) { ngid = nid; }
 
+                de2(id, gid)
+                de2(nid, ngid)
+                de3(num+cnt+1, p, np)
                 dp[nid][ngid] = min(dp[nid][ngid], Data(num+cnt+1, np));
             }
         }
@@ -240,7 +243,12 @@ int main () {
     ll ans = INF;
     ll lid = (N-1)*N + (N-1);
     rep(i, N) rep(j, N) {
+        de(dp[lid][i*N+j].k)
         chmin(ans, dp[lid][i*N+j].k);
+    }
+    rep(i, N) rep(j, N) {
+        ll id = i*N+j;
+        de(dp[id][id].k);
     }
     Out(ans);
     

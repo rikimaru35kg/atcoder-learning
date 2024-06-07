@@ -205,33 +205,30 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = sqrt(N);
-    vm dp(N);
-    vvm sky(M+1, vm(N));
-    dp[0] = 1;
-    de(M)
+    LONG(N); STRING(S);
+    vl A;
+    for(auto c: S) {
+        A.push_back(c-'A');
+    }
+    de(A)
+    ll M = 10;
+    vvm dp(1<<M, vm(M));
     mint ans = 0;
     rep(i, N) {
-        if (i==N-1) {
-            cout << "";
-        }
-        rep(j, M+1) { dp[i] += sky[j][i]; }
-        ans += dp[i];
-        if(i==N-1) break;
-        if (A[i]<=M) {
-            if(i+A[i]<N) sky[A[i]][i+A[i]] += dp[i];
-        } else {
-            for(ll k=i+A[i]; k<N; k+=A[i]) {
-                dp[k] += dp[i];
+        ll a = A[i];
+        repr(s, 1<<M) rep(j, M) {
+            if (~s>>j&1) continue;
+            if(dp[s][j]==0) continue;
+            if (a==j) {
+                dp[s][j] += dp[s][j];
+            } else if (~s>>a&1) {
+                ll ns = s|1<<a;
+                dp[ns][a] += dp[s][j];
             }
         }
-        rep(j, M+1) {
-            if(i+j<N) sky[j][i+j] += sky[j][i];
-        }
-        de(dp)
-        de(sky)
+        dp[1<<a][a]++;
     }
+    rep(s, 1<<M) rep(i, M) ans += dp[s][i];
     Out(ans);
     
 }
