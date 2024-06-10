@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### A.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -191,31 +191,17 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 1e6;
-    vl cnt(M+1);
-    rep(i, N) { cnt[A[i]]++; }
-
-    vl S(M+2);
-    rep(i, M+1) S[i+1] = S[i] + cnt[i];
-
-    ll ans = 0;
-    rep1(x, M) {
-        // if(cnt[x]==0) continue;
-        for(ll y=x; y<=M; y+=x) {
-            ll l = y, r = y+x;
-            chmin(r, M+1);
-            ll num = S[r] - S[l];
-            if(y==x) num -= cnt[x];
-            ans += num * (y/x) * cnt[x];
+    LONG(N, M);
+    VL(A, N);
+    rep(i, N) {
+        M -= A[i];
+        if (M<0) {
+            Out(i);
+            return 0;
         }
     }
-    de(ans)
-    rep1(x, M) {
-        ans += cnt[x]*(cnt[x]-1)/2;
-    }
-    Out(ans);
+    Out(N);
     
 }
 
-// ### test.cpp ###
+// ### A.cpp ###

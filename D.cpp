@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### D.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -179,8 +179,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {0, 1};
-const vi dj = {1, 0};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -188,70 +188,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Data {
-    ll k, p;
-    Data() {}
-    Data(ll k, ll p): k(k), p(p) {}
-    bool operator<(const Data &o) const {
-        if (k<o.k) return true;
-        return p>o.p;
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+vector<int> separate_digit(long long x, long long base=10) {
+    vector<int> ret;
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-};
-using vD = vector<Data>;
-using vvD = vector<vD>;
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<int> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VVL(P, N, N); VVL(R, N, N-1); VVL(D, N-1, N);
-    vvD dp(N*N, vD(N*N, Data(INF, 0)));
-    dp[0][0] = Data(0, 0);
-    rep(i, N) rep(j, N) {
-        ll id = N*i+j;
-        rep(gi, N) rep(gj, N) {
-            ll gid = N*gi + gj;
-            rep(k, 2) {
-                ll ni = i + di[k];
-                ll nj = j + dj[k];
-                if(!isin(ni,nj,N,N)) continue;
-                ll nid = ni*N+nj;
+    auto gg = separate_digit(N);
+    ll k = SIZE(gg);
+    mint r0 = N%998244353;
+    
 
-                auto [num, p] = dp[id][gid];
-                if (num==INF) continue;
-                ll cost = 0;
-                if (k==0) cost = R[i][j];
-                else cost = D[i][j];
-                ll np = p;
-                ll cnt = 0;
-                if (p<cost) {
-                    cnt += Divceil(cost-p, P[gi][gj]);
-                    np += cnt * P[gi][gj]; 
-                }
-                np -= cost;
-
-                ll ngid = gid;
-                if (P[ni][nj]>P[gi][gj]) { ngid = nid; }
-
-                de2(id, gid)
-                de2(nid, ngid)
-                de3(num+cnt+1, p, np)
-                dp[nid][ngid] = min(dp[nid][ngid], Data(num+cnt+1, np));
-            }
+    auto f=[&](auto f, ll n) -> pair<mint,mint> {
+        if(n==1) {
+            return {r0, mint(10).pow(k)};
         }
-    }
-    ll ans = INF;
-    ll lid = (N-1)*N + (N-1);
-    rep(i, N) rep(j, N) {
-        de(dp[lid][i*N+j].k)
-        chmin(ans, dp[lid][i*N+j].k);
-    }
-    rep(i, N) rep(j, N) {
-        ll id = i*N+j;
-        de(dp[id][id].k);
-    }
-    Out(ans);
+        ll N2 = n/2;
+        auto [r, po] = f(f, N2);
+        mint ret = r + r * po; //mint(10).pow(k*N2);
+        mint po2 = po * po;
+        if(n%2==1) {
+            ret += r0 * po2; //mint(10).pow(k*(n-1));
+            po2 *= mint(10).pow(k);
+        }
+        return {ret, po2 };
+    };
+    Out(f(f, N).first);
     
 }
 
-// ### test.cpp ###
+// ### D.cpp ###

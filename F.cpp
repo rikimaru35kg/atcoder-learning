@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### F.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -188,34 +188,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+struct S {
+    mint val; ll asum, bsum; ll w;
+    S() {}
+    S(mint val, ll asum, ll bsum, ll w): val(val), asum(asum), bsum(bsum), w(w) {}
+};
+S op(S a, S b) {
+    return S(a.val+b.val, a.asum+b.asum, a.bsum+b.bsum, a.w+b.w);
+}
+S e() {return S(0,0,0,0);}
+struct F {
+    ll x, y;
+    F () { }
+    F (ll x, ll y): x(x), y(y) {}
+};
+S mapping(F f, S x) {
+    return S(x.val+f.x*x.bsum+f.y*x.asum, x.asum+f.x*x.w, x.bsum+f.y*x.w, x.w);
+}
+F composition(F f, F g) {
+    return F(f.x+g.x, f.y+g.y);
+}
+F id() {return F(0,0);}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 1e6;
-    vl cnt(M+1);
-    rep(i, N) { cnt[A[i]]++; }
-
-    vl S(M+2);
-    rep(i, M+1) S[i+1] = S[i] + cnt[i];
-
-    ll ans = 0;
-    rep1(x, M) {
-        // if(cnt[x]==0) continue;
-        for(ll y=x; y<=M; y+=x) {
-            ll l = y, r = y+x;
-            chmin(r, M+1);
-            ll num = S[r] - S[l];
-            if(y==x) num -= cnt[x];
-            ans += num * (y/x) * cnt[x];
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    rep(i, N) {
+        seg.set(i, S(A[i]*B[i], A[i], B[i], 1));
+    }
+    rep(i, Q) {
+        LONG(t, l, r); --l;
+        if(t==1) {
+            LONG(x);
+            seg.apply(l, r, F(x, 0));
+        } else if (t==2) {
+            LONG(x);
+            seg.apply(l, r, F(0, x));
+        } else {
+            mint ans = seg.prod(l, r).val;
+            Out(ans);
         }
     }
-    de(ans)
-    rep1(x, M) {
-        ans += cnt[x]*(cnt[x]-1)/2;
-    }
-    Out(ans);
     
 }
 
-// ### test.cpp ###
+// ### F.cpp ###

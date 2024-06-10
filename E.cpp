@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### E.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -188,34 +188,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 1e6;
-    vl cnt(M+1);
-    rep(i, N) { cnt[A[i]]++; }
-
-    vl S(M+2);
-    rep(i, M+1) S[i+1] = S[i] + cnt[i];
-
+    LONG(N); VLM(A, N);
+    vvl from(N);
+    scc_graph scc(N);
+    rep(i, N) {
+        from[i].push_back(A[i]);
+        scc.add_edge(i, A[i]);
+    }
+    auto grs = scc.scc();
+    vl size(N, -1);
     ll ans = 0;
-    rep1(x, M) {
-        // if(cnt[x]==0) continue;
-        for(ll y=x; y<=M; y+=x) {
-            ll l = y, r = y+x;
-            chmin(r, M+1);
-            ll num = S[r] - S[l];
-            if(y==x) num -= cnt[x];
-            ans += num * (y/x) * cnt[x];
+    for(auto gr: grs) {
+        ll S = SIZE(gr);
+        if(S==1 && from[gr[0]][0] != gr[0]) continue;
+        for(auto v: gr) {
+            size[v] = S;
         }
+        ans += S*S;
     }
     de(ans)
-    rep1(x, M) {
-        ans += cnt[x]*(cnt[x]-1)/2;
+
+    auto dfs = [&](auto f, ll v) -> ll {
+        if(size[v] != -1) {
+            return size[v];
+        }
+        ll ret = 1;
+        for(auto nv: from[v]) {
+            ret += f(f, nv);
+        }
+        ans += ret;
+        size[v] = ret;
+        return ret;
+    };
+    rep(v, N) {
+        if (size[v]==-1) dfs(dfs, v);
     }
     Out(ans);
+
     
 }
 
-// ### test.cpp ###
+// ### E.cpp ###

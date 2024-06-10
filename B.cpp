@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### B.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -188,49 +188,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    vl A;
-    for(auto c: S) {
-        A.push_back(c-'A');
-    }
-    de(A)
-    ll M = 10;
-    vvm dp(1<<M, vm(M));
-    mint ans = 0;
+    STRING(S);
+    ll N = SIZE(S);
+    ll upp = 0, low = 0;
     rep(i, N) {
-        ll a = A[i];
-        repr(s, 1<<M) rep(j, M) {
-            if (~s>>j&1) continue;
-            if(dp[s][j]==0) continue;
-            if (a==j) {
-                dp[s][j] += dp[s][j];
-            } else if (~s>>a&1) {
-                ll ns = s|1<<a;
-                dp[ns][a] += dp[s][j];
-            }
-        }
-        dp[1<<a][a]++;
+        if(isupper(S[i])) ++upp;
+        else ++low;
     }
-    rep(s, 1<<M) rep(i, M) ans += dp[s][i];
+    bool bu = false;
+    if(upp>low) {
+        bu = true;
+    }
+
+    string ans;
+    rep(i, N) {
+        char c = S[i];
+        if(bu) {
+            c = toupper(c);
+        } else {
+            c = tolower(c);
+        }
+        ans.push_back(c);
+    }
     Out(ans);
     
 }
 
-// ### test.cpp ###
+// ### B.cpp ###
