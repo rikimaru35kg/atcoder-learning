@@ -934,8 +934,9 @@
 ## 戻すDP
 - 可換な操作であればDPテーブルを戻すことが可能
 - 部分和問題は可換（形式的べき級数FPSで考えれば明らか）
+- 部分和問題であれば、インラインでDPする場合のループ順と+/-を逆にするだけで戻す操作に対応
 ### 例題
-- !要復習 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
+- !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
 
 # 最短経路問題
 

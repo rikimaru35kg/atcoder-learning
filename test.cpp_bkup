@@ -190,46 +190,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    dsu uf(N);
-    ll M = 10;
-    vm dp(1<<(M+1));
-    vm edp = dp;
-    dp[1] = 1;
-    mint tot = 1;
-    ll mask = (1<<(M+1)) - 1;
-    deb(mask)
-    rep(i, N) {
-        vm pdp = edp;
-        swap(pdp, dp);
-        rep(s, 1<<(M+1)) {
-            // x=1 ~ M 
-            rep1(x, min(A[i],M)) {
-                ll ns = (s|s<<x) & mask;
-                dp[ns] += pdp[s];
-            }
-            // x=M+1 ~ A[i] 
-            dp[s] += pdp[s] * max(A[i]-M, 0LL);
-        }
-        tot *= A[i];
-    }
-    mint ans = 0;
-    rep(s, 1<<(M+1)) {
-        if(s>>(M)&1) {
-            ans += dp[s];
-        }
-    }
-    de(ans)
-    ans /= tot;
-    Out(ans);
+    
 }
 
 // ### test.cpp ###
