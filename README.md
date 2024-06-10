@@ -970,8 +970,8 @@
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
 ### 例題
 - 基本 [E - Swap Place](https://atcoder.jp/contests/abc289/tasks/abc289_e)
-- !復習価値高 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
-- !要復習 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
+- !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
+- !要復習 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
 
 ## ダイクストラ＋ポテンシャル法
 - ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる

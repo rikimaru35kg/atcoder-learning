@@ -188,47 +188,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Edge {
-    ll nv, l, d, k, c;
-    Edge(ll nv, ll l, ll d, ll k, ll c): nv(nv),l(l),d(d),k(k),c(c) {}
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vector<vector<Edge>> from(N);
+    vvl from(N);
     rep(i, M) {
-        LONG(l, d, k, c); LONGM(a, b);
-        from[b].emplace_back(a, l, d, k, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    vl dist(N, -INF);
-    priority_queue<Pr> que;
-    auto push=[&](ll v, ll t) {
-        if(dist[v]>=t) return;
-        dist[v] = t;
-        que.emplace(t, v);
+    vvl dist(1<<N, vl(N, INF));
+    dist[0][0] = 0;
+    queue<Pr> que;
+    auto push=[&](ll s, ll v, ll d) {
+        if(dist[s][v] != INF) return;
+        dist[s][v] = d;
+        que.emplace(s, v);
     };
-    push(N-1, INF);
+    rep(i, N) push(1<<i, i, 1);
     while(que.size()) {
-        auto [t, v] = que.top(); que.pop();
-        if(dist[v] != t) continue;
-        for(auto [nv,l,d,k,c]: from[v]) {
-            ll nt = t - c;
-            if(nt<l) continue;
-            ll last = l+(k-1)*d;
-            if(nt>=last) nt = last;
-            else nt = (nt-l)/d*d + l;
-            push(nv, nt);
+        auto [s, v] = que.front(); que.pop();
+        ll d = dist[s][v];
+        for(auto nv: from[v]) {
+            ll ns = s^1<<nv;
+            push(ns, nv, d+1);
         }
     }
-    rep(i, N-1) {
-        if(dist[i]==-INF) puts("Unreachable");
-        else Out(dist[i]);
+    ll ans = 0;
+    rep(s, 1<<N) {
+        ll now = INF;
+        rep(v, N) chmin(now, dist[s][v]);
+        deb(s)de(now)
+        // if(s==0) now = 0;
+        ans += now;
     }
-
-
-
+    Out(ans);
     
 }
 
