@@ -179,8 +179,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {1, 1, -1, -1};
-const vi dj = {1, -1, 1, -1};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -191,38 +191,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); LONGM(ax, ay, bx, by);
-    VS(S, N);
-    vvvl dist(N, vvl(N, vl(4, INF)));
-    deque<t3> que;
-    auto push = [&](ll i, ll j, ll k, ll d, bool fr) {
-        if(dist[i][j][k] <= d) return;
-        dist[i][j][k] = d;
-        de3(i, j, k) de(d)
-        if(fr) que.emplace_front(i, j, k);
-        else que.emplace_back(i, j, k);
+    LONG(H, W);
+    VS(S, H);
+    vvl dist(H, vl(W, INF));
+    deque<Pr> que;
+    auto push=[&](ll i, ll j, ll d, bool fr=true) {
+        if(dist[i][j]<=d) return;
+        dist[i][j] = d;
+        if(fr) que.emplace_front(i, j);
+        else que.emplace_back(i, j);
     };
-    rep(i, 4) push(ax, ay, i, 1, true);
-
+    push(0, 0, 0);
     while(que.size()) {
-        auto [i, j, dir] = que.front(); que.pop_front();
-        ll d = dist[i][j][dir];
+        auto [i, j] = que.front(); que.pop_front();
+        ll d = dist[i][j];
         rep(k, 4) {
-            // if(k==dir) continue;
-            push(i, j, k, d+1, false);
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni, nj, H, W)) continue;
+            if (S[ni][nj] == '#') continue;
+            push(ni, nj, d);
         }
-        ll ni = i + di[dir];
-        ll nj = j + dj[dir];
-        if(!isin(ni,nj,N,N)) continue;
-        if(S[ni][nj] == '#') continue;
-        push(ni,nj,dir,d,true);
+        repk(a, -2, 3) repk(b, -2, 3) {
+            if(abs(a)==2 && abs(b)==2) continue;
+            if(a==0 && b==0) continue;
+            ll ni = i + a;
+            ll nj = j + b;
+            if(!isin(ni, nj, H, W)) continue;
+            push(ni,nj,d+1,false);
+        }
     }
-
-    ll ans = INF;
-    rep(i, 4) chmin(ans, dist[bx][by][i]);
-    ch1(ans);
-    Out(ans);
-
+    de(dist)
+    Out(dist.back().back());
     
 }
 

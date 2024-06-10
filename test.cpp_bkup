@@ -114,8 +114,8 @@ template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.fron
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
-template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
-template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
+template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
+template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
 inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
@@ -188,39 +188,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q, K);
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, Q) {
-        CHAR(c); LONG(x);
-        if(c=='+') {
-            repr(j, K+1) {
-                if (j+x <= K) dp[j+x] += dp[j];
-            }
-        } else {
-            rep(j, K+1) {
-                if(j+x<=K) dp[j+x] -= dp[j];
-            }
+    LONG(H, W);
+    LONGM(si, sj, gi, gj);
+    VS(S, H);
+    vvl dist(H, vl(W,INF));
+    deque<Pr> que;
+    auto push=[&](ll i, ll j, ll d, bool fr) {
+        if(dist[i][j]<=d) return;
+        dist[i][j] = d;
+        if(fr) que.emplace_front(i,j);
+        else que.emplace_back(i,j);
+    };
+    push(si,sj,0,true);
+
+    while(que.size()) {
+        auto [i,j] = que.front(); que.pop_front();
+        ll d = dist[i][j];
+        rep(k, 4) {
+            ll ni = i + di[k];
+            ll nj = j + dj[k];
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='#') continue;
+            push(ni,nj,d,true);
         }
-        Out(dp[K]);
+        repk(a, -2, 3) repk(b, -2, 3) {
+            ll ni = i + a;
+            ll nj = j + b;
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='#') continue;
+            push(ni,nj,d+1,false);
+        }
     }
+    ll ans = dist[gi][gj];
+    ch1(ans);
+    Out(ans);
     
 }
 
