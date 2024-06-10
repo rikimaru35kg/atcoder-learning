@@ -920,14 +920,14 @@
 - !復習価値高（想定解と違ったが解けた） 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !要復習 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 
-## 貪欲＋DP
-- 貪欲しやすいように事前準備してからDPする必要のある問題あり
+## 前処理DP
+- DPできる形に前処理してからDPする問題
 ### 例題
 - !要復習 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
-- 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^10でOK）
+- 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
 ### 例題
 - !要復習 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 

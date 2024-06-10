@@ -668,8 +668,8 @@
       "};",
     ],
   },
-  "atcoder": {
-    "prefix": "atcoder",
+  "atcoder_all(Snippet)": {
+    "prefix": "atcoder_all",
     "body": [
       "#include <atcoder/all>",
       "using namespace atcoder;",
@@ -1210,6 +1210,73 @@
       "",
       "    }",
       "};",
+    ],
+  },
+  "atcoder/mint(Snippet)": {
+    "prefix": "atcoder_mint",
+    "body": [
+      "#include <atcoder/modint>",
+      "using namespace atcoder;",
+      "using mint = modint998244353;",
+      "using vm = vector<mint>;",
+      "using vvm = vector<vector<mint>>;",
+      "using vvvm = vector<vector<vector<mint>>>;",
+      "inline void Out(mint e) {cout << e.val() << '\\\\n';}",
+      "inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\\\\n':' ');}",
+      "#ifdef __DEBUG",
+      "inline void debug_view(mint e){cerr << e.val() << endl;}",
+      "inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << \" \";} cerr << endl;}",
+      "inline void debug_view(vvm &vv){cerr << \"----\" << endl;for(auto &v: vv){debug_view(v);} cerr << \"--------\" << endl;}",
+      "#endif",
+    ],
+  },
+  "atcoder/dsu(Snippet)": {
+    "prefix": "atcoder_dsu",
+    "body": [
+      "#include <atcoder/dsu>",
+      "using namespace atcoder;",
+    ],
+  },
+  "atcoder/fenwick(Snippet)": {
+    "prefix": "atcoder_fenwick",
+    "body": [
+      "#include <atcoder/fenwicktree>",
+      "using namespace atcoder;",
+    ],
+  },
+  "atcoder/segtree(Snippet)": {
+    "prefix": "atcoder_segtree",
+    "body": [
+      "#include <atcoder/segtree>",
+      "using namespace atcoder;",
+    ],
+  },
+  "atcoder/lazysegtree(Snippet)": {
+    "prefix": "atcoder_lazysegtree",
+    "body": [
+      "#include <atcoder/lazysegtree>",
+      "using namespace atcoder;",
+    ],
+  },
+  "atcoder/scc(Snippet)": {
+    "prefix": "atcoder_scc",
+    "body": [
+      "#include <atcoder/scc>",
+      "using namespace atcoder;",
+    ],
+  },
+  "atcoder/math(Snippet)": {
+    "prefix": "atcoder_math",
+    "body": [
+      "#include <atcoder/math>",
+      "using namespace atcoder;",
+    ],
+  },
+  "atcoder/string(Snippet)": {
+    "prefix": "atcoder_string",
+    "body": [
+      "#include <atcoder/string>",
+      "using namespace atcoder;",
     ],
   },
 }
