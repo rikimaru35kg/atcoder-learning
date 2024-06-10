@@ -963,7 +963,7 @@
 ### 例題
 - !復習価値低 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - !復習価値低 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
-- !復習価値高 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
+- !要復習 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 
 ## 拡張ダイクストラ法（or 拡張BFS）
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる

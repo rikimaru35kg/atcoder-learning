@@ -188,41 +188,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Edge {
+    ll nv, l, d, k, c;
+    Edge(ll nv, ll l, ll d, ll k, ll c): nv(nv),l(l),d(d),k(k),c(c) {}
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    vvl dist(H, vl(W, INF));
-    deque<Pr> que;
-    auto push=[&](ll i, ll j, ll d, bool fr=true) {
-        if(dist[i][j]<=d) return;
-        dist[i][j] = d;
-        if(fr) que.emplace_front(i, j);
-        else que.emplace_back(i, j);
+    LONG(N, M);
+    vector<vector<Edge>> from(N);
+    rep(i, M) {
+        LONG(l, d, k, c); LONGM(a, b);
+        from[b].emplace_back(a, l, d, k, c);
+    }
+    vl dist(N, -INF);
+    priority_queue<Pr> que;
+    auto push=[&](ll v, ll t) {
+        if(dist[v]>=t) return;
+        dist[v] = t;
+        que.emplace(t, v);
     };
-    push(0, 0, 0);
+    push(N-1, INF);
     while(que.size()) {
-        auto [i, j] = que.front(); que.pop_front();
-        ll d = dist[i][j];
-        rep(k, 4) {
-            ll ni = i + di[k];
-            ll nj = j + dj[k];
-            if(!isin(ni, nj, H, W)) continue;
-            if (S[ni][nj] == '#') continue;
-            push(ni, nj, d);
-        }
-        repk(a, -2, 3) repk(b, -2, 3) {
-            if(abs(a)==2 && abs(b)==2) continue;
-            if(a==0 && b==0) continue;
-            ll ni = i + a;
-            ll nj = j + b;
-            if(!isin(ni, nj, H, W)) continue;
-            push(ni,nj,d+1,false);
+        auto [t, v] = que.top(); que.pop();
+        if(dist[v] != t) continue;
+        for(auto [nv,l,d,k,c]: from[v]) {
+            ll nt = t - c;
+            if(nt<l) continue;
+            ll last = l+(k-1)*d;
+            if(nt>=last) nt = last;
+            else nt = (nt-l)/d*d + l;
+            push(nv, nt);
         }
     }
-    de(dist)
-    Out(dist.back().back());
+    rep(i, N-1) {
+        if(dist[i]==-INF) puts("Unreachable");
+        else Out(dist[i]);
+    }
+
+
+
     
 }
 

@@ -848,8 +848,8 @@
   "from(Snippet)": {
     "prefix": "fromsni",
     "body": [
-      "vvl from($1);",
-      "rep(i, $2) {",
+      "vvl from(N);",
+      "rep(i, $1) {",
       "    LONGM(a, b);"
       "    from[a].emplace_back(b);",
       "    from[b].emplace_back(a);",
