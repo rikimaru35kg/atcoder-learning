@@ -44,10 +44,18 @@ struct WeightedUnionFind {
         p[x] = y;
         num[y] += num[x];
         return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に対してのポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
     bool same (long long x, long long y) { return leader(x) == leader(y); }
     long long size (long long x) { return num[leader(x)]; }
 };
+
 
 int main () {
     UnionFind uf(100);

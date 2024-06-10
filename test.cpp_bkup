@@ -188,57 +188,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vtx {
-    ll v, d, sil;
-    Vtx(ll v, ll d, ll sil): v(v), d(d), sil(sil) {
-        chmin(sil, 2500LL);
-    }
-    bool operator<(const Vtx &o) const {
-        // if(d==o.d) return sil < o.sil;
-        // else return d > o.d;
-        return d > o.d;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, S);
-    vvt3 from(N);
+    LONG(N, M);
+    vvl from(N);
     rep(i, M) {
-        LONGM(a, b); LONG(c, t);
-        from[a].emplace_back(b, c, t);
-        from[b].emplace_back(a, c, t);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    vl C(N), D(N);
-    rep(i, N) cin>>C[i]>>D[i];
-    ll Mx = 2500;
-    vvl dist(N, vl(Mx+1, INF));
-    priority_queue<Vtx> que;
-    auto push=[&](ll v, ll d, ll sil) {
-        chmin(sil, Mx);
-        if(dist[v][sil]<=d) return;
-        dist[v][sil] = d;
-        que.emplace(v, d, sil);
+    vvl dist(1<<N, vl(N, INF));
+    dist[0][0] = 0;
+    queue<Pr> que;
+    auto push=[&](ll s, ll v, ll d) {
+        if(dist[s][v] != INF) return;
+        dist[s][v] = d;
+        que.emplace(s, v);
     };
-    push(0, 0, S);
-
+    rep(i, N) push(1<<i, i, 1);
     while(que.size()) {
-        auto [v, d, sil] = que.top(); que.pop();
-        if(dist[v][sil] != d) continue;
-        for(auto [nv, c, t]: from[v]) {
-            if(c>sil) continue;
-            push(nv, d+t, sil-c);
+        auto [s, v] = que.front(); que.pop();
+        ll d = dist[s][v];
+        for(auto nv: from[v]) {
+            ll ns = s^1<<nv;
+            push(ns, nv, d+1);
         }
-        push(v, d+D[v], sil+C[v]);
     }
-    rep1(i, N-1) {
-        ll ans = INF;
-        rep(j, Mx+1) {
-            chmin(ans, dist[i][j]);
-        }
-        Out(ans);
+    ll ans = 0;
+    rep(s, 1<<N) {
+        ll now = INF;
+        rep(v, N) chmin(now, dist[s][v]);
+        deb(s)de(now)
+        // if(s==0) now = 0;
+        ans += now;
     }
+    Out(ans);
     
 }
 
