@@ -118,8 +118,8 @@ template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.fron
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
-template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
-template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
+template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
+template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
 inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}

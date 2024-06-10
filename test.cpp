@@ -114,8 +114,8 @@ template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.fron
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
-template<typename T> inline bool chmax(T &a, T b) { return ((a < b) ? (a = b, true) : (false)); }
-template<typename T> inline bool chmin(T &a, T b) { return ((a > b) ? (a = b, true) : (false)); }
+template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
+template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
 inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
@@ -179,8 +179,8 @@ const ll INF = 3e18;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
-const vi di = {0, 1, 0, -1};
-const vi dj = {1, 0, -1, 0};
+const vi di = {1, 1, -1, -1};
+const vi dj = {1, -1, 1, -1};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -188,39 +188,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q, K);
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, Q) {
-        CHAR(c); LONG(x);
-        if(c=='+') {
-            repr(j, K+1) {
-                if (j+x <= K) dp[j+x] += dp[j];
-            }
-        } else {
-            rep(j, K+1) {
-                if(j+x<=K) dp[j+x] -= dp[j];
-            }
+    LONG(N); LONGM(ax, ay, bx, by);
+    VS(S, N);
+    vvvl dist(N, vvl(N, vl(4, INF)));
+    deque<t3> que;
+    auto push = [&](ll i, ll j, ll k, ll d, bool fr) {
+        if(dist[i][j][k] <= d) return;
+        dist[i][j][k] = d;
+        de3(i, j, k) de(d)
+        if(fr) que.emplace_front(i, j, k);
+        else que.emplace_back(i, j, k);
+    };
+    rep(i, 4) push(ax, ay, i, 1, true);
+
+    while(que.size()) {
+        auto [i, j, dir] = que.front(); que.pop_front();
+        ll d = dist[i][j][dir];
+        rep(k, 4) {
+            // if(k==dir) continue;
+            push(i, j, k, d+1, false);
         }
-        Out(dp[K]);
+        ll ni = i + di[dir];
+        ll nj = j + dj[dir];
+        if(!isin(ni,nj,N,N)) continue;
+        if(S[ni][nj] == '#') continue;
+        push(ni,nj,dir,d,true);
     }
+
+    ll ans = INF;
+    rep(i, 4) chmin(ans, dist[bx][by][i]);
+    ch1(ans);
+    Out(ans);
+
     
 }
 
