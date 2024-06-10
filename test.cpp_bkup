@@ -188,42 +188,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
+struct WeightedUnionFind {
+    vector<long long> p, num, diff;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) return w == 0;
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に対してのポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+};
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
+    LONG(N, M, Q);
+    vvp from(N);
+    WeightedUnionFind uf(N);
     rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        uf.merge(a, b, -c);
+        de2(a, b);
+        de2(uf.diff[a], uf.diff[b])
     }
-    vvl dist(1<<N, vl(N, INF));
-    dist[0][0] = 0;
-    queue<Pr> que;
-    auto push=[&](ll s, ll v, ll d) {
-        if(dist[s][v] != INF) return;
-        dist[s][v] = d;
-        que.emplace(s, v);
-    };
-    rep(i, N) push(1<<i, i, 1);
-    while(que.size()) {
-        auto [s, v] = que.front(); que.pop();
-        ll d = dist[s][v];
-        for(auto nv: from[v]) {
-            ll ns = s^1<<nv;
-            push(ns, nv, d+1);
+    rep(i, Q) {
+        LONGM(x, y);
+        if(!uf.same(x, y)) puts("nan");
+        else if (uf.inf[uf.leader(x)]) puts("inf");
+        else {
+            Out(uf.diff[x] - uf.diff[y]);
         }
     }
-    ll ans = 0;
-    rep(s, 1<<N) {
-        ll now = INF;
-        rep(v, N) chmin(now, dist[s][v]);
-        deb(s)de(now)
-        // if(s==0) now = 0;
-        ans += now;
-    }
-    Out(ans);
     
 }
 
