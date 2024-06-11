@@ -192,36 +192,43 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvp from(N);
+    vvt3 from(N);
     rep(i, M) {
-        LONGM(a, b); CHAR(p);
-        from[a].emplace_back(b, p);
-        from[b].emplace_back(a, p);
+        LONGM(s, t); LONG(d, time);
+        from[s].emplace_back(t, d, time);
+        from[t].emplace_back(s, d, time);
     }
-    vvl dist(N, vl(N, INF));
-    queue<Pr> que;
-    auto push=[&](ll i, ll j, ll d) {
-        if(dist[i][j]<=d) return;
-        dist[i][j] = d;
-        que.emplace(i, j);
-    };
-    push(0, N-1, 0);
-    while(que.size()) {
-        auto [i, j] = que.front(); que.pop();
-        for(auto [ni, ci]: from[i]) for(auto [nj, cj]: from[j]) {
-            if(ci!=cj) continue;
-            push(ni, nj, dist[i][j]+1);
+    vvl dp(1<<N, vl(N, INF));
+    vvl cnt(1<<N, vl(N));
+    for(auto [nv, d, t]: from[0]) {
+        if(d<=t) {
+            dp[1<<nv][nv] = d;
+            cnt[1<<nv][nv] = 1;
         }
     }
-    ll ans = INF;
-    rep(i, N) chmin(ans, dist[i][i]*2);
-    rep(i, N) {
-        for(auto [ni, ci]: from[i]) {
-            chmin(ans, 2*dist[i][ni]+1);
+    rep(s, 1<<N) {
+        rep(v, N) if(s>>v&1) {
+            ll ct = dp[s][v];
+            ll ccnt = cnt[s][v];
+            for(auto [nv, d, t]: from[v]) {
+                if (s>>nv&1) continue;
+                ll nt = ct + d;
+                if(nt > t) continue;
+                ll ns = s|1<<nv;
+                if(dp[ns][nv] > nt) {
+                    dp[ns][nv] = nt;
+                    cnt[ns][nv] = ccnt;
+                } else if (dp[ns][nv] == nt) {
+                    cnt[ns][nv] += ccnt;
+                }
+            }
         }
     }
-    ch1(ans);
-    Out(ans);
+    ll ans = dp[(1<<N)-1][0];
+    if(ans==INF) {
+        puts("IMPOSSIBLE"); return 0;
+    }
+    printf("%lld %lld\n", ans, cnt[(1<<N)-1][0]);
     
 }
 

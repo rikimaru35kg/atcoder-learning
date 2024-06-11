@@ -1023,7 +1023,7 @@
 ### 例題
 - !復習価値中 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
-- !要復習 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
+- !復習価値中 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 
 ## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
