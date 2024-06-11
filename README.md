@@ -435,6 +435,17 @@
 - 基本 [D - AtCoder Express 2](https://atcoder.jp/contests/abc106/tasks/abc106_d)
 - !復習価値低 市松模様の最適場所 [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b) なお、この問題は何も考えずにlong longを使いすぎるとMLEする
 
+## IMOS法
+- 重なり領域の累積はいもす法を用いて解決
+- IMOS法は配列数が多すぎるときは座標圧縮とのコンビネーションで解ける問題多し
+- 累積ではなく、重なっているかだけの判定で良ければ、引継ぎ型dpで解ける（ある点から何個後ろまで加算すべきかという情報において、何個の部分をmax取りしていけばよい）
+- 木の上でもimos法は使える
+### 例題
+- 基本 [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
+- 基本 [A - 鉄道旅行 (Railroad Trip)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a)
+- !復習価値低 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
+- !復習価値中 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
+
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
 - キーワード：連続部分列は累積和！（もしくは尺取り法）
@@ -1052,17 +1063,6 @@
 - 部分和問題であれば、インラインでDPする場合のループ順と+/-を逆にするだけで戻す操作に対応
 ### 例題
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
-
-# IMOS法
-- 重なり領域の累積はいもす法を用いて解決
-- IMOS法は配列数が多すぎるときは座標圧縮とのコンビネーションで解ける問題多し
-- 累積ではなく、重なっているかだけの判定で良ければ、引継ぎ型dpで解ける（ある点から何個後ろまで加算すべきかという情報において、何個の部分をmax取りしていけばよい）
-- 木の上でもimos法は使える
-### 例題
-- 基本 [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
-- 基本 [https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a](A - 鉄道旅行 (Railroad Trip) )
-- !復習価値中 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
-- !復習価値低t 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
 
 # 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数

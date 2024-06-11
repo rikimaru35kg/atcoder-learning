@@ -191,32 +191,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c, i);
-        from[b].emplace_back(a, c, i);
+    LONG(N);
+    vvl from(N);
+    vp edges;
+    vl dep(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        edges.emplace_back(a, b);
     }
-    pq que;
-    vl id(N, -1);
-    vl dist(N, INF);
-    vl ans;
-    auto push= [&](ll v, ll d, ll i=-1) {
-        if(dist[v] <= d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-        if(i!=-1) id[v] = i+1;
+    auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
+        dep[v] = d;
+        for(auto nv: from[v]) if(nv != p) {
+            f(f, nv, d+1, v);
+        }
     };
-    push(0, 0);
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        if(v!=0) ans.push_back(id[v]);
-        for(auto [nv, c, i]: from[v]) {
-            push(nv, d+c, i);
+    dfs(dfs, 0);
+
+    vl ans(N);
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t, e, x); --e;
+        auto [a, b] = edges[e];
+        if (t==2) swap(a, b);
+        if(dep[a]>dep[b]) {
+            ans[a] += x;
+        } else {
+            ans[0] += x;
+            ans[b] -= x;
         }
     }
+    auto dfs2 = [&](auto f, ll v, ll x=0, ll p=-1) -> void {
+        ans[v] += x;
+        for(auto nv: from[v]) if (nv != p) {
+            f(f, nv, ans[v], v);
+        }
+    };
+    dfs2(dfs2, 0);
     Out(ans);
     
 }

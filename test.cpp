@@ -191,48 +191,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b, i);
-        from[b].emplace_back(a, i);
+    LONG(N);
+    ll M = 1000;
+    vvl cnt(M+1, vl(M+1));
+    rep(i, N) {
+        LONG(x1, y1, x2, y2);
+        cnt[x1][y1]++;
+        cnt[x2][y1]--;
+        cnt[x1][y2]--;
+        cnt[x2][y2]++;
     }
-    de(from)
-    if(K%2==1) PNo
-    vb used(N);
-    vl ans;
-    auto dfs=[&](auto f, ll v, ll id=-1, ll p=-1) -> int {
-        used[v] = true;
-        ll st = 0;
-        for(auto [nv, i]: from[v]) if(!used[nv]) {
-            st ^= f(f, nv, i, v);
-        }
-        ll ret = 0;
-        if(p!=-1) {
-            if(K) {
-                if(st) ret = 0;
-                else ret = 1, ans.push_back(id+1);
-                --K;
-            } else {
-                if(st) ret = 1, ans.push_back(id+1);
-                else ret = 0;
-            }
-        }
-        if(p==-1) {
-            if(st) --K;
-        }
-        de3(v, st, ret)
-        return ret;
-    };
-    rep(i, N) if(!used[i]) {
-        dfs(dfs, i);
+    rep(i, M+1) rep(j, M) cnt[i][j+1] += cnt[i][j];
+    rep(i, M) rep(j, M+1) cnt[i+1][j] += cnt[i][j];
+    vl ans(N+1);
+    rep(i, M) rep(j, M) {
+        ans[cnt[i][j]]++;
     }
-    de(K)
-    if(K) PNo
-    puts("Yes");
-    Out(SIZE(ans));
-    Out(ans);
+    rep1(i, N) Out(ans[i]);
     
 }
 
