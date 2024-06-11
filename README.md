@@ -969,7 +969,9 @@
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
 ### 例題
-- 基本 [E - Swap Place](https://atcoder.jp/contests/abc289/tasks/abc289_e)
+- 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
+- !復習価値中 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
+- !復習価値低 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 - !要復習 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
 
@@ -1005,13 +1007,13 @@
 - 更新ステップ数がNを超えたら、負閉路があるということ
 - 始点と終点に関係ない点をあらかじめ除いておく事で、関係ない負閉路を使うことを避ける事も重要
 ### 例題
-- [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
+- !復習価値高 [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
 
 ## 一度に複数辺を進める場合の最短経路
 - 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
 ### 例題
 - !復習価値低 燃料補給回数 [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)  （参考：[距離1/Kで燃料補給は切り上げ方式の別解](https://atcoder.jp/contests/abc143/submissions/50298596)だが、計算量改善、ダイクストラO(N^2)方式の優先順位、最終的な答えの求め方（切上？切捨？）が難しすぎるので非推奨。こんな解き方もできるよ程度）
-- !復習価値高 定額タクシー [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
+- !復習価値低 定額タクシー（MLEに注意） [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
 
 ## 最短経路問題+α
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
@@ -1019,10 +1021,7 @@
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 - 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
 ### 例題
-- !復習価値高 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
-- 基本（2頂点を同時に動かす） [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
-- !要復習 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
-- !要復習 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
+- !復習価値中 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !要復習 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 

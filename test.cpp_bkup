@@ -192,20 +192,35 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl dist(N, vl(N, INF));
+    vvp from(N);
     rep(i, M) {
-        LONG(a, b, c); --a; --b;
-        dist[a][b] = c;
+        LONGM(a, b); CHAR(p);
+        from[a].emplace_back(b, p);
+        from[b].emplace_back(a, p);
     }
-    rep(i, N) dist[i][i] = 0;
-    
-    ll ans = 0;
-    rep(k, N) {
-        rep(i, N) rep(j, N) {
-            chmin(dist[i][j], dist[i][k] + dist[k][j]);
-            if(dist[i][j]!=INF) ans += dist[i][j];
+    vvl dist(N, vl(N, INF));
+    queue<Pr> que;
+    auto push=[&](ll i, ll j, ll d) {
+        if(dist[i][j]<=d) return;
+        dist[i][j] = d;
+        que.emplace(i, j);
+    };
+    push(0, N-1, 0);
+    while(que.size()) {
+        auto [i, j] = que.front(); que.pop();
+        for(auto [ni, ci]: from[i]) for(auto [nj, cj]: from[j]) {
+            if(ci!=cj) continue;
+            push(ni, nj, dist[i][j]+1);
         }
     }
+    ll ans = INF;
+    rep(i, N) chmin(ans, dist[i][i]*2);
+    rep(i, N) {
+        for(auto [ni, ci]: from[i]) {
+            chmin(ans, 2*dist[i][ni]+1);
+        }
+    }
+    ch1(ans);
     Out(ans);
     
 }
