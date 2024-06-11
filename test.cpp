@@ -188,50 +188,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Ver {
-    ll i, j, dir, d;
-    Ver(ll i, ll j, ll dir, ll d): i(i),j(j),dir(dir),d(d) {}
-    bool operator<(const Ver &o) const {
-        return d > o.d;
-    }
-};
-
-using vV = vector<Ver>;
-using vvV = vector<vV>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    LONGM(si, sj, gi, gj);
-    VS(C, H);
-    priority_queue<Ver> que;
-    vector dist(H, vvl(W, vl(4, INF)));
-    auto push = [&](ll i, ll j, ll dir, ll d) {
-        if(dist[i][j][dir]<=d) return;
-        dist[i][j][dir] = d;
-        que.emplace(i, j, dir, d);
-    };
-    rep(k, 4) push(si, sj, k, 0);
-
-    while(que.size()) {
-        auto [i, j, dir, d] = que.top(); que.pop();
-        if(dist[i][j][dir]!=d) continue;
-        ll cd = Divceil(d, K) * K;
-        rep(k, 4) {
-            push(i, j, k, cd);
+    LONG(N, M);
+    vvl from(N+M);
+    rep(i, N) {
+        LONG(a);
+        rep(j, a) {
+            LONGM(v);
+            from[M+i].push_back(v);
+            from[v].push_back(M+i);
         }
-        ll ni = i + di[dir];
-        ll nj = j + dj[dir];
-        if(!isin(ni,nj,H,W)) continue;
-        if(C[ni][nj]=='@') continue;
-        push(ni,nj,dir,d+1);
     }
-    ll ans = INF;
-    rep(k, 4) chmin(ans, dist[gi][gj][k]);
+    vl dist(N+M, INF);
+    queue<ll> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto nv: from[v]) {
+            push(nv, dist[v]+1);
+        }
+    }
+    ll ans = dist[M-1];
     if(ans==INF) Pm1
-    ans = Divceil(ans, K);
+    ans = (ans-2)/2;
     Out(ans);
+    
 }
 
 // ### test.cpp ###

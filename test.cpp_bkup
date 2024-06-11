@@ -188,48 +188,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvt3 from(N);
+    VL(X, N); VL(Y, N);
+    vt3 edges;
     rep(i, M) {
-        LONGM(s, t); LONG(d, time);
-        from[s].emplace_back(t, d, time);
-        from[t].emplace_back(s, d, time);
+        LONGM(a, b); LONG(c);
+        edges.emplace_back(c, a, b);
     }
-    vvl dp(1<<N, vl(N, INF));
-    vvl cnt(1<<N, vl(N));
-    for(auto [nv, d, t]: from[0]) {
-        if(d<=t) {
-            dp[1<<nv][nv] = d;
-            cnt[1<<nv][nv] = 1;
+    ll ans = INF;
+    rep(ai, 2) rep(bi, 2) {
+        vt3 nedges = edges;
+        if(ai) { rep(i, N) nedges.emplace_back(X[i], i, N); }
+        if(bi) { rep(i, N) nedges.emplace_back(Y[i], i, N+1); }
+        sort(all(nedges));
+        dsu uf(N+2);
+        ll now = 0;
+        for(auto [c, a, b]: nedges) {
+            if(uf.same(a, b)) continue;
+            uf.merge(a, b);
+            now += c;
         }
-    }
-    rep(s, 1<<N) {
-        rep(v, N) if(s>>v&1) {
-            ll ct = dp[s][v];
-            ll ccnt = cnt[s][v];
-            for(auto [nv, d, t]: from[v]) {
-                if (s>>nv&1) continue;
-                ll nt = ct + d;
-                if(nt > t) continue;
-                ll ns = s|1<<nv;
-                if(dp[ns][nv] > nt) {
-                    dp[ns][nv] = nt;
-                    cnt[ns][nv] = ccnt;
-                } else if (dp[ns][nv] == nt) {
-                    cnt[ns][nv] += ccnt;
-                }
+        if(!ai && !bi) {
+            if (uf.size(0) == N) {
+                chmin(ans, now);
             }
+        } else {
+            chmin(ans, now);
         }
     }
-    ll ans = dp[(1<<N)-1][0];
-    if(ans==INF) {
-        puts("IMPOSSIBLE"); return 0;
-    }
-    printf("%lld %lld\n", ans, cnt[(1<<N)-1][0]);
-    
+    Out(ans);
 }
 
 // ### test.cpp ###
