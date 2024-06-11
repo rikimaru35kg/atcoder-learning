@@ -191,33 +191,47 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N+M);
-    rep(i, N) {
-        LONG(a);
-        rep(j, a) {
-            LONGM(v);
-            from[M+i].push_back(v);
-            from[v].push_back(M+i);
-        }
+    LONG(N, M, K);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
     }
-    vl dist(N+M, INF);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);
+    de(from)
+    if(K%2==1) PNo
+    vb used(N);
+    vl ans;
+    auto dfs=[&](auto f, ll v, ll id=-1, ll p=-1) -> int {
+        used[v] = true;
+        ll st = 0;
+        for(auto [nv, i]: from[v]) if(!used[nv]) {
+            st ^= f(f, nv, i, v);
+        }
+        ll ret = 0;
+        if(p!=-1) {
+            if(K) {
+                if(st) ret = 0;
+                else ret = 1, ans.push_back(id+1);
+                --K;
+            } else {
+                if(st) ret = 1, ans.push_back(id+1);
+                else ret = 0;
+            }
+        }
+        if(p==-1) {
+            if(st) --K;
+        }
+        de3(v, st, ret)
+        return ret;
     };
-    push(0, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv: from[v]) {
-            push(nv, dist[v]+1);
-        }
+    rep(i, N) if(!used[i]) {
+        dfs(dfs, i);
     }
-    ll ans = dist[M-1];
-    if(ans==INF) Pm1
-    ans = (ans-2)/2;
+    de(K)
+    if(K) PNo
+    puts("Yes");
+    Out(SIZE(ans));
     Out(ans);
     
 }

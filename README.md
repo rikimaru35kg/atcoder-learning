@@ -509,6 +509,93 @@
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
 - 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
+# 最短経路問題
+
+## 01-BFS
+- 辺のコストが0か1しかない最短経路問題に使用可能
+- ダイクストラ法の単純な場合と言っても良い（最小コスト頂点が自明な為。logが無いので計算も速い）
+- 0コスト辺の場合、接続先頂点をqueのfrontに、1コスト辺の場合、接続先頂点をqueのbackにpushする事で実装可能
+- 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
+### 例題
+- 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
+- !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
+- 基本 [D - Wizard in Maze](https://atcoder.jp/contests/abc176/tasks/abc176_d)
+- !復習価値低 壁破壊 [E - Stronger Takahashi](https://atcoder.jp/contests/abc213/tasks/abc213_e)
+
+## ダイクストラ法（Dijkstra）
+- 下記を繰り返していくことで、全頂点の距離を更新していき、最短経路を求める
+- 始点（複数可）は0、それ以外の全頂点にINFを代入
+- 確定された頂点に接続された頂点を更新
+- 未確定頂点の中から最小コスト頂点を確定（その他の頂点がその頂点の距離を更新する事がありえない為）
+- 負辺や負閉路があると使えない
+- 実装はpriority_queueを用いると簡単。pushした時点の距離が更新されていたらそのpop値は破棄する
+- しかしながら、完全グラフなど辺の数が多い場合は、O(N^2)で実装した方が速い。ヨビノリ動画の通りに素直に実装すれば良い。自分で解いた例は[こちら](https://atcoder.jp/contests/joi2014yo/submissions/42739462)
+- ダイクストラ木を構成するには、各頂点がどの辺を使って辿りついたのかをキューに入れるタイミングで記録する。計算過程では複数経路で同じ頂点に辿り付くが、最終的に使われた（＝距離を更新した）経路が正しい（自明）。
+### 例題
+- !復習価値低 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
+- !復習価値低 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
+- !要復習 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
+
+## 拡張ダイクストラ法（or 拡張BFS）
+- 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
+- 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
+### 例題
+- 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
+- !復習価値中 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
+- !復習価値低 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
+- !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
+- !要復習 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
+
+## ポテンシャル法
+- ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる
+- ポテンシャルは重力ポテンシャルのようなもので、経路によらず保存されるような値
+- 問題設定上明らかな場合以外は、ベルマンフォードなどでポテンシャルを求める必要あり。この場合の計算量はO(NM)なので、全頂点にダイクストラを用いてもO(NMlogM)となり、後述のワーシャルフロイドより改善する（辺の数が少なければ）
+### 例題
+- !復習価値高 ポテンシャルを理解する良問 [F - Pay or Receive](https://atcoder.jp/contests/abc280/tasks/abc280_f)
+- !復習価値中 [E - Skiing](https://atcoder.jp/contests/abc237/tasks/abc237_e)
+
+## ワーシャルフロイド法（Warshall-Floyd）
+- 全頂点から全頂点への最短経路を求める方法。計算量はO(N^3)
+- 3重ループにより、経由値との比較をして順次行列を更新する
+- 経由地が一番外側のループ！！（例えばa->b->c->dが最短路の時、a->dを最初に更新してしまうとこの経路は現れない）
+- dist[i][i]=0で初期化しないと壊れるので注意！（chmin(d[i][i], d[i][k]+d[k][i]） の時に壊れる）
+- 負辺があっても使えるが、負閉路があると使えない（負辺がある場合、INFの辺を使って更新しない事！！！INF＋マイナスの値がINFより小さいので、更新してはいけないものを更新してしまう）
+- 自分自身への最短経路が負になった場合、負閉路ががあると検出できる！
+- ワーシャルフロイド後の行列が与えられたとして、不要な辺を除く事を考える事もできる
+- まず完全グラフを行列の通り作成、次に全辺に対して、三角不等式が等号成立するような経由頂点が存在する場合はその辺を削除すれば良い
+- この時、同じ辺は1度だけ削除するように！（何度も削除しないように）
+- 当然だが、三角不等式が不成立の場合はおかしいので、この場合はワーシャルフロイド後の行列として間違っていたということ
+### 例題
+- 基本問題 [D - バスと避けられない運命](https://atcoder.jp/contests/abc012/tasks/abc012_4)
+- !要復習 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
+- !基本 仕組みを理解する教育的良問 [D - Shortest Path Queries 2](https://atcoder.jp/contests/abc208/tasks/abc208_d)
+- !復習価値高 ワーシャルフロイド後行列 [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
+
+## ベルマンフォード法
+- 負閉路があっても使える最短経路を求めるアルゴリズムで、計算量はO(NM)
+- 負辺がある場合、距離INFの頂点からの更新はしない事！！！INF＋マイナスの値がINFより小さいので、更新してはいけないものを更新してしまう
+- 全辺に対して、dist[v] > dist[u] + costである限り更新し続ける
+- 更新ステップ数がNを超えたら、負閉路があるということ
+- 始点と終点に関係ない点をあらかじめ除いておく事で、関係ない負閉路を使うことを避ける事も重要
+### 例題
+- !復習価値高 [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
+
+## 一度に複数辺を進める場合の最短経路
+- 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
+### 例題
+- !復習価値低 燃料補給回数 [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)  （参考：[距離1/Kで燃料補給は切り上げ方式の別解](https://atcoder.jp/contests/abc143/submissions/50298596)だが、計算量改善、ダイクストラO(N^2)方式の優先順位、最終的な答えの求め方（切上？切捨？）が難しすぎるので非推奨。こんな解き方もできるよ程度）
+- !復習価値低 定額タクシー（MLEに注意） [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
+
+## 最短経路問題+α
+- 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
+- 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
+- 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
+- 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
+### 例題
+- !復習価値中 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
+- !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
+- !復習価値中 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
+
 # グラフ
 
 ## BFS
@@ -535,26 +622,6 @@
 - !復習価値低 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
 - !復習価値高 距離総和を全頂点について求める [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - !要復習 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
-
-## サイクル検出
-- 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）
-- 一般にはDFSを用いるが、seenとfinishedの両方の情報が必要（けんちょんのページが分かりやすい）
-- seenだけだと、有向グラフの途中から探索してseenになっている頂点があったとして、その手前から探索した場合にseenに辿り付いてサイクル検出してしまう
-- 例えば、1->2->3で、2から探索すると2と3がseenとなる。次に1から探索すると2のseenに辿り付きサイクル検出してしまう
-- 従って現在探索中がseen、完全終了がfinishedにしておく
-- 再帰関数をリターンして良いのはサイクル検出した時のみ（検出の瞬間と次頂点がサイクル検出した時）。finishedを見つけてもreturnではなくcontinue（スルー）
-- 再帰関数の途中でリターンする場合、必ずfinishedをtrueにするのを忘れずに！（サイクルが複数ある場合は必須）
-- サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいるsnuke式の場合、自己ループがある場合は要注意
-- サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
-- 最小サイクルや最大サイクルを見つけたい場合はDFSではなくBFSを用いる（全始点を試す必要あり）
-- この時、始点からの距離を通常通り記録しておき、始点への辺を持つ頂点の中で最小距離の物が最小サイクルを構成する（ただしこの始点に対する最小サイクルしか見つからない）
-### 例題
-- 基本 [F - Well-defined Path Queries on a Namori](https://atcoder.jp/contests/abc266/tasks/abc266_f)
-- 基本 ユーザー名変更希望 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
-- 基本 黒板ゲーム [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
-- 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
-- !復習価値低 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
-- !復習価値中 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
@@ -605,6 +672,36 @@
 - !要復習 距離Dとなるパスの個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
 - !要復習（惜しかった！） 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
+## 最小全域木（MST: Minimum Spanning Tree）
+- 全域木の中で辺の和が最小のものをいう
+- クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
+- 連結頂点の判定はUnion-Find木を用いる
+### 例題
+- 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
+- !復習価値中 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
+- !復習価値低 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
+- !要復習 後から辺追加（MSTの構造を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
+
+## 全域木
+- 無向グラフから全域木を構成すると見通しが良くなる事がある
+- 全域木を構成するにはMSTの他、DFS木、BFS木、最短経路木などがある
+- DFS木の後退辺（未使用辺）は必ず祖先の関係になる
+- BFS木の未使用辺は必ず祖先の関係にならない
+### 例題
+- !復習価値低 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
+- !復習価値高 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
+- !復習価値高 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
+
+## なもりグラフ（pseudo tree）とFunctional graph
+- 頂点数と辺の数が一致する（実際は木ではない）
+- 閉ループがただ一つ存在する
+- functional graph（任意の頂点に対して出次数が1の有向グラフが描ける）
+- UnionFind木を作成後、各辺・各頂点に対して親にカウントしていき、一致していればなもりグラフである
+- functional graphは必ずなもりグラフの形となる（というよりどこから辿ってもサイクルに流入するグラフ）
+- functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
+### 例題
+- 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
+
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
 
@@ -613,6 +710,57 @@
 - 針の先同士をつなげば距離2の組み合わせを1つずつ減らせるので、距離2の頂点組み合わせは0以上N-1C2であればすべて実現可能
 ### 例題
 - !復習価値中 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
+
+## DAG（Directed Acyclic Graph）とトポロジカルソート
+- DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
+- その順番であれば逆戻りのない並べ方に変える事をトポロジカルソートと呼ぶ
+- BFS式: トポロジカルソートは入次数が0の頂点をキューに入れ、繋がっている頂点の入次数を1減らしてゼロになればキューに入れる事で実現可能
+- DFS式: あるいはDFSの帰りがけ順を求め、その逆順としても良い（行きがけ順でseen配列を管理して、再度訪れないようにする事）
+- 有向グラフの閉路判定は、トポロジカルソートができなければ閉路ありと判定可能（ソート済み配列のsize != N、ただしこの判定方式はBFS式でソートした場合のみ）
+- DAGであっても、DFSの計算量が発散する事はありえる（同じ経路を重複して数えてしまう場合）ので、同じ頂点を何度も探索しないようにする事
+- DAGはサイクルがないので、後ろから辿ると最長経路問題を解くことが可能
+### 例題
+- 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
+- !基本 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
+- !復習価値低 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
+- !要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
+- !要復習（実装できなかった） 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
+
+## サイクル検出
+- 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）
+- 一般にはDFSを用いるが、seenとfinishedの両方の情報が必要（けんちょんのページが分かりやすい）
+- seenだけだと、有向グラフの途中から探索してseenになっている頂点があったとして、その手前から探索した場合にseenに辿り付いてサイクル検出してしまう
+- 例えば、1->2->3で、2から探索すると2と3がseenとなる。次に1から探索すると2のseenに辿り付きサイクル検出してしまう
+- 従って現在探索中がseen、完全終了がfinishedにしておく
+- 再帰関数をリターンして良いのはサイクル検出した時のみ（検出の瞬間と次頂点がサイクル検出した時）。finishedを見つけてもreturnではなくcontinue（スルー）
+- 再帰関数の途中でリターンする場合、必ずfinishedをtrueにするのを忘れずに！（サイクルが複数ある場合は必須）
+- サイクル内の点ではサイクル始点を返し、それ以外は-1を返すdfsを組んでいるsnuke式の場合、自己ループがある場合は要注意
+- サイクルを見つけた瞬間＝自分自身を見つけた瞬間という場合もあるので、この場合はちゃんと-1を返すこと
+- 最小サイクルや最大サイクルを見つけたい場合はDFSではなくBFSを用いる（全始点を試す必要あり）
+- この時、始点からの距離を通常通り記録しておき、始点への辺を持つ頂点の中で最小距離の物が最小サイクルを構成する（ただしこの始点に対する最小サイクルしか見つからない）
+### 例題
+- 基本 [F - Well-defined Path Queries on a Namori](https://atcoder.jp/contests/abc266/tasks/abc266_f)
+- 基本 ユーザー名変更希望 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
+- 基本 黒板ゲーム [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
+- 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
+- !復習価値低 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
+- !復習価値中 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
+
+## ダブリング
+- n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
+- 前準備として、2^k個だけ進むグラフ辺を作っておく（kは0以上で、2^kがn以上となるkまで）
+- あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
+### 例題
+- 基本 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
+- !復習価値中 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
+
+## 強連結成分分解（SCC[Strongly Connected Components]分解）
+- 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
+- 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
+- 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
+- SCC後、強連結成分毎に見るとトポロジカル順に並べたDAGになっている
+### 例題
+- 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く
@@ -633,39 +781,6 @@
 ### 例題
 - !復習価値中 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
-## DAG（Directed Acyclic Graph）とトポロジカルソート
-- DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
-- その順番であれば逆戻りのない並べ方に変える事をトポロジカルソートと呼ぶ
-- BFS式: トポロジカルソートは入次数が0の頂点をキューに入れ、繋がっている頂点の入次数を1減らしてゼロになればキューに入れる事で実現可能
-- DFS式: あるいはDFSの帰りがけ順を求め、その逆順としても良い（行きがけ順でseen配列を管理して、再度訪れないようにする事）
-- 有向グラフの閉路判定は、トポロジカルソートができなければ閉路ありと判定可能（ソート済み配列のsize != N、ただしこの判定方式はBFS式でソートした場合のみ）
-- DAGであっても、DFSの計算量が発散する事はありえる（同じ経路を重複して数えてしまう場合）ので、同じ頂点を何度も探索しないようにする事
-- DAGはサイクルがないので、後ろから辿ると最長経路問題を解くことが可能
-### 例題
-- 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
-- !基本 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
-- !復習価値低 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
-- !要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
-- !要復習（実装できなかった） 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
-
-## なもりグラフ（pseudo tree）とFunctional graph
-- 頂点数と辺の数が一致する（実際は木ではない）
-- 閉ループがただ一つ存在する
-- functional graph（任意の頂点に対して出次数が1の有向グラフが描ける）
-- UnionFind木を作成後、各辺・各頂点に対して親にカウントしていき、一致していればなもりグラフである
-- functional graphは必ずなもりグラフの形となる（というよりどこから辿ってもサイクルに流入するグラフ）
-- functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
-### 例題
-- 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
-
-## 強連結成分分解（SCC[Strongly Connected Components]分解）
-- 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
-- 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
-- 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
-- SCC後、強連結成分毎に見るとトポロジカル順に並べたDAGになっている
-### 例題
-- 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
-
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ
 - 2部グラフである必要十分条件は奇閉路がないこと（例えば木は必ず2部グラフ）
@@ -678,6 +793,14 @@
 - !復習価値高 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - !要復習 考察メイン [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 
+## 仮想頂点（超頂点）を設ける
+- 仮想頂点を設ける事で、見通しが良くなる場合あり
+- 考察を進めた上で、辺が多すぎて張れないとなった時に有効な印象
+### 例題
+- !復習価値中 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
+- !復習価値中 手段が複数ある最小全域木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
+- !復習価値高 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
+
 ## 橋（low-linkが必要なABCの問題に出会っていない為、Noteには未掲載）
 - 取り除くと連結成分が増える辺を橋と呼ぶ
 - low link法を用いるとDFSの計算量O(V+E)で全橋を列挙できる
@@ -686,14 +809,6 @@
 ### 例題
 - !復習価値中 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - 復習価値中 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
-
-## ダブリング
-- n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
-- 前準備として、2^k個だけ進むグラフ辺を作っておく（kは0以上で、2^kがn以上となるkまで）
-- あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
-### 例題
-- 基本 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
-- !復習価値中 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 
 ## グラフその他（典型手法と名づけるのが難しいのでNoteには未掲載）
 - 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または下の例題（Sum of Maximum Weights）など
@@ -937,120 +1052,6 @@
 - 部分和問題であれば、インラインでDPする場合のループ順と+/-を逆にするだけで戻す操作に対応
 ### 例題
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
-
-# 最短経路問題
-
-## 01-BFS
-- 辺のコストが0か1しかない最短経路問題に使用可能
-- ダイクストラ法の単純な場合と言っても良い（最小コスト頂点が自明な為。logが無いので計算も速い）
-- 0コスト辺の場合、接続先頂点をqueのfrontに、1コスト辺の場合、接続先頂点をqueのbackにpushする事で実装可能
-- 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
-### 例題
-- 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
-- !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
-- 基本 [D - Wizard in Maze](https://atcoder.jp/contests/abc176/tasks/abc176_d)
-- !復習価値低 壁破壊 [E - Stronger Takahashi](https://atcoder.jp/contests/abc213/tasks/abc213_e)
-
-## ダイクストラ法（Dijkstra）
-- 下記を繰り返していくことで、全頂点の距離を更新していき、最短経路を求める
-- 始点（複数可）は0、それ以外の全頂点にINFを代入
-- 確定された頂点に接続された頂点を更新
-- 未確定頂点の中から最小コスト頂点を確定（その他の頂点がその頂点の距離を更新する事がありえない為）
-- 負辺や負閉路があると使えない
-- 実装はpriority_queueを用いると簡単。pushした時点の距離が更新されていたらそのpop値は破棄する
-- しかしながら、完全グラフなど辺の数が多い場合は、O(N^2)で実装した方が速い。ヨビノリ動画の通りに素直に実装すれば良い。自分で解いた例は[こちら](https://atcoder.jp/contests/joi2014yo/submissions/42739462)
-- ダイクストラ木を構成するには、各頂点がどの辺を使って辿りついたのかをキューに入れるタイミングで記録する。計算過程では複数経路で同じ頂点に辿り付くが、最終的に使われた（＝距離を更新した）経路が正しい（自明）。
-### 例題
-- !復習価値低 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
-- !復習価値低 典型+α [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
-- !要復習 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
-
-## 拡張ダイクストラ法（or 拡張BFS）
-- 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
-- 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
-### 例題
-- 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
-- !復習価値中 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
-- !復習価値低 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
-- !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
-- !要復習 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
-
-## ポテンシャル法
-- ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる
-- ポテンシャルは重力ポテンシャルのようなもので、経路によらず保存されるような値
-- 問題設定上明らかな場合以外は、ベルマンフォードなどでポテンシャルを求める必要あり。この場合の計算量はO(NM)なので、全頂点にダイクストラを用いてもO(NMlogM)となり、後述のワーシャルフロイドより改善する（辺の数が少なければ）
-### 例題
-- !復習価値高 ポテンシャルを理解する良問 [F - Pay or Receive](https://atcoder.jp/contests/abc280/tasks/abc280_f)
-- !復習価値中 [E - Skiing](https://atcoder.jp/contests/abc237/tasks/abc237_e)
-
-## ワーシャルフロイド法（Warshall-Floyd）
-- 全頂点から全頂点への最短経路を求める方法。計算量はO(N^3)
-- 3重ループにより、経由値との比較をして順次行列を更新する
-- 経由地が一番外側のループ！！（例えばa->b->c->dが最短路の時、a->dを最初に更新してしまうとこの経路は現れない）
-- dist[i][i]=0で初期化しないと壊れるので注意！（chmin(d[i][i], d[i][k]+d[k][i]） の時に壊れる）
-- 負辺があっても使えるが、負閉路があると使えない（負辺がある場合、INFの辺を使って更新しない事！！！INF＋マイナスの値がINFより小さいので、更新してはいけないものを更新してしまう）
-- 自分自身への最短経路が負になった場合、負閉路ががあると検出できる！
-- ワーシャルフロイド後の行列が与えられたとして、不要な辺を除く事を考える事もできる
-- まず完全グラフを行列の通り作成、次に全辺に対して、三角不等式が等号成立するような経由頂点が存在する場合はその辺を削除すれば良い
-- この時、同じ辺は1度だけ削除するように！（何度も削除しないように）
-- 当然だが、三角不等式が不成立の場合はおかしいので、この場合はワーシャルフロイド後の行列として間違っていたということ
-### 例題
-- 基本問題 [D - バスと避けられない運命](https://atcoder.jp/contests/abc012/tasks/abc012_4)
-- !要復習 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
-- !基本 仕組みを理解する教育的良問 [D - Shortest Path Queries 2](https://atcoder.jp/contests/abc208/tasks/abc208_d)
-- !復習価値高 ワーシャルフロイド後行列 [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
-
-## ベルマンフォード法
-- 負閉路があっても使える最短経路を求めるアルゴリズムで、計算量はO(NM)
-- 負辺がある場合、距離INFの頂点からの更新はしない事！！！INF＋マイナスの値がINFより小さいので、更新してはいけないものを更新してしまう
-- 全辺に対して、dist[v] > dist[u] + costである限り更新し続ける
-- 更新ステップ数がNを超えたら、負閉路があるということ
-- 始点と終点に関係ない点をあらかじめ除いておく事で、関係ない負閉路を使うことを避ける事も重要
-### 例題
-- !復習価値高 [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
-
-## 一度に複数辺を進める場合の最短経路
-- 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
-### 例題
-- !復習価値低 燃料補給回数 [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)  （参考：[距離1/Kで燃料補給は切り上げ方式の別解](https://atcoder.jp/contests/abc143/submissions/50298596)だが、計算量改善、ダイクストラO(N^2)方式の優先順位、最終的な答えの求め方（切上？切捨？）が難しすぎるので非推奨。こんな解き方もできるよ程度）
-- !復習価値低 定額タクシー（MLEに注意） [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
-
-## 最短経路問題+α
-- 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）
-- 2頂点を同時に動かす最短経路問題は、queueに二つの頂点を入れればOK。
-- 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
-- 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
-### 例題
-- !復習価値中 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
-- !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
-- !復習価値中 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
-
-## 最小全域木（MST: Minimum Spanning Tree）
-- 全域木の中で辺の和が最小のものをいう
-- クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
-- 連結頂点の判定はUnion-Find木を用いる
-### 例題
-- 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
-- !復習価値中 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
-- !復習価値低 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
-- !要復習 後から辺追加（MSTの構造を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
-
-## 仮想頂点（超頂点）を設ける
-- 仮想頂点を設ける事で、見通しが良くなる場合あり
-### 例題
-- !復習価値中 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
-- !復習価値中 手段が複数ある最小全域木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
-- !復習価値高 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
-
-## 全域木
-- 無向グラフから全域木を構成すると見通しが良くなる事がある
-- 全域木を構成するにはMSTの他、DFS木、BFS木、最短経路木などがある
-- DFS木の後退辺（未使用辺）は必ず祖先の関係になる
-- BFS木の未使用辺は必ず祖先の関係にならない
-### 例題
-- [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
-- [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
-- [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 # IMOS法
 - 重なり領域の累積はいもす法を用いて解決
