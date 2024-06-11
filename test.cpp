@@ -191,36 +191,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(H, N);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        if(H[a]>H[b]) swap(a, b);
-        from[a].emplace_back(b, H[b]-H[a]);
-        from[b].emplace_back(a, 0);
+    LONG(N);
+    VVL(A, N, N);
+    rep(k, N) rep(i, N) rep(j, N) {
+        if(A[i][j] > A[i][k] + A[k][j]) Pm1
     }
-    de(from)
-    vl dist(N, INF);
-    pq que;
-    auto push = [&](ll v, ll d) {
-        if(dist[v] <= d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
-        }
-    }
-    de(dist)
     ll ans = 0;
-    rep(i, N) {
-        ll now = H[0] - H[i] - dist[i];
-        chmax(ans, now);
+    rep(i, N) rep(j, i) {
+        bool need = true;
+        rep(k, N) {
+            if(k==i || k==j) continue;
+            if(A[i][j]==A[i][k]+A[j][k]) need = false;
+        }
+        if(need) ans += A[i][j];
+        // else A[i][j] = INF;
     }
     Out(ans);
     
