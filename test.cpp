@@ -188,36 +188,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    vp plus, minus;
-    rep(i, N) {
-        string s = S[i];
-        ll M = SIZE(s);
-        ll down = 0, last = 0;
-        rep(j, M) {
-            if(s[j]=='(') ++last;
-            else --last;
-            chmin(down, last);
-        }
-        ll up = last - down;
-        if(last>=0) plus.emplace_back(down, up);
-        else minus.emplace_back(-up, -down);
+    LONG(H, W, M);
+    vl rlim(H, W), clim(W, H);
+    vvl csbyrow(H);
+    rep(i, M) {
+        LONGM(x, y);
+        chmin(rlim[x], y);
+        chmin(clim[y], x);
+        csbyrow[x].push_back(y);
     }
-    sort(allr(plus)); sort(allr(minus));
+    ll H0 = clim[0], W0 = rlim[0];
+    ll ans = 0;
+    rep(i, W0) ans += clim[i];
+    rep(i, H0) ans += rlim[i];
 
-    auto calc=[&](vp &plus) -> ll{
-        ll height = 0;
-        for(auto [down, up]: plus) {
-            if (height+down < 0) PNo
-            height += down + up;
+    fenwick_tree<ll> tree(W+10);
+    rep(i, W0) tree.add(i, 1);
+    rep(i, H0) {
+        ans -= tree.sum(0, rlim[i]);
+        for(auto y: csbyrow[i]) {
+            if(tree.sum(y, y+1) == 1) tree.add(y, -1);
         }
-        return height;
-    };
-    if(calc(plus) == calc(minus)) PYes PNo
+    }
+    Out(ans);
     
 }
 
