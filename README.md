@@ -1081,7 +1081,7 @@
 - ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
 - 指定要素の削除もO(1)
 ### 例題
-- !要復習 基本 [https://atcoder.jp/contests/abc344/tasks/abc344_f](https://atcoder.jp/contests/abc344/tasks/abc344_e)
+- !復習価値中 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
 
 ## 小さい方からK個の和/max
 - 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる

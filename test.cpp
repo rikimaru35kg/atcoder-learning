@@ -188,32 +188,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct BidirectionalList {
+    const long long ninf = (long long)3e18;
+    unordered_map<long long,pair<long long,long long>> mp;
+    BidirectionalList () {
+        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
+    }
+    void add_next(long long x, long long y) {  // put y after x
+        auto [p, n] = mp[x];
+        mp[x].second = y; mp[n].first = y;
+        mp[y] = {x, n};
+    }
+    void add_prev(long long x, long long y) {  // put y before x
+        auto [p, n] = mp[x];
+        mp[x].first = y; mp[p].second = y;
+        mp[y] = {p, x};
+    }
+    void add_head(long long x) { add_next(-ninf, x); }
+    void add_tail(long long x) { add_prev(ninf, x); }
+    pair<long long,long long> erase(long long x) {
+        auto [p, n] = mp[x];
+        mp[p].second = n; mp[n].first = p;
+        mp.erase(x);
+        return {p, n};
+    }
+    pair<long long,long long> get(long long x) { return mp[x]; }
+    void print() {
+        long long next = mp[-ninf].second;
+        vector<long long> vec;
+        while (next != ninf) {
+            vec.push_back(next);
+            next = mp[next].second;
+        }
+        for (int i=0; i<(int)vec.size(); ++i) {
+            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
+        }
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    map<ll,vl> obj;
-    rep(i, M) {
-        LONG(x, y);
-        obj[x].push_back(y);
+    LONG(N);
+    BidirectionalList list;
+    rep(i, N) {
+        LONG(a);
+        list.add_tail(a);
     }
-    uset<ll> white;
-    white.insert(N);
-    de(white)
-    for(auto [k, v]: obj) {
-        uset<ll> st;
-        for(auto y: v) {
-            if(white.count(y-1)) st.insert(y);
-            if(white.count(y+1)) st.insert(y);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x, y);
+            list.add_next(x, y);
+        } else {
+            LONG(x);
+            list.erase(x);
         }
-        for(auto y: v) {
-            if(!st.count(y)) white.erase(y);
-            else white.insert(y);
-        }
-        de(white)
     }
-    ll ans = white.size();
-    Out(ans);
+    list.print();
     
 }
 

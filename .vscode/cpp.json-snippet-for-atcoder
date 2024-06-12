@@ -784,6 +784,7 @@
       "            cout << vec[i] << (i==(int)vec.size()-1?'\\\\n':' ');",
       "        }",
       "    }",
+      "};",
     ],
   },
   "Combination2": {
