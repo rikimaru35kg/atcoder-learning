@@ -188,58 +188,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/modint>
+#include <atcoder/lazysegtree>
 using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-struct S {
-    Pr x1, x2;
-    S() {}
-    S(Pr x1, Pr x2): x1(x1), x2(x2) {}
+using S = mint;
+S op(S a, S b) {return a+b;}
+S e(){return 0;}
+struct F {
+    mint a, b;
+    F(mint a, mint b): a(a),b(b) {}
 };
-S op(S a, S b) {
-    auto insert=[&](Pr x) {
-        auto [x0, n] = x;
-        auto [x1, n1] = a.x1;
-        auto [x2, n2] = a.x2;
-        if (x0 > x1) {
-            swap(a.x1, a.x2);
-            a.x1 = x;
-        } else if (x0 == x1) {
-            a.x1.second += n;
-        } else if (x0 > x2) {
-            a.x2 = x;
-        } else if (x0 == x2) {
-            a.x2.second += n;
-        }
-    };
-    insert(b.x1);
-    insert(b.x2);
-    return a;
+S mapping (F f, S x) {
+    return f.a*x + f.b;
 }
-S e() {return S({-INF+1,0}, {-INF,0});}
+F composition(F f, F g) {
+    return F(f.a*g.a, f.a*g.b+f.b);
+}
+F id() {return F(1,0);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
+    LONG(N, M);
     VL(A, N);
-    vector<S> init(N);
+    vm init(N);
+    rep(i, N) { init[i] = A[i]; }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    rep(i, M) {
+        LONG(l, r, p);
+        --l;
+        mint d= r-l;
+        mint x = p;
+        x /= d;
+        seg.apply(l, r, F((d-1)/d, x));
+    }
+    vm ans(N);
     rep(i, N) {
-        init[i] = S({A[i], 1}, {-INF,0});
+        ans[i] = seg.prod(i, i+1);
     }
-    segtree<S,op,e> seg(init);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(p, x); --p;
-            // A[p] = x;
-            seg.set(p, S({x,1}, {-INF,0}));
-        } else {
-            LONG(l, r); --l;
-            ll tmp = seg.prod(l, r).x2.second;
-            Out(tmp);
-        }
-    }
+    Out(ans);
     
 }
 
