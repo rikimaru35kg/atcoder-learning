@@ -1087,9 +1087,8 @@
 - 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
-- !復習価値低 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
-- !要復習 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
-もう少し簡単な問題も例題に挙げられると良いのだが・・・
+- !復習価値低 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
+- !復習価値高 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 
 ## 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数

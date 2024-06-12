@@ -188,33 +188,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct HeadK {
+    long long K, sum = 0;
+    HeadK (long long K): K(K) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        stK.insert(x);
+        sum += x;
+        while ((ll)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    };
+    void del(long long x) {
+        if (stM.count(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.count(x)) return;
+            auto it = stK.find(x);
+            stK.erase(it);
+            sum -= x;
+            while ((ll)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
+        }
+    }
+    long long get_sum() {
+        return sum;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    map<ll,vl> obj;
+    LONG(N, M, K);
+    HeadK hk(K);
+    VL(A, N);
     rep(i, M) {
-        LONG(x, y);
-        obj[x].push_back(y);
+        hk.add(A[i]);
     }
-    uset<ll> white;
-    white.insert(N);
-    de(white)
-    for(auto [k, v]: obj) {
-        uset<ll> st;
-        for(auto y: v) {
-            if(white.count(y-1)) st.insert(y);
-            if(white.count(y+1)) st.insert(y);
-        }
-        for(auto y: v) {
-            if(!st.count(y)) white.erase(y);
-            else white.insert(y);
-        }
-        de(white)
+    vl ans;
+    rep(i, N+1-M) {
+        ll tmp = hk.get_sum();
+        ans.push_back(tmp);
+        if(i==N-M) break;
+        hk.del(A[i]);
+        hk.add(A[i+M]);
     }
-    ll ans = white.size();
     Out(ans);
     
+
 }
 
 // ### test.cpp ###

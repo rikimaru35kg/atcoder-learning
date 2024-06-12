@@ -188,65 +188,123 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct BidirectionalList {
-    const long long ninf = (long long)3e18;
-    unordered_map<long long,pair<long long,long long>> mp;
-    BidirectionalList () {
-        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
-    }
-    void add_next(long long x, long long y) {  // put y after x
-        auto [p, n] = mp[x];
-        mp[x].second = y; mp[n].first = y;
-        mp[y] = {x, n};
-    }
-    void add_prev(long long x, long long y) {  // put y before x
-        auto [p, n] = mp[x];
-        mp[x].first = y; mp[p].second = y;
-        mp[y] = {p, x};
-    }
-    void add_head(long long x) { add_next(-ninf, x); }
-    void add_tail(long long x) { add_prev(ninf, x); }
-    pair<long long,long long> erase(long long x) {
-        auto [p, n] = mp[x];
-        mp[p].second = n; mp[n].first = p;
-        mp.erase(x);
-        return {p, n};
-    }
-    pair<long long,long long> get(long long x) { return mp[x]; }
-    void print() {
-        long long next = mp[-ninf].second;
-        vector<long long> vec;
-        while (next != ninf) {
-            vec.push_back(next);
-            next = mp[next].second;
+struct HeadK {
+    long long K, sum = 0;
+    HeadK (long long K): K(K) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if (stM.count(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.count(x)) return;
+            auto it = stK.find(x);
+            stK.erase(it);
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
         }
-        for (int i=0; i<(int)vec.size(); ++i) {
-            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
+    }
+    void decK(long long nk) { // decrease K size
+        K = nk;
+        KtoM();
+    }
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
         }
+    }
+    long long get_sum() {
+        return sum;
+    }
+};
+
+struct HeadK {
+    long long K, sum = 0;
+    HeadK (long long K): K(K) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if (stM.count(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.count(x)) return;
+            auto it = stK.find(x);
+            stK.erase(it);
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
+        }
+    }
+    void decK(ll nk) { // decrease K size
+        K = nk;
+        KtoM();
+    }
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    }
+    long long get_sum() {
+        return sum;
     }
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    BidirectionalList list;
+    LONG(N, K);
+    HeadK hk(K);
+    vp query;
+    query.emplace_back(1, 0);
     rep(i, N) {
-        LONG(a);
-        list.add_tail(a);
+        LONG(t, y);
+        query.emplace_back(t, y);
     }
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x, y);
-            list.add_next(x, y);
+    reverse(all(query));
+    ll sum = 0, ans = -INF;
+    for(auto [t, y]: query) {
+        if (t==1 && K>=0) {
+            ll rem = hk.get_sum();
+            ll now = y + sum - rem;
+            de(now)
+            chmax(ans, now);
+            --K;
+            de(K)
+            if(K>=0) hk.decK(K);
         } else {
-            LONG(x);
-            list.erase(x);
+            sum += y;
+            if (y>=0) continue;
+            hk.add(y);
         }
     }
-    list.print();
+    Out(ans);
     
 }
 
