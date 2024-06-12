@@ -210,7 +210,7 @@ struct WeightedUnionFind {
         return true;
         // merge関数はポテンシャルの差として引数を指定すれば良い
         // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に対してのポテンシャル増加分を表すので
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
         // diffが正であるとは、親よりもポテンシャルが低いという事
         // （親ベースの増加分ではなく、それにマイナスをかけたもの）
         // 従ってvのuに対するポテンシャルを求めたいのであれば
@@ -224,16 +224,13 @@ struct WeightedUnionFind {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl ans;
+    LONG(N, M);
     WeightedUnionFind uf(N);
-    rep(i, Q) {
-        LONGM(a, b); LONG(w);
-        if (uf.merge(a, b, w)) {
-            ans.push_back(i+1);
-        }
+    rep(i, M) {
+        LONGM(l, r); LONG(d);
+        if(!uf.merge(l, r, d)) PNo
     }
-    Out(ans);
+    PYes
     
 }
 

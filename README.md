@@ -1074,7 +1074,7 @@
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
 ### 例題
-- !復習価値低 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
+- !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 
 ## 双方向リスト
 - 要素の前後関係だけ保持するリスト
