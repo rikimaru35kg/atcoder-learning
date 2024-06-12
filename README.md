@@ -508,6 +508,7 @@
 - !復習価値中 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 - !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
+- !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 
 # 最短経路問題
 
@@ -1115,21 +1116,18 @@
 - 個数を保存しておけば、ある値以下の個数を求める事にも使える
 - 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
 ### 例題
+- !復習価値低 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
 - !復習価値高 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
 - !復習価値高 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
 ## セグメントツリー（Segment tree）
 - atcoder libraryで使える
-- 一点更新、区間min・max・和取得などができる（遅延伝播セグメントツリー）
+- 一点更新、区間min・max・和取得などができる
 - モノイドであればセグ木にのる
 - セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
 ### 例題
-- 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
-- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
-- !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
-- !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
-- !要復習 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+- !復習価値高 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
 
 ## 遅延伝播セグメントツリー（Lazy segment tree）
 - セグメント木に加え、区間更新が可能
@@ -1138,6 +1136,7 @@
 - 作用素モノイドは結合律に加え、合成できる事が必要
 - なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
 ### 例題
+- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
 - !要復習 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
 - !要復習 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - !要復習 高難度 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
@@ -1161,6 +1160,7 @@
 - 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり
 - Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
 ### 例題
+- !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - !要復習 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
 
 ## 平面走査

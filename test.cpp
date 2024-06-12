@@ -188,35 +188,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
+#include <atcoder/segtree>
 using namespace atcoder;
+
+struct S {
+    Pr x1, x2;
+    S() {}
+    S(Pr x1, Pr x2): x1(x1), x2(x2) {}
+};
+S op(S a, S b) {
+    auto insert=[&](Pr x) {
+        auto [x0, n] = x;
+        auto [x1, n1] = a.x1;
+        auto [x2, n2] = a.x2;
+        if (x0 > x1) {
+            swap(a.x1, a.x2);
+            a.x1 = x;
+        } else if (x0 == x1) {
+            a.x1.second += n;
+        } else if (x0 > x2) {
+            a.x2 = x;
+        } else if (x0 == x2) {
+            a.x2.second += n;
+        }
+    };
+    insert(b.x1);
+    insert(b.x2);
+    return a;
+}
+S e() {return S({-INF+1,0}, {-INF,0});}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, M);
-    vl rlim(H, W), clim(W, H);
-    vvl csbyrow(H);
-    rep(i, M) {
-        LONGM(x, y);
-        chmin(rlim[x], y);
-        chmin(clim[y], x);
-        csbyrow[x].push_back(y);
+    LONG(N, Q);
+    VL(A, N);
+    vector<S> init(N);
+    rep(i, N) {
+        init[i] = S({A[i], 1}, {-INF,0});
     }
-    ll H0 = clim[0], W0 = rlim[0];
-    ll ans = 0;
-    rep(i, W0) ans += clim[i];
-    rep(i, H0) ans += rlim[i];
-
-    fenwick_tree<ll> tree(W+10);
-    rep(i, W0) tree.add(i, 1);
-    rep(i, H0) {
-        ans -= tree.sum(0, rlim[i]);
-        for(auto y: csbyrow[i]) {
-            if(tree.sum(y, y+1) == 1) tree.add(y, -1);
+    segtree<S,op,e> seg(init);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(p, x); --p;
+            // A[p] = x;
+            seg.set(p, S({x,1}, {-INF,0}));
+        } else {
+            LONG(l, r); --l;
+            ll tmp = seg.prod(l, r).x2.second;
+            Out(tmp);
         }
     }
-    Out(ans);
     
 }
 
