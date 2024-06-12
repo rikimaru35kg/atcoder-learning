@@ -411,7 +411,7 @@
 - !要復習 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
 - !復習価値中 ロボット移動（実装重め） [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
-# 区間和
+# 区間の問題
 
 ## 累積和
 - 区間和を高速に求める事ができる
@@ -508,17 +508,6 @@
 - !復習価値中 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 - !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
-
-# 全要素更新問題（全クリア）
-- 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
-- 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
-- リセット型クエリの場合、リセット値とリセット後の情報だけmap等で持てば良い
-- 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
-- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
-- 加算型クエリの場合、加算値と加算前の情報を持てば良い
-### 例題
-- 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
-- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 # 最短経路問題
 
@@ -1064,18 +1053,6 @@
 ### 例題
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
 
-# 括弧列
-- 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
-- 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
-- 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
-- つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
-- 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
-### 例題
-- 基本 正しい括弧列作成 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
-- 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
-- !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
-- !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
-
 # データ構造
 
 ## Union Find tree
@@ -1089,10 +1066,10 @@
 - Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
 - 発展的な重み付きUnion Findもある
 ### 例題
-- !復習価値低 実装工夫次第 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
-- !要復習 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
-- !復習価値低 重み付きUnion Findの練習にどうぞ [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
+- !復習価値中 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
+- !復習価値低 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
@@ -1113,6 +1090,29 @@
 - !復習価値低 想定解は非BIT木 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
 - !要復習 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 もう少し簡単な問題も例題に挙げられると良いのだが・・・
+
+## 括弧列
+- 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
+- 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
+- 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
+- つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
+- 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
+### 例題
+- 基本 正しい括弧列作成 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
+- 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
+- !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
+- !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
+
+## 全要素更新問題（全クリア）
+- 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
+- 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
+- リセット型クエリの場合、リセット値とリセット後の情報だけmap等で持てば良い
+- 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
+- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
+- 加算型クエリの場合、加算値と加算前の情報を持てば良い
+### 例題
+- 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
+- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 ## BIT木（Fenwick tree）
 - 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる

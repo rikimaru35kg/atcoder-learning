@@ -188,26 +188,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n,0) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) return w == 0;
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+};
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1000;
-    vvl cnt(M+1, vl(M+1));
-    rep(i, N) {
-        LONG(x1, y1, x2, y2);
-        cnt[x1][y1]++;
-        cnt[x2][y1]--;
-        cnt[x1][y2]--;
-        cnt[x2][y2]++;
+    LONG(N, M);
+    WeightedUnionFind uf(N);
+    rep(i, M) {
+        LONGM(l, r); LONG(d);
+        if(!uf.merge(l, r, d)) PNo
     }
-    rep(i, M+1) rep(j, M) cnt[i][j+1] += cnt[i][j];
-    rep(i, M) rep(j, M+1) cnt[i+1][j] += cnt[i][j];
-    vl ans(N+1);
-    rep(i, M) rep(j, M) {
-        ans[cnt[i][j]]++;
-    }
-    rep1(i, N) Out(ans[i]);
+    PYes
     
 }
 
