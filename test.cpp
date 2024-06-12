@@ -188,123 +188,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    HeadK (long long K): K(K) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        return sum;
-    }
-};
-
-struct HeadK {
-    long long K, sum = 0;
-    HeadK (long long K): K(K) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    void decK(ll nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        return sum;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    HeadK hk(K);
-    vp query;
-    query.emplace_back(1, 0);
+    LONG(N);
+    VS(S, N);
+    vp plus, minus;
     rep(i, N) {
-        LONG(t, y);
-        query.emplace_back(t, y);
-    }
-    reverse(all(query));
-    ll sum = 0, ans = -INF;
-    for(auto [t, y]: query) {
-        if (t==1 && K>=0) {
-            ll rem = hk.get_sum();
-            ll now = y + sum - rem;
-            de(now)
-            chmax(ans, now);
-            --K;
-            de(K)
-            if(K>=0) hk.decK(K);
-        } else {
-            sum += y;
-            if (y>=0) continue;
-            hk.add(y);
+        string s = S[i];
+        ll M = SIZE(s);
+        ll down = 0, last = 0;
+        rep(j, M) {
+            if(s[j]=='(') ++last;
+            else --last;
+            chmin(down, last);
         }
+        ll up = last - down;
+        if(last>=0) plus.emplace_back(down, up);
+        else minus.emplace_back(-up, -down);
     }
-    Out(ans);
+    sort(allr(plus)); sort(allr(minus));
+
+    auto calc=[&](vp &plus) -> ll{
+        ll height = 0;
+        for(auto [down, up]: plus) {
+            if (height+down < 0) PNo
+            height += down + up;
+        }
+        return height;
+    };
+    if(calc(plus) == calc(minus)) PYes PNo
     
 }
 

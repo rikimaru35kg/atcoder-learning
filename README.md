@@ -1073,7 +1073,15 @@
 
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
+- 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
+- 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
+- リセット型クエリの場合、リセット値とリセット後の情報だけmap等で持てば良い
+- 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
+- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
+- 加算型クエリの場合、加算値と加算前の情報を持てば良い
 ### 例題
+- 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
+- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 - !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 
 ## 双方向リスト
@@ -1101,17 +1109,6 @@
 - 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
 - !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
 - !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
-
-## 全要素更新問題（全クリア）
-- 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
-- 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
-- リセット型クエリの場合、リセット値とリセット後の情報だけmap等で持てば良い
-- 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
-- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
-- 加算型クエリの場合、加算値と加算前の情報を持てば良い
-### 例題
-- 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
-- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 
 ## BIT木（Fenwick tree）
 - 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる

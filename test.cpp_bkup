@@ -188,63 +188,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    HeadK (long long K): K(K) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        stK.insert(x);
-        sum += x;
-        while ((ll)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    };
-    void del(long long x) {
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((ll)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    long long get_sum() {
-        return sum;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    HeadK hk(K);
-    VL(A, N);
-    rep(i, M) {
-        hk.add(A[i]);
+    STRING(S);
+    vs stck;
+    stck.push_back("");
+    ll N = SIZE(S);
+    uset<char> box;
+    for(auto c: S) {
+        if (c=='(') {
+            stck.push_back("");
+        } else if (c==')') {
+            string last = stck.back();
+            for(auto d: last) {
+                box.erase(d);
+            }
+            stck.pop_back();
+        } else {
+            stck.back() += c;
+            if(!box.insert(c).second) PNo
+        }
+        de(stck)de(box)
     }
-    vl ans;
-    rep(i, N+1-M) {
-        ll tmp = hk.get_sum();
-        ans.push_back(tmp);
-        if(i==N-M) break;
-        hk.del(A[i]);
-        hk.add(A[i+M]);
-    }
-    Out(ans);
+    PYes
     
-
 }
 
 // ### test.cpp ###
