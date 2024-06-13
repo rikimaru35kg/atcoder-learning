@@ -229,7 +229,7 @@ public:
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -244,18 +244,27 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    Combination comb(1e6, 1e9+7);
+    LONG(H, W, K);
+    Combination comb(H*W+10, 998244353);
+    auto f=[&](ll h, ll w) -> mint {
+        return comb(h*w, K);
+    };
     mint ans = 0;
-    rep(k, N+1) {
-        mint now = 1;
-        now *= comb(N, k);
-        now *= comb.nPr(M-k, N-k);
-        de(k)de(now)
-        if(k%2==0) ans += now;
-        else ans -= now;
+    rep(h, H) rep(w, W) {
+        mint now = 0;
+        ll rh = H-1-h, rw = W-1-w;
+        now += f(h, W);
+        now += f(rh, W);
+        now += f(H, w);
+        now += f(H, rw);
+        now -= f(h, w);
+        now -= f(h, rw);
+        now -= f(rh, w);
+        now -= f(rh, rw);
+        now = f(H, W) - now;
+        ans += now;
     }
-    ans *= comb.nPr(M, N);
+    ans /= f(H, W);
     Out(ans);
     
 }

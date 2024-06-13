@@ -189,74 +189,83 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        ret *= n-k+1;
-        ret /= k;
     }
-    return ret;
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
 }
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vl c3k = {1, 3, 3, 1};
-    vl c2k = {1, 2, 1};
-    LONG(N, K);
-    auto f=[&](ll S) -> ll {
-        if(S<=2) return 0;
-        S -= 3;
-        ll ret = 0;
-        rep(k, 4) {
-            ll now = c3k[k] * nCr(S-k*N+2, 2);
-            if (k%2==0) ret += now;
-            else ret -= now;
-        }
-        return ret;
-    };
-    auto g=[&](ll S) -> ll {
-        if(S<=1) return 0;
-        S -= 2;
-        ll ret = 0;
-        rep(k, 3) {
-            ll now = c2k[k] * nCr(S-k*N+1, 1);
-            if (k%2==0) ret += now;
-            else ret -= now;
-        }
-        return ret;
-    };
-    repk(S, 3, 3*N+1) {
-        if (f(S)<K) {
-            K -= f(S);
-            continue;
-        }
-        rep1(a, N) {
-            ll bs = S - a;
-            if(g(bs)<K) {
-                K -= g(bs);
-                continue;
+    LONG(N, M);
+    VL(_A, N);
+    vl A;
+    rep(i, N) { if(M%_A[i]==0) A.push_back(_A[i]); }
+    N = SIZE(A);
+
+    auto vecp = prime_factorization(M);
+    ll K = SIZE(vecp);
+    vector<bitset<200010>> bst(K);
+
+    rep(i, N) {
+        ll a = A[i];
+        ll idx = 0;
+        for(auto [p, n]: vecp) {
+            ll x = 1;
+            rep(j, n) x *= p;
+            if(a%x==0) {
+                bst[idx].set(i, 1);
             }
-            rep1(b, N) {
-                ll c = S-a-b;
-                if(c>N) continue;
-                if(K==1) {
-                    printf("%lld %lld %lld\n", a, b, c);
-                    return 0;
-                }
-                --K;
-            }
+            ++idx;
         }
     }
-    de(K)
-    
+    mint ans = 0;
+    rep(s, 1<<K) {
+        bitset<200010> cst;
+        bool init = true;
+        rep(i, K) {
+            if (s>>i&1) {
+                if(init) {
+                    cst = bst[i];
+                    init = false;
+                } else {
+                    cst |= bst[i];
+                }
+            }
+        }
+        ll cnt = cst.count();
+        mint now = mint(2).pow(N-cnt)-1;
+        deb(s)de2(cnt ,N-cnt)de(now)
+        if(parity(s)) ans -= now;
+        else ans += now;
+    }
+    Out(ans);
     
 }
 
