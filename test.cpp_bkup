@@ -187,68 +187,44 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-
-#include <atcoder/lazysegtree>
+#include <atcoder/fenwicktree>
 using namespace atcoder;
-
-struct S {
-    ll l0,l1,r0,r1,mx0,mx1,w;
-    S(ll l0, ll l1, ll r0, ll r1, ll mx0, ll mx1, ll w) :
-        l0(l0),l1(l1),r0(r0),r1(r1),mx0(mx0),mx1(mx1),w(w) {}
-};
-S op(S a, S b) {
-    ll nl0 = a.l0;
-    if(nl0==a.w) nl0 = a.w+b.l0;
-    ll nl1 = a.l1;
-    if(nl1==a.w) nl1 = a.w+b.l1;
-    ll nr0 = b.r0;
-    if(nr0==b.w) nr0 = b.w+a.r0;
-    ll nr1 = b.r1;
-    if(nr1==b.w) nr1 = b.w+a.r1;
-    ll nmx0 = max(a.mx0, b.mx0);
-    chmax(nmx0, a.r0+b.l0);
-    ll nmx1 = max(a.mx1, b.mx1);
-    chmax(nmx1, a.r1+b.l1);
-    ll nw = a.w+b.w;
-    return S(nl0,nl1,nr0,nr1,nmx0,nmx1,nw);
-}
-S e() {return(S(0,0,0,0,0,0,0));}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==0) return x;
-    else {
-        swap(x.l0, x.l1);
-        swap(x.r0, x.r1);
-        swap(x.mx0, x.mx1);
-        return x;
-    }
-}
-F composition(F f, F g) {return f^g;}
-F id() {return 0;}
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, Q);
-    STRING(Str);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
-    rep(i, N) {
-        if (Str[i]=='0') {
-            seg.set(i, S(1,0,1,0,1,0,1));
-        } else {
-            seg.set(i, S(0,1,0,1,0,1,1));
+    VLM(C, N);
+    vvl ibyc(N);
+    rep(i, N) { ibyc[C[i]].push_back(i); }
+    vp spans;
+    rep(c, N) {
+        ll m = SIZE(ibyc[c]);
+        rep(i, m-1) {
+            spans.emplace_back(ibyc[c][i], ibyc[c][i+1]);
         }
     }
+    vt3 query;
     rep(i, Q) {
-        LONG(c, l, r); --l;
-        if(c==1) {
-            seg.apply(l, r, 1);
-        } else {
-            ll ans = seg.prod(l, r).mx1;
-            Out(ans);
-        }
+        LONGM(l, r);
+        query.emplace_back(l, r, i);
     }
+    fenwick_tree<ll> tree(N);
+    vl ans(Q);
+    sort(all(spans)); sort(allr(query));
+    de(spans)
+    for(auto [l, r, i]: query) {
+        while(spans.size() && spans.back().first >= l) {
+            auto [bl, br] = spans.back(); spans.pop_back();
+            tree.add(br, 1);
+        }
+        de(spans)
+        ll now = tree.sum(0, r+1);
+        de3(l, r, i)
+        de(now)
+        ans[i] = r-l+1-now;
+    }
+    for(auto x: ans) Out(x);
     
 }
 

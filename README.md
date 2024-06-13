@@ -823,6 +823,106 @@
 ### 例題
 - !復習価値中 グラフ上K日旅程の場合の数 [E - Safety Journey](https://atcoder.jp/contests/abc212/tasks/abc212_e)
 
+# データ構造
+
+## Union Find tree
+- 各頂点の連結操作や判定がO(α(N))で可能（α(N)はアッカーマンの逆関数で、実質的にO(1)）
+- UnionFind構造体を作る
+- parentsの初期化（p[x]を用意し、全てが親、例えば-1としておく）
+- find関数（再帰関数で実装すれば良い。実行時、p[x]も更新するとパス圧縮され次回のfindが速くなる）
+- unite関数（親同士をくっつける。ただし、同じ連結木はつながないように注意）
+- 辺を削除する問題は逆順に見てUnion Findをつなぐ問題に書き換えると解ける場合がある
+- Union Findは親に情報を持たせるとデータ管理がしやすい（連結成分のサイズやある点群に繋がっているかなど）
+- Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
+- 発展的な重み付きUnion Findもある
+### 例題
+- !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
+- !復習価値中 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
+- !復習価値低 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
+
+## 集合
+- Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
+- 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
+- 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
+- リセット型クエリの場合、リセット値とリセット後の情報だけmap等で持てば良い
+- 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
+- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
+- 加算型クエリの場合、加算値と加算前の情報を持てば良い
+### 例題
+- 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
+- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+- !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
+
+## 双方向リスト
+- 要素の前後関係だけ保持するリスト
+- ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
+- 指定要素の削除もO(1)
+### 例題
+- !復習価値中 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
+
+## 小さい方からK個の和/max
+- 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる
+- 要素追加、削除の関数を用意しておくと実装が楽になる
+### 例題
+- !復習価値低 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
+- !復習価値高 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
+
+## 括弧列
+- 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
+- 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
+- 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
+- つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
+- 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
+### 例題
+- 基本 正しい括弧列作成 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
+- 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
+- !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
+- !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
+
+## BIT木（Fenwick tree）
+- 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる
+- 個数を保存しておけば、ある値以下の個数を求める事にも使える
+- 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
+### 例題
+- !復習価値低 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
+- !復習価値高 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
+- !復習価値高 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
+
+## セグメントツリー（Segment tree）
+- atcoder libraryで使える
+- 一点更新、区間min・max・和取得などができる
+- モノイドであればセグ木にのる
+- セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
+### 例題
+- !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
+- !復習価値高 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+
+## 遅延伝播セグメントツリー（Lazy segment tree）
+- セグメント木に加え、区間更新が可能
+- 上側更新はO(logN)だが、下側更新は計算量が多いので、更新は最大区間で止めて必要になった時に下側に伝播させる
+- 更新（＝作用）を組み合わせられる必要があるので、作用素モノイドが必要
+- 作用素モノイドは結合律に加え、合成できる事が必要
+- なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
+### 例題
+- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
+- !復習価値高 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
+- !復習価値高 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
+- !復習価値高 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
+- !復習価値高 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
+
+
+## 永続データ構造
+- push_back()とpop_back()は木構造で書ける
+### 例題
+- !復習価値高 [E - Notebook](https://atcoder.jp/contests/abc273/tasks/abc273_e)
+
+## Sparse Table
+- 全ての区間を二つの区間の和集合で表せる
+- RMQにO(1)で回答可能（ただし構築にはsegtreeよりもメモリ消費が大きい）
+### 例題
+- !要復習 Sparse Tableの考え方 [F - Union of Two Sets](https://atcoder.jp/contests/abc282/tasks/abc282_f)
+
 # 動的計画法（DP）
 
 ## 一般的なこと
@@ -1054,113 +1154,13 @@
 ### 例題
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
 
-# データ構造
-
-## Union Find tree
-- 各頂点の連結操作や判定がO(α(N))で可能（α(N)はアッカーマンの逆関数で、実質的にO(1)）
-- UnionFind構造体を作る
-- parentsの初期化（p[x]を用意し、全てが親、例えば-1としておく）
-- find関数（再帰関数で実装すれば良い。実行時、p[x]も更新するとパス圧縮され次回のfindが速くなる）
-- unite関数（親同士をくっつける。ただし、同じ連結木はつながないように注意）
-- 辺を削除する問題は逆順に見てUnion Findをつなぐ問題に書き換えると解ける場合がある
-- Union Findは親に情報を持たせるとデータ管理がしやすい（連結成分のサイズやある点群に繋がっているかなど）
-- Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
-- 発展的な重み付きUnion Findもある
-### 例題
-- !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
-- !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
-- !復習価値中 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
-- !復習価値低 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
-
-## 集合
-- Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
-- 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
-- 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
-- リセット型クエリの場合、リセット値とリセット後の情報だけmap等で持てば良い
-- 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
-- リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
-- 加算型クエリの場合、加算値と加算前の情報を持てば良い
-### 例題
-- 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
-- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
-- !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
-
-## 双方向リスト
-- 要素の前後関係だけ保持するリスト
-- ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
-- 指定要素の削除もO(1)
-### 例題
-- !復習価値中 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
-
-## 小さい方からK個の和/max
-- 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる
-- 要素追加、削除の関数を用意しておくと実装が楽になる
-### 例題
-- !復習価値低 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
-- !復習価値高 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
-
-## 括弧列
-- 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
-- 括弧列は、開き括弧がある度にスタックを積み、閉じ括弧がある度にスタックを取り出す操作をすれば、対応する括弧の情報を取り出す事ができる
-- 括弧列は対応()を一つの頂点としてみると親子関係ができあがるので、根付き木に対応する
-- つまりDFS（再帰関数）との相性が良い（＝再帰下降構文解析）
-- 閉じ括弧を-1、開き括弧を1として増減させると、大局的な性質が分かる。最下点は閉じれない括弧の数、最下点からの最終到達点までの増加は開いたままの括弧の数となる
-### 例題
-- 基本 正しい括弧列作成 [002 - Encyclopedia of Parentheses（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_b)
-- 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
-- !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
-- !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
-
-## BIT木（Fenwick tree）
-- 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる
-- 個数を保存しておけば、ある値以下の個数を求める事にも使える
-- 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
-### 例題
-- !復習価値低 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
-- !復習価値高 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
-- !復習価値高 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
-
-## セグメントツリー（Segment tree）
-- atcoder libraryで使える
-- 一点更新、区間min・max・和取得などができる
-- モノイドであればセグ木にのる
-- セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
-### 例題
-- !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
-- !復習価値高 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
-
-## 遅延伝播セグメントツリー（Lazy segment tree）
-- セグメント木に加え、区間更新が可能
-- 上側更新はO(logN)だが、下側更新は計算量が多いので、更新は最大区間で止めて必要になった時に下側に伝播させる
-- 更新（＝作用）を組み合わせられる必要があるので、作用素モノイドが必要
-- 作用素モノイドは結合律に加え、合成できる事が必要
-- なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
-### 例題
-- !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
-- !復習価値高 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
-- !復習価値高 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
-- !復習価値高 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
-- !復習価値高 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
-
-
-## 永続データ構造
-- push_back()とpop_back()は木構造で書ける
-### 例題
-- !要復習 [E - Notebook](https://atcoder.jp/contests/abc273/tasks/abc273_e)
-
-## Sparse Table
-- 全ての区間を二つの区間の和集合で表せる
-- RMQにO(1)で回答可能（ただし構築にはsegtreeよりもメモリ消費が大きい）
-### 例題
-- !要復習 Sparse Tableの考え方 [F - Union of Two Sets](https://atcoder.jp/contests/abc282/tasks/abc282_f)
-
 # 2変数問題
 
 ## 1変数固定
 - 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり
 - Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
 ### 例題
-- !復習価値中 想定解は非セグ木（十字領域総和） [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- !復習価値低 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - !要復習 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
 
 ## 平面走査
@@ -1171,10 +1171,10 @@
 - xに等しい値が存在する場合の実装に注意（同時に処理するならmap<int,vi>的な実装が必要）
 ### 例題
 - 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
-- !復習価値低 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
-- !復習価値中 基本 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
-- !要復習 平面走査に辿り着くまでが難しいが良問 [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
-- !要復習 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
+- 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
+- !復習価値高 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
+- !復習価値高 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
+- !復習価値高 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
 
 ## 変数分離
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる

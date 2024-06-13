@@ -188,57 +188,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-using S = mint;
-S op(S a, S b) {return a+b;}
-S e(){return 0;}
-struct F {
-    mint a, b;
-    F(mint a, mint b): a(a),b(b) {}
-};
-S mapping (F f, S x) {
-    return f.a*x + f.b;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
 }
-F composition(F f, F g) {
-    return F(f.a*g.a, f.a*g.b+f.b);
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
 }
-F id() {return F(1,0);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vm init(N);
-    rep(i, N) { init[i] = A[i]; }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-    rep(i, M) {
-        LONG(l, r, p);
-        --l;
-        mint d= r-l;
-        mint x = p;
-        x /= d;
-        seg.apply(l, r, F((d-1)/d, x));
-    }
-    vm ans(N);
+    LONG(N);
+    vp pos;
     rep(i, N) {
-        ans[i] = seg.prod(i, i+1);
+        LONG(x, y);
+        pos.emplace_back(x, y);
     }
+    sort(all(pos));
+
+    auto f = [&](ll D) -> bool {
+        ll mx = -INF, mn = INF;
+        queue<Pr> que;
+        for(auto [x, y]: pos) {
+            while(que.size() && que.front().first <= x-D) {
+                auto [cx, cy] = que.front(); que.pop();
+                chmin(mn, cy); chmax(mx, cy);
+            }
+            if(mx - y >= D) return true;
+            if(y - mn >= D) return true;
+            que.emplace(x, y);
+        }
+        return false;
+    };
+
+    ll ans = binary_search(0, INF, f);
     Out(ans);
+    
     
 }
 
