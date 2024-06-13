@@ -187,44 +187,54 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-#include <atcoder/fenwicktree>
-using namespace atcoder;
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VLM(C, N);
-    vvl ibyc(N);
-    rep(i, N) { ibyc[C[i]].push_back(i); }
-    vp spans;
-    rep(c, N) {
-        ll m = SIZE(ibyc[c]);
-        rep(i, m-1) {
-            spans.emplace_back(ibyc[c][i], ibyc[c][i+1]);
+    LONG(N);
+    vp pos;
+    rep(i, N) {
+        LONG(x, y);
+        pos.emplace_back(x, y);
+    }
+    sort(all(pos));
+
+    auto f = [&](ll D) -> bool {
+        ll mx = -INF, mn = INF;
+        queue<Pr> que;
+        for(auto [x, y]: pos) {
+            while(que.size() && que.front().first <= x-D) {
+                auto [cx, cy] = que.front(); que.pop();
+                chmin(mn, cy); chmax(mx, cy);
+            }
+            if(mx - y >= D) return true;
+            if(y - mn >= D) return true;
+            que.emplace(x, y);
         }
-    }
-    vt3 query;
-    rep(i, Q) {
-        LONGM(l, r);
-        query.emplace_back(l, r, i);
-    }
-    fenwick_tree<ll> tree(N);
-    vl ans(Q);
-    sort(all(spans)); sort(allr(query));
-    de(spans)
-    for(auto [l, r, i]: query) {
-        while(spans.size() && spans.back().first >= l) {
-            auto [bl, br] = spans.back(); spans.pop_back();
-            tree.add(br, 1);
-        }
-        de(spans)
-        ll now = tree.sum(0, r+1);
-        de3(l, r, i)
-        de(now)
-        ans[i] = r-l+1-now;
-    }
-    for(auto x: ans) Out(x);
+        return false;
+    };
+
+    ll ans = binary_search(0, INF, f);
+    Out(ans);
+    
     
 }
 

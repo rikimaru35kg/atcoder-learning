@@ -1122,7 +1122,6 @@
 - !復習価値中 経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
-- !復習価値高 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
 - !復習価値高 サイコロゲーム（実装難しい） [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
@@ -1156,13 +1155,6 @@
 
 # 2変数問題
 
-## 1変数固定
-- 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり
-- Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
-### 例題
-- !復習価値低 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
-- !要復習 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
-
 ## 平面走査
 - (x,y)が順に与えられた場合に、"x1<x2 && y1<y2"となる点が存在するかを判定したい時などに使える
 - 1次元の大小判定はソートすれば可能だが2次元だと難しい場合に使えるテクニック
@@ -1180,7 +1172,15 @@
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる
 - min{f(i,j)}を求める問題でf(i,j)=g(i)+h(j)なら、min(g(i)+h(j))=min(g(i))+min(h(j))と選択肢を分離できる
 ### 例題
-- !要復習 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
+- !復習価値中 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
+- !復習価値高 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
+
+## 十字領域の総和最大化
+- 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり
+- Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
+### 例題
+- !復習価値低 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- !要復習 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる

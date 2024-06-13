@@ -188,53 +188,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp pos;
-    rep(i, N) {
-        LONG(x, y);
-        pos.emplace_back(x, y);
-    }
-    sort(all(pos));
+    LONG(H, W, C);
+    VVL(A, H, W);
 
-    auto f = [&](ll D) -> bool {
-        ll mx = -INF, mn = INF;
-        queue<Pr> que;
-        for(auto [x, y]: pos) {
-            while(que.size() && que.front().first <= x-D) {
-                auto [cx, cy] = que.front(); que.pop();
-                chmin(mn, cy); chmax(mx, cy);
-            }
-            if(mx - y >= D) return true;
-            if(y - mn >= D) return true;
-            que.emplace(x, y);
+    ll ans = INF;
+    rep(ri, 2) {
+        vvl mn(H, vl(W, INF));
+        rep(i, H) rep(j, W) {
+            chmin(mn[i][j], A[i][j]-C*(i+j));
+            if(i) chmin(mn[i][j], mn[i-1][j]);
+            if(j) chmin(mn[i][j], mn[i][j-1]);
         }
-        return false;
-    };
-
-    ll ans = binary_search(0, INF, f);
+        ll ans0 = INF;
+        rep(i, H) rep(j, W) {
+            ll now = INF;
+            if(i) chmin(now, A[i][j]+C*(i+j)+mn[i-1][j]);
+            if(j) chmin(now, A[i][j]+C*(i+j)+mn[i][j-1]);
+            chmin(ans0, now);
+        }
+        chmin(ans, ans0);
+        reverse(all(A));
+    }
     Out(ans);
-    
     
 }
 
