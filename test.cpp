@@ -189,83 +189,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(_A, N);
-    vl A;
-    rep(i, N) { if(M%_A[i]==0) A.push_back(_A[i]); }
-    N = SIZE(A);
-
-    auto vecp = prime_factorization(M);
-    ll K = SIZE(vecp);
-    vector<bitset<200010>> bst(K);
-
-    rep(i, N) {
-        ll a = A[i];
-        ll idx = 0;
-        for(auto [p, n]: vecp) {
-            ll x = 1;
-            rep(j, n) x *= p;
-            if(a%x==0) {
-                bst[idx].set(i, 1);
-            }
-            ++idx;
-        }
+    LONG(N);
+    vp spice;
+    for(ll i=1; i<=(1<<N)-1; ++i) {
+        LONG(c);
+        spice.emplace_back(c, i);
     }
-    mint ans = 0;
-    rep(s, 1<<K) {
-        bitset<200010> cst;
-        bool init = true;
-        rep(i, K) {
-            if (s>>i&1) {
-                if(init) {
-                    cst = bst[i];
-                    init = false;
-                } else {
-                    cst |= bst[i];
-                }
-            }
+    sort(all(spice));
+
+    vl base(N);
+    ll ans = 0;
+    for(auto [c, x]: spice) {
+        rep(i, N) {
+            if(x>>i&1) x^=base[i];
         }
-        ll cnt = cst.count();
-        mint now = mint(2).pow(N-cnt)-1;
-        deb(s)de2(cnt ,N-cnt)de(now)
-        if(parity(s)) ans -= now;
-        else ans += now;
+        if(x==0) continue;
+        ans += c;
+        repr(i, N) if(x>>i&1) {
+            base[i] = x;
+            break;
+        }
     }
     Out(ans);
+
     
 }
 

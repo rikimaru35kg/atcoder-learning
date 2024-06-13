@@ -1208,7 +1208,7 @@
 - !復習価値高 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 
 ## 掃き出し方
-- 基底を次々に追加する実装が分かりやすい
+- 基底を次々に追加する実装が分かりやすい（解説動画参照）
 ### 例題
 - !要復習 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
 
