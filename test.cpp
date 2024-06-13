@@ -103,6 +103,7 @@ using cd = complex<double>;
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) (ll)__builtin_popcountll(x)
+#define parity(x) (ll)__builtin_parityll(x)
 #define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
@@ -188,31 +189,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, C);
-    VVL(A, H, W);
-
-    ll ans = INF;
-    rep(ri, 2) {
-        vvl mn(H, vl(W, INF));
-        rep(i, H) rep(j, W) {
-            chmin(mn[i][j], A[i][j]-C*(i+j));
-            if(i) chmin(mn[i][j], mn[i-1][j]);
-            if(j) chmin(mn[i][j], mn[i][j-1]);
+    vl c3k = {1, 3, 3, 1};
+    vl c2k = {1, 2, 1};
+    LONG(N, K);
+    auto f=[&](ll S) -> ll {
+        if(S<=2) return 0;
+        S -= 3;
+        ll ret = 0;
+        rep(k, 4) {
+            ll now = c3k[k] * nCr(S-k*N+2, 2);
+            if (k%2==0) ret += now;
+            else ret -= now;
         }
-        ll ans0 = INF;
-        rep(i, H) rep(j, W) {
-            ll now = INF;
-            if(i) chmin(now, A[i][j]+C*(i+j)+mn[i-1][j]);
-            if(j) chmin(now, A[i][j]+C*(i+j)+mn[i][j-1]);
-            chmin(ans0, now);
+        return ret;
+    };
+    auto g=[&](ll S) -> ll {
+        if(S<=1) return 0;
+        S -= 2;
+        ll ret = 0;
+        rep(k, 3) {
+            ll now = c2k[k] * nCr(S-k*N+1, 1);
+            if (k%2==0) ret += now;
+            else ret -= now;
         }
-        chmin(ans, ans0);
-        reverse(all(A));
+        return ret;
+    };
+    repk(S, 3, 3*N+1) {
+        if (f(S)<K) {
+            K -= f(S);
+            continue;
+        }
+        rep1(a, N) {
+            ll bs = S - a;
+            if(g(bs)<K) {
+                K -= g(bs);
+                continue;
+            }
+            rep1(b, N) {
+                ll c = S-a-b;
+                if(c>N) continue;
+                if(K==1) {
+                    printf("%lld %lld %lld\n", a, b, c);
+                    return 0;
+                }
+                --K;
+            }
+        }
     }
-    Out(ans);
+    de(K)
+    
     
 }
 

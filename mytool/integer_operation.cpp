@@ -66,6 +66,22 @@ public:
     }
 };
 
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
 //! Only when <= 1e6
 //! If not, use Combination2 class below.
 class Combination {

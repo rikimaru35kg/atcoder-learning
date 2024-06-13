@@ -669,7 +669,7 @@
     ],
   },
   "atcoder_all(Snippet)": {
-    "prefix": "atcoder_all",
+    "prefix": "at_all",
     "body": [
       "#include <atcoder/all>",
       "using namespace atcoder;",
@@ -1185,7 +1185,7 @@
     ],
   },
   "atcoder/mint(Snippet)": {
-    "prefix": "atcoder_mint",
+    "prefix": "at_mint",
     "body": [
       "#include <atcoder/modint>",
       "using namespace atcoder;",
@@ -1203,49 +1203,49 @@
     ],
   },
   "atcoder/dsu(Snippet)": {
-    "prefix": "atcoder_dsu",
+    "prefix": "at_dsu",
     "body": [
       "#include <atcoder/dsu>",
       "using namespace atcoder;",
     ],
   },
   "atcoder/fenwick(Snippet)": {
-    "prefix": "atcoder_fenwick",
+    "prefix": "at_fenwick",
     "body": [
       "#include <atcoder/fenwicktree>",
       "using namespace atcoder;",
     ],
   },
   "atcoder/segtree(Snippet)": {
-    "prefix": "atcoder_segtree",
+    "prefix": "at_segtree",
     "body": [
       "#include <atcoder/segtree>",
       "using namespace atcoder;",
     ],
   },
   "atcoder/lazysegtree(Snippet)": {
-    "prefix": "atcoder_lazysegtree",
+    "prefix": "at_lazysegtree",
     "body": [
       "#include <atcoder/lazysegtree>",
       "using namespace atcoder;",
     ],
   },
   "atcoder/scc(Snippet)": {
-    "prefix": "atcoder_scc",
+    "prefix": "at_scc",
     "body": [
       "#include <atcoder/scc>",
       "using namespace atcoder;",
     ],
   },
   "atcoder/math(Snippet)": {
-    "prefix": "atcoder_math",
+    "prefix": "at_math",
     "body": [
       "#include <atcoder/math>",
       "using namespace atcoder;",
     ],
   },
   "atcoder/string(Snippet)": {
-    "prefix": "atcoder_string",
+    "prefix": "at_string",
     "body": [
       "#include <atcoder/string>",
       "using namespace atcoder;",
@@ -1332,6 +1332,53 @@
       "    }",
       "    long long get_sum() {",
       "        return sum;",
+      "    }",
+      "};",
+    ],
+  },
+  "Combination for small r(Snippet)": {
+    "prefix": "ncr",
+    "body": [
+      "// Combination for very small r",
+      "long long nCr (long long n, long long r) {",
+      "    long long ninf = 3e18;",
+      "    if(n<0 || r>n) return 0;",
+      "    r = min(r, n-r);",
+      "    long long ret = 1;",
+      "    for(long long k=1; k<=r; ++k) {",
+      "        if(n-k+1 > (ninf+ret-1)/ret) {",
+      "            assert(0&&\"[Error:nCr] Too large return value.\");",
+      "        }",
+      "        ret *= n-k+1;",
+      "        ret /= k;",
+      "    }",
+      "    return ret;",
+      "}",
+    ],
+  },
+  "Pascal(Snippet)": {
+    "prefix": "pascal",
+    "body": [
+      "//! no mod nCr",
+      "//! return value shall be within long long range",
+      "class Pascal {",
+      "    int mx = 66;",
+      "    vector<vector<long long>> comb;",
+      "public:",
+      "    Pascal () :comb(mx+1, vector<long long>(mx+1)) {",
+      "        comb[0][0] = 1;",
+      "        for (int i=0; i<mx; ++i) for (int j=0; j<=i; ++j) {",
+      "            comb[i+1][j] += comb[i][j];",
+      "            comb[i+1][j+1] += comb[i][j];",
+      "        }",
+      "    }",
+      "    long long nCr(int n, int r) {",
+      "        if (n < 0 || r < 0 || n < r) return 0;",
+      "        if (n > mx) {",
+      "            cout << \"[ClassPascalError@nCr] n is too large (shall be <=66)\" << endl;",
+      "            assert(0);",
+      "        }",
+      "        return comb[n][r];",
       "    }",
       "};",
     ],

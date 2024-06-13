@@ -107,6 +107,7 @@ using cd = complex<double>;
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) (ll)__builtin_popcountll(x)
+#define parity(x) (ll)__builtin_parityll(x)
 #define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
