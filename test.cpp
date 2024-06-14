@@ -192,19 +192,41 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    vvl S(K, vl(N+1));
-    rep(i, N) { S[i%K][i+1] = A[i]; }
-    rep(k, K) rep(i, N) S[k][i+1] += S[k][i];
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        set<ll> st;
-        rep(k, K) st.insert(S[k][r]-S[k][l]);
-        if(SIZE(st)==1) puts("Yes");
-        else puts("No");
+    LONG(N);
+    vl X(N), Y(N);
+    rep(i, N) cin>>X[i]>>Y[i];    
+
+    auto cdist=[&](vl X) -> ll {
+        ll ret = 0;
+        sort(all(X));
+        ll N = SIZE(X);
+        rep(i, N-1) {
+            ll w = X[i+1] - X[i];
+            ll n = (i+1)*(N-i-1);
+            ret += w*n;
+        }
+        return ret;
+    };
+
+    auto calc=[&](vl &X, vl &Y, int r) {
+        vl A, B;
+        rep(i, N) {
+            if((X[i]+Y[i])%2!=r) continue;
+            ll x = X[i], y = Y[i]+r;
+            ll a = (x-y)/2, b = (x+y)/2;
+            A.push_back(a), B.push_back(b);
+        }
+        de(X)de(Y)de(r)de(A)de(B)
+        ll ret = 0;
+        ret += cdist(A); ret += cdist(B);
+        return ret;
+    };
+
+    ll ans = 0;
+    rep(ri, 2) {
+        ans += calc(X, Y, ri);
     }
+    Out(ans);
 
 }
 

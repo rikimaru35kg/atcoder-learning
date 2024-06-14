@@ -1220,6 +1220,20 @@
 - !要復習 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
 
 # その他典型
+
+## マンハッタン距離
+- 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
+- maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
+- 逆に45度回転して1/√2倍拡大（座標系視点なら√2倍拡大）した座標系を(a,b)とすると、xy座標でのチェビシェフ距離がab座標でのマンハッタン距離になる
+- それぞれ相互に変換可能なので、得意な操作ができる座標系に変換すれば良い
+- マンハッタン距離は総和系の話が得意（距離の総和をxy独立に考えられる為）
+- 最大最小はチェビシェフ距離が得意（最大はそのまま、最小は2分探索＋平面走査）
+- ランダムウォークもチェビシェフ距離が得意[ここら辺の解説](https://www.youtube.com/live/T9Dxs5YLjRc?feature=shared&t=7472)
+### 例題
+- 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
+- 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
+- !要復習 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
+
 ## ヒストグラム最大長方形（スパン）
 - ヒストグラムの中で取りうる長方形の最大面積をO(N)で求める問題
 - まずは各要素に対して、その要素よりも初めて小さくなる左右の範囲（スパン）を求める
@@ -1277,19 +1291,6 @@
 ### 例題
 - !要復習 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
 - !復習価値高 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
-
-## マンハッタン距離
-- 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
-- maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
-- 逆に45度回転して1/√2倍拡大（座標系視点なら√2倍拡大）した座標系を(a,b)とすると、xy座標でのチェビシェフ距離がab座標でのマンハッタン距離になる
-- それぞれ相互に変換可能なので、得意な操作ができる座標系に変換すれば良い
-- マンハッタン距離は総和系の話が得意（距離の総和をxy独立に考えられる為）
-- 最大最小はチェビシェフ距離が得意（最大はそのまま、最小は2分探索＋平面走査）
-- ランダムウォークもチェビシェフ距離が得意[ここら辺の解説](https://www.youtube.com/live/T9Dxs5YLjRc?feature=shared&t=7472)
-### 例題
-- 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
-- !復習価値低 マンハッタン距離 [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
-- !要復習 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 
 ## パスカルの三角形
 - 各行の総和は2^行番号となる
