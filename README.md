@@ -1264,13 +1264,13 @@
 ## MODで考えてみる
 - 求めたい物に割り算が関係する場合、MODで考えてみると見通しが良くなる場合あり。特にDPする際には、MODであれば状態数が減らせる
 ### 例題
-- !要復習 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
+- !復習価値高 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 
 ## 円環問題
 - 円環はそのままでは扱いにくいので、(1)2つ繋げて列にするか、(2)頂点1から頂点1までの区間長Nの列にするか、(3)頂点1から頂点Nまでの区間長N-1の列にするかで考えると見通しが良くなる
 ### 例題
-- !要復習（本番で解けなかった） 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
-- !要復習（本番で解けなかった） 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
+- !復習価値高 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
+- !復習価値中 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
 
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
