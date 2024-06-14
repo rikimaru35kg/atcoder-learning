@@ -189,98 +189,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
-    }
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+#include <atcoder/fenwicktree>
+#include <atcoder/modint>
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+struct S {
+    mint x, w;
+    S(ll x, ll w): x(x),w(w) {}
+    S(mint x, mint w): x(x),w(w) {}
 };
+S op(S a, S b) {
+    return S(a.x+b.x, a.w+b.w);
+}
+S e() {return S(0,0);}
+using F = ll;
+S mapping(F f, S x) {
+    return S(x.x+f*x.w, x.w);
+}
+F composition(F f, F g) {return f+g;}
+F id() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    map<ll,vl> sushi;
+    LONG(N); VL(A, N);
+    ll M = 2e5+10;
+    vector<S> v(N, S(0,1));
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    fenwick_tree<ll> tree(M), tree2(M);
+    mint sum = 0;
     rep(i, N) {
-        LONG(t, d); --t;
-        sushi[t].push_back(d);
+        mint plus = tree.sum(0, A[i]+1) * A[i];
+        plus += tree2.sum(A[i]+1, M);
+        plus *= 2;
+        sum += plus + A[i];
+        Out(sum/(i+1)/(i+1));
+
+        tree.add(A[i], 1);
+        tree2.add(A[i], A[i]);
     }
-    vvl sus;
-    for(auto [k,v]: sushi) {
-        sort(allr(v));
-        sus.emplace_back(v);
-    }
-    ll M = SIZE(sus);
 
-    vl p(M);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return sus[i][0] > sus[j][0];
-    });
-
-    --K;
-    HeadK hk(K, false);
-    ll nt = 1;
-    ll ans = 0;
-    ll sum = 0;
-    for(auto i: p) {
-        vl vec = sus[i];
-        ll n = SIZE(vec);
-        sum += vec[0];
-
-        rep1(j, n-1) hk.add(vec[j]);
-
-        ll now = nt*nt;
-        now += sum;
-        now += hk.get_sum();
-        chmax(ans, now);
-        --K;
-        if(K<0) break;
-        hk.decK(K);
-        ++nt;
-    }
-    Out(ans);
     
 }
 

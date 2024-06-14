@@ -1250,7 +1250,7 @@
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
 ### 例題
-- !要復習 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
+- !復習価値中 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - !要復習 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 
 ## 偶奇に注目
