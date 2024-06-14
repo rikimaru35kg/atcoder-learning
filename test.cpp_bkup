@@ -192,42 +192,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl X(N), Y(N);
-    rep(i, N) cin>>X[i]>>Y[i];    
-
-    auto cdist=[&](vl X) -> ll {
-        ll ret = 0;
-        sort(all(X));
-        ll N = SIZE(X);
-        rep(i, N-1) {
-            ll w = X[i+1] - X[i];
-            ll n = (i+1)*(N-i-1);
-            ret += w*n;
-        }
-        return ret;
-    };
-
-    auto calc=[&](vl &X, vl &Y, int r) {
-        vl A, B;
-        rep(i, N) {
-            if((X[i]+Y[i])%2!=r) continue;
-            ll x = X[i], y = Y[i]+r;
-            ll a = (x-y)/2, b = (x+y)/2;
-            A.push_back(a), B.push_back(b);
-        }
-        de(X)de(Y)de(r)de(A)de(B)
-        ll ret = 0;
-        ret += cdist(A); ret += cdist(B);
-        return ret;
-    };
-
-    ll ans = 0;
+    LONG(N, K, C);
+    STRING(S);
+    vl Sl(N+1), Sr(N+1);
     rep(ri, 2) {
-        ans += calc(X, Y, ri);
+        ll last = -INF;
+        rep(i, N) {
+            if (i-last<=C) continue;
+            if(S[i]=='x') continue;
+            Sl[i+1] = 1;
+            last = i;
+        }
+        rep(i, N) Sl[i+1] += Sl[i];
+        swap(Sl, Sr);
+        reverse(all(S));
     }
-    Out(ans);
-
+    reverse(all(Sr));
+    de(Sl)de(Sr)
+    vl ans;
+    rep(i, N) {
+        if(Sl[i]+Sr[i+1]>=K) continue;
+        ans.push_back(i+1);
+    }
+    for(auto d: ans) Out(d);
+    
 }
 
 // ### test.cpp ###
