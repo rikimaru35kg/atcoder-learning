@@ -189,45 +189,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl X(N), Y(N);
-    rep(i, N) cin>>X[i]>>Y[i];    
-
-    auto cdist=[&](vl X) -> ll {
-        ll ret = 0;
-        sort(all(X));
-        ll N = SIZE(X);
-        rep(i, N-1) {
-            ll w = X[i+1] - X[i];
-            ll n = (i+1)*(N-i-1);
-            ret += w*n;
-        }
-        return ret;
-    };
-
-    auto calc=[&](vl &X, vl &Y, int r) {
-        vl A, B;
-        rep(i, N) {
-            if((X[i]+Y[i])%2!=r) continue;
-            ll x = X[i], y = Y[i]+r;
-            ll a = (x-y)/2, b = (x+y)/2;
-            A.push_back(a), B.push_back(b);
-        }
-        de(X)de(Y)de(r)de(A)de(B)
-        ll ret = 0;
-        ret += cdist(A); ret += cdist(B);
-        return ret;
-    };
-
-    ll ans = 0;
-    rep(ri, 2) {
-        ans += calc(X, Y, ri);
-    }
+    LONG(r1, c1, r2, c2); --r1, --c1;
+    Combination comb(2e6+20, 1e9+7);
+    mint ans = 0;
+    ans += comb(r2+c2+2, r2+1) - 1;
+    ans -= comb(r1+c2+2, r1+1) - 1;
+    de2(r1,c2)de(comb(r1+c2+2, r1+1) - 1)
+    ans -= comb(r2+c1+2, r2+1) - 1;
+    ans += comb(r1+c1+2, r1+1) - 1;
     Out(ans);
-
+    
+    
 }
 
 // ### test.cpp ###

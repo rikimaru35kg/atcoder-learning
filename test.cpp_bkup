@@ -192,27 +192,42 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl A(N), B(N), X(N), Y(N);
-    rep(i, N) {
-        LONG(a, b);
-        ll x = a - b;
-        ll y = a + b;
-        A[i] = x, B[i] = y;
-        X[i] = x, Y[i] = y;
+    LONG(N);
+    vl X(N), Y(N);
+    rep(i, N) cin>>X[i]>>Y[i];    
+
+    auto cdist=[&](vl X) -> ll {
+        ll ret = 0;
+        sort(all(X));
+        ll N = SIZE(X);
+        rep(i, N-1) {
+            ll w = X[i+1] - X[i];
+            ll n = (i+1)*(N-i-1);
+            ret += w*n;
+        }
+        return ret;
+    };
+
+    auto calc=[&](vl &X, vl &Y, int r) {
+        vl A, B;
+        rep(i, N) {
+            if((X[i]+Y[i])%2!=r) continue;
+            ll x = X[i], y = Y[i]+r;
+            ll a = (x-y)/2, b = (x+y)/2;
+            A.push_back(a), B.push_back(b);
+        }
+        de(X)de(Y)de(r)de(A)de(B)
+        ll ret = 0;
+        ret += cdist(A); ret += cdist(B);
+        return ret;
+    };
+
+    ll ans = 0;
+    rep(ri, 2) {
+        ans += calc(X, Y, ri);
     }
-    sort(all(X)); sort(all(Y));
-    rep(i, Q) {
-        LONGM(p);
-        ll a = A[p], b = B[p];
-        ll ans = 0;
-        chmax(ans, a-X[0]);
-        chmax(ans, X.back()-a);
-        chmax(ans, b-Y[0]);
-        chmax(ans, Y.back()-b);
-        Out(ans);
-    }
-    
+    Out(ans);
+
 }
 
 // ### test.cpp ###
