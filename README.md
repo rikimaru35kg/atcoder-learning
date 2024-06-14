@@ -871,6 +871,7 @@
 ### 例題
 - !復習価値低 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
 - !復習価値高 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
+- !復習価値中 寿司おいしさ+種類数ボーナス最大化（想定解ではHeadK不要なのでnote未掲載） [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 
 ## 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
@@ -1249,7 +1250,6 @@
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
 ### 例題
-- !復習価値中 寿司おいしさ+種類数ボーナス最大化 [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 - !要復習 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - !要復習 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 

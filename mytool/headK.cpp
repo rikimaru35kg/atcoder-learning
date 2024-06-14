@@ -3,14 +3,17 @@ using namespace std;
 
 struct HeadK {
     long long K, sum = 0;
-    HeadK (long long K): K(K) {}
+    bool ascending;
+    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
     multiset<long long> stK, stM;
     void add(long long x) {
+        if(!ascending) x = -x;
         stK.insert(x);
         sum += x;
         KtoM();
     };
     void del(long long x) {
+        if(!ascending) x = -x;
         if (stM.count(x)) {
             stM.erase(stM.find(x));
         } else {
@@ -41,6 +44,7 @@ struct HeadK {
         }
     }
     long long get_sum() {
-        return sum;
+        if(ascending) return sum;
+        else return -sum;
     }
 };
