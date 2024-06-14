@@ -1275,8 +1275,8 @@
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
 ### 例題
-- !復習価値高 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
-- !要復習 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
+- !要復習 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
+- !復習価値高 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
 
 ## マンハッタン距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる

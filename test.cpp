@@ -192,19 +192,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl p(2*N);
-    rep(i, N) {
-        LONGM(a, b);
-        p[a] = i, p[b] = i;
+    LONG(N, K);
+    VL(A, N);
+    vvl S(K, vl(N+1));
+    rep(i, N) { S[i%K][i+1] = A[i]; }
+    rep(k, K) rep(i, N) S[k][i+1] += S[k][i];
+    LONG(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        set<ll> st;
+        rep(k, K) st.insert(S[k][r]-S[k][l]);
+        if(SIZE(st)==1) puts("Yes");
+        else puts("No");
     }
-    vl stck;
-    rep(i, 2*N) {
-        if(stck.size() && stck.back() == p[i]) stck.pop_back();
-        else (stck.push_back(p[i]));
-    }
-    if(SIZE(stck)) PYes PNo
-    
+
 }
 
 // ### test.cpp ###
