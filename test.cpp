@@ -189,24 +189,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    VL(A, N);
-    ll rem = L - accumulate(all(A), 0LL);
-    priority_queue<ll,vl,greater<ll>> que;
-    rep(i, N) que.push(A[i]);
-    if(rem) que.push(rem);
-    ll ans = 0;
-    while (SIZE(que)>=2) {
-        auto a = que.top(); que.pop();
-        auto b = que.top(); que.pop();
-        ans += a+b;
-        de3(a, b, a+b);
-        de(ans);
-        que.push(a+b);
+    LONG(N);
+    vp pos;
+    ll zero = 0;
+    map<Pr,Pr> mp;
+    rep(i, N) {
+        LONG(a, b);
+        if(a==0 && b==0) {
+            ++zero;
+            continue;
+        }
+        ll g = gcd(a, b);
+        a /= g, b /= g;
+        if(b<0) a = -a, b = -b;
+        if(a<0 && b==0) a = -a;
+        ll ca = a, cb = b;
+        bool sec = false;
+        if(a <= 0) ca = b, cb = -a, sec = true;
+        if(!sec) mp[{ca,cb}].first++;
+        else mp[{ca,cb}].second++;
     }
+    mint ans = 1;
+    for(auto [p1,p2]:mp) {
+        auto [a, b] = p2;
+        mint now = 0;
+        now += mint(2).pow(a);
+        now += mint(2).pow(b);
+        --now;
+        de2(a,b)de(now)
+        ans *= now;
+    }
+    de(ans);
+    ans--;
+    ans += zero;
     Out(ans);
     
 }
