@@ -192,6 +192,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, Q);
+    VL(C, N);
+    vector<umap<ll,ll>> box(N);
+    rep(i, N) box[i][C[i]]++;
+
+    rep(i, Q) {
+        LONGM(a, b);
+        umap<ll,ll> &boxa = box[a], &boxb = box[b];
+        if(SIZE(boxa)>SIZE(boxb)) swap(boxa, boxb);
+        for(auto [k, v]: boxa) {
+            boxb[k] += v;
+        }
+        Out(SIZE(boxb));
+        boxa = umap<ll,ll>();
+    }
+
+
     
 }
 

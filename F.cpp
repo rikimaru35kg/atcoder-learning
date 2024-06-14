@@ -203,21 +203,21 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 struct S {
-    mint val; ll asum, bsum; ll w;
+    mint val; mint asum, bsum; ll w;
     S() {}
-    S(mint val, ll asum, ll bsum, ll w): val(val), asum(asum), bsum(bsum), w(w) {}
+    S(mint val, mint asum, mint bsum, ll w): val(val), asum(asum), bsum(bsum), w(w) {}
 };
 S op(S a, S b) {
     return S(a.val+b.val, a.asum+b.asum, a.bsum+b.bsum, a.w+b.w);
 }
 S e() {return S(0,0,0,0);}
 struct F {
-    ll x, y;
+    mint x, y;
     F () { }
-    F (ll x, ll y): x(x), y(y) {}
+    F (mint x, mint y): x(x), y(y) {}
 };
 S mapping(F f, S x) {
-    return S(x.val+f.x*x.bsum+f.y*x.asum, x.asum+f.x*x.w, x.bsum+f.y*x.w, x.w);
+    return S(x.val+f.x*x.bsum+f.y*x.asum+f.x*f.y*x.w, x.asum+f.x*x.w, x.bsum+f.y*x.w, x.w);
 }
 F composition(F f, F g) {
     return F(f.x+g.x, f.y+g.y);

@@ -488,6 +488,8 @@
 ### 例題
 - 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
 
+# 貪欲法
+
 ## 区間スケジューリング問題
 - なるべく多くの会議に出席したい場合、終了時刻で昇順ソートして、貪欲に選択するのが最適
 - 昇順ソートしたpairを順に見えていけば良い
@@ -498,7 +500,7 @@
 - !復習価値低 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
 - !復習価値低 フが何個見えるか [E - フ](https://atcoder.jp/contests/abc225/tasks/abc225_e)
 
-# 貪欲法
+## その他貪欲法
 - 自明な貪欲は簡単だが非自明な貪欲は思いつくのが難しい
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
 - 2つ以上の変数がある場合、1つに減らせれば貪欲な選択ができる（区間スケジューリングはその代表例）
@@ -510,6 +512,7 @@
 - !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 - !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- !復習価値高 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 
 # 最短経路問題
 
@@ -910,6 +913,7 @@
 - !復習価値高 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
 - !復習価値高 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - !復習価値高 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
+- !要復習 2数列区間加算区間内積クエリ [F - Two Sequence Queries](https://atcoder.jp/contests/abc357/tasks/abc357_f)
 - !復習価値高 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
 
 
@@ -1230,12 +1234,11 @@
 - !復習価値高 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 
-## マージテク
+## データ構造をマージする一般的なテク
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
 - 二分木を下（葉）から足していく際、総和=Σ頂点のコスト*高さとなるので、葉が決まっている際に最小和を求めるためには、小さい順にマージしていけばよい
 ### 例題
 - !復習価値低 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
-- !要復習 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
