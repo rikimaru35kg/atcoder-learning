@@ -192,35 +192,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N); VL(A, N);
+    ll minus = 0;
+    rep(i, N) if(A[i]<0) ++minus;
+    if (minus%2==0) {
+        ll ans = 0;
+        rep(i, N) ans += abs(A[i]);
+        Out(ans);
+    } else {
+        ll ans = 0;
+        ll mn = INF;
+        rep(i, N) chmin(mn, abs(A[i]));
+        rep(i, N) ans += abs(A[i]);
+        ans -= abs(mn)*2;
+        Out(ans);
     }
-    ll tot = 0;
-    vl sz(N);
-    auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> ll {
-        ll ret = 1;
-        tot += d;
-        for(auto nv: from[v]) if (nv != p) {
-            ret += f(f, nv, d+1, v);
-        }
-        return sz[v] = ret;
-    };
-    dfs(dfs, 0);
-
-    vl ans(N);
-    auto dfs2=[&](auto f, ll v, ll tot, ll p=-1) -> void {
-        ans[v] = tot;
-        for(auto nv: from[v]) if (nv != p) {
-            ll ntot = tot + (N-sz[nv]) - sz[nv];
-            f(f, nv, ntot, v);
-        }
-    };
-    dfs2(dfs2, 0, tot);
-    for(auto x: ans) Out(x);
     
 }
 
