@@ -191,37 +191,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S); VL(C, N);
-    vvl dp(2, vl(2, INF));
-    vvl edp = dp;
-    rep(i, N) {
-        int c = S[i] - '0';
-        if(i==0) {
-            dp[c][0] = 0;
-            dp[c^1][0] = C[i];
-            continue;
+    LONG(N, K);
+    vl X(N), Y(N);
+    rep(i, N) cin>>X[i]>>Y[i];
+    sort(all(X)); sort(all(Y));
+    ll dx = X.back() - X[0];
+    ll dy = Y.back() - Y[0];
+
+    auto cntmove=[&](vl &x, ll d, ll tot) -> ll {
+        if(tot<=d) return 0;
+        d = tot -d;
+
+        ll cnt = 0;
+        vl km(N);
+        rep(i, N-1) {
+            ll k = min(i+1, N-1-i);
+            km[k] += x[i+1] - x[i];
         }
-        vvl pdp = edp;
-        swap(pdp, dp);
-        rep(j, 2) rep(k, 2) {
-            {
-                ll t = j^1;
-                if(t==c) chmin(dp[t][k], pdp[j][k]);
-                else chmin(dp[t][k], pdp[j][k]+C[i]);
-            }
-            if(k==0) {
-                ll t = j;
-                if(t==c) chmin(dp[t][k+1], pdp[j][k]);
-                else chmin(dp[t][k+1], pdp[j][k]+C[i]);
+
+        rep1(k, N-1) {
+            if (km[k] < d) {
+                d -= km[k];
+                cnt += k*km[k];
+            } else {
+                cnt += d * k;
+                d = 0;
+                break;
             }
         }
-    }
-    ll ans = INF;
-    chmin(ans, dp[0][1]);
-    chmin(ans, dp[1][1]);
+        if(d>0) return INF;
+        return cnt;
+    };
+
+    auto f = [&](ll d) -> bool {
+        ll cnt1 = cntmove(X, d, dx);
+        ll cnt2 = cntmove(Y, d, dy);
+        ll cnt = cnt1+cnt2;
+        return cnt <= K;
+    };
+    ll ans = binary_search(INF, -1, f);
     Out(ans);
     
 }

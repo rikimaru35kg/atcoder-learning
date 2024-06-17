@@ -1,293 +1,6 @@
 # はじめに
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
-# 数や文字の扱い
-
-## 文字列
-- S.substr(開始位置, 長さ)で部分文字列を取得可能
-- regex_match(S, regex("正規表現"))で一致性を確認可能
-- ただし正規表現は遅い。計算量がシビアな問題ではなるべく使わない
-- S.find(s)は文字列sの含まれる最初の位置を出力。存在しない場合はnposを出力（sは文字でも可）
-- S.rfind(s)は文字列sが最後に含まれる位置を出力。存在しない場合はnposを出力
-- charをintに直すには'5'-'0'などとする
-- 文字列が連続している場合はランレングス圧縮が有効。余事象との組み合わせで、異なる文字が含まれる区間の場合の数も求められる
-- tolower(c)、toupper(c)で小文字、大文字変換が可能
-- scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
-- 文字コードを扱うときは一旦開始文字（eg A, a）からの差分値とし、最後に開始文字からの差分値で求める。('C' + 20) % 26などとすると空白文字となってしまうので要注意！
-### 例題
-- 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
-
-## ローリングハッシュ（Rolling Hash）
-- 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する（AとDのどちらを上位桁にしても問題ない）
-- ハッシュが一致すれば同一文字列と判定できる
-- 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せるが、結構難しい（累積和の差を更にXの累乗で割る必要がある）ので、セグ木推奨
-- (hash,桁数)はモノイドなのでセグ木に乗せられる（hash,x^桁数）とした方が楽かも
-- ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
-- 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
-### 例題
-- !要復習 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
-- !要復習 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
-
-## ハッシュで一致判定
-- ロリハと同じように一致判定はハッシュを使うと効率が良い
-- 衝突確率を下げる為、素数を多めに用意すると良い
-- 衝突確率はロリハのように基数を自由に選べる場合は1/p。選べない場合はpをランダムに選んだ場合に失敗するガチャと考えて、選択可能なpが何個あるかどうかを考える
-### 例題
-- !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
-
-## LCP（Longest Common Prefix）
-- Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
-- LCP（Longest Common Prefix）はTrie木のLCAまでの深さとなる
-- 文字列の数列は、辞書順に並べるとtrie木の構造となり、前後の文字列と比較するだけでLCAが分かる
-- 文字列を辞書順に並べた場合、S[i]とS[j]のLCPは区間minで求まる
-- LCPは全接頭辞の個数を事前に調べておけば解決できる問題も多く、ロリハが有用な事が多い
-### 例題 (普通の解法だけでなくロリハでも解いてみよう)
-- !復習価値高 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
-- 復習価値高 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
-
-## Z-algorhythm（Zアルゴリズム）
-- 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
-- 全探索だとO(N^2)だが、工夫することでO(N)に落とす
-- 探索済み部分文字列の中で、最も右まで探索した部分文字列のインデックス[from,last)を記憶しておくのがミソ
-- どこまで探索を省略できるかで頭が混乱しがちなので、かつっぱ氏のyoutubeを見ると理解できる
-- コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
-### 例題
-- !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
-
-## ランレングス圧縮（Run Length Encoding）
-- 連続する文字が何個あるかという情報に書き換える事をランレングス圧縮という
-### 例題
-- 交互列を塊と見て圧縮する場合もある 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
-
-## ビット操作
-- &や|等のビット演算子は==よりも優先順位が低いことに注意。ビットシフトも含め、ビット操作はとにかく括弧で囲め！
-- ビット操作にはビット列bitsetが便利
-- 部分集合の判定にbitsetを使用可能。A⊂BならA & B == A
-- 部分集合の全列挙には、i = Nとしておいて、i = (i-1)&Nで更新していけば全列挙できる（iを2進数とみなした場合）
-- 集合の一致判定にはハッシュとXORを用いたzobrist hashingが有効（衝突の可能性もある…）
-- 決められた位置のみ一括で反転したい場合は、排他的論理和を使うと楽
-- andはマスク処理とみなす事ができる
-- x + y = (x xor y) + 2 * (x & y)が成り立つ（両方1の桁だけ繰り上がりがあり、他の桁は一致するため）
-- ~0とすると1111111...111（intなら32桁）となる
-- ビット演算は桁ごとに独立
-
-## XOR
-- XORは繰り上がりなし足し算。その為、交換法則、結合法則が成り立つ（ANDが混ざっていたら不可）
-- XORは反転処理ともみなす事ができる
-- XORはビット毎に独立して考えると見通しが良くなることがある
-- XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
-- 木の任意の二頂点間のXORは、根からのXORをそれぞれ求めておき、それのXORを取れば求まる（共通部分のXORは消える為）
-- 和のXORでもビット毎に独立して考えたいが、繰り上がりがあるのが煩わしい
-- k-bit目を考えるなら、x%(2^k)で考えれば無駄な上位桁を排除できる（kは0-indexed）
-- この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは1）
-- この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
-### 例題
-- 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- !復習価値中 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
-- !要復習 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
-- !要復習 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
-
-## 2進数
-- 2進数を用いると、N桁で2^Nの情報量を表せる
-- Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
-### 例題
-- !復習価値中 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
-- 基本 [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
-
-## 整数
-- 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
-- a, b, cが自然数の時、a*b<=c とa<=floor(c/b)は同値（必要十分条件）
-- a, b, cが自然数の時、a*b>c とa>floor(c/b)は同値（必要十分条件）
-- c++では負の数の割り算の挙動に注意。a/bはabs(a)/abs(b)に符号を付けたもので、a%bはa=(a/b)*b + a%bが成り立つ値となる（余りが負になる事がある）
-- 負の数を割ったときの余りを0以上b未満にしたい場合、余りが負の場合は+bすれば良い
-- べき乗はpow(x, n)というSTLがあるが、戻り値がdouble型なので要注意！素直に自作pow関数を使うべき（2のn乗なら1LL<<nで十分）
-### 例題
-- 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
-
-## 余り
-- c++は余りがマイナスとなる事があるので注意（余りがマイナスなら割る数を足してやると良い）
-- 分数形式A/Bで表現された整数をMで割った余りは(A % B*M) / Bで求まる
-- A/B = q*M + rであり、A = q*B*M + r*Bなので、M>rである事に注意するとAをB*Mで割った余りはr*Bとなり、Bで割ればrが求まる
-
-## 1000000007（988244353）関連問題
-- MODの割り算は逆元を求めれば良く、modpow(x, MOD-2, MOD)で求まる。MODが素数で使えるフェルマーの小定理を利用したもの
-- フェルマーの小定理: a^(p-1)≡1 (mod p)　、**aとpは互いに素!!!** aがpの倍数なら当然0
-- ちなみにMODが素数でない場合の逆元は拡張ユークリッドの互除法により求まる（ただし互いに素でないと逆元は存在しない）
-- なお、ACLを用いれば素数かどうか気にする事無く逆元が求まる（普通に割る記号でもいけるし、inv()を使っても良い）
-- xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
-### 例題
-- !要復習 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
-- !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
-
-## ユークリッドの互除法（拡張含む）
-- gcd(a, b) = gcd(b, r) = ... = gcd(b', 0) = b'という古典的アルゴリズム
-- 再帰関数で簡潔に書ける
-- 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
-- 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
-- xの一般解は、特殊解との差から求められる x=x0+i(M/g)
-### 例題
-- !復習価値中 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
-
-## 最小桁和
-- 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる
-- この時、+1した回数に1を加えると、桁和になる
-- 最小桁和を求めたい場合、グラフを作って01-BFSすれば最小桁和を求める事ができる
-### 例題
-- !復習価値高 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
-
-## 有理数
-- 有理数を小数で扱うと誤差が出てしまう
-- 分母が必ず正の既約分数とし、分母と分子をそれぞれ保存すれば有理数を一対一で表せる
-- 有理数ライブラリは便利だが、掛け算や足し算を複数回繰り返すとオーバーフローするので注意
-- なお、y=ax+bを標準系として保存したい場合、a=p/qとすると、qy=px+bqとなるので、y切片bではなく分母をかけたbq(=qy-px)を保存すると良い
-- ちなみに傾き∞の場合は(p,q,bq)=(1,0,-x)となり、同一標準形で扱える
-### 例題
-- !復習価値低 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
-
-## 最大公約数と最小公倍数
-- 最大公約数は、各素因数の最小指数を選んだもの、最小公倍数は最大指数を選んだものとなる
-- 最小公倍数はオーバーフローに注意（1e9以下同士であれば大丈夫だが、それ以上の場合はgcdを求めてオーバーフロー判定する必要あり）
-- (a, b, c)のGCDとLCMはそれぞれ、gcd(gcd(a, b), c)、lcm(lcm(a, b), c)と書ける。理由は素因数分解から明らか
-- 素因数の指数部が同じであるかどうかの判定は、LCM/GCDを素因数で割り切れるかどうか調べればよい（例えばLCM/GCDが3で割り切れなければ、3の指数部は同じ数。理由は素因数分解から明らか）
-- 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
-- より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
-### 例題
-- !復習価値中 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
-- !復習価値中 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
-- !復習価値高 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
-
-## 約数全列挙
-- 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
-- 元の数をMとすると、計算量はO(sqrt(M))
-- 複数の数の約数を同時に全列挙するには、bool配列を用意しておき、最初に調べたい数のところを全てtrueにする
-- 次に、この配列の2の倍数の位置を全て調べ、trueがあったら2は約数という事で2のところをtrueにする
-- 続けて3, 4と調べていく。計算量は約数最大値をMとすると、O(M logM)になる（M/2 + M/3 + M/4 + ... + M/M回調べる為）
-
-## 約数の個数全列挙
-- N以下の約数の個数を全列挙するには、a=1~N、b=1~N/aとすればO(NlogN)で全列挙可能
-- なお、約数の個数は非常に小さいので、約数全列挙できるならば、全約数のループを回す事は容易
-- 約数の個数がそれ以下のどの自然数よりも多いものを高度合成数というが、10^9以下で1344個、10^18で約10^5個の約数を持つ
-- ただし、10^18の約数（あるいは約数の個数）を全列挙するとTLEするので要注意！
-- オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
-### 例題
-- 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
-- !復習価値中 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
-
-## 積分解（約数類似系）
-- M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
-- a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
-### 例題
-- !復習価値低 [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
-
-## 周期系数え上げ
-- 異なる周期であっても最終的に同じ列になるものを同一視しなければならない場合、最小周期で場合分けすれば重複を排除できる
-- しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
-- よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
-### 例題
-- !要復習 バイトシフトテーブル数え上げ [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
-
-## 素数判定
-- sqrt(N)まで試して割れなければ素数である
-- 素数関連では最も簡単（素因数分解や素数全列挙と比較して）
-
-## 素因数分解
-- 2からsqrt(N)まで試して、割り切れる回数が指数となる
-- sqrt(N)まで試して、割り切った数が1でない場合は、その数も素数であるので忘れないように
-- ライブラリprime_factorizationとして保存した
-- 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
-- エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
-- X<=10^16の素因数の個数は高々13個（2*3*5*...*41）
-### 例題
-- 基本（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
-- 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
-- !復習価値中 考察は易 実装工夫すると楽 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
-- !復習価値中 LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
-
-## 素数全列挙
-- エラトステネスの篩を用いると計算量はO(Nlog(logN))
-- 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
-- 消す倍数はp^2以上の数でOK（i=p*pからスタートしてi+=pしてループを回す）
-### 例題
-- 基本 xと(x+1)/2が素数となる数の個数 [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
-- !復習価値中 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
-
-## 最大公約数GCDがgとなる数字組合せ数え上げ
-- L<=(x,y)<=Rの二つの数字であり、xもyもkの倍数である組合せの数をg(k)とするとg(k)は簡単に求まるが、最大公約数がkという訳ではない
-- xとyの最大公約数がkである組合せの数をf(k)とすると、f(k)はg(k)をベースに考えると良い
-- g(k)はxとyが2k, 3k, 4k, ...の倍数である組合せもカウントしている
-- よって、g(k)からf(2k), f(3k), f(4k), ...を引けば最大公約数がkとなる組合せが数えられる
-- その為、f(k)=g(k)-Σf(i*g) (i>=2)とすると重複なく数えられる
-- この時、f(k)はkの降順で求めていけば順次求まる
-- 計算量は調和級数になるのでO(NlogN)
-- メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能 ### 例題
-- !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
-- !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
-
-## 剰余埋めつくし系
-- DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
-- gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
-### 例題
-- !復習価値中 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
-- !復習価値高 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
-
-## 中国剰余定理（CRT: Chinese Remainder Theorem）
-- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
-- 式変形により拡張ユークリッドの互除法で解ける
-- ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
-- sはLCM(C,D)であり、s==0の場合は解なし
-### 例題
-- !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
-- !要復習 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
-
-## 平方数
-- 素因数分解したときの指数がすべて偶数なら平方数
-- 平方数を考えるときは指数をMOD 2で考える（つまり0か1のみで、0の場合は無いのと同じなので指数が1の素因数の積になる）
-- 指数をMOD 2した場合、2数の積が平方数となるのは、同じ数との積のみ
-- 指数をMOD 2するには、素因数分解までは不要で、平方数で割れるだけ割ればよい
-### 例題
-- 基本 平方数数え上げ [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
-- !復習価値低 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
-
-## 小数
-- 小数点を出力する際はcout << fixed << setprecision(10) << x << endl;などとしないと小数点以下の桁が6桁ぐらいまでしか出力されない（printf("%.10f\n", x)の方が簡単）
-- 小数点の計算は誤差がある為、厳密な大小判定には使えない。整数型に直せれば厳密な判定が可能。
-- 小数を整数に入力したい場合、scnaf("%d.%d", &x, &y)で整数、小数を分離して入力可能
-- double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となっていて桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり）
-### 例題
-- !復習価値中 円内格子点の数 [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)
-
-## 方程式
-- 係数を保存しておくことで文字式を表すことができる。例えばax+bを保存したい場合、aとbを保存しておく
-- 文字式を保存できれば、方程式を解くこともできる。ax+bが保存されていれば、ax+b=cが解ける（x=(c-b)/a）
-### 例題
-- !要復習 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
-
-## MEX（Minimum Excluded value）
-- K個の数のMEXは必ずK以下
-- 長さKの配列を持ち、順番に数が存在するか見ていけば良い
-### 例題
-- 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
-
-# 場合の数と確率・期待値
-
-## 場合の数
-- combinationを使う問題多し
-- 理論的に数えるか、DPを使うか両方あり
-### 例題
-- !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
-- 上の問題解ければ解法自明なので問題見るだけでOK [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
-
-## 期待値
-- 期待値にも確率と同様に漸化式が成立する（dpで解ける問題があるという事）
-- 期待値DPの場合、何を状態として持つべきか良く考える事（表を書いてみると良い）
-- ゴールするまでの回数の期待値などは、後ろから考えると良い
-- あくまで感覚だが、ポイント的なもの（出目の総和など）を状態にもつカエル型DPが多い気がする
-- 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
-### 例題
-- !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
-- !復習価値中 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
-- !復習価値高 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
-
 # ソート
 
 ## STLのソート
@@ -348,7 +61,19 @@
 - 次に探索する状態へ再帰でつなぐ。自分自身で終了する事も忘れずに
 - 再帰しながら全探索するのではなく、先にオイラーツアーして順番を決めてから再度再帰して全探索する方が良い場合あり（例えば彩色問題。木なら良いが、ループありだと**異なる順番で**同じ配色を選んでしまう重複あり）
 - 他にも、連結無向グラフ（ループあり）の終端処理をしたい場合、終端判定がそもそも難しいので、先にオイラーツアーしておけばその順序で処理をかける事ができるなど実装上のメリットもある
+- DFSはstackあるいは再帰関数で実装
+- 再帰関数で実装する場合、重複演算しないように注意（メモ化再帰で工夫できる場合もある）
+- DFSは最終経路まで一つずつ探索する方法であり、再帰関数で実装する事でバックトラックが可能。関数の最初に探索点の履歴をtrue、関数の最後に探索点の履歴をfalseすれば、visited配列を1つ持つだけで実装できる
+- グラフのDFSはTLEしないか要チェック。ポイントは再帰呼び出しに重複がないかどうかなので、f(f,x)の手前で再捜索しないような仕組みを入れる
+- 具体的にはけんちょんのページが分かりやすい。帰りがけ順使用ノードを再探索しないのは当たり前だが、サイクル検出など行きがけ順済みと帰りがけ順を区別したい場合は別のデータとして持つ事（もちろん行きがけ順使用ノードも再探索しない）
+- 頂点を1度だけ訪れれば良い場合は、行きがけ順で探索済みの頂点は再探索不要
+- 合計距離Kでゴールにたどり着く迷路問題など、ループを許容し同じ地点での再探索がありうる場合は、頂点以外の情報（距離など）もセットで状態として管理し、状態が同じものは再探索しないようにする
 ### 例題
+- 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
+- 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
+- !復習価値低 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
+- !復習価値高 距離総和を全頂点について求める [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
+- !要復習 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 - !要復習 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - !復習価値低 ポリオミオ（Polyomio）の種類数が少ないから解ける [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
 
@@ -619,21 +344,6 @@
 - 最短経路問題にBFSが使用可能。（e.g. 迷路の最短経路問題、01-BFS）
 - 最短経路問題や01-BFSについては動的計画法の章で言及
 - ボードゲームの全探索にも使用可能。各マスの状態を並べたベクトルを状態ベクトルとしてqueueに突っ込む
-
-## DFS
-- DFSはstackあるいは再帰関数で実装
-- 再帰関数で実装する場合、重複演算しないように注意（メモ化再帰で工夫できる場合もある）
-- DFSは最終経路まで一つずつ探索する方法であり、再帰関数で実装する事でバックトラックが可能。関数の最初に探索点の履歴をtrue、関数の最後に探索点の履歴をfalseすれば、visited配列を1つ持つだけで実装できる
-- グラフのDFSはTLEしないか要チェック。ポイントは再帰呼び出しに重複がないかどうかなので、f(f,x)の手前で再捜索しないような仕組みを入れる
-- 具体的にはけんちょんのページが分かりやすい。帰りがけ順使用ノードを再探索しないのは当たり前だが、サイクル検出など行きがけ順済みと帰りがけ順を区別したい場合は別のデータとして持つ事（もちろん行きがけ順使用ノードも再探索しない）
-- 頂点を1度だけ訪れれば良い場合は、行きがけ順で探索済みの頂点は再探索不要
-- 合計距離Kでゴールにたどり着く迷路問題など、ループを許容し同じ地点での再探索がありうる場合は、頂点以外の情報（距離など）もセットで状態として管理し、状態が同じものは再探索しないようにする
-### 例題
-- 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
-- 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
-- !復習価値低 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
-- !復習価値高 距離総和を全頂点について求める [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
-- !要復習 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 
 ## 木と森
 - 要素数が辺の数＋1のとき木になる
@@ -1168,6 +878,298 @@
 - !復習価値中 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
 - !要復習 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
 
+# 文字列
+
+## 文字列
+- S.substr(開始位置, 長さ)で部分文字列を取得可能
+- regex_match(S, regex("正規表現"))で一致性を確認可能
+- ただし正規表現は遅い。計算量がシビアな問題ではなるべく使わない
+- S.find(s)は文字列sの含まれる最初の位置を出力。存在しない場合はnposを出力（sは文字でも可）
+- S.rfind(s)は文字列sが最後に含まれる位置を出力。存在しない場合はnposを出力
+- charをintに直すには'5'-'0'などとする
+- 文字列が連続している場合はランレングス圧縮が有効。余事象との組み合わせで、異なる文字が含まれる区間の場合の数も求められる
+- tolower(c)、toupper(c)で小文字、大文字変換が可能
+- scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
+- 文字コードを扱うときは一旦開始文字（eg A, a）からの差分値とし、最後に開始文字からの差分値で求める。('C' + 20) % 26などとすると空白文字となってしまうので要注意！
+### 例題
+- 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
+
+## ローリングハッシュ（Rolling Hash）
+- 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する（AとDのどちらを上位桁にしても問題ない）
+- ハッシュが一致すれば同一文字列と判定できる
+- 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せるが、結構難しい（累積和の差を更にXの累乗で割る必要がある）ので、セグ木推奨
+- (hash,桁数)はモノイドなのでセグ木に乗せられる（hash,x^桁数）とした方が楽かも
+- ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
+- 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
+### 例題
+- !要復習 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+- !要復習 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
+
+## ハッシュで一致判定
+- ロリハと同じように一致判定はハッシュを使うと効率が良い
+- 衝突確率を下げる為、素数を多めに用意すると良い
+- 衝突確率はロリハのように基数を自由に選べる場合は1/p。選べない場合はpをランダムに選んだ場合に失敗するガチャと考えて、選択可能なpが何個あるかどうかを考える
+### 例題
+- !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+
+## LCP（Longest Common Prefix）
+- Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
+- LCP（Longest Common Prefix）はTrie木のLCAまでの深さとなる
+- 文字列の数列は、辞書順に並べるとtrie木の構造となり、前後の文字列と比較するだけでLCAが分かる
+- 文字列を辞書順に並べた場合、S[i]とS[j]のLCPは区間minで求まる
+- LCPは全接頭辞の個数を事前に調べておけば解決できる問題も多く、ロリハが有用な事が多い
+### 例題 (普通の解法だけでなくロリハでも解いてみよう)
+- !復習価値高 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
+- 復習価値高 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+
+## Z-algorhythm（Zアルゴリズム）
+- 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
+- 全探索だとO(N^2)だが、工夫することでO(N)に落とす
+- 探索済み部分文字列の中で、最も右まで探索した部分文字列のインデックス[from,last)を記憶しておくのがミソ
+- どこまで探索を省略できるかで頭が混乱しがちなので、かつっぱ氏のyoutubeを見ると理解できる
+- コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
+### 例題
+- !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+
+## ランレングス圧縮（Run Length Encoding）
+- 連続する文字が何個あるかという情報に書き換える事をランレングス圧縮という
+### 例題
+- 交互列を塊と見て圧縮する場合もある 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
+
+# 数（整数・小数）
+
+## ビット操作
+- &や|等のビット演算子は==よりも優先順位が低いことに注意。ビットシフトも含め、ビット操作はとにかく括弧で囲め！
+- ビット操作にはビット列bitsetが便利
+- 部分集合の判定にbitsetを使用可能。A⊂BならA & B == A
+- 部分集合の全列挙には、i = Nとしておいて、i = (i-1)&Nで更新していけば全列挙できる（iを2進数とみなした場合）
+- 集合の一致判定にはハッシュとXORを用いたzobrist hashingが有効（衝突の可能性もある…）
+- 決められた位置のみ一括で反転したい場合は、排他的論理和を使うと楽
+- andはマスク処理とみなす事ができる
+- x + y = (x xor y) + 2 * (x & y)が成り立つ（両方1の桁だけ繰り上がりがあり、他の桁は一致するため）
+- ~0とすると1111111...111（intなら32桁）となる
+- ビット演算は桁ごとに独立
+
+## XOR
+- XORは繰り上がりなし足し算。その為、交換法則、結合法則が成り立つ（ANDが混ざっていたら不可）
+- XORは反転処理ともみなす事ができる
+- XORはビット毎に独立して考えると見通しが良くなることがある
+- XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
+- 木の任意の二頂点間のXORは、根からのXORをそれぞれ求めておき、それのXORを取れば求まる（共通部分のXORは消える為）
+- 和のXORでもビット毎に独立して考えたいが、繰り上がりがあるのが煩わしい
+- k-bit目を考えるなら、x%(2^k)で考えれば無駄な上位桁を排除できる（kは0-indexed）
+- この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは1）
+- この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
+### 例題
+- 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
+- !復習価値中 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
+- !要復習 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
+- !要復習 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
+
+## 2進数
+- 2進数を用いると、N桁で2^Nの情報量を表せる
+- Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
+### 例題
+- !復習価値中 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
+- 基本 [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
+
+## 整数
+- 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
+- a, b, cが自然数の時、a*b<=c とa<=floor(c/b)は同値（必要十分条件）
+- a, b, cが自然数の時、a*b>c とa>floor(c/b)は同値（必要十分条件）
+- c++では負の数の割り算の挙動に注意。a/bはabs(a)/abs(b)に符号を付けたもので、a%bはa=(a/b)*b + a%bが成り立つ値となる（余りが負になる事がある）
+- 負の数を割ったときの余りを0以上b未満にしたい場合、余りが負の場合は+bすれば良い
+- べき乗はpow(x, n)というSTLがあるが、戻り値がdouble型なので要注意！素直に自作pow関数を使うべき（2のn乗なら1LL<<nで十分）
+### 例題
+- 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
+
+## 余り
+- c++は余りがマイナスとなる事があるので注意（余りがマイナスなら割る数を足してやると良い）
+- 分数形式A/Bで表現された整数をMで割った余りは(A % B*M) / Bで求まる
+- A/B = q*M + rであり、A = q*B*M + r*Bなので、M>rである事に注意するとAをB*Mで割った余りはr*Bとなり、Bで割ればrが求まる
+
+## 1000000007（988244353）関連問題
+- MODの割り算は逆元を求めれば良く、modpow(x, MOD-2, MOD)で求まる。MODが素数で使えるフェルマーの小定理を利用したもの
+- フェルマーの小定理: a^(p-1)≡1 (mod p)　、**aとpは互いに素!!!** aがpの倍数なら当然0
+- ちなみにMODが素数でない場合の逆元は拡張ユークリッドの互除法により求まる（ただし互いに素でないと逆元は存在しない）
+- なお、ACLを用いれば素数かどうか気にする事無く逆元が求まる（普通に割る記号でもいけるし、inv()を使っても良い）
+- xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
+### 例題
+- !要復習 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
+- !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
+
+## ユークリッドの互除法（拡張含む）
+- gcd(a, b) = gcd(b, r) = ... = gcd(b', 0) = b'という古典的アルゴリズム
+- 再帰関数で簡潔に書ける
+- 拡張ユークリッドの互除法も再帰関数で簡潔に書ける（ax+by=gcd(a,b)のx, y, gcd(a,b)を求める問題）
+- 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
+- xの一般解は、特殊解との差から求められる x=x0+i(M/g)
+### 例題
+- !復習価値中 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+
+## 最小桁和
+- 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる
+- この時、+1した回数に1を加えると、桁和になる
+- 最小桁和を求めたい場合、グラフを作って01-BFSすれば最小桁和を求める事ができる
+### 例題
+- !復習価値高 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
+
+## 有理数
+- 有理数を小数で扱うと誤差が出てしまう
+- 分母が必ず正の既約分数とし、分母と分子をそれぞれ保存すれば有理数を一対一で表せる
+- 有理数ライブラリは便利だが、掛け算や足し算を複数回繰り返すとオーバーフローするので注意
+- なお、y=ax+bを標準系として保存したい場合、a=p/qとすると、qy=px+bqとなるので、y切片bではなく分母をかけたbq(=qy-px)を保存すると良い
+- ちなみに傾き∞の場合は(p,q,bq)=(1,0,-x)となり、同一標準形で扱える
+### 例題
+- !復習価値低 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
+
+## 最大公約数と最小公倍数
+- 最大公約数は、各素因数の最小指数を選んだもの、最小公倍数は最大指数を選んだものとなる
+- 最小公倍数はオーバーフローに注意（1e9以下同士であれば大丈夫だが、それ以上の場合はgcdを求めてオーバーフロー判定する必要あり）
+- (a, b, c)のGCDとLCMはそれぞれ、gcd(gcd(a, b), c)、lcm(lcm(a, b), c)と書ける。理由は素因数分解から明らか
+- 素因数の指数部が同じであるかどうかの判定は、LCM/GCDを素因数で割り切れるかどうか調べればよい（例えばLCM/GCDが3で割り切れなければ、3の指数部は同じ数。理由は素因数分解から明らか）
+- 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
+- より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
+### 例題
+- !復習価値中 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
+- !復習価値中 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
+- !復習価値高 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
+
+## 約数全列挙
+- 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
+- 元の数をMとすると、計算量はO(sqrt(M))
+- 複数の数の約数を同時に全列挙するには、bool配列を用意しておき、最初に調べたい数のところを全てtrueにする
+- 次に、この配列の2の倍数の位置を全て調べ、trueがあったら2は約数という事で2のところをtrueにする
+- 続けて3, 4と調べていく。計算量は約数最大値をMとすると、O(M logM)になる（M/2 + M/3 + M/4 + ... + M/M回調べる為）
+
+## 約数の個数全列挙
+- N以下の約数の個数を全列挙するには、a=1~N、b=1~N/aとすればO(NlogN)で全列挙可能
+- なお、約数の個数は非常に小さいので、約数全列挙できるならば、全約数のループを回す事は容易
+- 約数の個数がそれ以下のどの自然数よりも多いものを高度合成数というが、10^9以下で1344個、10^18で約10^5個の約数を持つ
+- ただし、10^18の約数（あるいは約数の個数）を全列挙するとTLEするので要注意！
+- オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
+### 例題
+- 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
+- !復習価値中 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
+
+## 積分解（約数類似系）
+- M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
+- a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
+### 例題
+- !復習価値低 [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+
+## 周期系数え上げ
+- 異なる周期であっても最終的に同じ列になるものを同一視しなければならない場合、最小周期で場合分けすれば重複を排除できる
+- しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
+- よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
+### 例題
+- !要復習 バイトシフトテーブル数え上げ [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+
+## 素数判定
+- sqrt(N)まで試して割れなければ素数である
+- 素数関連では最も簡単（素因数分解や素数全列挙と比較して）
+
+## 素因数分解
+- 2からsqrt(N)まで試して、割り切れる回数が指数となる
+- sqrt(N)まで試して、割り切った数が1でない場合は、その数も素数であるので忘れないように
+- ライブラリprime_factorizationとして保存した
+- 当たり前だが、その数自身も素数になる可能性があるので、N!の中に素数は最大N個程度ある（sqrt(N)ではないので要注意）
+- エラトステネスの篩に真偽ではなく最初に消されたときの数値を記録しておけば、素因数分解を繰り返すときに高速素因数分解できる。ただし篩を作るのにO(NloglogN)かかるので、素因数分解が数個しかない場合は遅くなるので注意
+- X<=10^16の素因数の個数は高々13個（2*3*5*...*41）
+### 例題
+- 基本（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
+- 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
+- !復習価値中 考察は易 実装工夫すると楽 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
+- !復習価値中 LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
+
+## 素数全列挙
+- エラトステネスの篩を用いると計算量はO(Nlog(logN))
+- 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
+- 消す倍数はp^2以上の数でOK（i=p*pからスタートしてi+=pしてループを回す）
+### 例題
+- 基本 xと(x+1)/2が素数となる数の個数 [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
+- !復習価値中 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
+
+## 最大公約数GCDがgとなる数字組合せ数え上げ
+- L<=(x,y)<=Rの二つの数字であり、xもyもkの倍数である組合せの数をg(k)とするとg(k)は簡単に求まるが、最大公約数がkという訳ではない
+- xとyの最大公約数がkである組合せの数をf(k)とすると、f(k)はg(k)をベースに考えると良い
+- g(k)はxとyが2k, 3k, 4k, ...の倍数である組合せもカウントしている
+- よって、g(k)からf(2k), f(3k), f(4k), ...を引けば最大公約数がkとなる組合せが数えられる
+- その為、f(k)=g(k)-Σf(i*g) (i>=2)とすると重複なく数えられる
+- この時、f(k)はkの降順で求めていけば順次求まる
+- 計算量は調和級数になるのでO(NlogN)
+- メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能 ### 例題
+- !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+- !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
+
+## 剰余埋めつくし系
+- DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
+- gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
+### 例題
+- !復習価値中 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
+- !復習価値高 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
+
+## 中国剰余定理（CRT: Chinese Remainder Theorem）
+- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
+- 式変形により拡張ユークリッドの互除法で解ける
+- ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
+- sはLCM(C,D)であり、s==0の場合は解なし
+### 例題
+- !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
+- !要復習 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
+
+## 平方数
+- 素因数分解したときの指数がすべて偶数なら平方数
+- 平方数を考えるときは指数をMOD 2で考える（つまり0か1のみで、0の場合は無いのと同じなので指数が1の素因数の積になる）
+- 指数をMOD 2した場合、2数の積が平方数となるのは、同じ数との積のみ
+- 指数をMOD 2するには、素因数分解までは不要で、平方数で割れるだけ割ればよい
+### 例題
+- 基本 平方数数え上げ [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
+- !復習価値低 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
+
+## 小数
+- 小数点を出力する際はcout << fixed << setprecision(10) << x << endl;などとしないと小数点以下の桁が6桁ぐらいまでしか出力されない（printf("%.10f\n", x)の方が簡単）
+- 小数点の計算は誤差がある為、厳密な大小判定には使えない。整数型に直せれば厳密な判定が可能。
+- 小数を整数に入力したい場合、scnaf("%d.%d", &x, &y)で整数、小数を分離して入力可能
+- double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となっていて桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり）
+### 例題
+- !復習価値中 円内格子点の数 [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)
+
+## 方程式
+- 係数を保存しておくことで文字式を表すことができる。例えばax+bを保存したい場合、aとbを保存しておく
+- 文字式を保存できれば、方程式を解くこともできる。ax+bが保存されていれば、ax+b=cが解ける（x=(c-b)/a）
+### 例題
+- !要復習 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
+
+## MEX（Minimum Excluded value）
+- K個の数のMEXは必ずK以下
+- 長さKの配列を持ち、順番に数が存在するか見ていけば良い
+### 例題
+- 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
+
+# 場合の数と確率・期待値
+
+## 1つずつ決めていく
+- combinationを使う問題多し
+### 例題
+- !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
+- 上の問題解ければ解法自明なので問題見るだけでOK（note非掲載） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
+
+## 独立事象を掛け合わせる
+### 例題
+- !要復習 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
+
+## 期待値
+- 期待値にも確率と同様に漸化式が成立する（dpで解ける問題があるという事）
+- 期待値DPの場合、何を状態として持つべきか良く考える事（表を書いてみると良い）
+- ゴールするまでの回数の期待値などは、後ろから考えると良い
+- あくまで感覚だが、ポイント的なもの（出目の総和など）を状態にもつカエル型DPが多い気がする
+- 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
+### 例題
+- !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
+- !復習価値中 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
+- !復習価値高 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
+
 # 2変数問題
 
 ## 平面走査
@@ -1182,6 +1184,11 @@
 - !復習価値高 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - !復習価値高 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 - !復習価値高 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
+
+## XY独立に考える
+### 例題
+- 基本 [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
+- !復習価値高 格子点を正方形に収める最小回数 [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
 
 ## 変数分離
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる
@@ -1319,15 +1326,6 @@
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - !復習価値高 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
-
-## XY独立に考える
-### 例題
-- 基本 [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
-- !復習価値高 格子点を正方形に収める最小回数 [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
-
-## bitごとに独立に考える
-### 例題
-- !復習価値中 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
 
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある

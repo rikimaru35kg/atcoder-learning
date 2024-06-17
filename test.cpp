@@ -191,66 +191,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl X(N), Y(N);
-    rep(i, N) cin>>X[i]>>Y[i];
-    sort(all(X)); sort(all(Y));
-    ll dx = X.back() - X[0];
-    ll dy = Y.back() - Y[0];
-
-    auto cntmove=[&](vl &x, ll d, ll tot) -> ll {
-        if(tot<=d) return 0;
-        d = tot -d;
-
-        ll cnt = 0;
-        vl km(N);
-        rep(i, N-1) {
-            ll k = min(i+1, N-1-i);
-            km[k] += x[i+1] - x[i];
-        }
-
-        rep1(k, N-1) {
-            if (km[k] < d) {
-                d -= km[k];
-                cnt += k*km[k];
-            } else {
-                cnt += d * k;
-                d = 0;
-                break;
+    LONG(N, Q);
+    ll M = 60;
+    vl X(Q), Y(Q), Z(Q), W(Q);
+    rep(i, Q) {
+        LONGM(x, y, z); LONG(w);
+        X[i] = x, Y[i] = y, Z[i] = z;
+        W[i] = w;
+    }
+    mint ans = 1;
+    rep(d, M) {
+        mint now = 0;
+        rep(s, 1<<N) {
+            bool ok = true;
+            rep(i, Q) {
+                ll w = W[i]>>d&1;
+                ll x = s>>X[i]&1, y = s>>Y[i]&1, z = s>>Z[i]&1;
+                if((x|y|z) != w) ok = false;
             }
+            if(ok) ++now;
         }
-        if(d>0) return INF;
-        return cnt;
-    };
-
-    auto f = [&](ll d) -> bool {
-        ll cnt1 = cntmove(X, d, dx);
-        ll cnt2 = cntmove(Y, d, dy);
-        ll cnt = cnt1+cnt2;
-        return cnt <= K;
-    };
-    ll ans = binary_search(INF, -1, f);
+        ans *= now;
+    }
     Out(ans);
     
 }
