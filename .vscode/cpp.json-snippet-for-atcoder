@@ -1294,7 +1294,7 @@
       "// Combination for very small r",
       "long long nCr (long long n, long long r) {",
       "    long long ninf = 3e18;",
-      "    if(n<0 || r>n) return 0;",
+      "    if(n<0 || r>n || r<0) return 0;",
       "    r = min(r, n-r);",
       "    long long ret = 1;",
       "    for(long long k=1; k<=r; ++k) {",

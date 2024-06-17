@@ -1243,6 +1243,16 @@
 
 # その他典型
 
+## 主客転倒
+- 全組合せを列挙するとTLEする場合、演算（maxやΣなど）の順番を入れ替える事で探索量が減るケースあり
+- 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
+- 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
+### 例題
+- !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
+- !復習価値高 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc127/submissions/54660548)の方が解法意図が分かりやすい)
+- !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc224/submissions/54662426)の方が解法意図が分かりやすい)
+- !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
+
 ## マンハッタン距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
 - maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
@@ -1333,6 +1343,10 @@
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - !復習価値高 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 
+## max(max())の形に帰着させる
+- maxの中にmaxがある形にできれば、簡単に解ける
+- !復習価値低 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
+
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
 ### 例題
@@ -1341,18 +1355,7 @@
 ## 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
 ### 例題
-- 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
-
-## 組合せ数減らし（主客転倒）
-- 全組合せを列挙するとTLEする場合、演算（maxやΣなど）の順番を入れ替える事で探索量が減るケースあり
-- 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
-- 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
-### 例題
-- !要復習 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
-- !要復習 駒置きコストの総和（難しいが良問） [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
-- !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
-- !要復習 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
-- !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
+- !復習価値低 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
 ## 構築系問題
 - 構築させる問題

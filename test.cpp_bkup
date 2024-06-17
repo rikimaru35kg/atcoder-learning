@@ -190,28 +190,38 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y);
-
-    umap<ll,ll> mem;
-    auto f=[&](auto f, ll x) -> ll {
-        if(x==1) return abs(x-X);
-        if(mem.count(x)) return mem[x];
-
-        ll ret = INF;
-        chmin(ret, abs(x-X));
-        if(x%2==0) chmin(ret, f(f, x/2)+1);
-        else {
-            chmin(ret, f(f, ((x+1)/2))+2);
-            chmin(ret, f(f, ((x-1)/2))+2);
-        }
-        return mem[x] = ret;
-    };
-    ll ans = f(f, Y);
-    de(mem)
+    STRING(S);
+    ll N = SIZE(S);
+    if(N==1) {
+        Out(S[0]-'0');
+        return 0;
+    }
+    mint ans = 0;
+    mint c = mint(2).pow(N-1);
+    repr(i, N) {
+        mint now = S[i]-'0';
+        now *= c;
+        ans += now;
+        c *= 5;
+        c += mint(2).pow(N-2);
+    }
     Out(ans);
     
 }

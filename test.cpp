@@ -191,120 +191,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-//! Currently, only operator* is defined.
-template <typename T>
-class Mat {
-    long long n; vector<vector<T>> a; long long mod;
-public:
-    // Initialize n*n matrix
-    Mat (long long n, const vector<vector<T>> &mat={}, long long mod=-1)
-    : n(n), a(n, vector<T>(n)), mod(mod) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
-                if (mod != -1) a[i][j] %= mod;
-            }
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
+        ret *= n-k+1;
+        ret /= k;
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        if (mod != -1) ret = Mat(n, ret.a, mod);
-        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-                if (mod != -1) ret.a[i][j] %= mod;
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-            if (mod != -1) ret[j] %= mod;
-        }
-        return ret;
-    }
-    // power k (A^k)
-    Mat pow(long long k) {
-        Mat ret = pow_recursive(*this, k);
-        return ret;
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(n);
-        if (mod != -1) ret = Mat(n, ret.a, mod);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
-};
-
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl Pos(N, vl(3, 1));
-    rep(i, N) cin>>Pos[i][0]>>Pos[i][1];
-    LONG(M);
-    vl T(M), P(M);
-    rep(i, M) {
-        cin>>T[i];
-        if(T[i]>=3) cin>>P[i];
-    }
-    vvp query(M+1);
-    LONG(Q);
-    rep(i, Q) {
-        LONG(a, b); --b;
-        query[a].emplace_back(b, i);
+    VLM(A, N);
+    vl cnt(N);
+    rep(i, N) cnt[A[i]]++;
+    ll minus = 0;
+    rep(i, N) {
+        minus += nCr(cnt[i], 2);
     }
 
-    Mat<ll> A(3);
-    vp ans(Q);
-    rep(i, M+1) {
-        for(auto [b, idx]: query[i]) {
-            vl vec = A * Pos[b];
-            ans[idx] = {vec[0], vec[1]};
-        }
-        if(i==M) break;
-        vvl mul;
-        ll t = T[i], p = P[i];
-        if(t==1) {
-            mul = {{0,1,0},{-1,0,0},{0,0,1}};
-        }
-        if (t==2) {
-            mul = {{0,-1,0},{1,0,0},{0,0,1}};
-        }
-        if (t==3) {
-            mul = {{-1,0,2*p},{0,1,0},{0,0,1}};
-        }
-        if (t==4) {
-            mul = {{1,0,0},{0,-1,2*p},{0,0,1}};
-        }
-        A = Mat(3, mul) * A;
+    auto del=[&](ll x) {
+        minus -= nCr(cnt[x], 2);
+        cnt[x]--;
+        minus += nCr(cnt[x], 2);
+    };
+
+    ll ans = 0;
+    ll r = N;
+    rep(l, N) {
+        ll w = r-l;
+        if (w<=0) break;
+        de2(l, r)
+        ll now = nCr(w, 2) - minus;
+        de2(nCr(w, 2), minus)
+        ans += now;
+        del(A[l]);
+        del(A[r-1]);
+        --r;
     }
     Out(ans);
+
     
 }
 
