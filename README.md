@@ -268,7 +268,14 @@
 ### 例題
 - 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 
-# 確率と期待値
+# 場合の数と確率・期待値
+
+## 場合の数
+- combinationを使う問題多し
+- 理論的に数えるか、DPを使うか両方あり
+### 例題
+- !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
+- 上の問題解ければ解法自明なので問題見るだけでOK [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 
 ## 期待値
 - 期待値にも確率と同様に漸化式が成立する（dpで解ける問題があるという事）
@@ -942,12 +949,6 @@
 - dpテーブルをpとswapする場合、pの要素を全部なめているか要注意！（dp(N+1)のとき、p[N]からの遷移を忘れずに！！rep(i, N)とすると遷移がなくなるので）
 - 初期値を-INFにする場合は要注意。足されて正の値になったら元も子もない。-1を初期値にして処理しないようにした方が無難かもしれない
 
-## DP実装特殊系問題（典型というわけではないのでNoteには非掲載）
-- 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
-- 実装になれないと混乱しがちなので問題をまとめておく
-### 例題
-- !復習価値中 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
-
 ## 部分和問題
 - （連続でない）部分列の総和がKになる場合の数は単純なDPで解ける
 - 部分和が存在するかどうかの単純DPの場合、bitsetでOR演算を繰り返すと超絶楽（ビット数に気を付けて！！）
@@ -1159,6 +1160,14 @@
 ### 例題
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
 
+## DP苦手問題（典型というわけではないのでNoteには非掲載）
+- 自分的に苦手な考え方のDPをまとめておく
+- 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
+- 経路問題、進んだステップ数もキーにする場合あり
+### 例題
+- !復習価値中 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
+- !要復習 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
+
 # 2変数問題
 
 ## 平面走査
@@ -1303,7 +1312,7 @@
 - その要素を必ず使うと見たときの左側と右側の関係を調べる、あるいはその要素を必ず使わないと見たときの左側と右側の関係を調べると良い
 ### 例題
 - !復習価値中 必ず働く日列挙 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
-- !要復習 LISに含まれるか [F - Useless for LIS](https://atcoder.jp/contests/abc354/tasks/abc354_f)
+- !復習価値高 LISに含まれるか [F - Useless for LIS](https://atcoder.jp/contests/abc354/tasks/abc354_f)
 
 ## クエリ先読み
 - クエリを先読みすると楽に処理できる事がある
@@ -1577,7 +1586,6 @@
 ## ACできなかった問題
 - [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
-- [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
 - [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
