@@ -1319,7 +1319,6 @@
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - !復習価値高 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
-- !復習価値高 [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
 
 ## XY独立に考える
 ### 例題
@@ -1582,6 +1581,7 @@
 - [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
 - [E - Clique Connect](https://atcoder.jp/contests/abc352/tasks/abc352_e)
 - [D - Intersecting Intervals](https://atcoder.jp/contests/abc355/tasks/abc355_d)
+- [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
 
 ## ACできなかった問題
 - [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
