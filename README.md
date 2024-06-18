@@ -1339,6 +1339,13 @@
 - maxの中にmaxがある形にできれば、簡単に解ける
 - !復習価値低 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 
+## Zoblist hash
+- 集合同士をO(1)で比較可能
+- 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
+- メルセンヌツイスターで乱数を発生させると良い
+### 例題
+- !復習価値中 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
+
 ## NIMとgrundy数
 - NIMは残り山の石の個数のxorが0なら負け、非0なら勝
 - xor=0からはxor!=0にしか遷移できないし、xor!=0なら最上位bitが立つ山を選んで下位bitが全て0になるように取り除けばxor=0に遷移可能
@@ -1377,13 +1384,6 @@
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
 - !要復習（だがしなくても良い、本当に！） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
-
-## Zoblist hash
-- 集合同士をO(1)で比較可能
-- 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
-- メルセンヌツイスターで乱数を発生させると良い
-### 例題
-- !要復習 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
 
 ## 偶置換・奇置換
 - 順列を置換した回数で分類（順列である必要はないが重複要素があっては駄目）

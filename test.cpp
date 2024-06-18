@@ -191,19 +191,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long mersenne(long long mn, long long mx) {
+    static mt19937_64 mt64(0);
+    uniform_int_distribution<long long> get(mn, mx);
+    return get(mt64);
+}
+
 int main () {
-    // ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    LONG(N, L, R);
+    LONG(N);
     VL(A, N);
-    ll gxor = 0;
+    VL(B, N);
+    umap<ll,ll> mp;
+    ll MN = 1, MX = INF;
     rep(i, N) {
-        ll now = (A[i]%(L+R)/L);
-        gxor ^= now;
+        mp[A[i]] = mersenne(MN, MX);
     }
-    if(gxor==0) puts("Second");
-    else puts("First");
-    
+    rep(i, N) {
+        mp[B[i]] = mersenne(MN, MX);
+    }
+    vl ha(N), hb(N);
+    uset<ll> st;
+    ll hash = 0;
+    rep(ri, 2) {
+        rep(i, N) {
+            if(!st.count(A[i])) {
+                st.insert(A[i]);
+                hash ^= mp[A[i]];
+            }
+            ha[i] = hash;
+        }
+        hash = 0;
+        st = uset<ll>();
+        swap(ha, hb);
+        swap(A, B);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(x, y);
+        if(ha[x]==hb[y]) puts("Yes");
+        else puts("No");
+    }
+
+
 }
 
 // ### test.cpp ###
