@@ -1253,6 +1253,15 @@
 - !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc224/submissions/54662426)の方が解法意図が分かりやすい)
 - !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 
+## 構築系問題
+- 構築させる問題
+### 例題
+- !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
+- !復習価値低 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- !復習価値低 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
+- 基本（ネタばれしたら終わりの問題） [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
+- !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
+
 ## マンハッタン距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
 - maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
@@ -1357,21 +1366,12 @@
 ### 例題
 - !復習価値低 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
-## 構築系問題
-- 構築させる問題
-### 例題
-- !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
-- !復習価値低 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
-- !復習価値低 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
-- 基本（ネタばれしたら終わりの問題） [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
-- !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
-
-## ホール（Hall）の結婚定理
+## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
 - 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
-- !要復習（だがしなくても良い） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
+- !要復習（だがしなくても良い、本当に！） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 ## まとめて処理する
 - 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる

@@ -191,53 +191,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    Sieve sieve(1e6);
-    vl a;
-    rep1(x, 1e6) {
-        if(!sieve.is_prime(x)) continue;
-        if(x%5!=1) continue;
-        de(x)
-        a.push_back(x);
+    LONG(N, M);
+    ll l = 1, r = N;
+    vp ans;
+    if(N%2==0) {
+        bool done = false;
+        rep(i, M) {
+            ll w = r-l;
+            ll ow = N-w;
+            if(!done && w<=ow) {
+                --r;
+                done = true;
+            }
+            ans.emplace_back(l, r);
+            ++l, --r;
+        }
+    } else {
+        rep(i, M) {
+            ans.emplace_back(l, r);
+            ++l, --r;
+        }
     }
-    rep(i, N) {
-        printf("%lld%c", a[i], i==N-1?'\n':' ');
-    }
-
+    Out(ans);
     
 }
 
