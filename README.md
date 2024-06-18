@@ -1392,7 +1392,7 @@
 ### 例題
 - !要復習（だがしなくても良い、本当に！） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
-## 読解が難しい問題
+## 読解が難しい問題（問題自体は簡単すぎるのでNote非掲載）
 ### 例題
 - !復習価値低 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
@@ -1405,15 +1405,15 @@
 - 基本（ネタばれしたら終わりの問題） [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
 - !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
 
-# 実装が重い問題
+# 実装系問題
 ### 例題
-- !復習価値低 シート重ね合わせ（実装工夫すればすっきり書ける） [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
-- !復習価値低 タイル置き（実装工夫すればそんなに大変ではない） [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
-- !要復習 トーナメント（入力部の実装が大変） [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
-- !要復習 クッキー消し（丁寧に実装しないと沼る） [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
-- !復習価値高 がっかりビンゴ（実装方針によっては沼る） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
-- !復習価値高 ABCパズル（実装方針間違えるとありえないぐらい沼る） [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
+- !復習価値高 がっかりビンゴ（解説コードが神） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
+- !復習価値中 シート重ね合わせ [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
+- !復習価値高 ABCパズル [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
+- !復習価値低 タイル置き [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 - !復習価値中 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
+- !復習価値高 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
+- !復習価値高 クッキー消し [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
 - !要復習 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
 
 # 青コーダーになるのに必須ではないと思われるアルゴリズム

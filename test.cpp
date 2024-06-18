@@ -191,28 +191,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    vl ans(N-1);
-    rep(i, N-1) {
-        ll l = 0;
-        ll w = i+1;
-        rep(j, N-1) {
-            if(j+w>=N) {
-                break;
+    LONG(N, K);
+    VL(A, N);
+    vl plus, minus;
+    rep(i, N) {
+        if(A[i]>=0) plus.push_back(A[i]);
+        else minus.push_back(A[i]);
+    }
+    sort(allr(plus)); sort(all(minus));
+    ll P = SIZE(plus), M = SIZE(minus);
+
+    auto isplus=[&]() {
+        ll k = K, m = M, p = P;
+        de3(k, m, p);
+        while(k) {
+            if(k>=2 && m>=2) {
+                k -= 2;
+                m -= 2;
+                continue;
             }
-            if (S[j]!=S[j+w]) {
-                ++l;
-            } else {
-                ans[i] = l;
-                break;
+            k--;
+            p--;
+            if(p<0) return false;
+        }
+        return true;
+    };
+
+    if(isplus()) {
+        vp val;
+        mint ans = 1;
+        if(K%2==1) {
+            K--;
+            ans *= plus[0];
+            plus.erase(plus.begin());
+            P--;
+        }
+        for(ll i=0; i<P-1; i+=2) {
+            val.emplace_back(plus[i]*plus[i+1], 1);
+        }
+        for(ll i=0; i<M-1; i+=2) {
+            val.emplace_back(minus[i]*minus[i+1], -1);
+        }
+        sort(all(val));
+        ll pi = 0;
+        while(K) {
+            if(K>=2) {
+                auto [v, t] = val.back(); val.pop_back();
+                ans *= v;
+                if(t==1) pi += 2;
+                K -= 2;
             }
         }
-        ans[i] = l;
+        Out(ans);
+    } else {
+        vl p(N);
+        iota(all(p), 0);
+        sort(all(p), [&](ll i, ll j){
+            return abs(A[i]) < abs(A[j]);
+        });
+        mint ans = 1;
+        ll tmp = 1;
+        rep(i, K) {
+            ll j = p[i];
+            tmp *= A[j];
+            ans *= A[j];
+        }
+        de(tmp)
+        Out(ans);
     }
-    Out(ans);
     
 }
 

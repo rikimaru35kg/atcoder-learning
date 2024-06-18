@@ -191,31 +191,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/scc>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N); VLM(B, N);
-    vl cnta(N), cntb(N);
-    rep(i, N) cnta[A[i]]++;
-    rep(i, N) cntb[B[i]]++;
-    if(cnta!=cntb) PNo
-    rep(i, N) {
-        if(cnta[i]>=2) PYes
-    }
+    LONG(H, W, K);
+    VS(C, H);
+    vvl A(H, vl(W));
+    rep(i, H) rep(j, W) A[i][j]=C[i][j]-'0';
 
-    scc_graph scca(N), sccb(N);
-    rep(i, N) {
-        scca.add_edge(i, A[i]);
-        sccb.add_edge(i, B[i]);
-    }
-    auto grsa = scca.scc();
-    auto grsb = sccb.scc();
-    if(SIZE(grsa)%2==SIZE(grsb)%2) PYes PNo
+    ll ans = INF;
+    rep(s, 1<<(H-1)) {
+        vvl S(1, vl(W+1));
+        rep(i, H) {
+            if(i && s>>(i-1)&1) S.push_back(vl(W+1));
+            vl &Snow = S.back();
+            rep(j, W) {
+                Snow[j+1] += A[i][j];
+            }
+        }
+        ll M = SIZE(S);
+        rep(i, M) rep(j, W) S[i][j+1] += S[i][j];
+        de(S)
 
+        auto check=[&](ll l, ll r) -> bool {
+            rep(i, M) {
+                if(S[i][r]-S[i][l]>K) return false;
+            }
+            return true;
+        };
+        ll l = 0, r = 0;
+        bool ok = true;
+        ll cnt = 0;
+        while(l<W) {
+            while(r<W && check(l, r+1)) {
+                ++r;
+            }
+            if(l==r) {
+                ok = false;
+                break;
+            }
+            ++cnt;
+            l = r;
+        }
+        --cnt;
+        if(ok) chmin(ans, cnt+pcnt(s));
+    }
+    Out(ans);
     
 }
 
