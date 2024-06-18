@@ -191,55 +191,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-    vl cnt(N);
-    rep(i, N) cnt[A[i]]++;
-    ll minus = 0;
-    rep(i, N) {
-        minus += nCr(cnt[i], 2);
-    }
-
-    auto del=[&](ll x) {
-        minus -= nCr(cnt[x], 2);
-        cnt[x]--;
-        minus += nCr(cnt[x], 2);
-    };
-
-    ll ans = 0;
-    ll r = N;
-    rep(l, N) {
-        ll w = r-l;
-        if (w<=0) break;
-        de2(l, r)
-        ll now = nCr(w, 2) - minus;
-        de2(nCr(w, 2), minus)
-        ans += now;
-        del(A[l]);
-        del(A[r-1]);
-        --r;
+    LONG(N, M);
+    ll l = 1, r = N;
+    vp ans;
+    if(N%2==0) {
+        bool done = false;
+        rep(i, M) {
+            ll w = r-l;
+            ll ow = N-w;
+            if(!done && w<=ow) {
+                --r;
+                done = true;
+            }
+            ans.emplace_back(l, r);
+            ++l, --r;
+        }
+    } else {
+        rep(i, M) {
+            ans.emplace_back(l, r);
+            ++l, --r;
+        }
     }
     Out(ans);
-
     
 }
 
