@@ -191,31 +191,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/scc>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N); VLM(B, N);
-    vl cnta(N), cntb(N);
-    rep(i, N) cnta[A[i]]++;
-    rep(i, N) cntb[B[i]]++;
-    if(cnta!=cntb) PNo
-    rep(i, N) {
-        if(cnta[i]>=2) PYes
+    LONG(N); STRING(S);
+    vl ans(N-1);
+    rep(i, N-1) {
+        ll l = 0;
+        ll w = i+1;
+        rep(j, N-1) {
+            if(j+w>=N) {
+                break;
+            }
+            if (S[j]!=S[j+w]) {
+                ++l;
+            } else {
+                ans[i] = l;
+                break;
+            }
+        }
+        ans[i] = l;
     }
-
-    scc_graph scca(N), sccb(N);
-    rep(i, N) {
-        scca.add_edge(i, A[i]);
-        sccb.add_edge(i, B[i]);
-    }
-    auto grsa = scca.scc();
-    auto grsb = sccb.scc();
-    if(SIZE(grsa)%2==SIZE(grsb)%2) PYes PNo
-
+    Out(ans);
     
 }
 

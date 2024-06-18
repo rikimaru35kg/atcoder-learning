@@ -1394,7 +1394,7 @@
 
 ## 読解が難しい問題
 ### 例題
-- 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
+- !復習価値低 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 ## 構築系問題
 - 構築させる問題
