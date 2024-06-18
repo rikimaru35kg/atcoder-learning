@@ -194,28 +194,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll l = 1, r = N;
-    vp ans;
-    if(N%2==0) {
-        bool done = false;
-        rep(i, M) {
-            ll w = r-l;
-            ll ow = N-w;
-            if(!done && w<=ow) {
-                --r;
-                done = true;
-            }
-            ans.emplace_back(l, r);
-            ++l, --r;
-        }
-    } else {
-        rep(i, M) {
-            ans.emplace_back(l, r);
-            ++l, --r;
-        }
+    LONG(N, C);
+    vp events;
+    rep(i, N) {
+        LONG(a, b, c);
+        events.emplace_back(a, c);
+        events.emplace_back(b+1, -c);
+    }
+    sort(all(events));
+    ll sum = 0;
+    ll lt = -100;
+    ll ans = 0;
+    for(auto [t, c]: events) {
+        ll w = t - lt;
+        if(sum<C) { ans += w * sum; }
+        else ans += w * C;
+
+        lt = t;
+        sum += c;
     }
     Out(ans);
+
     
 }
 

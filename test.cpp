@@ -194,47 +194,15 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N); VLM(B, N);
-    vl cnt(N);
-    rep(i, N) cnt[A[i]]++;
-    rep(i, N) cnt[B[i]]++;
-    rep(i, N) if(cnt[i]>N) PNo
-    puts("Yes");
-
-    multiset<ll> bs;
-    rep(i, N) bs.insert(B[i]);
-
-    vl ans;
-    auto del=[&](ll a, ll b) {
-        cnt[a]--, cnt[b]--;
-        bs.erase(bs.find(b));
-        ans.push_back(b+1);
-    };
-
+    LONG(N, L, R);
+    VL(A, N);
+    ll gxor = 0;
     rep(i, N) {
-        ll w = N - i;
-        ll a = A[i];
-        if(cnt[a]==w) {
-            ll b = *bs.begin();
-            if(b!=a) {
-                del(a, b);
-            } else {
-                b = *bs.rbegin();
-                del(a, b);
-            }
-        } else {
-            ll b = *bs.begin();
-            if(a==b) {
-                b = *bs.rbegin();
-                del(a, b);
-            } else {
-                if(cnt[b]==w) b = *bs.rbegin();
-                del(a, b);
-            }
-        }
+        ll now = (A[i]%(L+R)/L);
+        gxor ^= now;
     }
-    Out(ans);
-
+    if(gxor==0) puts("Second");
+    else puts("First");
     
 }
 

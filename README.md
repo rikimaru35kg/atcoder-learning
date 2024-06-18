@@ -1253,14 +1253,11 @@
 - !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc224/submissions/54662426)の方が解法意図が分かりやすい)
 - !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 
-## 構築系問題
-- 構築させる問題
+## まとめて処理する
+- 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
+- イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
 ### 例題
-- !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
-- !復習価値低 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
-- !復習価値低 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
-- 基本（ネタばれしたら終わりの問題） [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
-- !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
+- !復習価値低 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 
 ## マンハッタン距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
@@ -1274,14 +1271,6 @@
 - 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - !要復習 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
-
-## ヒストグラム最大長方形（スパン）
-- ヒストグラムの中で取りうる長方形の最大面積をO(N)で求める問題
-- まずは各要素に対して、その要素よりも初めて小さくなる左右の範囲（スパン）を求める
-- 左から順番に{高さ,要素番号}のpairをスタックに積んでいくが、自分より高さの高いスタックは二度と使われることがないので捨ててよい。これで左スパンが求まる
-- 右スパンも同様に求まるので、最大面積も求まる
-### 例題
-- !復習価値中 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 
 ## 計算量がlog(N)やsqrt(N)に落ちる問題
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
@@ -1333,12 +1322,6 @@
 - !要復習 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
 - !復習価値高 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
 
-## パスカルの三角形
-- 各行の総和は2^行番号となる
-- ある斜め列のすぐ下側の斜め列は累積和の行列となっている
-### 例題
-- !復習価値高 グリッド経路数の総和 [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
-
 ## 必ず含まれるかどうか（or 含まれる事があるかどうか）の判定
 - ある要素がある条件を構成するのに必ず含まれるかどうかについて調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられる
 - その要素を必ず使うと見たときの左側と右側の関係を調べる、あるいはその要素を必ず使わないと見たときの左側と右側の関係を調べると良い
@@ -1356,6 +1339,20 @@
 - maxの中にmaxがある形にできれば、簡単に解ける
 - !復習価値低 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 
+## NIMとgrundy数
+- NIMは残り山の石の個数のxorが0なら負け、非0なら勝
+- xor=0からはxor!=0にしか遷移できないし、xor!=0なら最上位bitが立つ山を選んで下位bitが全て0になるように取り除けばxor=0に遷移可能
+- NIMでは石の数がgrundy数だが、一般には遷移先のMEX（非負非除最小整数）が各山のgrundy数となる
+- NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
+### 例題
+- !要復習 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
+
+## パスカルの三角形
+- 各行の総和は2^行番号となる
+- ある斜め列のすぐ下側の斜め列は累積和の行列となっている
+### 例題
+- !復習価値高 グリッド経路数の総和 [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
+
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
 ### 例題
@@ -1366,26 +1363,20 @@
 ### 例題
 - !復習価値低 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
+## ヒストグラム最大長方形（スパン）
+- ヒストグラムの中で取りうる長方形の最大面積をO(N)で求める問題
+- まずは各要素に対して、その要素よりも初めて小さくなる左右の範囲（スパン）を求める
+- 左から順番に{高さ,要素番号}のpairをスタックに積んでいくが、自分より高さの高いスタックは二度と使われることがないので捨ててよい。これで左スパンが求まる
+- 右スパンも同様に求まるので、最大面積も求まる
+### 例題
+- !復習価値中 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
+
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
 - 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
 - !要復習（だがしなくても良い、本当に！） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
-
-## まとめて処理する
-- 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
-- イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
-### 例題
-- !復習価値中 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
-
-## NIMとgrundy数
-- NIMは残り山の石の個数のxorが0なら負け、非0なら勝
-- xor=0からはxor!=0にしか遷移できないし、xor!=0なら最上位bitが立つ山を選んで下位bitが全て0になるように取り除けばxor=0に遷移可能
-- NIMでは石の数がgrundy数だが、一般には遷移先のMEX（非負非除最小整数）が各山のgrundy数となる
-- NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
-### 例題
-- !要復習 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 
 ## Zoblist hash
 - 集合同士をO(1)で比較可能
@@ -1404,6 +1395,15 @@
 ## 読解が難しい問題
 ### 例題
 - 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
+
+## 構築系問題
+- 構築させる問題
+### 例題
+- !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
+- !復習価値低 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- !復習価値低 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
+- 基本（ネタばれしたら終わりの問題） [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
+- !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
 
 # 実装が重い問題
 ### 例題
