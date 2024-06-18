@@ -191,31 +191,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long mersenne(long long mn, long long mx) {
+    static mt19937_64 mt64(0);
+    uniform_int_distribution<long long> get(mn, mx);
+    return get(mt64);
+}
+
 int main () {
-    // ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    LONG(N, C);
-    vp events;
+    LONG(N);
+    VL(A, N);
+    VL(B, N);
+    umap<ll,ll> mp;
+    ll MN = 1, MX = INF;
     rep(i, N) {
-        LONG(a, b, c);
-        events.emplace_back(a, c);
-        events.emplace_back(b+1, -c);
+        mp[A[i]] = mersenne(MN, MX);
     }
-    sort(all(events));
-    ll sum = 0;
-    ll lt = -100;
-    ll ans = 0;
-    for(auto [t, c]: events) {
-        ll w = t - lt;
-        if(sum<C) { ans += w * sum; }
-        else ans += w * C;
-
-        lt = t;
-        sum += c;
+    rep(i, N) {
+        mp[B[i]] = mersenne(MN, MX);
     }
-    Out(ans);
+    vl ha(N), hb(N);
+    uset<ll> st;
+    ll hash = 0;
+    rep(ri, 2) {
+        rep(i, N) {
+            if(!st.count(A[i])) {
+                st.insert(A[i]);
+                hash ^= mp[A[i]];
+            }
+            ha[i] = hash;
+        }
+        hash = 0;
+        st = uset<ll>();
+        swap(ha, hb);
+        swap(A, B);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(x, y);
+        if(ha[x]==hb[y]) puts("Yes");
+        else puts("No");
+    }
 
-    
+
 }
 
 // ### test.cpp ###

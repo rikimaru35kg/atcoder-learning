@@ -191,48 +191,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long mersenne(long long mn, long long mx) {
-    static mt19937_64 mt64(0);
-    uniform_int_distribution<long long> get(mn, mx);
-    return get(mt64);
-}
+#include <atcoder/scc>
+using namespace atcoder;
 
 int main () {
+    // ios::sync_with_stdio(false);
+    cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    VL(B, N);
-    umap<ll,ll> mp;
-    ll MN = 1, MX = INF;
+    VLM(A, N); VLM(B, N);
+    vl cnta(N), cntb(N);
+    rep(i, N) cnta[A[i]]++;
+    rep(i, N) cntb[B[i]]++;
+    if(cnta!=cntb) PNo
     rep(i, N) {
-        mp[A[i]] = mersenne(MN, MX);
-    }
-    rep(i, N) {
-        mp[B[i]] = mersenne(MN, MX);
-    }
-    vl ha(N), hb(N);
-    uset<ll> st;
-    ll hash = 0;
-    rep(ri, 2) {
-        rep(i, N) {
-            if(!st.count(A[i])) {
-                st.insert(A[i]);
-                hash ^= mp[A[i]];
-            }
-            ha[i] = hash;
-        }
-        hash = 0;
-        st = uset<ll>();
-        swap(ha, hb);
-        swap(A, B);
-    }
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(x, y);
-        if(ha[x]==hb[y]) puts("Yes");
-        else puts("No");
+        if(cnta[i]>=2) PYes
     }
 
+    scc_graph scca(N), sccb(N);
+    rep(i, N) {
+        scca.add_edge(i, A[i]);
+        sccb.add_edge(i, B[i]);
+    }
+    auto grsa = scca.scc();
+    auto grsb = sccb.scc();
+    if(SIZE(grsa)%2==SIZE(grsb)%2) PYes PNo
 
+    
 }
 
 // ### test.cpp ###
