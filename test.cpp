@@ -267,17 +267,18 @@ int main () {
                 }
                 --it;
             }
+            de(it==st.begin());
+            de(it==st.end());
             ll ans = -1;
             if(ok) ans = *it;
             Out(ans);
         } else {
             LONG(x, k);
             auto it = st.lower_bound(x);
+            if(SIZE(st)==0) {Out(-1); continue;}
+            --it;
             bool ok = true;
-            if(it==st.end()) {
-                Out(-1); continue;
-            }
-            rep(j, k-1) {
+            rep(j, k) {
                 ++it;
                 if(it==st.end()) {
                     ok = false;
