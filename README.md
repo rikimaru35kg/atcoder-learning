@@ -570,10 +570,14 @@
 - 最初は0リセットされていると考え、初期状態を全部mapに突っ込んでおく（と実装が楽）
 - リセット時にmapを消すが、ならし計算量はO(1)となるのでTLEしない
 - 加算型クエリの場合、加算値と加算前の情報を持てば良い
+- set.lower_bound(x), set.upper_bound(x)が使えるが、範囲外に注意する事
+- まずit == set.end()となったら範囲外。後ろに進めるのはit!=st.end()の時、前に進めるのはit!=set.begin()の時、最終的にit!=set.end()である事にも注意したい
 ### 例題
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
 - 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+- !要復習 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
+
 
 ## 双方向リスト
 - 要素の前後関係だけ保持するリスト
@@ -1406,6 +1410,13 @@
 ### 例題
 - !復習価値低 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
+## 牛ゲー
+- 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題
+- 線形計画法のLP双対により、最短経路問題に帰着できる
+- 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
+### 例題
+- !福種価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+
 ## 構築系問題
 - 構築させる問題
 ### 例題
@@ -1425,15 +1436,6 @@
 - !復習価値高 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !復習価値高 クッキー消し [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
 - !要復習 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
-
-# 青コーダーになるのに必須ではないと思われるアルゴリズム
-
-## 牛ゲー
-- 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題
-- 線形計画法のLP双対により、最短経路問題に帰着できる
-- 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
-### 例題
-- !福種価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
 
 # 実装テクニック
 
@@ -1462,12 +1464,6 @@
 - 構造体定義の直下でvectorのサイズを定義すると理由不明だがエラーが出る。初期値関連はコンストラクタで初期化する必要がある
 - しかしながら、プログラム中で大量の構造体が使われる場合、vectorを使ってしまうと宣言時に領域を異常に確保してしまうからか、容易にTLEする。サイズが決まっている場合はint d[N]などと配列で準備する必要があるっぽい。正確には理解できていない（例えばこの問題[F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)）
 - 上記はもしかすると動的に確保する領域が散らばったり衝突したりして、アクセスが遅くなっているのかもしれない。あるいは構造体など関係なく、そもそも大量のvectorを定義してしまうと遅くなってしまうのかもしれない
-
-## set/multiset
-- set.lower_bound(x), set.upper_bound(x)が使えるが、範囲外に注意する事
-- まずit == set.end()となったら範囲外。後ろに進めるのはit!=st.end()の時、前に進めるのはit!=set.begin()の時、最終的にit!=set.end()である事にも注意したい
-### 例題
-- [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 
 ## TLE(Time Limit Exceeded)
 - 要素数Nの初期化はO(N)の計算量が必要なことに注意！（次数が3以下のグラフを距離3までBFSする際、BFSのループ回数は少ないが、visited(N)としてしまうとO(N)かかるので注意）

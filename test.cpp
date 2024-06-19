@@ -191,65 +191,104 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    ll v, c;
-    D(){};
-    D(ll v, ll c): v(v), c(c) {};
-    D operator+(const D &o) const {
-        return D(v+o.v, o.c);
-    }
-};
-struct Data {
-    D d1, d2;
-    Data(D d1, D d2): d1(d1), d2(d2) {}
-    void update(D d3) {
-        if (d3.v>d1.v) {
-            swap(d3, d1);
-            swap(d2, d3);
-        } else if(d3.v>d2.v) {
-            swap(d3, d2);
+struct HeadK {
+    long long K, sum = 0;
+    bool ascending;
+    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        if(!ascending) x = -x;
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if(!ascending) x = -x;
+        if (stM.count(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.count(x)) return;
+            auto it = stK.find(x);
+            stK.erase(it);
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
         }
-        if(d1.c==d2.c) swap(d2, d3);
+    }
+    void decK(long long nk) { // decrease K size
+        K = nk;
+        KtoM();
+    }
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    }
+    long long get_sum() {
+        if(ascending) return sum;
+        else return -sum;
+    }
+    long long get_Kth() {
+        ll ret = INF;
+        if ((long long)stK.size()==K) ret = *stK.rbegin();
+        if(ascending) return ret;
+        else return -ret;
     }
 };
-
-using vD = vector<Data>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl C(N), V(N);
-    rep(i, N) cin>>C[i]>>V[i];
-
-    vD dp(K+1, Data(D(-INF,-1), D(-INF, -2)));
-    vD edp = dp;
-    dp[0] = Data(D(0,-1), D(-INF,-2));
-    rep(i, N) {
-        vD pdp = edp;
-        swap(dp, pdp);
-        rep(j, K+1) {
-            if(j<K) {
-                dp[j+1].update(pdp[j].d1);
-                dp[j+1].update(pdp[j].d2);
+    LONG(Q);
+    multiset<ll> st;
+    rep(i, Q) {
+        de(st)
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            st.insert(x);
+        } else if (t==2) {
+            LONG(x, k);
+            auto it = st.upper_bound(x);
+            bool ok = true;
+            rep(j, k) {
+                if(it==st.begin()) {
+                    ok = false;
+                    break;
+                }
+                --it;
             }
-            if(pdp[j].d1.v!=-INF && pdp[j].d1.c != C[i]) {
-                D nxt = pdp[j].d1 + D(V[i], C[i]);
-                dp[j].update(nxt);
+            ll ans = -1;
+            if(ok) ans = *it;
+            Out(ans);
+        } else {
+            LONG(x, k);
+            auto it = st.lower_bound(x);
+            bool ok = true;
+            if(it==st.end()) {
+                Out(-1); continue;
             }
-            if(pdp[j].d2.v!=-INF && pdp[j].d2.c != C[i]) {
-                D nxt = pdp[j].d2 + D(V[i], C[i]);
-                dp[j].update(nxt);
+            rep(j, k-1) {
+                ++it;
+                if(it==st.end()) {
+                    ok = false;
+                    break;
+                }
             }
+            ll ans = -1;
+            if(ok) ans = *it;
+            Out(ans);
         }
     }
-    ll ans = -INF;
-    chmax(ans, dp[K].d1.v);
-    chmax(ans, dp[K].d2.v);
-    if(ans<0) ans = -1;
-    Out(ans);
-
-    
     
 }
 
