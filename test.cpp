@@ -191,91 +191,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct D {
+    ll v, c;
+    D(){};
+    D(ll v, ll c): v(v), c(c) {};
+    D operator+(const D &o) const {
+        return D(v+o.v, o.c);
+    }
+};
+struct Data {
+    D d1, d2;
+    Data(D d1, D d2): d1(d1), d2(d2) {}
+    void update(D d3) {
+        if (d3.v>d1.v) {
+            swap(d3, d1);
+            swap(d2, d3);
+        } else if(d3.v>d2.v) {
+            swap(d3, d2);
+        }
+        if(d1.c==d2.c) swap(d2, d3);
+    }
+};
+
+using vD = vector<Data>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    VL(A, N);
-    vl plus, minus;
+    vl C(N), V(N);
+    rep(i, N) cin>>C[i]>>V[i];
+
+    vD dp(K+1, Data(D(-INF,-1), D(-INF, -2)));
+    vD edp = dp;
+    dp[0] = Data(D(0,-1), D(-INF,-2));
     rep(i, N) {
-        if(A[i]>=0) plus.push_back(A[i]);
-        else minus.push_back(A[i]);
-    }
-    sort(allr(plus)); sort(all(minus));
-    ll P = SIZE(plus), M = SIZE(minus);
-
-    auto isplus=[&]() {
-        ll k = K, m = M, p = P;
-        de3(k, m, p);
-        while(k) {
-            if(k>=2 && m>=2) {
-                k -= 2;
-                m -= 2;
-                continue;
+        vD pdp = edp;
+        swap(dp, pdp);
+        rep(j, K+1) {
+            if(j<K) {
+                dp[j+1].update(pdp[j].d1);
+                dp[j+1].update(pdp[j].d2);
             }
-            k--;
-            p--;
-            if(p<0) return false;
-        }
-        return true;
-    };
-
-    if(isplus()) {
-        vp val;
-        mint ans = 1;
-        if(K%2==1) {
-            K--;
-            ans *= plus[0];
-            plus.erase(plus.begin());
-            P--;
-        }
-        for(ll i=0; i<P-1; i+=2) {
-            val.emplace_back(plus[i]*plus[i+1], 1);
-        }
-        for(ll i=0; i<M-1; i+=2) {
-            val.emplace_back(minus[i]*minus[i+1], -1);
-        }
-        sort(all(val));
-        ll pi = 0;
-        while(K) {
-            if(K>=2) {
-                auto [v, t] = val.back(); val.pop_back();
-                ans *= v;
-                if(t==1) pi += 2;
-                K -= 2;
+            if(pdp[j].d1.v!=-INF && pdp[j].d1.c != C[i]) {
+                D nxt = pdp[j].d1 + D(V[i], C[i]);
+                dp[j].update(nxt);
+            }
+            if(pdp[j].d2.v!=-INF && pdp[j].d2.c != C[i]) {
+                D nxt = pdp[j].d2 + D(V[i], C[i]);
+                dp[j].update(nxt);
             }
         }
-        Out(ans);
-    } else {
-        vl p(N);
-        iota(all(p), 0);
-        sort(all(p), [&](ll i, ll j){
-            return abs(A[i]) < abs(A[j]);
-        });
-        mint ans = 1;
-        ll tmp = 1;
-        rep(i, K) {
-            ll j = p[i];
-            tmp *= A[j];
-            ans *= A[j];
-        }
-        de(tmp)
-        Out(ans);
     }
+    ll ans = -INF;
+    chmax(ans, dp[K].d1.v);
+    chmax(ans, dp[K].d2.v);
+    if(ans<0) ans = -1;
+    Out(ans);
+
+    
     
 }
 
