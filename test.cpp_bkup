@@ -191,81 +191,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
-    }
-    long long get_Kth() {
-        ll ret = INF;
-        if ((long long)stK.size()==K) ret = *stK.rbegin();
-        if(ascending) return ret;
-        else return -ret;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    HeadK hks(3), hkb(3, false);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            hks.add(x);
-            hkb.add(x);
-        } else if (t==2) {
-            LONG(x, k);
-            ll ans = hkb.get_Kth();
-            Out(ans);
-        } else {
-            LONG(x, k);
-            ll ans = hks.get_Kth();
-            Out(ans);
+    LONG(N);
+    VS(S, N);
+    vs T(N);
+    rep(i, N) rep(j, N) T[i] += S[i];
+    swap(S, T);
+    ll ans = INF;
+    auto f=[&](ll x) {
+        vb finished(N);
+        ll cnt = 0;
+        rep(t, N*10) {
+            rep(j, N) {
+                if(finished[j]) continue;
+                if(S[j][t]-'0'==x) {
+                    finished[j] = true;
+                    ++cnt;
+                    if(cnt==N) {
+                        return t;
+                    }
+                    break;
+                }
+            }
         }
+        return INF;
+    };
+    rep(x, 10) {
+        chmin(ans, f(x));
     }
+    Out(ans);
     
 }
 

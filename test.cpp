@@ -191,105 +191,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
+        ret *= n-k+1;
+        ret /= k;
     }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
-    }
-    long long get_Kth() {
-        ll ret = INF;
-        if ((long long)stK.size()==K) ret = *stK.rbegin();
-        if(ascending) return ret;
-        else return -ret;
-    }
-};
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    multiset<ll> st;
-    rep(i, Q) {
-        de(st)
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            st.insert(x);
-        } else if (t==2) {
-            LONG(x, k);
-            auto it = st.upper_bound(x);
-            bool ok = true;
-            rep(j, k) {
-                if(it==st.begin()) {
-                    ok = false;
-                    break;
-                }
-                --it;
-            }
-            de(it==st.begin());
-            de(it==st.end());
-            ll ans = -1;
-            if(ok) ans = *it;
-            Out(ans);
-        } else {
-            LONG(x, k);
-            auto it = st.lower_bound(x);
-            if(SIZE(st)==0) {Out(-1); continue;}
-            --it;
-            bool ok = true;
-            rep(j, k) {
-                ++it;
-                if(it==st.end()) {
-                    ok = false;
-                    break;
-                }
-            }
-            ll ans = -1;
-            if(ok) ans = *it;
-            Out(ans);
+    LONG(N); VL(A, N);
+    ll M = 2e5+10;
+    vl cnt(M);
+    rep(i, N) cnt[A[i]]++;
+
+    ll Z = 3;
+    vl dp(Z+1);
+    dp[0] = 1;
+    rep (i, M) {
+        repr(j, Z+1) {
+            if(j<Z) dp[j+1] += cnt[i]*dp[j];
         }
     }
+    Out(dp[3]);
+
     
 }
 

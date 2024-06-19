@@ -1163,9 +1163,10 @@
 
 # 場合の数と確率・期待値
 
-## 1つずつ決めていく
+## 分布にしてからDP
 - combinationを使う問題多し
 ### 例題
+- !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
 - !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
 - 上の問題解ければ解法自明なので問題見るだけでOK（note非掲載） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 
@@ -1544,8 +1545,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [C - Slot Strategy](https://atcoder.jp/contests/abc252/tasks/abc252_c)
-- [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
 - [E - Throwing the Die](https://atcoder.jp/contests/abc266/tasks/abc266_e)
 - [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
