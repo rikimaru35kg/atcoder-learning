@@ -195,33 +195,26 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VS(S, N);
-    vs T(N);
-    rep(i, N) rep(j, N) T[i] += S[i];
-    swap(S, T);
-    ll ans = INF;
-    auto f=[&](ll x) {
-        vb finished(N);
-        ll cnt = 0;
-        rep(t, N*10) {
-            rep(j, N) {
-                if(finished[j]) continue;
-                if(S[j][t]-'0'==x) {
-                    finished[j] = true;
-                    ++cnt;
-                    if(cnt==N) {
-                        return t;
-                    }
-                    break;
-                }
+    ll M = 6;
+    vd dp(M+1);
+    rep1(x, M) dp[x] = x;
+    rep(i, N-1) {
+        vd pdp(M+1);
+        swap(pdp, dp);
+        rep1(x, M) {
+            double now = 0;
+            rep1(y, M) {
+                now += pdp[y] / 6;
             }
+            chmax(now, (double)x);
+            dp[x] = now;
         }
-        return INF;
-    };
-    rep(x, 10) {
-        chmin(ans, f(x));
     }
+    double ans = 0;
+    rep1(x, M) ans += dp[x]/6;
     Out(ans);
+
+
     
 }
 

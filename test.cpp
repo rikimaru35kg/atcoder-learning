@@ -191,40 +191,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 2e5+10;
-    vl cnt(M);
-    rep(i, N) cnt[A[i]]++;
-
-    ll Z = 3;
-    vl dp(Z+1);
-    dp[0] = 1;
-    rep (i, M) {
-        repr(j, Z+1) {
-            if(j<Z) dp[j+1] += cnt[i]*dp[j];
-        }
+    LONG(N);
+    VL(P, N);
+    auto f=[&](ll x) {
+        return (x%N+N)%N;
+    };
+    vl cnt(N);
+    rep(i, N) {
+        cnt[f(i-P[i])]++;
+        cnt[f(i-P[i]-1)]++;
+        cnt[f(i-P[i]+1)]++;
     }
-    Out(dp[3]);
-
+    ll ans = 0;
+    rep(i, N) chmax(ans, cnt[i]);
+    Out(ans);
     
 }
 

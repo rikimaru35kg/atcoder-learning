@@ -1268,6 +1268,10 @@
 - !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc224/submissions/54662426)の方が解法意図が分かりやすい)
 - !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 
+## 投票方式で考える
+### 例題
+- [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
+
 ## まとめて処理する
 - 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
@@ -1545,8 +1549,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [E - Throwing the Die](https://atcoder.jp/contests/abc266/tasks/abc266_e)
-- [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
