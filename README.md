@@ -1163,8 +1163,12 @@
 
 # 場合の数と確率・期待値
 
+## 組合せ
+- combinationを使う
+### 例題
+- [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+
 ## 分布にしてからDP
-- combinationを使う問題多し
 ### 例題
 - !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
 - !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
@@ -1549,21 +1553,10 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [E - Last Rook](https://atcoder.jp/contests/abc269/tasks/abc269_e)
-- [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
-- [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
-- [C - Cross](https://atcoder.jp/contests/abc300/tasks/abc300_c)
-- [D - Bitmask](https://atcoder.jp/contests/abc301/tasks/abc301_d)
-- [D - Merge Slimes](https://atcoder.jp/contests/abc323/tasks/abc323_d)
-- [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - [E - Modulo MST](https://atcoder.jp/contests/abc328/tasks/abc328_e)
-- [D - Pyramid](https://atcoder.jp/contests/abc336/tasks/abc336_d)
 - [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
-- [C - Many Replacement](https://atcoder.jp/contests/abc342/tasks/abc342_c)
-- [D - AtCoder Express](https://atcoder.jp/contests/abc076/tasks/abc076_d)
-- [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
-- [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
-- [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+- 未証明 [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
+
 - [D - Disjoint Set of Common Divisors](https://atcoder.jp/contests/abc142/tasks/abc142_d)
 - [D - Triangles](https://atcoder.jp/contests/abc143/tasks/abc143_d)
 - [D - Water Bottle](https://atcoder.jp/contests/abc144/tasks/abc144_d)
@@ -1582,6 +1575,8 @@
 - [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
 
 ## ACできなかった問題
+- [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+
 - [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
