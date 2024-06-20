@@ -1556,30 +1556,17 @@
 - [E - Modulo MST](https://atcoder.jp/contests/abc328/tasks/abc328_e)
 - [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
 - 未証明 [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
-
-- [D - Disjoint Set of Common Divisors](https://atcoder.jp/contests/abc142/tasks/abc142_d)
 - [D - Triangles](https://atcoder.jp/contests/abc143/tasks/abc143_d)
-- [D - Water Bottle](https://atcoder.jp/contests/abc144/tasks/abc144_d)
 - [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
-- [D - Alter Altar](https://atcoder.jp/contests/abc174/tasks/abc174_d)
-- [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
-- [D - Journey](https://atcoder.jp/contests/abc194/tasks/abc194_d)
-- [B - Many Oranges](https://atcoder.jp/contests/abc195/tasks/abc195_b)
-- [D - aab aba baa](https://atcoder.jp/contests/abc202/tasks/abc202_d)
 - [D - Kth Excluded](https://atcoder.jp/contests/abc205/tasks/abc205_d)
-- 動画解説が本質をついていて良い [D - Number of Shortest paths](https://atcoder.jp/contests/abc211/tasks/abc211_d)
-- [D - Pair of Balls](https://atcoder.jp/contests/abc216/tasks/abc216_d)
-- [F - Max Sum Counting](https://atcoder.jp/contests/abc216/tasks/abc216_f)
-- [E - Clique Connect](https://atcoder.jp/contests/abc352/tasks/abc352_e)
-- [D - Intersecting Intervals](https://atcoder.jp/contests/abc355/tasks/abc355_d)
 - [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
-
-- [D - ABS](https://atcoder.jp/contests/abc078/tasks/arc085_b)
+- [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
+
 - [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
 - [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)

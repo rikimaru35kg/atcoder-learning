@@ -190,9 +190,10 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -207,23 +208,29 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(L);
-    ll N = SIZE(L);
-    vm dp(2);
-    dp[0] = 1;
-    rep(i, N) {
-        vm pdp(2); swap(pdp, dp);
-        rep(j, 2) rep(x, 2) {
-            if(j==0 && L[i]-'0'<x) continue;
-            ll nj = j;
-            if(j==0 && L[i]-'0'>x) nj = 1;
-            ll coef = 1;
-            if(x==1) coef = 2;
-            dp[nj] += coef * pdp[j];
+    LONG(H, W, K);
+    LONG(x1, y1, x2, y2);
+    vvm dp(2, vm(2));
+    dp[x1==x2][y1==y2] = 1;
+    rep(i, K) {
+        vvm pdp(2, vm(2));
+        swap(pdp, dp);
+        rep(pi, 2) rep(ni, 2) rep(j, 2) {
+            if(ni==1 && pi==1) continue;
+            ll coef = H-2;
+            if(pi==0 && ni==1) coef = 1;
+            if(pi==1 && ni==0) coef = H-1;
+            dp[ni][j] += coef * pdp[pi][j];
+        }
+        rep(pj, 2) rep(nj, 2) rep(i, 2) {
+            if(nj==1 && pj==1) continue;
+            ll coef = W-2;
+            if(pj==0 && nj==1) coef = 1;
+            if(pj==1 && nj==0) coef = W-1;
+            dp[i][nj] += coef * pdp[i][pj];
         }
     }
-    mint ans = dp[0] + dp[1];
-    Out(ans);
+    Out(dp[1][1]);
     
 }
 
