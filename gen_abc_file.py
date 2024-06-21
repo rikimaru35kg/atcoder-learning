@@ -118,6 +118,7 @@ inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop();} cout<<endl;}
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
+template<typename T> inline void Out(vector<vector<T>> &vv){for(auto &v: vv) Out(v);}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
 template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
@@ -180,7 +181,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de3(var1,var2,var3) {}
 #define deb(var) {}
 #endif
-const ll INF = 3e18;
+ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}

@@ -176,7 +176,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de3(var1,var2,var3) {}
 #define deb(var) {}
 #endif
-const ll INF = 3e18;
+ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
@@ -191,40 +191,122 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using vvvvl = vector<vvvl>;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VL(R, H); VL(C, W);
-    VS(A, H);
-    vvvvl dp(H, vvvl(W, vvl(2, vl(2, INF))));
-    rep(i, 2) rep(j, 2) dp[0][0][i][j] = R[0]*i + C[0]*j;
+    LONG(N);
+    STRING(Str, Ttr);
+    ll Ns = SIZE(Str), Nt = SIZE(Ttr);
+    vl S, T;
+    rep(i, Ns) S.push_back(Str[i]-'a');
+    rep(i, Nt) T.push_back(Ttr[i]-'a');
+    vl S2 = S;
+    rep(i, Ns) S2.push_back(S[i]);
+    ll Ns2 = SIZE(S2);
+    ll M = 26;
 
-    rep(i, H) rep(j, W) {
-        if(j<W-1) {
-            rep(k, 2) rep(m, 2) {
-                ll cost = 0;
-                ll nk = k, nm = 0;
-                if(A[i][j]!=A[i][j+1] && m==0) cost = C[j+1], nm = 1;
-                if(A[i][j]==A[i][j+1] && m==1) cost = C[j+1], nm = 1;
-                chmin(dp[i][j+1][nk][nm], dp[i][j][k][m]+cost);
-            }
+    vvl as(M);
+    rep(i, Ns) as[S[i]].push_back(i);
+    vl cnt(M);
+    rep(i, Ns) cnt[S[i]]++;
+
+    rep(i, Nt) if(cnt[T[i]]==0) Pm0
+
+    auto f=[&](ll x) -> bool {
+        ll lim = Ns * N;
+        ll p = 0;
+        rep(i, Nt) {
+            ll rp = p % Ns;
+            ll w = cnt[T[i]];
+            auto [n, y] = lowbou(as[T[i]], rp);
+            n += x-1;
+            p = p/Ns*Ns + n/w*Ns + as[T[i]][n%w] + 1;
+            if(p>lim) return false;
         }
-        if(i<H-1) {
-            rep(k, 2) rep(m, 2) {
-                ll cost = 0;
-                ll nk = 0, nm = m;
-                if(A[i][j]!=A[i+1][j] && k==0) cost = R[i+1], nk = 1;
-                if(A[i][j]==A[i+1][j] && k==1) cost = R[i+1], nk = 1;
-                chmin(dp[i+1][j][nk][nm], dp[i][j][k][m]+cost);
-            }
-        }
-    }
-    ll ans = INF;
-    rep(i, 2)rep(j, 2) chmin(ans, dp[H-1][W-1][i][j]);
+        return true;
+    };
+    ll ans = binary_search(0, INF, f);
     Out(ans);
+
+
+
+
     
 }
 

@@ -114,6 +114,7 @@ inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop();} cout<<endl;}
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
+template<typename T> inline void Out(vector<vector<T>> &vv){for(auto &v: vv) Out(v);}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
 template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
@@ -176,7 +177,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de3(var1,var2,var3) {}
 #define deb(var) {}
 #endif
-const ll INF = 3e18;
+ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
@@ -191,67 +192,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    LONG(Q);
-
-    auto odd = [&](ll x, ll y) -> mint {
-        if(x==0 || y==0) return 0;
-        mint ret = 0;
-        chmin(y, M);
-        if(y%2==0) --y;
-
-        ll n = (y+1)/2;
-        mint sum = n*n;
-        x = Divceil(x, 2);
-        mint d = M*2*n;
-        ret += sum*x;
-        ret += d*x*(x-1)/2;
-        return ret;
-    };
-    auto even = [&](ll x, ll y) -> mint {
-        if(x==0 || y==0) return 0;
-        mint ret = 0;
-        chmin(y, M);
-        if(y%2==1) --y;
-
-        ll n = y/2;
-        mint sum = n*(n+1) + M*n;
-        x = x/2;
-        mint d = M*2*n;
-        ret += sum*x;
-        ret += d*x*(x-1)/2;
-        return ret;
-    };
-    auto f = [&](ll x, ll y) -> mint {
-        mint ret = odd(x, y) + even(x, y);
-        return ret;
-    };
-    rep(i, Q) {
-        LONG(a, b, c, d); --a, --c;
-        mint ans = 0;
-        ans += f(b, d);
-        ans -= f(a, d);
-        ans -= f(b, c);
-        ans += f(a, c);
-        Out(ans);
+    ll y = M+5;
+    vp dxdy;
+    rep(x, M+10) {
+        while(y>0 && euclid_dist2({0,0}, {x,y-1})>=M) --y;
+        if(euclid_dist2({0,0}, {x,y}) == M) {
+            dxdy.emplace_back(x, y);
+            dxdy.emplace_back(-x, y);
+            dxdy.emplace_back(-x, -y);
+            dxdy.emplace_back(x, -y);
+        }
     }
+    vvl dist(N, vl(N, -1));
+    queue<Pr> que;
+    auto push=[&](ll i, ll j, ll d) {
+        if(dist[i][j]!=-1) return;
+        dist[i][j] = d;
+        que.emplace(i, j);
+    };
+    push(0,0,0);
+    de(dxdy)
+    while(que.size()) {
+        auto [i, j] = que.front(); que.pop();
+
+        for(auto [dx, dy]: dxdy) {
+            ll ni = i + dx;
+            ll nj = j + dy;
+            if(!isin(ni,nj,N,N)) continue;
+            push(ni,nj,dist[i][j]+1);
+        }
+    }
+    Out(dist);
     
 }
 
