@@ -1560,22 +1560,20 @@
 - [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
 - [D - Kth Excluded](https://atcoder.jp/contests/abc205/tasks/abc205_d)
 - [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
+- 動画考察すごい（使わなくても解けたけど）[D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
+- 動画解説綺麗 [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 - [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
-
 - [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
 - [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
-- [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
-- [E - Addition and Multiplication 2](https://atcoder.jp/contests/abc257/tasks/abc257_e)
 - [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
-- [F - Monochromatic Path](https://atcoder.jp/contests/abc264/tasks/abc264_f)
-- [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
+
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [D - Root M Leaper](https://atcoder.jp/contests/abc272/tasks/abc272_d)
 - [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)

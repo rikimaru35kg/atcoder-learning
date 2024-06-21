@@ -190,6 +190,7 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -208,21 +209,50 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
+    LONG(Q);
 
-    vvvm dp(M+1, vvm(M+1, vm(M+1)));
-    vvvm edp = dp;
-    dp[M][M][M] = 1;
-    rep(i, N) {
-        vvvm pdp=edp; swap(pdp, dp);
-        rep(a, M+1) rep(b, M+1) rep(c, M+1) rep(x, M) {
-            if(x<=a) dp[x][b][c] += pdp[a][b][c];
-            else if(x<=b) dp[a][x][c] += pdp[a][b][c];
-            else if(x<=c) dp[a][b][x] += pdp[a][b][c];
-        }
+    auto odd = [&](ll x, ll y) -> mint {
+        if(x==0 || y==0) return 0;
+        mint ret = 0;
+        chmin(y, M);
+        if(y%2==0) --y;
+
+        ll n = (y+1)/2;
+        mint sum = n*n;
+        x = Divceil(x, 2);
+        mint d = M*2*n;
+        ret += sum*x;
+        ret += d*x*(x-1)/2;
+        return ret;
+    };
+    auto even = [&](ll x, ll y) -> mint {
+        if(x==0 || y==0) return 0;
+        mint ret = 0;
+        chmin(y, M);
+        if(y%2==1) --y;
+
+        ll n = y/2;
+        mint sum = n*(n+1) + M*n;
+        x = x/2;
+        mint d = M*2*n;
+        ret += sum*x;
+        ret += d*x*(x-1)/2;
+        return ret;
+    };
+    auto f = [&](ll x, ll y) -> mint {
+        mint ret = odd(x, y) + even(x, y);
+        return ret;
+    };
+    rep(i, Q) {
+        LONG(a, b, c, d); --a, --c;
+        mint ans = 0;
+        ans += f(b, d);
+        ans -= f(a, d);
+        ans -= f(b, c);
+        ans += f(a, c);
+        Out(ans);
     }
-    mint ans = 0;
-    rep(a, M) rep(b, M) rep(c, M) ans += dp[a][b][c];
-    Out(ans);
+    
 }
 
 // ### test.cpp ###
