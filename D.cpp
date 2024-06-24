@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### D.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -192,83 +192,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
 #ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-};
-
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,vp> box;
-    CoordinateCompression cc;
+    LONG(N, K);
+    STRING(S);
+
+    vm dp(1<<K);
+    dp[0] = 1;
+    ll mask = (1<<K)-1;
     rep(i, N) {
-        VL(a, 3);
-        sort(all(a));
-        box[a[0]].emplace_back(a[1],a[2]);
-        cc.add(a[1]);
-    }
-    segtree<S,op,e> seg(N);
-    auto upd=[&](ll x, ll y) {
-        ll now = seg.get(x);
-        seg.set(x, min(now, y));
-    };
-    for(auto [_, vec]: box) {
-        for(auto [x, y]: vec) {
-            x = cc(x);
-            ll mn = seg.prod(0, x);
-            if(mn<y) PYes
+        vm pdp(1<<K);
+        swap(pdp, dp);
+        rep(s, 1<<K) {
+            if(pdp[s]==0) continue;
+            if(S[i]=='?') {
+                rep(c, 2) {
+                    ll ns = (s<<1 | c) & mask;
+                    bool ok = false;
+                    if (i>=K-1) {
+                        rep(j, K) {
+                            if((ns>>j&1) != (ns>>(K-1-j)&1)) ok = true;
+                        }
+                    }
+                    if(i<K-1 || ok) dp[ns] += pdp[s];
+                }
+            } else {
+                ll c = S[i]-'A';
+                ll ns = (s<<1 | c) & mask;
+                bool ok = false;
+                if (i>=K-1) {
+                    if(i==3) {deb(ns)}
+                    rep(j, K) {
+                        if((ns>>j&1) != (ns>>(K-1-j)&1)) ok = true;
+                    }
+                    de(ok)
+                }
+                if(i<K-1 || ok) dp[ns] += pdp[s];
+            }
         }
-        for(auto [x, y]: vec) {
-            x = cc(x);
-            upd(x, y);
-        }
+        de(dp)
     }
-    PNo
+    mint ans = 0;
+    rep(s, 1<<K) ans += dp[s];
+    Out(ans);
+
     
 }
 
-// ### test.cpp ###
+// ### D.cpp ###

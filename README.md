@@ -95,6 +95,7 @@
 - !復習価値高 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
 - !要復習 有名問題（暗記必須） [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - !要復習 道路コストP以下が丁度K本の数 [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
+- !要復習 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
 
 ## 二分探索による平均最大化
 - 分母と分子に変数がある場合の最大値を求めたい場合、答えを決め打つと二分探索に持ち込める場合あり
@@ -1200,6 +1201,7 @@
 ### 例題
 - 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
 - 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
+- !復習価値高 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
 - !復習価値高 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - !復習価値高 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 - !復習価値高 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
@@ -1407,6 +1409,7 @@
 - 右スパンも同様に求まるので、最大面積も求まる
 ### 例題
 - !復習価値中 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
+- !復習価値高 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
@@ -1562,6 +1565,10 @@
 - [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
 - 動画考察すごい（使わなくても解けたけど）[D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - 動画解説綺麗 [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
+- [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
+- [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
+- [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)
+- [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
@@ -1574,15 +1581,8 @@
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
 - [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
-
-- [D - Root M Leaper](https://atcoder.jp/contests/abc272/tasks/abc272_d)
-- [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
-- [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
-- [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
-- [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
-- [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
-- [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
+
 - [F - Cans and Openers](https://atcoder.jp/contests/abc312/tasks/abc312_f)
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 - [F - Shortcuts](https://atcoder.jp/contests/abc315/tasks/abc315_f)

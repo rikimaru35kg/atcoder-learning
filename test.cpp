@@ -192,51 +192,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll y = M+5;
-    vp dxdy;
-    rep(x, M+10) {
-        while(y>0 && euclid_dist2({0,0}, {x,y-1})>=M) --y;
-        if(euclid_dist2({0,0}, {x,y}) == M) {
-            dxdy.emplace_back(x, y);
-            dxdy.emplace_back(-x, y);
-            dxdy.emplace_back(-x, -y);
-            dxdy.emplace_back(x, -y);
+    LONG(N); STRING(S);
+    vl A(N);
+    rep(i, N) {
+        if(S[i]=='1') A[i]=1;
+    }
+    vvl dp(N+1, vl(2));
+    dp[N][1] = 1;
+    repr(i, N) {
+        rep(j, 2) {
+            if(j==1 && A[i]==1) dp[i][j] = dp[i+1][0] + j;
+            else dp[i][j] = dp[i+1][1] + j;
         }
     }
-    vvl dist(N, vl(N, -1));
-    queue<Pr> que;
-    auto push=[&](ll i, ll j, ll d) {
-        if(dist[i][j]!=-1) return;
-        dist[i][j] = d;
-        que.emplace(i, j);
-    };
-    push(0,0,0);
-    de(dxdy)
-    while(que.size()) {
-        auto [i, j] = que.front(); que.pop();
-
-        for(auto [dx, dy]: dxdy) {
-            ll ni = i + dx;
-            ll nj = j + dy;
-            if(!isin(ni,nj,N,N)) continue;
-            push(ni,nj,dist[i][j]+1);
-        }
+    ll ans = 0;
+    rep(i, N) {
+        ans += dp[i+1][A[i]];
     }
-    Out(dist);
+    Out(ans);
     
 }
 

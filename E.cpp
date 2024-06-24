@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### E.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -192,83 +192,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,vp> box;
-    CoordinateCompression cc;
+    LONG(N); VL(H, N);
+    vp stck;
+    stck.emplace_back(INF, -1);
+    vl lft(N);
     rep(i, N) {
-        VL(a, 3);
-        sort(all(a));
-        box[a[0]].emplace_back(a[1],a[2]);
-        cc.add(a[1]);
+        while(stck.back().first<=H[i]) stck.pop_back();
+        auto [h, idx] = stck.back();
+        lft[i] = idx;
+        stck.emplace_back(H[i], i);
     }
-    segtree<S,op,e> seg(N);
-    auto upd=[&](ll x, ll y) {
-        ll now = seg.get(x);
-        seg.set(x, min(now, y));
-    };
-    for(auto [_, vec]: box) {
-        for(auto [x, y]: vec) {
-            x = cc(x);
-            ll mn = seg.prod(0, x);
-            if(mn<y) PYes
-        }
-        for(auto [x, y]: vec) {
-            x = cc(x);
-            upd(x, y);
-        }
+    de(lft)
+    vl ans(N);
+    rep(i, N) {
+        ll w = i - lft[i];
+        ll now = w * H[i];
+        de2(w, now)
+        if(lft[i]!=-1) now += ans[lft[i]];
+        de(now)
+        ans[i] = now;
     }
-    PNo
+    vl fans;
+    for(auto x: ans) fans.push_back(x+1);
+    Out(fans);
     
 }
 
-// ### test.cpp ###
+// ### E.cpp ###
