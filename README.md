@@ -159,6 +159,7 @@
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - 復習価値低 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
+- !復習価値高 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる
@@ -1569,6 +1570,11 @@
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
 - [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)
 - [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
+- [F - Cans and Openers](https://atcoder.jp/contests/abc312/tasks/abc312_f)
+- [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
+- [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
+- [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
+- [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
@@ -1582,16 +1588,8 @@
 - [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
+- 実装が面倒すぎるので今回はスキップ [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
 
-- [F - Cans and Openers](https://atcoder.jp/contests/abc312/tasks/abc312_f)
-- [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
-- [F - Shortcuts](https://atcoder.jp/contests/abc315/tasks/abc315_f)
-- [F - Push and Carry](https://atcoder.jp/contests/abc323/tasks/abc323_f)
-- [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
-- [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
-- [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
-- [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
-- 解説は動画ではなく[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2018/09/08/195000)で [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
 - [D - Binomial Coefficients](https://atcoder.jp/contests/abc094/tasks/arc095_b)
 - [D - Equal Cut](https://atcoder.jp/contests/abc102/tasks/arc100_b)
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)

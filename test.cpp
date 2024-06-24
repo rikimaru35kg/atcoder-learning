@@ -192,27 +192,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+ll get(ll a, ll x, ll n) {
+    if(n==0) return 0LL;
+    ll ret = a*x;
+    ll an = a+(n-1), xn = x-(n-1);
+    chmax(ret, an*xn);
+    ll k = (x+a)/2;
+    ll l = max(k, 0LL);
+    ll r = min(k, n-1);
+    for(ll m=l; m<=r; ++m) {
+        ll am = a + (m-1);
+        ll xm = x - (m-1);
+        chmax(ret, am*xm);
+    }
+    return ret;
+}
+
+
+void solve() {
+    LONG(a, b);
+    if(b>a) swap(a, b);
+    if(a==b) {
+        Out((a-1)*2);
+        return;
+    }
+    auto f =[&](ll x) {
+        if(x<a) return true;
+        ll ans = 0;
+        if(x<b) {
+            ll n = a-1;
+            ll now = get(1, x, n);
+            chmax(ans, now);
+            now = get(a+1, x-n, x-1);
+            chmax(ans, now);
+        } else {
+            if(a-1<x-b+1) {
+                ll n = a-1;
+                ll now = get(1, x-1, n);
+                chmax(ans, now);
+                ll n2 = x-b+1 - n;
+                a = a+1; x = x-n;
+                now = get(a, x, n2);
+
+            }
+
+        }
+        Out(ans);
+    };
+    ll ans = binary_search(0, INF, f);
+    Out(ans);
+
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    vl A(N);
-    rep(i, N) {
-        if(S[i]=='1') A[i]=1;
-    }
-    vvl dp(N+1, vl(2));
-    dp[N][1] = 1;
-    repr(i, N) {
-        rep(j, 2) {
-            if(j==1 && A[i]==1) dp[i][j] = dp[i+1][0] + j;
-            else dp[i][j] = dp[i+1][1] + j;
-        }
-    }
-    ll ans = 0;
-    rep(i, N) {
-        ans += dp[i+1][A[i]];
-    }
-    Out(ans);
+    LONG(Q);
+    rep(i, Q) solve();
+
     
 }
 
