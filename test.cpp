@@ -192,82 +192,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-ll get(ll a, ll x, ll n) {
-    if(n==0) return 0LL;
-    ll ret = a*x;
-    ll an = a+(n-1), xn = x-(n-1);
-    chmax(ret, an*xn);
-    ll k = (x+a)/2;
-    ll l = max(k, 0LL);
-    ll r = min(k, n-1);
-    for(ll m=l; m<=r; ++m) {
-        ll am = a + (m-1);
-        ll xm = x - (m-1);
-        chmax(ret, am*xm);
-    }
-    return ret;
-}
-
-
-void solve() {
-    LONG(a, b);
-    if(b>a) swap(a, b);
-    if(a==b) {
-        Out((a-1)*2);
-        return;
-    }
-    auto f =[&](ll x) {
-        if(x<a) return true;
-        ll ans = 0;
-        if(x<b) {
-            ll n = a-1;
-            ll now = get(1, x, n);
-            chmax(ans, now);
-            now = get(a+1, x-n, x-1);
-            chmax(ans, now);
-        } else {
-            if(a-1<x-b+1) {
-                ll n = a-1;
-                ll now = get(1, x-1, n);
-                chmax(ans, now);
-                ll n2 = x-b+1 - n;
-                a = a+1; x = x-n;
-                now = get(a, x, n2);
-
-            }
-
-        }
-        Out(ans);
-    };
-    ll ans = binary_search(0, INF, f);
-    Out(ans);
-
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
-
+    LONG(N); VL(A, N);
+    sort(all(A));
+    ll n = A.back(); A.pop_back();
+    --N;
+    ll m = n/2;
+    if(n%2==0) {
+        Pr best = {INF, -1};
+        rep(i, N) chmin(best, {abs(A[i]-m), i});
+        printf("%lld %lld\n", n, A[best.second]);
+    } else {
+        Pr best = {INF, -1};
+        rep(i, N) chmin(best, {abs(A[i]-m), i});
+        rep(i, N) chmin(best, {abs(A[i]-m-1), i});
+        printf("%lld %lld\n", n, A[best.second]);
+    }
     
 }
 
