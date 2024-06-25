@@ -1172,6 +1172,8 @@
 - combinationを使う
 ### 例題
 - [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+- !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- !要復習 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 
 ## 分布にしてからDP
 ### 例題
@@ -1580,6 +1582,7 @@
 - [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
 - [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
 - [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
+- [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
@@ -1597,9 +1600,6 @@
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 
-- [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
-- [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
-- [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 - [https://atcoder.jp/contests/abc198/tasks/abc198_c](https://atcoder.jp/contests/abc198/tasks/abc198_c)
 
