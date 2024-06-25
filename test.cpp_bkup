@@ -192,44 +192,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    char last_char = s[0]+1;
-    for (auto c: s) {
-        if (c != last_char) ret.emplace_back(c, 1);
-        else ++ret.back().second;
-        last_char = c;
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    rep(i, N) if(i%2==1) A[i] = A[i]^1;
-    auto vp = run_length_encoding(A);
-    de(vp)
-    ll M = SIZE(vp);
-    if (M<=2) {
-        Out(N); return 0;
+    LONG(N); VL(C, N);
+    sort(all(C));
+    vm two(N+10);
+    two[0] = 1;
+    rep(i, N+9) two[i+1] = 2*two[i];
+    mint ans = 0;
+    rep(i, N) {
+        ll l = i;
+        ll r = N-1-i;
+        mint a = two[l];
+        mint b = two[r];
+        mint c = (r? two[r-1]*r: 0);
+        de(a)de(b)de(c)
+        mint now = a*(b+c) * C[i];
+        ans += now;
+        de(now)
     }
-    ll ans = 0;
-    rep(i, M-2) {
-        ll now = vp[i].second + vp[i+1].second + vp[i+2].second;
-        chmax(ans, now);
-    }
+    ans *= two[N];
     Out(ans);
     
 }
