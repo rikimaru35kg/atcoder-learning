@@ -195,16 +195,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(R, X, Y);
-    ll d2 = X*X + Y*Y;
-    ll R2 = R*R;
-    if(d2<R2) { Out(2); return 0; }
-    if(d2==R2) { Out(1); return 0; }
-
-    ll x = max((ll)sqrt(1.0*d2/R2)-2, 0LL);
-    de(x)
-    while(x*x*R2 < d2) ++x;
-    Out(x);
+    LONG(X, Y, Z, K);
+    VL(A, X); VL(B, Y); VL(C, Z);
+    sort(allr(A)); sort(allr(B)); sort(allr(C));
+    vl ans;
+    rep(a, X) {
+        if(a>K) break;
+        rep(b, Y) {
+            if(a*b>K) break;
+            rep(c, Z) {
+                if(a*b*c>K) break;
+                ans.push_back(A[a]+B[b]+C[c]);
+            }
+        }
+    }
+    sort(allr(ans));
+    rep(i, K) {
+        Out(ans[i]);
+    }
+    
 }
 
 // ### test.cpp ###

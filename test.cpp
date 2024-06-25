@@ -192,27 +192,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10) {
+    vector<long long> ret;
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y, Z, K);
-    VL(A, X); VL(B, Y); VL(C, Z);
-    sort(allr(A)); sort(allr(B)); sort(allr(C));
-    vl ans;
-    rep(a, X) {
-        if(a>K) break;
-        rep(b, Y) {
-            if(a*b>K) break;
-            rep(c, Z) {
-                if(a*b*c>K) break;
-                ans.push_back(A[a]+B[b]+C[c]);
-            }
+    STRING(S1, S2, S3);
+    ll N1 = SIZE(S1); ll N2 = SIZE(S2); ll N3 = SIZE(S3);
+    map<char,ll> mp;
+    rep(i, N1) mp[S1[i]] = 0;
+    rep(i, N2) mp[S2[i]] = 0;
+    rep(i, N3) mp[S3[i]] = 0;
+    if(SIZE(mp)>10) {
+        puts("UNSOLVABLE"); return 0;
+    }
+    ll M = 10;
+    vl p(M);
+    iota(all(p), 0);
+
+    auto get=[&](string &s) -> ll {
+        ll ret = 0;
+        ll n = SIZE(s);
+        rep(i, n) {
+            ll x = mp[s[i]];
+            ret = ret * 10 + x;
         }
-    }
-    sort(allr(ans));
-    rep(i, K) {
-        Out(ans[i]);
-    }
+        auto v = separate_digit(ret);
+        if(SIZE(v)!=n) ret = INF;
+        return ret;
+    };
+
+    do {
+        ll idx = 0;
+        for(auto [k,v]: mp) {
+            mp[k] = p[idx];
+            ++idx;
+        }
+        ll x1 = get(S1); if(x1==INF) continue;
+        ll x2 = get(S2); if(x2==INF) continue;
+        ll x3 = get(S3); if(x3==INF) continue;
+        if(x1+x2==x3) {
+            Out(x1); Out(x2); Out(x3);
+            return 0;
+        }
+
+    } while(next_permutation(all(p)));
+
+    puts("UNSOLVABLE"); return 0;
     
 }
 
