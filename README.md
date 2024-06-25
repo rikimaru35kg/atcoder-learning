@@ -673,6 +673,7 @@
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
 - 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
+- !復習価値中 グリッド上AB差の最小値 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 - !復習価値中 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
 - !復習価値高 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
 - !復習価値高 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
@@ -947,10 +948,12 @@
 ### 例題
 - !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
-## ランレングス圧縮（Run Length Encoding）
-- 連続する文字が何個あるかという情報に書き換える事をランレングス圧縮という
+## 区間反転操作
+- 区間を反転させても内部に影響がない場合、区間の端だけ考えて考察すると良い
+- ランレングス圧縮と相性が良い
 ### 例題
-- 交互列を塊と見て圧縮する場合もある 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
+- 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
+- !要復習 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
 
 # 数（整数・小数）
 
@@ -1575,6 +1578,8 @@
 - [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
 - [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
 - [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
+- [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
+- [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
@@ -1589,14 +1594,8 @@
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
 - 実装が面倒すぎるので今回はスキップ [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
-
-- [D - Binomial Coefficients](https://atcoder.jp/contests/abc094/tasks/arc095_b)
-- [D - Equal Cut](https://atcoder.jp/contests/abc102/tasks/arc100_b)
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
-- [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
-- [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
-- [ D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
-- [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
+
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
 - [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)

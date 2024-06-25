@@ -192,24 +192,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+using D = bitset<30000>;
+using vD = vector<D>;
+using vvD = vector<vD>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    sort(all(A));
-    ll n = A.back(); A.pop_back();
-    --N;
-    ll m = n/2;
-    if(n%2==0) {
-        Pr best = {INF, -1};
-        rep(i, N) chmin(best, {abs(A[i]-m), i});
-        printf("%lld %lld\n", n, A[best.second]);
-    } else {
-        Pr best = {INF, -1};
-        rep(i, N) chmin(best, {abs(A[i]-m), i});
-        rep(i, N) chmin(best, {abs(A[i]-m-1), i});
-        printf("%lld %lld\n", n, A[best.second]);
+    LONG(H, W);
+    VVL(A, H, W);
+    VVL(B, H, W);
+    vvl C(H, vl(W));
+    rep(i, H) rep(j , W) C[i][j] = abs(A[i][j] - B[i][j]);
+
+    vvD dp(H, vD(W));
+    ll M = 15000;
+    dp[0][0].set(C[0][0]+M, 1);
+    dp[0][0].set(-C[0][0]+M, 1);
+    rep(i, H) rep(j, W) {
+        if(j<W-1) {
+            dp[i][j+1] |= dp[i][j]<<C[i][j+1];
+            dp[i][j+1] |= dp[i][j]>>C[i][j+1];
+        }
+        if(i<H-1) {
+            dp[i+1][j] |= dp[i][j]<<C[i+1][j];
+            dp[i+1][j] |= dp[i][j]>>C[i+1][j];
+        }
     }
+    ll ans = INF;
+    rep(i, 2*M) {
+        if(dp[H-1][W-1][i]) {
+            chmin(ans, abs(M-i));
+        }
+    }
+    Out(ans);
     
 }
 
