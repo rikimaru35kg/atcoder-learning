@@ -1583,6 +1583,7 @@
 - [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
 - [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
+- [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
@@ -1600,6 +1601,4 @@
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 
-- [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
-- [https://atcoder.jp/contests/abc198/tasks/abc198_c](https://atcoder.jp/contests/abc198/tasks/abc198_c)
 
