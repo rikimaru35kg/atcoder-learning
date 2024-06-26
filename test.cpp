@@ -193,43 +193,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For double type, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VS(S, N);
+    LONG(N);
+    VL(A, N);
 
-    ll ans = 0;
-    auto dfs=[&](auto f, ll k) -> void {
-        vs sorg = S;
-        de(S)
-        if(k==K) {
-            ++ans;
-            return;
-        }
-        rep(i, N) rep(j, N) {
-            if(S[i][j]!='.') continue;
-            bool ok = false;
-            for(auto [di,dj]:dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,N,N)) continue;
-                if(S[ni][nj]=='@') ok = true;
+    auto f=[&](double x) -> bool {
+        vd a(N);
+        rep(i, N) a[i] = A[i] - x;
+        vd dp(2, -INF);
+        dp[1] = 0;
+        rep(i, N) {
+            vd pdp(2, -INF); swap(pdp, dp);
+            rep(j, 2) rep(k, 2) if(pdp[j]!=-INF) {
+                if(j==0 && k==0) continue;
+                chmax(dp[k], pdp[j] + (k==0?0:a[i]));
             }
-            if(!ok) continue;
-            S[i][j] = '@';
-            f(f, k+1);
-            S[i][j] = '!';
         }
-        // S = sorg;
+        double mx = max(dp[0], dp[1]);
+        return mx >= 0;
     };
-
-    rep(i, N) rep(j, N) {
-        if(S[i][j]!='.') continue;
-        S[i][j] = '@';
-        dfs(dfs, 1);
-        S[i][j] = '!';
-    }
-    Out(ans);
+    double ave = binary_search(0.0, 3e8, f);
+    Out(ave);
     
 }
 
