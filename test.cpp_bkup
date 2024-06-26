@@ -40,6 +40,7 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
+using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
@@ -193,115 +194,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vl A(N), B(N); vl C(M), D(M);
-    rep(i, N) {
-        LONG(a, b);
-        A[i] = a, B[i] = a+b;
-    }
-    rep(i, M) {
-        LONG(a, b);
-        C[i] = a, D[i] = a+b;
-    }
+    LONG(N, X, Y);
+    VL(A, N); A.push_back(INF);
+    ++N;
+    ll MX = 2e5 + 10;
+    vl cnt(MX);
 
-    auto f=[&](double x) {
-        vd p(N), q(M);
-        rep(i, N) p[i] = 1.0*A[i] - x*B[i];
-        rep(i, M) q[i] = 1.0*C[i] - x*D[i];
-        sort(all(p)); sort(all(q));
-        de(p)de(q)
-        ll cnt = 0;
-        rep(i, N) {
-            auto [n, y] = lowbou(q, -p[i]);
-            cnt += M-n;
+    auto calc=[&](vl &x) -> ll {
+        de(x)
+        ll M = SIZE(x);
+        bool mx=false, mn=false;
+        auto add = [&](ll i) {
+            cnt[x[i]]++;
+            if(x[i]==X) mx = true;
+            if(x[i]==Y) mn = true;
+        };
+        auto del = [&](ll i) {
+            cnt[x[i]]--;
+            if(cnt[x[i]]==0 && x[i]==X) mx = false;
+            if(cnt[x[i]]==0 && x[i]==Y) mn = false;
+        };
+        ll r = 0;
+        ll ret = 0;
+        rep(l, M) {
+            while(r<M && (!mx || !mn)) {
+                add(r);
+                ++r;
+            }
+            de2(l, r)
+            if(mn&&mx) ret += M-r+1;
+            del(l);
         }
-        return cnt >= K;
+        return ret;
     };
-    // de(f(0.80))
-    double ans = binary_search(0.0, 1.0, f);
-    Out(ans*100);
 
-
+    ll ans = 0;
+    vl x;
+    rep(i, N) {
+        if(A[i]<=X && A[i]>=Y) x.push_back(A[i]);
+        else {
+            if(SIZE(x)) {
+                ans += calc(x);
+                x = vl();
+            }
+        }
+    }
+    Out(ans);
+    
 }
 
 // ### test.cpp ###

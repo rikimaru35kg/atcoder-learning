@@ -194,67 +194,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For double type, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-
-    auto f=[&](db x) -> bool {
-        vd a(N);
-        rep(i, N) a[i] = A[i] - x;
-        vd dp(2, -INF);
-        dp[1] = 0;
-        rep(i, N) {
-            vd pdp(2, -INF); swap(pdp, dp);
-            rep(j, 2) rep(k, 2) if(pdp[j]!=-INF) {
-                if(j==0 && k==0) continue;
-                chmax(dp[k], pdp[j] + (k==0?0:a[i]));
-            }
+    LONG(N, M);
+    vl A(N), B(N);
+    rep(i, N) cin>>A[i]>>B[i];
+    rep(i, N) A[i]--, B[i]--;
+    vl cnt(N);
+    vvl is(M);
+    rep(i, N) {
+        is[A[i]].push_back(i);
+        is[B[i]].push_back(i);
+    }
+    vl imos(M+10);
+    ll r = 0, num = 0;
+    auto upd=[&](ll mi) {
+        for(auto ni: is[mi]) {
+            if(cnt[ni]==0) ++num;
+            cnt[ni]++;
         }
-        db mx = max(dp[0], dp[1]);
-        return mx >= 0;
     };
-    db ave = binary_search(0.0, (db)INF, f);
-
-    auto g = [&](ll x) -> bool {
-        vl a(N);
-        rep(i, N) a[i] = (A[i]>=x?1:-1);
-        vl dp(2, -INF);
-        dp[1] = 0;
-        rep(i, N) {
-            vl pdp(2, -INF); swap(pdp, dp);
-            rep(j, 2) rep(k, 2) if(pdp[j]!=-INF) {
-                if(j==0 && k==0) continue;
-                chmax(dp[k], pdp[j] + (k==0?0:a[i]));
-            }
+    auto del=[&](ll mi) {
+        for(auto ni: is[mi]) {
+            cnt[ni]--;
+            if(cnt[ni]==0) --num;
         }
-        ll mx = max(dp[0], dp[1]);
-        return mx > 0;
     };
-    ll med = binary_search(0LL, INF, g);
-
-    Out(ave);Out(med);
+    rep(l, M) {
+        while(r<M && num<N) {
+            upd(r);
+            ++r;
+        }
+        if(num==N) {
+            de2(l, r)
+            imos[r-l]++;
+            imos[M-l+1]--;
+        }
+        del(l);
+    }
+    rep(i, M+5) imos[i+1] += imos[i];
+    vl ans;
+    rep1(i, M) ans.push_back(imos[i]);
+    Out(ans);
     
 }
 
