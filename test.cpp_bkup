@@ -185,6 +185,7 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
+const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -192,28 +193,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-int main () {
-    // ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    LONG(X, Y, Z, K);
-    VL(A, X); VL(B, Y); VL(C, Z);
-    sort(allr(A)); sort(allr(B)); sort(allr(C));
-    vl ans;
-    rep(a, X) {
-        if(a>K) break;
-        rep(b, Y) {
-            if(a*b>K) break;
-            rep(c, Z) {
-                if(a*b*c>K) break;
-                ans.push_back(A[a]+B[b]+C[c]);
-            }
-        }
+#include <bits/stdc++.h>
+using namespace std;
+
+const int n = 5, m = 4;
+int a[m][m];
+int cnt[m][m];
+bool used[n][n];
+int si, sj;
+
+int ans;
+void dfs(int i, int j) {
+  used[i][j] = true;
+  rep(v,4) {
+    int ni = i+di[v], nj = j+dj[v];
+    if (ni < 0 || nj < 0 || ni >= n || nj >= n) continue;
+    auto flip = [&] {
+      if (ni == i) {
+        int l = min(j,nj);
+        for (int mi = i; mi < m; ++mi) cnt[mi][l] ^= 1;
+      }
+    };
+    flip();
+    if (used[ni][nj]) {
+      if (si == ni && sj == nj) {
+        bool ok = true;
+        rep(mi,m)rep(mj,m) if (a[mi][mj] && !cnt[mi][mj]) ok = false;
+        if (ok) ++ans;
+      }
+    } else {
+      dfs(ni,nj);
     }
-    sort(allr(ans));
-    rep(i, K) {
-        Out(ans[i]);
-    }
-    
+    flip();
+  }
+  used[i][j] = false;
 }
 
-// ### test.cpp ###
+int main() {
+  rep(i,m)rep(j,m) cin >> a[i][j];
+  rep(i,n)rep(j,n) {
+    si = i; sj = j;
+    dfs(i,j);
+    used[i][j] = true;
+  }
+  ans /= 2;
+  cout << ans << endl;
+  return 0;
+}// ### test.cpp ###

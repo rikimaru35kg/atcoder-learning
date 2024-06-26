@@ -43,10 +43,9 @@
 ### 例題
 - 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
-- !復習価値低 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
-- !復習価値高 距離総和を全頂点について求める [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
-- !要復習 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
-- !要復習 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
+- 基本 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
+- !復習価値高 お堀の決め方の数 [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
+- !復習価値中 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - !復習価値低 ポリオミオ（Polyomio）の種類数が少ないから解ける [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
 
 # 工夫した探索
@@ -1326,7 +1325,7 @@
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる
 - この時、kを固定してもO(1)で求められないが、kが求まっていればk+1の答えが差分から求められるのであればO(1)になる
 ### 例題
-- !復習価値中 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
+- !復習価値低 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - !要復習 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 
 ## 偶奇に注目

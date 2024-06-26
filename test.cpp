@@ -185,6 +185,7 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
+const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -192,69 +193,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10) {
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S1, S2, S3);
-    ll N1 = SIZE(S1); ll N2 = SIZE(S2); ll N3 = SIZE(S3);
-    map<char,ll> mp;
-    rep(i, N1) mp[S1[i]] = 0;
-    rep(i, N2) mp[S2[i]] = 0;
-    rep(i, N3) mp[S3[i]] = 0;
-    if(SIZE(mp)>10) {
-        puts("UNSOLVABLE"); return 0;
-    }
-    ll M = 10;
-    vl p(M);
-    iota(all(p), 0);
+    LONG(N, K);
+    VS(S, N);
 
-    auto get=[&](string &s) -> ll {
-        ll ret = 0;
-        ll n = SIZE(s);
-        rep(i, n) {
-            ll x = mp[s[i]];
-            ret = ret * 10 + x;
+    ll ans = 0;
+    auto dfs=[&](auto f, ll k) -> void {
+        vs sorg = S;
+        de(S)
+        if(k==K) {
+            ++ans;
+            return;
         }
-        auto v = separate_digit(ret);
-        if(SIZE(v)!=n) ret = INF;
-        return ret;
+        rep(i, N) rep(j, N) {
+            if(S[i][j]!='.') continue;
+            bool ok = false;
+            for(auto [di,dj]:dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,N,N)) continue;
+                if(S[ni][nj]=='@') ok = true;
+            }
+            if(!ok) continue;
+            S[i][j] = '@';
+            f(f, k+1);
+            S[i][j] = '!';
+        }
+        // S = sorg;
     };
 
-    do {
-        ll idx = 0;
-        for(auto [k,v]: mp) {
-            mp[k] = p[idx];
-            ++idx;
-        }
-        ll x1 = get(S1); if(x1==INF) continue;
-        ll x2 = get(S2); if(x2==INF) continue;
-        ll x3 = get(S3); if(x3==INF) continue;
-        if(x1+x2==x3) {
-            Out(x1); Out(x2); Out(x3);
-            return 0;
-        }
-
-    } while(next_permutation(all(p)));
-
-    puts("UNSOLVABLE"); return 0;
+    rep(i, N) rep(j, N) {
+        if(S[i][j]!='.') continue;
+        S[i][j] = '@';
+        dfs(dfs, 1);
+        S[i][j] = '!';
+    }
+    Out(ans);
     
 }
 
