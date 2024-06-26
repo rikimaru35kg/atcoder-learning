@@ -40,6 +40,7 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
+using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
@@ -219,7 +220,7 @@ int main () {
     LONG(N);
     VL(A, N);
 
-    auto f=[&](double x) -> bool {
+    auto f=[&](db x) -> bool {
         vd a(N);
         rep(i, N) a[i] = A[i] - x;
         vd dp(2, -INF);
@@ -231,11 +232,29 @@ int main () {
                 chmax(dp[k], pdp[j] + (k==0?0:a[i]));
             }
         }
-        double mx = max(dp[0], dp[1]);
+        db mx = max(dp[0], dp[1]);
         return mx >= 0;
     };
-    double ave = binary_search(0.0, 3e8, f);
-    Out(ave);
+    db ave = binary_search(0.0, (db)INF, f);
+
+    auto g = [&](ll x) -> bool {
+        vl a(N);
+        rep(i, N) a[i] = (A[i]>=x?1:-1);
+        vl dp(2, -INF);
+        dp[1] = 0;
+        rep(i, N) {
+            vl pdp(2, -INF); swap(pdp, dp);
+            rep(j, 2) rep(k, 2) if(pdp[j]!=-INF) {
+                if(j==0 && k==0) continue;
+                chmax(dp[k], pdp[j] + (k==0?0:a[i]));
+            }
+        }
+        ll mx = max(dp[0], dp[1]);
+        return mx > 0;
+    };
+    ll med = binary_search(0LL, INF, g);
+
+    Out(ave);Out(med);
     
 }
 
