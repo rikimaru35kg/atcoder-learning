@@ -219,7 +219,7 @@
 - 文章ではわかりにくいので、[snuke氏の解説参照](https://www.youtube.com/live/VSeggcnxwrc?feature=shared&t=5618)
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
-- 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
+- !復習価値中 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
 
 # 貪欲法
 
