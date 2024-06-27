@@ -206,7 +206,7 @@
 - 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
 - クエリ[l,r)を座標上にプロットし、sqrt(Q)個に分割（すなわち高さをN/sqrt(Q)に分割）し、各分割ブロックごとに小さい順に辿って行けば良い
 ### 例題
-- !復習価値中 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
+- !復習価値高 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 
 ## 区間和がxの倍数
 - 区間和がxの倍数になるとは、[l,r)の累積和Sr-Sl≡0（mod x）、つまりSr≡Slなので、累積和（mod x）が等しければ良い
