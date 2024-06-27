@@ -194,49 +194,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
-
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 // return minimum index i where a[i] >= x, and its value a[i]
 // vector a must be pre-sorted in ascending (normal) order!
 // return value of a.size() means a.back() is not over x (a.back()<x)
@@ -299,28 +256,23 @@ pair<long long,T> uppbou_r(vector<T> &a, T x) {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(C, N); VL(X, N);
-    vvl xbyc(N);
+    LONG(N); VLM(A, N);
+    vvl is(N);
     rep(i, N) {
-        xbyc[C[i]].push_back(X[i]);
+        is[A[i]].push_back(i);
     }
-
-    auto calc = [&](vl &x) -> ll {
-        sort(all(x));
-        ll n = SIZE(x);
-
-        ll ret = 0;
-        rep(i, n) {
-            ret += tree.sum(x[i]+1, n);
-            tree.add(x[i], 1);
-        }
-        return ret;
-    };
-
-    ll ans = calc(X);
-    rep(i, N) ans -= calc(xbyc[i]);
-    Out(ans);
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(l, r, x);
+        ll a = lower_bound(all(is[x]), l) - is[x].begin();
+        ll b = upper_bound(all(is[x]), r) - is[x].begin(); --b;
+        de2(a, b)
+        ll ans = max(b-a+1, 0LL);
+        Out(ans);
+    }
+    vl x;
+    ll a = lower_bound(all(x), 5) - x.begin();
+    de(a)
     
 }
 

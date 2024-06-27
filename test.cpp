@@ -194,75 +194,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/fenwicktree>
+#include <atcoder/modint>
 using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl A;
-    CoordinateCompression cc;
+    LONG(N, K);
+    VL(A, N);
+    mint::set_mod(K);
+    mint sum = 0;
+    umap<ll,ll> mp;
+    mp[0] = 1;
+    ll ans = 0;
+    vm cum(N+1);
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        for(auto [k, v]: mp) {
+            cerr<< '{'<<k << ' ' << v <<'}' <<' ';
+        }
+        cerr<<endl;
+    #endif
+    };
     rep(i, N) {
-        VL(a, M);
-        sort(all(a));
-        A.insert(A.end(), all(a));
+        sum += A[i];
+        cum[i+1] = sum - (i+1);
+        if (i+1-K>=0) mp[cum[i+1-K].val()]--;
+        ans += mp[cum[i+1].val()];
+        mp[cum[i+1].val()]++;
+        dprint();
     }
-    ll ans = N*(N-1)/2 * M*(M+1)/2;
-    de(ans)
-    N = N*M;
-    rep(i, N) cc.add(A[i]);
-    rep(i, N) A[i] = cc(A[i]);
-    de(A)
-
-    fenwick_tree<ll> tree(N+10);
-    rep(i, N) {
-        ans += tree.sum(A[i]+1, N+10);
-        de(tree.sum(A[i]+1, N+10))
-        tree.add(A[i], 1);
-    }
+    de(cum)
     Out(ans);
-
 
     
 }

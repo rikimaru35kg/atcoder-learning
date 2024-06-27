@@ -139,7 +139,7 @@
 - Aの降順、Bの昇順を並べて組み合わせを考える場合、もしクロスしている組み合わせがあれば、組み合わせを逆にすることでかならずmax値は減少する
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
-- !復習価値低 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
+- 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
@@ -159,9 +159,9 @@
 - 逆向きに累積和と取れば単調減少（単調増加）となる
 - 和だけでなく、累積XORや累積GCDも考えられる（要するにnow=f(now,x)みたいな形で更新できる演算であれば何でも累積できる。区間を求められるかは別問題だが・・・）
 ### 例題
+- 基本 （累積和ではないのでNote非掲載 ）[C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
-- 基本 [C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
-- 復習価値低 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
+- 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 - !復習価値高 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
 
 ## 2次元累積和
@@ -181,8 +181,8 @@
 ### 例題
 - 基本 [D - Union of Interval](https://atcoder.jp/contests/abc256/tasks/abc256_d)
 - 基本 [A - 鉄道旅行 (Railroad Trip)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a)
-- !復習価値低 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
-- !復習価値中 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
+- 基本 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
+- 基本 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
@@ -197,10 +197,10 @@
 ### 例題
 - 基本 累積和がMの倍数となる区間の総数 [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
 - 基本 連続部分文字列がMOD Pで0になる個数 その1 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
-- !復習価値低 [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
-- !復習価値低 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
+- 基本 [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
 - !復習価値中 区間の中でXに一致する個数 [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
-- !復習価値中 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
+- !復習価値低 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
+- !復習価値高 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 
 ## Mo's Algorithm
 - 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
