@@ -194,49 +194,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vl A(N), B(N);
-    rep(i, N) cin>>A[i]>>B[i];
-    rep(i, N) A[i]--, B[i]--;
-    vl cnt(N);
-    vvl is(M);
+    vl A;
+    CoordinateCompression cc;
     rep(i, N) {
-        is[A[i]].push_back(i);
-        is[B[i]].push_back(i);
+        VL(a, M);
+        sort(all(a));
+        A.insert(A.end(), all(a));
     }
-    vl imos(M+10);
-    ll r = 0, num = 0;
-    auto upd=[&](ll mi) {
-        for(auto ni: is[mi]) {
-            if(cnt[ni]==0) ++num;
-            cnt[ni]++;
-        }
-    };
-    auto del=[&](ll mi) {
-        for(auto ni: is[mi]) {
-            cnt[ni]--;
-            if(cnt[ni]==0) --num;
-        }
-    };
-    rep(l, M) {
-        while(r<M && num<N) {
-            upd(r);
-            ++r;
-        }
-        if(num==N) {
-            de2(l, r)
-            imos[r-l]++;
-            imos[M-l+1]--;
-        }
-        del(l);
+    ll ans = N*(N-1)/2 * M*(M+1)/2;
+    de(ans)
+    N = N*M;
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) A[i] = cc(A[i]);
+    de(A)
+
+    fenwick_tree<ll> tree(N+10);
+    rep(i, N) {
+        ans += tree.sum(A[i]+1, N+10);
+        de(tree.sum(A[i]+1, N+10))
+        tree.add(A[i], 1);
     }
-    rep(i, M+5) imos[i+1] += imos[i];
-    vl ans;
-    rep1(i, M) ans.push_back(imos[i]);
     Out(ans);
+
+
     
 }
 

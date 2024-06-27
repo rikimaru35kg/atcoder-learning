@@ -115,9 +115,9 @@
 - N=10^12程度のとき、10^6に分けるとうまくいくような問題もある（数列の二乗など）
 ### 例題
 - 基本 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
-- !復習価値低 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
-- !要復習 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
-- !復習価値中 ロボット移動（実装重め） [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
+- 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
+- !復習価値高 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
+- !要復習 ロボット移動（実装重め） [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
 # ソート
 
@@ -130,7 +130,7 @@
 - バブルソートするのに必要な回数であるが、より本質的にはai>ajとなるペアの組合せの数と等しい（ソートにはこれ以上の回数が必要な事は自明だし、ソートが終わっていない時このような隣り合うペアが存在するので）
 - 全探索するとO(N^2)だが、BIT木を使えばO(NlogN)で可能。
 ### 例題
-- !復習価値中 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
+- !復習価値低 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
 - !復習価値中 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 
 ## 要素積のmaxを最小化

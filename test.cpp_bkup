@@ -194,54 +194,132 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    VL(A, N); A.push_back(INF);
-    ++N;
-    ll MX = 2e5 + 10;
-    vl cnt(MX);
+    LONG(N);
+    VLM(C, N); VL(X, N);
+    vvl xbyc(N);
+    rep(i, N) {
+        xbyc[C[i]].push_back(X[i]);
+    }
 
-    auto calc=[&](vl &x) -> ll {
-        de(x)
-        ll M = SIZE(x);
-        bool mx=false, mn=false;
-        auto add = [&](ll i) {
-            cnt[x[i]]++;
-            if(x[i]==X) mx = true;
-            if(x[i]==Y) mn = true;
-        };
-        auto del = [&](ll i) {
-            cnt[x[i]]--;
-            if(cnt[x[i]]==0 && x[i]==X) mx = false;
-            if(cnt[x[i]]==0 && x[i]==Y) mn = false;
-        };
-        ll r = 0;
+    auto calc = [&](vl &x) -> ll {
+        sort(all(x));
+        ll n = SIZE(x);
+
         ll ret = 0;
-        rep(l, M) {
-            while(r<M && (!mx || !mn)) {
-                add(r);
-                ++r;
-            }
-            de2(l, r)
-            if(mn&&mx) ret += M-r+1;
-            del(l);
+        rep(i, n) {
+            ret += tree.sum(x[i]+1, n);
+            tree.add(x[i], 1);
         }
         return ret;
     };
 
-    ll ans = 0;
-    vl x;
-    rep(i, N) {
-        if(A[i]<=X && A[i]>=Y) x.push_back(A[i]);
-        else {
-            if(SIZE(x)) {
-                ans += calc(x);
-                x = vl();
-            }
-        }
-    }
+    ll ans = calc(X);
+    rep(i, N) ans -= calc(xbyc[i]);
     Out(ans);
     
 }
