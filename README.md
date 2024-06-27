@@ -205,14 +205,10 @@
 ## Mo's Algorithm
 - 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
 - クエリ[l,r)を座標上にプロットし、sqrt(Q)個に分割（すなわち高さをN/sqrt(Q)に分割）し、各分割ブロックごとに小さい順に辿って行けば良い
+- r>=lの領域をはみ出さないように、さきに--lと++rをした方が良い
 ### 例題
 - !復習価値高 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 
-## 区間和がxの倍数
-- 区間和がxの倍数になるとは、[l,r)の累積和Sr-Sl≡0（mod x）、つまりSr≡Slなので、累積和（mod x）が等しければ良い
-- 累積和が等しい場合の数を全て加算しておけば、貰うDPで一括で足しこめる
-### 例題
-- !復習価値高 難しく頭が混乱するが、頑張れば解けるので頑張って！ [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 
 ## ある順列P{1,2,...,N}の区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
@@ -851,7 +847,8 @@
 - !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - !復習価値高 サイコロゲーム（実装難しい） [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
-- !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
+- !復習価値高 難しく頭が混乱するが、頑張れば解けるので頑張って！ [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
+- !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも。NOTE非掲載） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
 ## 状態を工夫するDP
 - 状態を工夫する事でDPに落とし込める問題
@@ -1497,6 +1494,7 @@
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 
 ## 実装テクニック（その他）
+- -1%2は-1と計算されてしまう。分子がマイナスになる恐れのある場合、自作マクロPercentを使うと良い（pythonと同一の結果が帰ってくる仕様）
 - for(auto x: u) for(auto y: v) {swap(x, y);}とすると何故か壊れる。イテレータがswapされて変なつなぎ変えが発生してしまうのだろうか？？
 - dpとpdpを用意する際、サイズの指定で間違う事が多いので、edp=dp（空）としておいて、以降ｈpdp=edpとする（サイズの指定が1箇所で済む）
 - unordered_set.clear()は遅いので、st = unordered_set<ll>()とすべき（stdlibc++のバグで過去の最大要素数だけ計算量がかかってしまう）

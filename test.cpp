@@ -194,54 +194,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N);
-    LONG(Q);
-    vp query;
-    rep(i, Q) {
-        LONG(l, r); --l;
-        query.emplace_back(l, r);
-    }
-    vl p(Q);
-    ll h = max(1LL, (ll)(N/sqrt(Q)));
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        auto [li, ri] = query[i];
-        auto [lj, rj] = query[j];
-        ll hi = ri/h, hj = rj/h;
-        if(hi==hj) {
-            return li < lj;
-        } else {
-            return hi < hj;
+    LONG(N); VL(A, N);
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    
+    vvm dp(N+1, vm(N+1));
+    vvm ds(N+1, vm(N+1));
+    dp[0][0] = 1;
+    ds[0][0] = 1;
+    rep1(i, N) {
+        for(ll j=N; j>=1; --j) {
+            // rep(ip, i) {
+            //     if ((Sc[i]-Sc[ip])%j==0) dp[i][j] += dp[ip][j-1];
+            // }
+            ll sum = Sc[i];
+            dp[i][j] += ds[j-1][sum%j];
+            ds[j][sum%(j+1)] += dp[i][j];
         }
-    });
-
-    vl cnt(N);
-    ll pair = 0;
-    auto add=[&](ll x) {
-        cnt[x]++;
-        if(cnt[x]%2==0) ++pair;
-    };
-    auto del=[&](ll x) {
-        cnt[x]--;
-        if(cnt[x]%2==1) --pair;
-    };
-    ll l = 0, r = 0;
-    vl ans(Q);
-    for(auto i: p) {
-        auto [cl, cr] = query[i];
-        while(l>cl) --l, add(A[l]);
-        while(r<cr) add(A[r]), ++r;
-        while(l<cl) del(A[l]), ++l;
-        while(r>cr) --r, del(A[r]);
-        de(i)
-        de(cnt)
-        ans[i] = pair;
     }
+    mint ans = 0;
+    rep1(i, N) ans += dp[N][i];
     Out(ans);
-    de(Percent(-1, -2))
     
 }
 
