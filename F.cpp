@@ -195,6 +195,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N); VL(A, N);
+    auto f = [&](ll d) -> ll {
+        return (d+1)*(d+1) - d*d;
+    };
+    vl dim(N, 1);
+    de(dim)
+    ll rem = N-2;
+    ll ans = accumulate(all(A), 0LL);
+    priority_queue<Pr,vp,greater<Pr>> que;
+    rep(i, N) { que.emplace(f(dim[i])*A[i], i); }
+
+    rep(_, rem) {
+        auto [c, i] = que.top(); que.pop();
+        ans += c;
+        dim[i]++;
+        que.emplace(f(dim[i])*A[i], i);
+    }
+    Out(ans);
     
 }
 

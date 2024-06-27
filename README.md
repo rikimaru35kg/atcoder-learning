@@ -250,6 +250,7 @@
 - !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !復習価値高 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
+- !要復習 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
 
 # 最短経路問題
 
