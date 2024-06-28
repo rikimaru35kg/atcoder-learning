@@ -194,55 +194,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Ver {
-    ll v, s, d;
-    Ver(ll v, ll s, ll d): v(v),s(s),d(d) {}
-    bool operator<(const Ver &o) const {
-        return d>o.d;
-    }
-};
-using vV = vector<Ver>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, S);
-    vvt3 from(N);
+    LONG(N, M);
+    vvl from(N);
     rep(i, M) {
-        LONGM(u, v); LONG(a, b);
-        from[u].emplace_back(v, a, b);
-        from[v].emplace_back(u, a, b);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    vl C(N), D(N);
-    rep(i, N) cin>>C[i]>>D[i];
-    ll Mx = 3000;
-    chmin(S, Mx-1);
 
-    priority_queue<Ver> pque;
-    vvl dist(N, vl(Mx, INF));
-    auto push=[&](ll v, ll s, ll d) {
-        chmin(s, Mx-1);
+    vvl dist(N, vl(1<<N, INF));
+    queue<Pr> que;
+    auto push = [&](ll v, ll s, ll d) {
         if(dist[v][s]<=d) return;
         dist[v][s] = d;
-        pque.emplace(v, s, d);
+        que.emplace(v, s);
     };
-    push(0, S, 0);
-    while(pque.size()) {
-        auto [v, s, d] = pque.top(); pque.pop();
-        if(dist[v][s] != d) continue;
-        for(auto [nv, a, b]: from[v]) {
-            if(s<a) continue;
-            push(nv, s-a, d+b);
-        }
-        push(v, s+C[v], d+D[v]);
-    }
-    repk(i, 1, N) {
-        ll ans = INF;
-        rep(j, Mx) chmin(ans, dist[i][j]);
-        Out(ans);
-    }
-    
+    rep(v, N) push(v, 1<<v, 1);
 
+    while(que.size()) {
+        auto [v, s] = que.front(); que.pop();
+        for(auto nv: from[v]) {
+            ll ns = s ^ 1<<nv;
+            push(nv, ns, dist[v][s]+1);
+        }
+    }
+
+    ll ans = 0;
+    rep(s, 1<<N) {
+        if(s==0) continue;
+        ll now = INF;
+        rep(v, N) chmin(now, dist[v][s]);
+        ans += now;
+    }
+    Out(ans);
     
 }
 
