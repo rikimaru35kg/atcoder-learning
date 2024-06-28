@@ -197,41 +197,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(H, N);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        if(H[b]<H[a]) swap(a, b);
-        ll cost = H[b]-H[a];
-        from[a].emplace_back(b, cost);
-        from[b].emplace_back(a, 0);
+    LONG(N);
+    VVL(A, N, N);
+    rep(i, N) rep(j, N) rep(k, N) {
+        if(i==j || j==k || k==i) continue;
+        if(A[i][j]+A[j][k] < A[i][k]) Pm1
     }
-
-    pq que;
-    vl dist(N, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
+    ll ans = 0;
+    rep(i, N) rep(j, i) {
+        bool need = true;
+        rep(k, N) {
+            if(i==k || j==k) continue;
+            if(A[i][k]+A[k][j]==A[i][j]) need = false;
         }
-    }
-    ll ans = -INF;
-    rep(i, N) {
-        ll now = H[0]-H[i] - dist[i];
-        chmax(ans, now);
+        if(need) ans += A[i][j];
     }
     Out(ans);
-
-
     
 }
 
