@@ -194,62 +194,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +/* leads to overflowing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b == 0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(q*rhs.p + p*rhs.q, q*rhs.q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    bool operator<(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p < 0;
-    }
-    bool operator<=(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p <= 0;
-    }
-    bool operator>(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p > 0;
-    }
-    bool operator>=(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p >= 0;
-    }
-    bool operator==(const Frac &rhs) {
-        if (p==rhs.p && q==rhs.q) return true;
-        else return false;
-    }
-};
-
-using Prf = pair<Frac,Frac>;
-using vprf = vector<Prf>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vprf spans;
-    rep(i, N) {
-        LONG(x, y);
-        spans.emplace_back(Frac(y, x-1), Frac(y-1, x));
-    }
-    sort(all(spans));
+    LONG(N, L);
+    VL(A, N);
+    ll rem = L - accumulate(all(A), 0LL);
+    priority_queue<ll,vl,greater<ll>> que;
+    rep(i, N) que.push(A[i]);
+    if(rem) que.push(rem);
+
     ll ans = 0;
-    Frac mx = Frac(-1,1);
-    for(auto [r, l]: spans) {
-        if (l >= mx) ++ans, mx = r;
+    while(SIZE(que)>=2) {
+        auto v1 = que.top(); que.pop();
+        auto v2 = que.top(); que.pop();
+        ans += v1 + v2;
+        que.push(v1+v2);
     }
     Out(ans);
     

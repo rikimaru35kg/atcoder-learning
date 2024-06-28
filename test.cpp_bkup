@@ -197,18 +197,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp spans;
-    rep(i, M){
-        LONG(l, r);
-        spans.emplace_back(r, l);
+    LONG(N, D, A);
+    vp mons;
+    rep(i, N) {
+        LONG(x, h);
+        mons.emplace_back(x, h);
     }
-    sort(allr(spans));
+    sort(all(mons));
+
+    ll sum = 0;
+    queue<Pr> que;
     ll ans = 0;
-    while(spans.size()) {
-        auto [r, l] = spans.back(); spans.pop_back();
-        ++ans;
-        while(spans.size() && spans.back().second < r) spans.pop_back();
+    for(auto [x, h]: mons) {
+        while(que.size() && que.front().first < x) {
+            auto [xp, dp] = que.front();
+            sum -= dp;
+            que.pop();
+        }
+        if(sum>=h) continue;
+
+        h -= sum;
+        ll num = Divceil(h, A);
+        ans += num;
+        que.emplace(x+2*D, A*num);
+        sum += A*num;
     }
     Out(ans);
     

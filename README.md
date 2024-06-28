@@ -221,33 +221,6 @@
 ### 例題
 - !復習価値中 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
 
-# 貪欲法
-
-## 区間スケジューリング問題
-- なるべく多くの会議に出席したい場合、終了時刻で昇順ソートして、貪欲に選択するのが最適
-- 昇順ソートしたpairを順に見えていけば良い
-- ソート済みpair（すなわち区間）を図示するとイメージしやすい。M区間に対してrep(i,M)して、それぞれどういう処理をすれば良いか考えれば実装できる
-- 全部で最大K会議選べるとしたとき、最初の1会議をなるべく早く終わらせた方が残りK-1会議の選択肢が増える。2番目、3番目の会議も同様の考え方
-- 亜種問題として、全ての会議を串刺しする問題あり。この階は区間スケジューリング問題の解に一致する。終了時刻昇順でソートしたとき、最初に終わる会議をその終了時刻までに選択するしかないが、なるべくたくさん串刺しするには、終了時刻で串刺しした方が残りの会議数を減らせる為
-### 例題
-- !復習価値低 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
-- !復習価値低 フが何個見えるか [E - フ](https://atcoder.jp/contests/abc225/tasks/abc225_e)
-
-## その他貪欲法
-- 自明な貪欲は簡単だが非自明な貪欲は思いつくのが難しい
-- DPで計算量が間に合わないなら貪欲を疑ってみると良い
-- 2つ以上の変数がある場合、1つに減らせれば貪欲な選択ができる（区間スケジューリングはその代表例）
-- 区間スケジューリング類似問題は、何らかの形で範囲の形として表せれば、解法が思いつきやすい。あるいは範囲を考える問題では貪欲法を疑ってみると良い
-- 辞書順最小を求めたい場合、貪欲で求まることが多い
-### 例題
-- !復習価値低 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
-- !復習価値中 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
-- !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
-- !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
-- !復習価値中 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
-- !復習価値高 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
-- !要復習 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
-
 # 最短経路問題
 
 ## 01-BFS
@@ -1173,6 +1146,7 @@
 - combinationを使う
 ### 例題
 - [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+- !復習価値中 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - !要復習 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 
@@ -1231,6 +1205,36 @@
 ### 例題
 - !復習価値低 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - !要復習 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
+
+# 貪欲法
+
+## 区間スケジューリング問題
+- なるべく多くの会議に出席したい場合、終了時刻で昇順ソートして、貪欲に選択するのが最適
+- 昇順ソートしたpairを順に見えていけば良い
+- ソート済みpair（すなわち区間）を図示するとイメージしやすい。M区間に対してrep(i,M)して、それぞれどういう処理をすれば良いか考えれば実装できる
+- 全部で最大K会議選べるとしたとき、最初の1会議をなるべく早く終わらせた方が残りK-1会議の選択肢が増える。2番目、3番目の会議も同様の考え方
+- 亜種問題として、全ての会議を串刺しする問題あり。この階は区間スケジューリング問題の解に一致する。終了時刻昇順でソートしたとき、最初に終わる会議をその終了時刻までに選択するしかないが、なるべくたくさん串刺しするには、終了時刻で串刺しした方が残りの会議数を減らせる為
+### 例題
+- !復習価値低 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
+- !復習価値低 フが何個見えるか [E - フ](https://atcoder.jp/contests/abc225/tasks/abc225_e)
+
+## 平面走査的貪欲法
+- 2つ以上の変数がある場合、**1つに減らせれば貪欲な選択ができる**（区間スケジューリングはその代表例）
+- 区間スケジューリング類似問題は、何らかの形で範囲の形として表せれば、解法が思いつきやすい。あるいは範囲を考える問題では貪欲法を疑ってみると良い
+- 貪欲法の場合、**左から見るか右から見るかで結果が変わる**ので、順序も重要!
+### 例題
+- !復習価値中 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
+- !復習価値中 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
+- !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
+
+## その他貪欲法
+- DPで計算量が間に合わないなら貪欲を疑ってみると良い
+- 辞書順最小を求めたい場合、貪欲で求まることが多い
+### 例題
+- !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
+- !復習価値小 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- !復習価値小 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
+- !要復習 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
 
 # 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
