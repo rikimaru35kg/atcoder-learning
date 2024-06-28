@@ -197,6 +197,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M, X, Y); --X, --Y;
+    vvt3 from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(t, k);
+        from[a].emplace_back(b, t, k);
+        from[b].emplace_back(a, t, k);
+    }
+    vl dist(N, INF);
+    pq que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(X, 0);
+
+    while(que.size()) {
+        auto [d, v] = que.top(); que.pop();
+        if(dist[v] != d) continue;
+        for(auto [nv, t, k]: from[v]) {
+            ll nd = Divceil(d, k) * k;
+            nd += t;
+            push(nv, nd);
+        }
+    }
+    ll ans = dist[Y];
+    ch1(ans);
+    Out(ans);
     
 }
 

@@ -194,40 +194,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Edge {
+    ll to, l, d, k, c;
+    Edge(){}
+    Edge(ll to, ll l, ll d, ll k, ll c):
+      to(to),l(l),d(d),k(k),c(c) {}
+};
+using vE = vector<Edge>;
+using vvE = vector<vE>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-
-    deque<Pr> deq;
-    vvl dist(H, vl(W, INF));
-    auto push = [&](ll i, ll j, ll d, bool fr) {
-        if(!isin(i,j,H,W)) return;
-        if(fr && S[i][j]=='#') return;
-        if(dist[i][j]<=d) return;
-        dist[i][j] = d;
-        if(fr) deq.emplace_front(i, j);
-        else deq.emplace_back(i, j);
+    LONG(N, M);
+    vvE from(N);
+    rep(i, M) {
+        LONG(l, d, k, c, a, b); --a, -- b;
+        from[b].emplace_back(a, l, d, k, c);
+    }
+    priority_queue<Pr> pque;
+    vl time(N, -INF);
+    auto push=[&](ll v, ll t) {
+        if(time[v]>=t) return;
+        time[v] = t;
+        pque.emplace(t, v);
     };
-    push(0, 0, 0, true);
-    while(deq.size()) {
-        auto [i, j] = deq.front(); deq.pop_front();
-        ll d = dist[i][j];
-        for(auto [di,dj]: dij) {
-            ll ni = i + di;
-            ll nj = j + dj;
-            push(ni, nj, d, true);
-        }
-        repk(a, -2, 3) repk(b, -2, 3) {
-            if(abs(a)+abs(b)>=4) continue;
-            ll ni = i + a;
-            ll nj = j + b;
-            push(ni, nj, d+1, false);
+    push(N-1, INF);
+    while(pque.size()) {
+        auto [t, v] = pque.top(); pque.pop();
+        if(time[v] != t) continue;
+        for(auto [nv, l, d, k, c]: from[v]) {
+            ll pt = t-c;
+            if(pt<=0) continue;
+            ll lt = l + (k-1)*d;
+            ll ft = l;
+            if(pt >= lt) push(nv, lt);
+            else if(pt >= ft) {
+                ll dt = pt - ft;
+                dt = dt/d * d;
+                push(nv, dt+l);
+            }
         }
     }
-    ll ans = dist[H-1][W-1];
-    Out(ans);
+    rep(i, N-1) {
+        ll ans = time[i];
+        if (ans==-INF) puts("Unreachable");
+        else Out(ans);
+    }
     
 }
 
