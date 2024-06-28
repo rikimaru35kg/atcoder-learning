@@ -194,37 +194,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! BE CAREFUL ABOUT OVERFLOWING!
+//! repeated usage of +/* leads to overflowing
+struct Frac {
+    long long p, q;  // p/q: p over q (like y/x: y over x)
+    Frac(long long a=0, long long b=1) {
+        if (b == 0) {
+            p = 1; q = 0;  // inf (no definition of -inf)
+            return;
+        }
+        long long g = gcd(a, b);
+        p = a/g; q = b/g;
+        if (q<0) {p=-p; q=-q;}
+    }
+    Frac operator+(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(q*rhs.p + p*rhs.q, q*rhs.q);
+    }
+    Frac operator*(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(p*rhs.p, q*rhs.q);
+    }
+    bool operator<(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p < 0;
+    }
+    bool operator<=(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p <= 0;
+    }
+    bool operator>(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p > 0;
+    }
+    bool operator>=(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p >= 0;
+    }
+    bool operator==(const Frac &rhs) {
+        if (p==rhs.p && q==rhs.q) return true;
+        else return false;
+    }
+};
+
+using Prf = pair<Frac,Frac>;
+using vprf = vector<Prf>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return A[i]>A[j];
-    });
-
-    multiset<ll> st;
-    st.insert(-1); st.insert(N);
-    st.insert(-1); st.insert(N);
-    ll ans = 0;
+    LONG(N);
+    vprf spans;
     rep(i, N) {
-        st.insert(p[i]);
-        auto it = st.find(p[i]);
-        ++it; ll r1 = *it;
-        ++it; ll r2 = *it;
-        it = st.find(p[i]);
-        --it; ll l1 = *it;
-        --it; ll l2 = *it;
-        ll o = p[i];
-        ll wl0 = o - l1, wl1 = l1 - l2;
-        ll wr0 = r1 - o, wr1 = r2 - r1;
-        de2(l2, l1)de2(r1, r2)
-        de2(wl0, wl1)de2(wr0, wr1)
-        de(wl0 * wr1 + wl1 * wr0)
-        ll now = wl0 * wr1 + wl1 * wr0;
-        ans += A[p[i]] * now;
+        LONG(x, y);
+        spans.emplace_back(Frac(y, x-1), Frac(y-1, x));
+    }
+    sort(all(spans));
+    ll ans = 0;
+    Frac mx = Frac(-1,1);
+    for(auto [r, l]: spans) {
+        if (l >= mx) ++ans, mx = r;
     }
     Out(ans);
     

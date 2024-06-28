@@ -25,6 +25,15 @@ struct Frac {
     bool operator<(const Frac &rhs) const {
         return p*rhs.q - q*rhs.p < 0;
     }
+    bool operator<=(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p <= 0;
+    }
+    bool operator>(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p > 0;
+    }
+    bool operator>=(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p >= 0;
+    }
     bool operator==(const Frac &rhs) {
         if (p==rhs.p && q==rhs.q) return true;
         else return false;
