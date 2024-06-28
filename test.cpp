@@ -194,60 +194,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-};
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q);
-    WeightedUnionFind uf(N);
-    vb cycle(N);
+    LONG(N, M);
+    VL(H, N);
+    vvp from(N);
     rep(i, M) {
-        LONGM(a,b); LONG(c);
-        uf.merge(a, b, -c);
+        LONGM(a, b);
+        if(H[b]<H[a]) swap(a, b);
+        ll cost = H[b]-H[a];
+        from[a].emplace_back(b, cost);
+        from[b].emplace_back(a, 0);
     }
-    rep(i, Q) {
-        LONGM(x, y);
-        if(!uf.same(x,y)) {
-            puts("nan");
-        } else if(uf.inf[uf.leader(x)]) puts("inf");
-        else Out(uf.diff[x]-uf.diff[y]);
+
+    pq que;
+    vl dist(N, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(0, 0);
+
+    while(que.size()) {
+        auto [d, v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
+        }
     }
+    ll ans = -INF;
+    rep(i, N) {
+        ll now = H[0]-H[i] - dist[i];
+        chmax(ans, now);
+    }
+    Out(ans);
+
+
     
 }
 

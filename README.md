@@ -264,7 +264,7 @@
 - 問題設定上明らかな場合以外は、ベルマンフォードなどでポテンシャルを求める必要あり。この場合の計算量はO(NM)なので、全頂点にダイクストラを用いてもO(NMlogM)となり、後述のワーシャルフロイドより改善する（辺の数が少なければ）
 ### 例題
 - !復習価値高 ポテンシャルを理解する良問 [F - Pay or Receive](https://atcoder.jp/contests/abc280/tasks/abc280_f)
-- !復習価値中 [E - Skiing](https://atcoder.jp/contests/abc237/tasks/abc237_e)
+- !復習価値低 [E - Skiing](https://atcoder.jp/contests/abc237/tasks/abc237_e)
 
 ## ワーシャルフロイド法（Warshall-Floyd）
 - 全頂点から全頂点への最短経路を求める方法。計算量はO(N^3)
