@@ -194,53 +194,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Edge {
-    ll to, l, d, k, c;
-    Edge(){}
-    Edge(ll to, ll l, ll d, ll k, ll c):
-      to(to),l(l),d(d),k(k),c(c) {}
-};
-using vE = vector<Edge>;
-using vvE = vector<vE>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvE from(N);
+    vvl from(N);
     rep(i, M) {
-        LONG(l, d, k, c, a, b); --a, -- b;
-        from[b].emplace_back(a, l, d, k, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    priority_queue<Pr> pque;
-    vl time(N, -INF);
-    auto push=[&](ll v, ll t) {
-        if(time[v]>=t) return;
-        time[v] = t;
-        pque.emplace(t, v);
+
+    vvl dist(N, vl(1<<N, INF));
+    queue<Pr> que;
+    auto push = [&](ll v, ll s, ll d) {
+        if(dist[v][s]<=d) return;
+        dist[v][s] = d;
+        que.emplace(v, s);
     };
-    push(N-1, INF);
-    while(pque.size()) {
-        auto [t, v] = pque.top(); pque.pop();
-        if(time[v] != t) continue;
-        for(auto [nv, l, d, k, c]: from[v]) {
-            ll pt = t-c;
-            if(pt<=0) continue;
-            ll lt = l + (k-1)*d;
-            ll ft = l;
-            if(pt >= lt) push(nv, lt);
-            else if(pt >= ft) {
-                ll dt = pt - ft;
-                dt = dt/d * d;
-                push(nv, dt+l);
-            }
+    rep(v, N) push(v, 1<<v, 1);
+
+    while(que.size()) {
+        auto [v, s] = que.front(); que.pop();
+        for(auto nv: from[v]) {
+            ll ns = s ^ 1<<nv;
+            push(nv, ns, dist[v][s]+1);
         }
     }
-    rep(i, N-1) {
-        ll ans = time[i];
-        if (ans==-INF) puts("Unreachable");
-        else Out(ans);
+
+    ll ans = 0;
+    rep(s, 1<<N) {
+        if(s==0) continue;
+        ll now = INF;
+        rep(v, N) chmin(now, dist[v][s]);
+        ans += now;
     }
+    Out(ans);
     
 }
 
