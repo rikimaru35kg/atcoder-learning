@@ -230,9 +230,9 @@
 - 単純BFSのようにdist[nv]!=INFでcontinueしてしまうと上手く動作しないので注意！ダイクストラのように、距離が更新できる時のみ更新するとしないといけない（BFSは書き込まれる距離が昇順だが、01-BFSの場合は書き込まれる距離が2種類ある為）
 ### 例題
 - 基本 [043 - Maze Challenge with Lack of Sleep（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_aq)
-- !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
 - 基本 [D - Wizard in Maze](https://atcoder.jp/contests/abc176/tasks/abc176_d)
-- !復習価値低 壁破壊 [E - Stronger Takahashi](https://atcoder.jp/contests/abc213/tasks/abc213_e)
+- !復習価値低 基本 [E- Bishop 2](https://atcoder.jp/contests/abc246/tasks/abc246_e)
+- 基本 壁破壊 [E - Stronger Takahashi](https://atcoder.jp/contests/abc213/tasks/abc213_e)
 
 ## ダイクストラ法（Dijkstra）
 - 下記を繰り返していくことで、全頂点の距離を更新していき、最短経路を求める
@@ -1142,7 +1142,7 @@
 
 # 場合の数と確率・期待値
 
-## 組合せ
+## 組合せの数
 - combinationを使う
 ### 例題
 - [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
@@ -1150,7 +1150,22 @@
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - !要復習 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 
-## 分布にしてからDP
+## 包除原理
+- AでもBでもない場合の数はU-A-B+A∩Bで求まる
+- 一般には集合の個数がM個あるとすると、積集合の全組み合わせ2^M通りについて、（符号）積集合[i]の場合の数の総和を求めればよい。符号は積集合のベース集合が奇数ならマイナス、偶数ならプラス（積集合が空集合の場合は全体集合となる）
+- rep(i, 1LL<<M)で回せば全組み合わせ列挙できる
+- Mが大きいと2^M通りのループは回せないが、完全順列の問題のように場合の数をまとめて数え上げられる場合は使えるケースあり
+- 重複組合せで各変数がai≦xi≦biのとき、まず全体からΣaiを引きxi'=xi-aiとすれば全変数0以上と見なせる
+- 次に各変数にci=bi-aiの上限がなければ単純な重複組合せ問題だが、包除原理によりj個の変数がci超えとなる場合の数を足したり引いたりすればOK
+### 例題
+- !復習価値中 多段キーボードで打てる文字種類 [F - typewriter](https://atcoder.jp/contests/abc246/tasks/abc246_f)
+- !復習価値中 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
+- !復習価値中 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
+- !復習価値高 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
+- !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
+- !復習価値高 最大公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
+
+## 一つずつ決めるDP
 ### 例題
 - !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
 - !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
@@ -1235,21 +1250,6 @@
 - !復習価値小 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !復習価値小 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !要復習 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
-
-# 包除原理
-- AでもBでもない場合の数はU-A-B+A∩Bで求まる
-- 一般には集合の個数がM個あるとすると、積集合の全組み合わせ2^M通りについて、（符号）積集合[i]の場合の数の総和を求めればよい。符号は積集合のベース集合が奇数ならマイナス、偶数ならプラス（積集合が空集合の場合は全体集合となる）
-- rep(i, 1LL<<M)で回せば全組み合わせ列挙できる
-- Mが大きいと2^M通りのループは回せないが、完全順列の問題のように場合の数をまとめて数え上げられる場合は使えるケースあり
-- 重複組合せで各変数がai≦xi≦biのとき、まず全体からΣaiを引きxi'=xi-aiとすれば全変数0以上と見なせる
-- 次に各変数にci=bi-aiの上限がなければ単純な重複組合せ問題だが、包除原理によりj個の変数がci超えとなる場合の数を足したり引いたりすればOK
-### 例題
-- !復習価値中 多段キーボードで打てる文字種類 [F - typewriter](https://atcoder.jp/contests/abc246/tasks/abc246_f)
-- !復習価値中 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
-- !復習価値中 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
-- !復習価値高 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
-- !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
-- !復習価値高 最大公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
 
 # 行列
 

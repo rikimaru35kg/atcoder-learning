@@ -197,20 +197,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    VL(A, N);
-    ll rem = L - accumulate(all(A), 0LL);
-    priority_queue<ll,vl,greater<ll>> que;
-    rep(i, N) que.push(A[i]);
-    if(rem) que.push(rem);
+    LONG(H, W);
+    VS(S, H);
 
-    ll ans = 0;
-    while(SIZE(que)>=2) {
-        auto v1 = que.top(); que.pop();
-        auto v2 = que.top(); que.pop();
-        ans += v1 + v2;
-        que.push(v1+v2);
+    deque<Pr> deq;
+    vvl dist(H, vl(W, INF));
+    auto push = [&](ll i, ll j, ll d, bool fr) {
+        if(!isin(i,j,H,W)) return;
+        if(fr && S[i][j]=='#') return;
+        if(dist[i][j]<=d) return;
+        dist[i][j] = d;
+        if(fr) deq.emplace_front(i, j);
+        else deq.emplace_back(i, j);
+    };
+    push(0, 0, 0, true);
+    while(deq.size()) {
+        auto [i, j] = deq.front(); deq.pop_front();
+        ll d = dist[i][j];
+        for(auto [di,dj]: dij) {
+            ll ni = i + di;
+            ll nj = j + dj;
+            push(ni, nj, d, true);
+        }
+        repk(a, -2, 3) repk(b, -2, 3) {
+            if(abs(a)+abs(b)>=4) continue;
+            ll ni = i + a;
+            ll nj = j + b;
+            push(ni, nj, d+1, false);
+        }
     }
+    ll ans = dist[H-1][W-1];
     Out(ans);
     
 }
