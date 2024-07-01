@@ -613,7 +613,7 @@
 - !復習価値高 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
 - !要復習 2数列区間加算区間内積クエリ [F - Two Sequence Queries](https://atcoder.jp/contests/abc357/tasks/abc357_f)
 - !復習価値高 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
-
+- !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける
@@ -805,9 +805,13 @@
 - 要素を順番に検査し、自分より大きい数を見つけたら書き換えていくだけで実装可能（実装上は二分探索で挿入位置を見つける）
 - 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
 - LISを求めていく過程で、その要素を最後だと見なした時のLIS長も同時に求まる事も覚えておきたい
+- LISをグラフ上で理解すると、要素iを使った時のLIS長がsegtree RMQで順次求まっていく
+- segtreeを使った方式を理解した方が応用が効く印象
 ### 例題
+!!!せっかくなので次回はsegtreeを使った解法でやってみて！
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する
@@ -1186,6 +1190,11 @@
 - !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
 - !復習価値中 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - !復習価値高 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
+
+## 対称性を利用する
+### 例題
+- !要復習 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
+- !復習価値高 黒いボール位置の期待値 [E - Random Swaps of Balls](https://atcoder.jp/contests/abc360/tasks/abc360_e)
 
 # 2変数問題
 
@@ -1595,7 +1604,6 @@
 ## ACできなかった問題
 - [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
-- [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
 - [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
