@@ -329,9 +329,8 @@
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
 - 距離が2以下の場合〇〇系の問題は、ある頂点を中心に考えると親と子しかいない。子に対する処理（数え上げなど）をする事で解ける問題あり
 ### 例題
-- !復習価値中 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
 - !復習価値中 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
-- !復習価値高 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
+- !復習価値中 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
 
 ## 木の直径、重心
 - xの最遠点yの最遠点zとすると、yとzの距離が直径となる
@@ -343,7 +342,8 @@
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - !復習価値高 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
-- !要復習 木の重心（超簡単な全方位木DPの練習にも） [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
+- !復習価値高 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
+- !復習価値高 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ

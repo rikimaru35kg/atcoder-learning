@@ -198,41 +198,39 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvp from(N*2);
+    vvl from(N);
     rep(i, N-1) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    VL(D, N);
-    rep(i, N) {
-        from[i].emplace_back(i+N, D[i]);
-        from[N+i].emplace_back(i, D[i]);
-    }
-
-    auto dfs0=[&](auto f, ll v, ll d=0, ll p=-1) -> Pr {
-        Pr ret(d, v);
-        for(auto [nv, c]: from[v]) if(nv!=p) {
-            chmax(ret, f(f, nv, d+c, v));
+    VL(C, N);
+    ll tot = accumulate(all(C), 0LL);
+    ll cog = -1;
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = C[v];
+        bool ok = true;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll tmp = f(f, nv, v);
+            ret += tmp;
+            if(tmp>tot/2) ok = false;
         }
+        if(tot-ret>tot/2) ok = false;
+        if(ok) cog = v;
         return ret;
     };
-    ll a = dfs0(dfs0, 0).second;
-    ll b = dfs0(dfs0, a).second;
-    de2(a, b)
+    dfs0(dfs0, 0);
 
-    vl ans(N, -INF);
+    ll ans = 0;
     auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
-        if(p!=v+N && v<N) chmax(ans[v], d);
-        for(auto [nv, c]: from[v]) if(nv!=p) {
-            f(f, nv, d+c, v);
+        ans += d*C[v];
+        for(auto nv: from[v]) if(nv != p) {
+            f(f, nv, d+1, v);
         }
     };
-    dfs(dfs, a);
-    dfs(dfs, b);
+    dfs(dfs, cog);
     Out(ans);
 
-    
 }
 
 // ### test.cpp ###

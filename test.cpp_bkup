@@ -198,59 +198,45 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvp from(N);
+    vvl from(N);
     rep(i, N-1) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    VL(D, N);
-
-    vl mx(N, -INF);
-    auto dfs0=[&](auto f, ll v, ll p=-1) -> ll {
-        ll ret = -INF;
-        for(auto [nv, c]: from[v]) if(nv != p) {
-            ll tmp = f(f, nv, v);
-            chmax(ret, tmp+c);
-            chmax(ret, D[nv]+c);
+    auto dfs0=[&](auto f, ll v, ll d=0, ll p=-1) -> Pr {
+        Pr ret(d, v);
+        for(auto nv: from[v]) if(nv!=p) {
+            chmax(ret, f(f, nv, d+1, v));
         }
-        return mx[v] = ret;
+        return ret;
     };
-    dfs0(dfs0, 0);
-    de(mx)
+    ll a = dfs0(dfs0, 0).second;
+    ll b = dfs0(dfs0, a).second;
+    de2(a, b)
+    LONG(Q);
+    vvp query(N);
+    rep(i, Q) {
+        LONG(u, k); --u;
+        query[u].emplace_back(k, i);
+    }
 
-    vl ans(N, -INF);
-    auto dfs=[&](auto f, ll v, ll pmx=-INF, ll pc=0, ll p=-1) -> void {
-        if(p!=-1) chmax(ans[v], pmx+pc);
-        if(p!=-1) chmax(ans[v], pc+D[p]);
-        ll base = ans[v];
-        chmax(ans[v], mx[v]);
-
-        vl mxs;
-        for(auto [nv, c]: from[v]) if(nv != p) {
-            mxs.push_back(mx[nv] + c);
-            chmax(mxs.back(), c + D[nv]);
+    vl ans(Q, -1);
+    deque<ll> vs;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        vs.push_front(v);
+        for(auto [k, i]: query[v]) {
+            if(k>=SIZE(vs)) continue;
+            ans[i] = vs[k]+1;
         }
-        ll M = SIZE(mxs);
-        vl mxf(M, -INF), mxr(M, -INF);
-        rep(i, M) chmax(mxf[i], mxs[i]);
-        rep(i, M) chmax(mxr[i], mxs[i]);
-        rep(i, M-1) { chmax(mxf[i+1], mxf[i]); }
-        repr(i, M-1) { chmax(mxr[i], mxr[i+1]); }
-        de(v)de(mxf)de(mxr)
-
-        ll idx = 0;
-        for(auto [nv, c]: from[v]) if(nv != p) {
-            ll npmx = base;
-            if(idx) chmax(npmx, mxf[idx-1]);
-            if(idx<M-1) chmax(npmx, mxr[idx+1]);
-            f(f, nv, npmx, c, v);
-            ++idx;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
         }
+        vs.pop_front();
     };
-    dfs(dfs, 0);
+    dfs(dfs, a);
+    dfs(dfs, b);
     Out(ans);
-
     
 }
 
