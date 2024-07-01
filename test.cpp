@@ -194,48 +194,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Ver {
-    ll i, j, dir, d;
-    Ver(ll i, ll j, ll dir, ll d) : i(i),j(j),dir(dir),d(d) {}
-    bool operator<(const Ver &o) const {
-        return d > o.d;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    LONGM(si, sj, gi, gj);
-    VS(C, H);
-    vvvl dist(H, vvl(W, vl(4, INF)));
-    priority_queue<Ver> que;
-    auto push=[&](ll i, ll j, ll dir, ll d) {
-        if(dist[i][j][dir]<=d) return;
-        dist[i][j][dir] = d;
-        que.emplace(i, j, dir, d);
-    };
-    rep(i, 4) push(si, sj, i, 0);
-    while(que.size()) {
-        auto [i, j, dir, d] = que.top(); que.pop();
-        if(dist[i][j][dir] != d) continue;
-        {
-            ll ni = i+di[dir]; ll nj = j+dj[dir];
-            if(isin(ni,nj,H,W) && C[ni][nj]=='.') {
-                push(ni,nj,dir,d+1);
-            }
-        }
-        ll nd = Divceil(d, K) * K;
-        rep(k, 4) {
-            push(i, j, k, nd);
-        }
+    LONG(N);
+    vvp from(N*2);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    de(dist)
-    ll ans = INF;
-    rep(i, 4) chmin(ans, dist[gi][gj][i]);
-    if(ans==INF) Pm1
-    ans = Divceil(ans, K);
+    VL(D, N);
+    rep(i, N) {
+        from[i].emplace_back(i+N, D[i]);
+        from[N+i].emplace_back(i, D[i]);
+    }
+
+    auto dfs0=[&](auto f, ll v, ll d=0, ll p=-1) -> Pr {
+        Pr ret(d, v);
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            chmax(ret, f(f, nv, d+c, v));
+        }
+        return ret;
+    };
+    ll a = dfs0(dfs0, 0).second;
+    ll b = dfs0(dfs0, a).second;
+    de2(a, b)
+
+    vl ans(N, -INF);
+    auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
+        if(p!=v+N && v<N) chmax(ans[v], d);
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            f(f, nv, d+c, v);
+        }
+    };
+    dfs(dfs, a);
+    dfs(dfs, b);
     Out(ans);
+
     
 }
 
