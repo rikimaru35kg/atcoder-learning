@@ -305,8 +305,8 @@
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 - 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
 ### 例題
-- !復習価値小 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
-- !復習価値小 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
+- !復習価値低 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
+- !復習価値低 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !復習価値中 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 
 # グラフ
@@ -351,8 +351,8 @@
 - 各頂点を探索している時に、その頂点に対する操作をするのか、あるいは繋がっている全頂点に対する操作（場合の数をかける等）をするのか、色々バリエーションあり
 - 区間をぎっちり詰めたい場合は、葉の個数分だけの区間長になる（この場合は葉のたびにインクリメント）
 ### 例題
-- !復習価値小 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
-- !復習価値小 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+- !復習価値低 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
+- !復習価値低 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
 
 ## LCA（Lowest Common Ancester）
 - 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した
@@ -375,9 +375,9 @@
 - 連結頂点の判定はUnion-Find木を用いる
 ### 例題
 - 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
-- !復習価値中 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
+- !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - !復習価値低 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
-- !要復習 後から辺追加（MSTの構造を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
+- !復習価値高 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 
 ## 全域木
 - 無向グラフから全域木を構成すると見通しが良くなる事がある
@@ -386,8 +386,8 @@
 - BFS木の未使用辺は必ず祖先の関係にならない
 ### 例題
 - !復習価値低 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
-- !復習価値高 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
-- !復習価値高 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
+- !復習価値中 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
+- !復習価値中 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
@@ -708,7 +708,7 @@
 - 遷移させるとき、単にdp[l][k]とdp[k][r]と必ず分割できるのか、A[l]とA[r-1]がくっつくパターンもあり分割できない場合もあるのか、よく考える事（Daruma Otoshiが分割できない良い例）
 ### 例題
 - 基本 [Matrix Chain Multiplication](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_B&lang=ja)
-- !復習価値小 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
+- !復習価値低 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - !復習価値高 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - !復習価値高 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !要復習 ペア選び（かなりの高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
@@ -1257,8 +1257,8 @@
 - 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
 - !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
-- !復習価値小 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
-- !復習価値小 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
+- !復習価値低 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- !復習価値低 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !要復習 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
 
 # 行列

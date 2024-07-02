@@ -146,9 +146,11 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
+#define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
+template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -194,50 +196,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct Vertex {
+    ll v, d, p;
+    Vertex(ll v, ll d, ll p): v(v), d(d), p(p) {}
+    bool operator<(const Vertex &o) const {
+        return d>o.d;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    vm h(N+1), g(N+1), f(N+1);
-    vm two(N+10);
-    two[0] = 1;
-    rep(i, N+9) two[i+1] = 2*two[i];
-    rep1(hgt, N-1) {
-        if(D>2*hgt) continue;
-        if(D==hgt) {
-            h[hgt] = two[hgt];
-            break;
+    LONG(N, M);
+    vvt3 from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c, i);
+        from[b].emplace_back(a, c, i);
+    }
+    vl dist(N, INF);
+    dist[0] = 0;
+    priority_queue<Vertex> que;
+    que.emplace(0, 0, -1);
+    vl ans;
+    while(que.size()) {
+        auto [v, d, p] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        if(p!=-1) ans.push_back(p+1);
+
+        for(auto [nv, c, i]: from[v]) {
+            if(dist[nv] <= dist[v]+c) continue;
+            dist[nv] = dist[v] + c;
+            que.emplace(nv, dist[v]+c, i);
         }
-        h[hgt] = two[max(hgt-1, 0LL)] * two[max(D-hgt-1,0LL)];
-        if(hgt*2!=D) h[hgt] *= 2;
     }
-    de(h)
-
-    rep1(hgt, N-1) {
-        g[hgt] = g[hgt-1] + h[hgt];
-    }
-    de(g)
-
-    rep1(hgt, N-1) {
-        f[hgt] = 2*f[hgt-1] + g[hgt];
-    }
-    de(f)
-    Out(f[N-1]*2);
-
+    Out(ans);
     
 }
 

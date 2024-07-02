@@ -194,37 +194,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve () {
-    LONG(N, X, K);
-    auto cal = [&](ll x, ll k) -> ll {
-        if(x>N) return 0;
-        if(k==0) return 1;
-        ll l = x, r = x;
-        rep(i, k) {
-            l <<= 1;
-            r = (r<<1) + 1;
-            if(l>N) return 0;
-        }
-        chmin(r, N);
-        return max(r-l+1, 0LL);
-    };
-    ll ans = cal(X, K);
-    ll v = X;
-    while(v>=2 && K>=2) {
-        ll ov = v ^ 1;
-        ans += cal(ov, K-2);
-        v >>= 1;
-        K--;
-    }
-    if(K==1 && v>=2) ++ans;
-    Out(ans);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N, M, K);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
+    }
+    if(K%2==1) PNo
+    
+    vb used(N);
+    vl ans;
+    auto dfs=[&](auto f, ll v, ll pe=-1, ll p=-1) -> ll {
+        ll ret = 0;
+        used[v] = true;
+        for(auto [nv, i]: from[v]) if(!used[nv]) {
+            ret ^= f(f, nv, i, v);
+        }
+        if(p==-1) {
+            if(ret) --K;
+            return 0;
+        }
+        ll tgt = 0;
+        if(K) tgt = 1, --K;
+        if (ret==tgt) {
+            return 0;
+        } else {
+            ans.push_back(pe+1);
+            return 1;
+        }
+    };
+    rep(i, N) {
+        if(used[i]) continue;
+        dfs(dfs, i);
+    }
+    if(K!=0) PNo
+    puts("Yes");
+    Out(SIZE(ans));
+    Out(ans);
     
 }
 
