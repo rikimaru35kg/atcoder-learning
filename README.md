@@ -397,7 +397,7 @@
 - functional graphは必ずなもりグラフの形となる（というよりどこから辿ってもサイクルに流入するグラフ）
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
-- 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
+- 復習価値中 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
@@ -406,7 +406,7 @@
 - 距離2の頂点組み合わせが最も多くなる（N-1C2）。nC2から最低必要辺数のN-1を引くと一致する事からこれより多くはできないことがわかる
 - 針の先同士をつなげば距離2の組み合わせを1つずつ減らせるので、距離2の頂点組み合わせは0以上N-1C2であればすべて実現可能
 ### 例題
-- !復習価値中 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
+- 基本 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
 
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
 - DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
@@ -418,10 +418,10 @@
 - DAGはサイクルがないので、後ろから辿ると最長経路問題を解くことが可能
 ### 例題
 - 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
-- !基本 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
+- 基本 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
 - !復習価値低 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
-- !要復習 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
-- !要復習（実装できなかった） 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
+- !復習価値高 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
+- !復習価値高 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
 
 ## サイクル検出
 - 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）
@@ -440,7 +440,7 @@
 - 基本 ユーザー名変更希望 [D - Change Usernames](https://atcoder.jp/contests/abc285/tasks/abc285_d)
 - 基本 黒板ゲーム [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
 - 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
-- !復習価値低 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
+- 基本 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 - !復習価値中 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
 
 ## ダブリング

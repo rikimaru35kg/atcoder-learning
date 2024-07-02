@@ -146,11 +146,9 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
-#define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
-template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -195,40 +193,30 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-
-struct Vertex {
-    ll v, d, p;
-    Vertex(ll v, ll d, ll p): v(v), d(d), p(p) {}
-    bool operator<(const Vertex &o) const {
-        return d>o.d;
-    }
-};
+#include <atcoder/scc>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c, i);
-        from[b].emplace_back(a, c, i);
-    }
-    vl dist(N, INF);
-    dist[0] = 0;
-    priority_queue<Vertex> que;
-    que.emplace(0, 0, -1);
-    vl ans;
-    while(que.size()) {
-        auto [v, d, p] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        if(p!=-1) ans.push_back(p+1);
+    LONG(N);
+    VLM(X, N);
+    VL(C, N);
 
-        for(auto [nv, c, i]: from[v]) {
-            if(dist[nv] <= dist[v]+c) continue;
-            dist[nv] = dist[v] + c;
-            que.emplace(nv, dist[v]+c, i);
-        }
+    scc_graph scc(N);
+    rep(i, N) scc.add_edge(i, X[i]);
+    
+    auto grs = scc.scc();
+    ll ans = 0;
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) continue;
+        de(gr)
+        vl cs;
+        for(auto v: gr) cs.push_back(C[v]);
+        de(cs)
+        ll mn = *min_element(all(cs));
+        de(mn)
+        ans += mn;
     }
     Out(ans);
     

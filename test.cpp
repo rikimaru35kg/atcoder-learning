@@ -193,48 +193,65 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+#include <atcoder/scc>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvp from(N);
+    LONG(N, M);
+    vvl from(N);
+    scc_graph scc(N);
     rep(i, M) {
         LONGM(a, b);
-        from[a].emplace_back(b, i);
-        from[b].emplace_back(a, i);
+        from[a].emplace_back(b);
+        scc.add_edge(a, b);
     }
-    if(K%2==1) PNo
-    
-    vb used(N);
-    vl ans;
-    auto dfs=[&](auto f, ll v, ll pe=-1, ll p=-1) -> ll {
-        ll ret = 0;
-        used[v] = true;
-        for(auto [nv, i]: from[v]) if(!used[nv]) {
-            ret ^= f(f, nv, i, v);
+    auto grs = scc.scc();
+    bool ok = false;
+    for(auto gr: grs) {
+        if(SIZE(gr)>=2) ok = true;
+    }
+    if(!ok) Pm1
+
+    auto bfs=[&](ll sv) -> vl {
+        queue<ll> que;
+        vl dist(N, INF);
+        dist[sv] = 0;
+        que.push(sv);
+        vl p(N, -1);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                if(sv==nv) {
+                    vl vs;
+                    while(p[v] != -1) {
+                        vs.push_back(v+1);
+                        v = p[v];
+                    }
+                    vs.push_back(sv+1);
+                    return vs;
+                }
+                if(dist[nv]!=INF) continue;
+                dist[nv] = dist[v] + 1;
+                que.push(nv);
+                p[nv] = v;
+            }
         }
-        if(p==-1) {
-            if(ret) --K;
-            return 0;
-        }
-        ll tgt = 0;
-        if(K) tgt = 1, --K;
-        if (ret==tgt) {
-            return 0;
-        } else {
-            ans.push_back(pe+1);
-            return 1;
-        }
+        return vl();
     };
+    Pr mn(INF, -1);
     rep(i, N) {
-        if(used[i]) continue;
-        dfs(dfs, i);
+        vl vs = bfs(i);
+        if(SIZE(vs) == 0) continue;
+        chmin(mn, {SIZE(vs), i});
     }
-    if(K!=0) PNo
-    puts("Yes");
+    if(mn.first==INF) Pm1
+
+    vl ans = bfs(mn.second);
     Out(SIZE(ans));
-    Out(ans);
+    for(auto x: ans) Out(x);
+
     
 }
 
