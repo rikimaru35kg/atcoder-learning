@@ -193,65 +193,102 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-#include <atcoder/scc>
-using namespace atcoder;
+
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    scc_graph scc(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        scc.add_edge(a, b);
-    }
-    auto grs = scc.scc();
-    bool ok = false;
-    for(auto gr: grs) {
-        if(SIZE(gr)>=2) ok = true;
-    }
-    if(!ok) Pm1
+    LONG(N, Q, X);
+    VL(W, N);
+    vl Sc(2*N+1);
+    rep(i, 2*N) Sc[i+1] = W[i%N];
+    rep(i, 2*N) Sc[i+1] += Sc[i];
 
-    auto bfs=[&](ll sv) -> vl {
-        queue<ll> que;
-        vl dist(N, INF);
-        dist[sv] = 0;
-        que.push(sv);
-        vl p(N, -1);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto nv: from[v]) {
-                if(sv==nv) {
-                    vl vs;
-                    while(p[v] != -1) {
-                        vs.push_back(v+1);
-                        v = p[v];
-                    }
-                    vs.push_back(sv+1);
-                    return vs;
-                }
-                if(dist[nv]!=INF) continue;
-                dist[nv] = dist[v] + 1;
-                que.push(nv);
-                p[nv] = v;
-            }
-        }
-        return vl();
+    ll tot = accumulate(all(W), 0LL);
+    ll cycle = X/tot;
+    ll rem = X%tot;
+
+    auto cal=[&](ll l) -> Pr {
+        auto [r, x] = lowbou(Sc, rem+Sc[l]);
+        return {r%N, cycle*N+r-l};
     };
-    Pr mn(INF, -1);
-    rep(i, N) {
-        vl vs = bfs(i);
-        if(SIZE(vs) == 0) continue;
-        chmin(mn, {SIZE(vs), i});
+    de(cal(0).second)
+
+    ll M = 50;
+    vvl to(M, vl(N));
+    rep(i, N) { to[0][i] = cal(i).first; }
+    rep(j, M-1) rep(i, N) {
+        to[j+1][i] = to[j][to[j][i]];
     }
-    if(mn.first==INF) Pm1
-
-    vl ans = bfs(mn.second);
-    Out(SIZE(ans));
-    for(auto x: ans) Out(x);
-
+    rep(i, Q) {
+        LONGM(K);
+        ll x = 0;
+        rep(i, M) if(K>>i&1) {
+            de2(i, x)
+            x = to[i][x];
+        }
+        de(2)
+        ll ans = cal(x).second;
+        Out(ans);
+    }
     
 }
 

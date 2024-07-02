@@ -199,26 +199,59 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(X, N);
-    VL(C, N);
-
+    LONG(N, M);
+    vvl from(N);
     scc_graph scc(N);
-    rep(i, N) scc.add_edge(i, X[i]);
-    
-    auto grs = scc.scc();
-    ll ans = 0;
-    for(auto gr: grs) {
-        if(SIZE(gr)==1) continue;
-        de(gr)
-        vl cs;
-        for(auto v: gr) cs.push_back(C[v]);
-        de(cs)
-        ll mn = *min_element(all(cs));
-        de(mn)
-        ans += mn;
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        scc.add_edge(a, b);
     }
-    Out(ans);
+    auto grs = scc.scc();
+    bool ok = false;
+    for(auto gr: grs) {
+        if(SIZE(gr)>=2) ok = true;
+    }
+    if(!ok) Pm1
+
+    auto bfs=[&](ll sv) -> vl {
+        queue<ll> que;
+        vl dist(N, INF);
+        dist[sv] = 0;
+        que.push(sv);
+        vl p(N, -1);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                if(sv==nv) {
+                    vl vs;
+                    while(p[v] != -1) {
+                        vs.push_back(v+1);
+                        v = p[v];
+                    }
+                    vs.push_back(sv+1);
+                    return vs;
+                }
+                if(dist[nv]!=INF) continue;
+                dist[nv] = dist[v] + 1;
+                que.push(nv);
+                p[nv] = v;
+            }
+        }
+        return vl();
+    };
+    Pr mn(INF, -1);
+    rep(i, N) {
+        vl vs = bfs(i);
+        if(SIZE(vs) == 0) continue;
+        chmin(mn, {SIZE(vs), i});
+    }
+    if(mn.first==INF) Pm1
+
+    vl ans = bfs(mn.second);
+    Out(SIZE(ans));
+    for(auto x: ans) Out(x);
+
     
 }
 
