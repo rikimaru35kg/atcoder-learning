@@ -194,97 +194,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(P, N-1);
-    vvl from(N);
-    rep(i, N-1) {
-        from[P[i]].push_back(i+1);
-    }
-    vl sl(N), sr(N);
-    
-    ll ord = 0;
-    vvl vbydepth(N);
-    auto dfs=[&](auto f, ll v, ll d=0) -> void {
-        sl[v] = ord;
-        vbydepth[d].push_back(ord);
-        ++ord;
-        for(auto nv: from[v]) {
-            f(f, nv, d+1);
+    LONG(N, D);
+    vm h(N+1), g(N+1), f(N+1);
+    vm two(N+10);
+    two[0] = 1;
+    rep(i, N+9) two[i+1] = 2*two[i];
+    rep1(hgt, N-1) {
+        if(D>2*hgt) continue;
+        if(D==hgt) {
+            h[hgt] = two[hgt];
+            break;
         }
-        sr[v] = ord;
-    };
-    dfs(dfs, 0);
-
-    LONG(Q);
-    rep(i, Q) {
-        ll u, d; cin >> u >> d; --u;
-        ll l = sl[u], r = sr[u];
-        auto [nl, xl] = lowbou(vbydepth[d], l);
-        auto [nr, xr] = uppbou_r(vbydepth[d], r);
-        ll ans = max(nr-nl+1, 0LL);
-        Out(ans);
+        h[hgt] = two[max(hgt-1, 0LL)] * two[max(D-hgt-1,0LL)];
+        if(hgt*2!=D) h[hgt] *= 2;
     }
+    de(h)
+
+    rep1(hgt, N-1) {
+        g[hgt] = g[hgt-1] + h[hgt];
+    }
+    de(g)
+
+    rep1(hgt, N-1) {
+        f[hgt] = 2*f[hgt-1] + g[hgt];
+    }
+    de(f)
+    Out(f[N-1]*2);
+
     
 }
 
