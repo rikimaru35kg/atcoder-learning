@@ -194,49 +194,97 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(N); VLM(P, N-1);
     vvl from(N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        from[P[i]].push_back(i+1);
     }
-    auto dfs0=[&](auto f, ll v, ll d=0, ll p=-1) -> Pr {
-        Pr ret(d, v);
-        for(auto nv: from[v]) if(nv!=p) {
-            chmax(ret, f(f, nv, d+1, v));
+    vl sl(N), sr(N);
+    
+    ll ord = 0;
+    vvl vbydepth(N);
+    auto dfs=[&](auto f, ll v, ll d=0) -> void {
+        sl[v] = ord;
+        vbydepth[d].push_back(ord);
+        ++ord;
+        for(auto nv: from[v]) {
+            f(f, nv, d+1);
         }
-        return ret;
+        sr[v] = ord;
     };
-    ll a = dfs0(dfs0, 0).second;
-    ll b = dfs0(dfs0, a).second;
-    de2(a, b)
-    LONG(Q);
-    vvp query(N);
-    rep(i, Q) {
-        LONG(u, k); --u;
-        query[u].emplace_back(k, i);
-    }
+    dfs(dfs, 0);
 
-    vl ans(Q, -1);
-    deque<ll> vs;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        vs.push_front(v);
-        for(auto [k, i]: query[v]) {
-            if(k>=SIZE(vs)) continue;
-            ans[i] = vs[k]+1;
-        }
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-        }
-        vs.pop_front();
-    };
-    dfs(dfs, a);
-    dfs(dfs, b);
-    Out(ans);
+    LONG(Q);
+    rep(i, Q) {
+        ll u, d; cin >> u >> d; --u;
+        ll l = sl[u], r = sr[u];
+        auto [nl, xl] = lowbou(vbydepth[d], l);
+        auto [nr, xr] = uppbou_r(vbydepth[d], r);
+        ll ans = max(nr-nl+1, 0LL);
+        Out(ans);
+    }
     
 }
 

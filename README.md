@@ -351,14 +351,14 @@
 - 各頂点を探索している時に、その頂点に対する操作をするのか、あるいは繋がっている全頂点に対する操作（場合の数をかける等）をするのか、色々バリエーションあり
 - 区間をぎっちり詰めたい場合は、葉の個数分だけの区間長になる（この場合は葉のたびにインクリメント）
 ### 例題
-- !復習価値中 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
-- !復習価値中 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+- !復習価値小 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
+- !復習価値小 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
 
 ## LCA（Lowest Common Ancester）
 - 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した
 - オイラーツアーの順に区間用のセグツリーやBIT木を適用すると色々対応可能
 ### 
-- !要復習（実装重いのでライブラリAC+解説動画見るだけでもOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
+- !復習価値高（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
 
 ## 完全二分木
 - 全ての葉が同じ深さを持ち、葉以外の全ての頂点が子を二つ持つ二分木を完全二分木と呼ぶ
