@@ -194,60 +194,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    T _sum (long long i) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    // ![CAUTION]   0 <= l,r <= _n
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
-        }
-    }
-    T get (long long i) {
-        return _sum(i);
-    }
-};
+#include <atcoder/fenwicktree>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    VL(B, M);
-    SpanBIT<ll> bit(N);
-    rep(i, N) {
-        bit.add(i, i+1, A[i]);
+    LONG(H, W, M);
+    vl row(H, W), col(W, H);
+    vvl csbyrow(H);
+    rep(i, M) {
+        LONGM(x, y);
+        chmin(row[x], y);
+        chmin(col[y], x);
     }
-    for(auto x: B) {
-        ll b = bit.get(x);
-        de2(x, b)
-        ll cycle = b / N;
-        ll rem = b % N;
-        bit.add(x,x+1,-b);
-        bit.add(0, N, cycle);
-        ll l = (x+1)%N;
-        de(rem)
-        bit.add(l, (l+rem)%N, 1);
+    rep(c, W) {
+        ll r = col[c];
+        if(r<H) csbyrow[r].push_back(c);
     }
-    vl ans;
-    rep(i, N) ans.push_back(bit.get(i));
+
+    ll ans = 0;
+    rep(i, col[0]) { ans += row[i]; }
+    rep(i, row[0]) { ans += col[i]; }
+
+    fenwick_tree<ll> tree(W);
+    rep(i, row[0]) tree.add(i, 1);
+    rep(i, col[0]) {
+        for(auto c: csbyrow[i]) {
+            if(tree.sum(c,c+1)==1) tree.add(c, -1);
+        }
+        ll now = tree.sum(0, row[i]);
+        ans -= now;
+    }
     Out(ans);
     
 }
