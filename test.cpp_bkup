@@ -194,34 +194,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct HeadK {
+    long long K, sum = 0;
+    bool ascending;
+    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        if(!ascending) x = -x;
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if(!ascending) x = -x;
+        if (stM.count(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.count(x)) return;
+            auto it = stK.find(x);
+            stK.erase(it);
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
+        }
+    }
+    void decK(long long nk) { // decrease K size
+        K = nk;
+        KtoM();
+    }
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    }
+    long long get_sum() {
+        if(ascending) return sum;
+        else return -sum;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    multiset<ll> st;
-    rep(i, 5) st.insert(INF);
-    rep(i, 5) st.insert(-INF);
-    rep(i, Q) {
-        LONG(t, x);
-        if(t==1) {
-            st.insert(x);
-        } else if (t==2) {
-            LONG(k);
-            auto it = st.upper_bound(x);
-            rep(j, k) { --it; }
-
-            if(*it==-INF) Out(-1);
-            else Out(*it);
-        } else {
-            LONG(k);
-            auto it = st.lower_bound(x);
-            rep(j, k-1) { ++it; }
-
-            if(*it==INF) Out(-1);
-            else Out(*it);
-        }
-        de(st)
+    LONG(N, K);
+    vp query;
+    query.emplace_back(1, 0);
+    rep(i, N) {
+        LONG(t, y);
+        query.emplace_back(t, y);
     }
+    reverse(all(query));
+    ll sum = 0;
+    HeadK headk(K);
+
+    ll ans = -INF;
+    for(auto [t, y]: query) {
+        if(t==2) {
+            sum += y;
+            if(y<0) headk.add(y);
+        } else {
+            ll now = y + sum;
+            ll ignore = headk.get_sum();
+            now -= ignore;
+            chmax(ans, now);
+            --K;
+            if(K<0) break;
+            headk.decK(K);
+        }
+    }
+    Out(ans);
+
     
 }
 
