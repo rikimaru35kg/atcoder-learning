@@ -194,56 +194,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    dsu uf(2*N);
     vvl from(N);
     rep(i, M) {
-        LONGM(a, b);
-        if(uf.same(a,b)) Pm0
-        uf.merge(a, b+N);
-        uf.merge(a+N, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+        LONG(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    vl cnt(2);
-    vb used(N);
-    auto dfs=[&](auto f, ll v, ll x=0) -> void {
-        cnt[x]++;
-        used[v] = true;
-        for(auto nv: from[v]) if(!used[nv]) {
-            f(f, nv, x^1);
-        }
+    vl ord(N, -1), low(N);
+    ll idx = 0;
+    vp ans;
+    auto save=[&](ll a, ll b) {
+        if(a>b) swap(a, b);
+        ans.emplace_back(a, b);
     };
-
-    ll ans = -M + nCr(N, 2);
-    rep(i, N) if(!used[i]) {
-        cnt = vl(2);
-        dfs(dfs, i);
-        ans += cnt[0] * cnt[1];
-        ans -= nCr(cnt[0]+cnt[1], 2);
-    }
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ord[v] = idx; low[v] = idx++;
+        for(auto nv: from[v]) if(p!=nv) {
+            if(ord[nv]==-1) f(f, nv, v);
+            chmin(low[v], low[nv]);
+            if(ord[v]<low[nv]) save(v, nv);
+        }
+        de2(v, low[v])
+    };
+    dfs(dfs, 0);
+    de(ord)de(low)
+    sort(all(ans));
     Out(ans);
     
 }

@@ -194,37 +194,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll M = 1e5;
     LONG(N);
-    vvl from(2*M);
-    rep(i, N) {
-        LONGM(x, y);
-        from[x].push_back(y+M);
-        from[y+M].push_back(x);
+    vt3 edges;
+    rep(i, N-1) {
+        LONGM(a, b); LONG(w);
+        edges.emplace_back(w, a, b);
     }
+    sort(all(edges));
 
-    vl cnt(2);
-    vb used(2*M);
-    auto dfs=[&](auto f, ll v, ll x=0) -> void {
-        cnt[x]++;
-        used[v] = true;
-        for(auto nv: from[v]) {
-            if (used[nv]) continue;
-            f(f, nv, x^1);
-        }
-    };
+    dsu uf(N);
     ll ans = 0;
-    rep(i, 2*M) if(!used[i]) {
-        cnt = vl(2);
-        dfs(dfs, i);
-        ans += cnt[0] * cnt[1];
+    for (auto [w, a, b]: edges) {
+        ans += w * uf.size(a) * uf.size(b);
+        uf.merge(a, b);
     }
-    ans -= N;
     Out(ans);
-
     
 }
 

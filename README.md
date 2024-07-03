@@ -220,6 +220,8 @@
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
 - !復習価値中 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
+- !復習価値中 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
+
 
 # 最短経路問題
 
@@ -490,12 +492,12 @@
 - !復習価値中 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - !復習価値中 考察メイン [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 
-## 仮想頂点（超頂点）を設ける
+## 超頂点を設ける
 - 仮想頂点を設ける事で、見通しが良くなる場合あり
 - 考察を進めた上で、辺が多すぎて張れないとなった時に有効な印象
 ### 例題
 - !復習価値中 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
-- !復習価値中 手段が複数ある最小全域木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
+- !復習価値中 最小シュタイナー木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
 - !復習価値高 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
 
 ## 橋（low-linkが必要なABCの問題に出会っていない為、Noteには未掲載）
@@ -504,13 +506,8 @@
 - ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
 - 文による説明は分かりにくい為、[こちらのyoutube参照](https://www.youtube.com/watch?v=iYJqgMKYsdI)
 ### 例題
-- !復習価値中 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
-- 復習価値中 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
-
-## グラフその他（典型手法と名づけるのが難しいのでNoteには未掲載）
-- 通常は頂点同士のつながりで考えるが、辺に着目（辺をベクターで持つ）することで解ける問題あり。例えば最小全域木を求めるクラスカル法はその良い例。または下の例題（Sum of Maximum Weights）など
-### 例題
-- !復習価値中 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
+- 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
+- !復習価値中 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
 
 ## グラフに関する問題の計算量見積り
 - ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
