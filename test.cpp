@@ -40,6 +40,7 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
+using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
@@ -114,6 +115,7 @@ inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop();} cout<<endl;}
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
+template<typename T> inline void Out(vector<vector<T>> &vv){for(auto &v: vv) Out(v);}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
 template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
 template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
@@ -176,12 +178,15 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de3(var1,var2,var3) {}
 #define deb(var) {}
 #endif
-const ll INF = 3e18;
+ll INF = 3e18;
+const ll M998 = 998244353;
+const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
+const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -189,97 +194,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.count(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
+template<typename T>
+class SpanBIT {
+    long long size;
+    vector<T> bit;
+    void _add (long long i, T x) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
+        ++i;
+        for (; i<size; i+=i&-i) bit[i] += x;
+    }
+    T _sum (long long i) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
+        ++i;
+        T ret = 0;
+        for (; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+public:
+    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    // ![CAUTION]   0 <= l,r <= _n
+    void add (long long l, long long r, T x) { // [l,r)
+        if(l<=r) {_add(l, x); _add(r, -x);}
+        else {
+            _add(l, x); _add(size-2, -x);
+            _add(0, x); _add(r, -x);
         }
     }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
+    T get (long long i) {
+        return _sum(i);
     }
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    map<ll,vl> sushi;
+    LONG(N, M);
+    VL(A, N);
+    VL(B, M);
+    SpanBIT<ll> bit(N);
     rep(i, N) {
-        LONG(t, d); --t;
-        sushi[t].push_back(d);
+        bit.add(i, i+1, A[i]);
     }
-    vvl sus;
-    for(auto [k,v]: sushi) {
-        sort(allr(v));
-        sus.emplace_back(v);
+    for(auto x: B) {
+        ll b = bit.get(x);
+        de2(x, b)
+        ll cycle = b / N;
+        ll rem = b % N;
+        bit.add(x,x+1,-b);
+        bit.add(0, N, cycle);
+        ll l = (x+1)%N;
+        de(rem)
+        bit.add(l, (l+rem)%N, 1);
     }
-    ll M = SIZE(sus);
-
-    vl p(M);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return sus[i][0] > sus[j][0];
-    });
-
-    --K;
-    HeadK hk(K, false);
-    ll nt = 1;
-    ll ans = 0;
-    ll sum = 0;
-    for(auto i: p) {
-        vl vec = sus[i];
-        ll n = SIZE(vec);
-        sum += vec[0];
-
-        rep1(j, n-1) hk.add(vec[j]);
-
-        ll now = nt*nt;
-        now += sum;
-        now += hk.get_sum();
-        chmax(ans, now);
-        --K;
-        if(K<0) break;
-        hk.decK(K);
-        ++nt;
-    }
+    vl ans;
+    rep(i, N) ans.push_back(bit.get(i));
     Out(ans);
     
 }

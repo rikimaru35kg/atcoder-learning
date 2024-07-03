@@ -50,6 +50,7 @@ class SpanBIT {
     }
 public:
     SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    // ![CAUTION]   0 <= l,r <= _n
     void add (long long l, long long r, T x) { // [l,r)
         if(l<=r) {_add(l, x); _add(r, -x);}
         else {
