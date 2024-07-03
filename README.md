@@ -500,7 +500,7 @@
 - !復習価値中 最小シュタイナー木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
 - !復習価値高 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
 
-## 橋（low-linkが必要なABCの問題に出会っていない為、Noteには未掲載）
+## 橋
 - 取り除くと連結成分が増える辺を橋と呼ぶ
 - low link法を用いるとDFSの計算量O(V+E)で全橋を列挙できる
 - ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
@@ -509,7 +509,7 @@
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - !復習価値中 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
 
-## グラフに関する問題の計算量見積り
+## グラフに関する問題の計算量見積り（個人的な苦手問題なのでNote非掲載）
 - ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
 - 各辺は確定頂点からしか呼ばれる事はなく、各辺は2頂点としか繋がっていない為、高々2回しか呼ばれない
 - グラフを用いたDPなどでも、同じ議論は成り立つので、計算量はO(NM)ではなくO(N+M)かもしれない事に注意せよ
@@ -532,7 +532,7 @@
 - !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - !復習価値中 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
-- !復習価値低 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
+- 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
 ## 集合
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる

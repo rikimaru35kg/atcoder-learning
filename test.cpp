@@ -194,27 +194,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vt3 edges;
-    rep(i, N-1) {
-        LONGM(a, b); LONG(w);
-        edges.emplace_back(w, a, b);
+    LONG(N, M);
+    WeightedUnionFind uf(N);
+    rep(i, M) {
+        LONGM(l, r); LONG(d);
+        if(!uf.merge(l, r, d)) PNo
     }
-    sort(all(edges));
-
-    dsu uf(N);
-    ll ans = 0;
-    for (auto [w, a, b]: edges) {
-        ans += w * uf.size(a) * uf.size(b);
-        uf.merge(a, b);
-    }
-    Out(ans);
+    PYes
     
 }
 
