@@ -194,38 +194,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
+#include <atcoder/all>
 using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+// !Lazy Segtree for affine transformation
+// Edit here --> 
+using S = ll;
+S op(S a, S b) {return a+b;}
+S e() {return 0;}
+// <-- Edit here
+struct F {
+    ll a, b;
+    F(ll a, ll b):a(a), b(b) {}
+};
+S mapping(F f, S x) {
+    return f.a*x + f.b;
+}
+F composition(F f, F g) {
+    return F(f.a*g.a, f.a*g.b+f.b);
+}
+F id() {return F(1,0);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, M);
-    vl row(H, W), col(W, H);
-    vvl csbyrow(H);
+    LONG(N, M);
+    VL(A, N);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    rep(i, N) { seg.set(i, A[i]); }
     rep(i, M) {
-        LONGM(x, y);
-        chmin(row[x], y);
-        chmin(col[y], x);
+        LONG(l, r, x);
+        --l;
+        mint w = r-l;
+        seg.apply(l, r, F((w-1)/w, mint(1)/w*x));
     }
-    rep(c, W) {
-        ll r = col[c];
-        if(r<H) csbyrow[r].push_back(c);
-    }
-
-    ll ans = 0;
-    rep(i, col[0]) { ans += row[i]; }
-    rep(i, row[0]) { ans += col[i]; }
-
-    fenwick_tree<ll> tree(W);
-    rep(i, row[0]) tree.add(i, 1);
-    rep(i, col[0]) {
-        for(auto c: csbyrow[i]) {
-            if(tree.sum(c,c+1)==1) tree.add(c, -1);
-        }
-        ll now = tree.sum(0, row[i]);
-        ans -= now;
-    }
+    vm ans;
+    rep(i, N) ans.push_back(seg.get(i));
     Out(ans);
     
 }

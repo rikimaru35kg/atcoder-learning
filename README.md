@@ -603,9 +603,9 @@
 - 作用素モノイドは結合律に加え、合成できる事が必要
 - なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
 ### 例題
+- !復習価値中 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
 - !復習価値高 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
-- !復習価値高 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - !復習価値高 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
 - !要復習 2数列区間加算区間内積クエリ [F - Two Sequence Queries](https://atcoder.jp/contests/abc357/tasks/abc357_f)
 - !復習価値高 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
