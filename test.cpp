@@ -193,27 +193,48 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll M = 5;
-    ll Z = 2*M+1;
-    vvl dp(Z, vl(2, -INF));
-    vvl edp = dp;
-    dp[M][0] = 0;
+    STRING(S);
+    S = '$'+S;
+    ll N = SIZE(S);
+    ll M = 26;
+    vvl nxt(M, vl(N, INF));
     rep(i, N) {
-        vvl pdp = edp; swap(pdp, dp);
-        rep(j, Z) rep(k, 2) if(pdp[j][k]!=-INF) {
-            if(j<Z-1 && k==0) chmax(dp[j+1][1], pdp[j][k]+A[i]);
-            if(j) chmax(dp[j-1][0], pdp[j][k]);
+        if(i==0) continue;
+        nxt[S[i]-'a'][i] = i;
+    }
+    rep(j, M) repr(i, N-1) chmin(nxt[j][i], nxt[j][i+1]);
+    vm dp(N+1);
+    dp[0] = 1;
+    mint ans = 0;
+    rep(i, N) {
+        rep(j, M) {
+            ll ni = nxt[j][i]+1;
+            if(ni>N) continue;
+            if (ni==i+1 && ni==N) continue;
+            if (ni==i+1) ni = nxt[j][ni]+1;
+            if(ni>N) continue;
+            dp[ni] += dp[i];
         }
     }
-    if(N%2==0) Out(max(dp[M][0], dp[M][1]));
-    else Out(max(dp[M-1][0], dp[M-1][1]));
-
+    rep1(i, N) ans+=dp[i];
+    Out(ans);
     
 }
 
