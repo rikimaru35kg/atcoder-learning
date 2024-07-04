@@ -194,54 +194,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/all>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-// !Lazy Segtree for affine transformation
-// Edit here --> 
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e() {return 0;}
-// <-- Edit here
-struct F {
-    ll a, b;
-    F(ll a, ll b):a(a), b(b) {}
-};
-S mapping(F f, S x) {
-    return f.a*x + f.b;
-}
-F composition(F f, F g) {
-    return F(f.a*g.a, f.a*g.b+f.b);
-}
-F id() {return F(1,0);}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
-    rep(i, N) { seg.set(i, A[i]); }
-    rep(i, M) {
-        LONG(l, r, x);
-        --l;
-        mint w = r-l;
-        seg.apply(l, r, F((w-1)/w, mint(1)/w*x));
+    LONG(N);
+    vp spans;
+    map<Pr,ll> mp;
+    for(ll w=1; w<=N; w<<=1) {
+        rep(l, N) {
+            ll r = l + w;
+            if(r>N) break;
+            spans.emplace_back(l, r);
+            mp[{l,r}] = spans.size();
+        }
     }
-    vm ans;
-    rep(i, N) ans.push_back(seg.get(i));
-    Out(ans);
+    ll M = SIZE(spans);
+    cout<< M << endl;
+    // for(auto [l, r]: spans) {
+    //     printf("%lld %lld", l+1, r);
+    //     cout << endl;
+    // }
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        ll tw = r - l;
+        ll w = 1;
+        while(2*w < tw) w<<=1;
+        ll l1 = l, r1 = l + w;
+        ll l2 = r-w, r2 = r;
+        ll m1 = mp[{l1,r1}];
+        ll m2 = mp[{l2,r2}];
+        printf("%lld %lld", m1, m2);
+        cout<<endl;
+    }
+
     
 }
 
