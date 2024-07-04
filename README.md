@@ -667,6 +667,24 @@
 - !復習価値中（実装面） 大きい座標上の経路数 [E - Warp](https://atcoder.jp/contests/abc265/tasks/abc265_e)
 - !復習価値高（考察＆実装）　クイーン経路数 [E - Queen on Grid](https://atcoder.jp/contests/abc183/tasks/abc183_e)
 
+## bit DP
+- N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
+- N=20程度の場合、O(N!)は無理だがO(N*2^N)ならいける！などと制約から思いつくのも手
+- 巡回セールスマン問題（TSP: Travelling Salesman Problem）やマッチング数が有名
+- 各頂点を1度だけ訪れるという条件がないとbitDPで解けないが、頂点間距離に三角不等式が成り立つならこの条件がなくても解ける（2度以上訪れるメリットがないので）
+- 再帰関数で実装できるが、forループで回す手法も可能
+- forループで回す場合、集合sの小さい順にループさせると良い（次のbitを立てるとき、必ずsの昇順となるから）
+### 例題
+- !復習価値中 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
+- !復習価値中 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
+- !復習価値高 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
+- !要復習 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
+- !復習価値中 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
+- !復習価値中 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
+- !復習価値高 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
+- !要復習 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
+- 君たちなんとか進数になるとできなくなるよねの問題を探す！
+
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという
 - Sのi文字目、Tのj文字目まで見たLCSをdp[i][j]と定義し、更新していけば良い
@@ -703,29 +721,6 @@
 - !復習価値高 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - !復習価値高 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !要復習 ペア選び（かなりの高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-
-## bit DP
-- N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
-- N=20程度の場合、O(N!)は無理だがO(N*2^N)ならいける！などと制約から思いつくのも手
-- 巡回セールスマン問題（TSP: Travelling Salesman Problem）やマッチング数が有名
-- 各頂点を1度だけ訪れるという条件がないとbitDPで解けないが、頂点間距離に三角不等式が成り立つならこの条件がなくても解ける（2度以上訪れるメリットがないので）
-- 集合から1つ取り除いたときの残りの集合との漸化式により解く
-- dp[1がn個のbit列] = dp[1がn-1個のbit列] + 1個を取り除いたときのコストなどとする
-- 取り除く時に残りの集合との依存関係がある場合はdp[bit列][要素番号]などとする
-- 再帰関数で実装できるが、forループで回す手法も可能
-- forループで回す場合、集合sの小さい順にループさせると良い（次のbitを立てるとき、必ずsの昇順となるから）
-- なお、遷移の順を単純に考えてBFSで実装する事も可能（下のE-Boosterはそうやって解いた）
-- 最短経路問題はforでも再帰でも解けそうだが、ゲームのように後ろからしか決まらないものは再帰でないと厳しい
-### 例題
-- !復習価値中 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
-- !復習価値中 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
-- !復習価値中 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
-- !復習価値高 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
-- !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
-- !復習価値中 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
-- !復習価値中 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
-- !復習価値高 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
-- !要復習 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 
 ## 部分集合の部分集合DP
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
@@ -775,12 +770,13 @@
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
 - dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
-- DP全般に言える事だが、いかにして状態数を減らせるかが大事（例: D - ABS）。計算量が間に合わないときは、無駄な状態はないかよく考える事
+- 再帰の方が分かりやすい場合は迷わず再帰で書く！
 ### 例題
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
 - !復習価値低 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 - !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
+- !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 
 ## 円環系DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
