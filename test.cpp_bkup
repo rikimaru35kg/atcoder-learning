@@ -193,39 +193,36 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    umap<ll,ll> vfromp, par, endx;
-    ll v = 0;
-    ll sz = 1;
-    par[0] = 0;
-    endx[0] = -1;
-    rep(i, Q) {
-        STRING(s);
-        if(s[0]=='A') {
-            LONG(x);
-            ll p = v;
-            v = sz++;
-            endx[v] = x;
-            par[v] = p;
-            Out(endx[v]);
-        } else if (s[0]=='D') {
-            v = par[v];
-            Out(endx[v]);
-        } else if (s[0]=='S') {
-            LONG(y);
-            vfromp[y] = v;
-            Out(endx[v]);
-        } else {
-            LONG(z);
-            v = vfromp[z];
-            Out(endx[v]);
+    LONG(N, S);
+    VL(A, N);
+    vm dp(S+1);
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp(S+1); swap(pdp, dp);
+        rep(j, S+1) {
+            dp[j] += 2*pdp[j];
+            if(j+A[i]<=S) dp[j+A[i]] += pdp[j];
         }
-        de(v)de(endx)de(par)
     }
+    Out(dp[S]);
+
     
 }
 

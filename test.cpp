@@ -198,36 +198,21 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vp spans;
-    map<Pr,ll> mp;
-    for(ll w=1; w<=N; w<<=1) {
-        rep(l, N) {
-            ll r = l + w;
-            if(r>N) break;
-            spans.emplace_back(l, r);
-            mp[{l,r}] = spans.size();
+    VL(A, N);
+    ll M = 5;
+    ll Z = 2*M+1;
+    vvl dp(Z, vl(2, -INF));
+    vvl edp = dp;
+    dp[M][0] = 0;
+    rep(i, N) {
+        vvl pdp = edp; swap(pdp, dp);
+        rep(j, Z) rep(k, 2) if(pdp[j][k]!=-INF) {
+            if(j<Z-1 && k==0) chmax(dp[j+1][1], pdp[j][k]+A[i]);
+            if(j) chmax(dp[j-1][0], pdp[j][k]);
         }
     }
-    ll M = SIZE(spans);
-    cout<< M << endl;
-    // for(auto [l, r]: spans) {
-    //     printf("%lld %lld", l+1, r);
-    //     cout << endl;
-    // }
-
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        ll tw = r - l;
-        ll w = 1;
-        while(2*w < tw) w<<=1;
-        ll l1 = l, r1 = l + w;
-        ll l2 = r-w, r2 = r;
-        ll m1 = mp[{l1,r1}];
-        ll m2 = mp[{l2,r2}];
-        printf("%lld %lld", m1, m2);
-        cout<<endl;
-    }
+    if(N%2==0) Out(max(dp[M][0], dp[M][1]));
+    else Out(max(dp[M-1][0], dp[M-1][1]));
 
     
 }
