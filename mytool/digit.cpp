@@ -1,11 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-vector<long long> separate_digit(long long x, long long base=10) {
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
     vector<long long> ret;
     while(x) {
         ret.push_back(x%base);
         x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
     }
     reverse(ret.begin(), ret.end());
     return ret;

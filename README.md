@@ -682,8 +682,8 @@
 - !復習価値中 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
 - !復習価値中 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 - !復習価値高 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
-- !要復習 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
-- 君たちなんとか進数になるとできなくなるよねの問題を探す！
+- !復習価値高 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
+- !復習価値中 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)
 
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという

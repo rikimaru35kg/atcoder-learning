@@ -194,27 +194,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while(SIZE(ret)<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while(SIZE(ret)>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    VL(A, N); VL(B, N);
-    vl dp(1<<N, INF);
-    dp[0] = 0;
+    auto tmp = separate_digit(9, 10, 2);
+    de(tmp)
+    LONG(N, K, P);
+    vl C(N);
+    vvl A(N, vl(K));
+    rep(i, N) {
+        cin >> C[i];
+        rep(j, K) cin>>A[i][j];
+    }
 
-    rep(s, 1<<N) {
-        rep(i, N) {
-            if(s>>i&1) continue;
-            ll cs = s>>(i+1);
-            ll ten = pcnt(cs);
-            ll cost = ten*Y;
-            ll idx = pcnt(s);
-            cost += X*abs(B[idx]-A[i]);
-            ll ns = s|1<<i;
-            chmin(dp[ns], dp[s]+cost);
+    ll Mx = 10000;
+    vl dp(Mx, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(Mx, INF); swap(pdp, dp);
+        rep(j, Mx) {
+            if(pdp[j]==INF) continue;
+            chmin(dp[j], pdp[j]);
+            vl v = separate_digit(j, P+1, K);
+            de(j)de(v)
+            rep(k, K) {
+                v[k] = min(v[k]+A[i][k], P);
+            }
+            ll nj = consolidate_digit(v, P+1);
+            de(v)de(nj)
+            chmin(dp[nj], pdp[j]+C[i]);
         }
     }
-    Out(dp.back());
+
+    vl tgt;
+    rep(i, K) tgt.push_back(P);
+    ll ntgt = consolidate_digit(tgt, P+1);
+    ll ans = dp[ntgt];
+    ch1(ans);
+    Out(ans);
     
 }
 
