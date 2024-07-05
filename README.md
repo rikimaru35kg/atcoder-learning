@@ -703,8 +703,8 @@
 - 復元するには、dp[i][j]==dp[i-1][j]ならi--、dp[i][j]==dp[i][j-1]ならj--、両方偽なら文字S[i-1]を選択してi--,j--すれば良い
 ### 例題
 - !復習価値中 LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
-- !復習価値中 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
-- !復習価値中 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
+- !復習価値小 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
+- !復習価値小 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
 
 ## 文字列の部分列
 - SがTのある要素を抜き取って並べたものであるとき、SはTの部分列という。連続していなくてもよい。連続している場合は部分文字列という。
@@ -715,6 +715,19 @@
 - !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - !復習価値中 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
 - !復習価値高 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
+
+## LIS 最長増加部分列
+- 単調増加する最長の部分列を特定する手法
+- 最初にINFで初期化したベクターを準備
+- 要素を順番に検査し、自分より大きい数を見つけたら書き換えていくだけで実装可能（実装上は二分探索で挿入位置を見つける）
+- 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
+- LISを求めていく過程で、その要素を最後だと見なした時のLIS長も同時に求まる事も覚えておきたい
+- LISをグラフ上で理解すると、要素iを使った時のLIS長がsegtree RMQで順次求まっていく
+- segtreeを使った方式を理解した方が応用が効く印象
+### 例題
+- 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
+- 復習価値小 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
@@ -790,20 +803,6 @@
 - !復習価値中 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
 - !復習価値中 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
 - !要復習（惜しかった） 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
-
-## LIS 最長増加部分列
-- 単調増加する最長の部分列を特定する手法
-- 最初にINFで初期化したベクターを準備
-- 要素を順番に検査し、自分より大きい数を見つけたら書き換えていくだけで実装可能（実装上は二分探索で挿入位置を見つける）
-- 狭義単調増加ならlower_bound、広義単調増加ならupper_boundを使う事に注意！（良く考えないと逆と思ってしまうので注意！）
-- LISを求めていく過程で、その要素を最後だと見なした時のLIS長も同時に求まる事も覚えておきたい
-- LISをグラフ上で理解すると、要素iを使った時のLIS長がsegtree RMQで順次求まっていく
-- segtreeを使った方式を理解した方が応用が効く印象
-### 例題
-!!!せっかくなので次回はsegtreeを使った解法でやってみて！
-- 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
-- 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
-- !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する
