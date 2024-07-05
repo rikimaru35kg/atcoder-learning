@@ -756,6 +756,19 @@
 - !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 - !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 
+## 円環DP
+- 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
+- 最後の決め方に最初の決め方が依存してしまう場合、最初の選び方を追加次元（dp[最初の選択][現在の選択]）で管理しておき、最初と最後の選択で辻褄が合わない遷移を捨てればよい
+- この場合、dpの初期値を埋めるのが若干手間（i=0のときのdpとi>=1の遷移を分けて書く必要あり。最初だけ特別だから）
+- 更に綺麗な実装とするには、dp[最後の選択（予言）][現在の選択]とし、最後の選択が一致したものだけ採用するという方法もある（snuke解説、なお、予言は添え字にせず、予言分だけ新たにdpを実施した方が分かりやすい）
+- 予言は実際にdpの値に最後の選択値を代入するものではないが、それをベースにdpを遷移させていく（このあたりの概念は分かりにくいので[snuke氏解説動画](https://www.youtube.com/live/lBhn0wg-IS4?feature=shared&t=2853)を参照
+- 円環のどこかに必ず固定できる点があるのであれば、それを1番目かつN+1番目の要素とする事で、円環を固定できる場合あり
+### 例題
+- !復習価値高 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
+- !復習価値高 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
+- !復習価値高 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
+- !復習価値中 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
+
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
@@ -791,19 +804,6 @@
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
 - !要復習 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
-
-## 円環系DP
-- 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
-- 最後の決め方に最初の決め方が依存してしまう場合、最初の選び方を追加次元（dp[最初の選択][現在の選択]）で管理しておき、最初と最後の選択で辻褄が合わない遷移を捨てればよい
-- この場合、dpの初期値を埋めるのが若干手間（i=0のときのdpとi>=1の遷移を分けて書く必要あり。最初だけ特別だから）
-- 更に綺麗な実装とするには、dp[最後の選択（予言）][現在の選択]とし、最後の選択が一致したものだけ採用するという方法もある（snuke解説、なお、予言は添え字にせず、予言分だけ新たにdpを実施した方が分かりやすい）
-- 予言は実際にdpの値に最後の選択値を代入するものではないが、それをベースにdpを遷移させていく（このあたりの概念は分かりにくいので[snuke氏解説動画](https://www.youtube.com/live/lBhn0wg-IS4?feature=shared&t=2853)を参照
-- 円環のどこかに必ず固定できる点があるのであれば、それを1番目かつN+1番目の要素とする事で、円環を固定できる場合あり
-### 例題
-- !復習価値中 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
-- !復習価値中 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
-- !復習価値中 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
-- !要復習（惜しかった） 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する

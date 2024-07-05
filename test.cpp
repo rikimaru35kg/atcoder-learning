@@ -201,35 +201,28 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(S);
-    vl A;
-    for(auto c: S) A.push_back(c-'0');
-    STRING(X);
+    VL(A, N);
+    VL(B, N);
+    rotate(B.begin(), B.begin()+N-1, B.end());
 
-    vvb used(N, vb(7)), mem(N, vb(7));
-    auto dfs=[&](auto f, ll i, ll j) -> bool {
-        if(i==N) return j%7==0;
-
-        if(used[i][j]) return mem[i][j];
-
-        bool ret = false;
-        if(X[i]=='T') {
-            ret = false;
-            if(f(f, i+1, (j*10+A[i])%7)) ret = true;
-            if(f(f, i+1, (j*10)%7)) ret = true;
-        } else {
-            ret = true;
-            if(!f(f, i+1, (j*10+A[i])%7)) ret = false;
-            if(!f(f, i+1, (j*10)%7)) ret = false;
+    ll ans = INF;
+    rep(si, 2) {
+        vl dp(2, INF);
+        dp[si] = 0;
+        rep(i, N) {
+            vl pdp(2, INF); swap(pdp, dp);
+            rep(j, 2) rep(k, 2) {
+                ll cost = 0;
+                if(j == k) cost += B[i];
+                if(k==1) cost += A[i];
+                chmin(dp[k], pdp[j]+cost);
+            }
         }
-        used[i][j] = true;
-        return mem[i][j] = ret;
-    };
-    
-    bool ans = dfs(dfs, 0, 0);
-    if(ans) puts("Takahashi");
-    else puts("Aoki");
+        chmin(ans, dp[si]);
+    }
+    Out(ans);
     
 }
 
 // ### test.cpp ###
+

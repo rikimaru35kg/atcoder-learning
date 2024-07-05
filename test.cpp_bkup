@@ -201,21 +201,24 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N); VL(A, N);
-
-    vvl mem(N+1, vl(N+1, -INF));
-    auto dfs=[&](auto f, ll l, ll r) -> ll {
-        if(l==r) return 0;
-        if(mem[l][r]!=-INF) return mem[l][r];
-        ll ret = -INF;
-        de2(l, r)
-        if(l==3 && r==4) {
-            cout<<"";
+    vl prod(N+1);
+    rep(i, N) {
+        ll idx = 0;
+        rep(j, i+1) {
+            prod[i+1] += A[idx];
+            if(j%2==1) ++idx;
         }
-        chmax(ret, -f(f, l+1, r) + A[l]);
-        chmax(ret, -f(f, l, r-1) + A[r-1]);
-        return mem[l][r] = ret;
-    };
-    ll ans = dfs(dfs, 0, N);
+    }
+    de(prod)
+    vl dp(N+1, -INF);
+    dp[0] = 0;
+    rep(i, N) {
+        rep(j, i+1) {
+            chmax(dp[i+1], dp[j] + prod[i-j]);
+        }
+    }
+    de(dp)
+    ll ans = dp[N];
     Out(ans);
     
 }
