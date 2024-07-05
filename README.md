@@ -769,6 +769,22 @@
 - !復習価値高 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
 - !復習価値中 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
 
+## 木DP
+- DFSをしながら部分木に対する処理を実行していく
+- dp[v][k]=頂点vを根とする部分木で状態kの時の場合の数などとすれば良い
+- 潜った直後に処理すれば、部分木に対する処理は終わっているはず
+### 例題
+- !復習価値低 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
+- !復習価値高 典型90からの出題だが難しい [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
+
+## 全方位木DP（難しい全方位は青コーダーになるには不要と思われる）
+- まず木DPで下向き部分木の求めたい値を求める
+- 再度DFS(BFS)する際に、潜り先の値を引いた物を渡してやる事で、逆向きの求めたい値を渡せる
+- 親からの逆向きの値を貰ってしまえば、全辺の合計値が求まる
+- 実装は難し目なのでライブラリ使用を推奨
+### 例題
+- !要復習 距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
+
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
@@ -781,29 +797,13 @@
 - !復習価値高 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !要復習 ペア選び（かなりの高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 
-## 木DP
-- DFSをしながら部分木に対する処理を実行していく
-- dp[v][k]=頂点vを根とする部分木で状態kの時の場合の数などとすれば良い
-- 潜った直後に処理すれば、部分木に対する処理は終わっているはず
-### 例題
-- !復習価値低 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
-- !要復習 典型90からの出題だが難しい [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
-
-## 全方位木DP（難しい全方位は青コーダーになるには不要と思われる）
-- まず木DPで下向き部分木の求めたい値を求める
-- 再度DFS(BFS)する際に、潜り先の値を引いた物を渡してやる事で、逆向きの求めたい値を渡せる
-- 親からの逆向きの値を貰ってしまえば、全辺の合計値が求まる
-- 実装は難し目なのでライブラリ使用を推奨
-### 例題
-- !要復習 距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
-
 ## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
 - ただし、i=0以外ににも始点がある場合、遡るのを途中でやめなければならない
 - 2経路の復元の場合は、常に異なる戦略を取って逆順に辿れば良い
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
-- !要復習 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
+- 想定解で解ければOK 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する

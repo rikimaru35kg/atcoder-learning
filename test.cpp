@@ -197,32 +197,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    VL(B, N);
-    rotate(B.begin(), B.begin()+N-1, B.end());
-
-    ll ans = INF;
-    rep(si, 2) {
-        vl dp(2, INF);
-        dp[si] = 0;
-        rep(i, N) {
-            vl pdp(2, INF); swap(pdp, dp);
-            rep(j, 2) rep(k, 2) {
-                ll cost = 0;
-                if(j == k) cost += B[i];
-                if(k==1) cost += A[i];
-                chmin(dp[k], pdp[j]+cost);
-            }
-        }
-        chmin(ans, dp[si]);
+    VC(C, N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+
+    vvm dp(N, vm(4));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ll ab = 0;
+        if (C[v]=='a') ab = 1;
+        else ab = 2;
+        mint d = 1;
+        mint e = 1;
+        for(auto nv :from[v]) if(nv != p) {
+            f(f, nv ,v);
+            d *= (dp[nv][ab]+dp[nv][3]);
+            e *= (dp[nv][1]+dp[nv][2]+dp[nv][3]*2);
+        }
+        dp[v][ab] = d;
+        e -= d;
+        dp[v][3] = e;
+    };
+    dfs(dfs, 0);
+    de(dp)
+    mint ans = dp[0][3];
     Out(ans);
+
+
     
 }
 
 // ### test.cpp ###
-
