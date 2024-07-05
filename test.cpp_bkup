@@ -194,40 +194,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while(SIZE(ret)<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while(SIZE(ret)>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
-    rep(i, M) {
-        LONGM(a, b); LONG(w);
-        dist[a][b] = w;
-    }
-    rep(i, N) dist[i][i] = 0;
-    rep(k, N) rep(i, N) rep(j, N) {
-        if(dist[i][k]==INF) continue;
-        if(dist[k][j]==INF) continue;
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
+    auto tmp = separate_digit(9, 10, 2);
+    de(tmp)
+    LONG(N, K, P);
+    vl C(N);
+    vvl A(N, vl(K));
+    rep(i, N) {
+        cin >> C[i];
+        rep(j, K) cin>>A[i][j];
     }
 
-    vvl dp(1<<N, vl(N, INF));
-    rep(i, N) dp[1<<i][i] = 0;
-    rep(s, 1<<N) {
-        rep(i, N) if(s>>i&1) {
-            if(dp[s][i]==INF) continue;
-            rep(j, N) {
-                if(dist[i][j]==INF) continue;
-                if(s>>j&1) continue;
-                ll ns = s|1<<j;
-                chmin(dp[ns][j], dp[s][i] + dist[i][j]);
+    ll Mx = 10000;
+    vl dp(Mx, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(Mx, INF); swap(pdp, dp);
+        rep(j, Mx) {
+            if(pdp[j]==INF) continue;
+            chmin(dp[j], pdp[j]);
+            vl v = separate_digit(j, P+1, K);
+            de(j)de(v)
+            rep(k, K) {
+                v[k] = min(v[k]+A[i][k], P);
             }
+            ll nj = consolidate_digit(v, P+1);
+            de(v)de(nj)
+            chmin(dp[nj], pdp[j]+C[i]);
         }
     }
-    ll ans = INF;
-    rep(i, N) chmin(ans, dp[(1<<N)-1][i]);
-    if(ans==INF) PNo
-    Out(ans);
 
+    vl tgt;
+    rep(i, K) tgt.push_back(P);
+    ll ntgt = consolidate_digit(tgt, P+1);
+    ll ans = dp[ntgt];
+    ch1(ans);
+    Out(ans);
     
 }
 

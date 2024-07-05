@@ -194,65 +194,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while(SIZE(ret)<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while(SIZE(ret)>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    auto tmp = separate_digit(9, 10, 2);
-    de(tmp)
-    LONG(N, K, P);
-    vl C(N);
-    vvl A(N, vl(K));
-    rep(i, N) {
-        cin >> C[i];
-        rep(j, K) cin>>A[i][j];
+    LONG(N, D);
+    VD(W, N);
+    double xave = 0;
+    rep(i, N) xave += W[i];
+    xave /= D;
+    vd weight(1<<N);
+    rep(s, 1<<N) {
+        double now = 0;
+        rep(i, N) if(s>>i&1) now += W[i];
+        weight[s] = now;
     }
+    de(xave)
 
-    ll Mx = 10000;
-    vl dp(Mx, INF);
+    ll mx = (1<<N)-1;
+    vd dp(1<<N, INF);
     dp[0] = 0;
-    rep(i, N) {
-        vl pdp(Mx, INF); swap(pdp, dp);
-        rep(j, Mx) {
-            if(pdp[j]==INF) continue;
-            chmin(dp[j], pdp[j]);
-            vl v = separate_digit(j, P+1, K);
-            de(j)de(v)
-            rep(k, K) {
-                v[k] = min(v[k]+A[i][k], P);
+    rep(i, D) {
+        vd pdp(1<<N, INF); swap(pdp, dp);
+        rep(s, 1<<N) {
+            if(pdp[s]==INF) continue;
+            ll t = mx^s;
+            for(ll u=t;; u=(u-1)&t) {
+                double x = weight[u];
+                ll ns = s|u;
+                chmin(dp[ns], pdp[s]+(x-xave)*(x-xave));
+                if(u==0) break;
             }
-            ll nj = consolidate_digit(v, P+1);
-            de(v)de(nj)
-            chmin(dp[nj], pdp[j]+C[i]);
         }
     }
-
-    vl tgt;
-    rep(i, K) tgt.push_back(P);
-    ll ntgt = consolidate_digit(tgt, P+1);
-    ll ans = dp[ntgt];
-    ch1(ans);
+    double ans = dp.back();
+    ans /= D;
     Out(ans);
     
 }
