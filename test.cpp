@@ -197,57 +197,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-void solve() {
-    LONG(N);
-    STRING(S);
-    vl A;
-    for(auto c: S) A.push_back(c-'A');
-    N = (N+1)/2;
-
-    vm dp(2);
-    dp[0] = 1;
-    rep(i, N) {
-        vm pdp(2); swap(pdp, dp);
-        rep(j, 2) rep(x, 26) {
-            if(pdp[j]==0) continue;
-            if(j==0 && x>A[i]) continue;
-            ll nj = j;
-            if(j == 0 && x<A[i]) nj = 1;
-            dp[nj] += pdp[j];
-        }
-    }
-    mint ans = dp[1];
-    string T;
-    ll N0 = SIZE(S);
-    string a = S.substr(0, N0/2);
-    if(N0%2==1) a += S[N0/2];
-    string b = S.substr(0, N0/2);
-    reverse(all(b));
-    T = a + b;
-    de(T)
-    if(T<=S) ++ans;
-    Out(ans);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N);
+    STRING(S);
+    vl A;
+    for(auto c: S) A.push_back(c-'0');
+    STRING(X);
+
+    vvb used(N, vb(7)), mem(N, vb(7));
+    auto dfs=[&](auto f, ll i, ll j) -> bool {
+        if(i==N) return j%7==0;
+
+        if(used[i][j]) return mem[i][j];
+
+        bool ret = false;
+        if(X[i]=='T') {
+            ret = false;
+            if(f(f, i+1, (j*10+A[i])%7)) ret = true;
+            if(f(f, i+1, (j*10)%7)) ret = true;
+        } else {
+            ret = true;
+            if(!f(f, i+1, (j*10+A[i])%7)) ret = false;
+            if(!f(f, i+1, (j*10)%7)) ret = false;
+        }
+        used[i][j] = true;
+        return mem[i][j] = ret;
+    };
+    
+    bool ans = dfs(dfs, 0, 0);
+    if(ans) puts("Takahashi");
+    else puts("Aoki");
     
 }
 

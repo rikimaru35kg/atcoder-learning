@@ -745,6 +745,17 @@
 - !復習価値高 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
 - !復習価値高 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
+## 対戦ゲームDP
+- 二人が最適戦略を取るという事は、後ろから考えていくと良い
+- dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
+- 再帰の方が分かりやすい場合は迷わず再帰で書く！
+### 例題
+- 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
+- !復習価値低 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
+- 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
+- !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
+- !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
+
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
@@ -780,17 +791,6 @@
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
 - !要復習 想定解はDPではないが、経路復元で解ける（その場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
-
-## 対戦ゲームDP
-- 二人が最適戦略を取るという事は、後ろから考えていくと良い
-- dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
-- 再帰の方が分かりやすい場合は迷わず再帰で書く！
-### 例題
-- 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
-- !復習価値低 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
-- 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
-- !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
-- !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 
 ## 円環系DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）

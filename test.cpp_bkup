@@ -200,33 +200,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    VL(A, N);
+    LONG(N); VL(A, N);
 
-    ll _X = X;
-    vl v;
-    vl B(N);
-    rep(i, N-1) B[i] = A[i+1]/A[i];
-    rep(i, N-1) {
-        v.push_back(_X%B[i]);
-        _X /= B[i];
-    }
-    v.push_back(_X);
-
-    vl dp(2, INF);
-    dp[0] = 0;
-    rep(i, N-1) {
-        vl pdp(2, INF); swap(pdp, dp);
-        rep(j, 2) {
-            ll a = v[i];
-            if (j) a++;
-            chmin(dp[0], pdp[j]+a);
-            chmin(dp[1], pdp[j]+B[i]-a);
+    vvl mem(N+1, vl(N+1, -INF));
+    auto dfs=[&](auto f, ll l, ll r) -> ll {
+        if(l==r) return 0;
+        if(mem[l][r]!=-INF) return mem[l][r];
+        ll ret = -INF;
+        de2(l, r)
+        if(l==3 && r==4) {
+            cout<<"";
         }
-    }
-    ll ans = INF;
-    chmin(ans, dp[0]+v.back());
-    chmin(ans, dp[1]+v.back()+1);
+        chmax(ret, -f(f, l+1, r) + A[l]);
+        chmax(ret, -f(f, l, r-1) + A[r-1]);
+        return mem[l][r] = ret;
+    };
+    ll ans = dfs(dfs, 0, N);
     Out(ans);
     
 }
