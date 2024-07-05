@@ -146,9 +146,11 @@ inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Di
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
+#define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
+template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -176,6 +178,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de(var) {}
 #define de2(var1,var2) {}
 #define de3(var1,var2,var3) {}
+#define de4(var1,var2,var3,var4) {}
 #define deb(var) {}
 #endif
 ll INF = 3e18;
@@ -194,62 +197,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while(SIZE(ret)<sz) ret.push_back(0);
-        while(SIZE(ret)>sz) ret.pop_back();
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, P);
-    vl C(N);
-    vvl A(N, vl(K));
-    rep(i, N) {
-        cin >> C[i];
-        rep(j, K) cin>>A[i][j];
-    }
+    STRING(Str);
+    vl A;
+    for(auto c: Str) A.push_back(c-'0');
+    A.insert(A.begin(), 0LL);
+    ll N = SIZE(A);
+    reverse(all(A));
 
-    ll Mx = 10000;
-    vl dp(Mx, INF);
+
+    vl dp(2, INF);
     dp[0] = 0;
     rep(i, N) {
-        repr(j, Mx) {
-            if(dp[j]==INF) continue;
-            vl v = separate_digit(j, P+1, K);
-            rep(k, K) {
-                v[k] = min(v[k]+A[i][k], P);
+        vl pdp(2, INF); swap(pdp, dp);
+        de(A[i])
+        rep(j, 2) rep(x, 10) {
+            if(pdp[j]==INF) continue;
+            ll a = A[i];
+            if (j==1) a--;
+            ll y = A[i] - x;
+            ll nj = 0;
+            if(y<0) {
+                nj = 1;
+                y += 10;
             }
-            ll nj = consolidate_digit(v, P+1);
-            chmin(dp[nj], dp[j]+C[i]);
+            de4(x,y,pdp[j],nj)
+            chmin(dp[nj], pdp[j]+x+y);
         }
+        de(dp)
     }
-
-    vl tgt;
-    rep(i, K) tgt.push_back(P);
-    ll ntgt = consolidate_digit(tgt, P+1);
-    ll ans = dp[ntgt];
-    ch1(ans);
-    Out(ans);
+    Out(dp[0]);
     
 }
 
 // ### test.cpp ###
-

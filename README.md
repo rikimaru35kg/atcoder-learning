@@ -729,6 +729,21 @@
 - 復習価値小 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
+## 桁DP（Digit DP）
+- 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
+- 上限->上限、上限->not上限、not上限->not上限の3通りの遷移がある
+- 上限からの遷移が複雑なので注意
+- 遷移が複雑なので、i桁目で0-9のどれを選ぶかのループ(rep(d, 10))を回し、その中でp[i][j][k] -> dp[ni][nj][nk]の遷移（すなわちni,nj,nk）がどうなるかのループを回した方が考えやすい
+- 引き算の筆算のように、下位桁から考えるDPもある。問題設定によるが、繰り下がりの有無で状態を持つ
+### 例題
+- !要復習 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
+- !復習価値低 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
+- !復習価値低 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
+- !復習価値中 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
+- !復習価値低 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
+- !復習価値高 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
+- !要復習 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
+
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
 - dp[l][r]で[l,r)での目的となる値を格納（半開区間である事に注意）
@@ -740,21 +755,6 @@
 - !復習価値高 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - !復習価値高 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !要復習 ペア選び（かなりの高難度） [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-
-## 桁DP（Digit DP）
-- 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
-- 上限->上限、上限->not上限、not上限->not上限の3通りの遷移がある
-- 上限からの遷移が複雑なので注意
-- 遷移が複雑なので、i桁目で0-9のどれを選ぶかのループ(rep(d, 10))を回し、その中でp[i][j][k] -> dp[ni][nj][nk]の遷移（すなわちni,nj,nk）がどうなるかのループを回した方が考えやすい
-- 引き算の筆算のように、下位桁から考えるDPもある。問題設定によるが、繰り下がりの有無で状態を持つ
-### 例題
-- !復習価値低 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
-- !復習価値低 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
-- !復習価値中 XOR2 [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
-- !復習価値高 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
-- !復習価値低 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
-- !復習価値高 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
-- !要復習 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
 ## 木DP
 - DFSをしながら部分木に対する処理を実行していく
