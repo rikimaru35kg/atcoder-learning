@@ -734,15 +734,16 @@
 - 上限->上限、上限->not上限、not上限->not上限の3通りの遷移がある
 - 上限からの遷移が複雑なので注意
 - 遷移が複雑なので、i桁目で0-9のどれを選ぶかのループ(rep(d, 10))を回し、その中でp[i][j][k] -> dp[ni][nj][nk]の遷移（すなわちni,nj,nk）がどうなるかのループを回した方が考えやすい
-- 引き算の筆算のように、下位桁から考えるDPもある。問題設定によるが、繰り下がりの有無で状態を持つ
+- 引き算の筆算のように、下位桁から考えるDPもある。繰り下がりの有無で状態を持つ
+- この時、繰り下がる＝引く数を＋1すると考えると良い
 ### 例題
 - !要復習 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
 - !復習価値低 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 - !復習価値低 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - !復習価値中 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
-- !復習価値低 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
+- !復習価値中 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 - !復習価値高 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
-- !要復習 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
+- !復習価値高 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）

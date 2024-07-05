@@ -197,38 +197,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N);
+    STRING(S);
+    vl A;
+    for(auto c: S) A.push_back(c-'A');
+    N = (N+1)/2;
+
+    vm dp(2);
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp(2); swap(pdp, dp);
+        rep(j, 2) rep(x, 26) {
+            if(pdp[j]==0) continue;
+            if(j==0 && x>A[i]) continue;
+            ll nj = j;
+            if(j == 0 && x<A[i]) nj = 1;
+            dp[nj] += pdp[j];
+        }
+    }
+    mint ans = dp[1];
+    string T;
+    ll N0 = SIZE(S);
+    string a = S.substr(0, N0/2);
+    if(N0%2==1) a += S[N0/2];
+    string b = S.substr(0, N0/2);
+    reverse(all(b));
+    T = a + b;
+    de(T)
+    if(T<=S) ++ans;
+    Out(ans);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    vl A;
-    for(auto c: Str) A.push_back(c-'0');
-    A.insert(A.begin(), 0LL);
-    ll N = SIZE(A);
-    reverse(all(A));
-
-
-    vl dp(2, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(2, INF); swap(pdp, dp);
-        de(A[i])
-        rep(j, 2) rep(x, 10) {
-            if(pdp[j]==INF) continue;
-            ll a = A[i];
-            if (j==1) a--;
-            ll y = A[i] - x;
-            ll nj = 0;
-            if(y<0) {
-                nj = 1;
-                y += 10;
-            }
-            de4(x,y,pdp[j],nj)
-            chmin(dp[nj], pdp[j]+x+y);
-        }
-        de(dp)
-    }
-    Out(dp[0]);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 
