@@ -256,6 +256,7 @@
 ### 例題
 - 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - !復習価値中 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
+- !復習価値低 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
 - !復習価値低 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 - !復習価値高 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
@@ -343,6 +344,7 @@
 - tot/2を探して潜る実装は面倒なので、（親側も含め）全部分木サイズがtot/2以下であれば重心としてメモすれば良い
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
+- 基本 [E - Tree and Hamilton Path 2](https://atcoder.jp/contests/abc361/tasks/abc361_e)
 - !復習価値高 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
 - !復習価値高 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
 - !復習価値高 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
@@ -1090,6 +1092,7 @@
 - メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能 ### 例題
 - !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
+- !復習価値高 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 
 ## 剰余埋めつくし系
 - DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
