@@ -197,37 +197,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct Data {
+    ll n, p;
+    Data() {}
+    Data(ll n, ll p): n(n),p(p) {}
+    Data gain(ll z, ll gp) {
+        return {n+z, p+gp};
+    }
+    Data pay(ll pp) {
+        return {n+1, p-pp};
+    }
+    bool operator<(const Data &o) const {
+        if(n==o.n) return p>o.p;
+        else return n<o.n;
+    }
+};
+
+using vD = vector<Data>;
+using vvD = vector<vD>;
+using vvvD = vector<vvD>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    if(K%9!=0) {
-        Pm0
-    }
+    LONG(N);
+    VVL(P, N, N);
+    VVL(R, N, N-1);
+    VVL(D, N-1, N);
+    auto id=[&](ll i, ll j) -> ll {return i*N+j;};
+    auto rid=[&](ll id) -> Pr {
+        ll i = id/N, j = id%N;
+        return {i, j};
+    };
+    auto mid=[&](ll i1, ll j1, ll i2, ll j2) -> Pr {
+        if(P[i1][j1]>P[i2][j2]) {
+            swap(i1, i2); swap(j1, j2);
+        }
+        return {i2, j2};
+    };
 
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, K) {
-        rep1(x, 9) {
-            ll ni = i + x;
-            if(ni<=K) dp[ni] += dp[i];
+    vvvD dp(N, vvD(N, vD(N*N, Data(INF, 0))));
+    dp[0][0][0] = Data(0, 0);
+
+
+    rep(i, N) rep(j, N) rep(k, N*N) {
+        auto [n, p] = dp[i][j][k];
+        if(n==INF) continue;
+        auto [mi, mj] = rid(k);
+        ll mp = P[mi][mj];
+        de4(i, j, mi, mj)
+        de2(n,p)
+        if(j<N-1) { // right
+            Data nd;
+            if(p>=R[i][j]) {
+                nd = dp[i][j][k].pay(R[i][j]);
+            } else {
+                ll z = Divceil(R[i][j]-p, mp);
+                nd = dp[i][j][k].gain(z, z*mp);
+                nd = nd.pay(R[i][j]);
+            }
+            auto [nmi, nmj] = mid(mi, mj, i, j+1);
+            chmin(dp[i][j+1][id(nmi,nmj)], nd);
+        }
+        if(i<N-1) { // down
+            Data nd;
+            if(p>=D[i][j]) {
+                nd = dp[i][j][k].pay(D[i][j]);
+            } else {
+                ll z = Divceil(D[i][j]-p, mp);
+                nd = dp[i][j][k].gain(z, z*mp);
+                nd = nd.pay(D[i][j]);
+            }
+            auto [nmi, nmj] = mid(mi, mj, i+1, j);
+            chmin(dp[i+1][j][id(nmi,nmj)], nd);
         }
     }
-    Out(dp[K]);
+
+    ll ans = INF;
+    rep(i, N*N) chmin(ans, dp[N-1][N-1][i].n);
+    Out(ans);
     
 }
 

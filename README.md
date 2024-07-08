@@ -826,10 +826,10 @@
 - 問題ごとに考察が必要
 ### 例題
 - !復習価値高 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
-- !復習価値中 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
+- !復習価値小 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
-- !復習価値高（想定解と違ったが解けた） 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
-- !要復習 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
+- !復習価値高 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
+- !復習価値高 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題

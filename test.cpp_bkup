@@ -197,42 +197,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    LONG(N);
+    VL(D, N);
+    LONG(L1, C1, K1, L2, C2, K2);
 
-    vvm dp(N+1, vm(N+1));
-    dp[0][0] = 1;
-    vvm ds(N+1, vm(N+1));
-    ds[0][0] = 1;
-    rep1(i, N) {
-        for(ll j=N; j>=1; --j) {
-            // rep(k, i) {
-            //     if((Sc[i]-Sc[k])%j==0) dp[i][j] += dp[k][j-1];
-            // }
-            dp[i][j] += ds[j-1][Sc[i]%j];
-            ds[j][Sc[i]%(j+1)] += dp[i][j];
+    vl dp(K1+1, INF);
+    dp[0] = 0;
+
+    rep(i, N) {
+        vl pdp(K1+1, INF); swap(pdp, dp);
+        rep(j, K1+1) {
+            if(pdp[j]==INF) continue;
+            ll r1 = K1-j, r2 = K2-pdp[j];
+            rep(k1, r1+1) {
+                ll w = D[i]-k1*L1;
+                if(w<=0) {
+                    chmin(dp[j+k1], pdp[j]);
+                    continue;
+                }
+                ll k2 = Divceil(w, L2);
+                if(k2>r2) continue;
+                chmin(dp[j+k1], pdp[j]+k2);
+            }
         }
+        de(dp)
     }
-    mint ans = 0;
-    rep1(i, N) ans += dp[N][i];
+    ll ans = INF;
+    rep(i, K1+1) {
+        if(dp[i]==INF) continue;
+        chmin(ans, C1*i + C2*dp[i]);
+    }
+    ch1(ans);
     Out(ans);
     
 }
