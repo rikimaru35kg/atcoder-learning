@@ -813,19 +813,19 @@
 - 平方分割を組み合わせて遷移を減らすこともある
 ### 例題
 - !復習価値低 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
-- !復習価値低 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
-- !復習価値中 経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
-- !復習価値中 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
-- !復習価値高 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
-- !復習価値高 サイコロゲーム（実装難しい） [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
-- !復習価値高 難しく頭が混乱するが、頑張れば解けるので頑張って！ [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
+- 基本 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
+- 基本 飛び飛びの場合の経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
+- !復習価値小 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
+- !復習価値小 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- !復習価値高 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
+- !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも。NOTE非掲載） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
-## 状態を工夫するDP
+## ひねりDP
 - 状態を工夫する事でDPに落とし込める問題
 - 問題ごとに考察が必要
 ### 例題
-- !要復習 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
+- !復習価値高 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - !復習価値中 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値高（想定解と違ったが解けた） 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
