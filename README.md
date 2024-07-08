@@ -834,7 +834,7 @@
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
 ### 例題
-- !要復習 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
+- !復習価値中 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
