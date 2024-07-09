@@ -197,7 +197,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 const long long base = 12345;
 const long long MX = 3;
 const long long ps[12] = {1000000007, 1000000009, 1000000021,
@@ -279,55 +278,24 @@ struct hash<mints> {
 };
 }
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S {
-    mints x, w;
-    S(mints x, mints w): x(x),w(w) {}
-};
-S op1(S a, S b) {
-    return S(a.x*b.w+b.x, a.w*b.w);
-}
-S op2(S a, S b) {
-    return S(a.x+b.x*a.w, a.w*b.w);
-}
-S e() {return S(0,1);}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(T);
-    vector<S> v;
-    rep(i, 2*N) {
-        v.emplace_back(T[i], base);
-    }
-    segtree<S,op1,e> seg1(v);
-    segtree<S,op2,e> seg2(v);
-    // segtree<S,op1,e> seg1(2*N);
-    // segtree<S,op2,e> seg2(2*N);
-    // rep(i, 2*N) {
-    //     seg1.set(i, S(T[i], base));
-    //     seg2.set(i, S(T[i], base));
-    // }
-    rep(i, N+1) {
-        ll l0 = 0, r0 = i;
-        ll l1 = r0, r1 = l1 + N;
-        ll l2 = r1, r2 = 2*N;
-        S m0 = seg1.prod(l0, r0);
-        S mb = seg2.prod(l1, r1);
-        S m2 = seg1.prod(l2, r2);
-        S ma = op1(m0, m2);
-        if(ma.x == mb.x) {
-            string ans = T.substr(i, N);
-            reverse(all(ans));
-            Out(ans);
-            Out(i);
-            return 0;
+    VS(S, N);
+    reverse(all(S));
+    umap<mints,ll> mp;
+
+    ll ans = 0;
+    rep(i, N) {
+        mints roh = 0;
+        rep(j, SIZE(S[i])) {
+            roh = roh * base + S[i][j];
+            ans += mp[roh];
+            mp[roh]++;
         }
     }
-    Pm1
+    Out(ans);
     
 }
 

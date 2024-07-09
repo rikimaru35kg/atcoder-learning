@@ -197,127 +197,101 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-const long long base = 12345;
-const long long MX = 3;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
+/* Trie 木： 文字の種類(char_size)、int型で0に対応する文字(base)
+    insert(word): 単語 word を Trie 木に挿入する
+    search(word): 単語 word が Trie 木にあるか判定する
+    start_with(prefix):  prefix が一致する単語が Trie 木にあるか判定する
+    count(): 挿入した単語の数を返す
+    size(): Trie 木の頂点数を返す
+    計算量: insert, search ともに O(M)（Mは単語の長さ）
+    説明: https://algo-logic.info/trie-tree/
+*/
+template <int char_size, int base>
+struct Trie {
+    struct Node {            // 頂点を表す構造体
+        vector<int> next;    // 子の頂点番号を格納。存在しなければ-1
+        vector<int> accept;  // 末端がこの頂点になる単語の word_id を保存
+        int c;               // base からの間隔をint型で表現したもの
+        int common;          // いくつの単語がこの頂点を共有しているか
+        Node(int c_) : c(c_), common(0) {
+            next.assign(char_size, -1);
         }
-        return ret;
+    };
+    vector<Node> nodes;  // trie 木本体
+    int root;
+    ll cnt = 0;
+    Trie() : root(0) {
+        nodes.push_back(Node(root));
     }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
+    // 単語の挿入
+    void insert(const string &word, int word_id) {
+        int node_id = 0;
+        for (int i = 0; i < (int)word.size(); i++) {
+            int c = (int)(word[i] - base);
+            int &next_id = nodes[node_id].next[c];
+            if (next_id == -1) {  // 次の頂点が存在しなければ追加
+                next_id = (int)nodes.size();
+                nodes.push_back(Node(c));
+            }
+            ++nodes[node_id].common;
+            node_id = next_id;
         }
-        return false;
+        ++nodes[node_id].common;
+        nodes[node_id].accept.push_back(word_id);
     }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
+    void insert(const string &word) {
+        insert(word, nodes[0].common);
     }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
+    // 単語とprefixの検索
+    bool search(const string &word, bool prefix = false) {
+        int node_id = 0;
+        for (int i = 0; i < (int)word.size(); i++) {
+            int c = (int)(word[i] - base);
+            int &next_id = nodes[node_id].next[c];
+            if (next_id == -1) {  // 次の頂点が存在しなければ終了
+                return false;
+            }
+            node_id = next_id;
+            cnt+=nodes[node_id].common;
+        }
+        return (prefix) ? true : nodes[node_id].accept.size() > 0;
+    }
+    // prefix を持つ単語が存在するかの検索
+    bool start_with(const string &prefix) {
+        return search(prefix, true);
+    }
+    // 挿入した単語の数
+    int count() const {
+        return (nodes[0].common);
+    }
+    // Trie木のノード数
+    int size() const {
+        return ((int)nodes.size());
+    }
+    int get(string &s) {
+        cnt = 0;
+        search(s);
+        de(s)
+        return cnt;
     }
 };
 
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-}
-struct S {
-    mints x, w;
-    S(ll x, ll w): x(x), w(w) {}
-    S(mints x, mints w) : x(x),w(w) {}
-};
-S op1(S a, S b) {
-    return S(a.x*b.w + b.x, a.w*b.w);
-}
-S op2(S a, S b) {
-    return S(b.x*a.w + a.x, a.w*b.w);
-}
-S e() {return S(0,1);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    STRING(Str);
-    segtree<S,op1,e> seg0(N);
-    segtree<S,op2,e> seg1(N);
-    rep(i, N) {
-        seg0.set(i, S(Str[i], base));
-        seg1.set(i, S(Str[i], base));
+    LONG(N);
+    VS(S, N);
+    reverse(all(S));
+    Trie<26,'a'> trie;
+
+    ll ans = 0;
+    for(auto s: S) {
+        ans += trie.get(s);
+        de(ans)
+        trie.insert(s);
     }
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(x); CHAR(c);
-            seg0.set(x, S(c, base));
-            seg1.set(x, S(c, base));
-        } else {
-            LONG(l, r); --l;
-            mints m0 = seg0.prod(l, r).x;
-            mints m1 = seg1.prod(l, r).x;
-            if(m0==m1) puts("Yes");
-            else puts("No");
-        }
-    }
+    Out(ans);
     
 }
 
