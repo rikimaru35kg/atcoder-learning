@@ -868,7 +868,7 @@
 - 経路問題、進んだステップ数もキーにする場合あり
 ### 例題
 - !復習価値中 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
-- !要復習 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
+- !復習価値中 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
 
 # 文字列
 

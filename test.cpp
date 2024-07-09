@@ -196,39 +196,35 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q, K);
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, Q) {
-        CHAR(c); LONG(x);
-        if(c=='+') {
-            repr(j, K+1) {
-                if(j+x<=K) dp[j+x] += dp[j];
+    LONG(H, W, K);
+    LONGM(si, sj);
+    VVL(A, H, W);
+    ll M = min(K, H*W);
+
+    vvl dp(H, vl(W, -INF));
+    vvl edp = dp;
+    dp[si][sj] = 0;
+    rep(m, M) {
+        vvl pdp = edp; swap(pdp, dp);
+        rep(i, H) rep(j, W) {
+            if(pdp[i][j]==-INF) continue;
+            for(auto [di, dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                chmax(dp[ni][nj], pdp[i][j]+A[ni][nj]);
             }
-        } else {
-            rep(j, K+1) {
-                if(j+x<=K) dp[j+x] -= dp[j];
-            }
+            chmax(dp[i][j], pdp[i][j]+A[i][j]);
         }
-        Out(dp[K]);
     }
+    ll ans = -INF;
+    rep(i, H) rep(j, W) {
+        chmax(ans, dp[i][j] + A[i][j]*(K-M));
+    }
+    Out(ans);
     
 }
 
