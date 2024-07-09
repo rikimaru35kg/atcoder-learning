@@ -884,7 +884,7 @@
 - scanf/sprintfに入力する為にはstringではなくchar[文字数+1]を定義する必要がある。+1はnull終端文字らしい。+1を忘れるとbuffer overflowとなるので要注意
 - 文字コードを扱うときは一旦開始文字（eg A, a）からの差分値とし、最後に開始文字からの差分値で求める。('C' + 20) % 26などとすると空白文字となってしまうので要注意！
 ### 例題
-- 基本 [B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
+- 基本 （簡単すぎるのでNote非掲載）[B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
 
 ## ローリングハッシュ（Rolling Hash）
 - 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する（AとDのどちらを上位桁にしても問題ない）

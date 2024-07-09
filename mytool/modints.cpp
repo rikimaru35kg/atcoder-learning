@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const long long b = 12345;
+const long long base = 12345;
 const long long MX = 3;
 const long long ps[12] = {1000000007, 1000000009, 1000000021,
                           1000000033, 1000000087, 1000000093,

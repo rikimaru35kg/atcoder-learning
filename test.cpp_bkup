@@ -200,43 +200,9 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    map<ll,Pr> mp;
-    mp[INF] = {0,0};
-    rep(i, N) {
-        LONG(x, c);
-        if(mp.count(c)) {
-            chmin(mp[c].first, x);
-            chmax(mp[c].second, x);
-        } else {
-            mp[c] = {x, x};
-        }
-    }
-    vp pos;
-    for(auto [k,p]: mp) {
-        pos.emplace_back(p);
-    }
-    ll M = SIZE(pos);
-
-    auto dist=[&](ll x0, ll x1) {
-        return abs(x0-x1);
-    };
-
-    de(pos)
-
-    vl dp(2);
-    ll pmn=0, pmx=0;
-    rep(i, M) {
-        vl pdp(2, INF); swap(pdp, dp);
-        auto [mn, mx] = pos[i];
-        chmin(dp[0], pdp[0] + dist(pmn, mx) + dist(mx, mn));
-        chmin(dp[0], pdp[1] + dist(pmx, mx) + dist(mx, mn));
-        chmin(dp[1], pdp[0] + dist(pmn, mn) + dist(mx, mn));
-        chmin(dp[1], pdp[1] + dist(pmx, mn) + dist(mx, mn));
-        pmn = mn, pmx = mx;
-    }
-    ll ans = dp[0];
-    Out(ans);
+    LONG(N); STRING(S);
+    for(auto &c: S) c  = (c-'A'+N)%26 + 'A';
+    Out(S);
     
 }
 
