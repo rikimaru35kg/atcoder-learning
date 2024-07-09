@@ -909,7 +909,7 @@
 - !復習価値高 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 - !復習価値高 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 
-## Z-algorhithm（Zアルゴリズム）
+## Z-algorithm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
 - 全探索だとO(N^2)だが、工夫することでO(N)に落とす
 - 探索済み部分文字列の中で、最も右まで探索した部分文字列のインデックス[from,last)を記憶しておくのがミソ
@@ -923,7 +923,7 @@
 - ランレングス圧縮と相性が良い
 ### 例題
 - 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
-- !要復習 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+- !復習価値中 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
 
 # 数（整数・小数）
 

@@ -197,28 +197,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/string>
-using namespace atcoder;
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    char last_char = s[0]+1;
+    for (auto c: s) {
+        if (c != last_char) ret.emplace_back(c, 1);
+        else ++ret.back().second;
+        last_char = c;
+    }
+    return ret;
+}
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(N, K);
     STRING(S);
     ll ans = 0;
-    rep(i, N) {
-        string s = S.substr(i);
-        ll M = SIZE(s);
-        auto z = z_algorithm(s);
-        ll now = 0;
-        rep(j, M) {
-            if(j==0) continue;
-            chmax(now, (ll)min(z[j], (int)j));
-        }
-        chmax(ans, now);
+    rep(i, N-1) {
+        if(S[i]==S[i+1]) ++ans;
     }
-    Out(ans);
-    
+    auto run = run_length_encoding(S);
+    ll M = SIZE(run);
+    de(M)
+    if(M%2==1) {
+        ans += 2*min(M/2, K);
+        Out(ans);
+    } else {
+        ans += 2*min(M/2-1, K);
+        if(K>M/2-1) ++ans;
+        Out(ans);
+    }
     
 }
 
