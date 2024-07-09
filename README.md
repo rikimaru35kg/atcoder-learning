@@ -893,18 +893,12 @@
 - (hash,桁数)はモノイドなのでセグ木に乗せられる（hash,x^桁数）とした方が楽かも
 - ロリハで最も難しいのは衝突確率。非衝突確率1-1/PなのでQ回のクエリでの衝突確率は約Q/P。事前にしっかり見積もること。特に文字列の種類数をカウントする時などは種類^2回のクエリに耐える必要がある
 - 衝突確率を下げる為、mintsを導入すると良い（複数の素数でmodを取った値を保持）
+- mintsの演算は定数倍（10ぐらい？）が重いので要注意！特にセグ木と使うなら、**opの中でlog**をつけてはだめだし、**初期化**もサボったら駄目。**素数の数**もいたずらに増やさない方が良い（2個で済むなら2個が無難）
 ### 例題
 - !要復習 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
 - !要復習 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
 
-## ハッシュで一致判定
-- ロリハと同じように一致判定はハッシュを使うと効率が良い
-- 衝突確率を下げる為、素数を多めに用意すると良い
-- 衝突確率はロリハのように基数を自由に選べる場合は1/p。選べない場合はpをランダムに選んだ場合に失敗するガチャと考えて、選択可能なpが何個あるかどうかを考える
-### 例題
-- !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
-
-## LCP（Longest Common Prefix）
+## LCP（Longest Common Prefix）最長共通接頭辞
 - Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
 - LCP（Longest Common Prefix）はTrie木のLCAまでの深さとなる
 - 文字列の数列は、辞書順に並べるとtrie木の構造となり、前後の文字列と比較するだけでLCAが分かる
@@ -1383,12 +1377,16 @@
 - maxの中にmaxがある形にできれば、簡単に解ける
 - !復習価値低 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 
-## Zoblist hash
-- 集合同士をO(1)で比較可能
+## ハッシュで一致判定
+- ロリハと同じように一致判定はハッシュを使うと効率が良い
+- 衝突確率を下げる為、素数を多めに用意すると良い
+- 衝突確率はロリハのように基数を自由に選べる場合は1/p。選べない場合はpをランダムに選んだ場合に失敗するガチャと考えて、選択可能なpが何個あるかどうかを考える
+- Zoblist hashは集合同士をO(1)で比較可能
 - 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
 - メルセンヌツイスターで乱数を発生させると良い
 ### 例題
 - !復習価値中 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
+- !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
 
 ## NIMとgrundy数
 - NIMは残り山の石の個数のxorが0なら負け、非0なら勝
