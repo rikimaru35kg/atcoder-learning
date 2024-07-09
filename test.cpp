@@ -197,32 +197,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, T);
-    vp foods;
-    rep(i, N) {
-        LONG(a, b);
-        foods.emplace_back(a, b);
-    }
-    sort(all(foods));
+    LONG(N); VL(A, N);
+    ll K = 11;
 
-    vl dp(T+1, -INF);
-    dp[0] = 0;
-    for(auto [a, b]: foods) {
-        // vl pdp(T+1, -INF); swap(pdp, dp);
-        repr(i, T) {
-            if(dp[i]==-INF) continue;
-            ll na = i + a;
-            chmin(na, T);
-            chmax(dp[na], dp[i]+b);
+    vm dp(1<<K);
+    dp[1] = 1;
+    ll mask = (1<<(K))-1;
+    mint den = 1;
+    rep(i, N) {
+        vm pdp(1<<K); swap(pdp, dp);
+        rep(s, 1<<K) {
+            if(pdp[s]==0) continue;
+            rep1(a, min(A[i],(K-1))) {
+                ll ns = (s<<a)&mask;
+                ns |= s;
+                dp[ns] += pdp[s];
+            }
+            dp[s] += max(A[i]-K+1, 0LL) * pdp[s];
         }
+        den /= A[i];
     }
-    de(dp)
-    ll ans = -INF;
-    rep(i, T+1) chmax(ans, dp[i]);
+    mint ans = 0;
+    rep(s, 1<<K) {
+        if((s>>(K-1))&1) ans += dp[s];
+    }
+    ans *= den;
     Out(ans);
+    
 }
 
 // ### test.cpp ###
