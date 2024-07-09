@@ -925,7 +925,7 @@
 - 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - !復習価値中 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
 
-# 数（整数・小数）
+# 数
 
 ## ビット操作
 - &や|等のビット演算子は==よりも優先順位が低いことに注意。ビットシフトも含め、ビット操作はとにかく括弧で囲め！
@@ -946,13 +946,13 @@
 - XORの累積和はmod4で考えると良い（0:n, 1:1, 2:n^1, 3:0）。例えば、0から4*n-1までのXORは必ず0となる
 - 木の任意の二頂点間のXORは、根からのXORをそれぞれ求めておき、それのXORを取れば求まる（共通部分のXORは消える為）
 - 和のXORでもビット毎に独立して考えたいが、繰り上がりがあるのが煩わしい
-- k-bit目を考えるなら、x%(2^k)で考えれば無駄な上位桁を排除できる（kは0-indexed）
+- k-bit目を考えるなら、x%(2*2^k)で考えれば無駄な上位桁を排除できる（kは0-indexed）
 - この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは1）
 - この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- !復習価値中 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
-- !要復習 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
+- !復習価値小 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
+- !復習価値高 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !要復習 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 
 ## 2進数

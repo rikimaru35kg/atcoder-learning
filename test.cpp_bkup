@@ -197,28 +197,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/string>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(S);
-    ll ans = 0;
-    rep(i, N) {
-        string s = S.substr(i);
-        ll M = SIZE(s);
-        auto z = z_algorithm(s);
-        ll now = 0;
-        rep(j, M) {
-            if(j==0) continue;
-            chmax(now, (ll)min(z[j], (int)j));
+    VL(A, N);
+
+    auto f=[&](auto f, vl x, ll d=35) -> ll {
+        if(d<0) return 0;
+        vl a, b;
+        for(auto c: x) {
+            if(c>>d&1) a.push_back(c);
+            else b.push_back(c);
         }
-        chmax(ans, now);
-    }
-    Out(ans);
-    
+        ll ret = INF;
+        if(SIZE(a)==0) {
+            chmin(ret, f(f, b, d-1));
+        }
+        else if(SIZE(b)==0) {
+            chmin(ret, f(f, a, d-1));
+        }
+        else {
+            chmin(ret, (1LL<<d) + f(f, a, d-1));
+            chmin(ret, (1LL<<d) + f(f, b, d-1));
+        }
+        return ret;
+    };
+    Out(f(f, A));
     
 }
 
