@@ -196,7 +196,6 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -214,32 +213,22 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll K = 11;
-
-    vm dp(1<<K);
-    dp[1] = 1;
-    ll mask = (1<<(K))-1;
-    mint den = 1;
-    rep(i, N) {
-        vm pdp(1<<K); swap(pdp, dp);
-        rep(s, 1<<K) {
-            if(pdp[s]==0) continue;
-            rep1(a, min(A[i],(K-1))) {
-                ll ns = (s<<a)&mask;
-                ns |= s;
-                dp[ns] += pdp[s];
+    LONG(Q, K);
+    vm dp(K+1);
+    dp[0] = 1;
+    rep(i, Q) {
+        CHAR(c); LONG(x);
+        if(c=='+') {
+            repr(j, K+1) {
+                if(j+x<=K) dp[j+x] += dp[j];
             }
-            dp[s] += max(A[i]-K+1, 0LL) * pdp[s];
+        } else {
+            rep(j, K+1) {
+                if(j+x<=K) dp[j+x] -= dp[j];
+            }
         }
-        den /= A[i];
+        Out(dp[K]);
     }
-    mint ans = 0;
-    rep(s, 1<<K) {
-        if((s>>(K-1))&1) ans += dp[s];
-    }
-    ans *= den;
-    Out(ans);
     
 }
 
