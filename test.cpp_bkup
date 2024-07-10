@@ -197,35 +197,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
-}
-
-
-void solve() {
-    LONG(N, S, K);
-    auto [g, x, y] = extgcd(K, N);
-    if(S%g!=0) {
-        Out(-1); return;
-    }
-    K /= g, N /= g, S /= g;
-    
-    x *= -S; y *= -S;
-    de3(g, x, y);
-    ll ans = Percent(x, N);
-    Out(ans);
-
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(K);
+    vl dist(K, INF);
+    deque<ll> que;
+    auto push=[&](ll v, ll d, bool fr) {
+        if(dist[v] <= d) return;
+        dist[v] = d;
+        if(fr) que.push_front(v);
+        else que.push_back(v);
+    };
+    push(1, 1, true);
+    while(que.size()) {
+        auto v = que.front(); que.pop_front();
+        ll d = dist[v];
+        push((v+1)%K, d+1, false);
+        push((10*v)%K, d, true);
+    }
+    Out(dist[0]);
     
 }
 
