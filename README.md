@@ -558,7 +558,7 @@
 - ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
 - 指定要素の削除もO(1)
 ### 例題
-- !復習価値小 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
+- !復習価値低 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
 
 ## 小さい方からK個の和/max
 - 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる
@@ -705,8 +705,8 @@
 - 復元するには、dp[i][j]==dp[i-1][j]ならi--、dp[i][j]==dp[i][j-1]ならj--、両方偽なら文字S[i-1]を選択してi--,j--すれば良い
 ### 例題
 - !復習価値中 LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
-- !復習価値小 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
-- !復習価値小 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
+- !復習価値低 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
+- !復習価値低 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
 
 ## 文字列の部分列
 - SがTのある要素を抜き取って並べたものであるとき、SはTの部分列という。連続していなくてもよい。連続している場合は部分文字列という。
@@ -728,7 +728,7 @@
 - segtreeを使った方式を理解した方が応用が効く印象
 ### 例題
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
-- 復習価値小 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- 復習価値低 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 桁DP（Digit DP）
@@ -815,8 +815,8 @@
 - !復習価値低 基本 [E - Distance Sequence](https://atcoder.jp/contests/abc253/tasks/abc253_e)
 - 基本 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - 基本 飛び飛びの場合の経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
-- !復習価値小 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
-- !復習価値小 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- !復習価値低 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
+- !復習価値低 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - !復習価値高 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも。NOTE非掲載） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
@@ -826,7 +826,7 @@
 - 問題ごとに考察が必要
 ### 例題
 - !復習価値高 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
-- !復習価値小 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
+- !復習価値低 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値高 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
@@ -941,7 +941,7 @@
 - この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- !復習価値小 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
+- !復習価値低 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - !復習価値高 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !要復習 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 
@@ -950,7 +950,7 @@
 - Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
 ### 例題
 - !復習価値中 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
-- 基本 [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
+- 基本（直接的な2進数問題でないのでNote非掲載） [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
 
 ## 整数
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
@@ -959,22 +959,18 @@
 - c++では負の数の割り算の挙動に注意。a/bはabs(a)/abs(b)に符号を付けたもので、a%bはa=(a/b)*b + a%bが成り立つ値となる（余りが負になる事がある）
 - 負の数を割ったときの余りを0以上b未満にしたい場合、余りが負の場合は+bすれば良い
 - べき乗はpow(x, n)というSTLがあるが、戻り値がdouble型なので要注意！素直に自作pow関数を使うべき（2のn乗なら1LL<<nで十分）
-### 例題
-- 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
-
-## 余り
 - c++は余りがマイナスとなる事があるので注意（余りがマイナスなら割る数を足してやると良い）
 - 分数形式A/Bで表現された整数をMで割った余りは(A % B*M) / Bで求まる
 - A/B = q*M + rであり、A = q*B*M + r*Bなので、M>rである事に注意するとAをB*Mで割った余りはr*Bとなり、Bで割ればrが求まる
-
-## 1000000007（988244353）関連問題
 - MODの割り算は逆元を求めれば良く、modpow(x, MOD-2, MOD)で求まる。MODが素数で使えるフェルマーの小定理を利用したもの
 - フェルマーの小定理: a^(p-1)≡1 (mod p)　、**aとpは互いに素!!!** aがpの倍数なら当然0
 - ちなみにMODが素数でない場合の逆元は拡張ユークリッドの互除法により求まる（ただし互いに素でないと逆元は存在しない）
 - なお、ACLを用いれば素数かどうか気にする事無く逆元が求まる（普通に割る記号でもいけるし、inv()を使っても良い）
 - xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
 ### 例題
-- !要復習 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
+- 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
+- !復習価値低 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
+- !復習価値高 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
 - !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
 
 ## ユークリッドの互除法（拡張含む）
@@ -984,7 +980,8 @@
 - 拡張ユークリッドの互除法は、ax≡b(mod M)を解くのと本質的に同じ。g=gcd(a,M)、ax+My=gを解き、bがgの倍数であれば両辺k(=b/g)倍してa(kx)+M(ky)=bとなるので、kxが答えとなる。なお、bがgの倍数でないときは解なしとなる
 - xの一般解は、特殊解との差から求められる x=x0+i(M/g)
 ### 例題
-- !復習価値中 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- !復習価値高 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- !復習価値中 [F - S = 1](https://atcoder.jp/contests/abc340/tasks/abc340_f)
 
 ## 最小桁和
 - 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる

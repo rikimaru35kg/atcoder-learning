@@ -197,29 +197,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
+}
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1;
-    while((1<<M) < N) ++M;
-    Out(M);
-    vvl A(M);
-    rep(s, N) {
-        rep(j, M) {
-            if(s>>j&1) A[j].push_back(s+1);
-        }
-    }
-    reverse(all(A));
-    rep(i, M) {
-        printf("%lld", SIZE(A[i]));
-        rep(j, SIZE(A[i])) printf(" %lld", A[i][j]);
-        cout << endl;
-    }
-    STRING(S);
-    ll ans = stoll(S, 0, 2);
-    Out(ans+1);
+    LONG(A, B);
+    auto [g, x, y] = extgcd(B, -A);
+    if(2%g!=0) Pm1
+    x *= 2/g, y *= 2/g;
+    printf("%lld %lld\n", x, y);
 
+    
 }
 
 // ### test.cpp ###
