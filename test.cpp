@@ -197,33 +197,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b){return gcd(a,b);}
-S e() {return 0;}
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N);
-    VL(B, N);
-    vl da(N-1), db(N-1);
-    rep(i, N-1) da[i] = A[i+1] - A[i];
-    rep(i, N-1) db[i] = B[i+1] - B[i];
-    segtree<S,op,e> sega(da), segb(db);
-    rep(i, Q) {
-        LONGM(h1, h2, w1, w2);
-        ll aw = h2-h1, bw = w2-w1;
-        ll ans = A[h1] + B[w1];
-        de4(h1,h2,w1,w2);
-        de2(aw, bw)
-        ans = gcd(ans, sega.prod(h1, h1+aw));
-        ans = gcd(ans, segb.prod(w1, w1+bw));
-        Out(ans);
+    LONG(N);
+    auto ds = listup_divisor(N);
+    ll ans = 0;
+    for(auto d: ds) {
+        if(d==1) continue;
+        ll n = N;
+        while(n%d==0) n /= d;
+        if((n-1)%d==0) ++ans;
     }
+
+    auto ds2 = listup_divisor(N-1);
+    ans += SIZE(ds2)-1;
+    Out(ans);
+
     
 }
 

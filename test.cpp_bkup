@@ -201,40 +201,15 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    umap<ll,ll> emax;
-    vvp ps(N);
-    rep(i, N) {
-        LONG(M);
-        rep(j, M) {
-            LONG(p, e);
-            ps[i].emplace_back(p, e);
-            chmax(emax[p], e);
-        }
+    vl cnt(N);
+    rep1(x, N-1) {
+        for(ll y=x; y<N; y+=x) cnt[y]++;
     }
-    ll ans = 0, ext = 0;
-    umap<ll,ll> cnt;
-    rep(i, N) {
-        for(auto [p,e]: ps[i]) {
-            if(emax[p]==e) {
-                de3(i,p,e)
-                cnt[p]++;
-            }
-        }
+    ll ans = 0;
+    rep1(x, N-1) {
+        ans += cnt[x] * cnt[N-x];
     }
-    de(emax)de(cnt)
-    rep(i, N) {
-        bool exist = false;
-        for(auto [p,e]: ps[i]) {
-            if(emax[p]==e && cnt[p]==1) {
-                ++ans;
-                exist = true;
-                break;
-            }
-        }
-        if(!exist) ext |= 1;
-    }
-    de2(ans, ext);
-    Out(ans+ext);
+    Out(ans);
     
 }
 
