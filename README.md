@@ -1040,7 +1040,7 @@
 - !復習価値中 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - !復習価値高 LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 
-## 約数関係の重複除外
+## 約数系の重複除外
 - 最大公約数GCDがgとなる数字組合せ数え上げなどに応用可能
 - L<=(x,y)<=Rの二つの数字であり、xもyもkの倍数である組合せの数をg(k)とするとg(k)は簡単に求まるが、最大公約数がkという訳ではない
 - xとyの最大公約数がkである組合せの数をf(k)とすると、f(k)はg(k)をベースに考えると良い
@@ -1053,9 +1053,9 @@
 - しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
-- !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+- !復習価値小 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
-- !復習価値高 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
+- !復習価値高 a^bと表せる数の個数 （動画解説にメビウス関数の気持ちあり）[F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !要復習 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 
 ## 剰余埋めつくし系

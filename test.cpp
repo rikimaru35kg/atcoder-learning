@@ -197,83 +197,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1e6+10;
-    Sieve sieve(M);
-    vl pn(M);
-    rep(i, M) {
-        if(sieve.is_prime(i)) pn[i]++;
-    }
-    rep(i, M-1) pn[i+1] += pn[i];
-
+    LONG(L, R);
+    auto cal=[&](ll g) {
+        ll ret = 0;
+        ret += R/g;
+        ret -= (L-1)/g;
+        return ret;
+    };
+    vl f(R+1);
     ll ans = 0;
-    for(ll p=2; p*p*p*p<=N; p++) {
-        if(!sieve.is_prime(p)) continue;
-        ll q3max = N/p;
-        auto f = [&](ll x) -> bool {
-            ll y = 1;
-            rep(i, 3) { y *= x; }
-            return y <= q3max;
-        };
-        ll q = binary_search(0, (ll)1e6, f);
-        de2(p, q)
-        if(p>=q) break;
-        ans += pn[q] - pn[p];
-        de(ans)
+    for(ll g=R; g>=2; g--) {
+        f[g] = cal(g)*cal(g);
+        for(ll x=2*g; x<=R; x+=g) {
+            f[g] -= f[x];
+        }
+        ans += f[g];
+    }
+    repk(g, max(L,2LL), R+1) {
+        ll now = (R/g)*2 - 1;
+        ans -= now;
     }
     Out(ans);
     
