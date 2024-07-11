@@ -200,23 +200,41 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    vl dist(K, INF);
-    deque<ll> que;
-    auto push=[&](ll v, ll d, bool fr) {
-        if(dist[v] <= d) return;
-        dist[v] = d;
-        if(fr) que.push_front(v);
-        else que.push_back(v);
-    };
-    push(1, 1, true);
-    while(que.size()) {
-        auto v = que.front(); que.pop_front();
-        ll d = dist[v];
-        push((v+1)%K, d+1, false);
-        push((10*v)%K, d, true);
+    LONG(N);
+    umap<ll,ll> emax;
+    vvp ps(N);
+    rep(i, N) {
+        LONG(M);
+        rep(j, M) {
+            LONG(p, e);
+            ps[i].emplace_back(p, e);
+            chmax(emax[p], e);
+        }
     }
-    Out(dist[0]);
+    ll ans = 0, ext = 0;
+    umap<ll,ll> cnt;
+    rep(i, N) {
+        for(auto [p,e]: ps[i]) {
+            if(emax[p]==e) {
+                de3(i,p,e)
+                cnt[p]++;
+            }
+        }
+    }
+    de(emax)de(cnt)
+    rep(i, N) {
+        bool exist = false;
+        for(auto [p,e]: ps[i]) {
+            if(emax[p]==e && cnt[p]==1) {
+                ++ans;
+                exist = true;
+                break;
+            }
+        }
+        if(!exist) ext |= 1;
+    }
+    de2(ans, ext);
+    Out(ans+ext);
     
 }
 
