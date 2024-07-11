@@ -200,15 +200,14 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl cnt(N);
-    rep1(x, N-1) {
-        for(ll y=x; y<N; y+=x) cnt[y]++;
+    LONG(N, M);
+    ll ans = INF;
+    for(ll a=1; a*a-a<M+1000 && a<=N; ++a) {
+        ll b = Divceil(M, a);
+        if(b>N) continue;
+        chmin(ans, a*b);
     }
-    ll ans = 0;
-    rep1(x, N-1) {
-        ans += cnt[x] * cnt[N-x];
-    }
+    ch1(ans);
     Out(ans);
     
 }

@@ -209,23 +209,46 @@ vector<long long> listup_divisor(long long x, bool issort=false) {
     return ret;
 }
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    auto ds = listup_divisor(N);
-    ll ans = 0;
+    LONG(N); STRING(S);
+    auto ds = listup_divisor(N, true);
+    map<ll,mint> mp;
+    vl stck;
+    mint ans = 0;
     for(auto d: ds) {
-        if(d==1) continue;
-        ll n = N;
-        while(n%d==0) n /= d;
-        if((n-1)%d==0) ++ans;
+        if(d==N) continue;
+        vb must(d);
+        rep(i, N) {
+            if(S[i]=='.') must[i%d] = true;
+        }
+        mint now = 1;
+        rep(i, d) if(!must[i]) now *= 2;
+
+        for(auto pd: stck) {
+            if(d%pd==0) now -= mp[pd];
+        }
+        de(d)de(must)de(now)
+        mp[d] = now;
+        ans += now;
+        stck.push_back(d);
     }
-
-    auto ds2 = listup_divisor(N-1);
-    ans += SIZE(ds2)-1;
     Out(ans);
-
     
 }
 

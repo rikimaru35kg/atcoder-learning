@@ -973,6 +973,13 @@
 - !復習価値高 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
 - !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
 
+## 積分解
+- M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
+- a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
+### 例題
+- !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+
+
 ## 約数
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
 - 元の数をMとすると、計算量はO(sqrt(M))
@@ -1008,19 +1015,6 @@
 - !復習価値中 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
 - !復習価値低 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
 
-## 積分解（約数類似系）
-- M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
-- a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
-### 例題
-- !復習価値低 [D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
-
-## 周期系数え上げ
-- 異なる周期であっても最終的に同じ列になるものを同一視しなければならない場合、最小周期で場合分けすれば重複を排除できる
-- しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
-- よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
-### 例題
-- !要復習 バイトシフトテーブル数え上げ [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
-
 ## 素数判定
 - sqrt(N)まで試して割れなければ素数である
 - 素数関連では最も簡単（素因数分解や素数全列挙と比較して）
@@ -1054,10 +1048,15 @@
 - その為、f(k)=g(k)-Σf(i*g) (i>=2)とすると重複なく数えられる
 - この時、f(k)はkの降順で求めていけば順次求まる
 - 計算量は調和級数になるのでO(NlogN)
-- メビウス関数を使うと引き算Σの部分を係数化できるが、発展的な話題で現在理解不可能 ### 例題
+- 異なる周期であっても最終的に同じ列になるものを同一視しなければならない場合、最小周期で場合分けすれば重複を排除できる
+- しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
+- よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
+### 例題
 - !復習価値中 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値高 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
+- !要復習 バイトシフトテーブル数え上げ [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+
 
 ## 剰余埋めつくし系
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
