@@ -197,18 +197,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
+
+
+//! Legendre's Formura
+//! ret = Σ{i=1-∞}floor(n/p^i)
+long long legendre_formula(long long n, long long p) {
+    long long ret = 0;
+    while(n) {
+        ret += n/p;
+        n /= p;
+    }
+    return ret;
+}
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll ans = INF;
-    for(ll a=1; a*a-a<M+1000 && a<=N; ++a) {
-        ll b = Divceil(M, a);
-        if(b>N) continue;
-        chmin(ans, a*b);
+    LONG(N);
+    Sieve sieve(N+10);
+
+    vp ps;
+    rep1(x, N) {
+        if(!sieve.is_prime(x)) continue;
+        ll y = legendre_formula(N, x);
+        ps.emplace_back(x, y);
     }
-    ch1(ans);
-    Out(ans);
+    de(ps)
+
+    ll M = 75;
+    vl dp(M+1);
+    dp[1] = 1;
+    for(auto [p, n]: ps) {
+        vl pdp(M+1); swap(pdp, dp);
+        rep(j, M+1) {
+            if(pdp[j]==0) continue;
+            rep(x, n+1) {
+                ll nj = j*(x+1);
+                if(nj<=M) dp[nj] += pdp[j];
+            }
+        }
+    }
+    de(dp)
+    Out(dp[M]);
     
 }
 

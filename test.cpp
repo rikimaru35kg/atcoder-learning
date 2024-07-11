@@ -197,21 +197,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
         }
     }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint1000000007;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -226,27 +245,26 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    auto ds = listup_divisor(N, true);
-    map<ll,mint> mp;
-    vl stck;
-    mint ans = 0;
-    for(auto d: ds) {
-        if(d==N) continue;
-        vb must(d);
-        rep(i, N) {
-            if(S[i]=='.') must[i%d] = true;
+    LONG(N);
+    VL(A, N);
+    Sieve sieve(1e6+100);
+    map<ll,ll> mp;
+    vvp pns(N);
+    rep(i, N) {
+        auto tmp = sieve.factorize(A[i]);
+        pns[i] = tmp;
+        for(auto [p,n]: tmp) {
+            chmax(mp[p], n);
         }
-        mint now = 1;
-        rep(i, d) if(!must[i]) now *= 2;
+    }
+    mint lc = 1;
+    for(auto [p,n]: mp) { lc *= mint(p).pow(n); }
 
-        for(auto pd: stck) {
-            if(d%pd==0) now -= mp[pd];
-        }
-        de(d)de(must)de(now)
-        mp[d] = now;
+    mint ans = 0;
+    rep(i, N) {
+        mint now = lc;
+        now /= A[i];
         ans += now;
-        stck.push_back(d);
     }
     Out(ans);
     

@@ -146,6 +146,16 @@ public:
     }
 };
 
+//! Legendre's Formura
+//! ret = Σ{i=1-∞}floor(n/p^i)
+long long legendre_formula(long long n, long long p) {
+    long long ret = 0;
+    while(n) {
+        ret += n/p;
+        n /= p;
+    }
+    return ret;
+}
 
 int main () {
     long long K; cin >> K;
