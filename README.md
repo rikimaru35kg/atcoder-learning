@@ -1031,7 +1031,7 @@
 - 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
 - !復習価値高 約数の個数が75の数 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 
-## 素数全列挙
+## エラトステネスの篩と高速素因数分解
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
 - 2から順番に調べていき、素数でなければcontinue、素数ならその倍数を消していく（falseにしていく）
 - 消す倍数はp^2以上の数でOK（i=p*pからスタートしてi+=pしてループを回す）

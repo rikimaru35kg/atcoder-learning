@@ -228,43 +228,52 @@ public:
     }
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    Sieve sieve(1e6+100);
-    map<ll,ll> mp;
-    vvp pns(N);
-    rep(i, N) {
-        auto tmp = sieve.factorize(A[i]);
-        pns[i] = tmp;
-        for(auto [p,n]: tmp) {
-            chmax(mp[p], n);
-        }
+    ll M = 1e6+10;
+    Sieve sieve(M);
+    vl pn(M);
+    rep(i, M) {
+        if(sieve.is_prime(i)) pn[i]++;
     }
-    mint lc = 1;
-    for(auto [p,n]: mp) { lc *= mint(p).pow(n); }
+    rep(i, M-1) pn[i+1] += pn[i];
 
-    mint ans = 0;
-    rep(i, N) {
-        mint now = lc;
-        now /= A[i];
-        ans += now;
+    ll ans = 0;
+    for(ll p=2; p*p*p*p<=N; p++) {
+        if(!sieve.is_prime(p)) continue;
+        ll q3max = N/p;
+        auto f = [&](ll x) -> bool {
+            ll y = 1;
+            rep(i, 3) { y *= x; }
+            return y <= q3max;
+        };
+        ll q = binary_search(0, (ll)1e6, f);
+        de2(p, q)
+        if(p>=q) break;
+        ans += pn[q] - pn[p];
+        de(ans)
     }
     Out(ans);
     

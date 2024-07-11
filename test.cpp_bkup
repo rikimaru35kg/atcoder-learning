@@ -228,48 +228,45 @@ public:
     }
 };
 
-
-//! Legendre's Formura
-//! ret = Σ{i=1-∞}floor(n/p^i)
-long long legendre_formula(long long n, long long p) {
-    long long ret = 0;
-    while(n) {
-        ret += n/p;
-        n /= p;
-    }
-    return ret;
-}
-
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    Sieve sieve(N+10);
-
-    vp ps;
-    rep1(x, N) {
-        if(!sieve.is_prime(x)) continue;
-        ll y = legendre_formula(N, x);
-        ps.emplace_back(x, y);
-    }
-    de(ps)
-
-    ll M = 75;
-    vl dp(M+1);
-    dp[1] = 1;
-    for(auto [p, n]: ps) {
-        vl pdp(M+1); swap(pdp, dp);
-        rep(j, M+1) {
-            if(pdp[j]==0) continue;
-            rep(x, n+1) {
-                ll nj = j*(x+1);
-                if(nj<=M) dp[nj] += pdp[j];
-            }
+    VL(A, N);
+    Sieve sieve(1e6+100);
+    map<ll,ll> mp;
+    vvp pns(N);
+    rep(i, N) {
+        auto tmp = sieve.factorize(A[i]);
+        pns[i] = tmp;
+        for(auto [p,n]: tmp) {
+            chmax(mp[p], n);
         }
     }
-    de(dp)
-    Out(dp[M]);
+    mint lc = 1;
+    for(auto [p,n]: mp) { lc *= mint(p).pow(n); }
+
+    mint ans = 0;
+    rep(i, N) {
+        mint now = lc;
+        now /= A[i];
+        ans += now;
+    }
+    Out(ans);
     
 }
 
