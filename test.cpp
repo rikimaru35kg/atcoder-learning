@@ -196,31 +196,23 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+void solve() {
+    LONG(N, D, K);
+    --K;
+    ll g = gcd(N, D);
+    ll ng = N/g;
+    ll c = K/ng;
+    ll r = K%ng;
+    ll ans = (c + r*D)%N;
+    Out(ans);
+
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L, R);
-    auto cal=[&](ll g) {
-        ll ret = 0;
-        ret += R/g;
-        ret -= (L-1)/g;
-        return ret;
-    };
-    vl f(R+1);
-    ll ans = 0;
-    for(ll g=R; g>=2; g--) {
-        f[g] = cal(g)*cal(g);
-        for(ll x=2*g; x<=R; x+=g) {
-            f[g] -= f[x];
-        }
-        ans += f[g];
-    }
-    repk(g, max(L,2LL), R+1) {
-        ll now = (R/g)*2 - 1;
-        ans -= now;
-    }
-    Out(ans);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 

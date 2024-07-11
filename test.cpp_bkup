@@ -196,35 +196,29 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vm f(K+1);
-    mint ans = 0;
-    for(ll g=K; g>=1; --g) {
-        f[g] = mint(K/g).pow(N);
-        for(ll x=g*2; x<=K; x+=g) {
-            f[g] -= f[x];
-        }
-        ans += f[g]*g;
+    LONG(N, M);
+    vp edges;
+    rep(i, M) {
+        LONG(a, c);
+        edges.emplace_back(c, a);
     }
+    sort(all(edges));
+    ll ans = 0;
+    for(auto [c, a]: edges) {
+        ll g = gcd(N, a);
+        de4(N,a,c,g)
+        ll now = (N-g) * c;
+        ans += now;
+        de(now)
+        N = g;
+        if(g==1) break;
+    }
+    if(N!=1) Pm1
     Out(ans);
-
     
 }
 
