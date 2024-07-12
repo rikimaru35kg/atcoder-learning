@@ -197,82 +197,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
-#include <atcoder/math>
-using namespace atcoder;
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
-    Sieve sieve(1e2);
-    ll m = 0;
-    vl sz;
-    rep1(i, 23) {
-        if(!sieve.is_prime(i)) continue;
-        ll ni = i;
-        if(i==2) ni = 4;
-        if(i==3) ni = 9;
-        m += ni;
-        sz.push_back(ni);
+    DOUBLE(_X, _Y, _R);
+    ll C = 10000;
+    ll Xo = round(_X*C); ll Yo = round(_Y*C); ll R = round(_R*C);
+    de3(Xo,Yo,R)
+    auto judgein=[&](ll x, ll y) -> bool {
+        return euclid_dist2({x,y},{Xo,Yo}) <= R*R;
+    };
+    
+    ll ans = 0;
+    {
+        ll xl = Div(Xo, C) * C;
+        ll xr = xl + C;
+        ll sy = Divceil(Yo+R, C) * C;
+        for(ll y=sy; y>=Yo; y-=C) {
+            while(judgein(xl,y)) xl -= C;
+            while(judgein(xr,y)) xr += C;
+            if(xr==xl+C) {
+                continue;
+            }
+            ans += (xr-xl)/C - 1;
+        }
     }
-    vl A;
-    ll idx = 1;
-    for(auto s: sz) {
-        rep(i, s) A.push_back((i+1)%s+idx);
-        idx += s;
+    de(ans)
+    {
+        ll xl = Div(Xo, C) * C;
+        ll xr = xl + C;
+        ll sy = Div(Yo-R, C) * C;
+        for(ll y=sy; y<Yo; y+=C) {
+            while(judgein(xl,y)) xl -= C;
+            while(judgein(xr,y)) xr += C;
+            if(xr==xl+C) {
+                continue;
+            }
+            // de2(y, (xr-xl)/C - 1);
+            ans += (xr-xl)/C - 1;
+        }
     }
-    ll M = m;
-    Out(M);
-    Out(A);
-    cout << flush;
-    VL(B, M);
-    vl rem, mod;
-    idx = 0;
-    for(auto s: sz) {
-        ll r = (B[idx]-(A[idx]-1)+s)%s;
-        ll m = s;
-
-        de3(idx,r, m)
-        rem.push_back(r);
-        mod.push_back(m);
-        idx += s;
-    }
-
-    auto [t,s] = crt(rem,mod);
-    Out(t);
+    Out(ans);
+    
     
 }
 
 // ### test.cpp ###
-

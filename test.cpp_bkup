@@ -108,10 +108,10 @@ using cd = complex<double>;
 #define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
-inline void Out(double x) {printf("%.15f",x);cout<<endl;}
-template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<endl;}
-template<typename T> inline void Out(T x) {cout<<x<<endl;}
-inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<endl;}
+inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
+template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
+template<typename T> inline void Out(T x) {cout<<x<<'\n';}
+inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
 template<typename T> inline void Out(queue<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop();} cout<<endl;}
 template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.front()<<" "; q.pop_front();} cout<<endl;}
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
@@ -228,80 +228,48 @@ public:
     }
 };
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
     }
     return ret;
 }
-
-#include <atcoder/math>
-using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N); VL(A, N);
 
-    Sieve sieve(1e2);
-    ll m = 0;
-    vl sz;
-    rep1(i, 23) {
-        if(!sieve.is_prime(i)) continue;
-        ll ni = i;
-        if(i==2) ni = 4;
-        if(i==3) ni = 9;
-        m += ni;
-        sz.push_back(ni);
+    Sieve sieve(2e5);
+    umap<ll,ll> mp;
+    ll ans = 0;
+    ll zero = 0;
+    rep(i, N) {
+        if(A[i]==0) {
+            ++zero;
+            continue;
+        }
+        auto vecp = sieve.factorize(A[i]);
+        ll now = 1;
+        for(auto [p,n]: vecp) {
+            if(n%2==0) continue;
+            now *= p;
+        }
+        ans += mp[now];
+        mp[now]++;
     }
-    vl A;
-    ll idx = 1;
-    ll cnt = 0;
-    for(auto s: sz) {
-        rep(i, s) A.push_back((i+1)%s+idx);
-        idx += s;
-        ++cnt;
-        // if(cnt>=2) break;
-    }
-    ll M = m;
-    Out(M);
-    rep(i, M) {
-        printf("%lld", A[i]);
-        if(i==M-1) cout << endl;
-        else cout << ' ';
-    }
-    VL(B, M);
-    vl rem, mod;
-    idx = 0;
-    cnt = 0;
-    for(auto s: sz) {
-        ll r = (B[idx]-(A[idx]-1)+s)%s;
-        ll m = s;
-
-        de3(idx,r, m)
-        rem.push_back(r);
-        mod.push_back(m);
-        idx += s;
-        ++cnt;
-        // if(cnt>=2) break;
-    }
-
-    auto [t,s] = crt(rem,mod);
-    Out(t);
+    ans += nCr(zero, 2);
+    ans += zero * (N-zero);
+    Out(ans);
     
 }
 
