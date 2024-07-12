@@ -1128,7 +1128,7 @@
 ## 組合せの数
 - combinationを使う
 ### 例題
-- [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+- !復習価値低 [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
 - !復習価値中 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - !要復習 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)

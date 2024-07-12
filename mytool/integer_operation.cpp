@@ -96,12 +96,18 @@ public:
         for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
     long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
         if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
     long long nPr(long long n, long long r) {
         if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r) {
+        return nCr(n+r-1, r);
     }
     long long get_fact(long long n) {
         if (n > mx) return 0;
@@ -119,6 +125,7 @@ public:
         else return a * child % mod * child % mod;
     }
 };
+
 
 //! Use this class if n >= 1e7 && r <= 1e6
 class Combination2 {

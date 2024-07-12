@@ -200,33 +200,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
+    LONG(N, Q);
     VL(A, N);
-    vvl events(M);
-    rep1(i, N) {
-        ll a = A[i-1];
-        ll l = Divceil(-a,i);
-        chmax(l, 1LL);
-        ll r = Div(N-a, i);
-        chmin(r, M);
-        for(ll x=l; x<=r; x++) {
-            events[x-1].push_back(a+x*i);
-        }
-    }
-    de(events)
-    for(auto v: events) {
-        ll sz = SIZE(v);
-        vb exist(sz);
-        rep(i, sz) {
-            if(v[i]>=sz) continue;
-            exist[v[i]] = true;
-        }
-        ll mex = 0;
-        rep(i, sz) {
-            if(exist[mex]) ++mex;
-            else break;
-        }
-        Out(mex);
+    set<ll> notused;
+    rep(i, N+1) notused.insert(i);
+    umap<ll,ll> mp;
+    auto add=[&](ll x) {
+        if(x>=N) return;
+        if(mp[x]==0) notused.erase(x);
+        mp[x]++;
+    };
+    auto del=[&](ll x) {
+        if(x>=N) return;
+        mp[x]--;
+        if(mp[x]==0) notused.insert(x);
+    };
+    rep(i, N) add(A[i]);
+
+    rep(j, Q) {
+        LONG(i, x); --i;
+        del(A[i]);
+        A[i] = x;
+        add(A[i]);
+        de(notused)
+        Out(*notused.begin());
     }
     
 }
