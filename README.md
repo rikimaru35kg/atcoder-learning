@@ -1049,16 +1049,7 @@
 - !復習価値低 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 - !復習価値中 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 
-## 中国剰余定理（CRT: Chinese Remainder Theorem）
-- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
-- 式変形により拡張ユークリッドの互除法で解ける
-- ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
-- sはLCM(C,D)であり、s==0の場合は解なし
-### 例題
-- !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
-- !要復習 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
-
-## 約数系の重複除外
+## 約数系包除
 - 最大公約数GCDがgとなる数字組合せ数え上げなどに応用可能
 - L<=(x,y)<=Rの二つの数字であり、xもyもkの倍数である組合せの数をg(k)とするとg(k)は簡単に求まるが、最大公約数がkという訳ではない
 - xとyの最大公約数がkである組合せの数をf(k)とすると、f(k)はg(k)をベースに考えると良い
@@ -1076,6 +1067,23 @@
 - !復習価値高 a^bと表せる数の個数 （動画解説にメビウス関数の気持ちあり）[F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !要復習 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 
+## 中国剰余定理（CRT: Chinese Remainder Theorem）
+- t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
+- 式変形により拡張ユークリッドの互除法で解ける
+- ACLにcrt関数があり、auto [t, s] = crt({a,b}, {C,D});で求まる
+- sはLCM(C,D)であり、s==0の場合は解なし
+- なお、Cx+a=Dy+bの形にしてextgcdを使って解く事も可能だが、ハマりポイントが幾つかあるので注意
+- ax+by=gの特殊解を(x0,y0)とすると、一般解は(x0+b'k, y0-a'k)と書ける
+- ax+by=rを求めるならxもyもr/g倍する
+- この後、xはb'で割った余りにしておかないと後々オーバーフローする可能性あり
+- ax+zの最小値を求めたいときは、ax+zをLCM(a,b)で割った余りとすれば良い
+- [この提出](https://atcoder.jp/contests/abc193/submissions/55467607)を参考に
+- あるいは、ax+zに__int128_tを使っても良い
+- ハマりポイントが多いので、CRTライブラリを推奨する
+### 例題
+- !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
+- !要復習 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
+
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
 - 平方数を考えるときは指数をMOD 2で考える（つまり0か1のみで、0の場合は無いのと同じなので指数が1の素因数の積になる）
@@ -1088,7 +1096,7 @@
 ## 分数・有理数
 - 有理数を小数で扱うと誤差が出てしまう
 - 分母が必ず正の既約分数とし、分母と分子をそれぞれ保存すれば有理数を一対一で表せる
-- 有理数ライブラリは便利だが、掛け算や足し算を複数回（**2回以上**）繰り返すとオーバーフローするので注意
+- 有理数ライブラリは便利だが、**1e9以下**であっても掛け算や足し算を複数回（**2回以上**）繰り返すとオーバーフローするので注意
 - なお、y=ax+bを標準系として保存したい場合、a=p/qとすると、qy=px+bqとなるので、y切片bではなく分母をかけたbq(=qy-px)を保存すると良い
 - ちなみに傾き∞の場合は(p,q,bq)=(1,0,-x)となり、同一標準形で扱える
 ### 例題
@@ -1504,6 +1512,10 @@
 - 空setに対して演算するとRE
 - set.erase(set.end())などとするとRE（なぜならset.erase(--set.end())とする必要があるから）
 - 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
+
+## インタラクティブ
+- 問題文にも明記あるが、余計な改行は不正出力と見なされWAとなるので注意（おそらく空文字を出力したと見なされる）
+- 出力のたびにflushするの、cout<<flush;でOK、わざわざ'\n'をendl;に書き換えなくてOK
 
 ## 実装テクニック（その他）
 - -1%2は-1と計算されてしまう。分子がマイナスになる恐れのある場合、自作マクロPercentを使うと良い（pythonと同一の結果が帰ってくる仕様）
