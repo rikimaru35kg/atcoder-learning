@@ -221,8 +221,9 @@ public:
         if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[n-r] % mod;
     }
-    long long nHr(long long n, long long r) {
-        return nCr(n+r-1, r);
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
     }
     long long get_fact(long long n) {
         if (n > mx) return 0;
@@ -240,10 +241,9 @@ public:
         else return a * child % mod * child % mod;
     }
 };
-
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -258,13 +258,16 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Combination comb(1e5, M107);
+    LONG(N, M, K);
+    Combination comb(1e6, M998);
 
-    while(true) {
-        LONG(n, r);
-        Out(comb(n, r));
+    mint ans = 0;
+    rep(k, K+1) {
+        mint now = M*mint(M-1).pow(N-1-k);
+        now *= comb.nHr(N-k, N, true);
+        ans += now;
     }
-
+    Out(ans);
     
 }
 

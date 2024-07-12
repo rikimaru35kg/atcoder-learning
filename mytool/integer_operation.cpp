@@ -106,8 +106,9 @@ public:
         if (r < 0 || r > n || n < 0 || n > mx) return 0;
         return facts[n] * ifacts[n-r] % mod;
     }
-    long long nHr(long long n, long long r) {
-        return nCr(n+r-1, r);
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
     }
     long long get_fact(long long n) {
         if (n > mx) return 0;
@@ -125,7 +126,6 @@ public:
         else return a * child % mod * child % mod;
     }
 };
-
 
 //! Use this class if n >= 1e7 && r <= 1e6
 class Combination2 {
