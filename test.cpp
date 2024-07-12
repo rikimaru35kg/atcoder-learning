@@ -197,58 +197,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(_X, _Y, _R);
-    ll C = 10000;
-    ll Xo = round(_X*C); ll Yo = round(_Y*C); ll R = round(_R*C);
-    de3(Xo,Yo,R)
-    auto judgein=[&](ll x, ll y) -> bool {
-        return euclid_dist2({x,y},{Xo,Yo}) <= R*R;
+    LONG(N, Q);
+    VL(A, N);
+    set<ll> notused;
+    rep(i, N+1) notused.insert(i);
+    umap<ll,ll> mp;
+    auto add=[&](ll x) {
+        if(x>=N) return;
+        if(mp[x]==0) notused.erase(x);
+        mp[x]++;
     };
-    
-    ll ans = 0;
-    {
-        ll xl = Div(Xo, C) * C;
-        ll xr = xl + C;
-        ll sy = Divceil(Yo+R, C) * C;
-        for(ll y=sy; y>=Yo; y-=C) {
-            while(judgein(xl,y)) xl -= C;
-            while(judgein(xr,y)) xr += C;
-            if(xr==xl+C) {
-                continue;
-            }
-            ans += (xr-xl)/C - 1;
-        }
+    auto del=[&](ll x) {
+        if(x>=N) return;
+        mp[x]--;
+        if(mp[x]==0) notused.insert(x);
+    };
+    rep(i, N) add(A[i]);
+
+    rep(j, Q) {
+        LONG(i, x); --i;
+        del(A[i]);
+        A[i] = x;
+        add(A[i]);
+        de(notused)
+        Out(*notused.begin());
     }
-    de(ans)
-    {
-        ll xl = Div(Xo, C) * C;
-        ll xr = xl + C;
-        ll sy = Div(Yo-R, C) * C;
-        for(ll y=sy; y<Yo; y+=C) {
-            while(judgein(xl,y)) xl -= C;
-            while(judgein(xr,y)) xr += C;
-            if(xr==xl+C) {
-                continue;
-            }
-            // de2(y, (xr-xl)/C - 1);
-            ans += (xr-xl)/C - 1;
-        }
-    }
-    Out(ans);
-    
     
 }
 

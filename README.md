@@ -952,6 +952,14 @@
 - !復習価値中 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
 - 基本（直接的な2進数問題でないのでNote非掲載） [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
 
+## MEX（Minimum Excluded value）
+- K個の数のMEXは必ずK以下
+- 長さKの配列を持ち、順番に数が存在するか見ていけば良い
+### 例題
+- 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
+- !復習価値中 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
+- !復習価値中 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+
 ## 整数
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
 - c++では負の数の割り算の挙動に注意。a/bはabs(a)/abs(b)に符号を付けたもので、a%bはa=(a/b)*b + a%bが成り立つ値となる（余りが負になる事がある）
@@ -1114,14 +1122,6 @@
 ## 方程式
 - 係数を保存しておくことで文字式を表すことができる。例えばax+bを保存したい場合、aとbを保存しておく
 - 文字式を保存できれば、方程式を解くこともできる。ax+bが保存されていれば、ax+b=cが解ける（x=(c-b)/a）
-### 例題
-- !要復習 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
-
-## MEX（Minimum Excluded value）
-- K個の数のMEXは必ずK以下
-- 長さKの配列を持ち、順番に数が存在するか見ていけば良い
-### 例題
-- 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 
 # 場合の数と確率・期待値
 
@@ -1277,6 +1277,7 @@
 ## 投票方式で考える
 ### 例題
 - [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
+- !復習価値中 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
 ## まとめて処理する
 - 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
@@ -1618,7 +1619,6 @@
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 
 ## ACできなかった問題
-- [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 - [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
