@@ -827,6 +827,7 @@
 ### 例題
 - !復習価値高 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - !復習価値低 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
+- !要復習 等差数列の個数 [ E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値高 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
@@ -914,6 +915,12 @@
 ### 例題
 - 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - !復習価値中 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+
+## Suffix Array
+- ある要素からのsuffixを辞書順に並べたもの
+- O(N)で求まるらしい（ACLにある）
+### 例題
+- !要復習 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
 
 # 数
 
@@ -1141,12 +1148,12 @@
 - 重複組合せで各変数がai≦xi≦biのとき、まず全体からΣaiを引きxi'=xi-aiとすれば全変数0以上と見なせる
 - 次に各変数にci=bi-aiの上限がなければ単純な重複組合せ問題だが、包除原理によりj個の変数がci超えとなる場合の数を足したり引いたりすればOK
 ### 例題
-- !復習価値中 多段キーボードで打てる文字種類 [F - typewriter](https://atcoder.jp/contests/abc246/tasks/abc246_f)
-- !復習価値中 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
+- !復習価値低 多段キーボードで打てる文字種類 [F - typewriter](https://atcoder.jp/contests/abc246/tasks/abc246_f)
+- !復習価値低 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 - !復習価値中 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
 - !復習価値高 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
-- !復習価値高 最大公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
+- !復習価値高 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
 - !復習価値高 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 
 ## 一つずつ決めるDP
@@ -1466,7 +1473,7 @@
 - 実際には関数オブジェクトなので関数ではないらしい
 
 ## 文字列
-- S.substr(開始位置, 長さ)で部分文字列を取得可能
+- S.substr(開始位置, 長さ)で部分文字列を取得可能。長さが後ろをはみ出しても大丈夫
 - regex_match(S, regex("正規表現"))で一致性を確認可能
 - ただし正規表現は遅い。計算量がシビアな問題ではなるべく使わない
 - S.find(s)は文字列sの含まれる最初の位置を出力。存在しない場合はnposを出力（sは文字でも可）
