@@ -821,13 +821,19 @@
 - !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも。NOTE非掲載） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
+## 長さを持つDP
+- 何回操作したか等の長さもキーにするDP
+### 例題
+- !要復習 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
+- !復習価値中 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
+
+
 ## ひねりDP
 - 状態を工夫する事でDPに落とし込める問題
 - 問題ごとに考察が必要
 ### 例題
 - !復習価値高 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - !復習価値低 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
-- !要復習 等差数列の個数 [ E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値高 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
@@ -869,7 +875,6 @@
 - 経路問題、進んだステップ数もキーにする場合あり
 ### 例題
 - !復習価値中 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
-- !復習価値中 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
 
 # 文字列
 
@@ -1151,15 +1156,16 @@
 - !復習価値低 多段キーボードで打てる文字種類 [F - typewriter](https://atcoder.jp/contests/abc246/tasks/abc246_f)
 - !復習価値低 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 - !復習価値中 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
+- !復習価値高 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 - !復習価値高 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
-- !復習価値高 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
-- !復習価値高 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
+- !要復習 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
 
-## 一つずつ決めるDP
+## 分布に対するDP
+- 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
 ### 例題
-- !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
-- !復習価値高 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
+- !復習価値高 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
+- !復習価値小 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
 - 上の問題解ければ解法自明なので問題見るだけでOK（note非掲載） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 
 ## 独立事象を掛け合わせる
