@@ -1180,8 +1180,8 @@
 - 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
 ### 例題
 - !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
-- !復習価値中 典型的な期待値DP [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
-- !復習価値高 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
+- !復習価値中 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
+- !復習価値中 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 
 ## 対称性を利用する
 ### 例題
