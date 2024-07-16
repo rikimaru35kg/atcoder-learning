@@ -197,40 +197,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/fenwicktree>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N-1);
-    reverse(all(A));
-
-    vm dp(N), ds(N+1);
-    dp[0] = 0;
-    rep1(i, N-1) {
-        ll a = A[i-1];
-        // rep1(j, a) {
-        //     dp[i] += dp[i-j]/a;
-        // }
-        // dp[i] += (a+1)/a;
-        dp[i] = (ds[i] - ds[i-a])/a + (mint)(a+1)/a;
-        ds[i+1] = ds[i] + dp[i];
+    LONG(N, Q);
+    VLM(C, N);
+    vvl is(N);
+    rep(i, N) {
+        is[C[i]].push_back(i);
     }
-    de(dp)
-    de(ds)
-    Out(dp[N-1]);
+    vp plot;
+    rep(i, N) {
+        ll sz = SIZE(is[i]);
+        rep(j, sz-1) {
+            plot.emplace_back(is[i][j], is[i][j+1]);
+        }
+    }
+    sort(all(plot));
+    vt3 query;
+    rep(i, Q) {
+        LONGM(l, r);
+        query.emplace_back(l, r, i);
+    }
+    sort(allr(query));
+
+    fenwick_tree<ll> tree(N+10);
+    vl ans(Q);
+    for(auto [l, r, i]: query) {
+        while(plot.size() && plot.back().first>=l) {
+            auto [x, y] = plot.back(); plot.pop_back();
+            tree.add(y, 1);
+        }
+        ll num = tree.sum(0, r+1);
+        ans[i] = r-l+1 - num;
+    }
+    Out(ans);
     
 }
 

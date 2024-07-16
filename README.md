@@ -1181,12 +1181,12 @@
 ### 例題
 - !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
 - !復習価値中 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
-- !復習価値中 ルーレット（良問） [E - Roulettes（青diff）](https://atcoder.jp/contests/abc314/tasks/abc314_e)
+- !復習価値中 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 
 ## 対称性を利用する
 ### 例題
-- !要復習 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 - !復習価値高 黒いボール位置の期待値 [E - Random Swaps of Balls](https://atcoder.jp/contests/abc360/tasks/abc360_e)
+- !要復習 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 
 # 2変数問題
 
@@ -1196,13 +1196,15 @@
 - xの小さい順に走査し、存在するか判定。存在しなければyの値をためていく
 - こうすることで、xについての大小判定を気にする必要がなくなる
 - xに等しい値が存在する場合の実装に注意（同時に処理するならmap<int,vi>的な実装が必要）
+- 自分自身（点）もペアとして選べるような場合は、追加してからカウントする
+- この時、同じ点があると厄介なので、同一x座標は先に全部追加してからカウントする
 ### 例題
-- 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
 - 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
-- !復習価値高 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
-- !復習価値高 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
-- !復習価値高 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
-- !復習価値高 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
+- 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
+- !復習価値中 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
+- !要復習 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
+- !復習価値中 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
+- !復習価値中 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
 
 ## XY独立に考える
 ### 例題

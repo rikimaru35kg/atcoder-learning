@@ -197,37 +197,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl C(N), P(N);
-    vvl S(N);
-    rep(i, N) {
-        cin>>C[i]; cin>>P[i];
-        VL(s, P[i]);
-        S[i] = s;
-    }
+    LONG(N);
+    VP(P, N);
+    sort(all(P));
 
-    vd dp(M+1);
-    repr(mi, M) {
-        double mn = INF;
-        rep(ni, N) {
-            double now = 0;
-            double zero = 0;
-            double nzsum = 0;
-            rep(pi, P[ni]) {
-                ll s = S[ni][pi];
-                if(s==0) ++zero;
-                else { nzsum += dp[min(mi+s,M)]; }
+    auto f=[&](ll d) ->bool {
+        ll idx = 0;
+        ll mn = INF, mx = -INF;
+        rep(i, N) {
+            auto [x, y] = P[i];
+            while(idx<N && P[idx].first<=x-d) {
+                auto [px, py] = P[idx];
+                chmin(mn, py);
+                chmax(mx, py);
+                ++idx;
             }
-            now = nzsum/(P[ni]-zero) + P[ni]/(P[ni]-zero) * C[ni];
-            chmin(mn, now);
+            if(y-mn>=d || mx-y>=d) return true;
         }
-        dp[mi] = mn;
-    }
-    Out(dp[0]);
-
+        return false;
+    };
+    ll ans = binary_search(0, (ll)1e10, f);
+    Out(ans);
     
 }
 
