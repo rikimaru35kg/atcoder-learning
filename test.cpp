@@ -220,26 +220,38 @@ double binary_search (double ok, double ng, auto f) {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(P, N);
-    sort(all(P));
+    LONG(N, K);
+    vl X(N), Y(N);
+    rep(i, N) cin>>X[i]>>Y[i];
+    sort(all(X)); sort(all(Y));
+    vl dbycx(N), dbycy(N);
+    rep(i, N-1) {
+        ll cost = min(i+1, N-1-i);
+        dbycx[cost] += X[i+1]-X[i];
+        dbycy[cost] += Y[i+1]-Y[i];
+    }
+    ll dx = X.back() - X[0];
+    ll dy = Y.back() - Y[0];
 
-    auto f=[&](ll d) ->bool {
-        ll idx = 0;
-        ll mn = INF, mx = -INF;
-        rep(i, N) {
-            auto [x, y] = P[i];
-            while(idx<N && P[idx].first<=x-d) {
-                auto [px, py] = P[idx];
-                chmin(mn, py);
-                chmax(mx, py);
-                ++idx;
-            }
-            if(y-mn>=d || mx-y>=d) return true;
+    auto count=[&](vl &dbyc, ll d, ll dx) -> ll {
+        ll cnt = 0;
+        d = max(dx - d, 0LL);
+        rep1(c, N-1) {
+            ll w = min(d, dbyc[c]);
+            cnt += w*c;
+            d -= w;
         }
-        return false;
+        return cnt;
     };
-    ll ans = binary_search(0, (ll)1e10, f);
+
+    auto f=[&](ll d) -> bool {
+        ll cnt = 0;
+        cnt += count(dbycx, d, dx);
+        cnt += count(dbycy, d, dy);
+        return cnt <= K;
+    };
+
+    ll ans = binary_search((ll)1e10, -1, f);
     Out(ans);
     
 }
