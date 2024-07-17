@@ -260,36 +260,51 @@ public:
 #endif
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vvm a(N, vm(N));
-    rep(i, N) rep(j, N) {
-        LONG(_a);
-        a[i][j] = _a;
+    LONG(N);
+    vvl P(N, vl(3, 1));
+    rep(i, N) {
+        LONG(x, y);
+        P[i][0] = x, P[i][1] = y;
     }
-    Mat<mint> A(N, a);
-    A.pow(K);
-    vm v(N, 1);
-    vm w = A*v;
-    mint ans = 0;
-    rep(i, N) ans += w[i];
+    LONG(M);
+    vp ops;
+    rep(i, M) {
+        LONG(t);
+        ll p = 0;
+        if(t>=3) { cin >> p; }
+        ops.emplace_back(t, p);
+    }
+    LONG(Q);
+    vvp query(M+1);
+    rep(i, Q) {
+        LONG(a, b); --b;
+        query[a].emplace_back(b, i);
+    }
+
+    vp ans(Q);
+    Mat<ll> mat(3, {{1,0,0},{0,1,0},{0,0,1}});
+    rep(i, M+1) {
+        for(auto [b, qi]: query[i]) {
+            vl v = mat * P[b];
+            ans[qi] = {v[0], v[1]};
+        }
+        if(i==M) break;
+        auto [t, p] = ops[i];
+
+        if(t==1) {
+            mat = Mat<ll>(3, {{0,1,0},{-1,0,0},{0,0,1}}) * mat;
+        } else if (t==2) {
+            mat = Mat<ll>(3, {{0,-1,0},{1,0,0},{0,0,1}}) * mat;
+        } else if (t==3) {
+            mat = Mat<ll>(3, {{-1,0,2*p},{0,1,0},{0,0,1}}) * mat;
+        } else {
+            mat = Mat<ll>(3, {{1,0,0},{0,-1,2*p},{0,0,1}}) * mat;
+        }
+    }
     Out(ans);
     
 }

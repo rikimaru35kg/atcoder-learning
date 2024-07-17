@@ -1263,7 +1263,7 @@
 - こうなる理由はEDPC R - Walkの解説参照
 - Nが50以下（本当？100ぐらいでも大丈夫な気がするが…）、Kがかなり大きい（10^9～10^18）の場合、行列累乗が使える可能性あり
 ### 例題
-- !復習価値高 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
+- !復習価値中 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 
 ## アフィン変換（同次行列）
 - x, yが1次を保ったまま変換される場合は、アフィン変換可能
