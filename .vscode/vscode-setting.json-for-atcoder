@@ -39,4 +39,24 @@
     "files.autoSave": "afterDelay",
     "editor.fontFamily": "'Anonymous Pro', monospace",
     "files.autoSaveDelay": 500,
+    "highlight.decorations": { "rangeBehavior": 3 },
+    "highlight.regexFlags": "gi",
+    "highlight.minDelay": 50,
+    "highlight.maxMatches": 250,
+    "highlight.regexes": {
+        "(// =+)": [
+            {
+                "backgroundColor":"#02aab0",
+                "color":"#ffffff",
+                "fontWeight": "bold"
+            },
+        ],
+        "(//  DO NOT.+)": [
+            {
+                "backgroundColor":"#02aab0",
+                "color":"#ffffff",
+                "fontWeight": "bold"
+            },
+        ],
+    },
 }

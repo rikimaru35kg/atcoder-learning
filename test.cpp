@@ -197,61 +197,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -INF;}
+
+#include <atcoder/segtree>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl X(N), Y(N);
-    rep(i, N) cin>>X[i]>>Y[i];
-    sort(all(X)); sort(all(Y));
-    vl dbycx(N), dbycy(N);
-    rep(i, N-1) {
-        ll cost = min(i+1, N-1-i);
-        dbycx[cost] += X[i+1]-X[i];
-        dbycy[cost] += Y[i+1]-Y[i];
+    INF = 1000;
+    // =============================================================
+    //  DO NOT FORGET TO UNDO THE DEBUG CHANGES!!
+    // =============================================================
+    LONG(N, C);
+    segtree<S,op,e> segp(N), segm(N);
+    segp.set(0, 0); segm.set(0, 0);
+    vl dp(N, -INF);
+    dp[0] = 0;
+
+    auto upd=[&](ll i, ll x) {
+        segp.set(i, max(segp.get(i), x + C*i));
+        segm.set(i, max(segm.get(i), x - C*i));
+    };
+
+    LONG(M);
+    rep(i, M) {
+        LONG(t, p); --t;
+        chmax(dp[t], p-C*t + segp.prod(0, t));
+        de(dp[t])
+        chmax(dp[t], p+C*t + segm.prod(t, N));
+        de(dp[t])
+        upd(t, dp[t]);
+        de(dp)
     }
-    ll dx = X.back() - X[0];
-    ll dy = Y.back() - Y[0];
-
-    auto count=[&](vl &dbyc, ll d, ll dx) -> ll {
-        ll cnt = 0;
-        d = max(dx - d, 0LL);
-        rep1(c, N-1) {
-            ll w = min(d, dbyc[c]);
-            cnt += w*c;
-            d -= w;
-        }
-        return cnt;
-    };
-
-    auto f=[&](ll d) -> bool {
-        ll cnt = 0;
-        cnt += count(dbycx, d, dx);
-        cnt += count(dbycy, d, dy);
-        return cnt <= K;
-    };
-
-    ll ans = binary_search((ll)1e10, -1, f);
+    ll ans = -INF;
+    rep(i, N) chmax(ans, dp[i]);
     Out(ans);
     
 }
