@@ -197,31 +197,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = (1<<N)-1;
-    vp spice;
-    rep(i, M) {
-        LONG(c);
-        spice.emplace_back(c, i+1);
-    }
-    sort(all(spice));
-    vl base(N);
+    LONG(N); VLM(A, N);
+    vl cnt(N);
+    rep(i, N) { cnt[A[i]]++; }
+
+    ll same = 0;
+    rep(i, N) same += nCr(cnt[i], 2);
+    auto add=[&](ll x) {
+        same -= nCr(cnt[x], 2);
+        cnt[x]++;
+        same += nCr(cnt[x], 2);
+    };
+    auto del=[&](ll x) {
+        same -= nCr(cnt[x], 2);
+        cnt[x]--;
+        same += nCr(cnt[x], 2);
+    };
+
     ll ans = 0;
-    for(auto [c, x]: spice) {
-        de2(c, x);
-        rep(i, N) if(x>>i&1) {
-            x ^= base[i];
-            if(x>>i&1) {
-                base[i] = x;
-                ans += c;
-                break;
-            }
-        }
-        de(base)
-        de(ans)
+    rep(l, N) {
+        ll r = N-l;
+        if(l>=r) break;
+        ll now = nCr(r-l, 2);
+        now -= same;
+        del(A[l]);
+        del(A[r-1]);
+        ans += now;
     }
     Out(ans);
     

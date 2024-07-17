@@ -1285,8 +1285,8 @@
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
 - !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
-- !復習価値高 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc127/submissions/54660548)の方が解法意図が分かりやすい)
-- !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f) (snuke解説より[自分の提出](https://atcoder.jp/contests/abc224/submissions/54662426)の方が解法意図が分かりやすい)
+- !復習価値高 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
+- !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - !要復習 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 
 ## 投票方式で考える

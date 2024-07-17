@@ -197,113 +197,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-//! Currently, only operator* is defined.
-template <typename T>
-class Mat {
-    long long n; vector<vector<T>> a;
-public:
-    // Initialize n*n matrix
-    Mat (long long n, const vector<vector<T>> &mat={})
-    : n(n), a(n, vector<T>(n)) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
 #ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-};
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl P(N, vl(3, 1));
+    STRING(S);
+    ll N = SIZE(S);
+    if(N==1) {
+        Out(S[0]-'0');
+        return 0;
+    }
+    mint ans = 0;
+    vm two(N+10), ten(N+10);
+    two[0] = 1; ten[0] = 1;
+    rep(i, N+9) two[i+1] = two[i]*2;
+    rep(i, N+9) ten[i+1] = ten[i]*10;
+
+    mint fi = 5;
     rep(i, N) {
-        LONG(x, y);
-        P[i][0] = x, P[i][1] = y;
-    }
-    LONG(M);
-    vp ops;
-    rep(i, M) {
-        LONG(t);
-        ll p = 0;
-        if(t>=3) { cin >> p; }
-        ops.emplace_back(t, p);
-    }
-    LONG(Q);
-    vvp query(M+1);
-    rep(i, Q) {
-        LONG(a, b); --b;
-        query[a].emplace_back(b, i);
-    }
-
-    vp ans(Q);
-    Mat<ll> mat(3, {{1,0,0},{0,1,0},{0,0,1}});
-    rep(i, M+1) {
-        for(auto [b, qi]: query[i]) {
-            vl v = mat * P[b];
-            ans[qi] = {v[0], v[1]};
-        }
-        if(i==M) break;
-        auto [t, p] = ops[i];
-
-        if(t==1) {
-            mat = Mat<ll>(3, {{0,1,0},{-1,0,0},{0,0,1}}) * mat;
-        } else if (t==2) {
-            mat = Mat<ll>(3, {{0,-1,0},{1,0,0},{0,0,1}}) * mat;
-        } else if (t==3) {
-            mat = Mat<ll>(3, {{-1,0,2*p},{0,1,0},{0,0,1}}) * mat;
-        } else {
-            mat = Mat<ll>(3, {{1,0,0},{0,-1,2*p},{0,0,1}}) * mat;
-        }
+        de("===")
+        ll x = S[i]-'0';
+        de(x)
+        mint now = 0;
+        mint a = x*two[N-2];
+        de(a)
+        ll n = N-1-i;
+        de(n)
+        now = a * (fi.pow(n) - 1) / (fi - 1);
+        now += two[i] * x * ten[N-1-i];
+        de(now)
+        ans += now;
     }
     Out(ans);
     
