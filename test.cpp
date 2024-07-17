@@ -197,105 +197,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +-*/ leads to overflowing
-//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
-//! BE CAREFUL ABOUT CALCULATION COST!
-//! O(logM) just for initializing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b == 0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return *this + Frac(x);
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
-    }
-    Frac operator-(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return *this - Frac(x);
-    }
-    Frac operator-(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
-    }
-    Frac operator*(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return Frac(p*x, q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    Frac operator/(const ll x) {
-        if (q == 0 || x == 0) return Frac(1, 0);
-        return Frac(p, q*x);
-    }
-    Frac operator/(const Frac &rhs) {
-        if (q == 0 || rhs.p == 0) return Frac(1, 0);
-        return Frac(p*rhs.q, q*rhs.p);
-    }
-    bool operator<(const ll x) const {
-        return *this < Frac(x);
-    }
-    bool operator<(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p < 0;
-    }
-    bool operator<=(const ll x) const {
-        return *this <= Frac(x);
-    }
-    bool operator<=(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p <= 0;
-    }
-    bool operator>(const ll x) const {
-        return *this > Frac(x);
-    }
-    bool operator>(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p > 0;
-    }
-    bool operator>=(const ll x) const {
-        return *this >= Frac(x);
-    }
-    bool operator>=(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p >= 0;
-    }
-    bool operator==(const ll x) const {
-        return (q==1 && p==x);
-    }
-    bool operator==(const Frac &rhs) {
-        return (p==rhs.p && q==rhs.q);
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<pair<Frac,Frac>> span;
+    LONG(N, M);
+    vp beit;
     rep(i, N) {
-        LONG(x, y);
-        Frac l = Frac(y-1,x);
-        Frac r = Frac(y,x-1);
-        span.emplace_back(r, l);
+        LONG(a, b);
+        if(a>M) continue;
+        beit.emplace_back(a, b);
     }
-    sort(all(span));
-    
-    Frac mx = Frac(-1,1);
+    sort(allr(beit));
+
+    multiset<ll> bs;
     ll ans = 0;
-    for(auto [r,l]: span) {
-        if(l<mx) continue;
-        ++ans;
-        chmax(mx, r);
+    rep1(i, M) {
+        while(beit.size() && beit.back().first <= i) {
+            auto [a,b] = beit.back(); beit.pop_back();
+            bs.insert(b);
+        }
+        if(bs.size()) {
+            ans += *bs.rbegin();
+            bs.erase(--bs.end());
+        }
     }
     Out(ans);
     
