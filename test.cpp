@@ -200,28 +200,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp beit;
-    rep(i, N) {
-        LONG(a, b);
-        if(a>M) continue;
-        beit.emplace_back(a, b);
-    }
-    sort(allr(beit));
+    LONG(N); VL(A, N);
+    vl deg(N, 1);
+    pq pque;
+    rep(i, N) { pque.emplace(3*A[i], i); }
 
-    multiset<ll> bs;
     ll ans = 0;
-    rep1(i, M) {
-        while(beit.size() && beit.back().first <= i) {
-            auto [a,b] = beit.back(); beit.pop_back();
-            bs.insert(b);
-        }
-        if(bs.size()) {
-            ans += *bs.rbegin();
-            bs.erase(--bs.end());
-        }
+    rep(i, N) ans += A[i];
+
+    rep(_, N-2) {
+        auto [c, i] = pque.top(); pque.pop();
+        ans += c;
+        ll d = deg[i]+1;
+        ll nd = d+1;
+        pque.emplace((nd*nd-d*d)*A[i], i);
+        deg[i]=d;
     }
     Out(ans);
+
     
 }
 

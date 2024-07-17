@@ -200,32 +200,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp spans;
-    rep(i, N) {
-        LONG(t, d);
-        spans.emplace_back(t, t+d);
+    LONG(N, L);
+    VL(A, N);
+    ll sum = accumulate(all(A), 0LL);
+    if(L-sum>0) {
+        A.push_back(L-sum);
+        ++N;
     }
-    sort(allr(spans));
-    multiset<ll> rs;
-
-    ll t = 0;
+    priority_queue<ll,vl,greater<ll>> pque;
+    rep(i, N) pque.emplace(A[i]);
     ll ans = 0;
-    while(rs.size() || spans.size()) {
-        while(rs.size() && *rs.begin()<t) { rs.erase(rs.begin()); }
-
-        while(spans.size() && spans.back().first<=t) {
-            auto [l, r] = spans.back(); spans.pop_back();
-            rs.insert(r);
-        }
-
-        if(rs.size()) {
-            ++ans;
-            rs.erase(rs.begin());
-        }
-
-        if(rs.size()) ++t;
-        else if( spans.size()) t = spans.back().first;
+    while(pque.size()>=2) {
+        auto a1 = pque.top(); pque.pop();
+        auto a2 = pque.top(); pque.pop();
+        ans += a1+a2;
+        pque.emplace(a1+a2);
     }
     Out(ans);
     

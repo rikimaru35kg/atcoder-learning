@@ -1011,7 +1011,7 @@
 - オーダーではO(N^(1/(loglogN)))らしく、O(sqrt(N))よりは小さいがO(logN)よりは大きい
 ### 例題
 - 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
-- !復習価値小 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
+- !復習価値低 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 
 ## GCD最大公約数と拡張ユークリッドの互除法
 - 最大公約数は各素因数の最小指数を選んだもの
@@ -1080,7 +1080,7 @@
 - しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
-- !復習価値小 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+- !復習価値低 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値高 a^bと表せる数の個数 （動画解説にメビウス関数の気持ちあり）[F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !要復習 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
@@ -1165,7 +1165,7 @@
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
 ### 例題
 - !復習価値高 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
-- !復習価値小 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
+- !復習価値低 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
 - 上の問題解ければ解法自明なので問題見るだけでOK（note非掲載） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 
 ## 独立事象を掛け合わせる
@@ -1215,7 +1215,7 @@
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる
 - min{f(i,j)}を求める問題でf(i,j)=g(i)+h(j)なら、min(g(i)+h(j))=min(g(i))+min(h(j))と選択肢を分離できる
 ### 例題
-- !復習価値小 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
+- !復習価値低 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
 - !復習価値高 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
 
 ## 十字領域の総和最大化
@@ -1223,7 +1223,7 @@
 - Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
 ### 例題
 - 基本 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
-- !復習価値小 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
+- !復習価値低 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
 
 # 貪欲法
 
@@ -1237,23 +1237,23 @@
 - 基本 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
 - !復習価値低 フが何個見えるか [E - フ](https://atcoder.jp/contests/abc225/tasks/abc225_e)
 
-## 平面走査的貪欲法
+## 区間貪欲
 - 2つ以上の変数がある場合、**1つに減らせれば貪欲な選択ができる**（区間スケジューリングはその代表例）
 - 区間スケジューリング類似問題は、何らかの形で範囲の形として表せれば、解法が思いつきやすい。あるいは範囲を考える問題では貪欲法を疑ってみると良い
 - 貪欲法の場合、**左から見るか右から見るかで結果が変わる**ので、順序も重要!
 ### 例題
 - !復習価値中 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
-- !復習価値小 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
+- !復習価値低 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 
 ## その他貪欲法
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
 - 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
-- !復習価値中 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
+- !復習価値低 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - !復習価値低 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !復習価値低 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
-- !要復習 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
+- !復習価値高 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
 
 # 行列
 
