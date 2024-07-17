@@ -1222,8 +1222,8 @@
 - 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり
 - Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
 ### 例題
-- !復習価値低 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
-- !要復習 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
+- !基本 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- !復習価値小 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
 
 # 貪欲法
 
@@ -1299,6 +1299,9 @@
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
 ### 例題
 - !復習価値低 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
+
+## 後ろから考える
+- 塗りつぶしのや～つ
 
 ## マンハッタン距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる

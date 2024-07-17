@@ -197,43 +197,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return -INF;}
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    INF = 1000;
-    // =============================================================
-    //  DO NOT FORGET TO UNDO THE DEBUG CHANGES!!
-    // =============================================================
-    LONG(N, C);
-    segtree<S,op,e> segp(N), segm(N);
-    segp.set(0, 0); segm.set(0, 0);
-    vl dp(N, -INF);
-    dp[0] = 0;
-
-    auto upd=[&](ll i, ll x) {
-        segp.set(i, max(segp.get(i), x + C*i));
-        segm.set(i, max(segm.get(i), x - C*i));
-    };
-
-    LONG(M);
-    rep(i, M) {
-        LONG(t, p); --t;
-        chmax(dp[t], p-C*t + segp.prod(0, t));
-        de(dp[t])
-        chmax(dp[t], p+C*t + segm.prod(t, N));
-        de(dp[t])
-        upd(t, dp[t]);
-        de(dp)
+    LONG(N);
+    umap<ll,ll> row, col;
+    umap<ll,vp> csbyrow;
+    rep(i, N) {
+        LONGM(r, c); LONG(x);
+        row[r] += x; col[c] += x;
+        csbyrow[r].emplace_back(c, x);
     }
-    ll ans = -INF;
-    rep(i, N) chmax(ans, dp[i]);
+    multiset<ll> st;
+    for(auto [c,v]: col) st.insert(v);
+
+    ll ans = 0;
+    for(auto [r,v]: row) {
+        for(auto [c, x]: csbyrow[r]) {
+            chmax(ans, v + col[c] - x);
+        }
+        for(auto [c, x]: csbyrow[r]) { st.erase(st.find(col[c])); }
+        if(st.size()) chmax(ans, v+*st.rbegin());
+        for(auto [c, x]: csbyrow[r]) { st.insert(col[c]); }
+    }
     Out(ans);
     
 }

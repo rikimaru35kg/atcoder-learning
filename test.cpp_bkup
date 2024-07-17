@@ -200,21 +200,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, C);
-    VVL(A, H, W);
-    ll ans = INF;
-    rep(ri, 2) {
-        vector D(H, vl(W, INF));
-        rep(i, H) rep(j, W) {
-            if(i) chmin(D[i][j], D[i-1][j]);
-            if(j) chmin(D[i][j], D[i][j-1]);
-            chmin(D[i][j], A[i][j]-C*(i+j));
+    LONG(H, W, M);
+    vl row(H), col(W);
+    vvl csbyrow(H);
+    rep(i, M) {
+        LONGM(r, c);
+        row[r]++, col[c]++;
+        csbyrow[r].push_back(c);
+    }
+    multiset<ll> st;
+    rep(c, W) if(col[c]) st.insert(col[c]);
+
+    ll ans = 0;
+    rep(r, H) {
+        for(auto c: csbyrow[r]) {
+            chmax(ans, row[r] + col[c] - 1);
         }
-        rep(i, H) rep(j, W) {
-            if(i) chmin(ans, A[i][j]+C*(i+j)+D[i-1][j]);
-            if(j) chmin(ans, A[i][j]+C*(i+j)+D[i][j-1]);
-        }
-        reverse(all(A));
+        for(auto c: csbyrow[r]) { st.erase(st.find(col[c])); }
+        if(st.size()) chmax(ans, row[r] + *st.rbegin());
+        for(auto c: csbyrow[r]) { st.insert(col[c]); }
     }
     Out(ans);
     
