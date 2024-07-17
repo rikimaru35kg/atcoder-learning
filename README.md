@@ -1275,7 +1275,7 @@
 - 基底を次々に追加する実装が分かりやすい（解説動画参照）
 - M*N行列の場合、O(M*N^2)となるので使えるかどうか計算量に注意
 ### 例題
-- !要復習 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
+- !復習価値高 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
 
 # その他典型
 
