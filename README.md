@@ -1222,7 +1222,7 @@
 - 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり
 - Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
 ### 例題
-- !基本 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
+- 基本 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
 - !復習価値小 復習価値高 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
 
 # 貪欲法
@@ -1234,7 +1234,7 @@
 - 全部で最大K会議選べるとしたとき、最初の1会議をなるべく早く終わらせた方が残りK-1会議の選択肢が増える。2番目、3番目の会議も同様の考え方
 - 亜種問題として、全ての会議を串刺しする問題あり。この階は区間スケジューリング問題の解に一致する。終了時刻昇順でソートしたとき、最初に終わる会議をその終了時刻までに選択するしかないが、なるべくたくさん串刺しするには、終了時刻で串刺しした方が残りの会議数を減らせる為
 ### 例題
-- !復習価値低 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
+- 基本 亜種問題 [D - Islands War](https://atcoder.jp/contests/abc103/tasks/abc103_d)
 - !復習価値低 フが何個見えるか [E - フ](https://atcoder.jp/contests/abc225/tasks/abc225_e)
 
 ## 平面走査的貪欲法
