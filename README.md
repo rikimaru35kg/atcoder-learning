@@ -823,10 +823,11 @@
 
 ## 長さを持つDP
 - 何回操作したか等の長さもキーにするDP
+- 制約が小さいときに見かけがち
 ### 例題
 - !要復習 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
+- !復習価値高 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 - !復習価値中 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
-
 
 ## ひねりDP
 - 状態を工夫する事でDPに落とし込める問題
@@ -1356,12 +1357,12 @@
 - 同様に隣り合う要素をswapできる場合、任意の2要素を反転できる事と等しい（バブルソートの仕組みに通じる）
 ### 例題
 - !復習価値低 隣り合う要素の符号を反転 [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
-- !要復習 グラフの2彩色場合の数 [E - Red and Blue Graph](https://atcoder.jp/contests/abc262/tasks/abc262_e)
+- !復習価値高 グラフの2彩色場合の数 [E - Red and Blue Graph](https://atcoder.jp/contests/abc262/tasks/abc262_e)
 
 ## MODで考えてみる
 - 求めたい物に割り算が関係する場合、MODで考えてみると見通しが良くなる場合あり。特にDPする際には、MODであれば状態数が減らせる
-### 例題
-- !復習価値高 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
+<!-- ### 例題 -->
+<!-- - 長さを持つDPに移動 !復習価値高 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f) -->
 
 ## 円環問題
 - 円環はそのままでは扱いにくいので、(1)2つ繋げて列にするか、(2)頂点1から頂点1までの区間長Nの列にするか、(3)頂点1から頂点Nまでの区間長N-1の列にするかで考えると見通しが良くなる

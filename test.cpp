@@ -197,42 +197,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll M = 2e5+10;
-    fenwick_tree<mint> tnum(M), tsum(M);
-    mint sum = 0;
-
+    LONG(N, X);
+    VL(A, N);
+    vvvl dp(N+1, vvl(N+1, vl(N+1, -INF)));
+    vvvl edp = dp;
+    rep1(m, N) dp[0][0][m] = 0;
     rep(i, N) {
-        ll a = A[i];
-        ll k = i+1;
-        sum += a;
-        sum += 2*a*tnum.sum(0, a);
-        sum += 2*tsum.sum(a, M);
-        de(sum)
-        mint ans = sum / k/k;
-        Out(ans);
-
-        tnum.add(a, 1);
-        tsum.add(a, a);
+        vvvl pdp = edp; swap(pdp, dp);
+        rep(j, N+1) rep(k, N) rep1(m, N) {
+            if(pdp[j][k][m]==-INF) continue;
+            chmax(dp[j][k][m], pdp[j][k][m]);
+            if(j<N) chmax(dp[j+1][(k+A[i])%m][m], pdp[j][k][m]+A[i]);
+        }
     }
+    ll ans = INF;
+    rep1(k, N) {
+        if(dp[k][X%k][k]==-INF) continue;
+        ll now = X - dp[k][X%k][k];
+        now /= k;
+        chmin(ans, now);
+    }
+    Out(ans);
     
 }
 
