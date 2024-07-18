@@ -200,24 +200,16 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VLM(X, M);
-    vl imos(N+10);
-    auto add=[&](ll l, ll r, ll x) {
-        imos[l] += x;
-        imos[r] -= x;
-    };
-    rep(i, M-1) {
-        ll l = X[i], r = X[i+1];
-        if(l>r) swap(l, r);
-        add(l, r, N-(r-l));
-        add(0, l, r-l);
-        add(r, N, r-l);
+    LONG(M);
+    ll k = 0, s = 0;
+    rep(i, M) {
+        LONG(d, c);
+        s += d*c;
+        k += c;
     }
-    rep(i, N+9) imos[i+1] += imos[i];
-    de(imos)
-    ll ans = INF;
-    rep(i, N) chmin(ans, imos[i]);
+    ll num = 9*k+s;
+    num -= 18;
+    ll ans = Divceil(num, 9);
     Out(ans);
     
 }

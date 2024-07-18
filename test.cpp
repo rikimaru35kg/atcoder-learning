@@ -200,24 +200,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl cords(2*N);
+    LONG(N, K);
+    VL(A, N);
+    vvl Sc(K, vl(N+1));
     rep(i, N) {
-        LONGM(a, b);
-        cords[a] = i;
-        cords[b] = i;
+        Sc[i%K][i+1] = A[i];
     }
-    vl stck;
-    rep(i, 2*N) {
-        ll c = cords[i];
-        if(stck.size()) {
-            if(stck.back() == c) stck.pop_back();
-            else stck.push_back(c);
-        } else {
-            stck.push_back(c);
+    rep(k, K) rep(i, N) Sc[k][i+1] += Sc[k][i];
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        ll sum = Sc[0][r] - Sc[0][l];
+        bool ok = true;
+        rep(k, K) {
+            if(Sc[k][r] - Sc[k][l] != sum) ok = false;
         }
+        if(ok) puts("Yes");
+        else puts("No");
     }
-    if(stck.size()) PYes PNo
+
     
 }
 
