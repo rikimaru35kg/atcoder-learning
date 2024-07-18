@@ -1308,7 +1308,7 @@
 - !復習価値高 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
 - !要復習 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 
-## マンハッタン距離
+## マンハッタン距離・チェビシェフ距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
 - maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
 - 逆に45度回転して1/√2倍拡大（座標系視点なら√2倍拡大）した座標系を(a,b)とすると、xy座標でのチェビシェフ距離がab座標でのマンハッタン距離になる
@@ -1319,7 +1319,7 @@
 ### 例題
 - 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
-- !要復習 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
+- !復習価値高 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 
 ## 計算量がlog(N)やsqrt(N)に落ちる問題
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある

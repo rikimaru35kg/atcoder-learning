@@ -201,33 +201,40 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    queue<ll> que;
-    vb pushed(N);
-    auto push=[&](ll v) {
-        if(pushed[v]) return;
-        pushed[v] = true;
-        que.push(v);
-    };
+    vl Xo, Yo, Xe, Ye;
     rep(i, N) {
-        LONGM(a, b);
-        from[a].emplace_back(i);
-        from[b].emplace_back(i);
-        if(i==a) push(i);
-        if(i==b) push(i);
-    }
-    de(que)de(from)
-    vl ans;
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        ans.push_back(v);
-        for(auto nv: from[v]) {
-            push(nv);
+        LONG(x, y);
+        if((x+y)%2==0) {
+            Xe.push_back(Div(x+y, 2));
+            Ye.push_back(Div(x-y, 2));
+        } else {
+            Xo.push_back(Div(x-1+y, 2));
+            Yo.push_back(Div(x-1-y, 2));
         }
     }
-    if(SIZE(ans)!=N) Pm1
-    reverse(all(ans));
-    for(auto x: ans) Out(x+1);
+    de(Xo)de(Yo)de(Xe)de(Ye)
+    sort(all(Xe)); sort(all(Xo));
+    sort(all(Ye)); sort(all(Yo));
+
+    auto calc=[&](vl &x) -> ll {
+        ll n = SIZE(x);
+        ll ret = 0;
+        rep(i, n-1) {
+            ll d = x[i+1] - x[i];
+            d *= (i+1) * (n-1-i);
+            ret += d;
+        }
+        return ret;
+    };
+
+    ll ans = calc(Xo);
+    de(ans);
+    ans += calc(Yo);
+    de(ans);
+    ans += calc(Xe);
+    de(ans);
+    ans += calc(Ye);
+    Out(ans);
     
 }
 
