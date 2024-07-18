@@ -1421,13 +1421,13 @@
 - サイクル個数の偶奇と置換の偶奇は一対一対応する（N=偶数なら一致、N=奇数なら逆）
 - 重複要素のある数列は偶置換でも奇置換でもあると見なせる
 ### 例題
-- !要復習 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+- !復習価値高 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
 
 ## パスカルの三角形
 - 各行の総和は2^行番号となる
 - ある斜め列のすぐ下側の斜め列は累積和の行列となっている
 ### 例題
-- !復習価値高 グリッド経路数の総和 [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
+- !復習価値低 グリッド経路数の総和 [F - Many Many Paths](https://atcoder.jp/contests/abc154/tasks/abc154_f)
 
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
