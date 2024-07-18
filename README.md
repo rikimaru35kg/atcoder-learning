@@ -1389,10 +1389,6 @@
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - !復習価値中 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 
-## max(max())の形に帰着させる
-- maxの中にmaxがある形にできれば、簡単に解ける
-- !復習価値低 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
-
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
 - 衝突確率を下げる為、素数を多めに用意すると良い
@@ -1400,6 +1396,10 @@
 - Zoblist hashは集合同士をO(1)で比較可能
 - 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
 - メルセンヌツイスターで乱数を発生させると良い
+- 巨大積の衝突確率見積について
+- AB-C==0(mod P)となるPを選ぶとアウト。つまり、PがAB-Cの約数だとアウト
+- Pを1e9ぐらい、AB-Cが1e2000ぐらいだとすると、Pぐらいの大きさの素数は最大で200個ぐらい存在
+- Pを1e9～2e9から選ぶとすると、1e6個ぐらい素数があり、その中で200個の素数がアウトなので、衝突確率は200/1e6ぐらい
 ### 例題
 - !復習価値中 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
 - !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
@@ -1410,7 +1410,11 @@
 - NIMでは石の数がgrundy数だが、一般には遷移先のMEX（非負非除最小整数）が各山のgrundy数となる
 - NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
 ### 例題
-- !要復習 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
+- !復習価値高 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
+
+## max(max())の形に帰着させる
+- maxの中にmaxがある形にできれば、簡単に解ける
+- 基本 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 
 ## 偶置換・奇置換
 - 順列を置換した回数で分類（順列である必要はないが重複要素があっては駄目）

@@ -197,47 +197,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    LONG(Q);
-    vl T(Q), X(Q), Y(Q), V(Q);
-    vp coef(N, Pr(1, 0));
-    vt3 cond;
-    rep(i, Q) {
-        cin >> T[i]>>X[i]>>Y[i]>>V[i];
-        --X[i], --Y[i];
-        if(T[i]==0) cond.emplace_back(X[i], Y[i], V[i]);
-    }
-    sort(all(cond));
-    for(auto [x, y, v]: cond) {
-        de3(x,y,v)
-        auto [a, b] = coef[x];
-        coef[y].first = -a;
-        coef[y].second = v-b;
-    }
-    de(coef)
+    LONG(N, M);
+    vl X(N), Y(N), Z(N);
+    rep(i, N) cin>>X[i]>>Y[i]>>Z[i];
 
-    dsu uf(N);
-    rep(i, Q) {
-        ll t = T[i], x = X[i], y = Y[i], v = V[i];
-        if(t==0) {
-            uf.merge(x, y);
-        } else {
-            if(!uf.same(x, y)) puts("Ambiguous");
-            else {
-                auto [a, b] = coef[x];
-                ll z = (v - b)*a;
-                auto [p, q] = coef[y];
-                ll ans = p*z + q;
-                Out(ans);
-            }
+    ll ans = 0;
+    for(ll a=-1; a<=1; a+=2)
+    for(ll b=-1; b<=1; b+=2)
+    for(ll c=-1; c<=1; c+=2) {
+        vl A(N);
+        rep(i, N) {
+            A[i] = a*X[i]+b*Y[i]+c*Z[i];
         }
+        sort(allr(A));
+        ll now = 0;
+        rep(i, M) {
+            now += A[i];
+        }
+        chmax(ans, now);
     }
+    Out(ans);
+    
     
 }
 
