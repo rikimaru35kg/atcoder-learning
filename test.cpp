@@ -200,23 +200,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y);
+    LONG(N);
+    VL(H, N);
+    H.insert(H.begin(), INF);
+    ++N;
 
-    umap<ll,ll> mem;
-    auto dfs=[&](auto f, ll x) -> ll {
-        if(x<=1) return abs(X-x);
-        if(mem.count(x)) return mem[x];
-        ll ret = abs(X-x);
-        if(x%2==0) chmin(ret, f(f, x/2) + 1);
-        else {
-            chmin(ret, f(f, (x+1)/2) + 2);
-            chmin(ret, f(f, x/2) + 2);
-        }
-        de2(x, ret)
-        return mem[x] = ret;
-    };
-    ll ans = dfs(dfs, Y);
-    Out(ans);
+    vl water(N);
+    vp stck;
+    stck.emplace_back(INF, 0);
+
+    rep1(i, N-1) {
+        while(stck.back().first<=H[i]) stck.pop_back();
+        auto [h, pi] = stck.back();
+        ll now = H[i]*(i-pi) + water[pi];
+        water[i] = now;
+        stck.emplace_back(H[i], i);
+    }
+    rep1(i, N-1) {
+        printf("%lld ", water[i]+1);
+    }
+    cout << endl;
     
 }
 

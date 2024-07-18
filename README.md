@@ -1445,7 +1445,7 @@
 - 左から順番に{高さ,要素番号}のpairをスタックに積んでいくが、自分より高さの高いスタックは二度と使われることがないので捨ててよい。これで左スパンが求まる
 - 右スパンも同様に求まるので、最大面積も求まる
 ### 例題
-- !復習価値中 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
+- 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 - !復習価値高 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
