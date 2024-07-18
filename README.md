@@ -1291,7 +1291,7 @@
 
 ## 投票方式で考える
 ### 例題
-- [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
+- 基本 [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - !復習価値中 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
 ## まとめて処理する
@@ -1301,7 +1301,12 @@
 - !復習価値低 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 
 ## 後ろから考える
-- 塗りつぶしのや～つ
+- 後勝ち操作の場合
+- 最初は選択肢が多く、だんだん少なくなる場合
+- 辺の削除クエリの場合
+### 例題
+- !復習価値高 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
+- !要復習 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 
 ## マンハッタン距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる

@@ -197,53 +197,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N);
-    vl cnt(N);
-    rep(i, N) { cnt[A[i]]++; }
-
-    ll same = 0;
-    rep(i, N) same += nCr(cnt[i], 2);
-    auto add=[&](ll x) {
-        same -= nCr(cnt[x], 2);
-        cnt[x]++;
-        same += nCr(cnt[x], 2);
+    LONG(N);
+    vvl from(N);
+    queue<ll> que;
+    vb pushed(N);
+    auto push=[&](ll v) {
+        if(pushed[v]) return;
+        pushed[v] = true;
+        que.push(v);
     };
-    auto del=[&](ll x) {
-        same -= nCr(cnt[x], 2);
-        cnt[x]--;
-        same += nCr(cnt[x], 2);
-    };
-
-    ll ans = 0;
-    rep(l, N) {
-        ll r = N-l;
-        if(l>=r) break;
-        ll now = nCr(r-l, 2);
-        now -= same;
-        del(A[l]);
-        del(A[r-1]);
-        ans += now;
+    rep(i, N) {
+        LONGM(a, b);
+        from[a].emplace_back(i);
+        from[b].emplace_back(i);
+        if(i==a) push(i);
+        if(i==b) push(i);
     }
-    Out(ans);
+    de(que)de(from)
+    vl ans;
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        ans.push_back(v);
+        for(auto nv: from[v]) {
+            push(nv);
+        }
+    }
+    if(SIZE(ans)!=N) Pm1
+    reverse(all(ans));
+    for(auto x: ans) Out(x+1);
     
 }
 
