@@ -1380,14 +1380,14 @@
 - ある要素がある条件を構成するのに必ず含まれるかどうかについて調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられる
 - その要素を必ず使うと見たときの左側と右側の関係を調べる、あるいはその要素を必ず使わないと見たときの左側と右側の関係を調べると良い
 ### 例題
-- !復習価値中 必ず働く日列挙 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
-- !復習価値高 LISに含まれるか [F - Useless for LIS](https://atcoder.jp/contests/abc354/tasks/abc354_f)
+- !復習価値低 必ず働く日列挙 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
+- !復習価値中 LISに含まれるか [F - Useless for LIS](https://atcoder.jp/contests/abc354/tasks/abc354_f)
 
 ## クエリ先読み
 - クエリを先読みすると楽に処理できる事がある
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
-- !復習価値高 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+- !復習価値中 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 
 ## max(max())の形に帰着させる
 - maxの中にmaxがある形にできれば、簡単に解ける
