@@ -200,27 +200,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    VL(A, N);
-    vvvl dp(N+1, vvl(N+1, vl(N+1, -INF)));
-    vvvl edp = dp;
-    rep1(m, N) dp[0][0][m] = 0;
+    LONG(N);
+    vl cords(2*N);
     rep(i, N) {
-        vvvl pdp = edp; swap(pdp, dp);
-        rep(j, N+1) rep(k, N) rep1(m, N) {
-            if(pdp[j][k][m]==-INF) continue;
-            chmax(dp[j][k][m], pdp[j][k][m]);
-            if(j<N) chmax(dp[j+1][(k+A[i])%m][m], pdp[j][k][m]+A[i]);
+        LONGM(a, b);
+        cords[a] = i;
+        cords[b] = i;
+    }
+    vl stck;
+    rep(i, 2*N) {
+        ll c = cords[i];
+        if(stck.size()) {
+            if(stck.back() == c) stck.pop_back();
+            else stck.push_back(c);
+        } else {
+            stck.push_back(c);
         }
     }
-    ll ans = INF;
-    rep1(k, N) {
-        if(dp[k][X%k][k]==-INF) continue;
-        ll now = X - dp[k][X%k][k];
-        now /= k;
-        chmin(ans, now);
-    }
-    Out(ans);
+    if(stck.size()) PYes PNo
     
 }
 

@@ -1367,8 +1367,8 @@
 ## 円環問題
 - 円環はそのままでは扱いにくいので、(1)2つ繋げて列にするか、(2)頂点1から頂点1までの区間長Nの列にするか、(3)頂点1から頂点Nまでの区間長N-1の列にするかで考えると見通しが良くなる
 ### 例題
-- !復習価値高 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
-- !復習価値中 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
+- !復習価値中 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
+- !復習価値低 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
 
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
