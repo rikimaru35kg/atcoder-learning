@@ -197,44 +197,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl Xo, Yo, Xe, Ye;
+    LONG(N); VL(A, N);
+    ll M = 2e5+10;
+    fenwick_tree<mint> tnum(M), tsum(M);
+    mint sum = 0;
+
     rep(i, N) {
-        LONG(x, y);
-        if((x+y)%2==0) {
-            Xe.push_back(Div(x+y, 2));
-            Ye.push_back(Div(x-y, 2));
-        } else {
-            Xo.push_back(Div(x-1+y, 2));
-            Yo.push_back(Div(x-1-y, 2));
-        }
+        ll a = A[i];
+        ll k = i+1;
+        sum += a;
+        sum += 2*a*tnum.sum(0, a);
+        sum += 2*tsum.sum(a, M);
+        de(sum)
+        mint ans = sum / k/k;
+        Out(ans);
+
+        tnum.add(a, 1);
+        tsum.add(a, a);
     }
-    de(Xo)de(Yo)de(Xe)de(Ye)
-    sort(all(Xe)); sort(all(Xo));
-    sort(all(Ye)); sort(all(Yo));
-
-    auto calc=[&](vl &x) -> ll {
-        ll n = SIZE(x);
-        ll ret = 0;
-        rep(i, n-1) {
-            ll d = x[i+1] - x[i];
-            d *= (i+1) * (n-1-i);
-            ret += d;
-        }
-        return ret;
-    };
-
-    ll ans = calc(Xo);
-    de(ans);
-    ans += calc(Yo);
-    de(ans);
-    ans += calc(Xe);
-    de(ans);
-    ans += calc(Ye);
-    Out(ans);
     
 }
 

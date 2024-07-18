@@ -197,37 +197,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    queue<ll> que;
-    vb pushed(N);
-    auto push=[&](ll v) {
-        if(pushed[v]) return;
-        pushed[v] = true;
-        que.push(v);
-    };
+    VP(P, N);
+    map<Pr,Pr> mp;
+    ll zero = 0;
     rep(i, N) {
-        LONGM(a, b);
-        from[a].emplace_back(i);
-        from[b].emplace_back(i);
-        if(i==a) push(i);
-        if(i==b) push(i);
-    }
-    de(que)de(from)
-    vl ans;
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        ans.push_back(v);
-        for(auto nv: from[v]) {
-            push(nv);
+        auto [x, y] = P[i];
+        if(x==0 && y==0) {
+            ++zero;
+            continue;
         }
+        ll g = gcd(x, y);
+        x /= g, y /= g;
+        if(y<0) x=-x, y=-y;
+        if(x<0 && y==0) x = 1;
+        bool rot = false;
+        if(x<=0) {
+            rot = true;
+            swap(x, y);
+            y = -y;
+        }
+        if(rot) mp[{x,y}].second++;
+        else mp[{x,y}].first++;
     }
-    if(SIZE(ans)!=N) Pm1
-    reverse(all(ans));
-    for(auto x: ans) Out(x+1);
+    
+    mint ans = 1;
+    vm two(N+1);
+    two[0] = 1;
+    rep(i, N) two[i+1] = two[i]*2;
+
+    for(auto [k,v]: mp) {
+        auto [v1, v2] = v;
+        mint now = two[v1] + two[v2] - 1;
+        ans *= now;
+    }
+    --ans;
+    ans += zero;
+    Out(ans);
     
 }
 
