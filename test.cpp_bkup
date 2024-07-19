@@ -197,73 +197,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(C, H);
-
-    vector<map<char,ll>> row(H), col(W);
-    auto add_c=[&](ll r, ll c) {
-        char cook = C[r][c];
-        row[r][cook]++;
-        col[c][cook]++;
-    };
-    rep(i, H) rep(j, W) {
-        add_c(i, j);
-    }
-
-    ll rh = H, rw = W;
-    vvb del(H, vb(W));
-    set<ll> rs, cs;
-    rep(i, H) rs.insert(i);
-    rep(i, W) cs.insert(i);
-
-    auto del_c=[&](ll r, ll c) {
-        if(del[r][c]) return;
-        del[r][c] = true;
-        char cook = C[r][c];
-        row[r][cook]--;
-        col[c][cook]--;
-        if(row[r][cook]==0) row[r].erase(cook);
-        if(col[c][cook]==0) col[c].erase(cook);
-    };
-
-    bool upd = true;
-    while(upd) {
-        upd = false;
-        vl er, ec;
-        if(rw>=2) {
-            for(auto r: rs) {
-                if(SIZE(row[r])==1) {
-                    er.push_back(r);
-                    upd = true;
-                }
-            }
-        }
-        if(rh>=2) {
-            for(auto c: cs) {
-                if(SIZE(col[c])==1) {
-                    ec.push_back(c);
-                    upd = true;
-                }
-            }
-        }
-        rh -= SIZE(er); rw -= SIZE(ec);
-        
-        for(auto r: er) {
-            for(auto c: cs) { del_c(r, c); }
-        }
-        for(auto c: ec) {
-            for(auto r: rs) { del_c(r, c); }
-        }
-        for(auto r: er) rs.erase(r);
-        for(auto c: ec) cs.erase(c);
-        de(del)
-    }
-
-    Out(rh*rw);
     
 }
 

@@ -197,72 +197,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    ll p=0, m=0;
-    rep(i, N) {
-        if(A[i]>=0) p++;
-        else m++;
-    }
-    bool ok = false;
-    for(ll k=0; k<=K; k+=2) {
-        if(k<=m && K-k<=p) ok = true;
-    }
-
-    if(ok) {
-        vl P, M;
-        rep(i, N) {
-            if(A[i]>=0) P.push_back(A[i]);
-            else M.push_back(-A[i]);
+    STRING(S);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t, k); --k;
+        ll s = k;
+        rep(i, t) {
+            s /= 2;
+            if(s==0) break;
         }
-        sort(allr(P));
-        sort(allr(M));
-
-        mint ans = 1;
-        if(K%2==1) {
-            ans = P[0];
-            P.erase(P.begin());
-            --K;
-        }
-        de(ans)
-        de(P)
-
-        vl v;
-        ll np = SIZE(P); ll nm = SIZE(M);
-        for(ll i=0; i<np-1; i+=2) { v.push_back(P[i]*P[i+1]); }
-        for(ll i=0; i<nm-1; i+=2) { v.push_back(M[i]*M[i+1]); }
-        sort(allr(v));
-        de(v)
-
-        K /= 2;
-        rep(i, K) ans *= v[i];
-        Out(ans);
-    } else {
-        vl B;
-        rep(i, N) B.push_back(abs(A[i]));
-        sort(all(B));
-        mint ans = -1;
-        rep(i, K) ans *= B[i];
-        Out(ans);
+        if(s!=0) k %= 1LL<<t;
+        de2(s, k)
+        ll cnt1 = pcnt(k);
+        ll cnt0 = t - cnt1;
+        ll ans = (S[s]-'A' + cnt1*2 + cnt0)%3;
+        char tmp = ans + 'A';
+        Out(tmp);
     }
-    
 }
-
-// ### test.cpp ###

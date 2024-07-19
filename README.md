@@ -370,6 +370,7 @@
 - このとき、f[h]とf[h-1]は根を同じくする関係（上が一緒）か、あるいは葉を同じくする関係（下が一緒）と両方考えられる
 ### 例題
 - 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
+- !復習価値高 [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - !復習価値高 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
 - !復習価値高 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
@@ -1624,14 +1625,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [E - Modulo MST](https://atcoder.jp/contests/abc328/tasks/abc328_e)
-- [E - Digit Sum Divisible](https://atcoder.jp/contests/abc336/tasks/abc336_e)
-- 未証明 [D - Integer Cards](https://atcoder.jp/contests/abc127/tasks/abc127_d)
-- [D - Triangles](https://atcoder.jp/contests/abc143/tasks/abc143_d)
-- [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
-- [D - Kth Excluded](https://atcoder.jp/contests/abc205/tasks/abc205_d)
-- [D - Gomamayo Sequence](https://atcoder.jp/contests/abc346/tasks/abc346_d)
-- 動画考察すごい（使わなくても解けたけど）[D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - 動画解説綺麗 [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
 - [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
@@ -1645,6 +1638,7 @@
 - [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
 - [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
+- [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
 
 ## ACできなかった問題
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
