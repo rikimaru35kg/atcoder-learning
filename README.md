@@ -1469,11 +1469,11 @@
 ## 構築系問題
 - 構築させる問題
 ### 例題
-- !復習価値低 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
-- !復習価値低 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
-- !復習価値低 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
-- 基本（ネタばれしたら終わりの問題） [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
-- !要復習 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
+- 基本 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
+- 基本 [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
+- !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- 基本 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
+- !復習価値中 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
 
 # 実装系問題
 ### 例題

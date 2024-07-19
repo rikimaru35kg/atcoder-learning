@@ -200,34 +200,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    auto calc=[&](vl &A) -> vl {
-        vl ret(N);
-        vp stck(N, Pr(0, -1));
-        rep(i, N) {
-            ll a = A[i];
-            while(stck.size() && stck.back().first>=a) stck.pop_back();
-            ret[i] = stck.back().second;
-            stck.emplace_back(a, i);
-        }
-        return ret;
-    };
+    LONG(N); VL(X, 3);
+    VS(S, N);
+    S.push_back(S[N-1]);
 
-    vl spanl = calc(A);
-    reverse(all(A));
-    vl spanr = calc(A);
-    reverse(all(A));
-    reverse(all(spanr));
-    rep(i, N) spanr[i] = N-1-spanr[i];
-
-    ll ans = 0;
+    vc ans;
     rep(i, N) {
-        ll now = A[i] * (i-spanl[i]);
-        now += A[i] * (spanr[i]-i);
-        now -= A[i];
-        chmax(ans, now);
+        ll x = 0, y = 1;
+        if(S[i]=="BC") x = 1, y = 2;
+        if(S[i]=="AC") x = 2, y = 0;
+
+        ll &a = X[x], &b = X[y];
+        if(a==0 && b==0) PNo
+        if(a==0) {
+            ans.emplace_back(x+'A');
+            ++a, --b;
+        } else if (b==0) {
+            ans.emplace_back(y+'A');
+            --a, ++b;
+        } else {
+            ll nx = 0, ny = 1;
+            if(S[i+1]=="BC") nx = 1, ny = 2;
+            if(S[i+1]=="AC") nx = 2, ny = 0;
+            if(x==nx || x==ny) { 
+                a++, b--;
+                ans.emplace_back(x+'A');
+            }
+            else {
+                a--, b++;
+                ans.emplace_back(y+'A');
+            }
+        }
+        de(X)
     }
+    puts("Yes");
     Out(ans);
     
 }
