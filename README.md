@@ -1479,12 +1479,12 @@
 ### 例題
 - !復習価値高 がっかりビンゴ（解説コードが神） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
 - !復習価値中 シート重ね合わせ [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
-- !復習価値高 ABCパズル [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
+- !復習価値低 ABCパズル [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
 - !復習価値低 タイル置き [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 - !復習価値中 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
-- !復習価値高 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - !復習価値高 クッキー消し [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
-- !要復習 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
+- !復習価値高 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
+- !復習価値中 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
 
 # 実装テクニック
 

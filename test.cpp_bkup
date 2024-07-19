@@ -197,44 +197,73 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(X, 3);
-    VS(S, N);
-    S.push_back(S[N-1]);
+    LONG(H, W);
+    VS(C, H);
 
-    vc ans;
-    rep(i, N) {
-        ll x = 0, y = 1;
-        if(S[i]=="BC") x = 1, y = 2;
-        if(S[i]=="AC") x = 2, y = 0;
+    vector<map<char,ll>> row(H), col(W);
+    auto add_c=[&](ll r, ll c) {
+        char cook = C[r][c];
+        row[r][cook]++;
+        col[c][cook]++;
+    };
+    rep(i, H) rep(j, W) {
+        add_c(i, j);
+    }
 
-        ll &a = X[x], &b = X[y];
-        if(a==0 && b==0) PNo
-        if(a==0) {
-            ans.emplace_back(x+'A');
-            ++a, --b;
-        } else if (b==0) {
-            ans.emplace_back(y+'A');
-            --a, ++b;
-        } else {
-            ll nx = 0, ny = 1;
-            if(S[i+1]=="BC") nx = 1, ny = 2;
-            if(S[i+1]=="AC") nx = 2, ny = 0;
-            if(x==nx || x==ny) { 
-                a++, b--;
-                ans.emplace_back(x+'A');
-            }
-            else {
-                a--, b++;
-                ans.emplace_back(y+'A');
+    ll rh = H, rw = W;
+    vvb del(H, vb(W));
+    set<ll> rs, cs;
+    rep(i, H) rs.insert(i);
+    rep(i, W) cs.insert(i);
+
+    auto del_c=[&](ll r, ll c) {
+        if(del[r][c]) return;
+        del[r][c] = true;
+        char cook = C[r][c];
+        row[r][cook]--;
+        col[c][cook]--;
+        if(row[r][cook]==0) row[r].erase(cook);
+        if(col[c][cook]==0) col[c].erase(cook);
+    };
+
+    bool upd = true;
+    while(upd) {
+        upd = false;
+        vl er, ec;
+        if(rw>=2) {
+            for(auto r: rs) {
+                if(SIZE(row[r])==1) {
+                    er.push_back(r);
+                    upd = true;
+                }
             }
         }
-        de(X)
+        if(rh>=2) {
+            for(auto c: cs) {
+                if(SIZE(col[c])==1) {
+                    ec.push_back(c);
+                    upd = true;
+                }
+            }
+        }
+        rh -= SIZE(er); rw -= SIZE(ec);
+        
+        for(auto r: er) {
+            for(auto c: cs) { del_c(r, c); }
+        }
+        for(auto c: ec) {
+            for(auto r: rs) { del_c(r, c); }
+        }
+        for(auto r: er) rs.erase(r);
+        for(auto c: ec) cs.erase(c);
+        de(del)
     }
-    puts("Yes");
-    Out(ans);
+
+    Out(rh*rw);
     
 }
 
