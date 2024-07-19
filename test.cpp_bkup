@@ -200,7 +200,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    
+    STRING(S);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t, k); --k;
+        ll s = k;
+        rep(i, t) {
+            s /= 2;
+            if(s==0) break;
+        }
+        if(s!=0) k %= 1LL<<t;
+        de2(s, k)
+        ll cnt1 = pcnt(k);
+        ll cnt0 = t - cnt1;
+        ll ans = (S[s]-'A' + cnt1*2 + cnt0)%3;
+        char tmp = ans + 'A';
+        Out(tmp);
+    }
 }
-
-// ### test.cpp ###

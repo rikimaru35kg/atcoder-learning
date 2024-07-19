@@ -197,24 +197,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
+    LONG(N, M);
     LONG(Q);
-    rep(i, Q) {
-        LONG(t, k); --k;
-        ll s = k;
-        rep(i, t) {
-            s /= 2;
-            if(s==0) break;
+
+    auto g=[&](ll x, ll y, ll n) -> mint {
+        return ((mint)x+y)/2*n;
+    };
+    auto f=[&](ll x, ll y) -> mint {
+        if(x==0 || y==0) return 0;
+        mint ret = 0;
+        {
+            mint now = 0;
+            ll mx = x, my = y;
+            if(mx%2==0) --mx;
+            if((mx+y)%2==1) --my;
+            ll h = (mx+1)/2, w = (my+1)/2;
+            now += g(1, (mx-1)*M+my, h*w);
+            if(mx==0 || my==0) now = 0;
+            ret += now;
         }
-        if(s!=0) k %= 1LL<<t;
-        de2(s, k)
-        ll cnt1 = pcnt(k);
-        ll cnt0 = t - cnt1;
-        ll ans = (S[s]-'A' + cnt1*2 + cnt0)%3;
-        char tmp = ans + 'A';
-        Out(tmp);
+        {
+            mint now = 0;
+            ll mx = x, my = y;
+            if(mx%2==1) --mx;
+            if((mx+y)%2==1) --my;
+            ll h = mx/2, w = my/2;
+            ll sx = 2, sy = 2;
+            now += g((sx-1)*M+sy, (mx-1)*M+my, h*w);
+            if(mx<=1 || my<=1) now = 0;
+            ret += now;
+        }
+        return ret;
+    };
+    rep(i, Q) {
+        LONG(a, b, c, d); --a, --c;
+        mint ans = f(b, d);
+        de(ans)
+        ans -= f(a, d);
+        de(ans)
+        ans -= f(b, c);
+        de(ans)
+        ans += f(a, c);
+        Out(ans);
     }
+    
 }
+
+// ### test.cpp ###
