@@ -1492,4 +1492,13 @@
       "};",
     ],
   },
+  "Snippet(dij)": {
+    "prefix": "dijsni",
+    "body": [
+      "for(auto [di,dj]: dij) {",
+      "    ll ni = i + di, nj = j + dj;",
+      "    if(!isin(ni,nj,**,**) continue;",
+      "}",
+    ],
+  },
 }

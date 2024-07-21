@@ -22,6 +22,7 @@
 - 10P5が必要だったとしても、next_permutationで10!回して、先頭の5つを取り出せば10P5の全列挙ができる（計算量が間に合うので）。nPr<=1e8かつn!>1e9のような場合には素直に再帰関数で実装するしかないと思われる
 ### 例題
 - 基本+実装少し工夫 [D - Send More Money](https://atcoder.jp/contests/abc198/tasks/abc198_d)
+- !復習価値高 長さKの回文含まない個数 [C - Avoid K Palindrome 2](https://atcoder.jp/contests/abc363/tasks/abc363_c)
 
 ## bit全探索
 - 各要素を選ぶ選ばないを2進数と考えループ
@@ -1467,6 +1468,17 @@
 ### 例題
 - !福種価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
 
+## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
+- 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
+### 例題
+- !要復習 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+
+## お堀問題
+- 外側を番兵でぐるっと囲むと見通しよくなる
+- Union Findが使える場合多し
+### 例題
+- !要復習 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+
 ## 構築系問題
 - 構築させる問題
 ### 例題
@@ -1493,6 +1505,11 @@
 - auto func = [&](auto func, int x) -> int {return func(func, x)}のようなイメージで書ける
 - わざわざグローバル変数にせずとも再帰関数に前提となる変数を渡すことができる（[&]の部分）
 - 実際には関数オブジェクトなので関数ではないらしい
+
+## set,map
+- 定数倍がかなり重い（感覚では5倍ぐらい）
+- 計算量が厳しい問題では慎重に使うこと！
+- 文字列をmapやsetのキーにするとその長さ分だけ計算量が増えるので注意
 
 ## 文字列
 - S.substr(開始位置, 長さ)で部分文字列を取得可能。長さが後ろをはみ出しても大丈夫
