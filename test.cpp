@@ -196,81 +196,45 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(X);
-    LONG(M);
-    ll na = SIZE(X);
-    vl A;
-    for(auto c: X) A.push_back(c-'0');
+    LONG(N, M);
 
-    if(na==1) {
-        ll ans = 0;
-        if(A[0]<=M) ans = 1;
-        Out(ans); return 0;
-    }
+    vvvm dp(M+1, vvm(M+1, vm(M+1)));
+    vvvm edp = dp;
+    dp[M][M][M] = 1;
 
-    auto f=[&](ll x) -> bool {
-        de(x)
-        ll now = 0;
-        rep(i, na) {
-            if(now>M/x) return false;
-            now = now * x + A[i];
+    rep(i, N) {
+        vvvm pdp = edp; swap(pdp, dp);
+        rep(a, M+1) rep(b, M+1) rep(c, M+1) rep(x, M) {
+            if(pdp[a][b][c]==0) continue;
+            de4(a,b,c,x) de(pdp[a][b][c])
+            if(x<=a) dp[x][b][c] += pdp[a][b][c];
+            else if(x<=b) dp[a][x][c] += pdp[a][b][c];
+            else if(x<=c) dp[a][b][x] += pdp[a][b][c];
         }
-        return now <= M;
-    };
-
-    ll mx = 0;
-    rep(i, na) chmax(mx, A[i]);
-    de(f(2))
-    de(f(3))
-    ll ans = binary_search(mx, INF, f);
-    Out(ans-mx);
-
-
+    }
+    mint ans = 0;
+    rep(a, M) rep(b, M) rep(c, M) {
+        ans += dp[a][b][c];
+    }
+    Out(ans);
     
 }
 

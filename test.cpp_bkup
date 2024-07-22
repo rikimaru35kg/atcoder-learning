@@ -197,21 +197,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/scc>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vvl cnt(10, vl(10));
-    LONG(N);
-    rep1(i, N) {
-        string s = to_string(i);
-        cnt[s[0]-'0'][s.back()-'0']++;
+    LONG(N, K);
+    VLM(to, N);
+    scc_graph scc(N);
+    rep(i, N) {
+        scc.add_edge(i, to[i]);
     }
-    ll ans = 0;
-    rep1(x, 9) rep1(y, 9) {
-        ans += cnt[x][y]*cnt[y][x];
+    VL(C, N);
+
+    auto grs = scc.scc();
+    vl cyclep(N, -1);
+    vl sz(N, -1);
+    uset<ll> cyclev;
+    for(auto gr: grs) {
+        ll cp = 0;
+        for(auto v: gr) { cp += C[v]; }
+        for(auto v: gr) {
+            sz[v] = SIZE(gr);
+            cyclep[v] = cp;
+            cyclev.insert(v);
+        }
+    }
+
+    ll ans = -INF;
+    rep(sv, N) {
+        ll now = 0;
+        ll v = sv;
+        ll r = K;
+        ll mx = -INF;
+        rep(j, N) {
+            v = to[v];
+            now += C[v];
+            --r;
+            ll bonus = 0;
+            if(cyclev.count(v) && cyclep[v]>0) {
+                ll cnum = r/sz[v];
+                bonus = cyclep[v]*cnum;
+            }
+            chmax(mx, now + bonus);
+            if(r==0) break;
+        }
+        chmax(ans, mx);
     }
     Out(ans);
-    
 }
 
 // ### test.cpp ###
