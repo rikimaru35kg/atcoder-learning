@@ -812,7 +812,7 @@
 - 2経路の復元の場合は、常に異なる戦略を取って逆順に辿れば良い
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
-- 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
+<!-- - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d) -->
 
 ## DP高速化
 - 遷移するときのループ分をO(1)で実施する
@@ -1420,8 +1420,9 @@
 ### 例題
 - !復習価値高 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 
-## 鳩ノ巣原理
+## 鳩の巣原理
 ### 例題
+- 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 - !復習価値高 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 
 ## max(max())の形に帰着させる
@@ -1662,12 +1663,10 @@
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
 
 ## ACできなかった問題
-- [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
 - 実装が面倒すぎるので今回はスキップ [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
-
-
+- [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)

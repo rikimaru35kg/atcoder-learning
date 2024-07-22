@@ -197,45 +197,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    mint::set_mod(P);
+    LONG(S, T, M);
+    vvl from(S+T);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    rep(i, S+T) sort(all(from[i]));
 
-    vvm dp(N, vm(2));
-    vvm edp = dp;
-    dp[0][1] = 1; dp[1][0] = 1;
-    rep(i, N-1) {
-        vvm pdp = edp; swap(pdp, dp);
-        rep(j, N) {
-            if(j<N-1) dp[j+1][0] += pdp[j][0];
-            dp[j][1] += pdp[j][0];
-
-            if(j<N-2) dp[j+2][0] += 2*pdp[j][1];
-            if(j<N-1) dp[j+1][1] += 3*pdp[j][1];
-            dp[j][1] += pdp[j][1];
+    vvl stck(T, vl(T, -1));
+    rep(v, S) {
+        ll sz = SIZE(from[v]);
+        rep(j, sz) rep(i, j) {
+            ll x = from[v][i]-S, y=from[v][j]-S;
+            if(stck[x][y]!=-1) {
+                vl ans = {from[v][i]+1, from[v][j]+1, stck[x][y]+1, v+1};
+                Out(ans);
+                return 0;
+            }
+            stck[x][y] = v;
         }
-        de(dp)
     }
-    rep1(i, N-1) {
-        mint ans = dp[i][1];
-        Out(ans);
-    }
+    Pm1
     
 }
 
