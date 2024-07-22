@@ -375,6 +375,12 @@
 - !復習価値高 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
 - !復習価値高 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
+## 木の次数列
+- 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる
+### 例題
+- !復習価値高 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
+- !復習価値高 [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
+
 ## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
 - クラスカル法により小さい順に連結頂点同士をつながないように辺を追加していく
@@ -1257,7 +1263,6 @@
 - !復習価値低 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - !復習価値低 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !復習価値低 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
-- !復習価値高 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
 
 # 行列
 
@@ -1651,8 +1656,6 @@
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 
 ## ACできなかった問題
-- [E - Subtree K-th Max](https://atcoder.jp/contests/abc239/tasks/abc239_e)
-- [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
 - [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)

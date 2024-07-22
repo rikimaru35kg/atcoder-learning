@@ -197,55 +197,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/scc>
-using namespace atcoder;
+using ST = multiset<ll>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VLM(to, N);
-    scc_graph scc(N);
-    rep(i, N) {
-        scc.add_edge(i, to[i]);
+    LONG(N, Q);
+    VL(X, N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    VL(C, N);
-
-    auto grs = scc.scc();
-    vl cyclep(N, -1);
-    vl sz(N, -1);
-    uset<ll> cyclev;
-    for(auto gr: grs) {
-        ll cp = 0;
-        for(auto v: gr) { cp += C[v]; }
-        for(auto v: gr) {
-            sz[v] = SIZE(gr);
-            cyclep[v] = cp;
-            cyclev.insert(v);
-        }
+    ll Mx = 20;
+    vvp query(N);
+    rep(i, Q) {
+        LONG(v, k); --v;
+        query[v].emplace_back(k, i);
     }
 
-    ll ans = -INF;
-    rep(sv, N) {
-        ll now = 0;
-        ll v = sv;
-        ll r = K;
-        ll mx = -INF;
-        rep(j, N) {
-            v = to[v];
-            now += C[v];
-            --r;
-            ll bonus = 0;
-            if(cyclev.count(v) && cyclep[v]>0) {
-                ll cnum = r/sz[v];
-                bonus = cyclep[v]*cnum;
-            }
-            chmax(mx, now + bonus);
-            if(r==0) break;
+    auto join=[&](ST &base, ST &x) {
+        for(auto v: x) { base.insert(v); }
+        while(SIZE(base)>Mx) base.erase(base.begin());
+    };
+
+    vl ans(Q);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> ST {
+        ST ret;
+        ret.insert(X[v]);
+        for(auto nv: from[v]) if(nv!=p) {
+            ST t = f(f, nv, v);
+            join(ret, t);
         }
-        chmax(ans, mx);
-    }
+        for(auto [k, i]: query[v]) {
+            auto it = ret.end();
+            rep(j, k) --it;
+            ans[i] = *it;
+        }
+        return ret;
+    };
+    dfs(dfs, 0);
     Out(ans);
+    
 }
 
 // ### test.cpp ###

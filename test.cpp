@@ -197,45 +197,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/dsu>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
+    VL(D, N);
+    VPM(edge, M);
+    ll tot = accumulate(all(D), 0LL);
+    if(tot!=2*N-2) Pm1
 
-    vvvm dp(M+1, vvm(M+1, vm(M+1)));
-    vvvm edp = dp;
-    dp[M][M][M] = 1;
-
-    rep(i, N) {
-        vvvm pdp = edp; swap(pdp, dp);
-        rep(a, M+1) rep(b, M+1) rep(c, M+1) rep(x, M) {
-            if(pdp[a][b][c]==0) continue;
-            de4(a,b,c,x) de(pdp[a][b][c])
-            if(x<=a) dp[x][b][c] += pdp[a][b][c];
-            else if(x<=b) dp[a][x][c] += pdp[a][b][c];
-            else if(x<=c) dp[a][b][x] += pdp[a][b][c];
-        }
+    vl deg(N);
+    for(auto [a, b]: edge) {
+        deg[a]++; deg[b]++;
     }
-    mint ans = 0;
-    rep(a, M) rep(b, M) rep(c, M) {
-        ans += dp[a][b][c];
+    rep(i, N) if(deg[i]>D[i]) Pm1
+
+    rep(i, N) deg[i] = D[i]-deg[i];
+
+    dsu uf(N);
+    for(auto [a, b]: edge) {
+        a = uf.leader(a);
+        b = uf.leader(b);
+        if(uf.same(a,b)) Pm1
+        uf.merge(a, b);
+    }
+    // de(deg)
+
+    vvl want(N);
+    rep(v, N) {
+        ll l = uf.leader(v);
+        rep(i, deg[v]) want[l].push_back(v);
+    }
+    // de(want)
+    // rep(v, N) {
+    //     de2(v, uf.leader(v));
+    // }
+    vl pdeg(N);
+    swap(pdeg, deg);
+    rep(v, N) {
+        deg[uf.leader(v)] += pdeg[v];
+    }
+    // de(deg)
+
+    set<pair<ll,ll>> st;
+    rep(v, N) if(v==uf.leader(v)) {
+        if(deg[v]==0) Pm1
+        st.emplace(deg[v], v);
+    }
+    // de(st)
+
+    vp ans;
+    while(st.size()) {
+        auto [d1, v1] = *st.begin();
+        auto [d2, v2] = *(--st.end());
+        st.erase(st.begin()); st.erase(--st.end());
+        ll w1 = want[v1].back(); want[v1].pop_back();
+        ll w2 = want[v2].back(); want[v2].pop_back();
+        ans.emplace_back(w1+1, w2+1);
+        ll l = uf.merge(v1, v2);
+        deg[l] = deg[v1] + deg[v2] - 2;
+        for(auto x: want[v1]) want[v2].push_back(x);
+        if(l != v2) swap(want[v1], want[v2]);
+        if(deg[l]>0) st.emplace(deg[l], l);
     }
     Out(ans);
-    
+
 }
 
 // ### test.cpp ###
