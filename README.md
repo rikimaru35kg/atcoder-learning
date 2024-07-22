@@ -1642,20 +1642,12 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
-- [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
-- [E - Kth Takoyaki Set](https://atcoder.jp/contests/abc297/tasks/abc297_e)
-- [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
-- [F - Cans and Openers](https://atcoder.jp/contests/abc312/tasks/abc312_f)
-- [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
-- [E - Maximize Rating](https://atcoder.jp/contests/abc327/tasks/abc327_e)
-- [E - 7x7x7](https://atcoder.jp/contests/abc343/tasks/abc343_e)
-- [C - Takahashi's Information](https://atcoder.jp/contests/abc088/tasks/abc088_c)
-- [D - Match Matching](https://atcoder.jp/contests/abc118/tasks/abc118_d)
-- [D - Handstand 2](https://atcoder.jp/contests/abc152/tasks/abc152_d)
-- [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 - [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
 - 動画解説綺麗 [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
+- [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
+- [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
+- [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
+- [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 
 ## ACできなかった問題
 - [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
@@ -1671,5 +1663,6 @@
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
+- [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 
 
