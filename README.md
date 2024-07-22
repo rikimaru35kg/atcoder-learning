@@ -1420,6 +1420,10 @@
 ### 例題
 - !復習価値高 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 
+## 鳩ノ巣原理
+### 例題
+- !復習価値高 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
+
 ## max(max())の形に帰着させる
 - maxの中にmaxがある形にできれば、簡単に解ける
 - 基本 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
@@ -1654,11 +1658,10 @@
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
 - [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
-
-## ACできなかった問題
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
-- [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
+
+## ACできなかった問題
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
 - 実装が面倒すぎるので今回はスキップ [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)

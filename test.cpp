@@ -197,74 +197,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(D, N);
-    VPM(edge, M);
-    ll tot = accumulate(all(D), 0LL);
-    if(tot!=2*N-2) Pm1
-
-    vl deg(N);
-    for(auto [a, b]: edge) {
-        deg[a]++; deg[b]++;
+    LONG(S, T, M);
+    vvl from(S+T);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    rep(i, N) if(deg[i]>D[i]) Pm1
+    rep(i, S+T) sort(all(from[i]));
 
-    rep(i, N) deg[i] = D[i]-deg[i];
-
-    dsu uf(N);
-    for(auto [a, b]: edge) {
-        a = uf.leader(a);
-        b = uf.leader(b);
-        if(uf.same(a,b)) Pm1
-        uf.merge(a, b);
+    vvl stck(T, vl(T, -1));
+    rep(v, S) {
+        ll sz = SIZE(from[v]);
+        rep(j, sz) rep(i, j) {
+            ll x = from[v][i]-S, y=from[v][j]-S;
+            if(stck[x][y]!=-1) {
+                vl ans = {from[v][i]+1, from[v][j]+1, stck[x][y]+1, v+1};
+                Out(ans);
+                return 0;
+            }
+            stck[x][y] = v;
+        }
     }
-    // de(deg)
-
-    vvl want(N);
-    rep(v, N) {
-        ll l = uf.leader(v);
-        rep(i, deg[v]) want[l].push_back(v);
-    }
-    // de(want)
-    // rep(v, N) {
-    //     de2(v, uf.leader(v));
-    // }
-    vl pdeg(N);
-    swap(pdeg, deg);
-    rep(v, N) {
-        deg[uf.leader(v)] += pdeg[v];
-    }
-    // de(deg)
-
-    set<pair<ll,ll>> st;
-    rep(v, N) if(v==uf.leader(v)) {
-        if(deg[v]==0) Pm1
-        st.emplace(deg[v], v);
-    }
-    // de(st)
-
-    vp ans;
-    while(st.size()) {
-        auto [d1, v1] = *st.begin();
-        auto [d2, v2] = *(--st.end());
-        st.erase(st.begin()); st.erase(--st.end());
-        ll w1 = want[v1].back(); want[v1].pop_back();
-        ll w2 = want[v2].back(); want[v2].pop_back();
-        ans.emplace_back(w1+1, w2+1);
-        ll l = uf.merge(v1, v2);
-        deg[l] = deg[v1] + deg[v2] - 2;
-        for(auto x: want[v1]) want[v2].push_back(x);
-        if(l != v2) swap(want[v1], want[v2]);
-        if(deg[l]>0) st.emplace(deg[l], l);
-    }
-    Out(ans);
-
+    Pm1
+    
 }
 
 // ### test.cpp ###
