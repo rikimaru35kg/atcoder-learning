@@ -197,115 +197,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
-//! n,k >= 0
-//! O(log kM) M=3e18
-long long kth_root(long long n, long long k) {
-    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
-    auto f=[&](long long x) -> bool {
-        long long x_to_kpow = 1;
-        for(long long i=0; i<k; ++i) {
-            if(x>n/x_to_kpow) return false;
-            x_to_kpow *= x;
-        }
-        return x_to_kpow <= n;
-    };
-    long long l = 0, r = 3e18;
-    while(r-l>1) {
-        long long m = (l+r)/2;
-        if(f(m)) l = m;
-        else r = m;
-    }
-    return l;
+    return ok;
 }
-// //! n,k >= 0
-// //! O(log k)
-// long long kth_root2(long long n, long long k) {
-//     if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
-//     auto f=[&](long long x) -> bool {
-//         long long x_to_kpow = 1;
-//         for(long long i=0; i<k; ++i) {
-//             if(x>n/x_to_kpow) return false;
-//             x_to_kpow *= x;
-//         }
-//         return x_to_kpow <= n;
-//     };
-//     long long cand = pow(n, 1.0/k);
-//     long long ret = 0;
-//     long long l = max(cand-2, 1LL);
-//     long long r = cand+2;
-//     for(long long x=l; x<=r; ++x) {
-//         if(!f(x)) break;
-//         if(f(x)) ret = max(ret, x);
-//     }
-//     return ret;
-// }
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// [方針]
+// ab以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
+// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
+// （なお、xが高橋の順位より低くならない事はほぼ自明。未証明・・・）
+// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
+// xの偶奇で場合分け可能。
+// 最大ペア積がab未満となる最大のxを二分探索すれば良い。
+// A==Bの時は最大ペア積を高橋が占領しているが、この時は
+// 答えが自明なので最初にはじいておく
+void solve() {
+    LONG(A, B);
+    ll ab = A*B;
+    if(A==B) {
+        ll x = 2*A-1;
+        Out(x-1);
+        return;
+    }
+    auto f=[&](ll x) -> bool {
+        ll num = 0;
+        if(x%2==0) {
+            if((x/2) > ab/(x/2+1)) return false; // care for overflowing
+            num = (x/2) * (x/2+1);
+        } else {
+            if((x+1)/2 > ab/((x+1)/2)) return false; // care for overflowing
+            num = (x+1)/2*((x+1)/2);
+        }
+        return num < ab;
+    };
+    ll x = binary_search(0, INF, f);
+    Out(x-1);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1e6+100;
-    Sieve sieve(M);
-    vl cnt(M);
-    rep(i, M) if(sieve.is_prime(i)) cnt[i]++;
-    rep(i, M-1) cnt[i+1] += cnt[i];
-
-    db st = (db)clock()/CLOCKS_PER_SEC;
-    de(st)
-    rep(n, 1000) rep1(k, 1000) {
-        kth_root(n,k);
-    }
-    db md = (db)clock()/CLOCKS_PER_SEC;
-    de(md)
-
-    rep(n, 1000) rep1(k, 1000) {
-        kth_root(n,k);
-    }
-    db ed = (db)clock()/CLOCKS_PER_SEC;
-    de(ed)
-
-    ll ans = 0;
-    for(ll a=2; a*a*a*a*a<=N; ++a) {
-        if(!sieve.is_prime(a)) continue;
-        for(ll b=a+1; a*a*b*b*b<=N; ++b) {
-            if(!sieve.is_prime(b)) continue;
-            ll cmax  = kth_root2(N/a/a/b, 2);
-            ans += cnt[cmax]-cnt[b];
-        }
-    }
-    Out(ans);
-
+    LONG(Q);
+    rep(i, Q) solve();
     
 }
 

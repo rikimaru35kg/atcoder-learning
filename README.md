@@ -134,13 +134,14 @@
 - !復習価値低 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
 - !復習価値中 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 
-## 要素積のmaxを最小化
+## ペア積（要素積）のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い
 - 割と自明とみなされているようだが、ここの理解に苦しんだ
 - Aの降順、Bの昇順を並べて組み合わせを考える場合、もしクロスしている組み合わせがあれば、組み合わせを逆にすることでかならずmax値は減少する
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
+- !復習価値高 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/55891620)
 
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
@@ -1661,10 +1662,9 @@
 - [D - Base n](https://atcoder.jp/contests/abc192/tasks/abc192_d)
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
+- [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
 
 ## ACできなかった問題
-- [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
-- 実装が面倒すぎるので今回はスキップ [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
 - [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
