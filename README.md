@@ -1157,6 +1157,7 @@
 - !復習価値中 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
 - !復習価値低 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- !復習価値高 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 
 ## 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
@@ -1667,6 +1668,5 @@
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
 
 ## ACできなかった問題
-- 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)

@@ -197,46 +197,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    ll tot = accumulate(all(A), 0LL);
-    auto ds = listup_divisor(tot);
-
-    auto possible=[&](vl &a, ll d) -> bool {
-        vl Sf(N+1), Sr(N+1);
-        rep(i, N) Sf[i+1] = Sf[i] + a[i];
-        repr(i, N) Sr[i] = Sr[i+1] + (d-a[i]);
-        rep(i, N+1) {
-            if(Sf[i]!=Sr[i]) continue;
-            if(Sf[i]==Sr[i]) {
-                if(Sf[i]<=K) return true;
-            }
-        }
-        return false;
-    };
-
-    ll ans = 1;
-    for(auto d: ds) {
-        vl a;
-        rep(i, N) a.push_back(A[i]%d);
-        sort(all(a));
-        if (possible(a, d)) chmax(ans, d);
+    LONG(N);
+    VL(C, N);
+    sort(all(C));
+    vm two(N+10);
+    two[0] = 1;
+    rep(i, N+9) two[i+1] = two[i]*2;
+    mint ans = 0;
+    rep(i, N) {
+        ll l = i, r = N-1-i;
+        mint now = 1;
+        now *= two[l];
+        now *= r*two[max(r-1,0LL)] + two[r];
+        now *= C[i];
+        de2(l, r)de(now)
+        ans += now;
     }
+    de(ans)
+    ans *= two[N];
     Out(ans);
     
 }
