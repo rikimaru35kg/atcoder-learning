@@ -364,6 +364,7 @@
 - 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した
 - オイラーツアーの順に区間用のセグツリーやBIT木を適用すると色々対応可能
 ### 
+- 基本 [D - 閉路](https://atcoder.jp/contests/abc014/tasks/abc014_4)
 - !復習価値高（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
 
 ## 完全二分木

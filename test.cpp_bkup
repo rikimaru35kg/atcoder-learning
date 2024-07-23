@@ -197,47 +197,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    ll tot = accumulate(all(A), 0LL);
-    auto ds = listup_divisor(tot);
-
-    auto possible=[&](vl &a, ll d) -> bool {
-        vl Sf(N+1), Sr(N+1);
-        rep(i, N) Sf[i+1] = Sf[i] + a[i];
-        repr(i, N) Sr[i] = Sr[i+1] + (d-a[i]);
-        rep(i, N+1) {
-            if(Sf[i]!=Sr[i]) continue;
-            if(Sf[i]==Sr[i]) {
-                if(Sf[i]<=K) return true;
-            }
-        }
-        return false;
-    };
-
-    ll ans = 1;
-    for(auto d: ds) {
-        vl a;
-        rep(i, N) a.push_back(A[i]%d);
-        sort(all(a));
-        if (possible(a, d)) chmax(ans, d);
+    LONG(N);
+    STRING(S);
+    ll mn = 0;
+    ll now = 0;
+    for(auto c: S) {
+        if(c=='(') ++now;
+        else --now;
+        chmin(mn, now);
     }
-    Out(ans);
+    ll end = now - mn;
+
+    string head;
+    rep(i, abs(mn)) {
+        head += '(';
+    }
+    S = head + S;
+    rep(i, end) {
+        S += ')';
+    }
+    Out(S);
+
     
 }
 

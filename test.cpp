@@ -197,42 +197,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/segtree>
 using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+
+using S = int;
+S op(S a, S b) {return min(a, b);}
+S e() {return 1001001001;}
+
+struct LCA {
+    int n, idx=0;
+    vector<int> et, in;
+    vector<long long> depth;
+    struct Edge {
+        int to, id;
+        long long w;
+    };
+    vector<vector<Edge>> from;
+    segtree<S,op,e> rmq;
+    LCA(long long n): n(n) {
+        from.resize(n);
+        in.resize(n);
+        depth.resize(n);
+    }
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w, idx);
+        from[b].emplace_back(a, w, idx);
+        ++idx;
+    };
+    void euler_tour(int v=0) {
+        dfs(v);
+        rmq = segtree<S,op,e>(et.size());
+        for(int i=0; i<(int)et.size(); ++i) {
+            rmq.set(i, in[et[i]]);
+        }
+    }
+    void dfs(int v, long long d=0, int p=-1) {
+        in[v] = et.size();
+        depth[v] = d;
+        et.push_back(v);
+        for(auto [nv, w, id]: from[v]) if (nv != p) {
+            dfs(nv, d+w, v);
+            et.push_back(v);
+        }
+    }
+    int lca(int a, int b) {
+        int l = in[a], r = in[b];
+        if (l > r) swap(l, r);
+        return et[rmq.prod(l, r+1)];
+    }
+    long long dist(int a, int b) {
+        long long ret = 0;
+        int c = lca(a, b);
+        if (a!=c) ret += depth[a] - depth[c];
+        if (b!=c) ret += depth[b] - depth[c];
+        return ret;
+    }
+};
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(C, N);
-    sort(all(C));
-    vm two(N+10);
-    two[0] = 1;
-    rep(i, N+9) two[i+1] = two[i]*2;
-    mint ans = 0;
-    rep(i, N) {
-        ll l = i, r = N-1-i;
-        mint now = 1;
-        now *= two[l];
-        now *= r*two[max(r-1,0LL)] + two[r];
-        now *= C[i];
-        de2(l, r)de(now)
-        ans += now;
+    LCA lca(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        lca.add_edge(a, b);
     }
-    de(ans)
-    ans *= two[N];
-    Out(ans);
+    lca.euler_tour();
+
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(a, b);
+        ll d = lca.dist(a, b);
+        Out(d+1);
+    }
     
 }
 
