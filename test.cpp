@@ -197,63 +197,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// [方針]
-// ab以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
-// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
-// （なお、xが高橋の順位より低くならない事はほぼ自明。未証明・・・）
-// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
-// xの偶奇で場合分け可能。
-// 最大ペア積がab未満となる最大のxを二分探索すれば良い。
-// A==Bの時は最大ペア積を高橋が占領しているが、この時は
-// 答えが自明なので最初にはじいておく
-void solve() {
-    LONG(A, B);
-    ll ab = A*B;
-    if(A==B) {
-        ll x = 2*A-1;
-        Out(x-1);
-        return;
-    }
-    auto f=[&](ll x) -> bool {
-        ll num = 0;
-        if(x%2==0) {
-            if((x/2) > ab/(x/2+1)) return false; // care for overflowing
-            num = (x/2) * (x/2+1);
-        } else {
-            if((x+1)/2 > ab/((x+1)/2)) return false; // care for overflowing
-            num = (x+1)/2*((x+1)/2);
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
         }
-        return num < ab;
-    };
-    ll x = binary_search(0, INF, f);
-    Out(x-1);
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
+    LONG(N, K);
+    VL(A, N);
+    ll tot = accumulate(all(A), 0LL);
+    auto ds = listup_divisor(tot);
+
+    auto possible=[&](vl &a, ll d) -> bool {
+        vl Sf(N+1), Sr(N+1);
+        rep(i, N) Sf[i+1] = Sf[i] + a[i];
+        repr(i, N) Sr[i] = Sr[i+1] + (d-a[i]);
+        rep(i, N+1) {
+            if(Sf[i]!=Sr[i]) continue;
+            if(Sf[i]==Sr[i]) {
+                if(Sf[i]<=K) return true;
+            }
+        }
+        return false;
+    };
+
+    ll ans = 1;
+    for(auto d: ds) {
+        vl a;
+        rep(i, N) a.push_back(A[i]%d);
+        sort(all(a));
+        if (possible(a, d)) chmax(ans, d);
+    }
+    Out(ans);
     
 }
 

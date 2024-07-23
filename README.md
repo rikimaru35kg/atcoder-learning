@@ -998,9 +998,11 @@
 - xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
 ### 例題
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
+- !復習価値高 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - !復習価値低 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
 - !復習価値高 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
 - !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
+- !復習価値中 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 
 ## 積分解
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
@@ -1665,8 +1667,6 @@
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
 
 ## ACできなかった問題
-- [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
-- [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 - 難しい（やりたいなら解説ACがおすすめ）[E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
