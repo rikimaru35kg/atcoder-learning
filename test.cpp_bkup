@@ -197,32 +197,124 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(S, T, M);
-    vvl from(S+T);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    rep(i, S+T) sort(all(from[i]));
+    LONG(N); STRING(S, T);
+    ll M = 26;
 
-    vvl stck(T, vl(T, -1));
-    rep(v, S) {
-        ll sz = SIZE(from[v]);
-        rep(j, sz) rep(i, j) {
-            ll x = from[v][i]-S, y=from[v][j]-S;
-            if(stck[x][y]!=-1) {
-                vl ans = {from[v][i]+1, from[v][j]+1, stck[x][y]+1, v+1};
-                Out(ans);
-                return 0;
-            }
-            stck[x][y] = v;
+    vb exst(M);
+    for(auto c: S) exst[c-'a'] = true;
+    for(auto c: T) if(!exst[c-'a']) Pm0
+
+    vvl is(M);
+    ll ns = SIZE(S), nt = SIZE(T);
+    rep(i, ns) { is[S[i]-'a'].push_back(i); }
+
+    auto f=[&](ll k) -> bool {
+        ll p = 0;
+        --k;
+        rep(i, nt) {
+            ll c = T[i] -'a';
+            ll sz = SIZE(is[c]);
+            auto [n, x] = lowbou(is[c], p%ns);
+            ll cycle = k/sz;
+            ll rem = k%sz;
+            p += cycle*ns;
+            ll rp = p%ns;
+            ll nx = is[c][(n+rem)%sz];
+            if(rp<=nx) p += nx-rp;
+            else p += nx-rp+ns;
+            p += 1;
+            if(p>ns*N) return false;
         }
-    }
-    Pm1
+        return p <= ns * N;
+    };
+    de(f(3))
+
+    ll ans = binary_search(0, INF, f);
+    Out(ans);
+
+
     
 }
 

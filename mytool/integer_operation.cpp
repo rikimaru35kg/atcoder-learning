@@ -43,6 +43,27 @@ long long spow(long long a, long long b) {
 	return ans;
 }
 
+//! n,k >= 0
+//! O(log kM) M=3e18
+long long kth_root(long long n, long long k) {
+    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
+    auto f=[&](long long x) -> bool {
+        long long x_to_kpow = 1;
+        for(long long i=0; i<k; ++i) {
+            if(x>n/x_to_kpow) return false;
+            x_to_kpow *= x;
+        }
+        return x_to_kpow <= n;
+    };
+    long long l = 0, r = 3e18;
+    while(r-l>1) {
+        long long m = (l+r)/2;
+        if(f(m)) l = m;
+        else r = m;
+    }
+    return l;
+}
+
 //! no mod nCr
 //! return value shall be within long long range
 class Pascal {
