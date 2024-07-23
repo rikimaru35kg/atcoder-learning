@@ -1156,6 +1156,7 @@
 ### 例題
 - !復習価値低 [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
 - !復習価値中 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
+- !復習価値高 [D - 11](https://atcoder.jp/contests/arc077/tasks/arc077_b)
 - !復習価値低 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - !復習価値高 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
