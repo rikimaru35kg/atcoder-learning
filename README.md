@@ -1330,6 +1330,11 @@
 - !復習価値高 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
 - !要復習 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 
+## 三つ組は真ん中を固定
+### 例題
+- !復習価値中 [B - スタンプラリー 2 (Collecting Stamps 2)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_b)
+- !要復習 [D - 三角形の分類](https://atcoder.jp/contests/abc033/tasks/abc033_d)
+
 ## マンハッタン距離・チェビシェフ距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
 - maxは結合法則を満たすので、マンハッタン距離の最大値であれば、軸ごとに独立に考えられる
@@ -1484,6 +1489,12 @@
 ## 読解が難しい問題（問題自体は簡単すぎるのでNote非掲載）
 ### 例題
 - !復習価値低 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
+
+## 偏角ソート
+- snuke librarywが良い！
+### 例題
+- !復習価値高 [009 - Three Point Angle（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_i)
+- !要復習 [F - Engines](https://atcoder.jp/contests/abc139/tasks/abc139_f)
 
 ## 牛ゲー
 - 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題

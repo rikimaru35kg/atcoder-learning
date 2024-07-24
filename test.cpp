@@ -197,38 +197,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// Vector
+const double eps = 1e-8; // suppose max(x,y) <= 1e9;
+struct Vec {
+  double x, y;
+  Vec(double x=0, double y=0): x(x), y(y) {}
+  Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
+  Vec operator+(const Vec& v) const { return Vec(*this) += v;}
+  Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
+  Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
+  Vec& operator*=(double s) { x *= s; y *= s; return *this;}
+  Vec operator*(double s) const { return Vec(*this) *= s;}
+  Vec& operator/=(double s) { x /= s; y /= s; return *this;}
+  Vec operator/(double s) const { return Vec(*this) /= s;}
+  double dot(const Vec& v) const { return x*v.x + y*v.y;}
+  // cross>0 means *this->v is counterclockwise.
+  double cross(const Vec& v) const { return x*v.y - v.x*y;}
+  double norm2() const { return x*x + y*y;}
+  double norm() const { return sqrt(norm2());}
+  Vec normalize() const { return *this/norm();}
+  Vec rotate90() const { return Vec(y, -x);}
+  int ort() const { // orthant
+    if (abs(x) < eps && abs(y) < eps) return 0;
+    if (y > 0) return x>0 ? 1 : 2;
+    else return x>0 ? 4 : 3;
+  }
+  bool operator<(const Vec& v) const {
+    int o = ort(), vo = v.ort();
+    if (o != vo) return o < vo;
+    return cross(v) > 0;
+  }
+};
+istream& operator>>(istream& is, Vec& v) {
+  is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vec& v) {
+  os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-
-    auto f=[&](ll s, ll a) -> ll {
-        if(s==0 || s==4) return a;
-        if(s==1 || s==3) {
-            if(a==0) return 2;
-            return a%2;
+    LONG(N);
+    vector<Vec> P(N);
+    rep(i, N) cin>>P[i];
+    sort(all(P));
+    db ans = 0;
+    rep(l, N) {
+        ll r = l;
+        db now = 0;
+        Vec cv;
+        rep(i, N) {
+            cv += P[r];
+            db len = cv.norm();
+            chmax(now, len);
+            r = (r+1)%N;
         }
-        else {
-            return a%2==0;
-        }
-    };
-
-    ll M = 4;
-    vl dp(M+1, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        // vl pdp(M+1, INF); swap(pdp, dp);
-        repr(j, M+1) repr(k, M+1) {
-            if(k<j) continue;
-            // if(pdp[j]==INF) continue;
-            chmin(dp[k], dp[j]+f(k, A[i]));
-        }
-        de(dp)
+        chmax(ans, now);
     }
-    ll ans = INF;
-    rep(i, M+1) chmin(ans, dp[i]);
     Out(ans);
-
+    
 }
 
 // ### test.cpp ###

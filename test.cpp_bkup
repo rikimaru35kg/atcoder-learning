@@ -186,7 +186,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-13;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -197,89 +197,115 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using ui = unsigned int;
-using vui = vector<ui>;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 3e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
 
-//! n*n matrix
-//! Currently, only operator* is defined.
-template <typename T>
-class Mat {
-public:
-    int n=6;
-    ui a[6][6];
-    // Initialize n*n matrix
-    Mat () {
-        rep(i, 6) rep(j, 6) a[i][j] = 0;
-        for (int i=0; i<n; ++i) a[i][i] = 1;
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret;
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
     }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
     }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
     }
-#else
-    void print(string debugname="------") {}
-#endif
-};
-#include <atcoder/segtree>
-using namespace atcoder;
-
-string disco = "DISCO";
-ll M = SIZE(disco);
-using S = Mat<ui>;
-S op(S a, S b) {return b*a;}
-S e() {return Mat<ui>();}
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    ll N = SIZE(Str);
-    vector<S> ini(N);
+    LONG(N);
+    VPD(P, N);
+
+    auto calc=[&](vd &angles, db mn, db mx) -> ll {
+        auto [l, x1] = lowbou(angles, mn);
+        auto [r, x2] = lowbou_r(angles, mx);
+        return max(r-l+1, 0LL);
+    };
+
+    ll n_right = 0, n_don = 0, n_ei = 0;
     rep(i, N) {
-        S tmp;
-        rep(j, M) {
-            if(disco[j]==Str[i]) {
-                tmp.a[j+1][j] = 1;
-            }
+        vd angles;
+        rep(j, N) if(i!=j) {
+            auto [x0,y0] = P[i];
+            auto [x1,y1] = P[j];
+            db theta = atan2(y1-y0, x1-x0)*180/PI;
+            angles.push_back(theta);
+            angles.push_back(theta+360.0);
         }
-        ini[i] = tmp;
+        sort(all(angles));
+        ll M = SIZE(angles)/2;
+        rep(j, M) {
+            db theta = angles[j];
+            n_right += calc(angles, theta+90-EPS, theta+90+EPS);
+            n_don += calc(angles, theta+90+EPS, theta+180-EPS);
+        }
+        de3(i, n_right, n_don)
     }
-    segtree<S,op,e> seg(ini);
-    vui base(M+1);
-    base[0] = 1;
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        S mat = seg.prod(l, r);
-        vui res = mat * base;
-        ui ans = res[M];
-        Out(ans);
-    }
+    n_ei = nCr(N, 3) - n_right - n_don;
+    printf("%lld %lld %lld\n", n_ei, n_right, n_don);
     
 }
 
 // ### test.cpp ###
-
