@@ -703,6 +703,12 @@
 ### 例題
 - !復習価値高 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
+## 耳DP
+- 一つずつ進む状態をキーに持つDP
+### 例題
+- 基本 [008 - AtCounter（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_h)
+- !要復習 耳DPの由来 [D - Ears](https://atcoder.jp/contests/yahoo-procon2019-qual/tasks/yahoo_procon2019_qual_d)
+
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという
 - Sのi文字目、Tのj文字目まで見たLCSをdp[i][j]と定義し、更新していけば良い

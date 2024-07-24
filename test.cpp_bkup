@@ -197,41 +197,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+using ui = unsigned int;
+using vui = vector<ui>;
 
 //! n*n matrix
 //! Currently, only operator* is defined.
 template <typename T>
 class Mat {
 public:
-    long long n; vector<vector<T>> a;
+    int n=6;
+    ui a[6][6];
     // Initialize n*n matrix
-    Mat (long long n, const vector<vector<T>> &mat={})
-    : n(n), a(n, vector<T>(n)) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
-            }
-        }
+    Mat () {
+        rep(i, 6) rep(j, 6) a[i][j] = 0;
+        for (int i=0; i<n; ++i) a[i][i] = 1;
     }
     // Define operator*
     Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
+        Mat ret;
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;
         for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
             for (int k=0; k<n; ++k) {
                 ret.a[i][j] += a[i][k] * rhs.a[k][j];
@@ -246,26 +230,12 @@ public:
         }
         return ret;
     }
-    // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
 #ifdef __DEBUG
     void print(string debugname="------") {  // for debug
         cerr << n << '\n';
         cerr << debugname << ":\n";
         for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+            cerr << a[i][j] << (j==n-1? '\n': ' ');
         }
         cerr << "---------" << '\n';
     }
@@ -273,57 +243,43 @@ public:
     void print(string debugname="------") {}
 #endif
 };
-
 #include <atcoder/segtree>
+using namespace atcoder;
 
-using SS = Mat<mint>;
-SS op(SS a, SS b) {
-    return b*a;
-}
-SS e() {return Mat<mint>(8);}
+string disco = "DISCO";
+ll M = SIZE(disco);
+using S = Mat<ui>;
+S op(S a, S b) {return b*a;}
+S e() {return Mat<ui>();}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-
-    string atc = "atcoder";
-    ll M = SIZE(atc);
-
-    vector<Mat<mint>> Ms(N ,Mat<mint>(M+1));
+    STRING(Str);
+    ll N = SIZE(Str);
+    vector<S> ini(N);
     rep(i, N) {
-        Mat<mint> m(M+1);
+        S tmp;
         rep(j, M) {
-            if(atc[j]==S[i]) m.a[j+1][j]=1;
+            if(disco[j]==Str[i]) {
+                tmp.a[j+1][j] = 1;
+            }
         }
-        Ms[i]=m;
-        // m.print();
+        ini[i] = tmp;
     }
-
-    segtree<SS,op,e> seg(Ms);
-
-    SS res = seg.all_prod();
-    res.print();
-    vm input = vm(M+1);
-    input[0] = 1;
-    vm ans = res * input;
-    Out(ans[M]);
-
-    // vm dp(M+1);
-    // dp[0] = 1;
-
-    // rep(i, N) {
-    //     // vm pdp(M+1); swap(pdp, dp);
-    //     repr(j, M+1) {
-    //         if(dp[j]==0) continue;
-    //         if(j<M && atc[j]==S[i]) dp[j+1] += dp[j];
-    //     }
-    //     de(dp)
-    // }
-    // mint ans = dp[M];
-    // Out(ans);
-
+    segtree<S,op,e> seg(ini);
+    vui base(M+1);
+    base[0] = 1;
+    LONG(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        S mat = seg.prod(l, r);
+        vui res = mat * base;
+        ui ans = res[M];
+        Out(ans);
+    }
     
 }
 
 // ### test.cpp ###
+

@@ -197,89 +197,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using ui = unsigned int;
-using vui = vector<ui>;
-
-//! n*n matrix
-//! Currently, only operator* is defined.
-template <typename T>
-class Mat {
-public:
-    int n=6;
-    ui a[6][6];
-    // Initialize n*n matrix
-    Mat () {
-        rep(i, 6) rep(j, 6) a[i][j] = 0;
-        for (int i=0; i<n; ++i) a[i][i] = 1;
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret;
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
-};
-#include <atcoder/segtree>
-using namespace atcoder;
-
-string disco = "DISCO";
-ll M = SIZE(disco);
-using S = Mat<ui>;
-S op(S a, S b) {return b*a;}
-S e() {return Mat<ui>();}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    ll N = SIZE(Str);
-    vector<S> ini(N);
-    rep(i, N) {
-        S tmp;
-        rep(j, M) {
-            if(disco[j]==Str[i]) {
-                tmp.a[j+1][j] = 1;
-            }
+    LONG(N); VL(A, N);
+
+    auto f=[&](ll s, ll a) -> ll {
+        if(s==0 || s==4) return a;
+        if(s==1 || s==3) {
+            if(a==0) return 2;
+            return a%2;
         }
-        ini[i] = tmp;
+        else {
+            return a%2==0;
+        }
+    };
+
+    ll M = 4;
+    vl dp(M+1, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        // vl pdp(M+1, INF); swap(pdp, dp);
+        repr(j, M+1) repr(k, M+1) {
+            if(k<j) continue;
+            // if(pdp[j]==INF) continue;
+            chmin(dp[k], dp[j]+f(k, A[i]));
+        }
+        de(dp)
     }
-    segtree<S,op,e> seg(ini);
-    vui base(M+1);
-    base[0] = 1;
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        S mat = seg.prod(l, r);
-        vui res = mat * base;
-        ui ans = res[M];
-        Out(ans);
-    }
-    
+    ll ans = INF;
+    rep(i, M+1) chmin(ans, dp[i]);
+    Out(ans);
+
 }
 
 // ### test.cpp ###
-
