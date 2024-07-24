@@ -197,95 +197,132 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! n*n matrix
+//! Currently, only operator* is defined.
+template <typename T>
+class Mat {
+public:
+    long long n; vector<vector<T>> a;
+    // Initialize n*n matrix
+    Mat (long long n, const vector<vector<T>> &mat={})
+    : n(n), a(n, vector<T>(n)) {
+        // unit matrix if mat is not specified
+        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
+        else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = mat[i][j];
+            }
+        }
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
     }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
+    // power k (A^k)
+    void pow(long long k) {
+        *this = pow_recursive(*this, k);
     }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
+    }
+    long long ij(long long i, long long j) {
+        return a[i][j];
+    }
+#ifdef __DEBUG
+    void print(string debugname="------") {  // for debug
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+    }
+#else
+    void print(string debugname="------") {}
+#endif
+};
+
+#include <atcoder/segtree>
+
+using SS = Mat<mint>;
+SS op(SS a, SS b) {
+    return b*a;
 }
+SS e() {return Mat<mint>(8);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
+    LONG(N); STRING(S);
 
-    vvl row(H), col(W);
-    rep(i, H) row[i].push_back(-1);
-    rep(j, W) col[j].push_back(-1);
+    string atc = "atcoder";
+    ll M = SIZE(atc);
 
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='.') continue;
-        row[i].push_back(j);
-        col[j].push_back(i);
+    vector<Mat<mint>> Ms(N ,Mat<mint>(M+1));
+    rep(i, N) {
+        Mat<mint> m(M+1);
+        rep(j, M) {
+            if(atc[j]==S[i]) m.a[j+1][j]=1;
+        }
+        Ms[i]=m;
+        // m.print();
     }
-    rep(i, H) row[i].push_back(W);
-    rep(j, W) col[j].push_back(H);
-    de(row)de(col)
 
-    ll ans = 0;
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='#') continue;
-        auto [nl, l] = uppbou_r(row[i], j);
-        auto [nr, r] = uppbou(row[i], j);
-        auto [nu, u] = uppbou_r(col[j], i);
-        auto [nd, d] = uppbou(col[j], i);
-        ll now = r-l-1+d-u-1-1;
-        chmax(ans, now);
-    }
-    Out(ans);
+    segtree<SS,op,e> seg(Ms);
+
+    SS res = seg.all_prod();
+    res.print();
+    vm input = vm(M+1);
+    input[0] = 1;
+    vm ans = res * input;
+    Out(ans[M]);
+
+    // vm dp(M+1);
+    // dp[0] = 1;
+
+    // rep(i, N) {
+    //     // vm pdp(M+1); swap(pdp, dp);
+    //     repr(j, M+1) {
+    //         if(dp[j]==0) continue;
+    //         if(j<M && atc[j]==S[i]) dp[j+1] += dp[j];
+    //     }
+    //     de(dp)
+    // }
+    // mint ans = dp[M];
+    // Out(ans);
+
     
 }
 

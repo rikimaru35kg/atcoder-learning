@@ -197,88 +197,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+using ui = unsigned int;
+using vui = vector<ui>;
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
+//! n*n matrix
+//! Currently, only operator* is defined.
+template <typename T>
+class Mat {
 public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    int n=6;
+    ui a[6][6];
+    // Initialize n*n matrix
+    Mat () {
+        rep(i, 6) rep(j, 6) a[i][j] = 0;
+        for (int i=0; i<n; ++i) a[i][i] = 1;
     }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret;
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
     }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
     }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
+#ifdef __DEBUG
+    void print(string debugname="------") {  // for debug
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j] << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
     }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
+#else
+    void print(string debugname="------") {}
+#endif
 };
+#include <atcoder/segtree>
+using namespace atcoder;
+
+string disco = "DISCO";
+ll M = SIZE(disco);
+using S = Mat<ui>;
+S op(S a, S b) {return b*a;}
+S e() {return Mat<ui>();}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N+1);
-    vl cnt(N+1);
-    rep(i, N+1) { cnt[A[i]]++; }
-    ll dn = -1;
-    rep(i, N+1) if (cnt[i]==2) dn = i;
-    vl is;
-    rep(i, N+1) if(A[i]==dn) is.push_back(i);
-    de(is)
-    ll a = is[0];
-    ll c = N-is[1];
-
-    Combination comb(1e6, M107);
-    rep1(k, N+1) {
-        mint now = comb(N+1, k);
-        now -= comb(a+c, k-1);
-        Out(now);
+    STRING(Str);
+    ll N = SIZE(Str);
+    vector<S> ini(N);
+    rep(i, N) {
+        S tmp;
+        rep(j, M) {
+            if(disco[j]==Str[i]) {
+                tmp.a[j+1][j] = 1;
+            }
+        }
+        ini[i] = tmp;
     }
-
-
+    segtree<S,op,e> seg(ini);
+    vui base(M+1);
+    base[0] = 1;
+    LONG(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        S mat = seg.prod(l, r);
+        vui res = mat * base;
+        ui ans = res[M];
+        Out(ans);
+    }
     
 }
 
 // ### test.cpp ###
+
