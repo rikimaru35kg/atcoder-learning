@@ -201,28 +201,29 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    ll A = 0;
-    ll T = 0;
-    vt3 vote;
+    vt4 items;
     rep(i, N) {
-        LONG(a, b);
-        A += a;
-        vote.emplace_back(b+2*a, a, b);
+        LONG(w, s, v);
+        items.emplace_back(s+w, s, w, v);
     }
-    sort(allr(vote));
+    sort(all(items));
+    ll Mw = 30000;
 
-    ll ans = -1;
+    vl dp(Mw+1);
+    dp[0] = 0;
     rep(i, N) {
-        auto [c,a,b] = vote[i];
-        A -= a;
-        T += a+b;
-        de4(a,b,A,T)
-        if(A<T) {
-            ans = i+1;
-            break;
+        auto [_, s,w,v] = items[i];
+        repr(j, Mw+1) {
+            // if(dp[j]==-INF) continue;
+            if(j>s) continue;
+            if(j+w<=Mw) chmax(dp[j+w], dp[j]+v);
         }
+        // de(dp)
     }
+    ll ans = 0;
+    rep(i, Mw+1) chmax(ans, dp[i]);
     Out(ans);
+
     
 }
 
