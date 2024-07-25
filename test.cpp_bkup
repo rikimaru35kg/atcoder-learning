@@ -197,35 +197,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    vl A(N), B(N);
-    rep(i, N) cin>>A[i]>>B[i];
+    LONG(N, K);
+    VL(A, N);
 
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return A[i]>A[j];
-    });
-
-    vl dp(P+1, -INF);
-    dp[0] = 0;
-    for(auto i: p) {
-        repr(j, P) {
-            if(dp[j]==-INF) continue;
-            chmax(dp[min(j+A[i],P)], dp[j]+B[i]);
+    vm dp(K+1);
+    dp[0] = 1;
+    rep(i, N) {
+        repr(j, K+1) {
+            if(j+A[i]<=K) dp[j+A[i]] += dp[j];
         }
     }
-    ll ans = -INF;
-    rep(i, P+1) chmax(ans, dp[i]);
-    Out(ans);
+    de(dp)
+
+    rep(i, N) {
+        repr(j, K+1) {
+            if(j+A[i]<=K) dp[j+A[i]] += dp[j];
+        }
+    }
+
+
+
     
 }
 
 // ### test.cpp ###
-
-
-
-

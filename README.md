@@ -883,6 +883,7 @@
 - あるいは、元のDP配列がa,b,c,d,eで、加える値が2の場合はa,b,a+c,b+d,c+eとなる事を考えれば、戻す操作の手順が理解できるはず
 ### 例題
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
+- !要復習 [D - No Need](https://atcoder.jp/contests/arc070/tasks/arc070_b)
 
 ## Top2を持つ
 - 和の最大値を求めるDPにおいて、隣が同じ色になってはNGの場合、最後に選んだ色をDPの状態に持てば良いが、計算量が収まらない場合あり
