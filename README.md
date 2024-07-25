@@ -589,6 +589,7 @@
 - 基本 非括弧列の部分取り出し [D - Mismatched Parenthesis](https://atcoder.jp/contests/abc307/tasks/abc307_d)
 - !復習価値低 基本 括弧と気絶（動画に再帰下降構文解析のおまけ解説あり）[D - Scope](https://atcoder.jp/contests/abc283/tasks/abc283_d)
 - !復習価値中 文字列をつなげて括弧列を作れるか [F - Bracket Sequencing](https://atcoder.jp/contests/abc167/tasks/abc167_f)
+- !要復習 最高気温の最小化（括弧列の問題ではないのでNote非掲載） [C - 魔法使い高橋君](https://atcoder.jp/contests/arc053/tasks/arc053_c)
 
 ## BIT木（Fenwick tree）
 - 元の配列が動的に変わるときの要素iまでの累積和を高速（logN）で求める事ができる
@@ -860,6 +861,7 @@
 - DPできる形に前処理してからDPする問題
 ### 例題
 - !復習価値中 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
+- !復習価値高　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある

@@ -186,7 +186,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-13;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -197,114 +197,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VPD(P, N);
-
-    auto calc=[&](vd &angles, db mn, db mx) -> ll {
-        auto [l, x1] = lowbou(angles, mn);
-        auto [r, x2] = lowbou_r(angles, mx);
-        return max(r-l+1, 0LL);
-    };
-
-    ll n_right = 0, n_don = 0, n_ei = 0;
+    ll A = 0;
+    ll T = 0;
+    vt3 vote;
     rep(i, N) {
-        vd angles;
-        rep(j, N) if(i!=j) {
-            auto [x0,y0] = P[i];
-            auto [x1,y1] = P[j];
-            db theta = atan2(y1-y0, x1-x0)*180/PI;
-            angles.push_back(theta);
-            angles.push_back(theta+360.0);
-        }
-        sort(all(angles));
-        ll M = SIZE(angles)/2;
-        rep(j, M) {
-            db theta = angles[j];
-            n_right += calc(angles, theta+90-EPS, theta+90+EPS);
-            n_don += calc(angles, theta+90+EPS, theta+180-EPS);
-        }
-        de3(i, n_right, n_don)
+        LONG(a, b);
+        A += a;
+        vote.emplace_back(b+2*a, a, b);
     }
-    n_ei = nCr(N, 3) - n_right - n_don;
-    printf("%lld %lld %lld\n", n_ei, n_right, n_don);
+    sort(allr(vote));
+
+    ll ans = -1;
+    rep(i, N) {
+        auto [c,a,b] = vote[i];
+        A -= a;
+        T += a+b;
+        de4(a,b,A,T)
+        if(A<T) {
+            ans = i+1;
+            break;
+        }
+    }
+    Out(ans);
     
 }
 
