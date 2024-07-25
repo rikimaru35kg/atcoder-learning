@@ -866,6 +866,7 @@
 - !要復習 おやつ [C - おやつ ](https://atcoder.jp/contests/arc042/tasks/arc042_c)
 - !復習価値高　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
 - !要復習 重さ制限付きタワー [X - Tower](https://atcoder.jp/contests/dp/tasks/dp_x)
+- !復習価値高 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある

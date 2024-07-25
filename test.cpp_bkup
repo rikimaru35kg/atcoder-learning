@@ -200,31 +200,32 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vt4 items;
-    rep(i, N) {
-        LONG(w, s, v);
-        items.emplace_back(s+w, s, w, v);
-    }
-    sort(all(items));
-    ll Mw = 30000;
+    LONG(N, P);
+    vl A(N), B(N);
+    rep(i, N) cin>>A[i]>>B[i];
 
-    vl dp(Mw+1);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return A[i]>A[j];
+    });
+
+    vl dp(P+1, -INF);
     dp[0] = 0;
-    rep(i, N) {
-        auto [_, s,w,v] = items[i];
-        repr(j, Mw+1) {
-            // if(dp[j]==-INF) continue;
-            if(j>s) continue;
-            if(j+w<=Mw) chmax(dp[j+w], dp[j]+v);
+    for(auto i: p) {
+        repr(j, P) {
+            if(dp[j]==-INF) continue;
+            chmax(dp[min(j+A[i],P)], dp[j]+B[i]);
         }
-        // de(dp)
     }
-    ll ans = 0;
-    rep(i, Mw+1) chmax(ans, dp[i]);
+    ll ans = -INF;
+    rep(i, P+1) chmax(ans, dp[i]);
     Out(ans);
-
     
 }
 
 // ### test.cpp ###
+
+
+
+
