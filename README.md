@@ -1705,6 +1705,7 @@
 - [F - Sum Sum Max](https://atcoder.jp/contests/abc240/tasks/abc240_f)
 - [F - Keep Connect](https://atcoder.jp/contests/abc248/tasks/abc248_f)
 - [D - AABCC](https://atcoder.jp/contests/abc300/tasks/abc300_d)
+- [C - : (Colon)](https://atcoder.jp/contests/abc168/tasks/abc168_c)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)

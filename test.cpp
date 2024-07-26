@@ -197,23 +197,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);VL(A, N);
-    vl box(N);
+    DOUBLE(A,B,H,M);
 
-    repr(i, N) {
-        ll x = (i+1);
-        ll now = A[i];
-        for(ll y=i+x; y<N; y+=x) {
-            now ^= box[y];
-        }
-        box[i] = now;
-    }
-    vl ans;
-    rep(i, N) if(box[i]) ans.push_back(i+1);
-    Out(SIZE(ans));
+    auto cal=[&](db r, db theta) -> Pd {
+        theta = PI/2 - theta;
+        db x = r*cos(theta);
+        db y = r*sin(theta);
+        return {x, y};
+    };
+
+    auto [xa, ya] = cal(A, 2*PI*(H/12+M/720));
+    auto [xb, yb] = cal(B, 2*PI*M/60);
+    de2(xa,ya)
+    de2(xb,yb)
+
+    db ans = euclid_distd({xa,ya}, {xb,yb});
     Out(ans);
     
 }
