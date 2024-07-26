@@ -1365,10 +1365,11 @@
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - !復習価値高 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 
-## 計算量がlog(N)やsqrt(N)に落ちる問題
+## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
 ### 例題
+- !復習価値低 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
 - !復習価値高 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 
