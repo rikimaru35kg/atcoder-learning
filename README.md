@@ -480,6 +480,8 @@
 - SCC後、強連結成分毎に見るとトポロジカル順に並べたDAGになっている
 ### 例題
 - 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
+- !要復習 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
+- !要復習 [道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く

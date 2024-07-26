@@ -186,7 +186,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const long double EPS = 1e-14;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -197,12 +197,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/scc>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    long double a, b, c;
-    cin>>a>>b>>c;
-    if(sqrt(a)+sqrt(b)<sqrt(c)-EPS) PYes PNo
+    LONG(N, M);
+    scc_graph scc(N);
+    vvl ifrom(N);
+    vl deg(N);
+    rep(i, M) {
+        LONGM(a, b);
+        ifrom[b].emplace_back(a);
+        deg[b]++;
+        scc.add_edge(a, b);
+    }
+    auto grs = scc.scc();
+    vl used(N);
+    ll ans = 0;
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) continue;
+        bool closed = true;
+        uset<ll> st;
+        for(auto v: gr) {
+            used[v] = true;
+            st.insert(v);
+        }
+        for(auto v: gr) {
+            for(auto nv: ifrom[v]) {
+                if (!st.count(nv)) closed = false;
+            }
+        }
+        if(closed) ++ans;
+    }
+    de(ans)
+
+    rep(i, N) if(!used[i]) {
+        used[i]=true;
+        if(deg[i]==0) ++ans;
+    }
+    Out(ans);
     
 }
 
