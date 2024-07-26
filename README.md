@@ -143,6 +143,14 @@
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
 - !復習価値高 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/55891620)
 
+## ペアつなぎ
+- 個別の区間に注目すると、最低何本は線があるかどうか分かる（下界）
+- その最低本を達成するつなぎ方をすれば、それが最適だと分かる
+- 最適なつなぎ方の通り数を求めたい場合は、つなぐ時につなぎ方の場合の数を掛け合わせていけば良い
+### 例題
+- 基本 [014 - We Used to Sing a Song Together（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_n)
+- !要復習 PC電源つなぎ方総数 [A - 1D Matching](https://atcoder.jp/contests/cf16-exhibition-final-open/tasks/cf16_exhibition_final_a)
+
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
 - 以下はmapの定数倍の遅さを解決したい場合の手法（あまり使う事はないかもしれない）
@@ -1174,6 +1182,7 @@
 - !復習価値低 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - !復習価値高 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
+- !要復習 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 
 ## 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる

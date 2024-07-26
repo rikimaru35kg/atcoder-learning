@@ -199,7 +199,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint1000000007;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -214,24 +214,30 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
+    LONG(N);
+    VL(A, N); VL(B, N);
+    vp X;
+    rep(i, N) X.emplace_back(A[i], 0);
+    rep(i, N) X.emplace_back(B[i], 1);
+    ll p = 0, q = 0;
+    mint ans = 1;
 
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, N) {
-        repr(j, K+1) {
-            if(j+A[i]<=K) dp[j+A[i]] += dp[j];
+    sort(all(X));
+    for(auto [x, t]: X) {
+        if(t==0 && q==0) {
+            ++p; continue;
+        }
+        if(t==1 && p==0) {
+            ++q; continue;
+        }
+        if(t==0) {
+            ans *= q; --q; continue;
+        }
+        if(t==1) {
+            ans *= p; --p; continue;
         }
     }
-    de(dp)
-
-    rep(i, N) {
-        repr(j, K+1) {
-            if(j+A[i]<=K) dp[j+A[i]] += dp[j];
-        }
-    }
-
+    Out(ans);
 
 
     
