@@ -186,7 +186,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const long double EPS = 1e-14;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -200,23 +200,9 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, 2*N);
-    N *= 2;
-
-    vvl dp(N+1, vl(N+1, INF));
-    rep(i, N+1) dp[i][i] = 0;
-
-    for(ll w=2; w<=N; w+=2) {
-        rep(l, N+1-w) {
-            ll r = l + w;
-            for(ll m=l+2; m<r; m+=2) {
-                chmin(dp[l][r], dp[l][m] + dp[m][r]);
-            }
-            chmin(dp[l][r], dp[l+1][r-1]+abs(A[l]-A[r-1]));
-        }
-    }
-    Out(dp[0][N]);
-
+    long double a, b, c;
+    cin>>a>>b>>c;
+    if(sqrt(a)+sqrt(b)<sqrt(c)-EPS) PYes PNo
     
 }
 

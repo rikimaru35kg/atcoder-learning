@@ -1160,6 +1160,7 @@
 - double型に小数を代入すると、3.1415なのに3.141499999...のように誤差が出てしまう事あり。小数第4位までのdouble型を整数にキャストするときは、round(x*10000)を使うと3.1415は31415となっていて桁落ちなしでキャスト可能（単に(ll)xでは31414になる可能性あり）
 ### 例題
 - !復習価値高 円内格子点の数 [D - Circle Lattice Points](https://atcoder.jp/contests/abc191/tasks/abc191_d)
+- !要復習 ポスターに2つの円 [4 - JOIポスター (JOI Poster)](https://atcoder.jp/contests/joisc2013-day1/tasks/joisc2013_joi_poster)
 
 ## 最小桁和
 - 1からスタートし、+1するか*10するかを繰り返すと任意の自然数を作ることができる

@@ -197,35 +197,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
+    LONG(N, W, H);
+    VP(P, N);
+    auto p2=[&](ll x) {
+        return x*x;
+    };
+    auto f=[&](ll x, ll d, ll r2) {
+        return p2(d-x) < r2;
+    };
+    auto judge=[&](ll a, ll b, ll c) -> bool {
+        if(c-a-b<0) return false;
+        return 4*a*b < p2(c-a-b);
+    };
 
-    vvl dp(N+1, vl(N+1));
+    ll ans = 0;
+    rep(i, N) rep(j, N) rep(k, N) rep(l, N) {
+        if(i==j || i==k || i==l) continue;
+        if(j==k || j==l) continue;
+        if(k==l) continue;
+        ll ra2 = euclid_dist2(P[i], P[j]);
+        ll rc2 = euclid_dist2(P[k], P[l]);
+        if(ra2<=rc2) continue;
 
-    for(ll w=3; w<=N; ++w) {
-        rep(l, N+1-w) {
-            ll r = l + w;
-            for(ll m=l+1; m<r; ++m) {
-                chmax(dp[l][r], dp[l][m]+dp[m][r]);
-                if(S[l]=='i' && S[m]=='w' && S[r-1]=='i' &&
-                   dp[l+1][m]*3==m-l-1 && dp[m+1][r-1]*3==r-m-2) {
-                    chmax(dp[l][r], dp[l+1][m]+dp[m+1][r-1]+1);
-                }
-            }
-            if(S.substr(l, 2)=="iw" && S[r-1]=='i' && dp[l+2][r-1]*3==r-l-3) {
-                chmax(dp[l][r], dp[l+2][r-1]+1);
-            }
-            if(S[l]=='i' && S.substr(r-2, 2)=="wi" && dp[l+1][r-2]*3==r-l-3) {
-                chmax(dp[l][r], dp[l+1][r-2]+1);
-            }
-        }
+        ll d2 = euclid_dist2(P[i], P[k]);
+        if(!judge(d2, rc2, ra2)) continue;
+
+        auto [xa, ya] = P[i];
+        auto [xc, yc] = P[k];
+        if(f(xa, 0, ra2)) continue;
+        if(f(xa, W, ra2)) continue;
+        if(f(ya, 0, ra2)) continue;
+        if(f(ya, H, ra2)) continue;
+        if(f(xc, 0, rc2)) continue;
+        if(f(xc, W, rc2)) continue;
+        if(f(yc, 0, rc2)) continue;
+        if(f(yc, H, rc2)) continue;
+        ++ans;
     }
-    Out(dp[0][N]);
+    Out(ans);
     
 }
 
 // ### test.cpp ###
-
