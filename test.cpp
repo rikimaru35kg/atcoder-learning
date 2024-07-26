@@ -197,37 +197,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(A,B,H,M);
+    STRING(S);
+    ll N = SIZE(S);
 
-    auto cal=[&](db r, db theta) -> Pd {
-        theta = PI/2 - theta;
-        db x = r*cos(theta);
-        db y = r*sin(theta);
-        return {x, y};
-    };
+    vvl dp(N+1, vl(N+1));
 
-    auto [xa, ya] = cal(A, 2*PI*(H/12+M/720));
-    auto [xb, yb] = cal(B, 2*PI*M/60);
-    de2(xa,ya)
-    de2(xb,yb)
-
-    db ans = euclid_distd({xa,ya}, {xb,yb});
-    Out(ans);
+    for(ll w=3; w<=N; ++w) {
+        rep(l, N+1-w) {
+            ll r = l + w;
+            for(ll m=l+1; m<r; ++m) {
+                chmax(dp[l][r], dp[l][m]+dp[m][r]);
+                if(S[l]=='i' && S[m]=='w' && S[r-1]=='i' &&
+                   dp[l+1][m]*3==m-l-1 && dp[m+1][r-1]*3==r-m-2) {
+                    chmax(dp[l][r], dp[l+1][m]+dp[m+1][r-1]+1);
+                }
+            }
+            if(S.substr(l, 2)=="iw" && S[r-1]=='i' && dp[l+2][r-1]*3==r-l-3) {
+                chmax(dp[l][r], dp[l+2][r-1]+1);
+            }
+            if(S[l]=='i' && S.substr(r-2, 2)=="wi" && dp[l+1][r-2]*3==r-l-3) {
+                chmax(dp[l][r], dp[l+1][r-2]+1);
+            }
+        }
+    }
+    Out(dp[0][N]);
     
 }
 
 // ### test.cpp ###
+
