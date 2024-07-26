@@ -477,7 +477,7 @@
 - 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
 - 2度目のDFSは辺を逆順に辿ることとし、辿り付く頂点が1つの強連結成分である
 - 自己ループがあってもSCCは動作する（ただしサイズ1のサイクルになるので、サイクルか非サイクルかの判定が別途必要）
-- SCC後、強連結成分毎に見るとトポロジカル順に並べたDAGになっている
+- SCC後、強連結成分を縮約すると**トポロジカル順に並べたDAG**になっている
 ### 例題
 - 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 - !要復習 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
