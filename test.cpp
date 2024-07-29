@@ -197,90 +197,10 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    SCC scc(N);
-    ll ind = 0, oud = 0;
-    vvl from(N);
-    vvl ifrom(N);
-    rep(i, M) {
-        LONG(a, b);
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-        scc.add_edge(a, b);
-    }
-    auto grs = scc.scc();
-    for(auto gr: grs) {
-        // if(SIZE(gr)==1) {
-        //     ++ind, ++oud;
-        //     continue;
-        // }
-        uset<ll> st;
-        for(auto v: gr) st.insert(v);
-        bool bout = false, bin = false;
-        for(auto v: gr) {
-            for(auto nv: from[v]) {
-                if(!st.count(nv)) bout = true;
-            }
-            for(auto nv: ifrom[v]) {
-                if(!st.count(nv)) bin = true;
-            }
-        }
-        de(gr)de(bout)de(bin)
-        if(!bout) ++oud;
-        if(!bin) ++ind;
-    }
-    if(SIZE(grs)==1) Pm0
-    Out(max(ind, oud));
+    
 }
 
 // ### test.cpp ###

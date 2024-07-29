@@ -400,6 +400,7 @@
 - !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - !復習価値低 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
 - !復習価値高 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
+- !要復習 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
 
 ## 全域木
 - 無向グラフから全域木を構成すると見通しが良くなる事がある
@@ -671,11 +672,11 @@
 - !復習価値中 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
 - !復習価値高 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
-## ナップサックDP
+## ナップザックDP
 - 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
 - 全探索では計算量が間に合わず、幾つか要素がある場合はこれが使えないか検討してみる
 
-## 個数制限なしナップサックDP
+## 個数制限なしナップザックDP
 - 通常のDPのように、i個目までを選んでという状態を取ってしまうと、個数制限がないのでiを1つ進めるたびにN回のループが発生してしまう
 - 重さ制限、残り体力など、通常2つ目に使う状態のみで実は十分。個数制限がない為、i個目まで使ってとか考える必要がないから
 - 2次元のまま遷移を高速化するという手法もあり、そっちのほうが実は典型解法かも？？
@@ -867,6 +868,7 @@
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値高 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
+- !復習価値高 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
@@ -1527,7 +1529,9 @@
 
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
+- K番目を考える時、二分探索するのも典型
 ### 例題
+- !復習価値高 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
 - !要復習 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
 
 ## お堀問題
