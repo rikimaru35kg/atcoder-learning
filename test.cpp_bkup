@@ -197,57 +197,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
+void solve(ll N) {
+    map<ll,ll> mp;
+    rep(i, N) {
+        int h1, m1, s1, h2, m2, s2;
+        scanf("%d:%d:%d %d:%d:%d", &h1, &m1, &s1, &h2, &m2, &s2);
+        ll st = h1*3600 + m1*60 + s1;
+        ll end = h2*3600 + m2*60 + s2;
+        mp[st]++;
+        mp[end]--;
     }
-    return ret;
+    ll ans = 0;
+    ll now = 0;
+    for(auto [k,v]:mp) {
+        now += v;
+        chmax(ans, now);
+    }
+    Out(ans);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    bool bipart = true;
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    while(true) {
+        LONG(N);
+        if(N==0) break;
+        solve(N);
     }
-
-    vl color(N, -1);
-    ll zero = 0, one = 0;
-    auto dfs=[&](auto f, ll v, ll c) -> void {
-        color[v] = c;
-        if(c) one++;
-        else zero++;
-        for(auto nv: from[v]) {
-            if(color[nv]!=-1) {
-                if(c==color[nv]) bipart = false;
-            }
-            else f(f, nv, c^1);
-        }
-    };
-    dfs(dfs, 0, 0);
-
-    if(bipart) {
-        ll ans = zero*one - M;
-        Out(ans);
-    } else {
-        ll ans = nCr(N, 2) - M;
-        Out(ans);
-    }
-
     
 }
 

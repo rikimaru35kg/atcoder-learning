@@ -63,7 +63,7 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using t3 = tuple<ll,ll,ll>;
-using t4 = tuple<ll,ll,ll,ll>;
+using t4 = tuple<int,int,int,int>;
 using vt3 = vector<t3>;
 using vt4 = vector<t4>;
 using vvt3 = vector<vector<t3>>;
@@ -197,91 +197,118 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+void dfs(int i, int j, int x, int W, int H, vvi &imos, vvb &used, vvi &color) {
+    if(used[i][j]) return;
+    used[i][j] = true;
+    color[i][j] = x;
+    for(auto [di,dj]: dij) {
+        int ni = i + di, nj = j + dj;
+        if(!isin(ni,nj,W,H)) continue;
+        if(imos[ni][nj]>0) continue;
+        dfs(ni, nj, x, W, H, imos, used, color);
+    }
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    CoordinateCompression ccx, ccy;
+    LONG(W, H, N);
+    vt4 rec;
+    rep(i, N) {
+        LONG(x1, y1, x2, y2);
+        rec.emplace_back(x1,y1,x2,y2);
+        ccx.add(x1); ccx.add(x2);
+        ccy.add(y1); ccy.add(y2);
     }
-    if(N<=3) {
-        vl p(N);
-        rep(i, N) p[i] = i+1;
-        Out(p); return 0;
+    ccx.add(0); ccx.add(W);
+    ccy.add(0); ccy.add(H);
+    int nw = ccx.size()+1;
+    int nh = ccy.size()+1;
+    vvi imos(nw, vi(nh));
+    for(auto [x1,y1,x2,y2]: rec) {
+        x1 = ccx(x1), x2 = ccx(x2);
+        y1 = ccy(y1), y2 = ccy(y2);
+        imos[x1][y1]++; imos[x1][y2]--;
+        imos[x2][y1]--; imos[x2][y2]++;
     }
+    rep(i, nw) rep(j, nh-1) imos[i][j+1] += imos[i][j];
+    rep(i, nw-1) rep(j, nh) imos[i+1][j] += imos[i][j];
+    de(imos)
+    de2(nw, nh)
 
-    vl color(N, -1);
-    ll a = 0, b = 0;
-    auto dfs=[&](auto f, ll v, ll c, ll p=-1) -> void {
-        color[v] = c;
-        if(c==0) ++a;
-        else ++b;
-        for(auto nv: from[v]) if(nv != p) {
-            f(f, nv, c^1, v);
-        }
-    };
-    dfs(dfs, 0, 0);
+    W = nw - 2, H = nh - 2;
+    vvi color(W, vi(H));
+    vvb used(W, vb(H));
+    // auto bfs=[&](ll si, ll sj, ll x) {
+    //     queue<pair<int,int>> que;
+    //     auto push=[&](ll i, ll j) {
+    //         if(!isin(i,j,W,H)) return;
+    //         if(used[i][j]) return;
+    //         if(imos[i][j]>0) return;
+    //         used[i][j] = true;
+    //         que.emplace(i, j);
+    //         color[i][j] = x;
+    //     };
+    //     push(si, sj);
+    //     while(que.size()) {
+    //         auto [i, j] = que.front(); que.pop();
+    //         for(auto [di,dj]: dij) {
+    //             ll ni = i + di, nj = j + dj;
+    //             push(ni, nj);
+    //         }
+    //     }
+    // };
 
-    ll k0 = N/3, k1 = Divceil(N,3), k2=N-k0-k1;
-    vl p(N, -1);
-    auto calc=[&](ll t) {
-        vl zs, rs;
-        uset<ll> rem;
-        rep1(i, N) rem.insert(i);
-        rep(v, N) {
-            if(color[v]==t) zs.push_back(v);
-            else rs.push_back(v);
-        }
-        ll num = 3;
-        for(auto v: zs) {
-            p[v] = num;
-            rem.erase(num);
-            num += 3;
-        }
-        for(auto v: rs) {
-            p[v] = *rem.begin();
-            rem.erase(rem.begin());
-        }
-        Out(p);
-    };
-    if(a<=k0) {
-        calc(0);
-    } else if(N-a<=k0) {
-        calc(1);
-    } else {
-        vl zs, rs;
-        uset<ll> rem;
-        rep1(i, N) rem.insert(i);
-        rep(v, N) {
-            if(color[v]==0) zs.push_back(v);
-            else rs.push_back(v);
-        }
-        ll num = 1;
-        for(auto v: zs) {
-            if(k1==0) break;
-            p[v] = num;
-            rem.erase(num);
-            num += 3;
-            --k1;
-        }
-        num = 2;
-        for(auto v: rs) {
-            if(k2==0) break;
-            p[v] = num;
-            rem.erase(num);
-            num += 3;
-            --k2;
-        }
-        rep(v, N) if(p[v]==-1) {
-            p[v] = *rem.begin();
-            rem.erase(rem.begin());
-        }
-        Out(p);
+    int c = 0;
+    rep(i, W) rep(j, H) if(!used[i][j]) {
+        if(imos[i][j]>0) continue;
+        ++c;
+        // bfs(i, j, c);
+        dfs(i, j, c, W, H, imos, used, color);
     }
+    de(color)
+    Out(c);
     
 }
 

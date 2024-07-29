@@ -193,6 +193,7 @@
 - 基本 [A - 鉄道旅行 (Railroad Trip)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a)
 - 基本 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
 - 基本 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
+- !要復習 メモリ制限注意！ [E - ペンキの色](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_e)
 
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
@@ -1619,10 +1620,11 @@
 - 要素数Nの初期化はO(N)の計算量が必要なことに注意！（次数が3以下のグラフを距離3までBFSする際、BFSのループ回数は少ないが、visited(N)としてしまうとO(N)かかるので注意）
 
 ## RE (Runtime Error)
-- ゼロ除算、配列外参照、巨大配列作成
+- ゼロ除算、配列外参照、巨大配列作成（**MLEでもRE**と判定される事がある）
 - 空setに対して演算するとRE
 - set.erase(set.end())などとするとRE（なぜならset.erase(--set.end())とする必要があるから）
-- 他に経験したREとしては、巨大配列vectorがある　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
+- 巨大配列vectorでRE　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
+- スタックオーバーフローでRE（DFS->BFSに変えたら通った） [](https://atcoder.jp/contests/joi2008ho/submissions/56107001)
 
 ## インタラクティブ
 - 問題文にも明記あるが、余計な改行は不正出力と見なされWAとなるので注意（おそらく空文字を出力したと見なされる）
