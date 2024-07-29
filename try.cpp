@@ -41,7 +41,7 @@ using namespace std;
 using ll = long long;
 using ull = unsigned long long;
 using db = double;
-using Pr = pair<ll, ll>;
+using Pr = pair<int, int>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -200,7 +200,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 //! Calculate Euclid distance^2
 //! input type = long long
 //! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+long long euclid_dist2(Pr p1, Pr p2) {
     long long ret = 0;
     ret += (p1.first - p2.first) * (p1.first - p2.first);
     ret += (p1.second - p2.second) * (p1.second - p2.second);
@@ -240,7 +240,9 @@ int main () {
     ll ans = 0;
     for(auto gr:grs) {
         uset<ll> st;
-        for(auto v: gr) { st.insert(v); }
+        for(auto v: gr) {
+            st.insert(v);
+        }
         bool fromout = false;
         for(auto v: gr) {
             for(auto nv: ifrom[v]) {
@@ -251,6 +253,8 @@ int main () {
         if(!fromout) ++ans;
     }
     Out(ans);
+    
+
 }
 
 // ### test.cpp ###

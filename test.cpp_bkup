@@ -197,60 +197,10 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-#include <atcoder/scc>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(F, N);
-    LONG(M);
-    VP(S, M);
-
-    vl mndist(N, INF);
-    rep(i, N) rep(j, M) {
-        ll d2 = euclid_dist2(F[i], S[j]);
-        chmin(mndist[i], d2);
-    }
-
-    scc_graph scc(N);
-    vvi ifrom(N);
-
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        ll d2 = euclid_dist2(F[i], F[j]);
-        if(d2<mndist[i]) {
-            scc.add_edge(i, j);
-            ifrom[j].push_back(i);
-        }
-    }
-    auto grs = scc.scc();
-
-    ll ans = 0;
-    for(auto gr:grs) {
-        uset<ll> st;
-        for(auto v: gr) { st.insert(v); }
-        bool fromout = false;
-        for(auto v: gr) {
-            for(auto nv: ifrom[v]) {
-                if(st.count(nv)) continue;
-                fromout = true;
-            }
-        }
-        if(!fromout) ++ans;
-    }
-    Out(ans);
+    
 }
 
 // ### test.cpp ###

@@ -483,6 +483,7 @@
 - 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 - !要復習 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
 - !要復習 [道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)
+- !要復習 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く
@@ -1515,7 +1516,7 @@
 - !復習価値低 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 ## 偏角ソート
-- snuke librarywが良い！
+- snuke libraryが良い！
 ### 例題
 - !復習価値高 [009 - Three Point Angle（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_i)
 - !要復習 [F - Engines](https://atcoder.jp/contests/abc139/tasks/abc139_f)
