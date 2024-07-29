@@ -197,60 +197,92 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-#include <atcoder/scc>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+
     LONG(N);
-    VP(F, N);
-    LONG(M);
-    VP(S, M);
-
-    vl mndist(N, INF);
-    rep(i, N) rep(j, M) {
-        ll d2 = euclid_dist2(F[i], S[j]);
-        chmin(mndist[i], d2);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    if(N<=3) {
+        vl p(N);
+        rep(i, N) p[i] = i+1;
+        Out(p); return 0;
     }
 
-    scc_graph scc(N);
-    vvi ifrom(N);
-
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        ll d2 = euclid_dist2(F[i], F[j]);
-        if(d2<mndist[i]) {
-            scc.add_edge(i, j);
-            ifrom[j].push_back(i);
+    vl color(N, -1);
+    ll a = 0, b = 0;
+    auto dfs=[&](auto f, ll v, ll c, ll p=-1) -> void {
+        color[v] = c;
+        if(c==0) ++a;
+        else ++b;
+        for(auto nv: from[v]) if(nv != p) {
+            f(f, nv, c^1, v);
         }
-    }
-    auto grs = scc.scc();
+    };
+    dfs(dfs, 0, 0);
 
-    ll ans = 0;
-    for(auto gr:grs) {
-        uset<ll> st;
-        for(auto v: gr) { st.insert(v); }
-        bool fromout = false;
-        for(auto v: gr) {
-            for(auto nv: ifrom[v]) {
-                if(st.count(nv)) continue;
-                fromout = true;
-            }
+    ll k0 = N/3, k1 = Divceil(N,3), k2=N-k0-k1;
+    vl p(N, -1);
+    auto calc=[&](ll t) {
+        vl zs, rs;
+        uset<ll> rem;
+        rep1(i, N) rem.insert(i);
+        rep(v, N) {
+            if(color[v]==t) zs.push_back(v);
+            else rs.push_back(v);
         }
-        if(!fromout) ++ans;
+        ll num = 3;
+        for(auto v: zs) {
+            p[v] = num;
+            rem.erase(num);
+            num += 3;
+        }
+        for(auto v: rs) {
+            p[v] = *rem.begin();
+            rem.erase(rem.begin());
+        }
+        Out(p);
+    };
+    if(a<=k0) {
+        calc(0);
+    } else if(N-a<=k0) {
+        calc(1);
+    } else {
+        vl zs, rs;
+        uset<ll> rem;
+        rep1(i, N) rem.insert(i);
+        rep(v, N) {
+            if(color[v]==0) zs.push_back(v);
+            else rs.push_back(v);
+        }
+        ll num = 1;
+        for(auto v: zs) {
+            if(k1==0) break;
+            p[v] = num;
+            rem.erase(num);
+            num += 3;
+            --k1;
+        }
+        num = 2;
+        for(auto v: rs) {
+            if(k2==0) break;
+            p[v] = num;
+            rem.erase(num);
+            num += 3;
+            --k2;
+        }
+        rep(v, N) if(p[v]==-1) {
+            p[v] = *rem.begin();
+            rem.erase(rem.begin());
+        }
+        Out(p);
     }
-    Out(ans);
+    
 }
 
 // ### test.cpp ###

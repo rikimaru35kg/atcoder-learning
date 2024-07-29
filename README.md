@@ -506,15 +506,18 @@
 
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ
-- 2部グラフである必要十分条件は奇閉路がないこと（例えば木は必ず2部グラフ）
+- 2部グラフである必要十分条件は**奇閉路がない**こと（例えば木は必ず2部グラフ）
 - 再帰関数DFSによって簡単に色塗り可能（BFSでも可）
 - DFSして同じ色同士を結んでしまう場合は2部グラフでない
 - 異なる連結成分同士を結ぶときは2部グラフを壊すことはない
 - 完全2部グラフはKm,nのように表す
 - XY平面上の格子系問題ではxとyの2部グラフと考えると上手くいくことがある（点を辺に対応させる）e.g. Must Be Rectangular
+- 何かが3の物に対して無限に操作を繰り返すタイプの問題は、二部グラフを疑っても良いかも
 ### 例題
 - !復習価値中 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
-- !復習価値中 考察メイン [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
+- !復習価値中 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
+- !要復習 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
+- !要復習 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
 
 ## 超頂点を設ける
 - 仮想頂点を設ける事で、見通しが良くなる場合あり
@@ -865,11 +868,11 @@
 ### 例題
 - !復習価値高 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - !復習価値低 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
+- !復習価値高 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
 - !復習価値中 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値高 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 稼ぎ＋最短経路（高難度） [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
-- !復習価値高 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
