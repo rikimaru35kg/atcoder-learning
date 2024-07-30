@@ -117,6 +117,7 @@ template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.fron
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<vector<T>> &vv){for(auto &v: vv) Out(v);}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
+template<typename T> inline void Outend(T x) {Out(x); exit(0);}
 template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
 template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
 inline void mi(void) {return;}
@@ -197,69 +198,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) { return max(a, b); }
-S e() {return 0;}
-using F = ll;
-S mapping(F f, S x) {return f+x;}
-F composition (F f, F g) {return f+g;}
-F id() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vt3 obj;
-    LONG(N, M);
+    LONG(N); VL(W, N); VL(B, N);
+
+    ll X = 55, Y = 2505;
+
+    vvl grundy(X, vl(Y, -1));
+    auto dfs=[&](auto f, ll x, ll y) -> ll {
+        if(x<=0 && y<=1) return 0;
+        if(grundy[x][y]!=-1) return grundy[x][y];
+        vl gs;
+        if(x) gs.push_back(f(f, x-1, y+x));
+        if(y>=2) {
+            for(ll k=1; k<=y/2; ++k) {
+                gs.push_back(f(f, x, y-k));
+            }
+        }
+        ll sz = SIZE(gs);
+        vb exst(sz+1);
+        for(auto g: gs) {
+            if(g<=sz) exst[g]=true;
+        }
+        ll ret = 0;
+        rep(i, sz) {
+            if(exst[i]) ++ret;
+            else break;
+        }
+        return grundy[x][y] = ret;
+    };
+
+    // for(ll x=0; x<X; ++x) for(ll y=0; y<Y; ++y) {
+    //     ll &now = grundy[x][y];
+    //     vl gs;
+    //     if(x && y+x<Y) gs.push_back(grundy[x-1][y+x]);
+    //     if(y>=2) {
+    //         for(ll k=1; k<=y/2; ++k) {
+    //             gs.push_back(grundy[x][y-k]);
+    //         }
+    //     }
+    //     ll sz = SIZE(gs);
+    //     vb exst(sz+1);
+    //     for(auto g: gs) {
+    //         if(g<=sz) exst[g]=true;
+    //     }
+    //     ll mex = 0;
+    //     rep(i, sz) {
+    //         if(exst[i]) ++mex;
+    //         else break;
+    //     }
+    //     now = mex;
+    // }
+
+    // rep(x, X) rep(y, 55) {
+    //     dfs(dfs, x, y);
+    // }
+    ll xo = 0;
     rep(i, N) {
-        LONG(x, y, w);
-        obj.emplace_back(y, x, w);
+        xo ^= dfs(dfs, W[i], B[i]);
     }
-    sort(all(obj));
-    vvl weapon(N+10);
-    rep(i, M) {
-        LONG(a);
-        weapon[a+1].emplace_back(i);
-    }
-
-    ll Mx = 1e6+10;
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(Mx);
-
-    auto calc=[&](ll x) -> ll {
-        ll l = 0, r = Mx;
-        while(r-l>1) {
-            ll m = (l+r)/2;
-            ll mx = seg.prod(0, m);
-            if(mx==x) r = m;
-            else l = m;
-        }
-        return r-1;
-    };
-    auto dprint=[&](){
-    #ifdef __DEBUG
-        rep(i, 30) {
-            cerr<< seg.get(i)  <<' ';
-        }
-        cerr<<endl;
-    #endif
-    };
-
-    vp ans(M, Pr(-1, -1));
-    for(auto [y,x,w]: obj) {
-        seg.apply(x, x+w, 1);
-        ll mx = seg.all_prod();
-        dprint();
-        cerr<<endl;
-        de4(y,x,mx,calc(mx))
-        for(auto i: weapon[mx]) {
-            if(ans[i].first!=-1) continue;
-            ll xlft = calc(mx);
-            ans[i] = {xlft, y};
-        }
-    }
-    Out(ans);
+    if(xo==0) Outend("Second");
+    Out("First");
     
 }
 

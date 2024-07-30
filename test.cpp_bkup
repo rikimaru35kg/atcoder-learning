@@ -197,41 +197,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-struct S {
-    ll x, w;
-    S(ll x, ll w): x(x),w(w) {}
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
 };
-S op(S a, S b) {
-    return S(a.x+b.x, a.w+b.w);
-}
-S e() {return S(0, 0);}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==0) return x;
-    return S(x.w-x.x, x.w);
-}
-F composition(F f, F g) {return f^g;}
-F id() {return 0;}
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<S> v(N, S(0, 1));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    LONG(N); VL(A, N);
+    Sieve sieve(1e6+10);
 
-    rep(i, Q) {
-        LONG(q, l, r);
-        if(q==1) {
-            seg.apply(l, r, 1);
-        } else {
-            ll ans = seg.prod(l, r).x;
-            Out(ans);
+    umap<ll,ll> mp;
+    rep(i, N) {
+        auto pn = sieve.factorize(A[i]);
+        for(auto [p, n]: pn) {
+            chmax(mp[p], n);
         }
     }
+    de(mp)
+    mint lc = 1;
+    for(auto [k,v]:mp) {
+        rep(i, v) {
+            lc *= k;
+        }
+    }
+    de(lc)
+    mint ans = 0;
+    rep(i, N) {
+        ans += lc/A[i];
+    }
+    Out(ans);
+
     
 }
 
