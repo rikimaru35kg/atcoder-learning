@@ -197,94 +197,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+struct S {
+    ll x, w;
+    S(ll x, ll w): x(x),w(w) {}
 };
+S op(S a, S b) {
+    return S(a.x+b.x, a.w+b.w);
+}
+S e() {return S(0, 0);}
+using F = ll;
+S mapping(F f, S x) {
+    if(f==0) return x;
+    return S(x.w-x.x, x.w);
+}
+F composition(F f, F g) {return f^g;}
+F id() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    CoordinateCompression ccx,ccy,ccz;
-    LONG(N, K);
-    vt3 v1, v2;
-    rep(i, N) {
-        LONG(x1,y1,z1,x2,y2,z2);
-        ccx.add(x1); ccx.add(x2);
-        ccy.add(y1); ccy.add(y2);
-        ccz.add(z1); ccz.add(z2);
-        v1.emplace_back(x1,y1,z1);
-        v2.emplace_back(x2,y2,z2);
-    }
-    ll X = ccx.size(), Y = ccy.size(), Z = ccz.size();
-    vvvl imos(X, vvl(Y, vl(Z)));
-    vl dx(X), dy(Y), dz(Z);
-    rep(i, X-1) { dx[i] = ccx[i+1] - ccx[i]; }
-    rep(i, Y-1) { dy[i] = ccy[i+1] - ccy[i]; }
-    rep(i, Z-1) { dz[i] = ccz[i+1] - ccz[i]; }
+    LONG(N, Q);
+    vector<S> v(N, S(0, 1));
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
 
-    rep(i, N) {
-        auto [x1,y1,z1] = v1[i];
-        auto [x2,y2,z2] = v2[i];
-        x1 = ccx(x1); x2 = ccx(x2);
-        y1 = ccy(y1); y2 = ccy(y2);
-        z1 = ccz(z1); z2 = ccz(z2);
-        imos[x1][y1][z1]++;
-        imos[x2][y2][z1]++;
-        imos[x2][y1][z2]++;
-        imos[x1][y2][z2]++;
-        imos[x2][y1][z1]--;
-        imos[x1][y2][z1]--;
-        imos[x1][y1][z2]--;
-        imos[x2][y2][z2]--;
+    rep(i, Q) {
+        LONG(q, l, r);
+        if(q==1) {
+            seg.apply(l, r, 1);
+        } else {
+            ll ans = seg.prod(l, r).x;
+            Out(ans);
+        }
     }
-    rep(i, X-1) rep(j, Y) rep(k, Z) imos[i+1][j][k] += imos[i][j][k];
-    rep(i, X) rep(j, Y-1) rep(k, Z) imos[i][j+1][k] += imos[i][j][k];
-    rep(i, X) rep(j, Y) rep(k, Z-1) imos[i][j][k+1] += imos[i][j][k];
-
-    de(imos)
-
-    ll ans = 0;
-    rep(i, X) rep(j, Y) rep(k, Z) {
-        if(imos[i][j][k]<K) continue;
-        ans += dx[i]*dy[j]*dz[k];
-    }
-    Out(ans);
     
 }
 

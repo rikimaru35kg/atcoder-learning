@@ -197,33 +197,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/lazysegtree>
 using namespace atcoder;
 
 using S = ll;
-S op(S a, S b) {return a^b;}
+S op(S a, S b) { return max(a, b); }
 S e() {return 0;}
+using F = ll;
+S mapping(F f, S x) {return f+x;}
+F composition (F f, F g) {return f+g;}
+F id() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N);
-    segtree<S,op,e> seg(A);
-    auto upd=[&](ll i, ll x) {
-        ll now = seg.get(i);
-        seg.set(i, now^x);
+    vt3 obj;
+    LONG(N, M);
+    rep(i, N) {
+        LONG(x, y, w);
+        obj.emplace_back(y, x, w);
+    }
+    sort(all(obj));
+    vvl weapon(N+10);
+    rep(i, M) {
+        LONG(a);
+        weapon[a+1].emplace_back(i);
+    }
+
+    ll Mx = 1e6+10;
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(Mx);
+
+    auto calc=[&](ll x) -> ll {
+        ll l = 0, r = Mx;
+        while(r-l>1) {
+            ll m = (l+r)/2;
+            ll mx = seg.prod(0, m);
+            if(mx==x) r = m;
+            else l = m;
+        }
+        return r-1;
+    };
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, 30) {
+            cerr<< seg.get(i)  <<' ';
+        }
+        cerr<<endl;
+    #endif
     };
 
-    rep(i, Q) {
-        LONG(t, x, y);
-        if(t==1) upd(x-1, y);
-        else {
-            --x;
-            ll ans = seg.prod(x, y);
-            Out(ans);
+    vp ans(M, Pr(-1, -1));
+    for(auto [y,x,w]: obj) {
+        seg.apply(x, x+w, 1);
+        ll mx = seg.all_prod();
+        dprint();
+        cerr<<endl;
+        de4(y,x,mx,calc(mx))
+        for(auto i: weapon[mx]) {
+            if(ans[i].first!=-1) continue;
+            ll xlft = calc(mx);
+            ans[i] = {xlft, y};
         }
     }
+    Out(ans);
     
 }
 
