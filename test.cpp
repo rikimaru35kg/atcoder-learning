@@ -201,65 +201,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(W, N); VL(B, N);
-
-    ll X = 55, Y = 2505;
-
-    vvl grundy(X, vl(Y, -1));
-    auto dfs=[&](auto f, ll x, ll y) -> ll {
-        if(x<=0 && y<=1) return 0;
-        if(grundy[x][y]!=-1) return grundy[x][y];
-        vl gs;
-        if(x) gs.push_back(f(f, x-1, y+x));
-        if(y>=2) {
-            for(ll k=1; k<=y/2; ++k) {
-                gs.push_back(f(f, x, y-k));
-            }
-        }
-        ll sz = SIZE(gs);
-        vb exst(sz+1);
-        for(auto g: gs) {
-            if(g<=sz) exst[g]=true;
-        }
-        ll ret = 0;
-        rep(i, sz) {
-            if(exst[i]) ++ret;
-            else break;
-        }
-        return grundy[x][y] = ret;
-    };
-
-    // for(ll x=0; x<X; ++x) for(ll y=0; y<Y; ++y) {
-    //     ll &now = grundy[x][y];
-    //     vl gs;
-    //     if(x && y+x<Y) gs.push_back(grundy[x-1][y+x]);
-    //     if(y>=2) {
-    //         for(ll k=1; k<=y/2; ++k) {
-    //             gs.push_back(grundy[x][y-k]);
-    //         }
-    //     }
-    //     ll sz = SIZE(gs);
-    //     vb exst(sz+1);
-    //     for(auto g: gs) {
-    //         if(g<=sz) exst[g]=true;
-    //     }
-    //     ll mex = 0;
-    //     rep(i, sz) {
-    //         if(exst[i]) ++mex;
-    //         else break;
-    //     }
-    //     now = mex;
-    // }
-
-    // rep(x, X) rep(y, 55) {
-    //     dfs(dfs, x, y);
-    // }
     ll xo = 0;
+    LONG(N);
     rep(i, N) {
-        xo ^= dfs(dfs, W[i], B[i]);
+        LONG(x, y, z);
+        ll xl=INF, xr=-INF;
+        ll yl=INF, yr=-INF;
+        ll zl=INF, zr=-INF;
+        LONG(M);
+        rep(j, M) {
+            LONG(x, y, z);
+            chmin(xl, x); chmax(xr, x);
+            chmin(yl, y); chmax(yr, y);
+            chmin(zl, z); chmax(zr, z);
+        }
+        de2(xl,xr)
+        de2(yl,yr)
+        de2(zl,zr)
+        xo ^= xl; xo ^= x-1 - xr;
+        xo ^= yl; xo ^= y-1 - yr;
+        xo ^= zl; xo ^= z-1 - zr;
     }
-    if(xo==0) Outend("Second");
-    Out("First");
+    if(xo==0) Outend("LOSE");
+    Out("WIN");
+
     
 }
 
