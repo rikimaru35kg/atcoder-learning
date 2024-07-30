@@ -198,18 +198,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
+    LONG(W, N);
 
-    ll ans = 0;
-    ll r = 0;
-    rep(l, N) {
-        while(l==r || (r<N && A[r-1]<A[r])) ++r;
-        ans += r-l;
-        de2(l,r)
+    segtree<S,op,e> seg(W+1);
+    auto upd=[&](ll i, ll x) {
+        seg.set(i, max(seg.get(i), x));
+    };
+    upd(0, 0);
+
+    rep(i, N) {
+        LONG(L, R, v);
+        repr(j, W+1) {
+            ll l = j-R, r = j-L+1;
+            chmax(l, 0LL); chmax(r, 0LL);
+            ll mx = seg.prod(l, r);
+            if(mx==-INF) continue;
+            upd(j, mx+v);
+        }
     }
+    ll ans = seg.get(W);
+    if(ans==-INF) ans = -1;
     Out(ans);
     
 }

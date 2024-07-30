@@ -198,42 +198,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b){return min(a,b);}
+S e() {return INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    VS(S, H);
-    rep(i, H) { S[i] = 'x' + S[i] + 'x'; }
-    S.insert(S.begin(), string(W+2, 'x'));
-    S.push_back(string(W+2, 'x'));
-    de(S)
-    W += 2;
-    H += 2;
+    LONG(N, Q);
+    vl rate(N);
+    vl school(N);
+    ll M = 2e5+10;
+    vector<map<ll,ll>> cinschool(M);
 
-    vvl dist(H, vl(W, INF));
-    queue<Pr> que;
-    auto push=[&](ll i, ll j, ll d) {
-        if(!isin(i, j, H, W)) return;
-        if(dist[i][j]<=d) return;
-        dist[i][j]=d;
-        que.emplace(i, j);
-    };
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='x') push(i, j, 0);
+    rep(i, N) {
+        LONG(a, b); --b;
+        rate[i] = a;
+        school[i] = b;
+        cinschool[b][a]++;
     }
-    while(que.size()) {
-        auto [i, j] = que.front(); que.pop();
-        for(auto [di, dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            push(ni, nj, dist[i][j]+1);
+
+    segtree<S,op,e> seg(M);
+    auto upd=[&](ll sch, map<ll,ll> &mp) {
+        if(SIZE(mp)==0) {
+            seg.set(sch, INF); return;
         }
+        auto it = mp.end(); --it;
+        auto [k, v] = *it;
+        seg.set(sch, k);
+    };
+    rep(i, M) {
+        upd(i, cinschool[i]);
     }
-    de(dist)
 
-    ll ans = 0;
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='x') continue;
-        if(dist[i][j]>=K) ++ans;
+    auto add=[&](ll c, ll sch) {
+        cinschool[sch][rate[c]]++;
+        school[c] = sch;
+    };
+    auto del=[&](ll c, ll sch) {
+        cinschool[sch][rate[c]]--;
+        if(cinschool[sch][rate[c]]==0) cinschool[sch].erase(rate[c]);
+    };
+    rep(i, Q) {
+        LONGM(c, d);
+        ll sch = school[c];
+        del(c, sch);
+        upd(sch, cinschool[sch]);
+        add(c, d);
+        upd(d, cinschool[d]);
+        de("-------------")
+        rep(j, M) de(cinschool[j])
+        ll ans = seg.all_prod();
+        Out(ans);
     }
-    Out(ans);
+    de(school)
+    
 }
+
+// ### test.cpp ###
