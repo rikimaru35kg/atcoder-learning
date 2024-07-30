@@ -201,29 +201,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll mx = *max_element(all(A));
-    if(mx==0) Pm0
-    A.insert(A.begin(), 0);
-    A.push_back(0);
-    map<ll,vl> mp;
-    repk(i, 1, N+1) { mp[A[i]].push_back(i); }
+    LONG(H, W, K);
+    VS(S, H);
+    rep(i, H) { S[i] = 'x' + S[i] + 'x'; }
+    S.insert(S.begin(), string(W+2, 'x'));
+    S.push_back(string(W+2, 'x'));
+    de(S)
+    W += 2;
+    H += 2;
 
-    vb sink(N+2);
-    sink[0] = true, sink[N+1] = true;
-    ll ans = 1; ll now = 1;
-    for(auto [k,v]: mp) {
-        for(auto i: v) {
-            sink[i] = true;
-            if(sink[i-1] && sink[i+1]) --now;
-            else if(!sink[i-1] && !sink[i+1]) ++now;
+    vvl dist(H, vl(W, INF));
+    queue<Pr> que;
+    auto push=[&](ll i, ll j, ll d) {
+        if(!isin(i, j, H, W)) return;
+        if(dist[i][j]<=d) return;
+        dist[i][j]=d;
+        que.emplace(i, j);
+    };
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='x') push(i, j, 0);
+    }
+    while(que.size()) {
+        auto [i, j] = que.front(); que.pop();
+        for(auto [di, dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            push(ni, nj, dist[i][j]+1);
         }
-        chmax(ans, now);
+    }
+    de(dist)
+
+    ll ans = 0;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='x') continue;
+        if(dist[i][j]>=K) ++ans;
     }
     Out(ans);
-    
-    
 }
-
-// ### test.cpp ###

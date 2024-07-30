@@ -201,20 +201,16 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    VL(A, N);
+    LONG(N); VL(A, N);
 
-    vl dp(2);
-    dp[0] = 1;
-    rep(i, N) {
-        vl pdp(2); swap(pdp, dp);
-        rep(j, 2) {
-            dp[j] += pdp[j];
-            ll nj = (j+A[i])%2;
-            dp[nj] += pdp[j];
-        }
+    ll ans = 0;
+    ll r = 0;
+    rep(l, N) {
+        while(l==r || (r<N && A[r-1]<A[r])) ++r;
+        ans += r-l;
+        de2(l,r)
     }
-    Out(dp[P]);
+    Out(ans);
     
 }
 
