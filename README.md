@@ -1407,6 +1407,7 @@
 ### 例題
 - !復習価値低 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - !復習価値高 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
+- !復習価値高 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 
 ## 偶奇に注目
 - 隣り合う要素を反転できる場合、実は任意の2要素を反転できる事と等しい
