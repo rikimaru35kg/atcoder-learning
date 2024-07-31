@@ -201,51 +201,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, X);
-    VL(T, N);
-    rep(i, N) {
-        if(T[i]==1) T[i] = 2;
-        else if(T[i]==2) T[i] = 1;
-    }
-    vvp from(N);
+    LONG(N, M, L);
+    vvp from(N), ifrom(N);
     rep(i, M) {
         LONGM(a, b); LONG(c);
         from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        ifrom[b].emplace_back(a, c);
     }
 
-    vvvl dist(N, vvl(2, vl(X+1, INF)));
-    priority_queue<t4,vt4,greater<t4>> que;
-    auto push=[&](ll v, ll t, ll x, ll d) {
-        ll &z = dist[v][t][x];
-        if(z <= d) return;
-        z = d;
-        que.emplace(d, v, t, x);
+    vvl dist(N, vl(M+1, INF));
+    priority_queue<t3,vt3,greater<t3>> que;
+    auto push=[&](ll v, ll r, ll d) {
+        if(dist[v][r]<=d) return;
+        dist[v][r] = d;
+        que.emplace(d, v, r);
     };
-    push(0, T[0], 0, 0);
+    push(0, 0, 0);
     while(que.size()) {
-        auto [d,v,t,x] = que.top(); que.pop();
-        if(d != dist[v][t][x]) continue;
-
+        auto [d,v,r]=que.top(); que.pop();
+        if(d!=dist[v][r]) continue;
         for(auto [nv, c]: from[v]) {
-            if(t==0&&T[nv]==1 || t==1&&T[nv]==0) {
-                if(x+c<X) continue;
-                if(nv==3&&T[nv]==1) {
-                    cout<<"";
-                }
-                push(nv, T[nv], 0, d+c);
-                continue;
-            }
-            if(t==0&&T[nv]==0) push(nv, t, 0, d+c);
-            else if(t==1&&T[nv]==1) push(nv, t, 0, d+c);
-            else push(nv, t, min(x+c,X), d+c);
+            push(nv, r, d+c);
+        }
+        for(auto [nv, c]: ifrom[v]) {
+            push(nv, r+1, d+c);
         }
     }
     ll ans = INF;
-    rep(t, 2) rep(x, X+1) chmin(ans, dist[N-1][t][x]);
-    de(dist[0][0][0])
-    de(dist[1][0][1])
-    de(dist[2][0][1])
+    rep(i, M+1) {
+        if(dist[N-1][i]<=L) chmin(ans, i);
+    }
+    ch1(ans);
     Out(ans);
     
 }

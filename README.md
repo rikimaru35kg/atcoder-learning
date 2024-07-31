@@ -273,6 +273,7 @@
 - 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - !復習価値中 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 - !復習価値低 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
+- !復習価値中 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
 - !要復習 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
 - !復習価値低 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)

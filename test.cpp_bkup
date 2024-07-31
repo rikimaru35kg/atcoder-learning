@@ -201,34 +201,51 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    LONGM(si, sj, gi, gj);
-    VS(S, H);
+    LONG(N, M, X);
+    VL(T, N);
+    rep(i, N) {
+        if(T[i]==1) T[i] = 2;
+        else if(T[i]==2) T[i] = 1;
+    }
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
 
-    vvvl dist(H, vvl(W, vl(4, INF)));
-    deque<t3> que;
-    auto push=[&](ll i, ll j, ll k, ll d, bool fr) {
-        ll &x = dist[i][j][k];
-        if(x<=d) return;
-        x = d;
-        if(fr) que.emplace_front(i, j, k);
-        else que.emplace_back(i, j, k);
+    vvvl dist(N, vvl(2, vl(X+1, INF)));
+    priority_queue<t4,vt4,greater<t4>> que;
+    auto push=[&](ll v, ll t, ll x, ll d) {
+        ll &z = dist[v][t][x];
+        if(z <= d) return;
+        z = d;
+        que.emplace(d, v, t, x);
     };
-    rep(i, 4) push(si, sj, i, 0, true);
-
+    push(0, T[0], 0, 0);
     while(que.size()) {
-        auto [i, j, k] = que.front(); que.pop_front();
-        rep(z, 4) {
-            push(i, j, z, dist[i][j][k]+1, false);
+        auto [d,v,t,x] = que.top(); que.pop();
+        if(d != dist[v][t][x]) continue;
+
+        for(auto [nv, c]: from[v]) {
+            if(t==0&&T[nv]==1 || t==1&&T[nv]==0) {
+                if(x+c<X) continue;
+                if(nv==3&&T[nv]==1) {
+                    cout<<"";
+                }
+                push(nv, T[nv], 0, d+c);
+                continue;
+            }
+            if(t==0&&T[nv]==0) push(nv, t, 0, d+c);
+            else if(t==1&&T[nv]==1) push(nv, t, 0, d+c);
+            else push(nv, t, min(x+c,X), d+c);
         }
-        ll ni = i + di[k];
-        ll nj = j + dj[k];
-        if(!isin(ni, nj, H, W)) continue;
-        if(S[ni][nj]=='#') continue;
-        push(ni, nj, k, dist[i][j][k], true);
     }
     ll ans = INF;
-    rep(i, 4) chmin(ans, dist[gi][gj][i]);
+    rep(t, 2) rep(x, X+1) chmin(ans, dist[N-1][t][x]);
+    de(dist[0][0][0])
+    de(dist[1][0][1])
+    de(dist[2][0][1])
     Out(ans);
     
 }
