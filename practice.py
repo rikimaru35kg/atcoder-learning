@@ -1,5 +1,5 @@
 import sys
-sys.setrecursionlimit(10**8)
+sys.setrecursionlimit(10**9)
 def instr():
     return input().rstrip()
 def instrs():
@@ -29,24 +29,12 @@ INF = int(3e18)
 
 from collections import deque
 
+import math
+
 def main():
-    N = inint()
-    A = []
-    dct = {}
-    for i in range(N):
-        a = inint()
-        A.append(a)
-        if(a in dct.keys()): dct[a] += 1
-        else: dct[a] = 1
-    import itertools as itt
-    ans = 0
-    for i,j in itt.product(range(N),range(N)):
-        b = A[i] * A[j]
-        if(b not in dct.keys()): continue
-        ans += dct[b]
+    L = inint()
+    ans = math.comb(L-1, 11)
     print(ans)
-
-
 
 if __name__ == '__main__':
     main()

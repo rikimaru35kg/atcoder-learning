@@ -1202,6 +1202,11 @@
 - !復習価値高 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !要復習 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 
+## Lucasの定理（頻度少なさそうなのでNote非掲載）
+- mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
+### 例題
+- !要復習 [C - Tricolor Pyramid](https://atcoder.jp/contests/arc117/tasks/arc117_c)
+
 ## 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる
 - 一般には集合の個数がM個あるとすると、積集合の全組み合わせ2^M通りについて、（符号）積集合[i]の場合の数の総和を求めればよい。符号は積集合のベース集合が奇数ならマイナス、偶数ならプラス（積集合が空集合の場合は全体集合となる）

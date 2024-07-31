@@ -198,36 +198,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return -INF;}
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, N);
+    LONG(N); VL(A, N);
 
-    segtree<S,op,e> seg(W+1);
-    auto upd=[&](ll i, ll x) {
-        seg.set(i, max(seg.get(i), x));
-    };
-    upd(0, 0);
-
-    rep(i, N) {
-        LONG(L, R, v);
-        repr(j, W+1) {
-            ll l = j-R, r = j-L+1;
-            chmax(l, 0LL); chmax(r, 0LL);
-            ll mx = seg.prod(l, r);
-            if(mx==-INF) continue;
-            upd(j, mx+v);
+    mint ans = 0;
+    mint two = 1;
+    rep(d, 60) {
+        ll zero = 0, one = 0;
+        rep(i, N) {
+            if(A[i]>>d&1) ++one;
+            else ++zero;
         }
+        mint now = two * one * zero;
+        ans += now;
+
+        two *= 2;
     }
-    ll ans = seg.get(W);
-    if(ans==-INF) ans = -1;
     Out(ans);
     
 }

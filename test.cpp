@@ -198,63 +198,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
 
-using S = ll;
-S op(S a, S b){return min(a,b);}
-S e() {return INF;}
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl rate(N);
-    vl school(N);
-    ll M = 2e5+10;
-    vector<map<ll,ll>> cinschool(M);
-
-    rep(i, N) {
-        LONG(a, b); --b;
-        rate[i] = a;
-        school[i] = b;
-        cinschool[b][a]++;
+    LONG(N);
+    STRING(S);
+    vl A;
+    for(auto c: S) {
+        if(c=='B') A.push_back(0);
+        if(c=='W') A.push_back(1);
+        if(c=='R') A.push_back(2);
     }
 
-    segtree<S,op,e> seg(M);
-    auto upd=[&](ll sch, map<ll,ll> &mp) {
-        if(SIZE(mp)==0) {
-            seg.set(sch, INF); return;
+    auto calc=[&](ll n, ll r) -> ll {
+        ll M = 15;
+        vl nx = separate_digit(n, 3, M);
+        vl rx = separate_digit(r, 3, M);
+
+        ll ret = 1;
+        rep(i, M) {
+            ret *= nCr(nx[i], rx[i]);
         }
-        auto it = mp.end(); --it;
-        auto [k, v] = *it;
-        seg.set(sch, k);
+        return ret%3;
     };
-    rep(i, M) {
-        upd(i, cinschool[i]);
-    }
 
-    auto add=[&](ll c, ll sch) {
-        cinschool[sch][rate[c]]++;
-        school[c] = sch;
-    };
-    auto del=[&](ll c, ll sch) {
-        cinschool[sch][rate[c]]--;
-        if(cinschool[sch][rate[c]]==0) cinschool[sch].erase(rate[c]);
-    };
-    rep(i, Q) {
-        LONGM(c, d);
-        ll sch = school[c];
-        del(c, sch);
-        upd(sch, cinschool[sch]);
-        add(c, d);
-        upd(d, cinschool[d]);
-        de("-------------")
-        rep(j, M) de(cinschool[j])
-        ll ans = seg.all_prod();
-        Out(ans);
+    ll tmp=0;
+    rep(i, N) {
+        tmp += A[i]*calc(N-1, i);
     }
-    de(school)
+    if(N%2==0) tmp = -tmp;
+    ll ans = Percent(tmp, 3);
+    if(ans==0) Out('B');
+    if(ans==1) Out('W');
+    if(ans==2) Out('R');
     
 }
 
