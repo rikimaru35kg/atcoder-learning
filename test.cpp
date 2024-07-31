@@ -198,77 +198,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vl A;
-    for(auto c: S) {
-        if(c=='B') A.push_back(0);
-        if(c=='W') A.push_back(1);
-        if(c=='R') A.push_back(2);
-    }
-
-    auto calc=[&](ll n, ll r) -> ll {
-        ll M = 15;
-        vl nx = separate_digit(n, 3, M);
-        vl rx = separate_digit(r, 3, M);
-
-        ll ret = 1;
-        rep(i, M) {
-            ret *= nCr(nx[i], rx[i]);
-        }
-        return ret%3;
-    };
-
-    ll tmp=0;
+    LONG(N, M, X);
+    VL(T, N);
     rep(i, N) {
-        tmp += A[i]*calc(N-1, i);
+        if(T[i]==1) T[i] = 2;
+        else if(T[i]==2) T[i] = 1;
     }
-    if(N%2==0) tmp = -tmp;
-    ll ans = Percent(tmp, 3);
-    if(ans==0) Out('B');
-    if(ans==1) Out('W');
-    if(ans==2) Out('R');
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+
+    vvvl dist(N, vvl(2, vl(X+1, INF)));
+    priority_queue<t4,vt4,greater<t4>> que;
+    auto push=[&](ll v, ll t, ll x, ll d) {
+        ll &z = dist[v][t][x];
+        if(z <= d) return;
+        z = d;
+        que.emplace(d, v, t, x);
+    };
+    push(0, T[0], 0, 0);
+    while(que.size()) {
+        auto [d,v,t,x] = que.top(); que.pop();
+        if(d != dist[v][t][x]) continue;
+
+        for(auto [nv, c]: from[v]) {
+            if(t==0&&T[nv]==1 || t==1&&T[nv]==0) {
+                if(x+c<X) continue;
+                if(nv==3&&T[nv]==1) {
+                    cout<<"";
+                }
+                push(nv, T[nv], 0, d+c);
+                continue;
+            }
+            if(t==0&&T[nv]==0) push(nv, t, 0, d+c);
+            else if(t==1&&T[nv]==1) push(nv, t, 0, d+c);
+            else push(nv, t, min(x+c,X), d+c);
+        }
+    }
+    ll ans = INF;
+    rep(t, 2) rep(x, X+1) chmin(ans, dist[N-1][t][x]);
+    de(dist[0][0][0])
+    de(dist[1][0][1])
+    de(dist[2][0][1])
+    Out(ans);
     
 }
 
