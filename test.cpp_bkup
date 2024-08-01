@@ -198,48 +198,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K, A, B, C);
-    LONG(T);
-    VLM(S, M);
-
-    ll ans = -1;
-    auto calc=[&](ll i, ll gi, ll t) -> vl {
-        if(t>T) return vl();
-
-        ll gain = (T-t)/A+1;
-        ans += min(gain, gi-i);
-        i += gain;
-        t += gain*C;
-
-        ll rem = K - M;
-        vl ret;
-        rep(_, rem) {
-            if(i>=gi) break;
-            if(t>T) break;
-            ll gain = (T-t)/A+1;
-            ll tmp = min(gain, gi-i);
-            ret.push_back(tmp);
-            i += gain;
-            t += gain*C;
-        }
-        return ret;
-    };
-
-    vl X;
-    rep(i, M-1) {
-        vl v = calc(S[i], S[i+1], B*S[i]);
-        for(auto x: v) X.push_back(x);
+    LONG(N, M);
+    vt3 edges;
+    rep(i, M) {
+        LONG(c, l, r); --l;
+        edges.emplace_back(c, l, r);
     }
-    sort(all(X));
-    ll rem = K - M;
-    while(X.size() && rem--) {
-        ans += X.back();
-        X.pop_back();
+    sort(all(edges));
+    dsu uf(N+1);
+    ll ans = 0;
+    for(auto [c,l,r]: edges) {
+        if(uf.same(l, r)) continue;
+        ans += c;
+        uf.merge(l, r);
     }
-    if(B*(N-1)<=T) ++ans;
+    if(uf.size(0)!=N+1) Pm1
     Out(ans);
     
 }

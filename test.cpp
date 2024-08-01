@@ -205,20 +205,24 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vt3 edges;
+    vt3 edge;
+    rep(i, N) {
+        LONG(c);
+        edge.emplace_back(c, i, N);
+    }
     rep(i, M) {
-        LONG(c, l, r); --l;
-        edges.emplace_back(c, l, r);
+        LONGM(a, b); LONG(r);
+        edge.emplace_back(r, a, b);
     }
-    sort(all(edges));
+    sort(all(edge));
     dsu uf(N+1);
+
     ll ans = 0;
-    for(auto [c,l,r]: edges) {
-        if(uf.same(l, r)) continue;
+    for(auto [c,a,b]: edge) {
+        if(uf.same(a,b)) continue;
+        uf.merge(a,b);
         ans += c;
-        uf.merge(l, r);
     }
-    if(uf.size(0)!=N+1) Pm1
     Out(ans);
     
 }
