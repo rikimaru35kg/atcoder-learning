@@ -201,52 +201,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, X);
-    VL(T, N);
-    rep(i, N) {
-        if(T[i]==1) T[i] = 2;
-        else if(T[i]==2) T[i] = 1;
-    }
-    vvp from(N);
+    LONG(N);
+    STRING(S, T);
+    vl A, B;
+    rep(i, N) if(S[i]=='0') A.push_back(i);
+    rep(i, N) if(T[i]=='0') B.push_back(i);
+    if (SIZE(A)!=SIZE(B)) Pm1
+
+    ll M = SIZE(A);
+    ll ans = 0;
     rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        if(A[i]!=B[i]) ++ ans;
     }
 
-    vvvl dist(N, vvl(2, vl(X+1, INF)));
-    priority_queue<t4,vt4,greater<t4>> que;
-    auto push=[&](ll v, ll t, ll x, ll d) {
-        ll &z = dist[v][t][x];
-        if(z <= d) return;
-        z = d;
-        que.emplace(d, v, t, x);
-    };
-    push(0, T[0], 0, 0);
-    while(que.size()) {
-        auto [d,v,t,x] = que.top(); que.pop();
-        if(d != dist[v][t][x]) continue;
 
-        for(auto [nv, c]: from[v]) {
-            if(t==0&&T[nv]==1 || t==1&&T[nv]==0) {
-                if(x+c<X) continue;
-                if(nv==3&&T[nv]==1) {
-                    cout<<"";
-                }
-                push(nv, T[nv], 0, d+c);
-                continue;
-            }
-            if(t==0&&T[nv]==0) push(nv, t, 0, d+c);
-            else if(t==1&&T[nv]==1) push(nv, t, 0, d+c);
-            else push(nv, t, min(x+c,X), d+c);
-        }
-    }
-    ll ans = INF;
-    rep(t, 2) rep(x, X+1) chmin(ans, dist[N-1][t][x]);
-    de(dist[0][0][0])
-    de(dist[1][0][1])
-    de(dist[2][0][1])
+
     Out(ans);
+
+
+
     
 }
 

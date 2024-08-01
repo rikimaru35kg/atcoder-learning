@@ -201,37 +201,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, L);
-    vvp from(N), ifrom(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        ifrom[b].emplace_back(a, c);
-    }
+    LONG(N, M, K, A, B, C);
+    LONG(T);
+    VLM(S, M);
 
-    vvl dist(N, vl(M+1, INF));
-    priority_queue<t3,vt3,greater<t3>> que;
-    auto push=[&](ll v, ll r, ll d) {
-        if(dist[v][r]<=d) return;
-        dist[v][r] = d;
-        que.emplace(d, v, r);
+    ll ans = -1;
+    auto calc=[&](ll i, ll gi, ll t) -> vl {
+        if(t>T) return vl();
+
+        ll gain = (T-t)/A+1;
+        ans += min(gain, gi-i);
+        i += gain;
+        t += gain*C;
+
+        ll rem = K - M;
+        vl ret;
+        rep(_, rem) {
+            if(i>=gi) break;
+            if(t>T) break;
+            ll gain = (T-t)/A+1;
+            ll tmp = min(gain, gi-i);
+            ret.push_back(tmp);
+            i += gain;
+            t += gain*C;
+        }
+        return ret;
     };
-    push(0, 0, 0);
-    while(que.size()) {
-        auto [d,v,r]=que.top(); que.pop();
-        if(d!=dist[v][r]) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, r, d+c);
-        }
-        for(auto [nv, c]: ifrom[v]) {
-            push(nv, r+1, d+c);
-        }
+
+    vl X;
+    rep(i, M-1) {
+        vl v = calc(S[i], S[i+1], B*S[i]);
+        for(auto x: v) X.push_back(x);
     }
-    ll ans = INF;
-    rep(i, M+1) {
-        if(dist[N-1][i]<=L) chmin(ans, i);
+    sort(all(X));
+    ll rem = K - M;
+    while(X.size() && rem--) {
+        ans += X.back();
+        X.pop_back();
     }
-    ch1(ans);
+    if(B*(N-1)<=T) ++ans;
     Out(ans);
     
 }
