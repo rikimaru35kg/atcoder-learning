@@ -198,27 +198,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vt3 edges;
-    rep(i, M) {
-        LONG(c, l, r); --l;
-        edges.emplace_back(c, l, r);
-    }
-    sort(all(edges));
-    dsu uf(N+1);
+    LONG(N);
+    VL(A, N);
+    ll sum0 = 0, sum1 = 0;
+    map<ll,ll> mp;
+    mp[0] = 1;
     ll ans = 0;
-    for(auto [c,l,r]: edges) {
-        if(uf.same(l, r)) continue;
-        ans += c;
-        uf.merge(l, r);
+    rep(i, N) {
+        if(i%2==0) sum0 += A[i];
+        else sum1 += A[i];
+        ll diff = sum0 - sum1;
+        ans += mp[diff];
+        mp[diff]++;
     }
-    if(uf.size(0)!=N+1) Pm1
     Out(ans);
     
 }

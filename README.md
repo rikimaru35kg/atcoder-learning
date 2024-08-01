@@ -1744,3 +1744,4 @@
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
+- [B - RGB Coloring](https://atcoder.jp/contests/agc025/tasks/agc025_b)
