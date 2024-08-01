@@ -408,6 +408,7 @@
 - !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
 - !復習価値低 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
 - !復習価値高 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
+- !要復習 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
 - !要復習 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
 
 ## 全域木
