@@ -198,36 +198,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-using F = ll;
-S mapping(F f, S x) {return min(f, x);}
-F composition(F f, F g) {return min(f,g);}
-F id() {return INF;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vt3 query;
+    LONG(X,Y,Z);
+    STRING(S);
+    vvp from(N+6);
     rep(i, M) {
-        LONG(l, r, c); --l;
-        query.emplace_back(l, r, c);
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    sort(all(query));
+    rep(i, N) {
+        ll warp = S[i]-'A';
+        from[i].emplace_back(warp+N, 0);
+        from[warp+N+3].emplace_back(i, 0);
+    }
+    de(from)
+    from[N].emplace_back(N+4, X);
+    from[N].emplace_back(N+5, Y);
+    from[N+1].emplace_back(N+5, Z);
+    from[N+1].emplace_back(N+3, X);
+    from[N+2].emplace_back(N+3, Y);
+    from[N+2].emplace_back(N+4, Z);
 
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
-    seg.set(0, 0);
-    for(auto [l,r,c]: query) {
-        ll now = seg.get(l);
-        seg.apply(l+1, r, now+c);
+    vl dist(N+6, INF);
+    pq pque;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        pque.emplace(d, v);
+    };
+    push(0, 0);
+    while(pque.size()) {
+        auto [d,v] = pque.top(); pque.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
+        }
     }
-    ll ans = seg.get(N-1);
-    ch1(ans);
+    ll ans = dist[N-1];
+    de(dist)
     Out(ans);
     
 }

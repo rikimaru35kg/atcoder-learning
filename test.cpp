@@ -198,49 +198,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! [Danger] might lead to RE because of too large return size.
+vector<vector<int>> listup_combinations(int n, int k) {
+    vector<vector<int>> ret;
+    auto f=[&](auto f, int i=0, vector<int> &v) -> void {
+        if((int)v.size()==k) {
+            ret.push_back(v);
+            return;
+        }
+        if(i>=n) return;
+        f(f, i+1, v);
+        v.push_back(i);
+        f(f, i+1, v);
+        v.pop_back();
+    };
+    vector<int> v={};
+    f(f, 0, v);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    LONG(X,Y,Z);
-    STRING(S);
-    vvp from(N+6);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-    rep(i, N) {
-        ll warp = S[i]-'A';
-        from[i].emplace_back(warp+N, 0);
-        from[warp+N+3].emplace_back(i, 0);
-    }
-    de(from)
-    from[N].emplace_back(N+4, X);
-    from[N].emplace_back(N+5, Y);
-    from[N+1].emplace_back(N+5, Z);
-    from[N+1].emplace_back(N+3, X);
-    from[N+2].emplace_back(N+3, Y);
-    from[N+2].emplace_back(N+4, Z);
-
-    vl dist(N+6, INF);
-    pq pque;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        pque.emplace(d, v);
-    };
-    push(0, 0);
-    while(pque.size()) {
-        auto [d,v] = pque.top(); pque.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
+    LONG(N, P, Q);
+    VL(A, N);
+    ll ans = 0;
+    auto judge=[&](vi &v) -> bool {
+        ll mul = 1;
+        for(auto i: v) {
+            mul *= A[i];
+            mul %= P;
         }
+        return mul==Q;
+    };
+    auto combs = listup_combinations(N, 5);
+    for(auto comb: combs) {
+        de(comb)
+        if(judge(comb)) ++ans;
     }
-    ll ans = dist[N-1];
-    de(dist)
+    // nCk
+    // auto combinations=[&](auto f, long long i=0, vector<long long> &v) -> void {
+    //     if((long long)v.size()==K) {
+    //         // edit here
+    //         return;
+    //     }
+    //     if(i==N) return;
+    //     f(f, si+1, v);
+    //     v.push_back(si);
+    //     f(f, si+1, v);
+    //     v.pop_back();
+    // };
+    // vl v={};
+    // f(f, 0, v);
+
     Out(ans);
+
     
 }
 
