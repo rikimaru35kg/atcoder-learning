@@ -226,8 +226,25 @@ int main () {
         LONG(x,y,z); --x, --y;
         choco.emplace_back(x,y,z);
     }
-    auto x = listup_combinations(5, 4);
-    de(x)
+    auto combs = listup_combinations(N, P);
+
+    ll ans = 0;
+    for(auto p: combs) {
+        vb women(N);
+        for(auto x:p) women[x] = true;
+        vl menvalue(M);
+        for(auto [x,y,z]:choco) {
+            if(!women[x]) continue;
+            menvalue[y] += z;
+        }
+        vl stck;
+        rep(i, M) { stck.push_back(menvalue[i]); }
+        sort(allr(stck));
+        ll now = 0;
+        rep(i, Q) { now += stck[i]; }
+        chmax(ans, now);
+    }
+    Out(ans);
     
 }
 
