@@ -198,51 +198,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<vector<long long>> listup_combinations(long long n, long long k) {
-    vector<vector<long long>> ret;
-    auto f=[&](auto f, long long si=0, vector<long long> &v) -> void {
-        if((long long)v.size()==k) {
-            ret.push_back(v);
-            return;
-        }
-        if(si>n) return;
-        for(long long i=si; i<n; ++i) {
-            vector<long long> nv = v;
-            nv.push_back(i);
-            f(f, i+1, nv);
-        }
-    };
-    vector<long long> v={};
-    f(f, 0, v);
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, P, Q, R);
-    vt3 choco;
-    rep(i, R) {
-        LONG(x,y,z); --x, --y;
-        choco.emplace_back(x,y,z);
-    }
-    auto combs = listup_combinations(N, P);
-
-    ll ans = 0;
-    for(auto p: combs) {
-        vb women(N);
-        for(auto x:p) women[x] = true;
-        vl menvalue(M);
-        for(auto [x,y,z]:choco) {
-            if(!women[x]) continue;
-            menvalue[y] += z;
-        }
-        vl stck;
-        rep(i, M) { stck.push_back(menvalue[i]); }
-        sort(allr(stck));
-        ll now = 0;
-        rep(i, Q) { now += stck[i]; }
-        chmax(ans, now);
+    LONG(N);
+    mint ans = 1;
+    rep(i, N) {
+        VL(v, 6);
+        ll now = accumulate(all(v), 0LL);
+        ans *= now;
     }
     Out(ans);
     

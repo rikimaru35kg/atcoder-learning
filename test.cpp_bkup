@@ -198,35 +198,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<vector<long long>> listup_combinations(long long n, long long k) {
+    vector<vector<long long>> ret;
+    auto f=[&](auto f, long long si=0, vector<long long> &v) -> void {
+        if((long long)v.size()==k) {
+            ret.push_back(v);
+            return;
+        }
+        if(si>n) return;
+        for(long long i=si; i<n; ++i) {
+            vector<long long> nv = v;
+            nv.push_back(i);
+            f(f, i+1, nv);
+        }
+    };
+    vector<long long> v={};
+    f(f, 0, v);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    vl A, B;
-    rep(i, N) {
-        LONG(w);
-        if(i%2==0) A.push_back(w);
-        else B.push_back(w);
+    LONG(N, M, P, Q, R);
+    vt3 choco;
+    rep(i, R) {
+        LONG(x,y,z); --x, --y;
+        choco.emplace_back(x,y,z);
     }
-
-    auto calc=[&](vl &v) -> umap<ll,ll> {
-        ll n = SIZE(v);
-        umap<ll,ll> ret;
-        rep(s, 1<<n) {
-            ll now = 0;
-            rep(i, n) if(s>>i&1) {
-                now += v[i];
-            }
-            ret[now]++;
-        }
-        return ret;
-    };
-
-    umap<ll,ll> da = calc(A), db = calc(B);
+    auto combs = listup_combinations(N, P);
 
     ll ans = 0;
-    for(auto [k,v]: da) {
-        ans += v * db[X-k];
+    for(auto p: combs) {
+        vb women(N);
+        for(auto x:p) women[x] = true;
+        vl menvalue(M);
+        for(auto [x,y,z]:choco) {
+            if(!women[x]) continue;
+            menvalue[y] += z;
+        }
+        vl stck;
+        rep(i, M) { stck.push_back(menvalue[i]); }
+        sort(allr(stck));
+        ll now = 0;
+        rep(i, Q) { now += stck[i]; }
+        chmax(ans, now);
     }
     Out(ans);
     
