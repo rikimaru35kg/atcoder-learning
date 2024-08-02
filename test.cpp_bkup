@@ -198,53 +198,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<vector<long long>> listup_combinations(long long n, long long k) {
-    vector<vector<long long>> ret;
-    auto f=[&](auto f, long long si=0, vector<long long> &v) -> void {
-        if((long long)v.size()==k) {
-            ret.push_back(v);
-            return;
-        }
-        if(si>n) return;
-        for(long long i=si; i<n; ++i) {
-            vector<long long> nv = v;
-            nv.push_back(i);
-            f(f, i+1, nv);
-        }
-    };
-    vector<long long> v={};
-    f(f, 0, v);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, P, Q, R);
-    vt3 choco;
-    rep(i, R) {
-        LONG(x,y,z); --x, --y;
-        choco.emplace_back(x,y,z);
-    }
-    auto combs = listup_combinations(N, P);
-
-    ll ans = 0;
-    for(auto p: combs) {
-        vb women(N);
-        for(auto x:p) women[x] = true;
-        vl menvalue(M);
-        for(auto [x,y,z]:choco) {
-            if(!women[x]) continue;
-            menvalue[y] += z;
+    LONG(N, M);
+    vvl from(N+M);
+    rep(i, M) {
+        LONG(K);
+        VLM(R, K);
+        rep(j, K) {
+            from[R[j]].push_back(N+i);
+            from[N+i].push_back(R[j]);
         }
-        vl stck;
-        rep(i, M) { stck.push_back(menvalue[i]); }
-        sort(allr(stck));
-        ll now = 0;
-        rep(i, Q) { now += stck[i]; }
-        chmax(ans, now);
     }
-    Out(ans);
+
+    queue<ll> que;
+    vl dist(N+M, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.push(v);  
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto nv :from[v]) {
+            push(nv, dist[v]+1);
+        }
+    }
+    rep(i, N) {
+        ll ans = dist[i];
+        if(ans==INF) Out(-1);
+        else Out(ans/2);
+    }
     
 }
 

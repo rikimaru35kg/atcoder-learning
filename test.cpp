@@ -198,31 +198,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    mint ans = 1;
-    rep(i, N) {
-        VL(v, 6);
-        ll now = accumulate(all(v), 0LL);
-        ans *= now;
+    LONG(N, M);
+    map<Pr,ll> mp;
+    vt3 lines;
+    rep(i, M) {
+        LONG(p, q, c); --p, --q;
+        mp[{p,c}] = 0;
+        mp[{q,c}] = 0;
+        lines.emplace_back(p,q,c);
     }
+    ll idx = N;
+    for(auto [k,v]: mp) { mp[k] = idx++; }
+    vvp from(idx);
+
+    for(auto [k,n]: mp) {
+        auto [p,c] = k;
+        from[n].emplace_back(p, 0);
+        from[p].emplace_back(n, 1);
+    }
+    for(auto [p,q,c]: lines) {
+        ll v1 = mp[{p,c}];
+        ll v2 = mp[{q,c}];
+        from[v1].emplace_back(v2, 0);
+        from[v2].emplace_back(v1, 0);
+    }
+    deque<ll> que;
+    vl dist(idx, INF);
+    auto push=[&](ll v, ll d, bool fr) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        if(fr) que.push_front(v);
+        else que.push_back(v);
+    };
+    push(0, 0, true);
+    while(que.size()) {
+        auto v = que.front(); que.pop_front();
+        for(auto [nv, cost]: from[v]) {
+            if(cost==0) push(nv, dist[v], true);
+            else push(nv, dist[v]+1, false);
+        }
+    }
+    ll ans = dist[N-1];
+    ch1(ans);
     Out(ans);
+
+
     
 }
 
