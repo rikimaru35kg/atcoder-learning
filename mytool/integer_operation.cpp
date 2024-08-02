@@ -174,6 +174,25 @@ public:
     }
 };
 
+vector<vector<long long>> listup_combinations(long long n, long long k) {
+    vector<vector<long long>> ret;
+    auto f=[&](auto f, long long si=0, vector<long long> &v) -> void {
+        if((long long)v.size()==k) {
+            ret.push_back(v);
+            return;
+        }
+        if(si>n) return;
+        for(long long i=si; i<n; ++i) {
+            vector<long long> nv = v;
+            nv.push_back(i);
+            f(f, i+1, nv);
+        }
+    };
+    vector<long long> v={};
+    f(f, 0, v);
+    return ret;
+}
+
 //! Legendre's Formura
 //! ret = Σ{i=1-∞}floor(n/p^i)
 long long legendre_formula(long long n, long long p) {

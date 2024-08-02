@@ -201,18 +201,32 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll sum0 = 0, sum1 = 0;
-    map<ll,ll> mp;
-    mp[0] = 1;
-    ll ans = 0;
+    LONG(N, X);
+    vl A, B;
     rep(i, N) {
-        if(i%2==0) sum0 += A[i];
-        else sum1 += A[i];
-        ll diff = sum0 - sum1;
-        ans += mp[diff];
-        mp[diff]++;
+        LONG(w);
+        if(i%2==0) A.push_back(w);
+        else B.push_back(w);
+    }
+
+    auto calc=[&](vl &v) -> umap<ll,ll> {
+        ll n = SIZE(v);
+        umap<ll,ll> ret;
+        rep(s, 1<<n) {
+            ll now = 0;
+            rep(i, n) if(s>>i&1) {
+                now += v[i];
+            }
+            ret[now]++;
+        }
+        return ret;
+    };
+
+    umap<ll,ll> da = calc(A), db = calc(B);
+
+    ll ans = 0;
+    for(auto [k,v]: da) {
+        ans += v * db[X-k];
     }
     Out(ans);
     

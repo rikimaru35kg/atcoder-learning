@@ -1645,6 +1645,7 @@
 - set.erase(set.end())などとするとRE（なぜならset.erase(--set.end())とする必要があるから）
 - 巨大配列vectorでRE　（[](https://atcoder.jp/contests/abc273/submissions/45018373)）
 - スタックオーバーフローでRE（DFS->BFSに変えたら通った） [](https://atcoder.jp/contests/joi2008ho/submissions/56107001)
+- 入力を受け付けないとRE（M個入力すべきなのにN個しか入力しないなど）
 
 ## インタラクティブ
 - 問題文にも明記あるが、余計な改行は不正出力と見なされWAとなるので注意（おそらく空文字を出力したと見なされる）
