@@ -202,50 +202,45 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    map<Pr,ll> mp;
-    vt3 lines;
+    LONG(X,Y,Z);
+    STRING(S);
+    vvp from(N+6);
     rep(i, M) {
-        LONG(p, q, c); --p, --q;
-        mp[{p,c}] = 0;
-        mp[{q,c}] = 0;
-        lines.emplace_back(p,q,c);
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    ll idx = N;
-    for(auto [k,v]: mp) { mp[k] = idx++; }
-    vvp from(idx);
+    rep(i, N) {
+        ll warp = S[i]-'A';
+        from[i].emplace_back(warp+N, 0);
+        from[warp+N+3].emplace_back(i, 0);
+    }
+    de(from)
+    from[N].emplace_back(N+4, X);
+    from[N].emplace_back(N+5, Y);
+    from[N+1].emplace_back(N+5, Z);
+    from[N+1].emplace_back(N+3, X);
+    from[N+2].emplace_back(N+3, Y);
+    from[N+2].emplace_back(N+4, Z);
 
-    for(auto [k,n]: mp) {
-        auto [p,c] = k;
-        from[n].emplace_back(p, 0);
-        from[p].emplace_back(n, 1);
-    }
-    for(auto [p,q,c]: lines) {
-        ll v1 = mp[{p,c}];
-        ll v2 = mp[{q,c}];
-        from[v1].emplace_back(v2, 0);
-        from[v2].emplace_back(v1, 0);
-    }
-    deque<ll> que;
-    vl dist(idx, INF);
-    auto push=[&](ll v, ll d, bool fr) {
+    vl dist(N+6, INF);
+    pq pque;
+    auto push=[&](ll v, ll d) {
         if(dist[v]<=d) return;
         dist[v] = d;
-        if(fr) que.push_front(v);
-        else que.push_back(v);
+        pque.emplace(d, v);
     };
-    push(0, 0, true);
-    while(que.size()) {
-        auto v = que.front(); que.pop_front();
-        for(auto [nv, cost]: from[v]) {
-            if(cost==0) push(nv, dist[v], true);
-            else push(nv, dist[v]+1, false);
+    push(0, 0);
+    while(pque.size()) {
+        auto [d,v] = pque.top(); pque.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
         }
     }
     ll ans = dist[N-1];
-    ch1(ans);
+    de(dist)
     Out(ans);
-
-
     
 }
 

@@ -198,39 +198,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return min(a,b);}
+S e() {return INF;}
+using F = ll;
+S mapping(F f, S x) {return min(f, x);}
+F composition(F f, F g) {return min(f,g);}
+F id() {return INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N+M);
+    vt3 query;
     rep(i, M) {
-        LONG(K);
-        VLM(R, K);
-        rep(j, K) {
-            from[R[j]].push_back(N+i);
-            from[N+i].push_back(R[j]);
-        }
+        LONG(l, r, c); --l;
+        query.emplace_back(l, r, c);
     }
+    sort(all(query));
 
-    queue<ll> que;
-    vl dist(N+M, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);  
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv :from[v]) {
-            push(nv, dist[v]+1);
-        }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    seg.set(0, 0);
+    for(auto [l,r,c]: query) {
+        ll now = seg.get(l);
+        seg.apply(l+1, r, now+c);
     }
-    rep(i, N) {
-        ll ans = dist[i];
-        if(ans==INF) Out(-1);
-        else Out(ans/2);
-    }
+    ll ans = seg.get(N-1);
+    ch1(ans);
+    Out(ans);
     
 }
 
