@@ -1341,10 +1341,13 @@
 - !復習価値中 [E - Rotate and Flip](https://atcoder.jp/contests/abc189/tasks/abc189_e)
 
 ## 掃き出し法
-- 基底を次々に追加する実装が分かりやすい（解説動画参照）
 - M*N行列の場合、O(M*N^2)となるので使えるかどうか計算量に注意
+- 基底を次々に追加する実装が分かりやすい（F-Spicesの解説動画参照）
+- 行列を用意してからやる方法はけんちょん氏のページが分かりやすい
 ### 例題
 - !復習価値高 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
+- !復習価値高 [D - 数列 XOR](https://atcoder.jp/contests/bitflyer2018-final/tasks/bitflyer2018_final_d)
+- !要復習 [057 - Flip Flap（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_be)
 
 # その他典型
 

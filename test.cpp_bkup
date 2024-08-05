@@ -202,13 +202,13 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 struct XorBase {
     long long N, M;
     long long rank = 0;
-    vl base;
-    XorBase(vl mat): base(mat) {
-        N = SIZE(base); M = 62;
+    vector<vector<long long>> base;
+    XorBase(vector<vector<long long>> mat): base(mat) {
+        N = SIZE(base); M = SIZE(base[0]);
         for(int j=0; j<M; ++j) {
             int pi = -1;  // pivot i
             for(int i=rank; i<N; ++i) {
-                if(~base[i]>>j&1) continue;
+                if(base[i][j]==0) continue;
                 pi = i; break;
             }
             if(pi==-1) continue;
@@ -216,14 +216,16 @@ struct XorBase {
             swap(base[rank], base[pi]);
             for(int ci=0; ci<N; ++ci) {
                 if(ci==rank) continue;
-                if(~base[ci]>>j&1) continue;
+                if(base[ci][j]==0) continue;
                 // XOR operation: base[ci] <- base[rank];
-                base[ci] ^= base[rank];
+                for(int cj=0; cj<M; ++cj) {
+                    base[ci][cj] ^= base[rank][cj];
+                }
             }
             ++rank;
         }
     }
-    vl get_base() { return base;}
+    vector<vector<long long>> get_base() { return base;}
     long long get_rank() { return rank;}
 };
 
@@ -231,23 +233,35 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    VL(B, N);
-    XorBase xoa(A), xob(B);
-    // if(xoa.get_rank() != xob.get_rank()) PNo
+    ll N2 = (1LL<<(N)) - 1;
+    vp spice;
+    rep(i, N2) {
+        LONG(c);
+        spice.emplace_back(c, i+1);
+    }
+    sort(all(spice));
 
-    A = xoa.get_base(); B = xob.get_base();
-    if(A==B) PYes PNo
-    // de(A)de(B)
-    // rep(j, 62) {
-    //     bool ba = false, bb = false;
-    //     rep(i, N) {
-    //         if(A[i]>>j&1) ba = true;
-    //         if(B[i]>>j&1) bb = true;
-    //     }
-    //     if(ba!=bb) PNo
-    // }
-    // PYes
+    auto num2vec =[&](ll x) -> vl {
+        vl ret(N);
+        rep(i, N) ret[i] = x>>i&1;
+        return ret;
+    };
+
+    ll rank = 0;
+    ll ans = 0;
+    vvl base(N, vl(N));
+    for(auto [c, a]: spice) {
+        vvl nbase = base;
+        nbase[rank] = num2vec(a);
+        XorBase xorb(nbase);
+        if(rank==xorb.get_rank()) continue;
+        base = nbase;
+        ans += c;
+        rank++;
+        if (rank==N) break;
+    }
+    Out(ans);
+
     
 }
 
