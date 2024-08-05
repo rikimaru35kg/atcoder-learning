@@ -102,6 +102,37 @@ public:
 #endif
 };
 
+//! O(N * M^2)
+struct XorBase {
+    long long N, M;
+    long long rank = 0;
+    vector<vector<long long>> base;
+    XorBase(vector<vector<long long>> mat): base(mat) {
+        N = SIZE(base); M = SIZE(base[0]);
+        for(int j=0; j<M; ++j) {
+            int pi = -1;  // pivot i
+            for(int i=rank; i<N; ++i) {
+                if(base[i][j]==0) continue;
+                pi = i; break;
+            }
+            if(pi==-1) continue;
+
+            swap(base[rank], base[pi]);
+            for(int ci=0; ci<N; ++ci) {
+                if(ci==rank) continue;
+                if(base[ci][j]==0) continue;
+                // XOR operation: base[ci] <- base[rank];
+                for(int cj=0; cj<M; ++cj) {
+                    base[ci][cj] ^= base[rank][cj];
+                }
+            }
+            ++rank;
+        }
+    }
+    vector<vector<long long>> get_base() { return base;}
+    long long get_rank() { return rank;}
+};
+
 //! n*n matrix
 //! Currently, only operator* is defined.
 template <typename T>

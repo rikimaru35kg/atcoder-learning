@@ -198,61 +198,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! [Danger] might lead to RE because of too large return size.
-vector<vector<int>> listup_combinations(int n, int k) {
-    vector<vector<int>> ret;
-    auto f=[&](auto f, int i=0, vector<int> &v) -> void {
-        if((int)v.size()==k) {
-            ret.push_back(v);
-            return;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! O(N * M^2)
+struct XorBase {
+    long long N, M;
+    long long rank = 0;
+    vector<vector<long long>> base;
+    XorBase(vector<vector<long long>> mat): base(mat) {
+        N = SIZE(base); M = SIZE(base[0]);
+        for(int j=0; j<M; ++j) {
+            int pi = -1;  // pivot i
+            for(int i=rank; i<N; ++i) {
+                if(base[i][j]==0) continue;
+                pi = i; break;
+            }
+            if(pi==-1) continue;
+
+            swap(base[rank], base[pi]);
+            for(int ci=0; ci<N; ++ci) {
+                if(ci==rank) continue;
+                if(base[ci][j]==0) continue;
+                // XOR operation: base[ci] <- base[rank];
+                for(int cj=0; cj<M; ++cj) {
+                    base[ci][cj] ^= base[rank][cj];
+                }
+            }
+            ++rank;
         }
-        if(i>=n) return;
-        f(f, i+1, v);
-        v.push_back(i);
-        f(f, i+1, v);
-        v.pop_back();
-    };
-    vector<int> v={};
-    f(f, 0, v);
-    return ret;
-}
+    }
+    vector<vector<long long>> get_base() { return base;}
+    long long get_rank() { return rank;}
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P, Q);
-    VL(A, N);
-    ll ans = 0;
-    auto judge=[&](vi &v) -> bool {
-        ll mul = 1;
-        for(auto i: v) {
-            mul *= A[i];
-            mul %= P;
+    LONG(N, M);
+    vvl base(N, vl(M));
+    rep(i, N) {
+        LONG(T);
+        rep(j, T) {
+            LONGM(a);
+            base[i][a] = 1;
         }
-        return mul==Q;
-    };
-    auto combs = listup_combinations(N, 5);
-    for(auto comb: combs) {
-        de(comb)
-        if(judge(comb)) ++ans;
     }
-    // nCk
-    // auto combinations=[&](auto f, long long i=0, vector<long long> &v) -> void {
-    //     if((long long)v.size()==K) {
-    //         // edit here
-    //         return;
-    //     }
-    //     if(i==N) return;
-    //     f(f, si+1, v);
-    //     v.push_back(si);
-    //     f(f, si+1, v);
-    //     v.pop_back();
-    // };
-    // vl v={};
-    // f(f, 0, v);
-
+    XorBase ba(base);
+    base = ba.get_base();
+    VL(S, M);
+    ll rank = ba.get_rank();
+    rep(i, rank) {
+        ll sj = -1;
+        rep(j, M) {
+            if(base[i][j]==0) continue;
+            sj=j; break;
+        }
+        if(S[sj]==0) continue;
+        rep(j, M) { S[j] ^= base[i][j]; }
+    }
+    rep(j, M) {
+        if(S[j]!=0) Pm0
+    }
+    mint ans = 1;
+    rep(i, N-rank) ans *= 2;
     Out(ans);
-
     
 }
 
