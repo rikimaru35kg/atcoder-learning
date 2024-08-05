@@ -198,57 +198,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(N * M^2)
+//! O(ROW * COL^2 / 64?)
+const int COL = 300;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
 struct XorBase {
-    long long N, M;
-    long long rank = 0;
-    vl base;
-    XorBase(vl mat): base(mat) {
-        N = SIZE(base); M = 62;
-        for(int j=0; j<M; ++j) {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(vBS mat): base(mat) {
+        ROW = SIZE(base);
+        for(int j=0; j<COL; ++j) {
             int pi = -1;  // pivot i
-            for(int i=rank; i<N; ++i) {
-                if(~base[i]>>j&1) continue;
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
                 pi = i; break;
             }
             if(pi==-1) continue;
 
             swap(base[rank], base[pi]);
-            for(int ci=0; ci<N; ++ci) {
-                if(ci==rank) continue;
-                if(~base[ci]>>j&1) continue;
-                // XOR operation: base[ci] <- base[rank];
-                base[ci] ^= base[rank];
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
             }
             ++rank;
         }
     }
-    vl get_base() { return base;}
-    long long get_rank() { return rank;}
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
 };
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    VL(B, N);
-    XorBase xoa(A), xob(B);
-    // if(xoa.get_rank() != xob.get_rank()) PNo
-
-    A = xoa.get_base(); B = xob.get_base();
-    if(A==B) PYes PNo
-    // de(A)de(B)
-    // rep(j, 62) {
-    //     bool ba = false, bb = false;
-    //     rep(i, N) {
-    //         if(A[i]>>j&1) ba = true;
-    //         if(B[i]>>j&1) bb = true;
-    //     }
-    //     if(ba!=bb) PNo
-    // }
-    // PYes
+    LONG(N, M);
+    vBS base(N);
+    rep(i, N) {
+        LONG(T);
+        rep(j, T) {
+            LONGM(a);
+            base[i][a] = 1;
+        }
+    }
+    XorBase ba(base);
+    base = ba.get_base();
+    BS tgt;
+    rep(i, M) {
+        LONG(x);
+        tgt[i] = x;
+    }
+    ll rank = ba.get_rank();
+    rep(i, rank) {
+        ll sj = -1;
+        rep(j, M) {
+            if(base[i][j]==0) continue;
+            sj=j; break;
+        }
+        if(tgt[sj]==0) continue;
+        tgt ^= base[i];
+    }
+    rep(j, M) {
+        if(tgt[j]!=0) Pm0
+    }
+    mint ans = 1;
+    rep(i, N-rank) ans *= 2;
+    Out(ans);
     
 }
-
-// ### test.cpp ###
