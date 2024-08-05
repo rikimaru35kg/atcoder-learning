@@ -198,48 +198,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A,B,C);
-    A %= 10;
-    if(A==0) Pm0
-
-    ll M = 10;
-    vl ord(M, -1);
-
-    ll x = A;
-    ll idx = 0;;
-    while(ord[x]==-1) {
-        ord[x] = idx++;
-        (x *= A) %= M;
+    LONG(N, K);
+    VLM(P, N);
+    VL(C, N);
+    ll ans = -INF;
+    rep(si, N) {
+        vl ord(N, -1);
+        ll i = si;
+        ll idx = 0, tot = 0;
+        vl route;
+        while(ord[i]==-1) {
+            route.push_back(C[i]);
+            tot += C[i];
+            ord[i] = idx++;
+            i = P[i];
+        }
+        de(route)
+        ll len = idx;
+        i = 0;
+        ll cur = 0; ll mx = -INF;
+        if(tot<=0 || K<=len) {
+            rep(i, min(K,len)) {
+                cur += route[i];
+                chmax(mx, cur);
+            }
+            chmax(ans, mx);
+        } else {
+            ll rem = K;
+            rep(i, len) {
+                cur += route[i];
+                --rem;
+                ll cycle = rem/len;
+                chmax(mx, cur + cycle*tot);
+            }
+            chmax(ans, mx);
+        }
     }
-    ll cycle = idx;
-    de(cycle)
-
-    mint::set_mod(cycle);
-    ll y = mint(B).pow(C).val();
-    if (y==0) y += cycle;
-
-    x = 1;
-    rep(i, y) {
-        (x *= A) %= M;
-    }
-    Out(x);
+    Out(ans);
     
 }
 
