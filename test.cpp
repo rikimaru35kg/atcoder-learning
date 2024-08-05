@@ -198,40 +198,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 300;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(vBS mat): base(mat) {
-        ROW = SIZE(base);
-        for(int j=0; j<COL; ++j) {
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;
-
-            swap(base[rank], base[pi]);
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
-        }
-    }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-};
-
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -246,37 +215,32 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vBS base(N);
-    rep(i, N) {
-        LONG(T);
-        rep(j, T) {
-            LONGM(a);
-            base[i][a] = 1;
-        }
+    LONG(A,B,C);
+    A %= 10;
+    if(A==0) Pm0
+
+    ll M = 10;
+    vl ord(M, -1);
+
+    ll x = A;
+    ll idx = 0;;
+    while(ord[x]==-1) {
+        ord[x] = idx++;
+        (x *= A) %= M;
     }
-    XorBase ba(base);
-    base = ba.get_base();
-    BS tgt;
-    rep(i, M) {
-        LONG(x);
-        tgt[i] = x;
+    ll cycle = idx;
+    de(cycle)
+
+    mint::set_mod(cycle);
+    ll y = mint(B).pow(C).val();
+    if (y==0) y += cycle;
+
+    x = 1;
+    rep(i, y) {
+        (x *= A) %= M;
     }
-    ll rank = ba.get_rank();
-    rep(i, rank) {
-        ll sj = -1;
-        rep(j, M) {
-            if(base[i][j]==0) continue;
-            sj=j; break;
-        }
-        if(tgt[sj]==0) continue;
-        tgt ^= base[i];
-    }
-    rep(j, M) {
-        if(tgt[j]!=0) Pm0
-    }
-    mint ans = 1;
-    rep(i, N-rank) ans *= 2;
-    Out(ans);
+    Out(x);
     
 }
+
+// ### test.cpp ###

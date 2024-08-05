@@ -1029,7 +1029,7 @@
 - !復習価値中 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - !復習価値中 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 
-## 整数
+## 整数とMOD
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
 - c++では負の数の割り算の挙動に注意。a/bはabs(a)/abs(b)に符号を付けたもので、a%bはa=(a/b)*b + a%bが成り立つ値となる（余りが負になる事がある）
 - 負の数を割ったときの余りを0以上b未満にしたい場合、余りが負の場合は+bすれば良い
@@ -1046,6 +1046,7 @@
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
 - !復習価値高 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - !復習価値低 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
+- !要復習 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
 - !復習価値高 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
 - !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
 - !復習価値中 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
@@ -1748,6 +1749,7 @@
 - [C - : (Colon)](https://atcoder.jp/contests/abc168/tasks/abc168_c)
 - [D - バレンタインデー](https://atcoder.jp/contests/abc018/tasks/abc018_4)
 - [ 052 - Dice Product（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_az)
+- [E - Sequence Sum](https://atcoder.jp/contests/abc179/tasks/abc179_e)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)

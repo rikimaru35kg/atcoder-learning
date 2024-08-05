@@ -32,8 +32,8 @@ from collections import deque
 import math
 
 def main():
-    L = inint()
-    ans = math.comb(L-1, 11)
+    A,B,C=inints()
+    ans = A**(B**C)%10
     print(ans)
 
 if __name__ == '__main__':
