@@ -198,77 +198,16 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A,B,C);
-    A %= 10;
-    if(A==0) Pm0
+    LONG(N, M, D);
+    db ans = 0;
+    if(D==0) ans += 1.0/N; 
+    else ans += 2.0*(N-D)/(N*N);
 
-    ll M = 10;
-    vl ord(M, -1);
-
-    ll x = 1;
-    ll idx = 0;;
-    while(ord[x]==-1) {
-        ord[x] = idx++;
-        (x *= A) %= M;
-    }
-    ll cycle = idx-ord[x];
-    ll len = idx;
-    ll si = len-cycle;
-    de(cycle)
-
-    auto less=[&](ll n) -> bool {
-        // B^C<=n;
-        ll x = 1;
-        rep(i, C) {
-            if(x>n/B) return false;
-            x = x * B;
-        }
-        return x <= n;
-    };
-
-    if(less(len)) {
-        ll x = 1;
-        rep(i, C) {
-            x *= B;
-        }
-        ll y = 1;
-        rep(i, x) {
-            (y *= A) %= M;
-        }
-        de(y)
-        Outend(y);
-    }
-
-
-    x = 1;
-    ll minus = 0;
-    rep(i, si) x *= A, minus++;
-    mint::set_mod(cycle);
-    mint y = mint(B).pow(C);
-    y -= minus;
-
-    rep(i, y.val()) {
-        (x *= A) %= M;
-    }
-    Out(x);
-    
+    ans *= M-1;
+    Out(ans);
 }
 
 // ### test.cpp ###

@@ -201,44 +201,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VLM(P, N);
-    VL(C, N);
-    ll ans = -INF;
-    rep(si, N) {
-        vl ord(N, -1);
-        ll i = si;
-        ll idx = 0, tot = 0;
-        vl route;
-        while(ord[i]==-1) {
-            route.push_back(C[i]);
-            tot += C[i];
-            ord[i] = idx++;
-            i = P[i];
+    LONG(N); VL(C, N);
+    db ans = 0;
+    rep(i, N) {
+        ll num = 0;
+        rep(j, N) {
+            if(i==j) continue;
+            if(C[i]%C[j]==0) ++num;
         }
-        de(route)
-        ll len = idx;
-        i = 0;
-        ll cur = 0; ll mx = -INF;
-        if(tot<=0 || K<=len) {
-            rep(i, min(K,len)) {
-                cur += route[i];
-                chmax(mx, cur);
-            }
-            chmax(ans, mx);
-        } else {
-            ll rem = K;
-            rep(i, len) {
-                cur += route[i];
-                --rem;
-                ll cycle = rem/len;
-                chmax(mx, cur + cycle*tot);
-            }
-            chmax(ans, mx);
-        }
+        db a = (num+2)/2;
+        db b = num+1;
+        db now = a/b;
+        ans += now;
     }
     Out(ans);
-    
+
 }
 
 // ### test.cpp ###
