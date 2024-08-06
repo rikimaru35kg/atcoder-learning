@@ -2,6 +2,7 @@
 using namespace std;
 
 vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    if(x==0) return vector<long long>({0});
     vector<long long> ret;
     while(x) {
         ret.push_back(x%base);

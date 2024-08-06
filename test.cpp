@@ -198,33 +198,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    if(x==0) return vector<long long>({0});
+    vector<long long> ret;
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(X, N);
-    mint c = 0;
-    mint ans = 0;
-    rep(i, N-1) {
-        c += mint(1)/(i+1);
-        ans += (X[i+1]-X[i]) * c;
+    STRING(N); LONG(K);
+    vl A;
+    for(auto c: N) A.push_back(c-'0');
+    ll x = consolidate_digit(A, 8);
+    rep(i, K) {
+        auto v9 = separate_digit(x, 9);
+        for(auto &y: v9) if(y==8) y = 5;
+        x = consolidate_digit(v9, 8);
     }
-    rep1(i, N-1) ans *= i;
-    Out(ans);
+    auto v8 = separate_digit(x, 8);
+    rep(i, SIZE(v8)) {
+        printf("%lld", v8[i]);
+    }
+    cout<<endl;
     
 }
 
