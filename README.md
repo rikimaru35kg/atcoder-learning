@@ -1253,6 +1253,7 @@
 - !復習価値中 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - !復習価値中 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 - !復習価値高 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3)
+- !要復習 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 
 ## 対称性を利用する
 ### 例題

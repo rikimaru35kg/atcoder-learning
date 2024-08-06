@@ -201,13 +201,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, D);
+    LONG(N); VL(C, N);
     db ans = 0;
-    if(D==0) ans += 1.0/N; 
-    else ans += 2.0*(N-D)/(N*N);
-
-    ans *= M-1;
+    rep(i, N) {
+        ll num = 0;
+        rep(j, N) {
+            if(i==j) continue;
+            if(C[i]%C[j]==0) ++num;
+        }
+        db a = (num+2)/2;
+        db b = num+1;
+        db now = a/b;
+        ans += now;
+    }
     Out(ans);
+
 }
 
 // ### test.cpp ###

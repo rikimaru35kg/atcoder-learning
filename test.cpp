@@ -198,24 +198,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(C, N);
-    db ans = 0;
-    rep(i, N) {
-        ll num = 0;
-        rep(j, N) {
-            if(i==j) continue;
-            if(C[i]%C[j]==0) ++num;
-        }
-        db a = (num+2)/2;
-        db b = num+1;
-        db now = a/b;
-        ans += now;
+    LONG(N);
+    VL(X, N);
+    mint c = 0;
+    mint ans = 0;
+    rep(i, N-1) {
+        c += mint(1)/(i+1);
+        ans += (X[i+1]-X[i]) * c;
     }
+    rep1(i, N-1) ans *= i;
     Out(ans);
-
+    
 }
 
 // ### test.cpp ###
