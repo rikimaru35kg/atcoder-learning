@@ -1283,6 +1283,7 @@
 ### 例題
 - 基本 [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
 - !復習価値中 格子点を正方形に収める最小回数 [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
+- !復習価値高 犯人の逃走経路数 [abduction - 誘拐 (Abduction)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_abduction)
 
 ## 変数分離
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる

@@ -198,32 +198,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VD(A, N);
-    // rep(i, N) A[i] /= 2;
-    sort(all(A));
+    LONG(W, H, N);
+    STRING(S);
+    vl xs, ys;
+    ll dir = 0;
+    if(S[0]=='L') dir = 0;
+    else dir = 1;
 
-    auto f=[&](db x) {
-        db ret = 0;
-        rep(i, N) {
-            ret += x + A[i] - min(A[i], 2*x);
-        }
-        ret /= N;
-        return ret;
+    auto push=[&](ll dir) {
+        if(dir==0) xs.push_back(1);
+        if(dir==1) ys.push_back(1);
+        if(dir==2) xs.push_back(-1);
+        if(dir==3) ys.push_back(-1);
     };
 
-    db l = 0, r = 1e9+10;
-    rep(i, 200) {
-        db m1 = (2*l+r)/3;
-        db m2 = (l+2*r)/3;
-        if(f(m1)<f(m2)) r = m2;
-        else l = m1;
-        // de2(l,r)
+    auto nd=[&](char c) {
+        if(c=='L') dir = (dir + 1) % 4;
+        else dir = (dir + 3) % 4;
+    };
+
+    push(dir);
+    for(auto c: S) {
+        nd(c);
+        push(dir);
     }
-    Out(f(l));
+    de(xs)de(ys)
+
+    mint::set_mod(10000000);
+
+    auto cal_dp=[&](vl &x, ll w) -> mint {
+        fenwick_tree<mint> dp(w+1);
+        ll n = SIZE(x);
+        dp.add(0, 1);
+        rep(i, n) {
+            fenwick_tree<mint> pdp(w+1); swap(pdp, dp);
+            rep(j, w+1) {
+                mint sum = 0;
+                if(x[i]==1) sum = pdp.sum(0, j);
+                else sum = pdp.sum(j+1, w+1);
+                dp.add(j, sum);
+            }
+        }
+        return dp.sum(w, w+1);
+    };
+    mint ans = 1;
+    ans *= cal_dp(xs, W);
+    ans *= cal_dp(ys, H);
+    Out(ans);
     
 }
 
