@@ -1240,6 +1240,7 @@
 
 ## 独立事象を掛け合わせる
 ### 例題
+- 基本 [D - Nowhere P](https://atcoder.jp/contests/jsc2021/tasks/jsc2021_d)
 - !要復習 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
 
 ## 期待値
