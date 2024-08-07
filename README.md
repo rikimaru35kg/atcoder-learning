@@ -1756,6 +1756,7 @@
 - [ 052 - Dice Product（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_az)
 - [E - Sequence Sum](https://atcoder.jp/contests/abc179/tasks/abc179_e)
 - [C - Base -2 Number](https://atcoder.jp/contests/abc105/tasks/abc105_c)
+- [B - Insurance](https://atcoder.jp/contests/arc122/tasks/arc122_b)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)

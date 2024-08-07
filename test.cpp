@@ -198,25 +198,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    mint ans = P-1;
-    ans *= mint(P-2).pow(N-1);
-    Out(ans);
+    LONG(N);
+    VD(A, N);
+    // rep(i, N) A[i] /= 2;
+    sort(all(A));
+
+    auto f=[&](db x) {
+        db ret = 0;
+        rep(i, N) {
+            ret += x + A[i] - min(A[i], 2*x);
+        }
+        ret /= N;
+        return ret;
+    };
+
+    db l = 0, r = 1e9+10;
+    rep(i, 200) {
+        db m1 = (2*l+r)/3;
+        db m2 = (l+2*r)/3;
+        if(f(m1)<f(m2)) r = m2;
+        else l = m1;
+        // de2(l,r)
+    }
+    Out(f(l));
+    
 }
+
+// ### test.cpp ###
