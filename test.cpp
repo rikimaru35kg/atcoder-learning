@@ -198,70 +198,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, H, N);
-    STRING(S);
-    vl xs, ys;
-    ll dir = 0;
-    if(S[0]=='L') dir = 0;
-    else dir = 1;
+    LONG(N);
 
-    auto push=[&](ll dir) {
-        if(dir==0) xs.push_back(1);
-        if(dir==1) ys.push_back(1);
-        if(dir==2) xs.push_back(-1);
-        if(dir==3) ys.push_back(-1);
-    };
-
-    auto nd=[&](char c) {
-        if(c=='L') dir = (dir + 1) % 4;
-        else dir = (dir + 3) % 4;
-    };
-
-    push(dir);
-    for(auto c: S) {
-        nd(c);
-        push(dir);
-    }
-    de(xs)de(ys)
-
-    mint::set_mod(10000000);
-
-    auto cal_dp=[&](vl &x, ll w) -> mint {
-        fenwick_tree<mint> dp(w+1);
-        ll n = SIZE(x);
-        dp.add(0, 1);
-        rep(i, n) {
-            fenwick_tree<mint> pdp(w+1); swap(pdp, dp);
-            rep(j, w+1) {
-                mint sum = 0;
-                if(x[i]==1) sum = pdp.sum(0, j);
-                else sum = pdp.sum(j+1, w+1);
-                dp.add(j, sum);
-            }
+    vs ans;
+    auto dfs=[&](auto f, ll i, string s="") -> void {
+        if(i==N) {
+            ans.push_back(s);
+            return;
         }
-        return dp.sum(w, w+1);
+        ll en = 0;
+        for(auto c: s) {
+            chmax(en, (c-'a')+1LL);
+        }
+
+        if(s=="aba"){
+            cout<<"";
+        }
+        rep(j, en+1){
+            f(f, i+1, s+(char)(j+'a'));
+        }
     };
-    mint ans = 1;
-    ans *= cal_dp(xs, W);
-    ans *= cal_dp(ys, H);
+    dfs(dfs, 1, "a");
     Out(ans);
     
 }
