@@ -198,46 +198,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    if(x==0) return vector<long long>({0});
-    vector<long long> ret;
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(N); LONG(K);
-    vl A;
-    for(auto c: N) A.push_back(c-'0');
-    ll x = consolidate_digit(A, 8);
-    rep(i, K) {
-        auto v9 = separate_digit(x, 9);
-        for(auto &y: v9) if(y==8) y = 5;
-        x = consolidate_digit(v9, 8);
+    LONG(N);
+    if(N==0) Pm0
+    string ans;
+    ll coef = 1;
+    while(N) {
+        ll x = N%2==0?0:1;
+        ans += x+'0';
+        N -= x;
+        N /= -2;
+        coef ^= 1;
     }
-    auto v8 = separate_digit(x, 8);
-    rep(i, SIZE(v8)) {
-        printf("%lld", v8[i]);
-    }
-    cout<<endl;
+    reverse(all(ans));
+    Out(ans);
     
 }
 

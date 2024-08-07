@@ -1565,6 +1565,7 @@
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
 - K番目を考える時、二分探索するのも典型
 ### 例題
+- !復習価値中 [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
 - !復習価値高 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
 - !要復習 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
 
@@ -1753,6 +1754,7 @@
 - [D - バレンタインデー](https://atcoder.jp/contests/abc018/tasks/abc018_4)
 - [ 052 - Dice Product（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_az)
 - [E - Sequence Sum](https://atcoder.jp/contests/abc179/tasks/abc179_e)
+- [C - Base -2 Number](https://atcoder.jp/contests/abc105/tasks/abc105_c)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
