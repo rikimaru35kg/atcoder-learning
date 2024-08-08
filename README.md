@@ -133,6 +133,7 @@
 ### 例題
 - !復習価値低 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
 - !復習価値中 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
+- !要復習 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
 
 ## ペア積（要素積）のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い

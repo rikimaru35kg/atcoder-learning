@@ -198,31 +198,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
+    VL(A, N); VL(B, N);
+    rep(i, N) A[i] += i;
+    rep(i, N) B[i] += i;
 
-    vs ans;
-    auto dfs=[&](auto f, ll i, string s="") -> void {
-        if(i==N) {
-            ans.push_back(s);
-            return;
-        }
-        ll en = 0;
-        for(auto c: s) {
-            chmax(en, (c-'a')+1LL);
-        }
+    vl sa = A, sb = B;
+    sort(all(sa)); sort(all(sb));
+    if(sa!=sb) Pm1
+    de(A)de(B)
 
-        if(s=="aba"){
-            cout<<"";
-        }
-        rep(j, en+1){
-            f(f, i+1, s+(char)(j+'a'));
-        }
-    };
-    dfs(dfs, 1, "a");
+    map<ll,vl> mp;
+    rep(i, N) { mp[B[i]].push_back(i); }
+    map<ll,ll> idx;
+
+    vl vec;
+    rep(i, N) {
+        vec.push_back(mp[A[i]][idx[A[i]]]);
+        idx[A[i]]++;
+    }
+    fenwick_tree<ll> tree(N);
+    ll ans = 0;
+    rep(i, N) {
+        ans += tree.sum(vec[i]+1, N);
+        tree.add(vec[i], 1);
+    }
     Out(ans);
+
+
     
 }
 

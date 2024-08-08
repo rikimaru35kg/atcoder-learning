@@ -201,48 +201,16 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, A, B);
-
-    vvl used(H, vl(W));
+    LONG(N);
+    STRING(S);
+    vl A;
+    for(auto c: S) A.push_back(c-'a');
+    reverse(all(A));
     ll ans = 0;
-    auto dfs=[&](auto f, ll a, ll b, ll id=1) {
-        ll si=-1, sj=-1;
-        [&]{ rep(i, H) rep(j, W) {
-            if(used[i][j]==0) {
-                si = i, sj = j;
-                return;
-            }
-        }}();
-        if(si==-1) {
-            de(used)
-            ++ans;
-            return;
-        }
-        if(a) {
-            if(sj<W-1 && !used[si][sj+1]) {
-                used[si][sj] = id;
-                used[si][sj+1] = id;
-                f(f, a-1, b, id+1);
-                used[si][sj+1] = 0;
-                used[si][sj] = 0;
-            }
-            if(si<H-1 && !used[si+1][sj]) {
-                used[si][sj] = id;
-                used[si+1][sj] = id;
-                f(f, a-1, b, id+1);
-                used[si+1][sj] = 0;
-                used[si][sj] = 0;
-            }
-        }
-        if(b) {
-            used[si][sj] = id;
-            f(f, a, b-1, id+1);
-            used[si][sj] = 0;
-        }
-    };
-    dfs(dfs, A, B);
+    rep(i, N) {
+        ans = ans*2 + A[i];
+    }
     Out(ans);
-
     
 }
 
