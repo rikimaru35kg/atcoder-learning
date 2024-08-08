@@ -198,77 +198,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vl A;
-    for(auto c: S) {
-        if(c=='B') A.push_back(0);
-        if(c=='W') A.push_back(1);
-        if(c=='R') A.push_back(2);
-    }
-    auto lucas=[&](ll n, ll r) -> ll {
-        auto nv = separate_digit(n, 3, 20);
-        auto rv = separate_digit(r, 3, 20);
-        de(nv)de(SIZE(nv))
-        de(rv)de(SIZE(rv))
-        ll ret = 1;
-        rep(i, 20) {
-            ret *= nCr(nv[i], rv[i]);
-            ret %= 3;
-        }
-        return ret;
-    };
-    ll now = 0;
+    LONG(N); VL(A, N);
+    ll sum0 = 0, sum1 = 0;
+    map<ll,ll> mp;
+    mp[0]++;
+    ll ans = 0;
     rep(i, N) {
-        now += lucas(N-1, i) * A[i];
-        now %= 3;
+        if(i%2==0) sum0 += A[i];
+        else sum1 += A[i];
+        ans += mp[sum0-sum1];
+        mp[sum0-sum1]++;
     }
-    if(N%2==0) now = -now;
-    now = Percent(now, 3);
-    if(now==0) puts("B");
-    if(now==1) puts("W");
-    if(now==2) puts("R");
+    Out(ans);
     
 }
 

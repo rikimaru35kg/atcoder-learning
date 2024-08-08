@@ -1460,6 +1460,7 @@
 ### 例題
 - !復習価値低 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
 - !復習価値低 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
+- !復習価値中 ビル高さ0にする [C - ARC Wrecker 2](https://atcoder.jp/contests/arc119/tasks/arc119_c)
 
 ## 必ず含まれるかどうか（or 含まれる事があるかどうか）の判定
 - ある要素がある条件を構成するのに必ず含まれるかどうかについて調べたいとき、左からの情報と右からの情報を前処理として持っておくと、その要素の影響が調べられる

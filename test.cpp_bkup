@@ -201,14 +201,19 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    ll g = 0;
-    ll mx = *max_element(all(A));
-    rep(i, N) g = gcd(g, A[i]);
-    if(K>mx) Outend("IMPOSSIBLE");
-    if(K%g!=0) Outend("IMPOSSIBLE");
-    Out("POSSIBLE");
+    LONG(N); VL(A, N);
+    ll minus = 0;
+    rep(i, N) if(A[i]<0) minus ^= 1;
+    ll ans = 0;
+    rep(i, N) {
+        ans += abs(A[i]);
+    }
+    ll mn = INF;
+    rep(i, N) chmin(mn, abs(A[i]));
+    if(minus) {
+        ans -= 2*mn;
+    }
+    Out(ans);
     
 }
 
