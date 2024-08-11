@@ -900,6 +900,7 @@
 - !復習価値高　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
 - !要復習 重さ制限付きタワー [X - Tower](https://atcoder.jp/contests/dp/tasks/dp_x)
 - !復習価値高 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
+- !復習価値高 アフィン変換最大化 [F - Maximum Composition](https://atcoder.jp/contests/abc366/tasks/abc366_f)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
@@ -1761,6 +1762,7 @@
 - [C - Base -2 Number](https://atcoder.jp/contests/abc105/tasks/abc105_c)
 - [B - Insurance](https://atcoder.jp/contests/arc122/tasks/arc122_b)
 - [D - String Equivalence](https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_d)
+- [E - Manhattan Multifocal Ellipse](https://atcoder.jp/contests/abc366/tasks/abc366_e)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
