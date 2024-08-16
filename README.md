@@ -1774,3 +1774,4 @@
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [B - RGB Coloring](https://atcoder.jp/contests/agc025/tasks/agc025_b)
+- [D - 一次元オセロ　(1D Othello)](https://atcoder.jp/contests/pakencamp-2018-day2/tasks/pakencamp_2018_day2_d)

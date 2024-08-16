@@ -198,37 +198,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    return ret;
+    return ok;
 }
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    return ret;
+    return ok;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N);
     STRING(S);
-    auto v = run_length_encoding(S);
-    string ans;
-    for(auto [c, n]: v) {
-        de(n)
-        ans += c;
-        string s = to_string(n);
-        ans += s;
+    char l = S[0], r = S.back();
+    deque<ll> deq;
+    rep(i, N-1) {
+        if(S[i]!=S[i+1]) deq.push_back(i);
+    }
+    LONG(M);
+    vector<pair<char,char>> op;
+    rep(i, M) {
+        CHAR(d, f);
+        op.emplace_back(d, f);
+    }
+    de(op)
+    vvp query(M);
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(t, p);
+        query[t].emplace_back(p, i);
+    }
+    ll si = 0, ei = N-1;
+    vc ans(Q);
+    rep(i, M) {
+        auto [d, f] = op[i];
+        if(d=='L') {
+            --si;
+            if(!deq.size() && l!=f) {
+                deq.push_front(si);
+            } else if(deq.size() && l!=f) {
+                deq.pop_front();
+            }
+            l = f;
+        } else {
+            if(!deq.size() && r!=f) {
+                deq.push_back(ei);
+            }
+            else if(deq.size() && r!=f) {
+                deq.pop_back();
+            }
+            ++ei;
+            r = f;
+        }
+        for(auto [p, qi]: query[i]) {
+            ll sz = deq.size();
+            auto f=[&](ll x) -> bool {
+                if(deq[x]-si<p) return true;
+                return false;
+            };
+            ll tmp = binary_search(-1, sz, f) + 1;
+            de(deq)
+            de3(si, qi, tmp);
+
+            if(tmp%2==0) ans[qi] = l;
+            else {
+                char z = l;
+                if(l=='B') z = 'W';
+                else z = 'B';
+                ans[qi] = z;
+            }
+        }
     }
     Out(ans);
     
