@@ -201,32 +201,13 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H,W,K,V);
-    vvl A(H+1, vl(W+1));
-    rep(i, H) rep(j, W) {
-        LONG(a);
-        A[i+1][j+1] = a;
+    LONG(N);
+    db e=0;
+    for(ll x=N-1; x>=1; --x) {
+        e = e + (db)N/(N-x);
+        de(e)
     }
-    rep(i, H) rep(j, W+1) A[i+1][j] += A[i][j];
-    rep(i, H+1) rep(j, W) A[i][j+1] += A[i][j];
-    ll ans = 0;
-    rep(j, H+1) rep(i, j) {
-        ll r = 0;
-        auto calc=[&](ll l, ll r) -> ll {
-            ll ret = 0;
-            ret += A[j][r];
-            ret -= A[j][l];
-            ret -= A[i][r];
-            ret += A[i][l];
-            return ret + (j-i)*(r-l)*K;
-        };
-        rep(l, W) {
-            while(r<W && calc(l,r+1) <= V) ++r;
-            chmax(ans, (j-i)*(r-l));
-            if(l==r) ++r;
-        }
-    }
-    Out(ans);
+    Out(e);
     
 }
 

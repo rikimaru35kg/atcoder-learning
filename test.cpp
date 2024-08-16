@@ -201,36 +201,54 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl D(N+1, vl(N+1));
-    rep(i, N) rep(j, N) {
-        LONG(d);
-        D[i+1][j+1] = d;
+    LONG(N, M);
+    vvl from(N);
+    vl deg(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a, b);
+        edge.emplace_back(a,b );
+        deg[a]++, deg[b]++;
     }
-    rep(i, N) rep(j, N+1) D[i+1][j] += D[i][j];
-    rep(i, N+1) rep(j, N) D[i][j+1] += D[i][j];
-    de(D)
-    auto calc=[&](ll i, ll j, ll x, ll y) -> ll {
-        ll ret = 0;
-        ret += D[x][y];
-        ret -= D[i][y];
-        ret -= D[x][j];
-        ret += D[i][j];
+    ll K = sqrt(2*M);
+    de(K)
+    for(auto [a, b]: edge) {
+        if(deg[a]>deg[b]) swap(a, b);
+        from[a].push_back(b);
+        if(deg[a]<K && deg[b]>=K) continue;
+        from[b].push_back(a);
+    }
+    de(from)
+    vl col(N, 1), t(N, -1);
+    LONG(Q);
+    vl qc(Q);
+    auto get=[&](ll v) -> ll {
+        ll ret = col[v], ct = t[v];
+        if(deg[v] < K) {
+            for(auto nv: from[v]) {
+                if(t[nv]>ct) {
+                    ret = qc[t[nv]];
+                    ct = t[nv];
+                }
+            }
+        }
         return ret;
     };
-    vl deli(N*N+1);
-    rep(x2, N+1) rep(x1, x2)  rep(y2, N+1) rep(y1, y2) {
-        ll num = (y2-y1)*(x2-x1);
-        chmax(deli[num], calc(x1,y1,x2,y2));
-    }
-    rep(i, N*N) chmax(deli[i+1], deli[i]);
-    LONG(Q);
+    auto write=[&](ll x, ll y, ll qi) {
+        col[x] = y, t[x] = qi;
+        for(auto nv: from[x]) {
+            col[nv] = y;
+            // t[nv] = qi;
+        }
+    };
     rep(qi, Q) {
-        LONG(q);
-        ll ans = deli[q];
+        LONG(x, y); --x;
+        qc[qi] = y;
+        ll ans = get(x);
         Out(ans);
+        write(x, y, qi);
+        de(col)de(t)
     }
-
     
 }
 
