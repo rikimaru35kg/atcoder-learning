@@ -1562,7 +1562,7 @@
 ## 平方分割
 ### 例題
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
-- [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
+- !要復習 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
 
 ## 牛ゲー
 - 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題
@@ -1768,6 +1768,7 @@
 - [B - Insurance](https://atcoder.jp/contests/arc122/tasks/arc122_b)
 - [D - String Equivalence](https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_d)
 - [E - Manhattan Multifocal Ellipse](https://atcoder.jp/contests/abc366/tasks/abc366_e)
+- [D - Deforestation](https://atcoder.jp/contests/nikkei2019-final/tasks/nikkei2019_final_d)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)

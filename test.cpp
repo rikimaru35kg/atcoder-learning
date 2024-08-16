@@ -198,57 +198,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+struct S {
+    ll x, w;
+    S(ll x, ll w): x(x), w(w) {}
+};
+S op(S a, S b) {
+    return S(a.x+b.x, a.w+b.w);
+}
+S e() {return S(0,0);}
+using F = ll;
+S mapping(F f, S x) {
+    if(f==INF) return x;
+    else return S(f*x.w, x.w);
+}
+F composition (F f, F g) {
+    if(f==INF) return g;
+    else return f;
+}
+F id() {return INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
-    vl deg(N);
-    vp edge;
+    vector<S> v(N, S(0,1));
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    ll ans = 0;
     rep(i, M) {
-        LONGM(a, b);
-        edge.emplace_back(a,b );
-        deg[a]++, deg[b]++;
-    }
-    ll K = sqrt(2*M);
-    de(K)
-    for(auto [a, b]: edge) {
-        if(deg[a]>deg[b]) swap(a, b);
-        from[a].push_back(b);
-        if(deg[a]<K && deg[b]>=K) continue;
-        from[b].push_back(a);
-    }
-    de(from)
-    vl col(N, 1), t(N, -1);
-    LONG(Q);
-    vl qc(Q);
-    auto get=[&](ll v) -> ll {
-        ll ret = col[v], ct = t[v];
-        if(deg[v] < K) {
-            for(auto nv: from[v]) {
-                if(t[nv]>ct) {
-                    ret = qc[t[nv]];
-                    ct = t[nv];
-                }
+        LONG(t, l, r); --l;
+        ll sub = seg.prod(l, r).x;
+        ll now = t*(r-l) - sub;
+        de(now)
+        ans += now;
+        seg.apply(l, r, t);
+        [&]{
+        #ifdef __DEBUG
+            rep(i, N) {
+                cerr<< seg.get(i).x  <<' ';
             }
-        }
-        return ret;
-    };
-    auto write=[&](ll x, ll y, ll qi) {
-        col[x] = y, t[x] = qi;
-        for(auto nv: from[x]) {
-            col[nv] = y;
-            // t[nv] = qi;
-        }
-    };
-    rep(qi, Q) {
-        LONG(x, y); --x;
-        qc[qi] = y;
-        ll ans = get(x);
-        Out(ans);
-        write(x, y, qi);
-        de(col)de(t)
+            rep(i, N) {
+                cerr<< seg.get(i).w  <<' ';
+            }
+            cerr<<endl;
+        #endif
+        }();
     }
+    Out(ans);
     
 }
 
