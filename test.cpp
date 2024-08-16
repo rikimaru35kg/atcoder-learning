@@ -198,53 +198,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
+    }
+    return ret;
+}
 
-struct S {
-    ll x, w;
-    S(ll x, ll w): x(x), w(w) {}
-};
-S op(S a, S b) {
-    return S(a.x+b.x, a.w+b.w);
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
 }
-S e() {return S(0,0);}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==INF) return x;
-    else return S(f*x.w, x.w);
-}
-F composition (F f, F g) {
-    if(f==INF) return g;
-    else return f;
-}
-F id() {return INF;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vector<S> v(N, S(0,1));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    ll ans = 0;
-    rep(i, M) {
-        LONG(t, l, r); --l;
-        ll sub = seg.prod(l, r).x;
-        ll now = t*(r-l) - sub;
-        de(now)
-        ans += now;
-        seg.apply(l, r, t);
-        [&]{
-        #ifdef __DEBUG
-            rep(i, N) {
-                cerr<< seg.get(i).x  <<' ';
-            }
-            rep(i, N) {
-                cerr<< seg.get(i).w  <<' ';
-            }
-            cerr<<endl;
-        #endif
-        }();
+    STRING(S);
+    auto v = run_length_encoding(S);
+    string ans;
+    for(auto [c, n]: v) {
+        de(n)
+        ans += c;
+        string s = to_string(n);
+        ans += s;
     }
     Out(ans);
     
