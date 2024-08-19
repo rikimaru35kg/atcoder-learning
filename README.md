@@ -1776,6 +1776,7 @@
 - [E - Manhattan Multifocal Ellipse](https://atcoder.jp/contests/abc366/tasks/abc366_e)
 - [D - Deforestation](https://atcoder.jp/contests/nikkei2019-final/tasks/nikkei2019_final_d)
 - [D - Pairs](https://atcoder.jp/contests/abc155/editorial)
+- [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)

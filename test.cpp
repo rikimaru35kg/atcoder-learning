@@ -198,114 +198,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
+    LONG(N, Q);
     VL(A, N);
-    sort(all(A));
+    vvb ng(N, vb(N));
+    rep(i, Q) {
+        LONGM(x, y);
+        ng[x][y] = true;
+        ng[y][x] = true;
+    }
 
-    auto f=[&](ll x) -> bool {
-        ll cnt = 0;
-        rep(i, N) {
-            if(A[i]<0) {
-                auto [n,y] = lowbou(A, Divceil(x, A[i]));
-                cnt += N-max(n, i+1);
-            } else if(A[i]==0) {
-                if(x>=0) cnt += N - i - 1;
-            } else {
-                auto [n,y] = lowbou_r(A, Div(x, A[i]));
-                cnt += max(n-i, 0LL);
-            }
+    map<ll,vl> mp;
+    auto dfs=[&](auto f, ll i, ll sum, vl sel) -> void {
+        if(i==N) return;
+        ll sz = SIZE(sel);
+        bool ok = true;
+        rep(j, sz) {
+            if(ng[sel[j]][i]) ok = false;
         }
-        de2(x, cnt)
-        return cnt >= K;
+        sel.push_back(i);
+        sum += A[i];
+        if(ok) {
+            if(mp.count(sum)) {
+                vl B = mp[sum];
+                Out(SIZE(B));
+                rep(k, SIZE(B)) B[k]++;
+                Out(B);
+                Out(SIZE(sel));
+                rep(k, SIZE(sel)) sel[k]++;
+                Out(sel);
+                exit(0);
+            }
+            mp[sum] = sel;
+        }
+        if(ok) f(f, i+1, sum+A[i], sel);
+        sel.pop_back();
+        sum += A[i];
+        f(f, i+1, sum, sel);
     };
-    // de(f(-12))
-    // de(f(-7))
-    // de(f(-6))
-
-    ll ans = binary_search(INF, -INF, f);
-    Out(ans);
+    dfs(dfs, 0, 0, vl());
     
 }
 
