@@ -1510,6 +1510,7 @@
 ## 鳩の巣原理
 ### 例題
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
+- !要復習 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - !復習価値高 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 
 ## max(max())の形に帰着させる
@@ -1748,12 +1749,6 @@
 - WINDOWSでMINGWのgccを使う場合、スタックオーバーフローに注意。AtCoderでは1024MBのスタックサイズが許容されているが、`ulimit -a`で調べると手元では2032KBしか確保されていなかった。ulimitでは変更が上手くいかないので、コンパイル時に`-Wl,--stack,1073741824`を指定して解決した（1073741824[Byte] = 1024MB）
 - AtCoderではスペースと改行を区別しないとsnuke氏はおっしゃっていたが、少なくともABC109のD問題では行末にスペースを入れたことでWAした・・・。サンプルまでWAになった場合は疑ってみる価値あり
 
-# これまでに解いた問題数
-- 以下は最初に解いた問題群。以降は[Atcoder Problemsで管理](https://kenkoooo.com/atcoder/#/table/)ABCの過去問を解いている
-- 競プロ典型90問: （★4以下の全問->後ほど★5以下全問on2023/12/28）
-- 分野別　初中級者が解くべき過去問精選 100 問: （問1,10,17,18,24-25,28,32,34-38,44-46,48-49,53,56,60,64,66,68,70,82,85,92,94はatcoderでないためスキップ。52,75,84は難しい為スキップ） ->後ほど全問解いたon2024/1/23
-- 1問: [N Slimes](https://atcoder.jp/contests/dp/tasks/dp_n) -> 後ほどEDPC Sまで全問
-
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
@@ -1776,7 +1771,6 @@
 - [E - Manhattan Multifocal Ellipse](https://atcoder.jp/contests/abc366/tasks/abc366_e)
 - [D - Deforestation](https://atcoder.jp/contests/nikkei2019-final/tasks/nikkei2019_final_d)
 - [D - Pairs](https://atcoder.jp/contests/abc155/editorial)
-- [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 
 ## ACできなかった問題
 - [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)

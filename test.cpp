@@ -201,44 +201,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N);
-    vvb ng(N, vb(N));
-    rep(i, Q) {
-        LONGM(x, y);
-        ng[x][y] = true;
-        ng[y][x] = true;
+    LONG(N, M);
+    VL(A, N); VL(B, M);
+    ll K = 2e6+10;
+    vvl stck(K);
+    rep(i, N) rep(j, M) {
+        ll s = A[i]+B[j];
+        if(SIZE(stck[s])) {
+            printf("%lld %lld ", stck[s][0], stck[s][1]);
+            printf("%lld %lld\n", i, j);
+            return 0;
+        }
+        stck[s].push_back(i);
+        stck[s].push_back(j);
     }
-
-    map<ll,vl> mp;
-    auto dfs=[&](auto f, ll i, ll sum, vl sel) -> void {
-        if(i==N) return;
-        ll sz = SIZE(sel);
-        bool ok = true;
-        rep(j, sz) {
-            if(ng[sel[j]][i]) ok = false;
-        }
-        sel.push_back(i);
-        sum += A[i];
-        if(ok) {
-            if(mp.count(sum)) {
-                vl B = mp[sum];
-                Out(SIZE(B));
-                rep(k, SIZE(B)) B[k]++;
-                Out(B);
-                Out(SIZE(sel));
-                rep(k, SIZE(sel)) sel[k]++;
-                Out(sel);
-                exit(0);
-            }
-            mp[sum] = sel;
-        }
-        if(ok) f(f, i+1, sum+A[i], sel);
-        sel.pop_back();
-        sum += A[i];
-        f(f, i+1, sum, sel);
-    };
-    dfs(dfs, 0, 0, vl());
+    Out(-1);
     
 }
 
