@@ -197,58 +197,25 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
+    return ok;
 }
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    return ret;
+    return ok;
 }
 
 // return minimum index i where a[i] >= x, and its value a[i]
@@ -313,61 +280,33 @@ pair<long long,T> uppbou_r(vector<T> &a, T x) {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Sieve sieve(100);
-    vl ps;
-    for(ll p=2; p<=43; ++p) {
-        if(!sieve.is_prime(p)) continue;
-        ps.push_back(p);
-    }
-    ll M = SIZE(ps);
-    map<ll,ll> mp;
-    ll mx = (ll)1e17;
-    auto ndiv = [&](vl &cs, ll x)  {
-        ll n = 1;
-        rep(i, M) n *= cs[i]+1;
-        if(!mp.count(n)) mp[n] = x;
-        else {
-            if(mp[n]>x) mp[n] = x;
-        }
-    };
-    auto dfs=[&](auto f, ll i, vl cs, ll x) -> void {
-        if(x>mx) return;
-        ndiv(cs, x);
-        if(i==M) return;
+    LONG(N, K);
+    VL(A, N);
+    sort(all(A));
 
-        if(i==0 || cs[i-1]>cs[i]) {
-            vl ncs = cs;
-            ncs[i]++;
-            f(f, i, ncs, x*ps[i]);
+    auto f=[&](ll x) -> bool {
+        ll cnt = 0;
+        rep(i, N) {
+            if(A[i]<0) {
+                auto [n,y] = lowbou(A, Divceil(x, A[i]));
+                cnt += N-max(n, i+1);
+            } else if(A[i]==0) {
+                if(x>=0) cnt += N - i - 1;
+            } else {
+                auto [n,y] = lowbou_r(A, Div(x, A[i]));
+                cnt += max(n-i, 0LL);
+            }
         }
-        f(f, i+1, cs, x);
+        de2(x, cnt)
+        return cnt >= K;
     };
-    vl cs(M);
-    dfs(dfs, 0, cs, 1);
-    vp snum;
-    vl dummy;
-    for(auto [k,v]: mp) {
-        snum.emplace_back(v, k);
-        dummy.push_back(v);
-    }
-    sort(all(snum));
-    sort(all(dummy));
-    de(snum)de(dummy)
-    ll Z = SIZE(snum);
-    rep(i, Z-1) {
-        if(snum[i+1].second < snum[i].second) {
-            snum[i+1] = snum[i];
-        }
-    }
-    // de(SIZE(snum))
+    // de(f(-12))
+    // de(f(-7))
+    // de(f(-6))
 
-    LONG(Q);
-    rep(i, Q) {
-        LONG(n);
-        auto [k, x] = lowbou_r(dummy, n);
-        // de(k)
-        // Out(snum[k]);
-        auto [z1, z2] = snum[k];
-        printf("%lld %lld\n", z2,z1);
-    }
+    ll ans = binary_search(INF, -INF, f);
+    Out(ans);
+    
 }
+
+// ### test.cpp ###
