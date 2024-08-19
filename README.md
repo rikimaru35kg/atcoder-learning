@@ -943,7 +943,7 @@
 - 基本 （簡単すぎるのでNote非掲載）[B - ROT N](https://atcoder.jp/contests/abc146/tasks/abc146_b)
 
 ## ローリングハッシュ（Rolling Hash）
-- 素数Pと乱数Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する（AとDのどちらを上位桁にしても問題ない）
+- 素数Pと乱数（基数）Xを用意し、ABCDという文字列をA*X+B*X^2+C*X^3+D*X^4(mod P)にハッシュ化する（AとDのどちらを上位桁にしても問題ない）
 - ハッシュが一致すれば同一文字列と判定できる
 - 文字列が不変ならハッシュの累積和を作っておくことで部分文字列のハッシュを取り出せるが、結構難しい（累積和の差を更にXの累乗で割る必要がある）ので、セグ木推奨
 - (hash,桁数)はモノイドなのでセグ木に乗せられる（hash,x^桁数）とした方が楽かも
@@ -1075,6 +1075,7 @@
 ### 例題
 - 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
 - !復習価値低 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
+- !要復習 高度合成数を求める [D - 2016](https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_d)
 
 ## GCD最大公約数と拡張ユークリッドの互除法
 - 最大公約数は各素因数の最小指数を選んだもの
@@ -1455,6 +1456,7 @@
 ### 例題
 - !復習価値中 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
 - !復習価値低 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
+- !復習価値高 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)
 
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
@@ -1481,6 +1483,9 @@
 - 衝突確率を下げる為、素数を多めに用意すると良い
 - 衝突確率はロリハのように基数を自由に選べる場合は1/p。選べない場合はpをランダムに選んだ場合に失敗するガチャと考えて、選択可能なpが何個あるかどうかを考える
 - Zoblist hashは集合同士をO(1)で比較可能
+- XORでなくとも、多項式で生成されたハッシュの衝突確率はd/P以下（dは多項式の次数）
+- これはSchwarts-Zippel lemmaである
+- つまり多重集合の一致判定は単純に累積和でOKという事
 - 各要素に乱数を割り当て、全要素のXORを集合のハッシュとする
 - メルセンヌツイスターで乱数を発生させると良い
 - 巨大積の衝突確率見積について
@@ -1490,6 +1495,7 @@
 ### 例題
 - !復習価値中 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
 - !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+- !要復習 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
 
 ## NIMとgrundy数
 - NIMは残り山の石の個数のxorが0なら負け、非0なら勝

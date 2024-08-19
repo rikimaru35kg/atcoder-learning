@@ -197,93 +197,177 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    return ok;
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
-    return ok;
+    return ret;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    char l = S[0], r = S.back();
-    deque<ll> deq;
-    rep(i, N-1) {
-        if(S[i]!=S[i+1]) deq.push_back(i);
+    Sieve sieve(100);
+    vl ps;
+    for(ll p=2; p<=43; ++p) {
+        if(!sieve.is_prime(p)) continue;
+        ps.push_back(p);
     }
-    LONG(M);
-    vector<pair<char,char>> op;
-    rep(i, M) {
-        CHAR(d, f);
-        op.emplace_back(d, f);
+    ll M = SIZE(ps);
+    map<ll,ll> mp;
+    ll mx = (ll)1e17;
+    auto ndiv = [&](vl &cs, ll x)  {
+        ll n = 1;
+        rep(i, M) n *= cs[i]+1;
+        if(!mp.count(n)) mp[n] = x;
+        else {
+            if(mp[n]>x) mp[n] = x;
+        }
+    };
+    auto dfs=[&](auto f, ll i, vl cs, ll x) -> void {
+        if(x>mx) return;
+        ndiv(cs, x);
+        if(i==M) return;
+
+        if(i==0 || cs[i-1]>cs[i]) {
+            vl ncs = cs;
+            ncs[i]++;
+            f(f, i, ncs, x*ps[i]);
+        }
+        f(f, i+1, cs, x);
+    };
+    vl cs(M);
+    dfs(dfs, 0, cs, 1);
+    vp snum;
+    vl dummy;
+    for(auto [k,v]: mp) {
+        snum.emplace_back(v, k);
+        dummy.push_back(v);
     }
-    de(op)
-    vvp query(M);
+    sort(all(snum));
+    sort(all(dummy));
+    de(snum)de(dummy)
+    ll Z = SIZE(snum);
+    rep(i, Z-1) {
+        if(snum[i+1].second < snum[i].second) {
+            snum[i+1] = snum[i];
+        }
+    }
+    // de(SIZE(snum))
+
     LONG(Q);
     rep(i, Q) {
-        LONGM(t, p);
-        query[t].emplace_back(p, i);
+        LONG(n);
+        auto [k, x] = lowbou_r(dummy, n);
+        // de(k)
+        // Out(snum[k]);
+        auto [z1, z2] = snum[k];
+        printf("%lld %lld\n", z2,z1);
     }
-    ll si = 0, ei = N-1;
-    vc ans(Q);
-    rep(i, M) {
-        auto [d, f] = op[i];
-        if(d=='L') {
-            --si;
-            if(!deq.size() && l!=f) {
-                deq.push_front(si);
-            } else if(deq.size() && l!=f) {
-                deq.pop_front();
-            }
-            l = f;
-        } else {
-            if(!deq.size() && r!=f) {
-                deq.push_back(ei);
-            }
-            else if(deq.size() && r!=f) {
-                deq.pop_back();
-            }
-            ++ei;
-            r = f;
-        }
-        for(auto [p, qi]: query[i]) {
-            ll sz = deq.size();
-            auto f=[&](ll x) -> bool {
-                if(deq[x]-si<p) return true;
-                return false;
-            };
-            ll tmp = binary_search(-1, sz, f) + 1;
-            de(deq)
-            de3(si, qi, tmp);
-
-            if(tmp%2==0) ans[qi] = l;
-            else {
-                char z = l;
-                if(l=='B') z = 'W';
-                else z = 'B';
-                ans[qi] = z;
-            }
-        }
-    }
-    Out(ans);
-    
 }
-
-// ### test.cpp ###
