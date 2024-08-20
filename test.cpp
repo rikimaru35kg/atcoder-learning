@@ -202,34 +202,59 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VVL(A, N, N);
-    vl point(1<<N);
-    rep(s, 1<<N) {
-        ll p = 0;
-        rep(i, N) rep(j, i) {
-            if(~s>>i&1) continue;
-            if(~s>>j&1) continue;
-            p += A[i][j];
-        }
-        point[s] = p;
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    
-    vl dp(1<<N, -INF);
-    dp[(1<<N)-1] = 0;
-    ll cnt = 0;
-    repr(s, 1<<N) {
-        if(dp[s]==-INF) {
-            ++cnt;
-            continue;
+    ll zero=0, one=0;
+    vl col(N);
+    auto dfs=[&](auto f, ll v, ll c=0, ll p=-1) -> void {
+        if(c==0) zero++;
+        else one++;
+        col[v] = c;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, c^1, v);
         }
-        for(ll t=s; t>0; t=(t-1)&s) {
-            // if(t==0) break;
-            ll ns = t^s;
-            chmax(dp[ns], dp[s] + point[t]);
+    };
+    dfs(dfs, 0);
+
+    ll n3 = N/3, n1 = (N+2)/3, n2 = N-n1-n3;//(N+1)/3;
+    if(zero>one) {
+        swap(zero,one);
+        rep(i, N) col[i] ^= 1;
+    }
+    if(zero<=n3) {
+        ll idx3 = 3;
+        ll idx2 = 1;
+        vl ans(N);
+        vb used(N+1);
+        rep(i, N) {
+            if(col[i]==0) ans[i] = idx3, used[idx3] = true, idx3 += 3;
+        }
+        rep(i, N) {
+            if(col[i]==0) continue;
+            if(used[idx2]) ++idx2;
+            ans[i] = idx2++;
+        }
+        Out(ans);
+        return 0;
+    }
+    ll idx1 = 1;
+    ll idx2 = 2;
+    ll idx3 = 3;
+    vl ans(N);
+    rep(i, N) {
+        if(col[i]==0) {
+            if(n1) ans[i] = idx1, idx1 += 3, n1--;
+            else ans[i] = idx3, idx3 += 3, n3--;
+        } else {
+            if(n2) ans[i] = idx2, idx2 += 3, n2--;
+            else ans[i] = idx3, idx3 += 3, n3--;
         }
     }
-    de(cnt)
-    Out(dp[0]);
+    Out(ans);
     
 }
 

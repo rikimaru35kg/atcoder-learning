@@ -198,50 +198,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/dsu>
 using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-
-    vm dp(N);
-    dp[0] = 1;
-    rep(i, N-1) {
-        char c = S[i];
-        vm pdp(N); swap(pdp, dp);
-        vm ds(N+1);
-        rep(j, N) ds[j+1] = ds[j] + pdp[j];
-        de(pdp)
-        de(ds)
-        if(c=='<') {
-            rep(j, N) {
-                dp[j] += ds[j];
-            }
-        } else {
-            rep(j, N) {
-                dp[j] += ds[i+1]-ds[j];
-            }
-        }
-        de(dp)
+    LONG(N, M);
+    vvl from(N);
+    dsu uf(2*N);
+    bool bip = true;
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        if(uf.same(a, b)) bip = false;
+        uf.merge(a, b+N);
+        uf.merge(b, a+N);
     }
-    mint ans = 0;
-    rep(i, N) ans += dp[i];
-    Out(ans);
+    if(!bip) {
+        ll ans = nCr(N, 2) - M;
+        Out(ans); return 0;
+    }
+    ll zero = 0, one = 0;
+    vl col(N, -1);
+    auto dfs=[&](auto f, ll c, ll v) -> void {
+        if(col[v]!=-1) return;
+        col[v] = c;
+        if(c==0) zero++;
+        else one++;
+        for(auto nv: from[v]) {
+            f(f, c^1, nv);
+        }
+    };
+    dfs(dfs, 0, 0);
 
+    ll ans = zero*one - M;
+    Out(ans);
     
 }
 

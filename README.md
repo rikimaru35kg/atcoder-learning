@@ -118,7 +118,7 @@
 - 基本 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
 - 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
 - !復習価値高 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
-- !要復習 ロボット移動（実装重め） [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
+- !復習価値高 ロボット移動（実装重め） [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
 # ソート
 
@@ -494,7 +494,7 @@
 ### 例題
 - 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
 - !要復習 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
-- !要復習 [道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)
+- !要復習 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)
 - !要復習 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
 
 ## 完全グラフ
