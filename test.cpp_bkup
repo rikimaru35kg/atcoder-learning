@@ -201,32 +201,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-
-    ll M = 200;
-    vvl stck(M);
-    auto dfs=[&](auto f, ll i, ll sum, vl sel) -> void {
-        if(i==N) return;
-        sel.push_back(i+1);
-        (sum += A[i]) %= M;
-        {
-            if(stck[sum].size()) {
-                puts("Yes");
-                printf("%lld ", SIZE(stck[sum]));
-                Out(stck[sum]);
-                printf("%lld ", SIZE(sel));
-                Out(sel);
-                exit(0);
-            }
-            stck[sum] = sel;
+    LONG(N, M);
+    VL(A, N); VL(B, M);
+    ll K = 2e6+10;
+    vvl stck(K);
+    rep(i, N) rep(j, M) {
+        ll s = A[i]+B[j];
+        if(SIZE(stck[s])) {
+            printf("%lld %lld ", stck[s][0], stck[s][1]);
+            printf("%lld %lld\n", i, j);
+            return 0;
         }
-        f(f, i+1, sum%M, sel);
-        sel.pop_back();
-        sum = ((sum-A[i])%M + M)%M;
-        f(f, i+1, sum, sel);
-    };
-    dfs(dfs, 0, 0, vl());
-    puts("No");
+        stck[s].push_back(i);
+        stck[s].push_back(j);
+    }
+    Out(-1);
     
 }
 

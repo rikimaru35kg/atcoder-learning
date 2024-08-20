@@ -919,6 +919,12 @@
 - !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
 - !要復習 [D - No Need](https://atcoder.jp/contests/arc070/tasks/arc070_b)
 
+## 挿入DP
+- 順列を作るとき、決めた長さまでの数字を使い{1,3,2}のように埋めておいて、次に2とする場合は2以上を繰り上げて{1,4,3,2}とする
+- dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
+### 例題
+- [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+
 ## Top2を持つ
 - 和の最大値を求めるDPにおいて、隣が同じ色になってはNGの場合、最後に選んだ色をDPの状態に持てば良いが、計算量が収まらない場合あり
 - この時、実はTop2のみ持てば良い事が分かる
