@@ -198,50 +198,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(S);
-
-    vm dp(N);
-    dp[0] = 1;
-    rep(i, N-1) {
-        char c = S[i];
-        vm pdp(N); swap(pdp, dp);
-        vm ds(N+1);
-        rep(j, N) ds[j+1] = ds[j] + pdp[j];
-        de(pdp)
-        de(ds)
-        if(c=='<') {
-            rep(j, N) {
-                dp[j] += ds[j];
-            }
-        } else {
-            rep(j, N) {
-                dp[j] += ds[i+1]-ds[j];
-            }
+    VVL(A, N, N);
+    vl point(1<<N);
+    rep(s, 1<<N) {
+        ll p = 0;
+        rep(i, N) rep(j, i) {
+            if(~s>>i&1) continue;
+            if(~s>>j&1) continue;
+            p += A[i][j];
         }
-        de(dp)
+        point[s] = p;
     }
-    mint ans = 0;
-    rep(i, N) ans += dp[i];
-    Out(ans);
-
+    
+    vl dp(1<<N, -INF);
+    dp[(1<<N)-1] = 0;
+    ll cnt = 0;
+    repr(s, 1<<N) {
+        if(dp[s]==-INF) {
+            ++cnt;
+            continue;
+        }
+        for(ll t=s; t>0; t=(t-1)&s) {
+            // if(t==0) break;
+            ll ns = t^s;
+            chmax(dp[ns], dp[s] + point[t]);
+        }
+    }
+    de(cnt)
+    Out(dp[0]);
     
 }
 

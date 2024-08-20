@@ -198,24 +198,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N); VL(B, M);
-    ll K = 2e6+10;
-    vvl stck(K);
-    rep(i, N) rep(j, M) {
-        ll s = A[i]+B[j];
-        if(SIZE(stck[s])) {
-            printf("%lld %lld ", stck[s][0], stck[s][1]);
-            printf("%lld %lld\n", i, j);
-            return 0;
+    LONG(N);
+    STRING(S);
+
+    vm dp(N);
+    dp[0] = 1;
+    rep(i, N-1) {
+        char c = S[i];
+        vm pdp(N); swap(pdp, dp);
+        vm ds(N+1);
+        rep(j, N) ds[j+1] = ds[j] + pdp[j];
+        de(pdp)
+        de(ds)
+        if(c=='<') {
+            rep(j, N) {
+                dp[j] += ds[j];
+            }
+        } else {
+            rep(j, N) {
+                dp[j] += ds[i+1]-ds[j];
+            }
         }
-        stck[s].push_back(i);
-        stck[s].push_back(j);
+        de(dp)
     }
-    Out(-1);
+    mint ans = 0;
+    rep(i, N) ans += dp[i];
+    Out(ans);
+
     
 }
 
