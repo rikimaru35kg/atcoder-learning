@@ -47,7 +47,13 @@
         "(// =+)": [
             {
                 "backgroundColor":"#02aab0",
-                "color":"#ffffff",
+                "color":"#ebeab6",
+                "fontWeight": "bold"
+            },
+        ],
+        "([+])": [
+            {
+                "color":"#ffff6c",
                 "fontWeight": "bold"
             },
         ],
@@ -59,4 +65,5 @@
             },
         ],
     },
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
 }

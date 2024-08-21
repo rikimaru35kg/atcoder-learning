@@ -198,58 +198,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    dsu uf(2*N);
-    bool bip = true;
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-        if(uf.same(a, b)) bip = false;
-        uf.merge(a, b+N);
-        uf.merge(b, a+N);
+    LONG(N);
+    vp minus, plus;
+    rep(i, N) {
+        LONG(a, b);
+        if(a-b<=0) minus.emplace_back(a, b);
+        else plus.emplace_back(b, a);
     }
-    if(!bip) {
-        ll ans = nCr(N, 2) - M;
-        Out(ans); return 0;
+    sort(all(minus)); sort(allr(plus));
+    ll now = 0; ll ans = 0;
+    for(auto [a,b]: minus) {
+        now += a; chmax(ans, now);
+        now -= b;
     }
-    ll zero = 0, one = 0;
-    vl col(N, -1);
-    auto dfs=[&](auto f, ll c, ll v) -> void {
-        if(col[v]!=-1) return;
-        col[v] = c;
-        if(c==0) zero++;
-        else one++;
-        for(auto nv: from[v]) {
-            f(f, c^1, nv);
-        }
-    };
-    dfs(dfs, 0, 0);
-
-    ll ans = zero*one - M;
+    for(auto [b,a]: plus) {
+        now += a; chmax(ans, now);
+        now -= b;
+    }
     Out(ans);
     
 }

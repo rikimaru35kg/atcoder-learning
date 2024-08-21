@@ -198,63 +198,98 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+// struct S {
+//     mint sab, sa, sb, w;
+//     S(mint sab, mint sa, mint sb, mint w): sab(sab),sa(sa),sb(sb),w(w) {
+//     }
+// };
+// S op(S a, S b) {
+//     return S(a.sab+b.sab, a.sa+b.sa, a.sb+b.sb, a.w+b.w);
+// }
+// S e() {return S(0,0,0,0);}
+struct S {
+    mint ab, a, b, w;
+    S(mint ab, mint a, mint b, mint w):
+      ab(ab),a(a),b(b),w(w) {}
+};
+S op(S x, S y) {
+    return S(x.ab+y.ab, x.a+y.a, x.b+y.b, x.w+y.w);
+}
+S e() {return S(0,0,0,0);}
+
+// struct F {
+//     mint x, y;
+//     F(mint x, mint y): x(x),y(y) {}
+// };
+
+struct F {
+    mint x, y;
+    F(mint x, mint y): x(x), y(y) {}
+};
+S mapping(F f, S x) {
+    return S(x.ab + f.y*x.a + f.x*x.b + x.w*f.x*f.y,
+             x.a + x.w*f.x, x.b + x.w*f.y, x.w);
+}
+// S mapping (F f, S x) {
+//     mint ab = x.ab + f.x*x.b + f.y*x.a + f.x*f.y*x.w;
+//     mint a = x.a + x.w*f.x;
+//     mint b = x.b + x.w*f.y;
+//     return S(ab, a, b, x.w);
+// }
+F composition(F f, F g) {return F(f.x+g.x, f.y+g.y);}
+F id() {return F(0,0);}
+
+// F composition (F f, F g) {
+//     return F(f.x+g.x, f.y+g.y);
+// }
+// F id() {return F(0, 0);}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    ll zero=0, one=0;
-    vl col(N);
-    auto dfs=[&](auto f, ll v, ll c=0, ll p=-1) -> void {
-        if(c==0) zero++;
-        else one++;
-        col[v] = c;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, c^1, v);
-        }
-    };
-    dfs(dfs, 0);
-
-    ll n3 = N/3, n1 = (N+2)/3, n2 = N-n1-n3;//(N+1)/3;
-    if(zero>one) {
-        swap(zero,one);
-        rep(i, N) col[i] ^= 1;
-    }
-    if(zero<=n3) {
-        ll idx3 = 3;
-        ll idx2 = 1;
-        vl ans(N);
-        vb used(N+1);
-        rep(i, N) {
-            if(col[i]==0) ans[i] = idx3, used[idx3] = true, idx3 += 3;
-        }
-        rep(i, N) {
-            if(col[i]==0) continue;
-            if(used[idx2]) ++idx2;
-            ans[i] = idx2++;
-        }
-        Out(ans);
-        return 0;
-    }
-    ll idx1 = 1;
-    ll idx2 = 2;
-    ll idx3 = 3;
-    vl ans(N);
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
     rep(i, N) {
-        if(col[i]==0) {
-            if(n1) ans[i] = idx1, idx1 += 3, n1--;
-            else ans[i] = idx3, idx3 += 3, n3--;
+        seg.set(i, S(A[i]*B[i], A[i], B[i], 1));
+    }
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, N) {
+            // cerr<< seg.get(i).sab.val()  <<' ';
+            // cerr<< v[i].sab.val()  <<' ';
+        }
+        cerr<<endl;
+    #endif
+    };
+    rep(i, Q) {
+        LONG(t, l, r); --l;
+        if(t==1) {
+            LONG(x);
+            seg.apply(l, r, F(x,0));
+        } else if(t==2) {
+            LONG(x);
+            seg.apply(l, r, F(0,x));
         } else {
-            if(n2) ans[i] = idx2, idx2 += 3, n2--;
-            else ans[i] = idx3, idx3 += 3, n3--;
+            mint ans = seg.prod(l, r).ab;
+            Out(ans);
         }
     }
-    Out(ans);
     
 }
 
