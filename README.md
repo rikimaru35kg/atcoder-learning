@@ -723,7 +723,7 @@
 - !復習価値中 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
 - !復習価値中 実装面で勉強になる [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
 - !復習価値高 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
-- !要復習 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
+- !復習価値中 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
 - !復習価値中 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
 - !復習価値中 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 - !復習価値高 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
@@ -789,7 +789,7 @@
 - 引き算の筆算のように、下位桁から考えるDPもある。繰り下がりの有無で状態を持つ
 - この時、繰り下がる＝引く数を＋1すると考えると良い
 ### 例題
-- !要復習 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
+- !復習価値中 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
 - !復習価値低 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 - !復習価値低 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - !復習価値中 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
@@ -908,7 +908,7 @@
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
-- !要復習（惜しかった！） [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
+- !復習価値高 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 
 ## 戻すDP
 - 可換な操作であればDPテーブルを戻すことが可能

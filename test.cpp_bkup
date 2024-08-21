@@ -202,22 +202,24 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vp minus, plus;
-    rep(i, N) {
-        LONG(a, b);
-        if(a-b<=0) minus.emplace_back(a, b);
-        else plus.emplace_back(b, a);
+    vl W(N), S(N), V(N);
+    rep(i, N) cin>>W[i]>>S[i]>>V[i];
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return W[i]+S[i] < W[j]+S[j];
+    });
+
+    ll M = 2e4;
+    vl dp(M+1);
+    for(auto i: p) {
+        repr(j, M+1) {
+            if(j>S[i]) continue;
+            if(j+W[i]<=M) chmax(dp[j+W[i]], dp[j]+V[i]);
+        }
     }
-    sort(all(minus)); sort(allr(plus));
-    ll now = 0; ll ans = 0;
-    for(auto [a,b]: minus) {
-        now += a; chmax(ans, now);
-        now -= b;
-    }
-    for(auto [b,a]: plus) {
-        now += a; chmax(ans, now);
-        now -= b;
-    }
+    ll ans = 0;
+    rep(i, M+1) chmax(ans, dp[i]);
     Out(ans);
     
 }

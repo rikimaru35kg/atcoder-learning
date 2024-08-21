@@ -198,7 +198,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -213,83 +212,38 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-// struct S {
-//     mint sab, sa, sb, w;
-//     S(mint sab, mint sa, mint sb, mint w): sab(sab),sa(sa),sb(sb),w(w) {
-//     }
-// };
-// S op(S a, S b) {
-//     return S(a.sab+b.sab, a.sa+b.sa, a.sb+b.sb, a.w+b.w);
-// }
-// S e() {return S(0,0,0,0);}
-struct S {
-    mint ab, a, b, w;
-    S(mint ab, mint a, mint b, mint w):
-      ab(ab),a(a),b(b),w(w) {}
-};
-S op(S x, S y) {
-    return S(x.ab+y.ab, x.a+y.a, x.b+y.b, x.w+y.w);
-}
-S e() {return S(0,0,0,0);}
-
-// struct F {
-//     mint x, y;
-//     F(mint x, mint y): x(x),y(y) {}
-// };
-
-struct F {
-    mint x, y;
-    F(mint x, mint y): x(x), y(y) {}
-};
-S mapping(F f, S x) {
-    return S(x.ab + f.y*x.a + f.x*x.b + x.w*f.x*f.y,
-             x.a + x.w*f.x, x.b + x.w*f.y, x.w);
-}
-// S mapping (F f, S x) {
-//     mint ab = x.ab + f.x*x.b + f.y*x.a + f.x*f.y*x.w;
-//     mint a = x.a + x.w*f.x;
-//     mint b = x.b + x.w*f.y;
-//     return S(ab, a, b, x.w);
-// }
-F composition(F f, F g) {return F(f.x+g.x, f.y+g.y);}
-F id() {return F(0,0);}
-
-// F composition (F f, F g) {
-//     return F(f.x+g.x, f.y+g.y);
-// }
-// F id() {return F(0, 0);}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N); VL(B, N);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    LONG(N); VL(A, N);
+    ll M = 10;
+    de(A)
+
+    vm dp(1<<(M+1));
+    dp[1] = 1;
+    ll mask = (1<<(M+1))-1;
+    mint tot = 1;
     rep(i, N) {
-        seg.set(i, S(A[i]*B[i], A[i], B[i], 1));
-    }
-    auto dprint=[&](){
-    #ifdef __DEBUG
-        rep(i, N) {
-            // cerr<< seg.get(i).sab.val()  <<' ';
-            // cerr<< v[i].sab.val()  <<' ';
+        vm pdp(1<<(M+1)); swap(pdp, dp);
+        rep(j, 1<<(M+1)) {
+            if(pdp[j]==0) continue;
+            for(ll a=1; a<=A[i] && a<=M; ++a) {
+                ll nj = j|j<<a;
+                nj &= mask;
+                dp[nj] += pdp[j];
+            }
+            ll rem = max(A[i]-M, 0LL);
+            dp[j] += rem*pdp[j];
         }
-        cerr<<endl;
-    #endif
-    };
-    rep(i, Q) {
-        LONG(t, l, r); --l;
-        if(t==1) {
-            LONG(x);
-            seg.apply(l, r, F(x,0));
-        } else if(t==2) {
-            LONG(x);
-            seg.apply(l, r, F(0,x));
-        } else {
-            mint ans = seg.prod(l, r).ab;
-            Out(ans);
-        }
+        tot *= A[i];
     }
+    mint ans = 0;
+    rep(j, 1<<(M+1)) {
+        if(~j>>M&1) continue;
+        ans += dp[j];
+    }
+    ans /= tot;
+    Out(ans);
     
 }
 
