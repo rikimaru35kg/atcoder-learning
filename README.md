@@ -989,7 +989,7 @@
 - !復習価値中 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
 
 ## Suffix Array
-- ある要素からのsuffixを辞書順に並べたもの
+- ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
 - O(N)で求まるらしい（ACLにある）
 ### 例題
 - !要復習 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
@@ -1022,7 +1022,7 @@
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - !復習価値低 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - !復習価値高 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
-- !要復習 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
+- !復習価値高 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 
 ## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
