@@ -198,52 +198,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-#include <atcoder/string>
+#include <atcoder/modint>
 using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S); LONG(Q);
-    auto sa = suffix_array(S);
-    ll N = SIZE(S);
-    de(sa)
+    LONG(N);
+    STRING(S);
+    vm f(N+1);
 
-    rep(i, Q) {
-        STRING(t);
-        ll m = SIZE(t);
-        auto f=[&](ll x) -> bool {
-            string org = S.substr(sa[x], m);
-            if(t<=org) return true;
-            return false;
-        };
-        auto l = binary_search(N, -1, f);
-        t += '~'; ++m;
-        auto r = binary_search(N, -1, f);
-        Out(r-l);
+    vm two(N+1);
+    two[0] = 1;
+    rep(i, N) two[i+1] = two[i]*2;
+
+    auto cal=[&](ll m) -> mint {
+        vb work(m);
+        rep(i, N) { if(S[i]=='.') work[i%m] = true; }
+        ll cnt = 0;
+        rep(i, m) if(!work[i]) ++cnt;
+        return two[cnt];
+    };
+
+    auto divs = listup_divisor(N);
+    for(auto d: divs) {
+        f[d] = cal(d);
     }
-
-
+    de(f)
+    rep1(i, N) {
+        for(ll j=2*i; j<=N; j+=i) {
+            f[j] -= f[i];
+        }
+    }
+    mint ans = 0;
+    for(auto d: divs) {
+        if(d==N) continue;
+        ans += f[d];
+    }
+    de(f)
+    Out(ans);
     
 }
 

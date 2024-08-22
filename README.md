@@ -1154,7 +1154,7 @@
 - !復習価値低 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
 - !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値高 a^bと表せる数の個数 （動画解説にメビウス関数の気持ちあり）[F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
-- !要復習 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+- !復習価値高 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
 - t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
@@ -1171,7 +1171,7 @@
 - ハマりポイントが多いので、CRTライブラリを推奨する
 ### 例題
 - !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
-- !要復習 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
+- !復習価値高 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数

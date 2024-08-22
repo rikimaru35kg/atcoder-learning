@@ -198,102 +198,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
     }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
+};
+
+#include <atcoder/math>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N); VL(B, N);
-
-    ll mask = 1;
-    ll T = 1;
-    ll ans = 0;
-    rep(d, 29) {
-        vl a, b;
-        rep(i, N) a.push_back(A[i]&mask);
-        rep(i, N) b.push_back(B[i]&mask);
-        sort(all(a)); sort(all(b));
-        if(d==1) {
-            cout<<"";
-        }
-
-        ll cnt = 0;
-        rep(i, N) {
-            {
-                auto [l, xl] = lowbou(b, T-a[i]);
-                auto [r, xr] = lowbou(b, 2*T-a[i]);
-                cnt += r - l;
-            }
-            {
-                auto [l, xl] = lowbou(b, 3*T-a[i]);
-                auto [r, xr] = lowbou(b, 4*T-a[i]);
-                cnt += r - l;
-            }
-        }
-        if(cnt%2==1) ans |= 1LL<<d;
-
-        mask = mask<<1 | 1;
-        T <<= 1;
+    Sieve sieve(100);
+    vl ps = {4, 9};
+    ll M = 13;
+    repk(p, 5, 29) {
+        if(!sieve.is_prime(p)) continue;
+        ps.push_back(p);
+        M += p;
     }
+
+    vl A;
+    ll si = 0;
+    for(auto p: ps) {
+        rep(i, p) {
+            A.push_back((i+1)%p + si + 1);
+        }
+        si += p;
+    }
+    Out(M);
+    cout<<flush;
+    Out(A);
+    cout<<flush;
+    VLM(B, M);
+    si = 0;
+    vl rems;
+    for(auto p: ps) {
+        ll b = B[si];
+        rems.push_back((b-si+p) % p);
+        si += p;
+    }
+    auto res = crt(rems, ps);
+    ll ans = res.first;
     Out(ans);
+    cout<<flush;
     
 }
 
