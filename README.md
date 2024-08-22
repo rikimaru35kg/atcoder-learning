@@ -924,7 +924,7 @@
 - 順列を作るとき、決めた長さまでの数字を使い{1,3,2}のように埋めておいて、次に2とする場合は2以上を繰り上げて{1,4,3,2}とする
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
-- [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+- !復習価値高 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
 
 ## Top2を持つ
 - 和の最大値を求めるDPにおいて、隣が同じ色になってはNGの場合、最後に選んだ色をDPの状態に持てば良いが、計算量が収まらない場合あり
@@ -934,7 +934,7 @@
 - 関数(1) 色が与えられたとき、異なる色での最大値を返す（i番目におけるpdp[j]からの最大ペアを求める為）
 - 関数(2) 新しい（色、値）のペアが来た際、Top2を更新する（入替する）
 ### 例題
-- !要復習 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
+- !復習価値高 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
 - 自分的に苦手な考え方のDPをまとめておく
@@ -959,8 +959,8 @@
 - mintsの演算は定数倍（10倍ぐらい？）が重いので要注意！特にセグ木と使うなら、**opの中でlog**をつけてはだめだし、**初期化**もサボったら駄目。**素数の数**もいたずらに増やさない方が良い（2個で済むなら2個が無難）
 - また、ハッシュ一致判定で**mapやumap**を使うなら、その定数倍も重い（5倍ぐらい？）ので注意！
 ### 例題
-- !要復習 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
-- !要復習 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
+- !復習価値高 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+- !復習価値高 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
 
 ## LCP（Longest Common Prefix）最長共通接頭辞
 - Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造

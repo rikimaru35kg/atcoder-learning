@@ -1,998 +1,260 @@
-test.cpp:229:36: warning: multi-character character constant [-Wmultichar]
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-test.cpp:232:51: warning: multi-character character constant [-Wmultichar]
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
 test.cpp: In function ‘int main()’:
-test.cpp:229:34: error: no match for ‘operator==’ (operand types are ‘std::__cxx11::basic_string<char>’ and ‘int’)
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                    ~~~~~~~~~~~~~~^~~~~~
-      |                            |       |
-      |                            |       int
-      |                            std::__cxx11::basic_string<char>
-In file included from /usr/include/c++/12/regex:66,
-                 from stdc++.h:110:
-/usr/include/c++/12/bits/regex.h:1248:5: note: candidate: ‘template<class _Bi_iter, class _Ch_traits, class _Ch_alloc> bool std::__cxx11::operator==(const sub_match<_BiIter>&, __sub_match_string<_Bi_iter, _Ch_traits, _Ch_alloc>&)’ (reversed)
- 1248 |     operator==(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1248:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/regex.h:1415:5: note: candidate: ‘template<class _Bi_iter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type*)’ (reversed)
- 1415 |     operator==(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1415:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/regex.h:1587:5: note: candidate: ‘template<class _Bi_iter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type&)’ (reversed)
- 1587 |     operator==(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1587:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
-                 from /usr/include/c++/12/bits/specfun.h:45,
-                 from /usr/include/c++/12/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/12/bits/stl_iterator.h:530:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (reversed)
-  530 |     operator==(const reverse_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:530:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::reverse_iterator<_IteratorL>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:1674:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (reversed)
- 1674 |     operator==(const move_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1674:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::move_iterator<_IteratorL>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/string:41,
-                 from /usr/include/c++/12/bits/locale_classes.h:40,
-                 from /usr/include/c++/12/bits/ios_base.h:41,
-                 from /usr/include/c++/12/ios:42,
-                 from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
+test.cpp:303:23: error: no match for ‘operator*’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’} and ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’})
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+In file included from /usr/include/c++/12/ccomplex:39,
                  from stdc++.h:54:
-/usr/include/c++/12/bits/allocator.h:219:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const allocator<_CharT>&, const allocator<_T2>&)’ (reversed)
-  219 |     operator==(const allocator<_T1>&, const allocator<_T2>&)
+/usr/include/c++/12/complex:392:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const complex<_Tp>&, const complex<_Tp>&)’
+  392 |     operator*(const complex<_Tp>& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/bits/allocator.h:219:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::allocator<_CharT>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/bits/basic_string.h:47,
-                 from /usr/include/c++/12/string:53:
-/usr/include/c++/12/string_view:546:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(basic_string_view<_CharT, _Traits>, __type_identity_t<basic_string_view<_CharT, _Traits> >)’ (reversed)
-  546 |     operator==(basic_string_view<_CharT, _Traits> __x,
+/usr/include/c++/12/complex:392:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/complex:401:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const complex<_Tp>&, const _Tp&)’
+  401 |     operator*(const complex<_Tp>& __x, const _Tp& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/string_view:546:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘std::basic_string_view<_CharT, _Traits>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/basic_string.h:3607:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr bool std::operator==(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’ (reversed)
- 3607 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+/usr/include/c++/12/complex:401:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/complex:410:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const _Tp&, const complex<_Tp>&)’
+  410 |     operator*(const _Tp& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3607:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/complex:469:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const complex<_Tp>&, const _Tp&)’ (reversed)
-  469 |     operator==(const complex<_Tp>& __x, const _Tp& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/complex:469:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::complex<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/functional:54,
-                 from stdc++.h:71:
-/usr/include/c++/12/tuple:1496:5: note: candidate: ‘template<class ... _TElements, class ... _UElements> constexpr bool std::operator==(const tuple<_UTypes ...>&, const tuple<_UTypes ...>&)’ (reversed)
- 1496 |     operator==(const tuple<_TElements...>& __t,
-      |     ^~~~~~~~
-/usr/include/c++/12/tuple:1496:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::tuple<_UTypes ...>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/functional:59:
-/usr/include/c++/12/bits/std_function.h:718:5: note: candidate: ‘template<class _Res, class ... _Args> bool std::operator==(const function<_Res(_ArgTypes ...)>&, nullptr_t)’ (reversed)
-  718 |     operator==(const function<_Res(_Args...)>& __f, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/std_function.h:718:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::function<_Res(_ArgTypes ...)>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/memory:75,
-                 from stdc++.h:82:
-/usr/include/c++/12/bits/unique_ptr.h:824:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep> constexpr bool std::operator==(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’ (reversed)
-  824 |     operator==(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:824:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/unique_ptr.h:832:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator==(const unique_ptr<_Tp, _Dp>&, nullptr_t)’ (reversed)
-  832 |     operator==(const unique_ptr<_Tp, _Dp>& __x, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:832:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/bits/shared_ptr.h:53,
-                 from /usr/include/c++/12/memory:76:
-/usr/include/c++/12/bits/shared_ptr_base.h:1793:5: note: candidate: ‘template<class _Tp1, class _Tp2, __gnu_cxx::_Lock_policy _Lp> bool std::operator==(const __shared_ptr<_Tp1, _Lp>&, const __shared_ptr<_Tp2, _Lp>&)’ (reversed)
- 1793 |     operator==(const __shared_ptr<_Tp1, _Lp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1793:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__shared_ptr<_Tp1, _Lp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1799:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> bool std::operator==(const __shared_ptr<_Tp, _Lp>&, nullptr_t)’ (reversed)
- 1799 |     operator==(const __shared_ptr<_Tp, _Lp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1799:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__shared_ptr<_Tp, _Lp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/shared_ptr.h:555:5: note: candidate: ‘template<class _Tp, class _Up> bool std::operator==(const shared_ptr<_Tp>&, const shared_ptr<_Tp>&)’ (reversed)
-  555 |     operator==(const shared_ptr<_Tp>& __a, const shared_ptr<_Up>& __b) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:555:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::shared_ptr<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/shared_ptr.h:561:5: note: candidate: ‘template<class _Tp> bool std::operator==(const shared_ptr<_Tp>&, nullptr_t)’ (reversed)
-  561 |     operator==(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:561:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::shared_ptr<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
+/usr/include/c++/12/complex:410:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::complex<_Tp>’
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
 In file included from /usr/include/c++/12/valarray:603,
                  from stdc++.h:95:
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’ (reversed)
- 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
       | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’ (reversed)
- 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
       | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::valarray<_Tp>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from stdc++.h:111:
-/usr/include/c++/12/scoped_allocator:499:5: note: candidate: ‘template<class _OutA1, class _OutA2, class ... _InA> bool std::operator==(const scoped_allocator_adaptor<_OutA1, _InA ...>&, const scoped_allocator_adaptor<_InnerHead, _InnerTail ...>&)’ (reversed)
-  499 |     operator==(const scoped_allocator_adaptor<_OutA1, _InA...>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/scoped_allocator:499:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::scoped_allocator_adaptor<_OutA1, _InA ...>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from stdc++.h:130:
-/usr/include/c++/12/optional:1222:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Tp, _Up> std::operator==(const optional<_Tp>&, const optional<_Up>&)’ (reversed)
- 1222 |     operator==(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1222:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::optional<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/optional:1282:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const optional<_Tp>&, nullopt_t)’ (reversed)
- 1282 |     operator==(const optional<_Tp>& __lhs, nullopt_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1282:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::optional<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/optional:1350:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Tp, _Up> std::operator==(const optional<_Tp>&, const _Up&)’ (reversed)
- 1350 |     operator==(const optional<_Tp>& __lhs, const _Up& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1350:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::optional<_Tp>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/optional:1356:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Up, _Tp> std::operator==(const _Up&, const optional<_Tp>&)’ (reversed)
- 1356 |     operator==(const _Up& __lhs, const optional<_Tp>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1356:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::optional<_Tp>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/x86_64-linux-gnu/c++/12/bits/c++allocator.h:33,
-                 from /usr/include/c++/12/bits/allocator.h:46:
-/usr/include/c++/12/bits/new_allocator.h:196:9: note: candidate: ‘template<class _Up> constexpr bool std::operator==(const __new_allocator<char>&, const __new_allocator<_Tp>&)’ (reversed)
-  196 |         operator==(const __new_allocator&, const __new_allocator<_Up>&)
-      |         ^~~~~~~~
-/usr/include/c++/12/bits/new_allocator.h:196:9: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__new_allocator<_Tp>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/bits/ios_base.h:46:
-/usr/include/c++/12/system_error:460:3: note: candidate: ‘bool std::operator==(const error_code&, const error_condition&)’ (reversed)
-  460 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:460:32: note:   no known conversion for argument 1 from ‘int’ to ‘const std::error_code&’
-  460 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
-      |              ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/bits/regex.h:1077:5: note: candidate: ‘template<class _BiIter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const sub_match<_BiIter>&)’
- 1077 |     operator==(const sub_match<_BiIter>& __lhs, const sub_match<_BiIter>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1077:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/regex.h:2145:5: note: candidate: ‘template<class _Bi_iter, class _Alloc> bool std::__cxx11::operator==(const match_results<_BiIter, _Alloc>&, const match_results<_BiIter, _Alloc>&)’
- 2145 |     operator==(const match_results<_Bi_iter, _Alloc>& __m1,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:2145:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__cxx11::match_results<_BiIter, _Alloc>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/deque:70,
-                 from stdc++.h:68:
-/usr/include/c++/12/debug/deque:672:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const deque<_Tp, _Allocator>&, const deque<_Tp, _Allocator>&)’
-  672 |     operator==(const deque<_Tp, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/deque:672:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::deque<_Tp, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/unordered_map:52,
-                 from /usr/include/c++/12/functional:61:
-/usr/include/c++/12/debug/unordered_map:855:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&, const unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
-  855 |     operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_map:855:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/debug/unordered_map:1572:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&, const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
- 1572 |     operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_map:1572:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/vector:74,
-                 from /usr/include/c++/12/functional:62:
-/usr/include/c++/12/debug/vector:750:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const vector<_Tp, _Alloc>&, const vector<_Tp, _Alloc>&)’
-  750 |     operator==(const vector<_Tp, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/vector:750:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::vector<_Tp, _Alloc>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/list:67,
-                 from stdc++.h:79:
-/usr/include/c++/12/debug/list:925:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const list<_Tp, _Allocator>&, const list<_Tp, _Allocator>&)’
-  925 |     operator==(const list<_Tp, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/list:925:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::list<_Tp, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/debug/map:43,
-                 from /usr/include/c++/12/map:67,
-                 from stdc++.h:81:
-/usr/include/c++/12/debug/map.h:748:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> bool std::__debug::operator==(const map<_Key, _Tp, _Compare, _Allocator>&, const map<_Key, _Tp, _Compare, _Allocator>&)’
-  748 |     operator==(const map<_Key, _Tp, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/map.h:748:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::map<_Key, _Tp, _Compare, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/debug/map:44:
-/usr/include/c++/12/debug/multimap.h:630:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> bool std::__debug::operator==(const multimap<_Key, _Tp, _Compare, _Allocator>&, const multimap<_Key, _Tp, _Compare, _Allocator>&)’
-  630 |     operator==(const multimap<_Key, _Tp, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multimap.h:630:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/debug/set:41,
-                 from /usr/include/c++/12/set:67,
-                 from stdc++.h:87:
-/usr/include/c++/12/debug/set.h:611:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> bool std::__debug::operator==(const set<_Key, _Compare, _Allocator>&, const set<_Key, _Compare, _Allocator>&)’
-  611 |     operator==(const set<_Key, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/set.h:611:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::set<_Key, _Compare, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/debug/set:42:
-/usr/include/c++/12/debug/multiset.h:601:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> bool std::__debug::operator==(const multiset<_Key, _Compare, _Allocator>&, const multiset<_Key, _Compare, _Allocator>&)’
-  601 |     operator==(const multiset<_Key, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multiset.h:601:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::multiset<_Key, _Compare, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/forward_list:43,
-                 from stdc++.h:104:
-/usr/include/c++/12/debug/forward_list:865:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const forward_list<_Tp, _Allocator>&, const forward_list<_Tp, _Allocator>&)’
-  865 |     operator==(const forward_list<_Tp, _Alloc>& __lx,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/forward_list:865:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::forward_list<_Tp, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/unordered_set:52,
-                 from stdc++.h:118:
-/usr/include/c++/12/debug/unordered_set:723:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_set<_Tp, _Hash, _Pred, _Allocator>&, const unordered_set<_Tp, _Hash, _Pred, _Allocator>&)’
-  723 |     operator==(const unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_set:723:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_set<_Tp, _Hash, _Pred, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/debug/unordered_set:1400:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&, const unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&)’
- 1400 |     operator==(const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_set:1400:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_multiset<_Tp, _Hash, _Pred, _Allocator>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/bits/stl_algobase.h:64:
-/usr/include/c++/12/bits/stl_pair.h:640:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const pair<_T1, _T2>&, const pair<_T1, _T2>&)’
-  640 |     operator==(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_pair.h:640:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::pair<_T1, _T2>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:589:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorL>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
-  589 |     operator==(const reverse_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:589:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:1744:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const move_iterator<_IteratorL>&, const move_iterator<_IteratorL>&)’
- 1744 |     operator==(const move_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1744:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::move_iterator<_IteratorL>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/iosfwd:40,
-                 from /usr/include/c++/12/ios:38:
-/usr/include/c++/12/bits/postypes.h:192:5: note: candidate: ‘template<class _StateT> bool std::operator==(const fpos<_StateT>&, const fpos<_StateT>&)’
-  192 |     operator==(const fpos<_StateT>& __lhs, const fpos<_StateT>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/postypes.h:192:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::fpos<_StateT>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/string_view:540:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(basic_string_view<_CharT, _Traits>, basic_string_view<_CharT, _Traits>)’
-  540 |     operator==(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:540:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/basic_string.h:3583:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr bool std::operator==(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
- 3583 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3583:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/bits/basic_string.h:3592:5: note: candidate: ‘template<class _CharT> constexpr typename __gnu_cxx::__enable_if<std::__is_char<_Tp>::__value, bool>::__type std::operator==(const __cxx11::basic_string<_CharT>&, const __cxx11::basic_string<_CharT>&)’
- 3592 |     operator==(const basic_string<_CharT>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3592:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT>’ and ‘int’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/bits/locale_facets.h:48,
-                 from /usr/include/c++/12/bits/basic_ios.h:37,
-                 from /usr/include/c++/12/ios:44:
-/usr/include/c++/12/bits/streambuf_iterator.h:233:5: note: candidate: ‘template<class _CharT, class _Traits> bool std::operator==(const istreambuf_iterator<_CharT, _Traits>&, const istreambuf_iterator<_CharT, _Traits>&)’
-  233 |     operator==(const istreambuf_iterator<_CharT, _Traits>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/streambuf_iterator.h:233:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::istreambuf_iterator<_CharT, _Traits>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/complex:464:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const complex<_Tp>&, const complex<_Tp>&)’
-  464 |     operator==(const complex<_Tp>& __x, const complex<_Tp>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/complex:464:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::complex<_Tp>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/functional:63:
-/usr/include/c++/12/array:304:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr bool std::operator==(const array<_Tp, _Nm>&, const array<_Tp, _Nm>&)’
-  304 |     operator==(const array<_Tp, _Nm>& __one, const array<_Tp, _Nm>& __two)
-      |     ^~~~~~~~
-/usr/include/c++/12/array:304:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::array<_Tp, _Nm>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/queue:64,
-                 from stdc++.h:86:
-/usr/include/c++/12/bits/stl_queue.h:380:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator==(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’
-  380 |     operator==(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:380:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::queue<_Tp, _Seq>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/stack:61,
-                 from stdc++.h:89:
-/usr/include/c++/12/bits/stl_stack.h:356:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator==(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’
-  356 |     operator==(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_stack.h:356:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::stack<_Tp, _Seq>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const valarray<_Tp>&, const valarray<_Tp>&)’
- 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
       | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::valarray<_Tp>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from /usr/include/c++/12/random:51,
-                 from stdc++.h:108:
-/usr/include/c++/12/bits/random.tcc:1905:5: note: candidate: ‘template<class _RealType1> bool std::operator==(const normal_distribution<_RealType>&, const normal_distribution<_RealType>&)’
- 1905 |     operator==(const std::normal_distribution<_RealType>& __d1,
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:303:28: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::valarray<_Tp>’
+  303 |         h1 = h1 - T[i]*bn[N] + T[i+N];
+      |                            ^
+test.cpp:198:4: note: candidate: ‘Pr operator*(Pr, Pr)’
+  198 | Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
+      |    ^~~~~~~~
+test.cpp:198:18: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’} to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
+  198 | Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
+      |               ~~~^
+test.cpp:304:19: error: no match for ‘operator*’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’} and ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’})
+  304 |         h2 += T[i]*bn[i];
+/usr/include/c++/12/complex:392:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const complex<_Tp>&, const complex<_Tp>&)’
+  392 |     operator*(const complex<_Tp>& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1905:5: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::normal_distribution<_RealType>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from stdc++.h:133:
-/usr/include/c++/12/variant:1241:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator==(const variant<_Types ...>&, const variant<_Types ...>&)’
- 1241 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(==, equal)
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/variant:1241:3: note:   template argument deduction/substitution failed:
-test.cpp:229:36: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::variant<_Types ...>’
-  229 |                 if(S.substr(l, 2)=='iw' && S[r-1]=='i'
-      |                                    ^~~~
-In file included from stdc++.h:142:
-/usr/include/c++/12/coroutine:146:3: note: candidate: ‘constexpr bool std::__n4861::operator==(coroutine_handle<void>, coroutine_handle<void>)’
-  146 |   operator==(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/coroutine:146:33: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘std::__n4861::coroutine_handle<void>’
-  146 |   operator==(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |              ~~~~~~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/system_error:444:3: note: candidate: ‘bool std::operator==(const error_code&, const error_code&)’
-  444 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:444:32: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘const std::error_code&’
-  444 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
-      |              ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/system_error:475:3: note: candidate: ‘bool std::operator==(const error_condition&, const error_condition&)’
-  475 |   operator==(const error_condition& __lhs,
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:475:37: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘const std::error_condition&’
-  475 |   operator==(const error_condition& __lhs,
-      |              ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
-In file included from /usr/include/c++/12/stop_token:35,
-                 from /usr/include/c++/12/condition_variable:46,
-                 from stdc++.h:103:
-/usr/include/c++/12/bits/std_thread.h:311:3: note: candidate: ‘bool std::operator==(thread::id, thread::id)’
-  311 |   operator==(thread::id __x, thread::id __y) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/bits/std_thread.h:311:25: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘std::thread::id’
-  311 |   operator==(thread::id __x, thread::id __y) noexcept
-      |              ~~~~~~~~~~~^~~
-/usr/include/c++/12/variant:1248:18: note: candidate: ‘constexpr bool std::operator==(monostate, monostate)’
- 1248 |   constexpr bool operator==(monostate, monostate) noexcept { return true; }
-      |                  ^~~~~~~~
-/usr/include/c++/12/variant:1248:29: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘std::monostate’
- 1248 |   constexpr bool operator==(monostate, monostate) noexcept { return true; }
-      |                             ^~~~~~~~~
-/usr/include/c++/12/bits/allocator.h:205:7: note: candidate: ‘constexpr bool std::operator==(const allocator<char>&, const allocator<char>&)’
-  205 |       operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-      |       ^~~~~~~~
-/usr/include/c++/12/bits/allocator.h:205:18: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘const std::allocator<char>&’
-  205 |       operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-      |                  ^~~~~~~~~~~~~~~~
-test.cpp:232:49: error: no match for ‘operator==’ (operand types are ‘std::__cxx11::basic_string<char>’ and ‘int’)
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                 ~~~~~~~~~~~~~~~~^~~~~~
-      |                                         |         |
-      |                                         |         int
-      |                                         std::__cxx11::basic_string<char>
-/usr/include/c++/12/bits/regex.h:1248:5: note: candidate: ‘template<class _Bi_iter, class _Ch_traits, class _Ch_alloc> bool std::__cxx11::operator==(const sub_match<_BiIter>&, __sub_match_string<_Bi_iter, _Ch_traits, _Ch_alloc>&)’ (reversed)
- 1248 |     operator==(const sub_match<_Bi_iter>& __lhs,
+/usr/include/c++/12/complex:392:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/complex:401:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const complex<_Tp>&, const _Tp&)’
+  401 |     operator*(const complex<_Tp>& __x, const _Tp& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1248:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/regex.h:1415:5: note: candidate: ‘template<class _Bi_iter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type*)’ (reversed)
- 1415 |     operator==(const sub_match<_Bi_iter>& __lhs,
+/usr/include/c++/12/complex:401:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/complex:410:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const _Tp&, const complex<_Tp>&)’
+  410 |     operator*(const _Tp& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1415:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/regex.h:1587:5: note: candidate: ‘template<class _Bi_iter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type&)’ (reversed)
- 1587 |     operator==(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1587:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:530:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (reversed)
-  530 |     operator==(const reverse_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:530:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::reverse_iterator<_IteratorL>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:1674:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (reversed)
- 1674 |     operator==(const move_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1674:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::move_iterator<_IteratorL>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/allocator.h:219:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const allocator<_CharT>&, const allocator<_T2>&)’ (reversed)
-  219 |     operator==(const allocator<_T1>&, const allocator<_T2>&)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/allocator.h:219:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::allocator<_CharT>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/string_view:546:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(basic_string_view<_CharT, _Traits>, __type_identity_t<basic_string_view<_CharT, _Traits> >)’ (reversed)
-  546 |     operator==(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:546:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘std::basic_string_view<_CharT, _Traits>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/basic_string.h:3607:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr bool std::operator==(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’ (reversed)
- 3607 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3607:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/complex:469:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const complex<_Tp>&, const _Tp&)’ (reversed)
-  469 |     operator==(const complex<_Tp>& __x, const _Tp& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/complex:469:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::complex<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/tuple:1496:5: note: candidate: ‘template<class ... _TElements, class ... _UElements> constexpr bool std::operator==(const tuple<_UTypes ...>&, const tuple<_UTypes ...>&)’ (reversed)
- 1496 |     operator==(const tuple<_TElements...>& __t,
-      |     ^~~~~~~~
-/usr/include/c++/12/tuple:1496:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::tuple<_UTypes ...>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/std_function.h:718:5: note: candidate: ‘template<class _Res, class ... _Args> bool std::operator==(const function<_Res(_ArgTypes ...)>&, nullptr_t)’ (reversed)
-  718 |     operator==(const function<_Res(_Args...)>& __f, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/std_function.h:718:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::function<_Res(_ArgTypes ...)>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/unique_ptr.h:824:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep> constexpr bool std::operator==(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’ (reversed)
-  824 |     operator==(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:824:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/unique_ptr.h:832:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator==(const unique_ptr<_Tp, _Dp>&, nullptr_t)’ (reversed)
-  832 |     operator==(const unique_ptr<_Tp, _Dp>& __x, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:832:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1793:5: note: candidate: ‘template<class _Tp1, class _Tp2, __gnu_cxx::_Lock_policy _Lp> bool std::operator==(const __shared_ptr<_Tp1, _Lp>&, const __shared_ptr<_Tp2, _Lp>&)’ (reversed)
- 1793 |     operator==(const __shared_ptr<_Tp1, _Lp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1793:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__shared_ptr<_Tp1, _Lp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1799:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> bool std::operator==(const __shared_ptr<_Tp, _Lp>&, nullptr_t)’ (reversed)
- 1799 |     operator==(const __shared_ptr<_Tp, _Lp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1799:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__shared_ptr<_Tp, _Lp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/shared_ptr.h:555:5: note: candidate: ‘template<class _Tp, class _Up> bool std::operator==(const shared_ptr<_Tp>&, const shared_ptr<_Tp>&)’ (reversed)
-  555 |     operator==(const shared_ptr<_Tp>& __a, const shared_ptr<_Up>& __b) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:555:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::shared_ptr<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/shared_ptr.h:561:5: note: candidate: ‘template<class _Tp> bool std::operator==(const shared_ptr<_Tp>&, nullptr_t)’ (reversed)
-  561 |     operator==(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:561:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::shared_ptr<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/complex:410:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::complex<_Tp>’
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’ (reversed)
-  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’ (reversed)
- 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
       | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’ (reversed)
- 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
       | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::valarray<_Tp>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/scoped_allocator:499:5: note: candidate: ‘template<class _OutA1, class _OutA2, class ... _InA> bool std::operator==(const scoped_allocator_adaptor<_OutA1, _InA ...>&, const scoped_allocator_adaptor<_InnerHead, _InnerTail ...>&)’ (reversed)
-  499 |     operator==(const scoped_allocator_adaptor<_OutA1, _InA...>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/scoped_allocator:499:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::scoped_allocator_adaptor<_OutA1, _InA ...>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/optional:1222:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Tp, _Up> std::operator==(const optional<_Tp>&, const optional<_Up>&)’ (reversed)
- 1222 |     operator==(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1222:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::optional<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/optional:1282:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const optional<_Tp>&, nullopt_t)’ (reversed)
- 1282 |     operator==(const optional<_Tp>& __lhs, nullopt_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1282:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::optional<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/optional:1350:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Tp, _Up> std::operator==(const optional<_Tp>&, const _Up&)’ (reversed)
- 1350 |     operator==(const optional<_Tp>& __lhs, const _Up& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1350:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::optional<_Tp>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/optional:1356:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Up, _Tp> std::operator==(const _Up&, const optional<_Tp>&)’ (reversed)
- 1356 |     operator==(const _Up& __lhs, const optional<_Tp>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1356:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::optional<_Tp>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/new_allocator.h:196:9: note: candidate: ‘template<class _Up> constexpr bool std::operator==(const __new_allocator<char>&, const __new_allocator<_Tp>&)’ (reversed)
-  196 |         operator==(const __new_allocator&, const __new_allocator<_Up>&)
-      |         ^~~~~~~~
-/usr/include/c++/12/bits/new_allocator.h:196:9: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__new_allocator<_Tp>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/system_error:460:3: note: candidate: ‘bool std::operator==(const error_code&, const error_condition&)’ (reversed)
-  460 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:460:32: note:   no known conversion for argument 1 from ‘int’ to ‘const std::error_code&’
-  460 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
-      |              ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/bits/regex.h:1077:5: note: candidate: ‘template<class _BiIter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const sub_match<_BiIter>&)’
- 1077 |     operator==(const sub_match<_BiIter>& __lhs, const sub_match<_BiIter>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1077:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/regex.h:2145:5: note: candidate: ‘template<class _Bi_iter, class _Alloc> bool std::__cxx11::operator==(const match_results<_BiIter, _Alloc>&, const match_results<_BiIter, _Alloc>&)’
- 2145 |     operator==(const match_results<_Bi_iter, _Alloc>& __m1,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:2145:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__cxx11::match_results<_BiIter, _Alloc>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/deque:672:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const deque<_Tp, _Allocator>&, const deque<_Tp, _Allocator>&)’
-  672 |     operator==(const deque<_Tp, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/deque:672:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::deque<_Tp, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/unordered_map:855:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&, const unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
-  855 |     operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_map:855:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/unordered_map:1572:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&, const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
- 1572 |     operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_map:1572:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/vector:750:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const vector<_Tp, _Alloc>&, const vector<_Tp, _Alloc>&)’
-  750 |     operator==(const vector<_Tp, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/vector:750:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::vector<_Tp, _Alloc>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/list:925:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const list<_Tp, _Allocator>&, const list<_Tp, _Allocator>&)’
-  925 |     operator==(const list<_Tp, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/list:925:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::list<_Tp, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/map.h:748:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> bool std::__debug::operator==(const map<_Key, _Tp, _Compare, _Allocator>&, const map<_Key, _Tp, _Compare, _Allocator>&)’
-  748 |     operator==(const map<_Key, _Tp, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/map.h:748:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::map<_Key, _Tp, _Compare, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/multimap.h:630:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> bool std::__debug::operator==(const multimap<_Key, _Tp, _Compare, _Allocator>&, const multimap<_Key, _Tp, _Compare, _Allocator>&)’
-  630 |     operator==(const multimap<_Key, _Tp, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multimap.h:630:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/set.h:611:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> bool std::__debug::operator==(const set<_Key, _Compare, _Allocator>&, const set<_Key, _Compare, _Allocator>&)’
-  611 |     operator==(const set<_Key, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/set.h:611:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::set<_Key, _Compare, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/multiset.h:601:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> bool std::__debug::operator==(const multiset<_Key, _Compare, _Allocator>&, const multiset<_Key, _Compare, _Allocator>&)’
-  601 |     operator==(const multiset<_Key, _Compare, _Allocator>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multiset.h:601:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::multiset<_Key, _Compare, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/forward_list:865:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const forward_list<_Tp, _Allocator>&, const forward_list<_Tp, _Allocator>&)’
-  865 |     operator==(const forward_list<_Tp, _Alloc>& __lx,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/forward_list:865:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::forward_list<_Tp, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/unordered_set:723:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_set<_Tp, _Hash, _Pred, _Allocator>&, const unordered_set<_Tp, _Hash, _Pred, _Allocator>&)’
-  723 |     operator==(const unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_set:723:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_set<_Tp, _Hash, _Pred, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/debug/unordered_set:1400:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&, const unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&)’
- 1400 |     operator==(const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/unordered_set:1400:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::__debug::unordered_multiset<_Tp, _Hash, _Pred, _Allocator>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_pair.h:640:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const pair<_T1, _T2>&, const pair<_T1, _T2>&)’
-  640 |     operator==(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_pair.h:640:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::pair<_T1, _T2>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:589:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorL>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
-  589 |     operator==(const reverse_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:589:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_iterator.h:1744:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const move_iterator<_IteratorL>&, const move_iterator<_IteratorL>&)’
- 1744 |     operator==(const move_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1744:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::move_iterator<_IteratorL>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/postypes.h:192:5: note: candidate: ‘template<class _StateT> bool std::operator==(const fpos<_StateT>&, const fpos<_StateT>&)’
-  192 |     operator==(const fpos<_StateT>& __lhs, const fpos<_StateT>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/postypes.h:192:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::fpos<_StateT>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/string_view:540:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(basic_string_view<_CharT, _Traits>, basic_string_view<_CharT, _Traits>)’
-  540 |     operator==(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:540:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/basic_string.h:3583:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr bool std::operator==(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
- 3583 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3583:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/basic_string.h:3592:5: note: candidate: ‘template<class _CharT> constexpr typename __gnu_cxx::__enable_if<std::__is_char<_Tp>::__value, bool>::__type std::operator==(const __cxx11::basic_string<_CharT>&, const __cxx11::basic_string<_CharT>&)’
- 3592 |     operator==(const basic_string<_CharT>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3592:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT>’ and ‘int’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/streambuf_iterator.h:233:5: note: candidate: ‘template<class _CharT, class _Traits> bool std::operator==(const istreambuf_iterator<_CharT, _Traits>&, const istreambuf_iterator<_CharT, _Traits>&)’
-  233 |     operator==(const istreambuf_iterator<_CharT, _Traits>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/streambuf_iterator.h:233:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::istreambuf_iterator<_CharT, _Traits>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/complex:464:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const complex<_Tp>&, const complex<_Tp>&)’
-  464 |     operator==(const complex<_Tp>& __x, const complex<_Tp>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/complex:464:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::complex<_Tp>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/array:304:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr bool std::operator==(const array<_Tp, _Nm>&, const array<_Tp, _Nm>&)’
-  304 |     operator==(const array<_Tp, _Nm>& __one, const array<_Tp, _Nm>& __two)
-      |     ^~~~~~~~
-/usr/include/c++/12/array:304:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::array<_Tp, _Nm>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_queue.h:380:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator==(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’
-  380 |     operator==(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:380:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::queue<_Tp, _Seq>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/stl_stack.h:356:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator==(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’
-  356 |     operator==(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_stack.h:356:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::stack<_Tp, _Seq>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const valarray<_Tp>&, const valarray<_Tp>&)’
- 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
       | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::valarray<_Tp>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/bits/random.tcc:1905:5: note: candidate: ‘template<class _RealType1> bool std::operator==(const normal_distribution<_RealType>&, const normal_distribution<_RealType>&)’
- 1905 |     operator==(const std::normal_distribution<_RealType>& __d1,
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:304:24: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::valarray<_Tp>’
+  304 |         h2 += T[i]*bn[i];
+      |                        ^
+test.cpp:198:4: note: candidate: ‘Pr operator*(Pr, Pr)’
+  198 | Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
+      |    ^~~~~~~~
+test.cpp:198:18: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’} to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
+  198 | Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
+      |               ~~~^
+test.cpp:305:21: error: no match for ‘operator*’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’} and ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’})
+  305 |         h2 -= T[i+N]*bn[i];
+/usr/include/c++/12/complex:392:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const complex<_Tp>&, const complex<_Tp>&)’
+  392 |     operator*(const complex<_Tp>& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1905:5: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::normal_distribution<_RealType>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/variant:1241:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator==(const variant<_Types ...>&, const variant<_Types ...>&)’
- 1241 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(==, equal)
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/variant:1241:3: note:   template argument deduction/substitution failed:
-test.cpp:232:51: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::variant<_Types ...>’
-  232 |                 if(S[l]=='i' && S.substr(r-2, 2)=='wi'
-      |                                                   ^~~~
-/usr/include/c++/12/coroutine:146:3: note: candidate: ‘constexpr bool std::__n4861::operator==(coroutine_handle<void>, coroutine_handle<void>)’
-  146 |   operator==(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/coroutine:146:33: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘std::__n4861::coroutine_handle<void>’
-  146 |   operator==(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |              ~~~~~~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/system_error:444:3: note: candidate: ‘bool std::operator==(const error_code&, const error_code&)’
-  444 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:444:32: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘const std::error_code&’
-  444 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
-      |              ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/system_error:475:3: note: candidate: ‘bool std::operator==(const error_condition&, const error_condition&)’
-  475 |   operator==(const error_condition& __lhs,
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:475:37: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘const std::error_condition&’
-  475 |   operator==(const error_condition& __lhs,
-      |              ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/bits/std_thread.h:311:3: note: candidate: ‘bool std::operator==(thread::id, thread::id)’
-  311 |   operator==(thread::id __x, thread::id __y) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/bits/std_thread.h:311:25: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘std::thread::id’
-  311 |   operator==(thread::id __x, thread::id __y) noexcept
-      |              ~~~~~~~~~~~^~~
-/usr/include/c++/12/variant:1248:18: note: candidate: ‘constexpr bool std::operator==(monostate, monostate)’
- 1248 |   constexpr bool operator==(monostate, monostate) noexcept { return true; }
-      |                  ^~~~~~~~
-/usr/include/c++/12/variant:1248:29: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘std::monostate’
- 1248 |   constexpr bool operator==(monostate, monostate) noexcept { return true; }
-      |                             ^~~~~~~~~
-/usr/include/c++/12/bits/allocator.h:205:7: note: candidate: ‘constexpr bool std::operator==(const allocator<char>&, const allocator<char>&)’
-  205 |       operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-      |       ^~~~~~~~
-/usr/include/c++/12/bits/allocator.h:205:18: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘const std::allocator<char>&’
-  205 |       operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-      |                  ^~~~~~~~~~~~~~~~
+/usr/include/c++/12/complex:392:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/complex:401:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const complex<_Tp>&, const _Tp&)’
+  401 |     operator*(const complex<_Tp>& __x, const _Tp& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:401:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/complex:410:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const _Tp&, const complex<_Tp>&)’
+  410 |     operator*(const _Tp& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:410:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::complex<_Tp>’
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’}
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+/usr/include/c++/12/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1188:1: note:   template argument deduction/substitution failed:
+test.cpp:305:26: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<mints>, mints>::value_type’ {aka ‘mints’} is not derived from ‘const std::valarray<_Tp>’
+  305 |         h2 -= T[i+N]*bn[i];
+      |                          ^
+test.cpp:198:4: note: candidate: ‘Pr operator*(Pr, Pr)’
+  198 | Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
+      |    ^~~~~~~~
+test.cpp:198:18: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<char>, char>::value_type’ {aka ‘char’} to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
+  198 | Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
+      |               ~~~^

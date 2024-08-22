@@ -198,29 +198,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/string>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl W(N), S(N), V(N);
-    rep(i, N) cin>>W[i]>>S[i]>>V[i];
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return W[i]+S[i] < W[j]+S[j];
-    });
-
-    ll M = 2e4;
-    vl dp(M+1);
-    for(auto i: p) {
-        repr(j, M+1) {
-            if(j>S[i]) continue;
-            if(j+W[i]<=M) chmax(dp[j+W[i]], dp[j]+V[i]);
-        }
+    STRING(T);
+    string t1 = T.substr(0, N), t2 = T.substr(N);
+    reverse(all(t2));
+    string s1 = t1+t2, s2 = t2+t1;
+    de(s1)de(s2)
+    auto z1 = z_algorithm(s1);
+    auto z2 = z_algorithm(s2);
+    de(z1)de(z2)
+    if(t1==t2) {
+        string ans = t2;
+        reverse(all(ans));
+        Out(ans);
+        Out(0);
+        return 0;
     }
-    ll ans = 0;
-    rep(i, M+1) chmax(ans, dp[i]);
-    Out(ans);
+
+    rep(i, N-1) {
+        if(z1[2*N-1-i]!=i+1) continue;
+        if(z2[N+i+1]!=N-i-1) continue;
+        string ans = T.substr(i+1, N);
+        reverse(all(ans));
+        Out(ans);
+        Out(i+1);
+        return 0;
+    }
+    Pm1
     
 }
 
