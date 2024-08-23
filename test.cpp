@@ -198,46 +198,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N);
+    LONG(N);
+    map<Pr,Pr> mp;
+    ll zero = 0;
+    rep(i, N) {
+        LONG(x, y);
+        if(x==0 && y==0) {
+            ++zero; continue;
+        }
+        if(y<0) x = -x, y = -y;
+        if(x<0 && y==0) x = -x;
+        ll g = gcd(x, y);
+        x /= g, y /= g;
 
-    vl cnt(N);
-    rep(i, N) { cnt[A[i]]++; }
-    ll same = 0;
-    rep(i, N) same += nCr(cnt[i], 2);
-    
-    auto del=[&](ll x) {
-        same -= nCr(cnt[x], 2);
-        cnt[x]--;
-        same += nCr(cnt[x], 2);
-    };
-
-    ll ans = 0, l=0, r=N-1;
-    while(l<r) {
-        ll num = r-l+1;
-        ans += nCr(num, 2) - same;
-        del(A[l]);
-        del(A[r]);
-        ++l, --r;
+        bool rot = false;
+        if(x<=0) rot = true;
+        if(rot) { swap(x, y); y = -y; }
+        if(rot) mp[{x,y}].second++;
+        else mp[{x,y}].first++;
     }
+
+    vm two(N+1); two[0] = 1;
+    rep(i, N) two[i+1] = two[i] * 2;
+
+    mint ans = 1;
+    for(auto [p,c]: mp) {
+        auto [f,s] = c;
+        ans *= two[f] + two[s] - 1;
+    }
+    --ans;
+    ans += zero;
     Out(ans);
     
 }
