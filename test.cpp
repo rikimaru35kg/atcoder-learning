@@ -198,113 +198,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-const int MX = 10;  // DEFINE PROPERLY!!
-template <typename T>
-class Mat {
-public:
-    int n; T a[MX][MX];
-    // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
-            }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
+        ret *= n-k+1;
+        ret /= k;
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
-};
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
-ll M = 6;
-using S = Mat<unsigned int>;
-S op(S a, S b) { return b*a; }
-S e() {return S(M);}
-
-using VEC = vector<unsigned int>;
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    ll N = SIZE(Str);
-    vector<S> v(N, S(M));
-    string disco="DISCO";
-    rep(i, N) {
-        rep(j, 5) {
-            if(Str[i]!=disco[j]) continue;
-            v[i].a[j+1][j] = 1;
-        }
-    }
+    LONG(N); VLM(A, N);
 
-    segtree<S,op,e> seg(v);
-    VEC unit(M);
-    unit[0] = 1;
+    vl cnt(N);
+    rep(i, N) { cnt[A[i]]++; }
+    ll same = 0;
+    rep(i, N) same += nCr(cnt[i], 2);
+    
+    auto del=[&](ll x) {
+        same -= nCr(cnt[x], 2);
+        cnt[x]--;
+        same += nCr(cnt[x], 2);
+    };
 
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        S tmp = seg.prod(l, r);
-        VEC ans = tmp*unit;
-        Out(ans[M-1]);
+    ll ans = 0, l=0, r=N-1;
+    while(l<r) {
+        ll num = r-l+1;
+        ans += nCr(num, 2) - same;
+        del(A[l]);
+        del(A[r]);
+        ++l, --r;
     }
-    // unsigned int tmp[2][2] = {{1,0}, {0,2}};
-    // S fuck(2);
-    // fuck.pow(4);
-    // fuck.print();
-    // S piyo(2, *tmp);
-    // piyo.pow(4);
-    // piyo.print();
+    Out(ans);
     
 }
 
