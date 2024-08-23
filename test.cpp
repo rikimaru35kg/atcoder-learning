@@ -198,76 +198,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
 public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
         return ret;
     }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
 };
 
-#include <atcoder/math>
+#include <atcoder/fenwicktree>
 using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Sieve sieve(100);
-    vl ps = {4, 9};
-    ll M = 13;
-    repk(p, 5, 29) {
-        if(!sieve.is_prime(p)) continue;
-        ps.push_back(p);
-        M += p;
+    LONG(N); VL(A, N); VL(B, N);
+    map<ll,vl> mp;
+    CoordinateCompression cc;
+    rep(i, N) {
+        cc.add(B[i]);
+        mp[A[i]].push_back(B[i]);
     }
-
-    vl A;
-    ll si = 0;
-    for(auto p: ps) {
-        rep(i, p) {
-            A.push_back((i+1)%p + si + 1);
+    ll M = cc.size();
+    fenwick_tree<int> tree(M);
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, M) {
+            cerr<< tree.sum(i,i+1)  <<' ';
         }
-        si += p;
+        cerr<<endl;
+    #endif
+    };
+
+    ll ans = 0;
+    for(auto [k,v]: mp) {
+        for(auto b: v) {
+            b = cc(b);
+            tree.add(b, 1);
+        }
+        for(auto b: v) {
+            b = cc(b);
+            ans += tree.sum(b, M);
+        }
+        de2(k, ans)
+        dprint();
     }
-    Out(M);
-    cout<<flush;
-    Out(A);
-    cout<<flush;
-    VLM(B, M);
-    si = 0;
-    vl rems;
-    for(auto p: ps) {
-        ll b = B[si];
-        rems.push_back((b-si+p) % p);
-        si += p;
-    }
-    auto res = crt(rems, ps);
-    ll ans = res.first;
     Out(ans);
-    cout<<flush;
     
 }
 

@@ -212,54 +212,30 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vm f(N+1);
+    LONG(H, W, K);
+    LONGM(x1,y1,x2,y2);
 
-    vm two(N+1);
-    two[0] = 1;
-    rep(i, N) two[i+1] = two[i]*2;
-
-    auto cal=[&](ll m) -> mint {
-        vb work(m);
-        rep(i, N) { if(S[i]=='.') work[i%m] = true; }
-        ll cnt = 0;
-        rep(i, m) if(!work[i]) ++cnt;
-        return two[cnt];
-    };
-
-    auto divs = listup_divisor(N);
-    for(auto d: divs) {
-        f[d] = cal(d);
-    }
-    de(f)
-    rep1(i, N) {
-        for(ll j=2*i; j<=N; j+=i) {
-            f[j] -= f[i];
+    vvm dp(2, vm(2));
+    vvm edp = dp;
+    dp[x1!=x2][y1!=y2] = 1;
+    rep(i, K) {
+        vvm pdp = edp; swap(pdp, dp);
+        rep(i, 2) {
+            dp[i][1] += pdp[i][0]*(W-1);
+            dp[i][0] += pdp[i][1];
+            dp[i][1] += pdp[i][1]*(W-2);
+        }
+        rep(j, 2) {
+            dp[1][j] += pdp[0][j]*(H-1);
+            dp[0][j] += pdp[1][j];
+            dp[1][j] += pdp[1][j]*(H-2);
         }
     }
-    mint ans = 0;
-    for(auto d: divs) {
-        if(d==N) continue;
-        ans += f[d];
-    }
-    de(f)
-    Out(ans);
+    Out(dp[0][0]);
+
     
 }
 
