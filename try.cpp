@@ -117,7 +117,6 @@ template<typename T> inline void Out(deque<T> q){while(!q.empty()) {cout<<q.fron
 template<typename T> inline void Out(vector<T> v) {rep(i,SIZE(v)) cout<<v[i]<<(i==SIZE(v)-1?'\n':' ');}
 template<typename T> inline void Out(vector<vector<T>> &vv){for(auto &v: vv) Out(v);}
 template<typename T> inline void Out(vector<pair<T,T>> v) {for(auto p:v) Out(p);}
-template<typename T> inline void Outend(T x) {Out(x); exit(0);}
 template<typename T> inline void chmin(T &a, T b) { a = min(a, b); }
 template<typename T> inline void chmax(T &a, T b) { a = max(a, b); }
 inline void mi(void) {return;}
@@ -198,29 +197,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+using ui = unsigned int;
+using vui = vector<ui>;
+
 //! n*n matrix
-const int MX = 10;  // DEFINE PROPERLY!!
+//! Currently, only operator* is defined.
 template <typename T>
 class Mat {
 public:
-    int n; T a[MX][MX];
-    // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
-            }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
-        }
+    int n=6;
+    ui a[6][6];
+    // Initialize n*n matrix
+    Mat () {
+        rep(i, 6) rep(j, 6) a[i][j] = 0;
+        for (int i=0; i<n; ++i) a[i][i] = 1;
     }
     // Define operator*
     Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        Mat ret;
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;
         for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
             for (int k=0; k<n; ++k) {
                 ret.a[i][j] += a[i][k] * rhs.a[k][j];
@@ -235,20 +230,6 @@ public:
         }
         return ret;
     }
-    // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
 #ifdef __DEBUG
     void print(string debugname="------") {  // for debug
         cerr << n << '\n';
@@ -262,50 +243,44 @@ public:
     void print(string debugname="------") {}
 #endif
 };
-
 #include <atcoder/segtree>
 using namespace atcoder;
 
-ll M = 6;
-using S = Mat<unsigned int>;
-S op(S a, S b) { return b*a; }
-S e() {return S(M);}
-
-using VEC = vector<unsigned int>;
+string disco = "DISCO";
+ll M = SIZE(disco);
+using S = Mat<ui>;
+S op(S a, S b) {return b*a;}
+S e() {return Mat<ui>();}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     STRING(Str);
     ll N = SIZE(Str);
-    vector<S> v(N, S(M));
-    string disco="DISCO";
+    vector<S> ini(N);
     rep(i, N) {
-        rep(j, 5) {
-            if(Str[i]!=disco[j]) continue;
-            v[i].a[j+1][j] = 1;
+        S tmp;
+        rep(j, M) {
+            if(disco[j]==Str[i]) {
+                tmp.a[j+1][j] = 1;
+            }
         }
+        ini[i] = tmp;
     }
-
-    segtree<S,op,e> seg(v);
-    VEC unit(M);
-    unit[0] = 1;
-
+    segtree<S,op,e> seg(ini);
+    vui base(M+1);
+    base[0] = 1;
     LONG(Q);
     rep(i, Q) {
         LONG(l, r); --l;
-        S tmp = seg.prod(l, r);
-        VEC ans = tmp*unit;
-        Out(ans[M-1]);
+        S mat = seg.prod(l, r);
+        mat.print();
+        vui res = mat * base;
+        ui ans = res[M];
+        Out(ans);
     }
-    // unsigned int tmp[2][2] = {{1,0}, {0,2}};
-    // S fuck(2);
-    // fuck.pow(4);
-    // fuck.print();
-    // S piyo(2, *tmp);
-    // piyo.pow(4);
-    // piyo.print();
     
 }
 
 // ### test.cpp ###
+

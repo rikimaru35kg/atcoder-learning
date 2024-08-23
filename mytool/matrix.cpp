@@ -9,7 +9,6 @@ struct Vec {
     Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
     Vec operator+(const Vec& v) const { return Vec(*this) += v;}
     Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
-    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
     Vec& operator*=(double s) { x *= s; y *= s; return *this;}
     Vec operator*(double s) const { return Vec(*this) *= s;}
     Vec& operator/=(double s) { x /= s; y /= s; return *this;}
@@ -40,26 +39,28 @@ ostream& operator<<(ostream& os, const Vec& v) {
 }
 
 //! n*n matrix
-//! Currently, only operator* is defined.
+const int MX = 10;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
-    long long n; vector<vector<T>> a;
 public:
-    // Initialize n*n matrix
-    Mat (long long n, const vector<vector<T>> &mat={})
-    : n(n), a(n, vector<T>(n)) {
-        // unit matrix if mat is not specified
-        if (mat.size() == 0) for (int i=0; i<n; ++i) a[i][i] = 1;
-        else {
+    int n; T a[MX][MX];
+    // Initialize n*n matrix as unit matrix
+    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
             for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = mat[i][j];
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
             }
         }
     }
     // Define operator*
     Mat operator* (const Mat &rhs) {  // Mat * Mat
         Mat ret(n);
-        ret.a.assign(n, vector<T>(n, 0));  // zero matrix
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
         for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
             for (int k=0; k<n; ++k) {
                 ret.a[i][j] += a[i][k] * rhs.a[k][j];

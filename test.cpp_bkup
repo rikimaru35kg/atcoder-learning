@@ -198,44 +198,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    LONGM(x1,y1,x2,y2);
+    LONG(N,M,K);
+    K -= M;
+    LONG(A,B,C);
+    LONG(T);
+    VLM(S, M);
 
-    vvm dp(2, vm(2));
-    vvm edp = dp;
-    dp[x1!=x2][y1!=y2] = 1;
-    rep(i, K) {
-        vvm pdp = edp; swap(pdp, dp);
-        rep(i, 2) {
-            dp[i][1] += pdp[i][0]*(W-1);
-            dp[i][0] += pdp[i][1];
-            dp[i][1] += pdp[i][1]*(W-2);
-        }
-        rep(j, 2) {
-            dp[1][j] += pdp[0][j]*(H-1);
-            dp[0][j] += pdp[1][j];
-            dp[1][j] += pdp[1][j]*(H-2);
+    vl data;
+    ll ans = -1;
+    rep(i, M-1) {
+        ll st = S[i]*B;
+        ll si = S[i];
+        if(st>T) break;
+        ll lim = S[i+1]-si;
+        ll local = min((T - st)/A + 1, lim);
+        ans += local;
+        si += local;
+        st += local*C;
+
+        ll rem = K;
+        while(si<S[i+1] && rem--) {
+            if(T-st<0) break;
+            ll lim = S[i+1]-si;
+            ll semi = min((T - st)/A + 1, lim);
+            data.emplace_back(semi);
+            si += semi;
+            st += semi*C;
         }
     }
-    Out(dp[0][0]);
+    if(S[M-1]*B<=T) ++ans;
 
+    sort(all(data));
+    while(data.size() && K--) {
+        ans += data.back(); data.pop_back();
+    }
+
+    Out(ans);
     
 }
 
