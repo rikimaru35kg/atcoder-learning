@@ -778,7 +778,7 @@
     "prefix": "mints",
     "body": [
       "const long long base = 12345;",
-      "const long long MX = 3;",
+      "const long long MX = 2;",
       "const long long ps[12] = {1000000007, 1000000009, 1000000021,",
       "                          1000000033, 1000000087, 1000000093,",
       "                          1000000097, 1000000103, 1000000123,",

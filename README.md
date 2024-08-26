@@ -1382,11 +1382,13 @@
 - 基本 [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - !復習価値中 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
-## まとめて処理する
+## 時系列順に処理する
 - 日数が多い場合、変化のある日（イベント）にだけ着目してまとめて処理する事で計算量を抑えられる
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
+- 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
 - !復習価値低 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
+- !要復習 電車発車の最小遅れ問題（考察も実装も勉強になる） [ E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
 
 ## 後ろから考える
 - 後勝ち操作の場合
@@ -1784,3 +1786,4 @@
 - [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [B - RGB Coloring](https://atcoder.jp/contests/agc025/tasks/agc025_b)
 - [D - 一次元オセロ　(1D Othello)](https://atcoder.jp/contests/pakencamp-2018-day2/tasks/pakencamp_2018_day2_d)
+- [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
