@@ -198,44 +198,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve(ll N) {
-    de(N)
-    if(N==1){
-        puts("0"); return;
-    } 
-    N--;
-    vl ten(20);
-    ten[0] = 1;
-    rep(i, 19) ten[i+1] = ten[i] * 10;
-    rep1(d, 40) {
-        ll k = (d+1)/2;
-        if(9*ten[k-1]<N) {
-            N -= 9*ten[k-1];
-            continue;
-        }
-        ll x = ten[k-1];
-        x += N-1;
-        string s1 = to_string(x);
-        ll r = d/2;
-        string s2 = s1.substr(0, r);
-        reverse(all(s2));
-        string ans = s1+s2;
-        Out(ans);
-        return;
-    }
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    solve(N);
-    // LONG(N);
-    // rep1(i, 300) {
-    //     solve(i);
-    // }
-    // solve(209);
-    // solve(218);
+    LONG(N, K);
+
+    auto ask=[&](vl &v) -> ll {
+        printf("? ");
+        Out(v);
+        cout<<flush;
+        LONG(t);
+        return t;
+    };
+    auto fans=[&](vl &v) {
+        printf("! ");
+        Out(v);
+        cout<<flush;
+    };
+    vl ans(N);
+    vl xs(N);
+    rep(i, K+1) {
+        vl v;
+        rep(j, K+1) {
+            if(i==j) continue;
+            v.push_back(j+1);
+        }
+        xs[i] = ask(v);
+    }
+    ll xo = 0;
+    rep(i, K+1) xo ^= xs[i];
+    rep(i, K+1) {
+        ans[i] = xo^xs[i];
+    }
+    vl base;
+    rep(i, K-1) base.push_back(i+1);
+    ll bxo = 0;
+    rep(i, K-1) bxo ^= xs[i];
+
+    repk(i, K+1, N) {
+        base.push_back(i+1);
+        xs[i] = ask(base);
+        ans[i] = xs[i]^bxo;
+        base.pop_back();
+    }
+    fans(ans);
+
     
 }
 

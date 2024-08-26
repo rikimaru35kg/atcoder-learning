@@ -198,36 +198,124 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, Y);
-    VVL(A, H, W);
-    vvp event(Y);
-    rep(i, H) rep(j, W) {
-        if(A[i][j]<=Y) event[A[i][j]-1].emplace_back(i, j);
+    LONG(N); STRING(S, T);
+    ll Ns = SIZE(S);//, Nt = SIZE(T);
+    ll M = 26;
+    vvl idxs(M);
+    rep(i, Ns) {
+        ll c = S[i]-'a';
+        idxs[c].push_back(i);
     }
-    auto gid=[&](ll i, ll j){return i*W+j;};
-    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
 
-    dsu uf(H*W+1);
-    rep(y, Y) {
-        for(auto [i,j]: event[y]) {
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) {
-                    uf.merge(H*W, gid(i,j));
-                } else {
-                    if(A[ni][nj]<=y+1) uf.merge(gid(ni,nj),gid(i,j));
-                }
-            }
+    auto f=[&](ll k) -> bool {
+        ll idx = 0;
+        --k;
+        for(auto c: T) {
+            c = c-'a';
+            ll sz = SIZE(idxs[c]);
+            if(sz==0) return false;
+            ll si = idx%Ns;
+            ll bi = idx/Ns*Ns;
+            auto [n,x] = lowbou(idxs[c], si);
+            // siからあとk個進む
+            ll cycle = k/sz;
+            ll rem = k%sz;
+            si = idxs[c][(n+rem)%sz];
+            if(n+rem>=sz) si += Ns;
+            si += cycle*Ns;
+            si += bi;
+            idx = si + 1;
+            if(idx>Ns*N) return false;
         }
-        ll ans = H*W - uf.size(H*W)+1;
-        Out(ans);
-    }
+        return idx <= Ns*N;
+    };
+
+    // de(f(3))
+    // de(f(4))
+    ll ans = binary_search(0, INF, f);
+    Out(ans);
     
 }
 

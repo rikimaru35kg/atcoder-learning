@@ -1594,6 +1594,7 @@
 - !復習価値中 [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
 - !復習価値高 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
 - !復習価値高 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+- !復習価値高 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 
 ## お堀問題
 - 外側を番兵でぐるっと囲むと見通しよくなる
@@ -1782,8 +1783,6 @@
 - [D - Pairs](https://atcoder.jp/contests/abc155/editorial)
 
 ## ACできなかった問題
-- [D - Odd or Even](https://atcoder.jp/contests/abc313/tasks/abc313_d)
-- [F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 - [B - RGB Coloring](https://atcoder.jp/contests/agc025/tasks/agc025_b)
 - [D - 一次元オセロ　(1D Othello)](https://atcoder.jp/contests/pakencamp-2018-day2/tasks/pakencamp_2018_day2_d)
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
