@@ -1781,8 +1781,7 @@
 - [E - Manhattan Multifocal Ellipse](https://atcoder.jp/contests/abc366/tasks/abc366_e)
 - [D - Deforestation](https://atcoder.jp/contests/nikkei2019-final/tasks/nikkei2019_final_d)
 - [D - Pairs](https://atcoder.jp/contests/abc155/editorial)
+- [D - 一次元オセロ　(1D Othello)](https://atcoder.jp/contests/pakencamp-2018-day2/tasks/pakencamp_2018_day2_d)
 
 ## ACできなかった問題
-- [B - RGB Coloring](https://atcoder.jp/contests/agc025/tasks/agc025_b)
-- [D - 一次元オセロ　(1D Othello)](https://atcoder.jp/contests/pakencamp-2018-day2/tasks/pakencamp_2018_day2_d)
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

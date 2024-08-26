@@ -246,7 +246,7 @@ pair<long long,T> lowbou_r(vector<T> &a, T x) {
 // vector a must be pre-sorted in ascending (normal) order!
 // return value of -1 means a[0] is already over x (a[0]>=x)
 template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
+pair<long long,T> uppbou_r(deque<T> &a, T x) {
     long long l = -1, r = a.size();
     while (r - l > 1) {
         T m = (l + r) / 2;
@@ -257,64 +257,65 @@ pair<long long,T> uppbou_r(vector<T> &a, T x) {
     else return make_pair(-1, (T)-3e18);
 }
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S, T);
-    ll Ns = SIZE(S);//, Nt = SIZE(T);
-    ll M = 26;
-    vvl idxs(M);
-    rep(i, Ns) {
-        ll c = S[i]-'a';
-        idxs[c].push_back(i);
+    LONG(N); STRING(S);
+    vl A;
+    for(auto c: S) {
+        A.push_back(c=='W'?0:1);
+    }
+    LONG(M);
+    vl D(M), F(M);
+    rep(i, M) {
+        CHAR(d, f);
+        D[i] = d=='L'?0:1;
+        F[i] = f=='W'?0:1;
+    }
+    deque<ll> sep;
+    rep(i, N-1) {
+        if(A[i]!=A[i+1]) sep.push_back(i);
     }
 
-    auto f=[&](ll k) -> bool {
-        ll idx = 0;
-        --k;
-        for(auto c: T) {
-            c = c-'a';
-            ll sz = SIZE(idxs[c]);
-            if(sz==0) return false;
-            ll si = idx%Ns;
-            ll bi = idx/Ns*Ns;
-            auto [n,x] = lowbou(idxs[c], si);
-            // siからあとk個進む
-            ll cycle = k/sz;
-            ll rem = k%sz;
-            si = idxs[c][(n+rem)%sz];
-            if(n+rem>=sz) si += Ns;
-            si += cycle*Ns;
-            si += bi;
-            idx = si + 1;
-            if(idx>Ns*N) return false;
-        }
-        return idx <= Ns*N;
-    };
+    LONG(Q);
+    vvp query(M);
+    rep(i, Q) {
+        LONGM(t, p);
+        query[t].emplace_back(p, i);
+    }
 
-    // de(f(3))
-    // de(f(4))
-    ll ans = binary_search(0, INF, f);
+    ll si = 0, ei = N-1;
+    ll left = A[0], right = A[N-1];
+    vc ans(Q);
+    rep(i, M) {
+        if(D[i]==0) {
+            if(SIZE(sep) && left!=F[i]) { 
+                sep.pop_front();
+            } else if(SIZE(sep)==0 && left!=F[i]) {
+                sep.push_front(si-1);
+            }
+            left = F[i];
+            --si;
+        } else {
+            if(SIZE(sep) && right!=F[i]) { 
+                sep.pop_back();
+            } else if(SIZE(sep)==0 && right!=F[i]) {
+                sep.push_back(ei);
+            }
+            right = F[i];
+            ++ei;
+        }
+        de(sep)
+        de2(left, right)
+        for(auto [p,qi]: query[i]) {
+            auto [n,x] = uppbou_r(sep, p+si);
+            de4(p-si,qi,n,x)
+            ll now = left;
+            if(n%2==0) now ^= 1;
+            if(now==0) ans[qi] = 'W';
+            else ans[qi] = 'B';
+        }
+    }
     Out(ans);
     
 }
