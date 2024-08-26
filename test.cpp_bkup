@@ -198,36 +198,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+void solve(ll N) {
+    de(N)
+    if(N==1){
+        puts("0"); return;
+    } 
+    N--;
+    vl ten(20);
+    ten[0] = 1;
+    rep(i, 19) ten[i+1] = ten[i] * 10;
+    rep1(d, 40) {
+        ll k = (d+1)/2;
+        if(9*ten[k-1]<N) {
+            N -= 9*ten[k-1];
+            continue;
+        }
+        ll x = ten[k-1];
+        x += N-1;
+        string s1 = to_string(x);
+        ll r = d/2;
+        string s2 = s1.substr(0, r);
+        reverse(all(s2));
+        string ans = s1+s2;
+        Out(ans);
+        return;
+    }
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, Y);
-    VVL(A, H, W);
-    vvp event(Y);
-    rep(i, H) rep(j, W) {
-        if(A[i][j]<=Y) event[A[i][j]-1].emplace_back(i, j);
-    }
-    auto gid=[&](ll i, ll j){return i*W+j;};
-    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
-
-    dsu uf(H*W+1);
-    rep(y, Y) {
-        for(auto [i,j]: event[y]) {
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) {
-                    uf.merge(H*W, gid(i,j));
-                } else {
-                    if(A[ni][nj]<=y+1) uf.merge(gid(ni,nj),gid(i,j));
-                }
-            }
-        }
-        ll ans = H*W - uf.size(H*W)+1;
-        Out(ans);
-    }
+    LONG(N);
+    solve(N);
+    // LONG(N);
+    // rep1(i, 300) {
+    //     solve(i);
+    // }
+    // solve(209);
+    // solve(218);
     
 }
 

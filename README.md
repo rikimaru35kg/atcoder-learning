@@ -1593,13 +1593,13 @@
 ### 例題
 - !復習価値中 [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
 - !復習価値高 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
-- !要復習 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+- !復習価値高 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
 
 ## お堀問題
 - 外側を番兵でぐるっと囲むと見通しよくなる
 - Union Findが使える場合多し
 ### 例題
-- !要復習 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+- !復習価値高 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
 
 ## 構築系問題
 - 構築させる問題
