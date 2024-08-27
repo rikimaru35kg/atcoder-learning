@@ -198,50 +198,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+bool judge(string &s) {
+    string t = s;
+    reverse(all(t));
+    if(s==t) return true;
+    else return false;
+};
 
-#include <atcoder/dsu>
-using namespace atcoder;
+void solve() {
+    LONG(N, K);
+    STRING(S);
+    K %= 2*N;
+    if(K==0) K = 2*N;
+    string T(K, '.');
+    rep(i, min(K,N)) T[K-1-i] = S[i];
+    rep(i, min(K,N)) { T[i] = S[N-1-i]; }
+    string s1 = S+T;
+    if(!judge(s1)) {
+        de(1)
+        Out("No"); return;
+    }
+    string s2 = T+S;
+    if(!judge(s2)) {
+        Out("No"); return;
+    }
+    Out("Yes");
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(P, N);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return P[i].first < P[j].first;
-    });
-    dsu uf(N);
-
-    set<Pr> st;
-    for(auto i: p) {
-        auto [x,y] = P[i];
-        if(st.size()==0) {
-            st.emplace(y, i); continue;
-        }
-        auto it = st.begin();
-        auto [py, pi] = *it;
-        if(py>y) {
-            st.emplace(y, i); continue;
-        }
-        uf.merge(pi, i);
-        ++it;
-        // vp es;
-        while(it!=st.end()) {
-            auto [py, pi] = *it;
-            if(py>y) break;
-            uf.merge(i, pi);
-            // es.emplace_back(py, pi);
-            it = st.erase(it);
-            // ++it;
-        }
-        // for(auto x: es) st.erase(x);
-    }
-    vl ans(N);
-    rep(i, N) ans[i] = uf.size(i);
-    Out(ans);
+    LONG(T);
+    rep(i, T) solve();
     
 }
+
+// ### test.cpp ###
