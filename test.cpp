@@ -198,28 +198,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    ll N = 50;
-    vl ans(N, N-1);
-    ll cycle = K/N;
-    ll rem = K%N;
-    rep(i, N) {
-        ans[i] += cycle;
-    }
+    LONG(N);
+    VP(P, N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return P[i].first < P[j].first;
+    });
+    dsu uf(N);
 
-    rep(i, rem) {
-        ans[i] += N;
-        rep(j, N) {
-            if(j==i) continue;
-            ans[j]--;
+    set<Pr> st;
+    for(auto i: p) {
+        auto [x,y] = P[i];
+        if(st.size()==0) {
+            st.emplace(y, i); continue;
         }
+        auto it = st.begin();
+        auto [py, pi] = *it;
+        if(py>y) {
+            st.emplace(y, i); continue;
+        }
+        uf.merge(pi, i);
+        ++it;
+        // vp es;
+        while(it!=st.end()) {
+            auto [py, pi] = *it;
+            if(py>y) break;
+            uf.merge(i, pi);
+            // es.emplace_back(py, pi);
+            it = st.erase(it);
+            // ++it;
+        }
+        // for(auto x: es) st.erase(x);
     }
-    Out(N);
+    vl ans(N);
+    rep(i, N) ans[i] = uf.size(i);
     Out(ans);
     
 }
-
-// ### test.cpp ###

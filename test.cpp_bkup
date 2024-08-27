@@ -198,34 +198,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N+M);
+    LONG(K);
+    ll N = 50;
+    vl ans(N, N-1);
+    ll cycle = K/N;
+    ll rem = K%N;
     rep(i, N) {
-        LONG(K);
-        rep(j, K) {
-            LONGM(l);
-            from[i].push_back(N+l);
-            from[N+l].push_back(i);
+        ans[i] += cycle;
+    }
+
+    rep(i, rem) {
+        ans[i] += N;
+        rep(j, N) {
+            if(j==i) continue;
+            ans[j]--;
         }
     }
-    ll cnt = 0;
-    vb used(N+M);
-    auto dfs=[&](auto f, ll v) -> void {
-        if(used[v]) return;
-        used[v] = true;
-        if(v<N) ++cnt;
-        for(auto nv: from[v]) {
-            f(f, nv);
-        }
-    };
-    dfs(dfs, 0);
-
-    if(cnt==N) puts("YES");
-    else puts("NO");
+    Out(N);
+    Out(ans);
     
 }
 
