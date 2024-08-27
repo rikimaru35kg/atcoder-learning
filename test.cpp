@@ -198,38 +198,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-bool judge(string &s) {
-    string t = s;
-    reverse(all(t));
-    if(s==t) return true;
-    else return false;
-};
-
-void solve() {
-    LONG(N, K);
-    STRING(S);
-    K %= 2*N;
-    if(K==0) K = 2*N;
-    string T(K, '.');
-    rep(i, min(K,N)) T[K-1-i] = S[i];
-    rep(i, min(K,N)) { T[i] = S[N-1-i]; }
-    string s1 = S+T;
-    if(!judge(s1)) {
-        de(1)
-        Out("No"); return;
-    }
-    string s2 = T+S;
-    if(!judge(s2)) {
-        Out("No"); return;
-    }
-    Out("Yes");
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N);
+    VL(A, N);
+    ll ans = accumulate(all(A), 0LL);
+    ll M = 32;
+    vl cnt(M);
+    rep(i, N) rep(d, M) {
+        if(A[i]>>d&1) cnt[d]++;
+    }
+    rep(i, N) {
+        ll now = 0;
+        rep(d, M) {
+            if(A[i]>>d&1) now += (N-cnt[d])<<d;
+            else now += cnt[d]<<d;
+        }
+        chmax(ans, now);
+    }
+    Out(ans);
     
 }
 
