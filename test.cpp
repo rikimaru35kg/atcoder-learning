@@ -198,125 +198,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(deque<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    vl A;
-    for(auto c: S) {
-        A.push_back(c=='W'?0:1);
-    }
-    LONG(M);
-    vl D(M), F(M);
-    rep(i, M) {
-        CHAR(d, f);
-        D[i] = d=='L'?0:1;
-        F[i] = f=='W'?0:1;
-    }
-    deque<ll> sep;
-    rep(i, N-1) {
-        if(A[i]!=A[i+1]) sep.push_back(i);
-    }
-
-    LONG(Q);
-    vvp query(M);
-    rep(i, Q) {
-        LONGM(t, p);
-        query[t].emplace_back(p, i);
-    }
-
-    ll si = 0, ei = N-1;
-    ll left = A[0], right = A[N-1];
-    vc ans(Q);
-    rep(i, M) {
-        if(D[i]==0) {
-            if(SIZE(sep) && left!=F[i]) { 
-                sep.pop_front();
-            } else if(SIZE(sep)==0 && left!=F[i]) {
-                sep.push_front(si-1);
-            }
-            left = F[i];
-            --si;
-        } else {
-            if(SIZE(sep) && right!=F[i]) { 
-                sep.pop_back();
-            } else if(SIZE(sep)==0 && right!=F[i]) {
-                sep.push_back(ei);
-            }
-            right = F[i];
-            ++ei;
+    LONG(N, K);
+    STRING(S);
+    ll ny = 0;
+    rep(i, N) { if(S[i]=='Y') ++ny; }
+    if(ny==0) { Outend(max(K-1, 0LL)); }
+    if(ny==N) { Outend(max(N-1-K,0LL));}
+    
+    auto cal=[&](string &S, ll &K) {
+        ll ret = 0;
+        rep(i, N-1) { if(S[i]=='Y' && S[i+1]=='Y') ++ret; }
+        ll ly = -1;
+        vl ws;
+        ll ext = 0;
+        rep(i, N) {
+            if(S[i]=='X') continue;
+            ll w = i-ly-1;
+            if(w && ly!=-1) ws.push_back(w);
+            else if(w) ext += w;
+            ly = i;
         }
-        de(sep)
-        de2(left, right)
-        for(auto [p,qi]: query[i]) {
-            auto [n,x] = uppbou_r(sep, p+si);
-            de4(p-si,qi,n,x)
-            ll now = left;
-            if(n%2==0) now ^= 1;
-            if(now==0) ans[qi] = 'W';
-            else ans[qi] = 'B';
+        if(S[N-1]=='X') ext += N-ly-1;
+        sort(all(ws));
+        // de(ws)de(ext)
+        for(auto w: ws) {
+            if (w<=K) ret += w+1, K -= w;
+            else ret += K, K -= K;
+            // de2(ret, K)
+            if(K==0) break;
         }
+        if(K) {
+            ret += min(K, ext);
+            K -= min(K, ext);
+        }
+        return ret;
+    };
+    ll ans = cal(S, K);
+    for(auto &c: S) c = c=='X'?'Y':'X';
+    de(S)
+    de(ans)
+    de(K)
+    if(K) {
+        ll rem = ny - K;
+        de(rem)
+        ans = cal(S, rem);
     }
     Out(ans);
+    
     
 }
 

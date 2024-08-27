@@ -1,6 +1,9 @@
 # はじめに
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
+## 最後の一斉復習日
+2024/8/26
+
 # 全探索
 
 ## 多重ループ全探索
@@ -1785,3 +1788,4 @@
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
+- [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
