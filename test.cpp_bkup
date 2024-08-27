@@ -198,59 +198,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    STRING(S);
-    vp adds;
-    ll point=0;
+    LONG(N, M);
+    vvl from(N+M);
     rep(i, N) {
-        if(S[i]=='X') {
-            ll cnt = 0;
-            if(i && S[i-1]!=S[i]) ++cnt;
-            if(i<N-1 && S[i+1]!=S[i]) ++cnt;
-            adds.emplace_back(cnt, i);
-        } else {
-            if(i<N-1 && S[i+1]=='Y') point++;
+        LONG(K);
+        rep(j, K) {
+            LONGM(l);
+            from[i].push_back(N+l);
+            from[N+l].push_back(i);
         }
     }
-    sort(allr(adds));
-    vb used(N);
-    for(auto [plus, i]: adds) {
-        point += plus;
-        used[i] = true;
-        S[i]='Y';
-        --K;
-        if(K==0) break;
-    }
-    de(used)de(point)de(K);
-
-    set<Pr> st;
-    vl rem(N);
-    rep(i, N) {
-        if(used[i]) continue;
-        if(i==0 || i==N-1) st.emplace(1, i), rem[i] = 1;
-        else st.emplace(2, i), rem[i] = 2;
-    }
-    auto dec=[&](ll i) {
-        st.erase({rem[i], i});
-        rem[i]--;
-        st.emplace(rem[i], i);
+    ll cnt = 0;
+    vb used(N+M);
+    auto dfs=[&](auto f, ll v) -> void {
+        if(used[v]) return;
+        used[v] = true;
+        if(v<N) ++cnt;
+        for(auto nv: from[v]) {
+            f(f, nv);
+        }
     };
-    while(K--) {
-        auto it = st.begin();
-        auto [c, i] = *it;
-        point -= c;
-        S[i] = 'X';
-        st.erase({rem[i], i});
-        used[i] = true;
-        if(i && !used[i-1] && S[i-1]=='Y') dec(i-1);
-        if(i<N-1 && !used[i+1] && S[i+1]=='Y') dec(i+1);
-        de(S)
-        de(used)
-    }
-    Out(point);
+    dfs(dfs, 0);
+
+    if(cnt==N) puts("YES");
+    else puts("NO");
     
 }
 

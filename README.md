@@ -1789,3 +1789,4 @@
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
+- [D - Decrease (Contestant ver.)](https://atcoder.jp/contests/abc068/tasks/arc079_b)

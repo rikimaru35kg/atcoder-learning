@@ -201,53 +201,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    STRING(S);
-    ll ny = 0;
-    rep(i, N) { if(S[i]=='Y') ++ny; }
-    if(ny==0) { Outend(max(K-1, 0LL)); }
-    if(ny==N) { Outend(max(N-1-K,0LL));}
-    
-    auto cal=[&](string &S, ll &K) {
-        ll ret = 0;
-        rep(i, N-1) { if(S[i]=='Y' && S[i+1]=='Y') ++ret; }
-        ll ly = -1;
-        vl ws;
-        ll ext = 0;
-        rep(i, N) {
-            if(S[i]=='X') continue;
-            ll w = i-ly-1;
-            if(w && ly!=-1) ws.push_back(w);
-            else if(w) ext += w;
-            ly = i;
-        }
-        if(S[N-1]=='X') ext += N-ly-1;
-        sort(all(ws));
-        // de(ws)de(ext)
-        for(auto w: ws) {
-            if (w<=K) ret += w+1, K -= w;
-            else ret += K, K -= K;
-            // de2(ret, K)
-            if(K==0) break;
-        }
-        if(K) {
-            ret += min(K, ext);
-            K -= min(K, ext);
-        }
-        return ret;
-    };
-    ll ans = cal(S, K);
-    for(auto &c: S) c = c=='X'?'Y':'X';
-    de(S)
-    de(ans)
-    de(K)
-    if(K) {
-        ll rem = ny - K;
-        de(rem)
-        ans = cal(S, rem);
+    LONG(K);
+    ll N = 50;
+    vl ans(N, N-1);
+    ll cycle = K/N;
+    ll rem = K%N;
+    rep(i, N) {
+        ans[i] += cycle;
     }
+
+    rep(i, rem) {
+        ans[i] += N;
+        rep(j, N) {
+            if(j==i) continue;
+            ans[j]--;
+        }
+    }
+    Out(N);
     Out(ans);
-    
     
 }
 
