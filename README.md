@@ -359,6 +359,7 @@
 ### 例題
 - !復習価値中 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
 - !復習価値中 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
+- !要復習 部分木フリップ（木構造を考察する良問だがad-hoc的なのでnote非掲載） [C - Lights Out on Tree](https://atcoder.jp/contests/arc148/tasks/arc148_c)
 
 ## 木の直径、重心
 - xの最遠点yの最遠点zとすると、yとzの距離が直径となる

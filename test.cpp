@@ -197,44 +197,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl A(N), B(N);
-    rep(i, N) cin>>A[i]>>B[i];
-
-    if(N==1) {
-        ll ans = lcm(A[0], B[0]);
-        Outend(ans);
+    LONG(N, Q);
+    vl P(N);
+    vl cnum(N);
+    repk(i, 1, N) {
+        LONGM(p);
+        P[i] = p;
+        cnum[p]++;
     }
-
-    vl divsa = listup_divisor(A[0]);
-    vl divsb = listup_divisor(B[0]);
-
-    ll ans = 1;
-    for(auto da: divsa) for(auto db: divsb) {
-        bool ok = true;
-        repk(i, 1, N) {
-            if(A[i]%da==0 && B[i]%db==0) continue;
-            if(B[i]%da==0 && A[i]%db==0) continue;
-            ok = false;
+    rep(i, Q) {
+        LONG(M);
+        uset<ll> st;
+        rep(j, M) {
+            LONGM(v);
+            st.insert(v);
         }
-        if(ok) chmax(ans, lcm(da, db));
+        ll ans = 0;
+        for(auto v: st) { ans += cnum[v]+1; }
+        de2(i, ans)
+        for(auto v: st) {
+            if(v==0) continue;
+            if(st.count(P[v])) ans -= 2;
+        }
+        Out(ans);
     }
-    Out(ans);
     
 }
 
