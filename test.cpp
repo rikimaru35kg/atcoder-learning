@@ -105,7 +105,6 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) (ll)__builtin_popcountll(x)
 #define parity(x) (ll)__builtin_parityll(x)
-#define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
@@ -201,23 +200,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll ans = accumulate(all(A), 0LL);
-    ll M = 32;
-    vl cnt(M);
-    rep(i, N) rep(d, M) {
-        if(A[i]>>d&1) cnt[d]++;
-    }
-    rep(i, N) {
-        ll now = 0;
-        rep(d, M) {
-            if(A[i]>>d&1) now += (N-cnt[d])<<d;
-            else now += cnt[d]<<d;
+    LONG(N, M);
+    vvp from(N);
+    vvl dist(N, vl(N, INF));
+    rep(i, N) dist[i][i] = 0;
+    vp vfrom0;
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        if(a==0) {
+            vfrom0.emplace_back(b, c);
+            continue;
         }
-        chmax(ans, now);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+        dist[a][b] = c;
+        dist[b][a] = c;
     }
+    rep(k, N) rep(i, N) rep(j, N) {
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
+    }
+    de(dist)
+    ll ans = INF;
+    ll Z = SIZE(vfrom0);
+    rep(i, Z) rep(j, i) {
+        auto [v1, c1] = vfrom0[i];
+        auto [v2, c2] = vfrom0[j];
+        chmin(ans, c1+c2+dist[v1][v2]);
+    }
+    ch1(ans);
     Out(ans);
+
     
 }
 

@@ -109,7 +109,6 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) (ll)__builtin_popcountll(x)
 #define parity(x) (ll)__builtin_parityll(x)
-#define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}

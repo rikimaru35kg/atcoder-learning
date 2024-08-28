@@ -105,7 +105,6 @@ using cd = complex<double>;
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
 #define pcnt(x) (ll)__builtin_popcountll(x)
 #define parity(x) (ll)__builtin_parityll(x)
-#define abs(x) llabs(x)
 #define uset unordered_set
 #define umap unordered_map
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
@@ -201,8 +200,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    string s(10, 'a');
-    de(s)
+    LONG(N, K);
+    VL(X, N);
+    multiset<Pr> st;
+    rep(i, K) {
+        st.emplace(X[i], i);
+    }
+    auto add=[&](ll x, ll i) {
+        st.emplace(x, i);
+        while(SIZE(st)>K) { st.erase(--st.end()); }
+    };
+    rep(i, N+1-K) {
+        de(i)
+        auto it = st.end(); --it;
+        auto [x, xi] = *it;
+        Out(xi+1);
+        if(i==N-K) break;
+        add(X[i+K], i+K);
+    }
     
 }
 

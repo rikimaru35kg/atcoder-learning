@@ -334,6 +334,7 @@
 - !復習価値低 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - !復習価値低 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !復習価値中 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
+- !復習価値高 最短閉路問題 [C - Blue Bird](https://atcoder.jp/contests/abc022/tasks/abc022_c)
 
 # グラフ
 
