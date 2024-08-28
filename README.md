@@ -68,6 +68,7 @@
 - !復習価値高 道路コストP以下が丁度K本の数 [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 - !復習価値高 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - !復習価値高 有名問題（暗記必須） [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
+- !要復習 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - !要復習 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
 
 ## 二分探索による中央値探索
@@ -331,10 +332,10 @@
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 - 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
 ### 例題
+- !復習価値高 最短閉路問題 [C - Blue Bird](https://atcoder.jp/contests/abc022/tasks/abc022_c)
 - !復習価値低 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
 - !復習価値低 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
 - !復習価値中 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
-- !復習価値高 最短閉路問題 [C - Blue Bird](https://atcoder.jp/contests/abc022/tasks/abc022_c)
 
 # グラフ
 
@@ -721,7 +722,8 @@
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
 - N=20程度の場合、O(N!)は無理だがO(N*2^N)ならいける！などと制約から思いつくのも手
 - 巡回セールスマン問題（TSP: Travelling Salesman Problem）やマッチング数が有名
-- 各頂点を1度だけ訪れるという条件がないとbitDPで解けないが、頂点間距離に三角不等式が成り立つならこの条件がなくても解ける（2度以上訪れるメリットがないので）
+- 各頂点を1度だけ訪れるという条件がないとbitDPで解けないが、頂点間距離に三角不等式が成り立つならこの条件がなくても解ける（2度以上訪れるメリットがないから。単に座標が与えられる場合などがこれに該当）
+- 各頂点を1度だけ訪れる場合はそのまま、何度でも訪れて良い場合は事前にワーシャルフロイドしておけば良い
 - 再帰関数で実装できるが、forループで回す手法も可能
 - forループで回す場合、集合sの小さい順にループさせると良い（次のbitを立てるとき、必ずsの昇順となるから）
 ### 例題

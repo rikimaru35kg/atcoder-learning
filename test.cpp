@@ -197,39 +197,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvp from(N);
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
-    vp vfrom0;
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        if(a==0) {
-            vfrom0.emplace_back(b, c);
-            continue;
-        }
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-        dist[a][b] = c;
-        dist[b][a] = c;
+    LONG(N);
+    ll M = 5;
+    vvl A(M, vl(N));
+    rep(i, N) rep(j, M) {
+        cin >> A[j][i];
     }
-    rep(k, N) rep(i, N) rep(j, N) {
-        chmin(dist[i][j], dist[i][k] + dist[k][j]);
-    }
-    de(dist)
-    ll ans = INF;
-    ll Z = SIZE(vfrom0);
-    rep(i, Z) rep(j, i) {
-        auto [v1, c1] = vfrom0[i];
-        auto [v2, c2] = vfrom0[j];
-        chmin(ans, c1+c2+dist[v1][v2]);
-    }
-    ch1(ans);
-    Out(ans);
 
+    auto f=[&](ll x) -> bool {
+        ll M2= 1<<M;
+        vl cnt(M2);
+        rep(i, N) {
+            ll now = 0;
+            rep(j, M) {
+                if(A[j][i]>=x) now |= 1<<j;
+            }
+            cnt[now]++;
+        }
+        rep(i, M2) rep(j, i) rep(k, j) {
+            if((i|j|k)!=M2-1) continue;
+            if(cnt[i]==0 || cnt[j]==0 || cnt[k]==0) continue;
+            return true;
+        }
+        rep(i, M2) rep(j, i) {
+            if((i|j)!=M2-1) continue;
+            if(cnt[i]==0 || cnt[j]==0) continue;
+            // if(cnt[i]+cnt[j]<3) continue;
+            return true;
+        }
+        if(cnt[M2-1]>=1) return true;
+        return false;
+    };
+
+    ll ans = binary_search(0, 1e9+10, f);
+    Out(ans);
     
 }
 
