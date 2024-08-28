@@ -197,9 +197,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(H, W, K);
+    vs S(H, string(W, '.'));
+    rep(i, K) {
+        LONGM(h, w); CHAR(c);
+        S[h][w] = c;
+    }
+    vvm dp(H, vm(W));
+    dp[0][0] = mint(3).pow(H*W-K);
+    mint inv3 = mint(3).inv();
+    rep(i, H) rep(j, W) {
+        mint now = dp[i][j];
+        if(S[i][j]=='.') now *= inv3;
+        if(S[i][j] == '.') {
+            if(i<H-1) dp[i+1][j] += 2*now;
+            if(j<W-1) dp[i][j+1] += 2*now;
+        } else if (S[i][j] == 'X') {
+            if(i<H-1) dp[i+1][j] += now;
+            if(j<W-1) dp[i][j+1] += now;
+        } else if (S[i][j] == 'R') {
+            if(j<W-1) dp[i][j+1] += now;
+        } else {
+            if(i<H-1) dp[i+1][j] += now;
+        }
+    }
+    Out(dp[H-1][W-1]);
     
 }
 

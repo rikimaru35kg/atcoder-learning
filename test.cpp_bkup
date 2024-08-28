@@ -197,35 +197,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+using BS = bitset<1010>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Wmax);
-    vl W(N), V(N);
-    rep(i, N) cin>>W[i]>>V[i];
-    ll M = 3*N;
-    ll w0 = W[0];
-    rep(i, N) { W[i] -= w0; }
-    if(w0>Wmax) Pm0;
-    de(W)
-    de(V)
+    LONG(N, M);
+    vvt3 from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c, i);
+        from[b].emplace_back(a, c, i);
+    }
 
-    vvl dp(N+1, vl(M+1, -INF));
-    dp[0][0] = 0;
-    rep(i, N) {
-        repr(k, N+1) rep(j, M+1) {
-            if(dp[k][j]==-INF) continue;
-            chmax(dp[k][j], dp[k][j]);
-            if(k<N && j+W[i]<=M) chmax(dp[k+1][j+W[i]], dp[k][j]+V[i]);
+    auto dijk=[&](ll sv) -> BS {
+        pq pque;
+        vl dist(N, INF);
+        vl e(N, -1);
+        BS ret;
+        auto push=[&](ll v, ll d, ll ei) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            if(ei!=-1) e[v] = ei;
+            pque.emplace(d, v);
+        };
+        push(sv, 0, -1);
+        while(pque.size()) {
+            auto [d,v] = pque.top(); pque.pop();
+            if(dist[v]!=d) continue;
+            if(e[v]!=-1) ret[e[v]] = 1;
+            for(auto [nv,c,ei]: from[v]) {
+                push(nv, d+c, ei);
+            }
         }
+        return ret;
+    };
+
+    BS edges;
+    rep(i, N) {
+        edges |= dijk(i);
     }
-    de(dp)
-    ll ans = 0;
-    rep(k, N+1) rep(j, M+1) {
-        ll wsum = k*w0+j;
-        if(wsum>Wmax) continue;
-        chmax(ans, dp[k][j]);
-    }
+    ll ans = M - edges.count();
     Out(ans);
     
 }
