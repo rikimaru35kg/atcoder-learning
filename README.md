@@ -1792,6 +1792,7 @@
 - [D - Deforestation](https://atcoder.jp/contests/nikkei2019-final/tasks/nikkei2019_final_d)
 - [D - Pairs](https://atcoder.jp/contests/abc155/editorial)
 - [D - 一次元オセロ　(1D Othello)](https://atcoder.jp/contests/pakencamp-2018-day2/tasks/pakencamp_2018_day2_d)
+- [D - Simple Knapsack](https://atcoder.jp/contests/abc060/tasks/arc073_b)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
