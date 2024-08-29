@@ -32,8 +32,11 @@ from collections import deque
 import math
 
 def main():
-    S = instr()
-    print(S.count("ZONe"))
+    S = "ACL"
+    K = inint()
+    S = S*K
+    print(S)
+
 
 if __name__ == '__main__':
     main()

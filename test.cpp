@@ -199,7 +199,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -211,25 +211,67 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve() {
-    LONG(N, A, B);
-    if(N-A-B<0) {
-        Out(0); return;
-    }
-    mint n2 = N-A-B, num = N-A-B+1;
-    mint x1 = mint(N-B+1)*(N-A+1)*(num*(num+1)/2);
-    mint x2 = (n2*(n2+1)/2)*(n2*(n2+1)/2) + 2*(n2*(n2+1)/2*num) + num*num;
-    // mint x2 = (num*(num+1)/2) * (num*(num+1)/2);
-    de(x1)de(x2)
-    mint ans = 4*x1 - 4*x2;
-    Out(ans);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N); STRING(X);
+
+    vl mem(N+10);
+    auto dfs=[&](auto f, ll x) -> ll {
+        if(x==0) return 0;
+        if(mem[x]!=0) return mem[x];
+        return mem[x] = f(f, x%pcnt(x)) + 1;
+    };
+    rep1(i, N) {
+        dfs(dfs, i);
+    }
+    ll cnt = 0;
+    for(auto c: X) if(c=='1') ++cnt;
+
+    vl ans(N);
+    {
+        mint::set_mod(cnt+1);
+        mint now=0;
+        vm two(N+1);
+        two[0] = 1;
+        rep(i, N) two[i+1] = two[i]*2;
+        rep(i, N) {
+            ll c = X[i]-'0';
+            now = now * 2 + c;
+        }
+        rep(i, N) {
+            if(X[i]=='1') continue;
+            mint cur = now;
+            cur += two[N-1-i];
+            ans[i] = mem[cur.val()] + 1;
+        }
+    }
+    if(cnt>1){
+        mint::set_mod(cnt-1);
+        mint now=0;
+        vm two(N+1);
+        two[0] = 1;
+        rep(i, N) two[i+1] = two[i]*2;
+        rep(i, N) {
+            ll c = X[i]-'0';
+            now = now * 2 + c;
+        }
+        rep(i, N) {
+            if(X[i]=='0') continue;
+            mint cur = now;
+            cur -= two[N-1-i];
+            ans[i] = mem[cur.val()] + 1;
+        }
+    }
+    if(cnt==1) {
+        rep(i, N) {
+            if(X[i]=='0') continue;
+            ans[i] = 0;
+        }
+    }
+    Out(ans);
+
+
     
 }
 

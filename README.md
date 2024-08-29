@@ -1220,13 +1220,14 @@
 # 場合の数と確率・期待値
 
 ## 組合せの数
-- combinationを使う
+- combinationを使う事が多い印象
 ### 例題
 - !復習価値低 [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
 - !復習価値中 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
 - !復習価値高 [D - 11](https://atcoder.jp/contests/arc077/tasks/arc077_b)
 - !復習価値低 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- !要復習 2つの正方形を配置する場合の数 [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
 - !復習価値高 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !要復習 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 
@@ -1344,6 +1345,7 @@
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
 - 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
+- !復習価値中 株の売買 [D - Road to Millionaire](https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_d)
 - !復習価値低 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - !復習価値低 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !復習価値低 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
@@ -1801,4 +1803,4 @@
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
 - [D - Decrease (Contestant ver.)](https://atcoder.jp/contests/abc068/tasks/arc079_b)
 - [A - ST and TS Palindrome](https://atcoder.jp/contests/arc155/tasks/arc155_a)
-- [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
+- [D - Anything Goes to Zero](https://atcoder.jp/contests/aising2020/tasks/aising2020_d)
