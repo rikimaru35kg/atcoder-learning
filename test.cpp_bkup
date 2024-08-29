@@ -197,47 +197,16 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using BS = bitset<1010>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c, i);
-        from[b].emplace_back(a, c, i);
+    LONG(A, B);
+    ll ans = 1;
+    for(ll g=1; g<=B; ++g) {
+        ll l = max(A, g);
+        ll cnt = B/g - (l-1)/g;
+        if(cnt>=2) chmax(ans, g);
     }
-
-    auto dijk=[&](ll sv) -> BS {
-        pq pque;
-        vl dist(N, INF);
-        vl e(N, -1);
-        BS ret;
-        auto push=[&](ll v, ll d, ll ei) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            if(ei!=-1) e[v] = ei;
-            pque.emplace(d, v);
-        };
-        push(sv, 0, -1);
-        while(pque.size()) {
-            auto [d,v] = pque.top(); pque.pop();
-            if(dist[v]!=d) continue;
-            if(e[v]!=-1) ret[e[v]] = 1;
-            for(auto [nv,c,ei]: from[v]) {
-                push(nv, d+c, ei);
-            }
-        }
-        return ret;
-    };
-
-    BS edges;
-    rep(i, N) {
-        edges |= dijk(i);
-    }
-    ll ans = M - edges.count();
     Out(ans);
     
 }

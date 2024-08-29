@@ -197,48 +197,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    vs S(H, string(W, '.'));
-    rep(i, K) {
-        LONGM(h, w); CHAR(c);
-        S[h][w] = c;
-    }
-    vvm dp(H, vm(W));
-    dp[0][0] = mint(3).pow(H*W-K);
-    mint inv3 = mint(3).inv();
-    rep(i, H) rep(j, W) {
-        mint now = dp[i][j];
-        if(S[i][j]=='.') now *= inv3;
-        if(S[i][j] == '.') {
-            if(i<H-1) dp[i+1][j] += 2*now;
-            if(j<W-1) dp[i][j+1] += 2*now;
-        } else if (S[i][j] == 'X') {
-            if(i<H-1) dp[i+1][j] += now;
-            if(j<W-1) dp[i][j+1] += now;
-        } else if (S[i][j] == 'R') {
-            if(j<W-1) dp[i][j+1] += now;
-        } else {
-            if(i<H-1) dp[i+1][j] += now;
+    LONG(R, C);
+    VVL(A, R, C-1);
+    VVL(B, R-1, C);
+
+    vvvl dist(R, vvl(C, vl(2, INF)));
+    priority_queue<t4,vt4,greater<t4>> pque;
+    auto push=[&](ll i, ll j, ll k, ll d) {
+        if(dist[i][j][k]<=d) return;
+        dist[i][j][k] = d;
+        pque.emplace(d, i, j, k);
+    };
+    push(0, 0, 0, 0);
+    while(pque.size()) {
+        auto [d,i,j,k] = pque.top(); pque.pop();
+        if(dist[i][j][k]!=d) continue;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,R,C)) continue;
+            ll cost = 0;
+            ll nk = k;
+            if(nj>j) {
+                cost = A[i][j];
+                nk = 0;
+            } else if(nj<j) {
+                cost = A[i][j-1];
+                nk = 0;
+            } else if (ni>i) {
+                cost = B[i][j];
+                nk = 0;
+            } else {
+                if(k==0) cost = 2;
+                else cost = 1;
+                nk = 1;
+            }
+            push(ni,nj,nk,d+cost);
         }
     }
-    Out(dp[H-1][W-1]);
+    Out(min(dist[R-1][C-1][0],dist[R-1][C-1][1]));
     
 }
 
