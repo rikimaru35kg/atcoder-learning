@@ -200,14 +200,15 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A, B);
-    ll ans = 1;
-    for(ll g=1; g<=B; ++g) {
-        ll l = max(A, g);
-        ll cnt = B/g - (l-1)/g;
-        if(cnt>=2) chmax(ans, g);
+    LONG(N);
+    set<ll> st;
+    rep(i, N+1) st.insert(i);
+    rep(i, N) {
+        LONG(x);
+        st.erase(x);
+        ll ans = *st.begin();
+        Out(ans);
     }
-    Out(ans);
     
 }
 

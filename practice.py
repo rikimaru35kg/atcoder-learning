@@ -32,9 +32,8 @@ from collections import deque
 import math
 
 def main():
-    A,B,C=inints()
-    ans = A**(B**C)%10
-    print(ans)
+    S = instr()
+    print(S.count("ZONe"))
 
 if __name__ == '__main__':
     main()

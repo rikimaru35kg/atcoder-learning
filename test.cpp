@@ -197,47 +197,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N, A, B);
+    if(N-A-B<0) {
+        Out(0); return;
+    }
+    mint n2 = N-A-B, num = N-A-B+1;
+    mint x1 = mint(N-B+1)*(N-A+1)*(num*(num+1)/2);
+    mint x2 = (n2*(n2+1)/2)*(n2*(n2+1)/2) + 2*(n2*(n2+1)/2*num) + num*num;
+    // mint x2 = (num*(num+1)/2) * (num*(num+1)/2);
+    de(x1)de(x2)
+    mint ans = 4*x1 - 4*x2;
+    Out(ans);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(R, C);
-    VVL(A, R, C-1);
-    VVL(B, R-1, C);
-
-    vvvl dist(R, vvl(C, vl(2, INF)));
-    priority_queue<t4,vt4,greater<t4>> pque;
-    auto push=[&](ll i, ll j, ll k, ll d) {
-        if(dist[i][j][k]<=d) return;
-        dist[i][j][k] = d;
-        pque.emplace(d, i, j, k);
-    };
-    push(0, 0, 0, 0);
-    while(pque.size()) {
-        auto [d,i,j,k] = pque.top(); pque.pop();
-        if(dist[i][j][k]!=d) continue;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,R,C)) continue;
-            ll cost = 0;
-            ll nk = k;
-            if(nj>j) {
-                cost = A[i][j];
-                nk = 0;
-            } else if(nj<j) {
-                cost = A[i][j-1];
-                nk = 0;
-            } else if (ni>i) {
-                cost = B[i][j];
-                nk = 0;
-            } else {
-                if(k==0) cost = 2;
-                else cost = 1;
-                nk = 1;
-            }
-            push(ni,nj,nk,d+cost);
-        }
-    }
-    Out(min(dist[R-1][C-1][0],dist[R-1][C-1][1]));
+    LONG(T);
+    rep(i, T) solve();
     
 }
 

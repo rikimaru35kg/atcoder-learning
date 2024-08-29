@@ -1648,8 +1648,8 @@
 - S.substr(開始位置, 長さ)で部分文字列を取得可能。長さが後ろをはみ出しても大丈夫
 - regex_match(S, regex("正規表現"))で一致性を確認可能
 - ただし正規表現は遅い。計算量がシビアな問題ではなるべく使わない
-- S.find(s)は文字列sの含まれる最初の位置を出力。存在しない場合はnposを出力（sは文字でも可）
-- S.rfind(s)は文字列sが最後に含まれる位置を出力。存在しない場合はnposを出力
+- S.find(s)は文字列sの含まれる最初の位置を出力。存在しない場合はstring::npos(==-1)を出力（sは文字でも可）
+- S.rfind(s)は文字列sが最後に含まれる位置を出力。存在しない場合はstring::nposを出力
 - charをintに直すには'5'-'0'などとする
 - 文字列が連続している場合はランレングス圧縮が有効。余事象との組み合わせで、異なる文字が含まれる区間の場合の数も求められる
 - tolower(c)、toupper(c)で小文字、大文字変換が可能
@@ -1801,3 +1801,4 @@
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
 - [D - Decrease (Contestant ver.)](https://atcoder.jp/contests/abc068/tasks/arc079_b)
 - [A - ST and TS Palindrome](https://atcoder.jp/contests/arc155/tasks/arc155_a)
+- [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
