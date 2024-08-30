@@ -32,10 +32,8 @@ from collections import deque
 import math
 
 def main():
-    S = "ACL"
-    K = inint()
-    S = S*K
-    print(S)
+    N = instr()
+    print(N.count('2'))
 
 
 if __name__ == '__main__':

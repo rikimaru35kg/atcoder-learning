@@ -197,25 +197,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve(ll n) {
-    vl f(n+1);
-    for(ll x=1; x*x+2*x+3<=n; ++x) {
-    for(ll y=1; y*y+2*y+3<=n; ++y) {
-    for(ll z=1; z*z+2*z+3<=n; ++z) {
-        ll now = x*x + y*y + z*z + x*y + y*z + z*x;
-        if(now>n) continue;
-        f[now]++;
-    }}}
-    rep1(i, n) {
-        Out(f[i]);
-    }
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    solve(N);
+    LONG(A,B,K);
+    int taka = 1;
+    while(K--) {
+        if(taka) {
+            A /= 2;
+            B += A;
+        } else {
+            B /= 2;
+            A += B;
+        }
+        taka ^= 1;
+    }
+    printf("%lld %lld\n", A, B);
     
 }
 

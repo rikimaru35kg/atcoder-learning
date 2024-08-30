@@ -197,81 +197,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(X);
+    LONG(N);
+    VL(A, N);
+    sort(all(A));
+    ll ans = -INF;
+    rep(ri, 2) {
+        deque<ll> a(A);
+        ll v = N/2;
+        int dir = 0;
+        ll now = 0;
+        while(a.size()>1) {
+            ll nv = -1;
+            if(dir) nv = 0;
+            else nv = (ll)a.size()-1;
 
-    vl mem(N+10);
-    auto dfs=[&](auto f, ll x) -> ll {
-        if(x==0) return 0;
-        if(mem[x]!=0) return mem[x];
-        return mem[x] = f(f, x%pcnt(x)) + 1;
-    };
-    rep1(i, N) {
-        dfs(dfs, i);
-    }
-    ll cnt = 0;
-    for(auto c: X) if(c=='1') ++cnt;
-
-    vl ans(N);
-    {
-        mint::set_mod(cnt+1);
-        mint now=0;
-        vm two(N+1);
-        two[0] = 1;
-        rep(i, N) two[i+1] = two[i]*2;
-        rep(i, N) {
-            ll c = X[i]-'0';
-            now = now * 2 + c;
+            v = nv;
+            if(dir) a.pop_back
+            else ++l;
+            dir ^= 1;
         }
-        rep(i, N) {
-            if(X[i]=='1') continue;
-            mint cur = now;
-            cur += two[N-1-i];
-            ans[i] = mem[cur.val()] + 1;
-        }
-    }
-    if(cnt>1){
-        mint::set_mod(cnt-1);
-        mint now=0;
-        vm two(N+1);
-        two[0] = 1;
-        rep(i, N) two[i+1] = two[i]*2;
-        rep(i, N) {
-            ll c = X[i]-'0';
-            now = now * 2 + c;
-        }
-        rep(i, N) {
-            if(X[i]=='0') continue;
-            mint cur = now;
-            cur -= two[N-1-i];
-            ans[i] = mem[cur.val()] + 1;
-        }
-    }
-    if(cnt==1) {
-        rep(i, N) {
-            if(X[i]=='0') continue;
-            ans[i] = 0;
-        }
+        chmax(ans, now);
+        reverse(all(A));
     }
     Out(ans);
-
-
     
 }
 
