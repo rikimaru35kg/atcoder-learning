@@ -197,32 +197,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    sort(all(A));
-    ll ans = -INF;
-    rep(ri, 2) {
-        deque<ll> a(A);
-        ll v = N/2;
-        int dir = 0;
-        ll now = 0;
-        while(a.size()>1) {
-            ll nv = -1;
-            if(dir) nv = 0;
-            else nv = (ll)a.size()-1;
-
-            v = nv;
-            if(dir) a.pop_back
-            else ++l;
-            dir ^= 1;
-        }
-        chmax(ans, now);
-        reverse(all(A));
+    rep1(a, 3500) rep1(b, 3500) {
+        ll rhs = N*a*b;
+        ll lhs = 4*a*b - N*(a+b);
+        if(lhs<=0) continue;
+        if(rhs%lhs!=0) continue;
+        ll c = rhs/lhs;
+        printf("%lld %lld %lld\n", a, b, c);
+        return 0;
     }
-    Out(ans);
     
 }
 

@@ -200,19 +200,11 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A,B,K);
-    int taka = 1;
-    while(K--) {
-        if(taka) {
-            A /= 2;
-            B += A;
-        } else {
-            B /= 2;
-            A += B;
-        }
-        taka ^= 1;
-    }
-    printf("%lld %lld\n", A, B);
+    LONG(N);
+    VP(P, N);
+    sort(all(P));
+    auto [a,b] = P.back();
+    Out(a+b);
     
 }
 
