@@ -200,18 +200,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    map<ll,ll> mp;
-    rep(i, N) mp[A[i]]++;
-    vl cand;
-    ll ans = 0;
-    for(auto [k,v]: mp) {
-        if(v>=2) cand.push_back(k);
-        if(v>=4) chmax(ans, k*k);
+    LONG(H, W);
+    if(H%3==0 || W%3==0) Pm0
+
+    ll ans = INF;
+    rep(ri, 2) {
+        ll h3 = H/3;
+        ll mn = h3 * W;
+        ll mx = (h3+1) * W;
+        chmin(ans, mx-mn);
+        swap(H, W);
     }
-    ll M = SIZE(cand);
-    if(M>=2) chmax(ans, cand[M-1]*cand[M-2]);
+    auto diff=[&](ll x, ll y, ll z) -> ll {
+        ll v[3] = {x,y,z};
+        sort(v, v+3);
+        return v[2] - v[0];
+    };
+    rep(ri, 2) {
+        ll h2 = H/2;
+        for(ll w=1; w<W; ++w) {
+            ll mn = (W-w)*h2;
+            ll mx = mn;
+            if(h2*2!=H) { mx = (W-w)*(h2+1); }
+            ll now = diff(mn, mx, H*w);
+            chmin(ans, now);
+        }
+        swap(H, W);
+    }
     Out(ans);
     
 }

@@ -14,12 +14,11 @@ struct HeadK {
     };
     void del(long long x) {
         if(!ascending) x = -x;
-        if (stM.count(x)) {
+        if (stM.contains(x)) {
             stM.erase(stM.find(x));
         } else {
-            if (!stK.count(x)) return;
-            auto it = stK.find(x);
-            stK.erase(it);
+            if (!stK.contains(x)) return;
+            stK.erase(stK.find(x));
             sum -= x;
             while ((long long)stK.size()<K && stM.size()) {
                 auto it = stM.begin();

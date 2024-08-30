@@ -82,7 +82,7 @@ def tree_graph(N):
         print(*t)
 
 if __name__ == '__main__':
-    # N_An(5)
+    N_An(100000)
     # print("-------------------")
     # N_An_Bn(5, True)
     # print("-------------------")
@@ -90,5 +90,5 @@ if __name__ == '__main__':
     # print("-------------------")
     # N_M_graph(10, 9, True)
     # print("-------------------")
-    tree_graph(10)
+    # tree_graph(10)
 

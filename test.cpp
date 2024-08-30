@@ -197,52 +197,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct HeadK {
+    long long K, sum = 0;
+    bool ascending;
+    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        if(!ascending) x = -x;
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if(!ascending) x = -x;
+        if (stM.contains(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.contains(x)) return;
+            stK.erase(stK.find(x));
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
+        }
+    }
+    void decK(long long nk) { // decrease K size
+        K = nk;
+        KtoM();
+    }
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    }
+    long long get_sum() {
+        if(ascending) return sum;
+        else return -sum;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VS(S, 2);
-
-    mint ans = 1;
-    ll i = 0;
-    vl type;
-    while(i<N) {
-        if(i<N-1 && S[0][i]==S[0][i+1]) {  // yoko
-            type.push_back(0);
-            i += 2;
-        } else {
-            type.push_back(1);
-            ++i;
-        }
-    }
-    ll M = SIZE(type);
-    rep(i, M) {
-        if(i==0) {
-            if(type[i]==0) ans *= 6;
-            else ans *= 3;
-        } else {
-            if(type[i-1]==1 && type[i]==1) ans *= 2;
-            if(type[i-1]==0 && type[i]==1) ans *= 1;
-            if(type[i-1]==1 && type[i]==0) ans *= 2;
-            if(type[i-1]==0 && type[i]==0) ans *= 3;
-        }
+    VL(A, 3*N);
+    HeadK h1(N, false), h2(N, true);
+    rep(i, N) h1.add(A[i]);
+    repk(i, N, 3*N) h2.add(A[i]);
+    ll ans = -INF;
+    rep(i, N+1) {
+        ll l = h1.get_sum();
+        ll r = h2.get_sum();
+        de2(l, r)
+        chmax(ans, l-r);
+        if(i==N) break;
+        h1.add(A[i+N]);
+        h2.del(A[i+N]);
     }
     Out(ans);
     
 }
 
 // ### test.cpp ###
+
