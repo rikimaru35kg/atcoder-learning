@@ -1805,6 +1805,8 @@
 - [E - 潜入](https://atcoder.jp/contests/zone2021/tasks/zone2021_e)
 - [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
 - [C - 4/N](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_c)
+- [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
+- [D - Coloring Dominoes](https://atcoder.jp/contests/abc071/tasks/arc081_b)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

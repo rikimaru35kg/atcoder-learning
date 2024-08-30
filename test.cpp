@@ -197,27 +197,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl A(N), B(N);
-    rep(i, N) cin>>A[i]>>B[i];
-    ll ans = 0;
-    rep(i, N) {
-        if((A[i]&K)==A[i]) ans += B[i];
-    }
-    repr(d, 31) {
-        if(~K>>d&1) continue;
-        ll nk = K;
-        nk ^= 1LL<<d;
-        rep(di, d) nk |= 1LL<<di;
-        ll now = 0;
-        rep(i, N) {
-            if((A[i]&nk)==A[i]) now += B[i];
+    LONG(N);
+    VS(S, 2);
+
+    mint ans = 1;
+    ll i = 0;
+    vl type;
+    while(i<N) {
+        if(i<N-1 && S[0][i]==S[0][i+1]) {  // yoko
+            type.push_back(0);
+            i += 2;
+        } else {
+            type.push_back(1);
+            ++i;
         }
-        de2(d, now)
-        chmax(ans, now);
+    }
+    ll M = SIZE(type);
+    rep(i, M) {
+        if(i==0) {
+            if(type[i]==0) ans *= 6;
+            else ans *= 3;
+        } else {
+            if(type[i-1]==1 && type[i]==1) ans *= 2;
+            if(type[i-1]==0 && type[i]==1) ans *= 1;
+            if(type[i-1]==1 && type[i]==0) ans *= 2;
+            if(type[i-1]==0 && type[i]==0) ans *= 3;
+        }
     }
     Out(ans);
     

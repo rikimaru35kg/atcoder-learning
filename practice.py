@@ -33,7 +33,8 @@ import math
 
 def main():
     N = instr()
-    print(N.count('2'))
+    N = N[::2]
+    print(N)
 
 
 if __name__ == '__main__':
