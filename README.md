@@ -1033,6 +1033,12 @@
 - !復習価値高 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !要復習 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
 
+## OR
+- ORは各ビットの和集合
+- ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
+### 例題
+- [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
+
 ## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
 - Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
