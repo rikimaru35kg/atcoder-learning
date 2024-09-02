@@ -197,55 +197,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! no mod nCr
-//! return value shall be within long long range
-class Pascal {
-    int mx = 66;
-    vector<vector<long long>> comb;
-public:
-    Pascal () :comb(mx+1, vector<long long>(mx+1)) {
-        comb[0][0] = 1;
-        for (int i=0; i<mx; ++i) for (int j=0; j<=i; ++j) {
-            comb[i+1][j] += comb[i][j];
-            comb[i+1][j+1] += comb[i][j];
-        }
-    }
-    long long operator()(int n, int r) {
-        if (n < 0 || r < 0 || n < r) return 0;
-        if (n > mx) {
-            cout << "[ClassPascalError@nCr] n is too large (shall be <=66)" << endl;
-            assert(0);
-        }
-        return comb[n][r];
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, A, B);
-    VL(V, N);
-    sort(allr(V));
-    Pascal comb;
-    db mx = 0;
-    rep(i, A) mx += V[i];
-    mx /= A;
-    Out(mx);
-    if(V[0]==V[A-1]) {
-        ll cnt = 0;
-        rep(i, N) if(V[i]==V[0]) ++cnt;
-        ll ans = 0;
-        repk(i, A, B+1) {
-            ans += comb(cnt, i);
+    LONG(N);
+    STRING(S);
+    rep(a, 2) rep(b, 2) {
+        vl dp(N+2);
+        dp[0] = a;
+        dp[1] = b;
+        repk(i, 1, N+1) {
+            int ox = S[i%N]=='o'?0:1;
+            int xo = ox^dp[i];
+            dp[i+1] = xo^dp[i-1];
         }
-        Out(ans);
-    } else {
-        ll cntin = 0, cntout = 0;
-        rep(i, A) if(V[i]==V[A-1]) ++cntin;
-        rep(i, N) if(V[i]==V[A-1]) ++cntout;
-        ll ans = comb(cntout, cntin);
-        Out(ans);
+        if(dp[N]==a && dp[N+1]==b) {
+            string ans;
+            rep(i, N) ans += dp[i]==0?'S':'W';
+            Outend(ans);
+        }
     }
+    Out(-1);
     
 }
 

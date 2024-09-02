@@ -186,7 +186,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -197,59 +197,18 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    db x; ll n;
-    D(db x, ll n): x(x), n(n) {}
-
-    void upd(const D &o) {
-        if(o.x > x+EPS) x = o.x, n = o.n;
-        else if(abs(o.x-x)<=EPS) n += o.n;
-    }
-};
-using vD = vector<D>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, A, B);
-    VL(V, N);
-    ll vmax = *max_element(all(V));
-    ll keta = 0;
-    while(vmax) {
-        ++keta;
-        vmax /= 10;
-    }
-    // EPS = 1;
-    // rep(i, keta) EPS *= 10;
-    // rep(i, 14) EPS /= 10;
-    // de(EPS)
+    LONG(N, M);
+    ll ans = 0;
+    ll num = min(M/2, N);
 
-    D ans(-INF, 0);
-    repk(k, A, B+1) {
-        vD dp(k+1, D(-INF, 0));
-        vD edp = dp;
-        dp[0] = D(0, 1);
-        rep(i, N) {
-            vD pdp = edp; swap(pdp, dp);
-            rep(j, k+1) {
-                auto [x, n] = pdp[j];
-                if(x==-INF) continue;
-                { // no sel
-                    dp[j].upd(pdp[j]);
-                }
-                if(j<k) { // sel
-                    db nx = x + V[i];
-                    dp[j+1].upd(D(nx, n));
-                }
-            }
-        }
-        auto [mx, n] = dp[k];
-        mx /= k;
-        ans.upd(D(mx, n));
-    }
-    auto [mx, n] = ans;
-    Out(mx);
-    Out(n);
+    ans += num;
+    N -= num;
+    M -= 2*num;
+    ans += M/4;
+    Out(ans);
     
 }
 

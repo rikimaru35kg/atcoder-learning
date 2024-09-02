@@ -1484,6 +1484,7 @@
 ### 例題
 - !復習価値中 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
 - !復習価値低 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
+- !要復習 [D - Menagerie](https://atcoder.jp/contests/abc055/tasks/arc069_b)
 - !復習価値高 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)
 
 ## 不変量を見つける
