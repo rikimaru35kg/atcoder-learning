@@ -786,7 +786,8 @@
 - segtreeを使った方式を理解した方が応用が効く印象
 ### 例題
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
-- 復習価値低 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- !復習価値低 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+- !復習価値高 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
 - !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 桁DP（Digit DP）
@@ -1807,6 +1808,7 @@
 - [C - 4/N](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_c)
 - [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
 - [D - Coloring Dominoes](https://atcoder.jp/contests/abc071/tasks/arc081_b)
+- [D - Bonus EXP](https://atcoder.jp/contests/abc369/tasks/abc369_d)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
@@ -1814,3 +1816,5 @@
 - [D - Decrease (Contestant ver.)](https://atcoder.jp/contests/abc068/tasks/arc079_b)
 - [A - ST and TS Palindrome](https://atcoder.jp/contests/arc155/tasks/arc155_a)
 - [D - Anything Goes to Zero](https://atcoder.jp/contests/aising2020/tasks/aising2020_d)
+- [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
+- [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)

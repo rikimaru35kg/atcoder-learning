@@ -197,74 +197,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.contains(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.contains(x)) return;
-            stK.erase(stK.find(x));
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
+//! no mod nCr
+//! return value shall be within long long range
+class Pascal {
+    int mx = 66;
+    vector<vector<long long>> comb;
+public:
+    Pascal () :comb(mx+1, vector<long long>(mx+1)) {
+        comb[0][0] = 1;
+        for (int i=0; i<mx; ++i) for (int j=0; j<=i; ++j) {
+            comb[i+1][j] += comb[i][j];
+            comb[i+1][j+1] += comb[i][j];
         }
     }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
+    long long operator()(int n, int r) {
+        if (n < 0 || r < 0 || n < r) return 0;
+        if (n > mx) {
+            cout << "[ClassPascalError@nCr] n is too large (shall be <=66)" << endl;
+            assert(0);
         }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
+        return comb[n][r];
     }
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, 3*N);
-    HeadK h1(N, false), h2(N, true);
-    rep(i, N) h1.add(A[i]);
-    repk(i, N, 3*N) h2.add(A[i]);
-    ll ans = -INF;
-    rep(i, N+1) {
-        ll l = h1.get_sum();
-        ll r = h2.get_sum();
-        de2(l, r)
-        chmax(ans, l-r);
-        if(i==N) break;
-        h1.add(A[i+N]);
-        h2.del(A[i+N]);
+    LONG(N, A, B);
+    VL(V, N);
+    sort(allr(V));
+    Pascal comb;
+    db mx = 0;
+    rep(i, A) mx += V[i];
+    mx /= A;
+    Out(mx);
+    if(V[0]==V[A-1]) {
+        ll cnt = 0;
+        rep(i, N) if(V[i]==V[0]) ++cnt;
+        ll ans = 0;
+        repk(i, A, B+1) {
+            ans += comb(cnt, i);
+        }
+        Out(ans);
+    } else {
+        ll cntin = 0, cntout = 0;
+        rep(i, A) if(V[i]==V[A-1]) ++cntin;
+        rep(i, N) if(V[i]==V[A-1]) ++cntout;
+        ll ans = comb(cntout, cntin);
+        Out(ans);
     }
-    Out(ans);
     
 }
 
 // ### test.cpp ###
-
