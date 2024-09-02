@@ -197,47 +197,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Ma, Mb);
-    vt3 d1, d2;
+    LONG(N, K, L);
+    dsu road(N), train(N);
+    rep(i, K) {
+        LONGM(a, b);
+        road.merge(a, b);
+    }
+    rep(i, L) {
+        LONGM(a, b);
+        train.merge(a, b);
+    }
+    map<Pr,ll> mp;
     rep(i, N) {
-        LONG(a,b,c);
-        if(i%2==0) d1.emplace_back(a,b,c);
-        else d2.emplace_back(a,b,c);
+        ll rl = road.leader(i);
+        ll tl = train.leader(i);
+        mp[{rl,tl}]++;
     }
-
-    umap<ll,ll> mp1, mp2;
-    rep(ri, 2) {
-        ll N2 = SIZE(d1);
-        rep(s, 1<<N2) {
-            if(s==0) continue;
-            ll sa = 0, sb = 0, sc = 0;
-            rep(i, N2) {
-                auto [a,b,c] = d1[i];
-                if(s>>i&1) {
-                    sa += a, sb += b, sc += c;
-                }
-            }
-            ll x = sa*Mb - sb*Ma;
-            if(mp1.count(x)) chmin(mp1[x], sc);
-            else mp1[x] = sc;
-        }
-        swap(mp1, mp2);
-        swap(d1, d2);
+    vl ans;
+    rep(i, N) {
+        ll rl = road.leader(i);
+        ll tl = train.leader(i);
+        ans.push_back(mp[{rl,tl}]);
     }
-    de(mp1)de(mp2)
-
-    ll ans = INF;
-    for(auto [k,v]: mp1) {
-        if(!mp2.count(-k)) continue;
-        auto d = mp2[-k];
-        chmin(ans, v+d);
-    }
-    if(mp1.count(0)) chmin(ans, mp1[0]);
-    if(mp2.count(0)) chmin(ans, mp2[0]);
-
-    ch1(ans);
     Out(ans);
+    
 }
+
+// ### test.cpp ###

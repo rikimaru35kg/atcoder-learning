@@ -578,6 +578,7 @@
 - 発展的な重み付きUnion Findもある
 ### 例題
 - !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- !要復習 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
 - !復習価値中 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - !復習価値中 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
 - !要復習 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)

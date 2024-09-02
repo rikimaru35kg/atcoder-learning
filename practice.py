@@ -32,11 +32,10 @@ from collections import deque
 import math
 
 def main():
-    A,B=inints()
-    if(A>B): print("GREATER")
-    if(A<B): print("LESS")
-    if(A==B): print("EQUAL")
-    
+    c = instr()
+    lst = ['a','e','i','o','u']
+    if(c in lst): print("vowel")
+    else: print("consonant")
 
 
 if __name__ == '__main__':
