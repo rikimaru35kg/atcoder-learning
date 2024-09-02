@@ -1810,6 +1810,7 @@
 - [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
 - [D - Coloring Dominoes](https://atcoder.jp/contests/abc071/tasks/arc081_b)
 - [D - Bonus EXP](https://atcoder.jp/contests/abc369/tasks/abc369_d)
+- [D - Mixing Experiment](https://atcoder.jp/contests/abc054/tasks/abc054_d)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

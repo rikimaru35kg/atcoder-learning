@@ -200,25 +200,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    rep(a, 2) rep(b, 2) {
-        vl dp(N+2);
-        dp[0] = a;
-        dp[1] = b;
-        repk(i, 1, N+1) {
-            int ox = S[i%N]=='o'?0:1;
-            int xo = ox^dp[i];
-            dp[i+1] = xo^dp[i-1];
-        }
-        if(dp[N]==a && dp[N+1]==b) {
-            string ans;
-            rep(i, N) ans += dp[i]==0?'S':'W';
-            Outend(ans);
-        }
+    LONG(N, Ma, Mb);
+    vt3 d1, d2;
+    rep(i, N) {
+        LONG(a,b,c);
+        if(i%2==0) d1.emplace_back(a,b,c);
+        else d2.emplace_back(a,b,c);
     }
-    Out(-1);
-    
-}
 
-// ### test.cpp ###
+    umap<ll,ll> mp1, mp2;
+    rep(ri, 2) {
+        ll N2 = SIZE(d1);
+        rep(s, 1<<N2) {
+            if(s==0) continue;
+            ll sa = 0, sb = 0, sc = 0;
+            rep(i, N2) {
+                auto [a,b,c] = d1[i];
+                if(s>>i&1) {
+                    sa += a, sb += b, sc += c;
+                }
+            }
+            ll x = sa*Mb - sb*Ma;
+            if(mp1.count(x)) chmin(mp1[x], sc);
+            else mp1[x] = sc;
+        }
+        swap(mp1, mp2);
+        swap(d1, d2);
+    }
+    de(mp1)de(mp2)
+
+    ll ans = INF;
+    for(auto [k,v]: mp1) {
+        if(!mp2.count(-k)) continue;
+        auto d = mp2[-k];
+        chmin(ans, v+d);
+    }
+    if(mp1.count(0)) chmin(ans, mp1[0]);
+    if(mp2.count(0)) chmin(ans, mp2[0]);
+
+    ch1(ans);
+    Out(ans);
+}

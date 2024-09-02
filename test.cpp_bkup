@@ -201,14 +201,16 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    ll ans = 0;
-    ll num = min(M/2, N);
-
-    ans += num;
-    N -= num;
-    M -= 2*num;
-    ans += M/4;
-    Out(ans);
+    VS(A, N);
+    VS(B, M);
+    rep(i, N+1-M) rep(j, N+1-M) {
+        bool ok = true;
+        rep(a, M) rep(b, M) {
+            if(A[i+a][j+b]!=B[a][b]) ok = false;
+        }
+        if(ok) PYes
+    }
+    PNo
     
 }
 
