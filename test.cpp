@@ -197,35 +197,18 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, L);
-    dsu road(N), train(N);
-    rep(i, K) {
-        LONGM(a, b);
-        road.merge(a, b);
+    STRING(S);
+    ll N = SIZE(S);
+    if(S[0]==S.back()) {
+        if(N%2==0) puts("First");
+        else puts("Second");
+    } else {
+        if(N%2==1) puts("First");
+        else puts("Second");
     }
-    rep(i, L) {
-        LONGM(a, b);
-        train.merge(a, b);
-    }
-    map<Pr,ll> mp;
-    rep(i, N) {
-        ll rl = road.leader(i);
-        ll tl = train.leader(i);
-        mp[{rl,tl}]++;
-    }
-    vl ans;
-    rep(i, N) {
-        ll rl = road.leader(i);
-        ll tl = train.leader(i);
-        ans.push_back(mp[{rl,tl}]);
-    }
-    Out(ans);
     
 }
 

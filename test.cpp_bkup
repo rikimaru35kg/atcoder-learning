@@ -200,22 +200,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    ll M = 2;
-    vvb dp(N+50, vb(M));
-    dp[0][1] = true;
-    rep(i, N) {
-        rep(j, M) {
-            if(!dp[i][j]) continue;
-            if(S.substr(i, 5) == "erase") dp[i+5][0] = true;
-            if(S.substr(i, 5) == "dream") dp[i+5][0] = true;
-            if(S.substr(i, 6) == "eraser") dp[i+6][1] = true;
-            if(S.substr(i, 7) == "dreamer") dp[i+7][1] = true;
-            if(j==0 && S.substr(i, 2)=="er") dp[i+2][1] = true;
-        }
-    }
-    de(dp)
-    if(dp[N][0] || dp[N][1]) puts("YES");
-    else puts("NO");
+    LONG(a,b,x);
+    ll ans = Div(b,x)- Div(a-1,x);
+    Out(ans);
+    
 }
+
+// ### test.cpp ###

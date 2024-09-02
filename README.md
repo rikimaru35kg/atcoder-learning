@@ -1543,6 +1543,10 @@
 - !要復習 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - !復習価値高 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 
+## 最終形を考える
+### 例題
+- !要復習 [D - An Ordinary Game](https://atcoder.jp/contests/abc048/tasks/arc064_b)
+
 ## max(max())の形に帰着させる
 - maxの中にmaxがある形にできれば、簡単に解ける
 - 基本 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
