@@ -197,41 +197,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    ll M = 26;
-    vector<set<Pr>> st(M);
-    vl Sc(M);
-    rep(j, M) st[j].emplace(0, 0);
-
-    vp stck;
-    ll c = S[0] - 'a';
-    Sc[c]++;
-    rep(j, M) { stck.emplace_back(Sc[j]-1, 1); }
-
-    repk(i, 1, N) {
-        ll c = S[i]-'a';
-        Sc[c]++;
-        rep(j, M) {
-            auto it = st[j].lower_bound({2*Sc[j]-(i+1), -1});
-            if(it==st[j].begin()) continue;
-            else {
-                --it;
-                auto [s,l] = *it;
-                printf("%lld %lld\n", l+1, i+1);
-                return 0;
-            }
-        }
-
-        rep(j, M) st[j].insert(stck[j]);
-        stck = vp();
-        rep(j, M) stck.emplace_back(2*Sc[j]-(i+1), i+1);
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    puts("-1 -1");
 
+    vvm dp(N, vm(2, 1));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        mint both = 1, white = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            both *= dp[nv][0] + dp[nv][1];
+            white *= dp[nv][0];
+        }
+        dp[v][0] = both;
+        dp[v][1] = white;
+    };
+    dfs(dfs, 0);
+    mint ans = dp[0][0] + dp[0][1];
+    Out(ans);
     
 }
 
