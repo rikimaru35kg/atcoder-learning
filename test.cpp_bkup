@@ -200,22 +200,17 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll ans = 0;
-    ll N = SIZE(S);
-    ll M = SIZE(S)-1;
-    rep(s, 1<<M) {
+    LONG(N); VL(A, N);
+    auto p2=[&](ll x) {
+        return x*x;
+    };
+    ll ans = INF;
+    repk(x, -100, 101) {
         ll now = 0;
-        ll sum = 0;
         rep(i, N) {
-            now = now * 10 + S[i]-'0';
-            if(s>>i&1) {
-                sum += now;
-                now = 0;
-            }
+            now += p2(A[i]-x);
         }
-        sum += now;
-        ans += sum;
+        chmin(ans, now);
     }
     Out(ans);
     

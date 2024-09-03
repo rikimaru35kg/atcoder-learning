@@ -200,27 +200,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, N);
-    map<Pr,ll> mp;
-    rep(k, N) {
-        LONGM(a,b);
-        rep(i, 3) rep(j, 3) {
-            ll na = a + i, nb = b + j;
-            if(na>=H || nb>=W) continue;
-            if(na<=1 || nb<=1) continue;
-            mp[{na,nb}]++;
+    STRING(S);
+    ll N = SIZE(S);
+    ll M = 26;
+    vector<set<Pr>> st(M);
+    vl Sc(M);
+    rep(j, M) st[j].emplace(0, 0);
+
+    vp stck;
+    ll c = S[0] - 'a';
+    Sc[c]++;
+    rep(j, M) { stck.emplace_back(Sc[j]-1, 1); }
+
+    repk(i, 1, N) {
+        ll c = S[i]-'a';
+        Sc[c]++;
+        rep(j, M) {
+            auto it = st[j].lower_bound({2*Sc[j]-(i+1), -1});
+            if(it==st[j].begin()) continue;
+            else {
+                --it;
+                auto [s,l] = *it;
+                printf("%lld %lld\n", l+1, i+1);
+                return 0;
+            }
         }
+
+        rep(j, M) st[j].insert(stck[j]);
+        stck = vp();
+        rep(j, M) stck.emplace_back(2*Sc[j]-(i+1), i+1);
     }
-    vl ans(10);
-    for(auto [k,v]: mp) {
-        ans[v]++;
-    }
-    ll tot = 1;
-    tot *= H-3+1;
-    tot *= W-3+1;
-    rep1(i, 9) tot -= ans[i];
-    ans[0] = tot;
-    Out(ans);
+    puts("-1 -1");
+
     
 }
 

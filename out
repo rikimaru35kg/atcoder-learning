@@ -1,0 +1,91 @@
+In file included from /usr/include/c++/12/ext/alloc_traits.h:34,
+                 from /usr/include/c++/12/bits/basic_string.h:39,
+                 from /usr/include/c++/12/string:53,
+                 from /usr/include/c++/12/bits/locale_classes.h:40,
+                 from /usr/include/c++/12/bits/ios_base.h:41,
+                 from /usr/include/c++/12/ios:42,
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/sstream:38,
+                 from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = std::pair<long long int, long long int>; _Args = {long long int}; _Tp = std::pair<long long int, long long int>; allocator_type = std::allocator<std::pair<long long int, long long int> >]’:
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int}; _Tp = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int}; _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+test.cpp:215:30:   required from here
+/usr/include/c++/12/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(std::pair<long long int, long long int>*&, long long int)’
+  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
+      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_iterator.h:85,
+                 from /usr/include/c++/12/bits/stl_algobase.h:67,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
+   94 |     construct_at(_Tp* __location, _Args&&... __args)
+      |     ^~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = std::pair<long long int, long long int>; _Args = {long long int}]’:
+/usr/include/c++/12/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = std::pair<long long int, long long int>; _Args = {long long int}; _Tp = std::pair<long long int, long long int>; allocator_type = std::allocator<std::pair<long long int, long long int> >]’
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int}; _Tp = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int}; _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+test.cpp:215:30:   required from here
+/usr/include/c++/12/bits/stl_construct.h:96:17: error: no matching function for call to ‘std::pair<long long int, long long int>::pair(long long int)’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_algobase.h:64:
+/usr/include/c++/12/bits/stl_pair.h:297:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<_U1, _U2>() constexpr std::pair<_T1, _T2>::pair(std::pair<_U1, _U2>&&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  297 |         pair(pair<_U1, _U2>&& __p)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:297:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘long long int’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:288:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<const _U1&, const _U2&>() constexpr std::pair<_T1, _T2>::pair(const std::pair<_U1, _U2>&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  288 |         pair(const pair<_U1, _U2>& __p)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:288:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘const std::pair<_T1, _T2>’ and ‘long long int’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:279:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<_U1, _U2>() constexpr std::pair<_T1, _T2>::pair(_U1&&, _U2&&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  279 |         pair(_U1&& __x, _U2&& __y)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:279:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 2 arguments, 1 provided
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:217:9: note: candidate: ‘template<class ... _Args1, long unsigned int ..._Indexes1, class ... _Args2, long unsigned int ..._Indexes2> constexpr std::pair<_T1, _T2>::pair(std::tuple<_Args1 ...>&, std::tuple<_Args2 ...>&, std::_Index_tuple<_Indexes1 ...>, std::_Index_tuple<_Indexes2 ...>) [with _Args1 = {_Args1 ...}; long unsigned int ..._Indexes1 = {_Indexes1 ...}; _Args2 = {_Args2 ...}; long unsigned int ..._Indexes2 = {_Indexes2 ...}; _T1 = long long int; _T2 = long long int]’
+  217 |         pair(tuple<_Args1...>&, tuple<_Args2...>&,
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:217:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘long long int’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:200:9: note: candidate: ‘template<class ... _Args1, class ... _Args2> constexpr std::pair<_T1, _T2>::pair(std::piecewise_construct_t, std::tuple<_Args1 ...>, std::tuple<_Args2 ...>) [with _Args1 = {_Args1 ...}; _Args2 = {_Args2 ...}; _T1 = long long int; _T2 = long long int]’
+  200 |         pair(piecewise_construct_t, tuple<_Args1...>, tuple<_Args2...>);
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:200:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 3 arguments, 1 provided
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:269:7: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(const _T1&, const _T2&) requires  _S_constructible<const _T1&, const _T2&>() [with _T1 = long long int; _T2 = long long int]’
+  269 |       pair(const _T1& __x, const _T2& __y)
+      |       ^~~~
+/usr/include/c++/12/bits/stl_pair.h:269:7: note:   candidate expects 2 arguments, 1 provided
+/usr/include/c++/12/bits/stl_pair.h:228:7: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair() requires (is_default_constructible_v<_T1>) && (is_default_constructible_v<_T2>) [with _T1 = long long int; _T2 = long long int]’
+  228 |       pair()
+      |       ^~~~
+/usr/include/c++/12/bits/stl_pair.h:228:7: note:   candidate expects 0 arguments, 1 provided
+/usr/include/c++/12/bits/stl_pair.h:196:17: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(std::pair<_T1, _T2>&&) [with _T1 = long long int; _T2 = long long int]’
+  196 |       constexpr pair(pair&&) = default;         ///< Move constructor
+      |                 ^~~~
+/usr/include/c++/12/bits/stl_pair.h:196:22: note:   no known conversion for argument 1 from ‘long long int’ to ‘std::pair<long long int, long long int>&&’
+  196 |       constexpr pair(pair&&) = default;         ///< Move constructor
+      |                      ^~~~~~
+/usr/include/c++/12/bits/stl_pair.h:195:17: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(const std::pair<_T1, _T2>&) [with _T1 = long long int; _T2 = long long int]’
+  195 |       constexpr pair(const pair&) = default;    ///< Copy constructor
+      |                 ^~~~
+/usr/include/c++/12/bits/stl_pair.h:195:22: note:   no known conversion for argument 1 from ‘long long int’ to ‘const std::pair<long long int, long long int>&’
+  195 |       constexpr pair(const pair&) = default;    ///< Copy constructor
+      |                      ^~~~~~~~~~~
