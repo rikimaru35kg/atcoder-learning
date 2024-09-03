@@ -200,22 +200,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll p = 0;
-    ll ans = 0;
-    for(auto c: S) {
-        de(p)
-        char a = 'g';
-        if(p>0 && c=='g') a = 'p';
-        if(p>0 && c=='p') a = 'p';
-        if(c!=a) {
-            if(a=='g') --ans;
-            else ++ans;
+    LONG(H, W, N);
+    map<Pr,ll> mp;
+    rep(k, N) {
+        LONGM(a,b);
+        rep(i, 3) rep(j, 3) {
+            ll na = a + i, nb = b + j;
+            if(na>=H || nb>=W) continue;
+            if(na<=1 || nb<=1) continue;
+            mp[{na,nb}]++;
         }
-        if(a=='g') ++p;
-        else --p;
-        de(a)
     }
+    vl ans(10);
+    for(auto [k,v]: mp) {
+        ans[v]++;
+    }
+    ll tot = 1;
+    tot *= H-3+1;
+    tot *= W-3+1;
+    rep1(i, 9) tot -= ans[i];
+    ans[0] = tot;
     Out(ans);
     
 }

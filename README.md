@@ -1400,6 +1400,7 @@
 ## 投票方式で考える
 ### 例題
 - 基本 [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
+- 復習価値低 [D - すぬけ君の塗り絵](https://atcoder.jp/contests/abc045/tasks/arc061_b)
 - !復習価値中 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 
 ## 時系列順に処理する
