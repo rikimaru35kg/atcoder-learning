@@ -200,9 +200,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(a,b,x);
-    ll ans = Div(b,x)- Div(a-1,x);
-    Out(ans);
+    LONG(N);
+    vl T(N), A(N);
+    rep(i, N) cin>>T[i]>>A[i];
+    ll x = T[0], y = A[0];
+    repk(i, 1, N) {
+        ll t = T[i], a = A[i];
+        x = Divceil(x, t) * t;
+        y = Divceil(y, a) * a;
+        if(y<x/t*a) y = x/t*a;
+        if(x<y/a*t) x = y/a*t;
+    }
+    Out(x+y);
     
 }
 

@@ -201,14 +201,22 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     STRING(S);
-    ll N = SIZE(S);
-    if(S[0]==S.back()) {
-        if(N%2==0) puts("First");
-        else puts("Second");
-    } else {
-        if(N%2==1) puts("First");
-        else puts("Second");
+    ll p = 0;
+    ll ans = 0;
+    for(auto c: S) {
+        de(p)
+        char a = 'g';
+        if(p>0 && c=='g') a = 'p';
+        if(p>0 && c=='p') a = 'p';
+        if(c!=a) {
+            if(a=='g') --ans;
+            else ++ans;
+        }
+        if(a=='g') ++p;
+        else --p;
+        de(a)
     }
+    Out(ans);
     
 }
 
