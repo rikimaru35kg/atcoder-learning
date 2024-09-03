@@ -1,6 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+vector<string> split(string &s, char t) {
+    vector<string> ret; string now;
+    for(auto c: s) {
+        if(c==t) {
+            if(now.size()) ret.push_back(now);
+            now = "";
+        } else now += c;
+    }
+    if(now.size()) ret.push_back(now);
+    return ret;
+}
+
 vector<long long> z_algo(string s) {
     long long n = s.size();
     vector<long long> a(n);

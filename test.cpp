@@ -197,44 +197,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+vector<string> split(string &s, char t) {
+    vector<string> ret; string now;
+    for(auto c: s) {
+        if(c==t) {
+            if(now.size()) ret.push_back(now);
+            now = "";
+        } else now += c;
+    }
+    if(now.size()) ret.push_back(now);
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-
-    vvm dp(N, vm(2, 1));
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        mint both = 1, white = 1;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            both *= dp[nv][0] + dp[nv][1];
-            white *= dp[nv][0];
+    STRING(S);
+    vs sp = split(S, '+');
+    ll ans = 0;
+    for(auto s: sp) {
+        bool zero=false;
+        for(auto c: s) {
+            if(c=='0') zero=true;
         }
-        dp[v][0] = both;
-        dp[v][1] = white;
-    };
-    dfs(dfs, 0);
-    mint ans = dp[0][0] + dp[0][1];
+        if(!zero) ++ans;
+    }
     Out(ans);
     
 }

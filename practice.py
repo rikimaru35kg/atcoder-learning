@@ -32,10 +32,13 @@ from collections import deque
 import math
 
 def main():
-    c = instr()
-    lst = ['a','e','i','o','u']
-    if(c in lst): print("vowel")
-    else: print("consonant")
+    S = instr()
+    lst = S.split('+')
+    ans = 0
+    for x in lst:
+        v = eval(x)
+        if(v != 0): ans += 1
+    print(ans)
 
 
 if __name__ == '__main__':
