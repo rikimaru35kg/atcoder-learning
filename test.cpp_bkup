@@ -197,50 +197,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-int main () {
-    // ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    LONG(N, M, T);
-    VL(A, N);
-    vvp from(N), ifrom(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        ifrom[b].emplace_back(a, c);
+void solveN(ll N, ll M, vl &V, vl &W) {
+    vl v1, v2, w1, w2;
+    rep(i, N) {
+        if(i%2==0) v1.push_back(V[i]), w1.push_back(W[i]);
+        if(i%2==1) v2.push_back(V[i]), w2.push_back(W[i]);
     }
+    if(N%2==1) v2.push_back(0), w2.push_back(0);
+    ll N2 = (N+1)/2;
 
-    auto dijk=[&](vvp &from) -> vl {
-        vl dist(N, INF);
-        pq pque;
-        auto push=[&](ll v, ll d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            pque.emplace(d, v);
-        };
-        push(0, 0);
-        while(pque.size()) {
-            auto [d, v] = pque.top(); pque.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv, c]: from[v]) {
-                push(nv, d+c);
+    auto calc=[&](vl &v, vl &w) -> vp {
+        vp ret;
+        rep(s, 1<<N2) {
+            ll vnow = 0, wnow = 0;
+            rep(i, N2) if(s>>i&1) {
+                vnow += v[i];
+                wnow += w[i];
             }
+            ret.emplace_back(wnow, vnow);
         }
-        return dist;
+        return ret;
     };
 
-    auto dist1 = dijk(from);
-    auto dist2 = dijk(ifrom);
-
+    vp p1 = calc(v1, w1);
+    vp p2 = calc(v2, w2);
+    sort(allr(p1)); sort(allr(p2));
     ll ans = 0;
-    rep(i, N) {
-        ll sum = dist1[i] + dist2[i];
-        ll rem = T - sum;
-        if(rem<=0) continue;
-        ll now = A[i]*rem;
+    ll mx = 0;
+    for(auto [w1,v1]: p1) {
+        if(w1>M) continue;
+        while(p2.size() && w1+p2.back().first<=M) {
+            auto [w2,v2] = p2.back(); p2.pop_back();
+            chmax(mx, v2);
+        }
+        ll now = v1 + mx;
         chmax(ans, now);
     }
     Out(ans);
-    
+}
+
+void solveV(ll N, ll M, vl &V, vl &W) {
+    ll Vmax = 1000*N;
+    vl dp(Vmax+1, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        repr(j, Vmax+1) {
+            if(dp[j]==INF) continue;
+            chmin(dp[j+V[i]], dp[j]+W[i]);
+        }
+    }
+    ll ans = 0;
+    rep(j, Vmax+1) if(dp[j]<=M) {
+        chmax(ans, j);
+    }
+    Out(ans);
+
+}
+
+void solveW(ll N, ll M, vl &V, vl &W) {
+    vl dp(M+1, -INF);
+    dp[0] = 0;
+    rep(i, N) {
+        repr(j, M+1) {
+            if(dp[j]==-INF) continue;
+            if(j+W[i]<=M) chmax(dp[j+W[i]], dp[j]+V[i]);
+        }
+    }
+    ll ans = -INF;
+    rep(j, M+1) chmax(ans, dp[j]);
+    Out(ans);
+}
+int main () {
+    // ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    LONG(N, M);
+    vl V(N), W(N);
+    rep(i, N) cin>>V[i]>>W[i];
+
+    ll vmax = *max_element(all(V));
+    ll wmax = *max_element(all(W));
+
+    if(N<=30) solveN(N, M, V, W);
+    else if(vmax<=1000) solveV(N, M, V, W);
+    else if(wmax<=1000) solveW(N, M, V, W);
     
 }
 

@@ -197,32 +197,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> split(string &s, char t) {
-    vector<string> ret; string now;
-    for(auto c: s) {
-        if(c==t) {
-            if(now.size()) ret.push_back(now);
-            now = "";
-        } else now += c;
-    }
-    if(now.size()) ret.push_back(now);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    vs sp = split(S, '+');
-    ll ans = 0;
-    for(auto s: sp) {
-        bool zero=false;
-        for(auto c: s) {
-            if(c=='0') zero=true;
+    LONG(N); VL(A, N);
+
+    vl S0(N+1), S1(N+1);
+    rep(i, N) {
+        if(i%2==0) S0[i+1] += A[i];
+        else S1[i+1] += A[i];
+    }
+    rep(i, N) S0[i+1] += S0[i];
+    rep(i, N) S1[i+1] += S1[i];
+    de(S0)de(S1)
+
+    ll ans = -INF;
+    rep(i, N) {
+        Pr mx(-INF, INF);
+        rep(j, i) {
+            ll sum = 0;
+            if(j%2==0) sum = S1[i+1] - S1[j];
+            else sum = S0[i+1] - S0[j];
+            chmax(mx, Pr(sum, -j));
         }
-        if(!zero) ++ans;
+        repk(j, i+1, N) {
+            ll sum = 0;
+            if(i%2==0) sum = S1[j+1] - S1[i];
+            else sum = S0[j+1] - S0[i];
+            chmax(mx, Pr(sum, -j));
+        }
+        ll l = i, r = -mx.second;
+        if(l>r) swap(l, r);
+        ll now = 0;
+        if(l%2==0) now = S0[r+1] - S0[l];
+        else now = S1[r+1] - S1[l];
+        de4(i, l, r, now)
+        chmax(ans, now);
     }
     Out(ans);
+
     
 }
 

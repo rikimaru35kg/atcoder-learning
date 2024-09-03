@@ -1829,3 +1829,4 @@
 - [D - Anything Goes to Zero](https://atcoder.jp/contests/aising2020/tasks/aising2020_d)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
+- [C - 数列ゲーム](https://atcoder.jp/contests/abc031/tasks/abc031_c)
