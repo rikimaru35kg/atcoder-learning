@@ -200,6 +200,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N); STRING(Str);
+    deque<char> S;
+    for(auto c: Str) S.push_back(c);
+
+    deque<char> now;
+    now.push_back('b');
+    ll idx = 0;
+    while(SIZE(now)<=N) {
+        de(now)
+        if(now==S) Outend(idx);
+        ++idx;
+        if(idx%3==0) now.push_back('b'), now.push_front('b');
+        else if(idx%3==1) now.push_front('a'), now.push_back('c');
+        else if(idx%3==2) now.push_front('c'), now.push_back('a');
+    }
+    Pm1
     
 }
 

@@ -200,35 +200,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    vl A;
-    for(auto c: S) A.push_back(c-'0');
-    ll N = SIZE(A);
+    LONG(R, C, K);
+    LONG(N);
+    ll M = 1e6+10;
+    umap<ll,ll> row, col;
+    vvl csbyrow(M);
+    rep(i, N) {
+        LONG(r, c);
+        row[r]++, col[c]++;
+        csbyrow[r].push_back(c);
+    }
+    ll rcnt = SIZE(row), ccnt = SIZE(col);
 
-    vl ten(15);
-    ten[0] = 1;
-    rep(i, 14) ten[i+1] = ten[i] * 10;
+    umap<ll,ll> cnt;
+    for(auto [k,v]: col) { cnt[v]++; }
+    cnt[0] = C - ccnt;
+    de(row)de(col)de(cnt)
 
     ll ans = 0;
-    rep(i, N) {
-        ll upper = 0;
-        for(ll j=0; j<i; ++j) { upper = upper * 10 + A[j]; }
-        ll lower = 0;
-        for(ll j=i+1; j<N; ++j) { lower = lower * 10 + A[j]; }
-        de2(upper, lower)
+    for(auto [r,x]: row) {
+        if(x>K) continue;
         ll now = 0;
-        if (A[i]==0) {
-            now = upper * ten[N-1-i];
-        } else if(A[i]!=1) {
-            now = (upper+1) * ten[N-1-i];
-        } else {
-            now = upper * ten[N-1-i];
-            now += lower+1;
+        for(auto c: csbyrow[r]) { cnt[col[c]]--; }
+        now += cnt[K-x];
+        for(auto c: csbyrow[r]) { cnt[col[c]]++; }
+
+        for(auto c: csbyrow[r]) {
+            if(col[c]==K-x+1) ++now;
         }
-        de(now)
         ans += now;
     }
+    de(ans)
+    // row 0 sum
+    de2(rcnt, cnt[K])
+    ans += (R-rcnt) * cnt[K];
+
     Out(ans);
+
+
     
 }
 
