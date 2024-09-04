@@ -197,47 +197,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+using prd = pair<db,db>;
+
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(R, C, K);
     LONG(N);
-    ll M = 1e6+10;
-    umap<ll,ll> row, col;
-    vvl csbyrow(M);
-    rep(i, N) {
-        LONG(r, c);
-        row[r]++, col[c]++;
-        csbyrow[r].push_back(c);
-    }
-    ll rcnt = SIZE(row), ccnt = SIZE(col);
-
-    umap<ll,ll> cnt;
-    for(auto [k,v]: col) { cnt[v]++; }
-    cnt[0] = C - ccnt;
-    de(row)de(col)de(cnt)
-
-    ll ans = 0;
-    for(auto [r,x]: row) {
-        if(x>K) continue;
-        ll now = 0;
-        for(auto c: csbyrow[r]) { cnt[col[c]]--; }
-        now += cnt[K-x];
-        for(auto c: csbyrow[r]) { cnt[col[c]]++; }
-
-        for(auto c: csbyrow[r]) {
-            if(col[c]==K-x+1) ++now;
+    VP(A, N);
+    VP(B, N);
+    auto center=[&](vp A) -> prd {
+        prd ac;
+        rep(i, N) {
+            ac.first += A[i].first;
+            ac.second += A[i].second;
         }
-        ans += now;
-    }
-    de(ans)
-    // row 0 sum
-    de2(rcnt, cnt[K])
-    ans += (R-rcnt) * cnt[K];
+        ac.first /= N;
+        ac.second /= N;
+        return ac;
+    };
 
-    Out(ans);
+    auto far=[&](prd c, vp &A) -> db {
+        db ret = 0;
+        rep(i, N) {
+            chmax(ret, euclid_distd(A[i], c));
+        }
+        return ret;
+    };
 
+    auto ac = center(A), bc = center(B);
 
+    db a = far(ac, A), b = far(bc, B);
+    Out(b/a);
     
 }
 
