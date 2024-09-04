@@ -1074,6 +1074,7 @@
 ### 例題
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
 - !復習価値高 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
+- !復習価値高 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
 - !要復習 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
 - !復習価値高 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)

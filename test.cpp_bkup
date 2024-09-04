@@ -200,23 +200,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M); LONG(X, Y);
-    VL(A, N); VL(B, M);
-    reverse(all(A)); reverse(all(B));
-
-    ll t = 0;
-    ll ans = 0;
-    while(A.size() && B.size()) {
-        while(A.size() && A.back()<t) A.pop_back();
-        if(!A.size()) break;
-        t = A.back() + X;
-
-        while(B.size() && B.back()<t) B.pop_back();
-        if(!B.size()) break;
-        t = B.back() + Y;
-        ++ans;
-    }
-    Out(ans);
     
 }
 

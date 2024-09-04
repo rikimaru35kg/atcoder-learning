@@ -200,55 +200,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X); --X;
-    STRING(K);
-    VLM(A, N);
+    STRING(S);
+    vl A;
+    for(auto c: S) A.push_back(c-'0');
+    ll N = SIZE(A);
 
-    if(SIZE(K)<=18) {
-        ll Z = SIZE(K);
-        ll k = 0;
-        rep(i, Z) k = k*10 + K[i]-'0';
+    vl ten(15);
+    ten[0] = 1;
+    rep(i, 14) ten[i+1] = ten[i] * 10;
 
-        ll M = 62;
-        vvl to(M, vl(N, -1));
-        rep(i, N) { to[0][i] = A[i]; }
-
-        rep(j, M-1) rep(i, N) {
-            to[j+1][i] = to[j][to[j][i]];
+    ll ans = 0;
+    rep(i, N) {
+        ll upper = 0;
+        for(ll j=0; j<i; ++j) { upper = upper * 10 + A[j]; }
+        ll lower = 0;
+        for(ll j=i+1; j<N; ++j) { lower = lower * 10 + A[j]; }
+        de2(upper, lower)
+        ll now = 0;
+        if (A[i]==0) {
+            now = upper * ten[N-1-i];
+        } else if(A[i]!=1) {
+            now = (upper+1) * ten[N-1-i];
+        } else {
+            now = upper * ten[N-1-i];
+            now += lower+1;
         }
-
-        rep(i, M) {
-            if(k>>i&1) X = to[i][X];
-        }
-        Out(X+1);
-        return 0;
+        de(now)
+        ans += now;
     }
-
-    ll v = X;
-    vl stck;
-    vl ord(N, -1);
-    ll len = 0;
-    while(ord[v]==-1) {
-        stck.push_back(v);
-        ord[v] = len++;
-        v = A[v];
-    }
-    de(stck)de(v)de(len)de(ord)
-    ll cycle = SIZE(stck) - ord[v];
-    de(cycle)
-
-    ll k = 0;
-    ll Z = SIZE(K);
-    rep(i, Z) {
-        k = (k*10 + K[i]-'0') % cycle;
-    }
-    k  = ((k-N)%cycle + cycle) % cycle;
-    k += N;
-    v = X;
-    rep(i, k) {
-        v = A[v];
-    }
-    Out(v+1);
+    Out(ans);
     
 }
 

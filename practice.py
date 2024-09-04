@@ -28,17 +28,20 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 from collections import deque
+from math import *
 
-import math
+ans = []
+def dfs(s, N):
+    if(len(s)==N): ans.append(s); return
+    for x in ['a','b','c']:
+        ns = s+x
+        dfs(ns, N)
 
 def main():
-    S = instr()
-    lst = S.split('+')
-    ans = 0
-    for x in lst:
-        v = eval(x)
-        if(v != 0): ans += 1
-    print(ans)
+    N = inint()
+    dfs("", N)
+    for s in ans:
+        print(s)
 
 
 if __name__ == '__main__':
