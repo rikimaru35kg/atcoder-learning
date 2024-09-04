@@ -197,89 +197,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solveN(ll N, ll M, vl &V, vl &W) {
-    vl v1, v2, w1, w2;
-    rep(i, N) {
-        if(i%2==0) v1.push_back(V[i]), w1.push_back(W[i]);
-        if(i%2==1) v2.push_back(V[i]), w2.push_back(W[i]);
-    }
-    if(N%2==1) v2.push_back(0), w2.push_back(0);
-    ll N2 = (N+1)/2;
-
-    auto calc=[&](vl &v, vl &w) -> vp {
-        vp ret;
-        rep(s, 1<<N2) {
-            ll vnow = 0, wnow = 0;
-            rep(i, N2) if(s>>i&1) {
-                vnow += v[i];
-                wnow += w[i];
-            }
-            ret.emplace_back(wnow, vnow);
-        }
-        return ret;
-    };
-
-    vp p1 = calc(v1, w1);
-    vp p2 = calc(v2, w2);
-    sort(allr(p1)); sort(allr(p2));
-    ll ans = 0;
-    ll mx = 0;
-    for(auto [w1,v1]: p1) {
-        if(w1>M) continue;
-        while(p2.size() && w1+p2.back().first<=M) {
-            auto [w2,v2] = p2.back(); p2.pop_back();
-            chmax(mx, v2);
-        }
-        ll now = v1 + mx;
-        chmax(ans, now);
-    }
-    Out(ans);
-}
-
-void solveV(ll N, ll M, vl &V, vl &W) {
-    ll Vmax = 1000*N;
-    vl dp(Vmax+1, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        repr(j, Vmax+1) {
-            if(dp[j]==INF) continue;
-            chmin(dp[j+V[i]], dp[j]+W[i]);
-        }
-    }
-    ll ans = 0;
-    rep(j, Vmax+1) if(dp[j]<=M) {
-        chmax(ans, j);
-    }
-    Out(ans);
-
-}
-
-void solveW(ll N, ll M, vl &V, vl &W) {
-    vl dp(M+1, -INF);
-    dp[0] = 0;
-    rep(i, N) {
-        repr(j, M+1) {
-            if(dp[j]==-INF) continue;
-            if(j+W[i]<=M) chmax(dp[j+W[i]], dp[j]+V[i]);
-        }
-    }
-    ll ans = -INF;
-    rep(j, M+1) chmax(ans, dp[j]);
-    Out(ans);
-}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl V(N), W(N);
-    rep(i, N) cin>>V[i]>>W[i];
+    LONG(N, M); LONG(X, Y);
+    VL(A, N); VL(B, M);
+    reverse(all(A)); reverse(all(B));
 
-    ll vmax = *max_element(all(V));
-    ll wmax = *max_element(all(W));
+    ll t = 0;
+    ll ans = 0;
+    while(A.size() && B.size()) {
+        while(A.size() && A.back()<t) A.pop_back();
+        if(!A.size()) break;
+        t = A.back() + X;
 
-    if(N<=30) solveN(N, M, V, W);
-    else if(vmax<=1000) solveV(N, M, V, W);
-    else if(wmax<=1000) solveW(N, M, V, W);
+        while(B.size() && B.back()<t) B.pop_back();
+        if(!B.size()) break;
+        t = B.back() + Y;
+        ++ans;
+    }
+    Out(ans);
     
 }
 

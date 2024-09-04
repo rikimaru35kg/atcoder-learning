@@ -200,42 +200,55 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
+    LONG(N, X); --X;
+    STRING(K);
+    VLM(A, N);
 
-    vl S0(N+1), S1(N+1);
-    rep(i, N) {
-        if(i%2==0) S0[i+1] += A[i];
-        else S1[i+1] += A[i];
-    }
-    rep(i, N) S0[i+1] += S0[i];
-    rep(i, N) S1[i+1] += S1[i];
-    de(S0)de(S1)
+    if(SIZE(K)<=18) {
+        ll Z = SIZE(K);
+        ll k = 0;
+        rep(i, Z) k = k*10 + K[i]-'0';
 
-    ll ans = -INF;
-    rep(i, N) {
-        Pr mx(-INF, INF);
-        rep(j, i) {
-            ll sum = 0;
-            if(j%2==0) sum = S1[i+1] - S1[j];
-            else sum = S0[i+1] - S0[j];
-            chmax(mx, Pr(sum, -j));
+        ll M = 62;
+        vvl to(M, vl(N, -1));
+        rep(i, N) { to[0][i] = A[i]; }
+
+        rep(j, M-1) rep(i, N) {
+            to[j+1][i] = to[j][to[j][i]];
         }
-        repk(j, i+1, N) {
-            ll sum = 0;
-            if(i%2==0) sum = S1[j+1] - S1[i];
-            else sum = S0[j+1] - S0[i];
-            chmax(mx, Pr(sum, -j));
-        }
-        ll l = i, r = -mx.second;
-        if(l>r) swap(l, r);
-        ll now = 0;
-        if(l%2==0) now = S0[r+1] - S0[l];
-        else now = S1[r+1] - S1[l];
-        de4(i, l, r, now)
-        chmax(ans, now);
-    }
-    Out(ans);
 
+        rep(i, M) {
+            if(k>>i&1) X = to[i][X];
+        }
+        Out(X+1);
+        return 0;
+    }
+
+    ll v = X;
+    vl stck;
+    vl ord(N, -1);
+    ll len = 0;
+    while(ord[v]==-1) {
+        stck.push_back(v);
+        ord[v] = len++;
+        v = A[v];
+    }
+    de(stck)de(v)de(len)de(ord)
+    ll cycle = SIZE(stck) - ord[v];
+    de(cycle)
+
+    ll k = 0;
+    ll Z = SIZE(K);
+    rep(i, Z) {
+        k = (k*10 + K[i]-'0') % cycle;
+    }
+    k  = ((k-N)%cycle + cycle) % cycle;
+    k += N;
+    v = X;
+    rep(i, k) {
+        v = A[v];
+    }
+    Out(v+1);
     
 }
 
