@@ -999,6 +999,7 @@
 ### 例題
 - 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - !復習価値中 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+- !要復習 括弧列内文字反転 [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 
 ## Suffix Array
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）

@@ -30,18 +30,10 @@ INF = int(3e18)
 from collections import deque
 from math import *
 
-ans = []
-def dfs(s, N):
-    if(len(s)==N): ans.append(s); return
-    for x in ['a','b','c']:
-        ns = s+x
-        dfs(ns, N)
 
 def main():
-    N = inint()
-    dfs("", N)
-    for s in ans:
-        print(s)
+    a,b = instrs()
+    print(eval(a+b)*2)
 
 
 if __name__ == '__main__':

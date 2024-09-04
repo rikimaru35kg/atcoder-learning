@@ -197,48 +197,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using prd = pair<db,db>;
-
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+// !Lazy Segtree for affine transformation
+// Edit here --> 
+using S = ll;
+S op(S a, S b) {return a+b;}
+S e() {return 0;}
+// <-- Edit here
+struct F {
+    ll a, b;
+    F(ll a, ll b):a(a), b(b) {}
+};
+S mapping(F f, S x) {
+    return f.a*x + f.b;
 }
+F composition(F f, F g) {
+    return F(f.a*g.a, f.a*g.b+f.b);
+}
+F id() {return F(1,0);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    STRING(Str);
+    ll M = SIZE(Str);
     LONG(N);
-    VP(A, N);
-    VP(B, N);
-    auto center=[&](vp A) -> prd {
-        prd ac;
-        rep(i, N) {
-            ac.first += A[i].first;
-            ac.second += A[i].second;
+
+
+    vector<S> v(M);
+    rep(i, M) v[i] = i;
+    de(v)
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, M) {
+            cerr<< seg.get(i)  <<' ';
         }
-        ac.first /= N;
-        ac.second /= N;
-        return ac;
+        cerr<<endl;
+    #endif
     };
-
-    auto far=[&](prd c, vp &A) -> db {
-        db ret = 0;
-        rep(i, N) {
-            chmax(ret, euclid_distd(A[i], c));
-        }
-        return ret;
-    };
-
-    auto ac = center(A), bc = center(B);
-
-    db a = far(ac, A), b = far(bc, B);
-    Out(b/a);
+    rep(i, N) {
+        LONG(l, r); --l, --r;
+        de2(l,r)
+        seg.apply(l, r+1, F(-1, r+l));
+        dprint();
+    }
+    string ans(M, '.');
+    rep(i, M) {
+        ll ni = seg.get(i);
+        de2(i, ni)
+        ans[ni] = Str[i];
+    }
+    Out(ans);
     
 }
 
