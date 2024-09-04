@@ -200,16 +200,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    vp p(3);
-    rep(i, 3) cin>>p[i].first;
-    rep(i, 3) p[i].second = i;
-    sort(allr(p));
-
-    vl ans(3);
-    rep(i, 3) {
-        ans[p[i].second] = i+1;
-    }
-    for(auto x: ans) Out(x);
+    STRING(S);
+    regex re("(ch|o|k|u)+");
+    if(regex_match(S, re)) puts("YES");
+    else puts("NO");
     
 }
 

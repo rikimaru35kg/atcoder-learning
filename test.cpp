@@ -197,60 +197,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-// !Lazy Segtree for affine transformation
-// Edit here --> 
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e() {return 0;}
-// <-- Edit here
-struct F {
-    ll a, b;
-    F(ll a, ll b):a(a), b(b) {}
-};
-S mapping(F f, S x) {
-    return f.a*x + f.b;
-}
-F composition(F f, F g) {
-    return F(f.a*g.a, f.a*g.b+f.b);
-}
-F id() {return F(1,0);}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    ll M = SIZE(Str);
-    LONG(N);
-
-
-    vector<S> v(M);
-    rep(i, M) v[i] = i;
-    de(v)
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-
-    auto dprint=[&](){
-    #ifdef __DEBUG
-        rep(i, M) {
-            cerr<< seg.get(i)  <<' ';
-        }
-        cerr<<endl;
-    #endif
-    };
+    LONG(N, M);
+    vl L(N), R(N), S(N);
+    rep(i, N) cin>>L[i]>>R[i]>>S[i];
+    rep(i, N) L[i]--;
+    ll tot = accumulate(all(S), 0LL);
+    vl imos(M+1);
     rep(i, N) {
-        LONG(l, r); --l, --r;
-        de2(l,r)
-        seg.apply(l, r+1, F(-1, r+l));
-        dprint();
+        imos[L[i]] += S[i];
+        imos[R[i]] -= S[i];
     }
-    string ans(M, '.');
-    rep(i, M) {
-        ll ni = seg.get(i);
-        de2(i, ni)
-        ans[ni] = Str[i];
-    }
-    Out(ans);
+    rep(i, M) imos[i+1] += imos[i];
+
+    ll mn = INF;
+    rep(i, M) chmin(mn, imos[i]);
+    de(mn)
+
+    Out(tot-mn);
+
     
 }
 

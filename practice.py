@@ -30,10 +30,15 @@ INF = int(3e18)
 from collections import deque
 from math import *
 
+import re
+
 
 def main():
-    a,b = instrs()
-    print(eval(a+b)*2)
+    S = instr()
+    m = re.fullmatch(r"(ch|o|k|u)+", S)
+    if(m): print("YES")
+    else: print("NO")
+
 
 
 if __name__ == '__main__':

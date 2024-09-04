@@ -1835,3 +1835,4 @@
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
 - [C - 数列ゲーム](https://atcoder.jp/contests/abc031/tasks/abc031_c)
+- [C - ハイスコア](https://atcoder.jp/contests/abc017/tasks/abc017_3)
