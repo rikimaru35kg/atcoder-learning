@@ -200,29 +200,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, H);
-    LONG(A,B,C,D,E);
+    LONG(N, D, X, Y);
+    X = abs(X), Y = abs(Y);
+    if(X%D!=0 || Y%D!=0) Pm0
+    X /= D, Y /= D;
+    if(X+Y>N) Pm0
 
-    ll ans = INF;
-    rep(e, N+1) {
-        ll z = e*E-H+1;
-        if(z<=0) z = 0;
-        ll p = N-e;
-        ll x = 0;
-        if(z-p*D<=0) x = 0;
-        else {
-            x = Divceil(z-p*D, B-D);
-        }
-        ll y = p-x;
-        de4(e,z,x,y)
-        if(x>p) continue;
-        if(x*B + y*D < z) continue;
-        ll now = x*A + y*C;
-        de(now)
-        chmin(ans, now);
+    vvd nCr(N+1, vd(N+1));
+    nCr[0][0] = 1;
+    rep(n, N) rep(r, N) {
+        nCr[n+1][r] += nCr[n][r]/2;
+        nCr[n+1][r+1] += nCr[n][r]/2;
+    }
+
+    auto calc=[&](ll x, ll X) -> db {
+        if(x%2 != X%2) return 0;
+        ll r = (x+X)/2;
+        return nCr[x][r];
+    };
+
+    db ans = 0;
+    rep(x, N+1) {
+        ll y = N - x;
+        if(y<0) break;
+        db now = calc(x, X);
+        now *= calc(y, Y);
+        now *= nCr[N][x];
+        ans += now;
     }
     Out(ans);
-    
-}
 
-// ### test.cpp ###
+
+}

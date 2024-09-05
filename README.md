@@ -1278,8 +1278,9 @@
 ### 例題
 - 基本 [D - Nowhere P](https://atcoder.jp/contests/jsc2021/tasks/jsc2021_d)
 - !要復習 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
+- !要復習 N回後(X,Y)にいる確率 [D - 大ジャンプ](https://atcoder.jp/contests/abc011/tasks/abc011_4)
 
-## 期待値
+## 確率・期待値
 - 期待値にも確率と同様に漸化式が成立する（dpで解ける問題があるという事）
 - 期待値DPの場合、何を状態として持つべきか良く考える事（表を書いてみると良い）
 - ゴールするまでの回数の期待値などは、後ろから考えると良い

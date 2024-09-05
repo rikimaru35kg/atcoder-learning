@@ -200,9 +200,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(a, b);
-    if(a>b) swap(a,b);
-    Out(min(b-a, 10-(b-a)));
+    LONG(N); VL(ng, 3);
+
+    ll M = 100;
+    vvb mem(N+1, vb(M+1));
+    vvb used(N+1, vb(M+1));
+    auto dfs=[&](auto f, ll n, ll d) -> bool {
+        if(d>M) return false;
+        if(n==0) return true;
+        rep(i, 3) if(n==ng[i]) return false;
+        if(used[n][d]) return mem[n][d];
+        used[n][d] = true;
+        bool ret = false;
+        ret |= f(f, n-1, d+1);
+        if(n>=2) ret |= f(f, n-2, d+1);
+        if(n>=3) ret |= f(f, n-3, d+1);
+        return mem[n][d] = ret;
+    };
+    if(dfs(dfs, N, 0)) puts("YES");
+    else puts("NO");
     
 }
 

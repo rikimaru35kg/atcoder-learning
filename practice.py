@@ -35,9 +35,11 @@ import re
 
 def main():
     S = instr()
-    m = re.fullmatch(r"(ch|o|k|u)+", S)
-    if(m): print("YES")
-    else: print("NO")
+    S = S.lower()
+    lst = [x for x in S]
+    lst[0] = lst[0].upper()
+    ans = ''.join(lst)
+    print(ans)
 
 
 
