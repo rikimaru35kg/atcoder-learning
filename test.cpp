@@ -197,27 +197,123 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! n*n matrix
+const int MX = 2;  // DEFINE PROPERLY!!
+template <typename T>
+class Mat {
+public:
+    int n; T a[MX][MX];
+    // Initialize n*n matrix as unit matrix
+    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
+        }
+    }
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
+    }
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
+    }
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    // power k (A^k)
+    void pow(long long k) {
+        *this = pow_recursive(*this, k);
+    }
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
+    }
+    long long ij(long long i, long long j) {
+        return a[i][j];
+    }
+#ifdef __DEBUG
+    void print(string debugname="------") {  // for debug
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j] << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+    }
+#else
+    void print(string debugname="------") {}
+#endif
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl L(N), R(N), S(N);
-    rep(i, N) cin>>L[i]>>R[i]>>S[i];
-    rep(i, N) L[i]--;
-    ll tot = accumulate(all(S), 0LL);
-    vl imos(M+1);
+    DOUBLE(xs, ys, xt, yt);
+    db d = yt-ys;
+    db e = -(xt-xs);
+    db f = -xs*yt + xt*ys;
+    LONG(N);
+    ll cnt = 0;
+    VPD(P, N);
+
+    auto within=[&](db x, db l, db r) -> bool {
+        if(l>r) swap(l, r);
+        if(l-EPS<=x && x<=r+EPS) return true;
+        else return false;
+    };
+
     rep(i, N) {
-        imos[L[i]] += S[i];
-        imos[R[i]] -= S[i];
+        auto [x1, y1] = P[i];
+        auto [x2, y2] = P[(i+1)%N];
+        db a = y2-y1;
+        db b = -(x2-x1);
+        db c = -x1*y2 + x2*y1;
+        db det = a*e-b*d;
+        if(abs(det)<EPS) continue;
+        db mat[2][2] = {{a, b},{d, e}};
+        vector<db> x = {-c, -f};
+
+        Mat A(2, *mat);
+        A = A.inv();
+        auto v = A*x;
+        if(!within(v[0], x1, x2)) continue;
+        if(!within(v[0], xs, xt)) continue;
+        ++cnt;
     }
-    rep(i, M) imos[i+1] += imos[i];
-
-    ll mn = INF;
-    rep(i, M) chmin(mn, imos[i]);
-    de(mn)
-
-    Out(tot-mn);
-
+    Out(cnt/2+1);
     
 }
 

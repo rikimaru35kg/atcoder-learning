@@ -75,6 +75,22 @@ public:
         }
         return ret;
     }
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
     // power k (A^k)
     void pow(long long k) {
         *this = pow_recursive(*this, k);
@@ -102,6 +118,7 @@ public:
     void print(string debugname="------") {}
 #endif
 };
+
 
 //! O(ROW * COL^2 / 64?)
 const int COL = 300;
