@@ -1263,6 +1263,7 @@
 - !要復習 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 - !復習価値中 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
 - !復習価値高 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
+- !要復習 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4)
 - !復習価値高 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値高 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !要復習 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
@@ -1622,7 +1623,12 @@
 - 線形計画法のLP双対により、最短経路問題に帰着できる
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
-- !福種価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+- !復習価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+
+## 最大フロー・最小カット
+- ACLで求める（実装は難しそう）
+### 例題
+- !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる

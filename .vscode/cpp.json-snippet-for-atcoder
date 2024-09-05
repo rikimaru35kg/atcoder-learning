@@ -1660,4 +1660,11 @@
       "",
     ],
   },
+  "Snippet(maxflow)": {
+    "prefix": "at_flow",
+    "body": [
+      "#include <atcoder/maxflow>",
+      "using namespace atcoder;",
+    ],
+  },
 }
