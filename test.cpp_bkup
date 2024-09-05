@@ -200,22 +200,9 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
-    rep(i, M) {
-        LONGM(a,b);
-        dist[a][b] = 1;
-        dist[b][a] = 1;
-    }
-    rep(k, N) rep(i, N) rep(j, N) {
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
-    }
-    rep(i, N) {
-        ll ans = 0;
-        rep(j, N) if(dist[i][j]==2) ++ans;
-        Out(ans);
-    }
+    LONG(a, b);
+    if(a>b) swap(a,b);
+    Out(min(b-a, 10-(b-a)));
     
 }
 

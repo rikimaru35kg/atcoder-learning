@@ -197,34 +197,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(xs, ys, xt, yt);
-    LONG(N);
-    ll cnt = 0;
-    VP(P, N);
+    LONG(N, H);
+    LONG(A,B,C,D,E);
 
-    auto pro=[&](Pr p1, Pr p2) -> ll {
-        auto [x1,y1] = p1;
-        auto [x2,y2] = p2;
-        return x1*y2 - y1*x2;
-    };
-
-    rep(i, N) {
-        auto [x1, y1] = P[i];
-        auto [x2, y2] = P[(i+1)%N];
-
-        ll pro1 = pro({x2-x1,y2-y1},{xs-x1,ys-y1});
-        ll pro2 = pro({x2-x1,y2-y1},{xt-x1,yt-y1});
-        if(pro1*pro2>=0) continue;
-        ll pro3 = pro({xt-xs,yt-ys},{x1-xs,y1-ys});
-        ll pro4 = pro({xt-xs,yt-ys},{x2-xs,y2-ys});
-        if(pro3*pro4>=0) continue;
-        ++cnt;
+    ll ans = INF;
+    rep(e, N+1) {
+        ll z = e*E-H+1;
+        if(z<=0) z = 0;
+        ll p = N-e;
+        ll x = 0;
+        if(z-p*D<=0) x = 0;
+        else {
+            x = Divceil(z-p*D, B-D);
+        }
+        ll y = p-x;
+        de4(e,z,x,y)
+        if(x>p) continue;
+        if(x*B + y*D < z) continue;
+        ll now = x*A + y*C;
+        de(now)
+        chmin(ans, now);
     }
-    Out(cnt/2+1);
+    Out(ans);
     
 }
 
