@@ -1631,11 +1631,16 @@
 - !復習価値高 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
 - !復習価値高 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 
-## お堀問題
+## お堀問題（ニッチすぎてNote非掲載）
 - 外側を番兵でぐるっと囲むと見通しよくなる
 - Union Findが使える場合多し
 ### 例題
 - !復習価値高 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+
+## 線分交差判定（ニッチすぎてNote非掲載）
+- 外積を4回使うと良い
+### 例題
+- !復習価値高 [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
 
 ## 構築系問題
 - 構築させる問題
