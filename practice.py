@@ -27,19 +27,18 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-from collections import deque
-from math import *
-
-import re
-
-
 def main():
-    S = instr()
-    S = S.lower()
-    lst = [x for x in S]
-    lst[0] = lst[0].upper()
-    ans = ''.join(lst)
-    print(ans)
+    N = inint()
+    S = instrvec(N)
+    great = False
+    for s in S:
+        if(s in ["Good", "Bad", "Miss"]):
+            print("Failed")
+            return
+        if(s == "Great"): great = True
+    if(great): print("Full Combo")
+    else: print("All Perfect")
+
 
 
 
