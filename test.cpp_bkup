@@ -200,29 +200,32 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll Mx = 5010;
-    vvp cls(Mx);
-    rep(i, N) {
-        LONG(a, b, c);
-        cls[b].emplace_back(a, c);
-    }
+    LONG(N);
+    VP(cust, N);
+    sort(allr(cust));
 
-    vl dp(M+1, INF);
-    dp[0] = 0;
-    rep(i, Mx) {
-        vl pdp(M+1, INF); swap(pdp, dp);
-        rep(j, M+1) {
-            if(pdp[j]==INF) continue;
-            chmin(dp[j], pdp[j]);
-            for(auto [a,c]: cls[i]) {
-                chmin(dp[min(j+c,M)], pdp[j]+a);
-            }
+    LONG(Q);
+    VL(T, Q);
+    vl p(Q);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return T[i]<T[j];
+    });
+    vl ans(Q);
+
+    priority_queue<ll,vl,greater<ll>> que;
+    for(auto i: p) {
+        ll t = T[i];
+        while(cust.size() && cust.back().first<=t) {
+            auto [a,b] = cust.back(); cust.pop_back();
+            que.push(b);
         }
+        while(que.size() && que.top()<t) {
+            que.pop();
+        }
+        ans[i] = SIZE(que);
     }
-    ll ans = dp[M];
-    ch1(ans);
-    Out(ans);
+    for(auto x: ans) Out(x);
     
 }
 

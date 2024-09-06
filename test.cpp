@@ -197,47 +197,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-bool instr(string &s, string &t) {
-    ll n = SIZE(s), m = SIZE(t);
-    ll idx = 0;
-    rep(i, m) {
-        if(s[idx]==t[i]) ++idx;
-        if(idx>=n) return true;
-    }
-    return false;
-}
-
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    umap<string,ll> mp;
-    rep(i, N) mp[S[i]]++;
+    LONG(N); STRING(S);
+    ll M = 10;
 
-    vl a={1, 5, 2, 2, 2, 2, 2, 3};
-    unique(a);
-    de(a)
-
-    ll ans = 0;
+    vvb dp(N+1, vb(M));
+    dp[0][0] = true;
     rep(i, N) {
-        ll m = SIZE(S[i]);
-        vs ts;
-        rep(s, 1<<m) {
-            if(s==0) continue;
-            string now;
-            rep(j, m) if(s>>j&1) now += S[i][j];
-            ts.push_back(now);
+        rep(j, M) {
+            if(!dp[i][j]) continue;
+            if(S[i]=='?') {
+                rep(x, M) {
+                    ll plus = x*(i+1);
+                    dp[i+1][(j+plus)%M] = true;
+                }
+            } else {
+                ll plus = (S[i]-'0')*(i+1);
+                dp[i+1][(j+plus)%M] = true;
+            }
         }
-        unique(ts);
-        // sort(all(ts));
-        // ts.erase(unique(all(ts)), ts.end());
-        for(auto t: ts) ans += mp[t];
     }
+    if(!dp[N][0]) PNo
+    puts("Yes");
+
+    de(dp)
+    mint::set_mod(M);
+    mint v = 0;
+    string ans;
+    repr(i, N) {
+        de(v)
+        if(S[i]!='?') {
+            ll plus = (S[i]-'0')*(i+1);
+            ans += S[i];
+            v -= plus;
+            continue;
+        }
+        rep(x, 10) {
+            ll plus = x*(i+1);
+            if(dp[i][(v-plus).val()]) {
+                ans += x + '0';
+                v -= plus;
+                break;
+            }
+        }
+    }
+    reverse(all(ans));
     Out(ans);
+
+
+    
 }
+
+// ### test.cpp ###

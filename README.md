@@ -866,6 +866,7 @@
 - 2経路の復元の場合は、常に異なる戦略を取って逆順に辿れば良い
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
+- !復習価値中 [K - 正しいチェックディジット](https://atcoder.jp/contests/past17-open/tasks/past17_k)
 <!-- - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d) -->
 
 ## DP高速化
