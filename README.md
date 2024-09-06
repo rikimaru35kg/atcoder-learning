@@ -638,6 +638,7 @@
 ### 例題
 - !復習価値中 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
 - !復習価値中 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
+- !要復習 [O - 整地クエリ](https://atcoder.jp/contests/past17-open/tasks/past17_o)
 - !復習価値高 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
 ## セグメントツリー（Segment tree）
@@ -773,6 +774,7 @@
 - idxが最後まで進んだら一致しなかったという事でアウト。
 - なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
+- !要復習 [I - 部分列ペア](https://atcoder.jp/contests/past17-open/tasks/past17_i)
 - !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - !復習価値中 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
 - !復習価値高 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)

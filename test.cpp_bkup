@@ -201,31 +201,55 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VP(cust, N);
-    sort(allr(cust));
+    VL(T, N);
 
-    LONG(Q);
-    VL(T, Q);
-    vl p(Q);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return T[i]<T[j];
-    });
-    vl ans(Q);
+    auto p2=[](db x) { return x*x;};
 
-    priority_queue<ll,vl,greater<ll>> que;
-    for(auto i: p) {
-        ll t = T[i];
-        while(cust.size() && cust.back().first<=t) {
-            auto [a,b] = cust.back(); cust.pop_back();
-            que.push(b);
+    auto cal=[&](db t1, db t2, db a, db s) -> db {
+        db ret = 0;
+        ret += 0.5*a*p2(t2) - s*t2;
+        ret -= 0.5*a*p2(t1) - s*t1;
+        return ret;
+    };
+
+    auto intg=[&](db t1, db t2, db a, db s) -> db {
+        db t0 = s/a;
+        db ret = 0;
+        if(t0<t1) {
+            ret = cal(t1,t2,a,s);
+        } else if (t0 < t2) {
+            ret = -cal(t1,t0,a,s);
+            ret += cal(t0,t2,a,s);
+        } else {
+            ret = -cal(t1,t2,a,s);
         }
-        while(que.size() && que.top()<t) {
-            que.pop();
-        }
-        ans[i] = SIZE(que);
+        return ret;
+    };
+    
+    // db a = intg(0,3,4,10);
+    // db b = intg(3,10,4.0/3,10);
+    // de((a+b)/10);
+    vd tim(1<<N);
+    rep(s, 1<<N) {
+        ll now = 0;
+        rep(i, N) if(s>>i&1) now += T[i];
+        tim[s] = now;
     }
-    for(auto x: ans) Out(x);
+    db tot = 0;
+    rep(i, N) tot += T[i];
+
+    vd dp(1<<N, INF);
+    dp[0] = 0;
+    rep(s, 1<<N) {
+        ll k = pcnt(s)+1;
+        rep(i, N) if(~s>>i&1) {
+            ll ns = s|1<<i;
+            db t1 = tim[s], t2 = t1 + T[i];
+            db a = (db)N/(k-0.5);
+            chmin(dp[ns], dp[s]+intg(t1, t2, a, tot));
+        }
+    }
+    Out(dp.back()/tot);
     
 }
 

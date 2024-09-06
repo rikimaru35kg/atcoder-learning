@@ -197,70 +197,100 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
+#include <atcoder/fenwicktree>
 using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    ll M = 10;
+    LONG(N); VL(A, N);
+    vl B = A;
+    sort(all(B));
+    fenwick_tree<ll> tree(N);
+    rep(i, N) tree.add(i, B[i]);
 
-    vvb dp(N+1, vb(M));
-    dp[0][0] = true;
-    rep(i, N) {
-        rep(j, M) {
-            if(!dp[i][j]) continue;
-            if(S[i]=='?') {
-                rep(x, M) {
-                    ll plus = x*(i+1);
-                    dp[i+1][(j+plus)%M] = true;
-                }
-            } else {
-                ll plus = (S[i]-'0')*(i+1);
-                dp[i+1][(j+plus)%M] = true;
-            }
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(k, d); --k;
+            ll a = A[k];
+            auto [l, x1] = lowbou(B, a);
+            auto [r, x2] = lowbou_r(B, a);
+            if(d==1) B[r] += d, tree.add(r, d);
+            else B[l] += d, tree.add(l, d);
+            A[k] += d;
+        } else {
+            LONG(x);
+            auto [n, y] = uppbou_r(B, x);
+            ll ans = 0;
+            ++n;
+            ans += n*x;
+            ans -= tree.sum(0, n);
+            ans -= (N-n)*x;
+            ans += tree.sum(n, N);
+            Out(ans);
         }
     }
-    if(!dp[N][0]) PNo
-    puts("Yes");
-
-    de(dp)
-    mint::set_mod(M);
-    mint v = 0;
-    string ans;
-    repr(i, N) {
-        de(v)
-        if(S[i]!='?') {
-            ll plus = (S[i]-'0')*(i+1);
-            ans += S[i];
-            v -= plus;
-            continue;
-        }
-        rep(x, 10) {
-            ll plus = x*(i+1);
-            if(dp[i][(v-plus).val()]) {
-                ans += x + '0';
-                v -= plus;
-                break;
-            }
-        }
-    }
-    reverse(all(ans));
-    Out(ans);
-
-
     
 }
 
