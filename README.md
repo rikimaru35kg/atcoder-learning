@@ -1456,6 +1456,7 @@
 - !復習価値低 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
 - !復習価値高 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
+- !要復習 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
 
 ## データ構造をマージする一般的なテク
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
@@ -1495,11 +1496,13 @@
 
 ## 円環問題
 - 円環はそのままでは扱いにくいので、(1)2つ繋げて列にするか、(2)頂点1から頂点1までの区間長Nの列にするか、(3)頂点1から頂点Nまでの区間長N-1の列にするかで考えると見通しが良くなる
+- 貪欲時に円環のどこからスタートすべきか分からない時、スタート地点と着地地点のfunctional graphを作ってダブリングすると良い
 ### 例題
 - !復習価値中 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
 - !復習価値低 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
 - !要復習 [D - Menagerie](https://atcoder.jp/contests/abc055/tasks/arc069_b)
 - !復習価値高 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)
+- !要復習 [F - Cake Division](https://atcoder.jp/contests/abc370/tasks/abc370_f)
 
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
