@@ -1847,6 +1847,7 @@
 - [D - AtCoDeerくんと変なじゃんけん](https://atcoder.jp/contests/abc046/tasks/arc062_b)
 - [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
 - [M - 線分の交差判定](https://atcoder.jp/contests/past16-open/tasks/past202309_m)
+- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

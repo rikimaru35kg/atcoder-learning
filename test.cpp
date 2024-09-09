@@ -197,67 +197,121 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Vector
-const double eps = 1e-8; // suppose max(x,y) <= 1e9;
-struct Vec {
-    double x, y;
-    Vec(double x=0, double y=0): x(x), y(y) {}
-    Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
-    Vec operator+(const Vec& v) const { return Vec(*this) += v;}
-    Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
-    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
-    Vec& operator*=(double s) { x *= s; y *= s; return *this;}
-    Vec operator*(double s) const { return Vec(*this) *= s;}
-    Vec& operator/=(double s) { x /= s; y /= s; return *this;}
-    Vec operator/(double s) const { return Vec(*this) /= s;}
-    double dot(const Vec& v) const { return x*v.x + y*v.y;}
-    // cross>0 means *this->v is counterclockwise.
-    double cross(const Vec& v) const { return x*v.y - v.x*y;}
-    double norm2() const { return x*x + y*y;}
-    double norm() const { return sqrt(norm2());}
-    Vec normalize() const { return *this/norm();}
-    Vec rotate90() const { return Vec(y, -x);}
-    int ort() const { // orthant
-    if (abs(x) < eps && abs(y) < eps) return 0;
-    if (y > 0) return x>0 ? 1 : 2;
-    else return x>0 ? 4 : 3;
+#include <atcoder/lazysegtree>
+#include <atcoder/fenwicktree>
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using S = mint;
+S op(S a, S b) {return (a+b);}
+S e() {return 0;}
+using F = mint;
+S mapping(F f, S x) { return f*x; }
+F composition(F f, F g) {return f*g;}
+F id() {return 1;}
+
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    bool operator<(const Vec& v) const {
-      int o = ort(), vo = v.ort();
-      if (o != vo) return o < vo;
-      return cross(v) > 0;
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
     }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
 };
-istream& operator>>(istream& is, Vec& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vec& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(x1,y1,x2,y2);
-    LONG(x3,y3,x4,y4);
-    if(x1>x2) swap(x1,x2), swap(y1,y2);
-    if(x3>x4) swap(x3,x4), swap(y3,y4);
-    Vec v1(x2-x1, y2-y1);
-    Vec v3(x4-x3, y4-y3);
-    Vec v13(x3-x1, y3-y1);
-    Vec v14(x4-x1, y4-y1);
-    Vec v31(x1-x3, y1-y3);
-    Vec v32(x2-x3, y2-y3);
-    if(v1.cross(v13)==0 && v1.cross(v14)==0) {
-        ll l = -INF, r = INF;
-        chmax(l, x1); chmax(l, x3);
-        chmin(r, x2); chmin(r, x4);
-        if(r<l) PNo
-        PYes
+    LONG(Q, K);
+    mint k = K;
+    mint kinv = k.inv();
+    vc qt(Q); vl qx(Q);
+    rep(i, Q) cin>>qt[i]>>qx[i];
+    CoordinateCompression cc;
+    rep(i, Q) cc.add(qx[i]);
+
+    ll N = qx.size(); 
+    vector<S> v(N, S(0));
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    fenwick_tree<ll> tree(N);
+    auto add=[&](ll i, mint x) {
+        mint cur = seg.get(i);
+        seg.set(i, cur+x);
+    };
+    auto del=[&](ll i, mint x) {
+        mint cur = seg.get(i);
+        seg.set(i, cur-x);
+    };
+    rep(i, Q) {
+        char c = qt[i];
+        ll xi = cc(qx[i]);
+        ll cnt = tree.sum(0, xi);
+        mint ad = mint(K).pow(cnt) * qx[i];
+        if(c=='+') {
+            seg.apply(xi, N, k);
+            add(xi, ad);
+
+            tree.add(xi, 1);
+        } else {
+            del(xi, ad);
+            seg.apply(xi, N, kinv);
+
+            tree.add(xi, -1);
+        }
+        auto dprint=[&](){
+        #ifdef __DEBUG
+            rep(i, N) {
+                cerr<< seg.get(i).val()  <<' ';
+            }
+            cerr<<endl;
+        #endif
+        };
+        // dprint();
+        mint ans = seg.all_prod();
+        Out(ans);
     }
-    if(v1.cross(v13)*v1.cross(v14)>0) PNo
-    if(v3.cross(v31)*v3.cross(v32)>0) PNo
-    PYes
     
 }
 
