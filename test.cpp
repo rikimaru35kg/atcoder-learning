@@ -197,121 +197,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-#include <atcoder/fenwicktree>
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-using S = mint;
-S op(S a, S b) {return (a+b);}
-S e() {return 0;}
-using F = mint;
-S mapping(F f, S x) { return f*x; }
-F composition(F f, F g) {return f*g;}
-F id() {return 1;}
-
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q, K);
-    mint k = K;
-    mint kinv = k.inv();
-    vc qt(Q); vl qx(Q);
-    rep(i, Q) cin>>qt[i]>>qx[i];
-    CoordinateCompression cc;
-    rep(i, Q) cc.add(qx[i]);
-
-    ll N = qx.size(); 
-    vector<S> v(N, S(0));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    fenwick_tree<ll> tree(N);
-    auto add=[&](ll i, mint x) {
-        mint cur = seg.get(i);
-        seg.set(i, cur+x);
-    };
-    auto del=[&](ll i, mint x) {
-        mint cur = seg.get(i);
-        seg.set(i, cur-x);
-    };
-    rep(i, Q) {
-        char c = qt[i];
-        ll xi = cc(qx[i]);
-        ll cnt = tree.sum(0, xi);
-        mint ad = mint(K).pow(cnt) * qx[i];
-        if(c=='+') {
-            seg.apply(xi, N, k);
-            add(xi, ad);
-
-            tree.add(xi, 1);
+    LONG(N, M);
+    vl B(N);
+    set<Pr, greater<Pr>> dec;
+    ll tot = 0;
+    vb used(N);
+    rep(i, N) {
+        LONG(a, b, x);
+        B[i] = b;
+        if(x==0) {
+            tot += a*(b-1);
+            if(b>1) dec.emplace(a, i);
+            used[i] = true;
         } else {
-            del(xi, ad);
-            seg.apply(xi, N, kinv);
-
-            tree.add(xi, -1);
+            tot += a*b;
+            if(b==1) dec.emplace(a, i);
+            else dec.emplace(2*a, i);
         }
-        auto dprint=[&](){
-        #ifdef __DEBUG
-            rep(i, N) {
-                cerr<< seg.get(i).val()  <<' ';
-            }
-            cerr<<endl;
-        #endif
-        };
-        // dprint();
-        mint ans = seg.all_prod();
-        Out(ans);
     }
+
+    while(dec.size() && M) {
+        auto it = dec.begin();
+        auto [a,i] = *it; dec.erase(it);
+        ll n = 1;
+        if(used[i]) n = B[i] - 1;
+        else {
+            used[i] = true;
+            B[i]--;
+            if(B[i]>1) dec.emplace(a/2, i);
+        }
+        ll k = min(M, n);
+        M -= k;
+        tot -= a*k;
+    }
+    Out(tot);
     
 }
 
