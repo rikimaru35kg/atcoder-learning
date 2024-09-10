@@ -646,9 +646,13 @@
 - 一点更新、区間min・max・和取得などができる
 - モノイドであればセグ木にのる
 - セグメント木をDPに使う問題もある。このときは貰うDPの方が使える
+- seg.max_rightはf(seg.prod(l,r))==trueである最大のrを求める関数
+- 左から見て初めて〇〇を満たさない（あるいは満たす）ところを求めたい訳なので、lower_boundと同じ似た感覚で使う事が可能
+- 具体的にはfはラムダ式f=[&](S x)->bool{};を作り、seg.max_right<decltype(f)>(l,f)と書けばOK（lは0である事が多いはず）
 ### 例題
 - !復習価値高 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
 - !復習価値高 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+- !要復習 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)
 
 ## 遅延伝播セグメントツリー（Lazy segment tree）
 - セグメント木に加え、区間更新が可能

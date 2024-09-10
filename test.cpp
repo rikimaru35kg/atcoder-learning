@@ -197,44 +197,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vl B(N);
-    set<Pr, greater<Pr>> dec;
-    ll tot = 0;
-    vb used(N);
+    VL(A, N); VL(B, M);
+
+    segtree<S,op,e> seg(M);
+    rep(i, M) seg.set(i, B[i]);
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, M) {
+            cerr<< seg.get(i)  <<' ';
+        }
+        cerr<<endl;
+    #endif
+    };
+
     rep(i, N) {
-        LONG(a, b, x);
-        B[i] = b;
-        if(x==0) {
-            tot += a*(b-1);
-            if(b>1) dec.emplace(a, i);
-            used[i] = true;
-        } else {
-            tot += a*b;
-            if(b==1) dec.emplace(a, i);
-            else dec.emplace(2*a, i);
+        auto f = [&](S x) -> bool {
+            return x<A[i];
+        };
+        ll j = seg.max_right<decltype(f)>(0,f);
+        if(j==M) {
+            puts("No");
+            Out(i+1); return 0;
         }
+        de2(i,j)
+        ll now = seg.get(j);
+        now -= A[i];
+        seg.set(j, now);
+        dprint();
     }
-
-    while(dec.size() && M) {
-        auto it = dec.begin();
-        auto [a,i] = *it; dec.erase(it);
-        ll n = 1;
-        if(used[i]) n = B[i] - 1;
-        else {
-            used[i] = true;
-            B[i]--;
-            if(B[i]>1) dec.emplace(a/2, i);
-        }
-        ll k = min(M, n);
-        M -= k;
-        tot -= a*k;
+    puts("Yes");
+    vl ans(M);
+    rep(i, M) {
+        ans[i] = B[i] - seg.get(i);
     }
-    Out(tot);
-    
+    Out(ans);
 }
-
-// ### test.cpp ###
