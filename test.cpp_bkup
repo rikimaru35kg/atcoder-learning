@@ -197,31 +197,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
-    vl deg(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        deg[b]++;
-    }
-    priority_queue<ll,vl,greater<ll>> que;
-    rep(i, N) if(deg[i]==0) que.push(i);
+    VL(A, N); VL(B, M);
 
-    vl ans;
-    while(que.size()) {
-        auto v = que.top(); que.pop();
-        ans.push_back(v+1);
-        for(auto nv: from[v]) {
-            deg[nv]--;
-            if(deg[nv]==0) que.push(nv);
+    segtree<S,op,e> seg(M);
+    rep(i, M) seg.set(i, B[i]);
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, M) {
+            cerr<< seg.get(i)  <<' ';
         }
+        cerr<<endl;
+    #endif
+    };
+
+    rep(i, N) {
+        auto f = [&](S x) -> bool {
+            return x<A[i];
+        };
+        ll j = seg.max_right<decltype(f)>(0,f);
+        if(j==M) {
+            puts("No");
+            Out(i+1); return 0;
+        }
+        de2(i,j)
+        ll now = seg.get(j);
+        now -= A[i];
+        seg.set(j, now);
+        dprint();
+    }
+    puts("Yes");
+    vl ans(M);
+    rep(i, M) {
+        ans[i] = B[i] - seg.get(i);
     }
     Out(ans);
-    
 }
-
-// ### test.cpp ###

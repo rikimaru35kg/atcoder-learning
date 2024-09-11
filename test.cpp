@@ -197,49 +197,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N); VL(B, M);
-
-    segtree<S,op,e> seg(M);
-    rep(i, M) seg.set(i, B[i]);
-    auto dprint=[&](){
-    #ifdef __DEBUG
-        rep(i, M) {
-            cerr<< seg.get(i)  <<' ';
-        }
-        cerr<<endl;
-    #endif
-    };
-
+    LONG(N, C, D);
+    vp gomi;
+    gomi.emplace_back(1, 0);
     rep(i, N) {
-        auto f = [&](S x) -> bool {
-            return x<A[i];
-        };
-        ll j = seg.max_right<decltype(f)>(0,f);
-        if(j==M) {
-            puts("No");
-            Out(i+1); return 0;
-        }
-        de2(i,j)
-        ll now = seg.get(j);
-        now -= A[i];
-        seg.set(j, now);
-        dprint();
+        LONG(d, a);
+        gomi.emplace_back(d, a);
     }
-    puts("Yes");
-    vl ans(M);
-    rep(i, M) {
-        ans[i] = B[i] - seg.get(i);
+    reverse(all(gomi));
+
+    ll ans = 0;
+    priority_queue<ll> que;
+    ll t = D;
+    for(auto [d,a]: gomi) {
+        ll diff = t - d;
+        C -= diff;
+        while(que.size() && C<0) {
+            C += que.top(); que.pop();
+            ++ans;
+        }
+        if(C<0) Pm1
+
+        t = d;
+
+        que.push(a);
+        de3(d,a,C)
     }
     Out(ans);
+    
 }
+
+// ### test.cpp ###
