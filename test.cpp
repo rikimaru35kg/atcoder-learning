@@ -198,35 +198,87 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+struct Span {
+    ll l, r;
+    Span(ll l, ll r): l(l),r(r) {}
+    bool operator<(const Span &o) const {
+        if(l!=o.l) return l < o.l;
+        return r > o.r;
+    }
+};
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    LONG(x1, y1, x2, y2);
-    vl P(N), Q(N), R(N), W(N);
-    rep(i,N) cin>>P[i]>>Q[i]>>R[i]>>W[i];
-
-    auto get=[&](ll x, ll y, ll i) -> ll {
-        return P[i]*x + Q[i]*y - R[i];
-    };
-
-    ll ans = 0;
-    ll ok = 0;
-    vl ws;
+    LONG(N);
+    vector<Span> span;
+    CoordinateCompression cc;
     rep(i, N) {
-        ll a = get(x1,y1,i);
-        ll b = get(x2,y2,i);
-        sll x = (sll)a*b;
-        if(x>0) ++ok;
-        else ws.push_back(W[i]);
+        LONG(l, r);
+        span.emplace_back(l, r);
+        cc.add(r);
     }
-    K -= min(K, ok);
-    de(K)
-    sort(all(ws));
-    rep(i, K) ans += ws[i];
-    de(ws)
-    Out(ans);
-    
-}
+    sort(all(span));
 
-// ### test.cpp ###
+    ll M = cc.size();
+
+    segtree<S,op,e> seg(M);
+
+    for(auto [l,r]: span) {
+        r = cc(r);
+        ll mx = seg.prod(r, M);
+        seg.set(r, mx+1);
+    }
+
+    ll ans = seg.all_prod();
+    Out(ans);
+
+
+}

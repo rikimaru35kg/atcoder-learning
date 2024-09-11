@@ -198,53 +198,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].push_back(b);
-    }
+    LONG(A,B,X);
 
-    vb finished(N), seen(N);
-    vl stck;
-    ll pos=-1;
-    auto dfs=[&](auto f, ll v) -> bool {
-        seen[v] = true;
-        stck.push_back(v);
-        for(auto nv: from[v]) {
-            if(finished[nv]) continue;
-            if(seen[nv]) {
-                pos = nv;
-                return true;
+    auto solve=[&](ll d, ll mx) -> ll { // maximum value <=mx at ketawa = d
+        auto v = separate_digit(mx);
+         ll N = SIZE(v);
+         vvl dp(2, vl(d+1, -INF));
+         vvl edp = dp;
+         dp[0][0] = 0;
+         rep(i, N) {
+            vvl pdp = edp; swap(pdp, dp);
+            rep(j, 2) rep(k, d+1) rep(x, 10) {
+                if(pdp[j][k]==-INF) continue;
+                if(j==0 && x>v[i]) continue;
+                ll nj = j;
+                if(j==0 && x<v[i]) nj = 1;
+                if(k+x<=d) chmax(dp[nj][k+x], pdp[j][k]*10+x);
             }
-            bool b = f(f, nv);
-            if(b) return true;
-        }
-        finished[v] = true;
-        stck.pop_back();
-        return false;
+         }
+         ll ret = max(dp[0][d], dp[1][d]);
+         return min(ret, (ll)1e9);
     };
-    rep(i, N) {
-        bool b = dfs(dfs, i);
-        if(b) {
-            de(pos)
-            de(stck);
-            vl route;
-            while(stck.back()!=pos) {
-                route.push_back(stck.back()); stck.pop_back();
-            }
-            route.push_back(stck.back());
-            reverse(all(route));
-            de(route)
-            PNo
-            return 0;
-        }
+
+    ll ans = 1;
+    repk(d, 1, 81) {
+        if(X-B*d<=0) continue;
+        ll mx = (X-B*d)/A;
+        ll now = solve(d, mx);
+        // de2(d, now)
+        chmax(ans, now);
     }
-    PYes
+    Out(ans);
     
 }
 

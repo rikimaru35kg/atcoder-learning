@@ -1857,6 +1857,7 @@
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
 - [J - 横断](https://atcoder.jp/contests/past202212-open/tasks/past202212_j)
+- [L - 区間](https://atcoder.jp/contests/past202212-open/tasks/past202212_l)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
@@ -1868,3 +1869,4 @@
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
 - [C - 数列ゲーム](https://atcoder.jp/contests/abc031/tasks/abc031_c)
 - [C - ハイスコア](https://atcoder.jp/contests/abc017/tasks/abc017_3)
+- [K - 整数屋さん](https://atcoder.jp/contests/past202212-open/tasks/past202212_k)
