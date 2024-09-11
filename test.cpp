@@ -40,6 +40,7 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
+using sll = __int128_t;
 using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
@@ -197,87 +198,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-struct S {
-    ll x, w;
-    S(ll x, ll w): x(x), w(w) {}
-};
-S op(S a, S b) {return S(a.x+b.x, a.w+b.w);}
-S e() {return S(0,0);}
-using F = ll;
-S mapping(F f, S x) { 
-    if(f==-1) return x;
-    return S(f*x.w, x.w);
-}
-F composition(F f, F g) {
-    if(f==-1) return g;
-    return f;
-}
-F id() {return -1;}
-
-using SEG = lazy_segtree<S,op,e,F,mapping,composition,id>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N);
+    LONG(N, K);
+    LONG(x1, y1, x2, y2);
+    vl P(N), Q(N), R(N), W(N);
+    rep(i,N) cin>>P[i]>>Q[i]>>R[i]>>W[i];
 
-    vector<S> v(N, S(0,1));
-    rep(i, N) { v[i] = S(A[i], 1); }
-    SEG seg(v);
-    ll M = 10;
-    vector<SEG> segf(M+1, SEG(N));
-    rep(i, N) {
-        rep(j, M+1) {
-            if(A[i]==j) segf[j].set(i, S(1, 1));
-            else segf[j].set(i, S(0, 1));
-        }
-    }
-
-    auto dprint=[&](SEG &seg){
-    #ifdef __DEBUG
-        rep(i, N) {
-            cerr<< seg.get(i).x  <<' ';
-        }
-        cerr<<endl;
-    #endif
+    auto get=[&](ll x, ll y, ll i) -> ll {
+        return P[i]*x + Q[i]*y - R[i];
     };
 
-    rep(i, Q) {
-        LONG(t, l, r); --l;
-        if(t==1) {
-            vl cnt(M+1);
-            rep(j, M+1) cnt[j] = segf[j].prod(l, r).x;
-
-            ll idx = l;
-            rep(j, M+1) {
-                seg.apply(idx, idx+cnt[j], j);
-                segf[j].apply(l, idx, 0);
-                segf[j].apply(idx, idx+cnt[j], 1);
-                segf[j].apply(idx+cnt[j], r, 0);
-                idx += cnt[j];
-            }
-        } else if(t==2) {
-            vl cnt(M+1);
-            rep(j, M+1) cnt[j] = segf[j].prod(l, r).x;
-
-            ll idx = l;
-            repr(j, M+1) {
-                seg.apply(idx, idx+cnt[j], j);
-                segf[j].apply(l, idx, 0);
-                segf[j].apply(idx, idx+cnt[j], 1);
-                segf[j].apply(idx+cnt[j], r, 0);
-                idx += cnt[j];
-            }
-        } else {
-            ll ans = seg.prod(l, r).x;
-            Out(ans);
-        }
-        dprint(seg);
+    ll ans = 0;
+    ll ok = 0;
+    vl ws;
+    rep(i, N) {
+        ll a = get(x1,y1,i);
+        ll b = get(x2,y2,i);
+        sll x = (sll)a*b;
+        if(x>0) ++ok;
+        else ws.push_back(W[i]);
     }
+    K -= min(K, ok);
+    de(K)
+    sort(all(ws));
+    rep(i, K) ans += ws[i];
+    de(ws)
+    Out(ans);
     
 }
 

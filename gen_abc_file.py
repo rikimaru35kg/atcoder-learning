@@ -44,6 +44,7 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
+using sll = __int128_t;
 using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;

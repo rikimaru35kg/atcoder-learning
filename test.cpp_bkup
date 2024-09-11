@@ -40,6 +40,7 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
+using sll = __int128_t;
 using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
@@ -197,36 +198,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C, D);
-    vp gomi;
-    gomi.emplace_back(1, 0);
-    rep(i, N) {
-        LONG(d, a);
-        gomi.emplace_back(d, a);
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].push_back(b);
     }
-    reverse(all(gomi));
 
-    ll ans = 0;
-    priority_queue<ll> que;
-    ll t = D;
-    for(auto [d,a]: gomi) {
-        ll diff = t - d;
-        C -= diff;
-        while(que.size() && C<0) {
-            C += que.top(); que.pop();
-            ++ans;
+    vb finished(N), seen(N);
+    vl stck;
+    ll pos=-1;
+    auto dfs=[&](auto f, ll v) -> bool {
+        seen[v] = true;
+        stck.push_back(v);
+        for(auto nv: from[v]) {
+            if(finished[nv]) continue;
+            if(seen[nv]) {
+                pos = nv;
+                return true;
+            }
+            bool b = f(f, nv);
+            if(b) return true;
         }
-        if(C<0) Pm1
-
-        t = d;
-
-        que.push(a);
-        de3(d,a,C)
+        finished[v] = true;
+        stck.pop_back();
+        return false;
+    };
+    rep(i, N) {
+        bool b = dfs(dfs, i);
+        if(b) {
+            de(pos)
+            de(stck);
+            vl route;
+            while(stck.back()!=pos) {
+                route.push_back(stck.back()); stck.pop_back();
+            }
+            route.push_back(stck.back());
+            reverse(all(route));
+            de(route)
+            PNo
+            return 0;
+        }
     }
-    Out(ans);
+    PYes
     
 }
 
