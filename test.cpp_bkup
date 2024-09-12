@@ -201,22 +201,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(R, N, M, L);
-    ll r = 0;
-    ll n = N;
-    ll m = 0;
-    VL(S, L);
-    rep(i, L) {
-        n -= S[i];
-        ++m;
-        if(n<0) PNo
-        if(n==0 || m==M) {
-            ++r, n = N;
-            m = 0;
-        }
+    DOUBLE(H, W, D);
+    auto p2=[&](db x) {return x*x;};
+
+    H /= 2, W /= 2;
+    if(W<H) swap(H, W);
+    if(p2(W) + p2(H) <= p2(D)) Outend(1);
+
+
+    db square = H*W;
+    if(D<=W && D<=H) {
+        db circle = PI * p2(D) / 4;
+        Outend(circle/square);
     }
-    if(r==R && m==0) PYes PNo
-    de(m)de(n)de(r)
+
+    auto tri=[&](db d, db h) -> db {
+        return 0.5 * h * sqrt(p2(d) - p2(h));
+    };
+
+    if(D<=W && D>H) {
+        db theta = asin(H/D);
+        db circle = PI * p2(D) * theta/(2*PI);
+        circle += tri(D, H);
+        Outend(circle/square);
+    }
+
+    db theta = PI/2 - acos(W/D) - acos(H/D);
+    db circle = PI * p2(D) * theta/(2*PI);
+    circle += tri(D, H) + tri(D, W);
+    Out(circle/square);
+
+
     
 }
 

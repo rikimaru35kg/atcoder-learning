@@ -198,36 +198,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
+    LONG(N, M);
+    vp edge;
     set<Pr> st;
-    rep(i, N) st.emplace(A[i], i);
-    ll M = 2e5+10;
-    vvb X(N, vb(M));
-    rep(i, N) {
-        LONG(C);
-        rep(j, C) {
-            LONGM(x);
-            X[i][x] = true;
-        }
+    rep(i, M) {
+        LONGM(a, b);
+        if(a>b) swap(a,b);
+        edge.emplace_back(a, b);
+        st.emplace(a,b);
     }
-    de(X)
     LONG(Q);
+    vt3 query;
     rep(i, Q) {
-        LONG(D);
-        VLM(Y, D);
-        Pr mx(-1, -1);
-        rep(ni, N) {
-            bool ok = true;
-            for(auto y: Y) {
-                if(X[ni][y]) ok = false;
-            }
-            if(ok) chmax(mx, Pr(A[ni], ni+1));
-        }
-        Out(mx.second);
+        LONG(t, x, y); --x, --y;
+        if(x>y) swap(x,y);
+        query.emplace_back(t,x,y);
+        if(t==1) st.emplace(x,y);
+        if(t==2) st.erase({x,y});
     }
+
+    dsu uf(N);
+    for(auto [a,b]: st) {
+        uf.merge(a,b);
+    }
+
+    vs ans;
+    repr(qi, Q) {
+        auto [t,x,y] = query[qi];
+        if(t==1) {
+            st.erase({x,y});
+            uf = dsu(N);
+            for(auto [a,b]: st) uf.merge(a,b);
+        } else if (t==2) {
+            st.emplace(x, y);
+            uf.merge(x,y);
+        } else {
+            if(uf.same(x,y)) ans.push_back("Yes");
+            else ans.push_back("No");
+        }
+    }
+    reverse(all(ans));
+    Out(ans);
+
+
+    
 }
 
 // ### test.cpp ###

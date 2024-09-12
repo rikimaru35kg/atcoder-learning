@@ -1437,6 +1437,7 @@
 - 辺の削除クエリの場合
 ### 例題
 - !復習価値高 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
+- !要復習 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
 - !要復習 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !要復習 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
 
