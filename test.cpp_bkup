@@ -201,37 +201,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    DOUBLE(H, W, D);
-    auto p2=[&](db x) {return x*x;};
-
-    H /= 2, W /= 2;
-    if(W<H) swap(H, W);
-    if(p2(W) + p2(H) <= p2(D)) Outend(1);
-
-
-    db square = H*W;
-    if(D<=W && D<=H) {
-        db circle = PI * p2(D) / 4;
-        Outend(circle/square);
+    LONG(N, M);
+    VL(A, N);
+    vvp from(N+1);
+    rep(i, N) {
+        from[i].emplace_back(i+1, A[i]);
+        from[i+1].emplace_back(i, 0);
+    }
+    rep(i, M) {
+        LONG(b, l, r); --l;
+        from[l].emplace_back(r, b);
     }
 
-    auto tri=[&](db d, db h) -> db {
-        return 0.5 * h * sqrt(p2(d) - p2(h));
+    pq pque;
+    vl dist(N+1, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        pque.emplace(d, v);
     };
-
-    if(D<=W && D>H) {
-        db theta = asin(H/D);
-        db circle = PI * p2(D) * theta/(2*PI);
-        circle += tri(D, H);
-        Outend(circle/square);
+    push(0, 0);
+    while(pque.size()) {
+        auto [d,v] = pque.top(); pque.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
+        }
     }
-
-    db theta = PI/2 - acos(W/D) - acos(H/D);
-    db circle = PI * p2(D) * theta/(2*PI);
-    circle += tri(D, H) + tri(D, W);
-    Out(circle/square);
-
-
+    Out(dist[N]);
     
 }
 

@@ -947,6 +947,12 @@
 ### 例題
 - !復習価値高 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
 
+## 決め打ちDP
+- ある条件を決め打ってDPする事で、問題が解けるようになる場合あり
+- 決め打った条件と整合する場合のみ採用すればOK（円環の予測DPに近い考え方）
+### 例題
+- !要復習 [L - 展覧会](https://atcoder.jp/contests/past202209-open/tasks/past202209_l)
+
 ## Top2を持つ
 - 和の最大値を求めるDPにおいて、隣が同じ色になってはNGの場合、最後に選んだ色をDPの状態に持てば良いが、計算量が収まらない場合あり
 - この時、実はTop2のみ持てば良い事が分かる
@@ -1466,6 +1472,7 @@
 - !復習価値低 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
 - !復習価値高 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
+- !要復習 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - !要復習 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
 
 ## データ構造をマージする一般的なテク
