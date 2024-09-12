@@ -198,87 +198,86 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
+ll D = -1;
+ll ten = 1;
 
-struct Span {
-    ll l, r;
-    Span(ll l, ll r): l(l),r(r) {}
-    bool operator<(const Span &o) const {
-        if(l!=o.l) return l < o.l;
-        return r > o.r;
-    }
+struct S {
+    ll x[9];
+    S(ll y=0) {
+        rep(i, D) {
+            x[i] = y;
+            ll ny = y%ten*10 + y/ten;
+            y = ny;
+        }
+    };
 };
+S op(S a, S b) {
+    S ret(0);
+    rep(i, D) { ret.x[i] = a.x[i] ^ b.x[i]; }
+    return ret;
+}
+S e() { return S(0); }
 
-#include <atcoder/segtree>
+using F = ll;
+S mapping(F f, S x) {
+    rotate(begin(x.x), begin(x.x)+f, begin(x.x)+D);
+    return x;
+}
+F composition(F f, F g) {
+    f += g;
+    f %= D;
+    return f;
+}
+F id() {return 0;}
+
+#include <atcoder/lazysegtree>
 using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<Span> span;
-    CoordinateCompression cc;
-    rep(i, N) {
-        LONG(l, r);
-        span.emplace_back(l, r);
-        cc.add(r);
+    LONG(N); cin>>D;
+    VL(A, N);
+    rep(i, D-1) ten *= 10;
+
+    vector<S> v(N);
+    rep(i, N) { v[i] = S(A[i]); }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+
+    ll si = 0;
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            si += x;
+        } else if (t==2) {
+            LONG(l, r, y); --l, --r;
+            l += si, r += si;
+            l %= N, r %= N;
+            if(l<=r) {
+                seg.apply(l, r+1, y);
+            } else {
+                seg.apply(l, N, y);
+                seg.apply(0, r+1, y);
+            }
+        } else {
+            LONG(l, r); --l, --r;
+            l += si, r += si;
+            l %= N, r %= N;
+            ll ans = 0;
+            if(l<=r) {
+                ans = seg.prod(l, r+1).x[0];
+            } else {
+                ll a = seg.prod(l, N).x[0];
+                ll b = seg.prod(0, r+1).x[0];
+                ans = a^b;
+            }
+            Out(ans);
+        }
     }
-    sort(all(span));
 
-    ll M = cc.size();
-
-    segtree<S,op,e> seg(M);
-
-    for(auto [l,r]: span) {
-        r = cc(r);
-        ll mx = seg.prod(r, M);
-        seg.set(r, mx+1);
-    }
-
-    ll ans = seg.all_prod();
-    Out(ans);
-
-
+    
 }
+
+// ### test.cpp ###

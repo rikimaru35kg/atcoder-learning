@@ -226,6 +226,7 @@
 - r>=lの領域をはみ出さないように、さきに--lと++rをした方が良い
 ### 例題
 - !復習価値高 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
+- !復習価値中 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
 
 
 ## ある順列P{1,2,...,N}の区間max値の総和
@@ -669,6 +670,7 @@
 - !復習価値高 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
 - !復習価値高 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
 - !要復習 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
+- !要復習 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 永続データ構造

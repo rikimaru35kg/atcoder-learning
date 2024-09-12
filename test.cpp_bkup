@@ -198,61 +198,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A,B,X);
+    LONG(N); VL(A, N);
+    LONG(Q);
+    vl L(Q), R(Q);
+    rep(i, Q) cin>>L[i]>>R[i];
+    rep(i, Q) L[i]--;
 
-    auto solve=[&](ll d, ll mx) -> ll { // maximum value <=mx at ketawa = d
-        auto v = separate_digit(mx);
-         ll N = SIZE(v);
-         vvl dp(2, vl(d+1, -INF));
-         vvl edp = dp;
-         dp[0][0] = 0;
-         rep(i, N) {
-            vvl pdp = edp; swap(pdp, dp);
-            rep(j, 2) rep(k, d+1) rep(x, 10) {
-                if(pdp[j][k]==-INF) continue;
-                if(j==0 && x>v[i]) continue;
-                ll nj = j;
-                if(j==0 && x<v[i]) nj = 1;
-                if(k+x<=d) chmax(dp[nj][k+x], pdp[j][k]*10+x);
-            }
-         }
-         ll ret = max(dp[0][d], dp[1][d]);
-         return min(ret, (ll)1e9);
+    auto p2=[&](ll x) {return x*x;};
+
+    ll h = max((db)N/sqrt(Q), 1.0);
+    vl p(Q);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = R[i]/h, hj = R[j]/h;
+        if(hi==hj) return L[i]<L[j];
+        else return hi<hj;
+    });
+
+    multiset<ll> st;
+    st.insert(-INF); st.insert(INF);
+    ll now = 0;
+    auto add=[&](ll x) {
+        auto it = st.lower_bound(x);
+        ll nxt = *it, prv = *prev(it);
+        if(prv!=-INF && nxt!=INF) {
+            now -= p2(nxt-prv);
+        }
+        if(prv!=-INF) now += p2(x-prv);
+        if(nxt!=INF) now += p2(nxt-x);
+        st.insert(x);
     };
-
-    ll ans = 1;
-    repk(d, 1, 81) {
-        if(X-B*d<=0) continue;
-        ll mx = (X-B*d)/A;
-        ll now = solve(d, mx);
-        // de2(d, now)
-        chmax(ans, now);
+    auto del=[&](ll x) {
+        auto it = st.find(x);
+        ll nxt = *next(it), prv = *prev(it);
+        if(prv!=-INF && nxt!=INF) {
+            now += p2(nxt-prv);
+        }
+        if(prv!=-INF) now -= p2(x-prv);
+        if(nxt!=INF) now -= p2(nxt-x);
+        st.erase(it);
+    };
+    
+    ll l = 0, r = 0;
+    vl ans(Q);
+    for(auto i: p) {
+        ll lt = L[i], rt = R[i];
+        de2(i, now)
+        while(l>lt) --l, add(A[l]);
+        de2(i, now)
+        while(r<rt) add(A[r]), ++r;
+        de2(i, now)
+        while(r>rt) --r, del(A[r]);
+        de2(i, now)
+        while(l<lt) del(A[l]), ++l;
+        de2(i, now)
+        ans[i] = now;
     }
     Out(ans);
     
