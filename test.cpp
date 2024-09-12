@@ -198,86 +198,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll D = -1;
-ll ten = 1;
-
-struct S {
-    ll x[9];
-    S(ll y=0) {
-        rep(i, D) {
-            x[i] = y;
-            ll ny = y%ten*10 + y/ten;
-            y = ny;
-        }
-    };
-};
-S op(S a, S b) {
-    S ret(0);
-    rep(i, D) { ret.x[i] = a.x[i] ^ b.x[i]; }
-    return ret;
-}
-S e() { return S(0); }
-
-using F = ll;
-S mapping(F f, S x) {
-    rotate(begin(x.x), begin(x.x)+f, begin(x.x)+D);
-    return x;
-}
-F composition(F f, F g) {
-    f += g;
-    f %= D;
-    return f;
-}
-F id() {return 0;}
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); cin>>D;
-    VL(A, N);
-    rep(i, D-1) ten *= 10;
-
-    vector<S> v(N);
-    rep(i, N) { v[i] = S(A[i]); }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-
-    ll si = 0;
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            si += x;
-        } else if (t==2) {
-            LONG(l, r, y); --l, --r;
-            l += si, r += si;
-            l %= N, r %= N;
-            if(l<=r) {
-                seg.apply(l, r+1, y);
-            } else {
-                seg.apply(l, N, y);
-                seg.apply(0, r+1, y);
-            }
-        } else {
-            LONG(l, r); --l, --r;
-            l += si, r += si;
-            l %= N, r %= N;
-            ll ans = 0;
-            if(l<=r) {
-                ans = seg.prod(l, r+1).x[0];
-            } else {
-                ll a = seg.prod(l, N).x[0];
-                ll b = seg.prod(0, r+1).x[0];
-                ans = a^b;
-            }
-            Out(ans);
+    LONG(N); VL(A, N);
+    set<Pr> st;
+    rep(i, N) st.emplace(A[i], i);
+    ll M = 2e5+10;
+    vvb X(N, vb(M));
+    rep(i, N) {
+        LONG(C);
+        rep(j, C) {
+            LONGM(x);
+            X[i][x] = true;
         }
     }
-
-    
+    de(X)
+    LONG(Q);
+    rep(i, Q) {
+        LONG(D);
+        VLM(Y, D);
+        Pr mx(-1, -1);
+        rep(ni, N) {
+            bool ok = true;
+            for(auto y: Y) {
+                if(X[ni][y]) ok = false;
+            }
+            if(ok) chmax(mx, Pr(A[ni], ni+1));
+        }
+        Out(mx.second);
+    }
 }
 
 // ### test.cpp ###

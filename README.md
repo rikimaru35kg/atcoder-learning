@@ -1860,6 +1860,7 @@
 - [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
 - [J - 横断](https://atcoder.jp/contests/past202212-open/tasks/past202212_j)
 - [L - 区間](https://atcoder.jp/contests/past202212-open/tasks/past202212_l)
+- [F - 薬剤師](https://atcoder.jp/contests/past202209-open/tasks/past202209_f)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

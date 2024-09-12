@@ -201,63 +201,22 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    LONG(Q);
-    vl L(Q), R(Q);
-    rep(i, Q) cin>>L[i]>>R[i];
-    rep(i, Q) L[i]--;
-
-    auto p2=[&](ll x) {return x*x;};
-
-    ll h = max((db)N/sqrt(Q), 1.0);
-    vl p(Q);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        ll hi = R[i]/h, hj = R[j]/h;
-        if(hi==hj) return L[i]<L[j];
-        else return hi<hj;
-    });
-
-    multiset<ll> st;
-    st.insert(-INF); st.insert(INF);
-    ll now = 0;
-    auto add=[&](ll x) {
-        auto it = st.lower_bound(x);
-        ll nxt = *it, prv = *prev(it);
-        if(prv!=-INF && nxt!=INF) {
-            now -= p2(nxt-prv);
+    LONG(R, N, M, L);
+    ll r = 0;
+    ll n = N;
+    ll m = 0;
+    VL(S, L);
+    rep(i, L) {
+        n -= S[i];
+        ++m;
+        if(n<0) PNo
+        if(n==0 || m==M) {
+            ++r, n = N;
+            m = 0;
         }
-        if(prv!=-INF) now += p2(x-prv);
-        if(nxt!=INF) now += p2(nxt-x);
-        st.insert(x);
-    };
-    auto del=[&](ll x) {
-        auto it = st.find(x);
-        ll nxt = *next(it), prv = *prev(it);
-        if(prv!=-INF && nxt!=INF) {
-            now += p2(nxt-prv);
-        }
-        if(prv!=-INF) now -= p2(x-prv);
-        if(nxt!=INF) now -= p2(nxt-x);
-        st.erase(it);
-    };
-    
-    ll l = 0, r = 0;
-    vl ans(Q);
-    for(auto i: p) {
-        ll lt = L[i], rt = R[i];
-        de2(i, now)
-        while(l>lt) --l, add(A[l]);
-        de2(i, now)
-        while(r<rt) add(A[r]), ++r;
-        de2(i, now)
-        while(r>rt) --r, del(A[r]);
-        de2(i, now)
-        while(l<lt) del(A[l]), ++l;
-        de2(i, now)
-        ans[i] = now;
     }
-    Out(ans);
+    if(r==R && m==0) PYes PNo
+    de(m)de(n)de(r)
     
 }
 
