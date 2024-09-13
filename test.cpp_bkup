@@ -198,12 +198,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        long long m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(a, b, x, y);
-    ll ans = x/a;
-    chmin(ans, y/b);
+
+    DOUBLE(a, b, c);
+
+    auto g=[&](db x) -> db {
+        return a*x*x*x*x*x + b*x + c;
+    };
+
+    auto f=[&](db x) -> bool {
+        if(g(x)>0 && g(1)>0) return true;
+        if(g(x)<0 && g(1)<0) return true;
+        return false;
+    };
+
+    db ans = binary_search(1.0, 2.0, f);
     Out(ans);
     
 }

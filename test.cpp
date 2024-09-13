@@ -198,18 +198,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vvl vs;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), vs(n) {
+        rep(i, n) vs[i].push_back(i);
+    }
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        for(auto t: vs[x]) vs[y].push_back(t);
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    ll a = (N-1)/3;
-    char x = 'a'+a-1;
-    ll r = N%3;
-    if(r==0) r = 3;
-    de(r)
-    string ans = S.substr(0, r);
-    ans += x;
-    Out(ans);
+    LONG(N); LONG(Q);
+    WeightedUnionFind uf(N);
 
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(a, b);
+            uf.merge(a, b);
+        } else {
+            LONGM(a);
+            a = uf.leader(a);
+            vl ans = uf.vs[a];
+            sort(all(ans));
+            for(auto &x: ans) ++x;
+            Out(ans);
+        }
+    }
+    
 }
+
+// ### test.cpp ###

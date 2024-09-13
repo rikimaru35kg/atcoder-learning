@@ -31,17 +31,20 @@ from datetime import timedelta,datetime
 
 def main():
     S = instr()
-    T = instr()
-    s = datetime.strptime(S,"%Y-%m-%d")
-    t = datetime.strptime(T,"%Y-%m-%d")
+    dt = datetime.strptime(S, "%Y/%m/%d")
 
-    ans = 0
-    while(s<=t):
-        if(s.weekday() in [5, 6]): ans += 1
-        if(s==t): break
-        s += timedelta(days=1) 
-    print(ans)
-
+    while True:
+        y = f"{dt.year:04d}"
+        m = f"{dt.month:02d}"
+        d = f"{dt.day:02d}"
+        st = set()
+        for c in y: st.add(c)
+        for c in m: st.add(c)
+        for c in d: st.add(c)
+        if len(st)<=2:
+            print(f"{y}/{m}/{d}")
+            return 0
+        dt += timedelta(days=1)
 
 
 
