@@ -201,61 +201,15 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    vvl C(H+2, vl(W+2, INF));
-    repk(i, 1, H+1) repk(j, 1, W+1) {
-        LONG(c);
-        C[i][j] = c;
-    }
-    C[1][1] = INF, C[H][W] = INF;
-    repk(i, 2, H+1) C[i][0] = 0;
-    repk(j, 1, W) C[H+1][j] = 0;
-
-    vvl dist(H+2, vl(W+2, INF));
-    vvp pre(H+2, vp(W+2, Pr(-1,-1)));
-    priority_queue<t3, vt3, greater<t3>> que;
-    auto push=[&](ll i, ll j, ll d, ll pi=-1, ll pj=-1) {
-        if(dist[i][j]<=d) return;
-        dist[i][j] = d;
-        que.emplace(d, i, j);
-        pre[i][j] = Pr(pi, pj);
-    };
-    repk(j, 2, W+1) push(0, j, 0);
-    repk(i, 1, H) push(i, W+1, 0);
-    while(que.size()) {
-        auto [d,i,j] = que.top(); que.pop();
-        if(dist[i][j]!=d) continue;
-        repk(di,-1,2) repk(dj,-1,2) {
-            if(di==0 && dj==0) continue;
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H+2,W+2)) continue;
-            ll c = C[ni][nj];
-            push(ni, nj, d+c, i, j);
-        }
-    }
-
-    de(dist)
-    ll ans = INF;
-    ll ci=-1, cj=-1;
-    repk(i, 2, H+1) {
-        if(dist[i][0]<ans) ci=i, cj=0;
-        chmin(ans, dist[i][0]);
-    }
-    repk(j, 1, W) {
-        if(dist[H+1][j]<ans) ci=H+1, cj=j;
-        chmin(ans, dist[H+1][j]);
-    }
-    de2(ci,cj)
-    vs str(H+2, string(W+2, '.'));
-    while(pre[ci][cj].first!=-1) {
-        de2(ci,cj)
-        auto [ni, nj] = pre[ci][cj];
-        str[ni][nj] = '#';
-        ci = ni, cj = nj;
-    }
+    STRING(S);
+    ll N = SIZE(S);
+    ll a = (N-1)/3;
+    char x = 'a'+a-1;
+    ll r = N%3;
+    if(r==0) r = 3;
+    de(r)
+    string ans = S.substr(0, r);
+    ans += x;
     Out(ans);
-    repk(i, 1, H+1) {
-        Out(str[i].substr(1,W));
-    }
 
 }
