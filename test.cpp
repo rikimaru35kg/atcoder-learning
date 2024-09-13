@@ -198,43 +198,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Date {
+    int y, m, d;
+    vector<int> mon_cum;
+    Date(int y, int m, int d): y(y), m(m), d(d), mon_cum(13) {
+        mon_cum = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        for(int i=0; i<12; ++i) mon_cum[i+1] += mon_cum[i];
+    }
+    int total_days() {
+        int ret = year_to_day(y-1) + mon_cum[m-1] + d;
+        if(is_leap(y) && m>=3) ++ret;
+        ret += 6;  // fine adjustment so that Monday = 0
+        return ret;
+    }
+    int weekday() {  // 0:Monday - 6:Sunday
+        int ret = total_days() % 7;
+        return ret;
+    }
+    int year_to_day(int y) {
+        int ret = y*365; ret += y/4; ret -= y/100; ret += y/400;
+        return ret;
+    }
+    bool is_leap(int y) {
+        if(y%400==0) return true;
+        if(y%4==0 && y%100!=0) return true;
+        return false;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, Q);
-    VS(A, H);
-    int flip=0;
-    if(H>W) {
-        flip=1;
-        vs tmp(W, string(H, '.'));
-        rep(i, H) rep(j, W) {
-            tmp[j][i] = A[i][j];
-        }
-        swap(A, tmp);
-        swap(H, W);
-    }
-    vector<deque<char>> deq(H);
-    rep(i, H) rep(j, W) {
-        deq[i].push_back(A[i][j]);
-    }
+    ll ys, ms, ds, yt, mt, dt;
+    scanf("%lld-%lld-%lld", &ys, &ms, &ds);
+    scanf("%lld-%lld-%lld", &yt, &mt, &dt);
 
-    string ans;
-    rep(qi, Q) {
-        LONG(t,p); --p; CHAR(c);
-        if(flip) t = 3 - t;
-        if(t==1) {
-            ans.push_back(deq[p].back());
-            deq[p].pop_back();
-            deq[p].push_front(c);
-        } else {
-            ans.push_back(deq[H-1][p]);
-            repr(i, H-1) {
-                deq[i+1][p] = deq[i][p];
-            }
-            deq[0][p] = c;
-        }
-    }
+    Date s(ys,ms,ds);
+    Date t(yt,mt,dt);
+
+    auto days=[&](ll d, ll r) -> ll {
+        return (d+(7-r))/7;
+    };
+
+    ll ss = s.total_days();
+    ll tt = t.total_days();
+    de(t.weekday())
+    de2(ss, tt)
+
+    ll ans = days(tt, 6) + days(tt, 5);
+    de(ans)
+    ans -= days(ss-1, 6) + days(ss-1, 5);
     Out(ans);
+
+
 
     
 }

@@ -201,34 +201,50 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vvp from(N+1);
-    rep(i, N) {
-        from[i].emplace_back(i+1, A[i]);
-        from[i+1].emplace_back(i, 0);
-    }
-    rep(i, M) {
-        LONG(b, l, r); --l;
-        from[l].emplace_back(r, b);
+    LONG(H, W);
+    VS(S, H);
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    auto rid=[&](ll id) {return Pr(id/W, id%W);};
+    ll ni=-1, st=-1, go=-1;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='a') ni=gid(i, j), S[i][j]='.';
+        if(S[i][j]=='s') st=gid(i, j), S[i][j]='.';
+        if(S[i][j]=='g') go=gid(i, j), S[i][j]='.';
     }
 
-    pq pque;
-    vl dist(N+1, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        pque.emplace(d, v);
+    vvl dist(H*W, vl(H*W, INF));
+    queue<Pr> que;
+    auto push=[&](ll id1, ll id2, ll d) {
+        if(dist[id1][id2]<=d) return;
+        dist[id1][id2] = d;
+        que.emplace(id1, id2);
     };
-    push(0, 0);
-    while(pque.size()) {
-        auto [d,v] = pque.top(); pque.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
+    push(st, ni, 0);
+    while(que.size()) {
+        auto [id1, id2] = que.front(); que.pop();
+        auto [si, sj] = rid(id1);
+        auto [ai, aj] = rid(id2);
+        ll d = dist[id1][id2];
+        for(auto [di,dj]: dij) {
+            ll ni = si + di, nj = sj + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='#') continue;
+            if(ni==ai && nj==aj) {
+                ll nai=ai+di, naj=aj+dj;
+                if(!isin(nai,naj,H,W)) continue;
+                if(S[nai][naj]=='#') continue;
+                push(gid(ni,nj),gid(nai,naj),d+1);
+            } else {
+                push(gid(ni,nj),gid(ai,aj),d+1);
+            }
         }
     }
-    Out(dist[N]);
+    ll ans = INF;
+    rep(i, H) rep(j, W) {
+        chmin(ans, dist[gid(i,j)][go]);
+    }
+    ch1(ans);
+    Out(ans);
     
 }
 

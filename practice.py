@@ -27,17 +27,22 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
+from datetime import timedelta,datetime
+
 def main():
-    N = inint()
-    S = instrvec(N)
-    great = False
-    for s in S:
-        if(s in ["Good", "Bad", "Miss"]):
-            print("Failed")
-            return
-        if(s == "Great"): great = True
-    if(great): print("Full Combo")
-    else: print("All Perfect")
+    S = instr()
+    T = instr()
+    s = datetime.strptime(S,"%Y-%m-%d")
+    t = datetime.strptime(T,"%Y-%m-%d")
+
+    ans = 0
+    while(s<=t):
+        if(s.weekday() in [5, 6]): ans += 1
+        if(s==t): break
+        s += timedelta(days=1) 
+    print(ans)
+
+
 
 
 
