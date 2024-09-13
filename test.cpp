@@ -200,7 +200,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -212,75 +212,113 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
+//! n*n matrix
+const int MX = 2;  // DEFINE PROPERLY!!
+template <typename T>
+class Mat {
 public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    int n; T a[MX][MX];
+    // Initialize n*n matrix as unit matrix
+    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
+        }
     }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
     }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
     }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
     }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
     }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
+    // power k (A^k)
+    void pow(long long k) {
+        *this = pow_recursive(*this, k);
     }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
     }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
+    long long ij(long long i, long long j) {
+        return a[i][j];
     }
+#ifdef __DEBUG
+    void print(string debugname="------") {  // for debug
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j] << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+    }
+#else
+    void print(string debugname="------") {}
+#endif
 };
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VL(A, N);
-    sort(all(A));
-    Combination comb(1e6, M998);
+    LONG(K, M);
+    mint::set_mod(M);
 
-    auto calc=[&](vl &A) -> mint {
-        mint ret = 0;
-        rep(i, N) {
-            mint now = comb(i, K-1);
-            now *= A[i];
-            ret += now;
-        }
+    auto calc=[&](auto f, ll d) -> mint {
+        if(d==0) return 0;
+        mint ret = f(f, d/2);
+        ret = mint(10).pow(d/2)*ret + ret;
+        if(d%2==1) ret = ret*10 + 1;
         return ret;
     };
 
     mint ans = 0;
-    ans += calc(A);
-    de(ans)
-    reverse(all(A));
-    ans -= calc(A);
-
-    ans /= comb(N, K);
+    de(calc(calc, 1))
+    de(calc(calc, 2))
+    de(calc(calc, 3))
+    de(calc(calc, 4))
+    rep(i, K) {
+        LONG(c, d);
+        mint now = calc(calc, d);
+        now *= c;
+        ans = ans * mint(10).pow(d) + now;
+    }
     Out(ans);
     
 }

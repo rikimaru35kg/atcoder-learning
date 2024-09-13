@@ -201,41 +201,42 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(P, N); VP(Q, N);
+    LONG(N, M);
+    vvp from(N), ifrom(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        ifrom[b].emplace_back(a, c);
+    }
 
-    auto move=[&](vp &X, int t) {
-        ll xmn=INF, ymn=INF;
-        for(auto [x,y]: X) {
-            chmin(xmn, x); chmin(ymn, y);
+    auto dijk=[&](ll sv, vvp &from) -> vl {
+        vl dist(N, INF);
+        pq que;
+        auto push=[&](ll v, ll d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d, v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv, c]: from[v]) {
+                push(nv, d+c);
+            }
         }
-        rep(i, N) {
-            if(t==0) X[i].first -= xmn;
-            else X[i].second -= ymn;
-        }
+        return dist;
     };
 
-    rep(a, 2) rep(b, 2) {
-        if(a==1 && b==1) break;
-        vp X = P, Y = Q;
-        if(a) {
-            rep(i, N) {
-                X[i].first *= -1;
-            }
+    vl dist1 = dijk(0, from), distN = dijk(N-1, ifrom);
+
+    rep(i, N) {
+        if(dist1[i]==INF || distN[i]==INF) {
+            Out(-1); continue;
         }
-        if(b) {
-            rep(i, N) {
-                X[i].second *= -1;
-            }
-        }
-        if(a) move(X, 0), move(Y, 0);
-        if(b) move(X, 1), move(Y, 1);
-        sort(all(X)); sort(all(Y));
-        if(X==Y) PYes
+        ll d = dist1[i] + distN[i];
+        Out(d);
     }
-    PNo
-
-
     
 }
 
