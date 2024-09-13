@@ -784,6 +784,7 @@
 - !要復習 [I - 部分列ペア](https://atcoder.jp/contests/past17-open/tasks/past17_i)
 - !復習価値中 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - !復習価値中 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
+- !復習価値高 部分列DP [K - 部分列](https://atcoder.jp/contests/past202206-open/tasks/past202206_k)
 - !復習価値高 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
 
 ## LIS 最長増加部分列

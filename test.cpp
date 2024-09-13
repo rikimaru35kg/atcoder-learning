@@ -198,58 +198,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Date {
-    int y, m, d;
-    vector<int> mon_cum;
-    Date(int y, int m, int d): y(y), m(m), d(d), mon_cum(13) {
-        mon_cum = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        for(int i=0; i<12; ++i) mon_cum[i+1] += mon_cum[i];
-    }
-    int total_days() {
-        int ret = year_to_day(y-1) + mon_cum[m-1] + d;
-        if(is_leap(y) && m>=3) ++ret;
-        ret += 6;  // fine adjustment so that Monday = 0
-        return ret;
-    }
-    int weekday() {  // 0:Monday - 6:Sunday
-        int ret = total_days() % 7;
-        return ret;
-    }
-    int year_to_day(int y) {
-        int ret = y*365; ret += y/4; ret -= y/100; ret += y/400;
-        return ret;
-    }
-    bool is_leap(int y) {
-        if(y%400==0) return true;
-        if(y%4==0 && y%100!=0) return true;
-        return false;
-    }
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll ys, ms, ds, yt, mt, dt;
-    scanf("%lld-%lld-%lld", &ys, &ms, &ds);
-    scanf("%lld-%lld-%lld", &yt, &mt, &dt);
+    STRING(S, T);
+    ll N = SIZE(S), M = SIZE(T);
+    ll Z = 26;
 
-    Date s(ys,ms,ds);
-    Date t(yt,mt,dt);
+    vvl nxts(Z, vl(N, INF)), nxtt(Z, vl(M, INF));
+    rep(z, Z) rep(i, N) nxts[S[i]-'a'][i] = i;
+    rep(z, Z) rep(i, M) nxtt[T[i]-'a'][i] = i;
 
-    auto days=[&](ll d, ll r) -> ll {
-        return (d+(7-r))/7;
+    rep(z, Z) repr(i, N-1) chmin(nxts[z][i], nxts[z][i+1]);
+    rep(z, Z) repr(i, M-1) chmin(nxtt[z][i], nxtt[z][i+1]);
+
+    auto calc=[&](ll n, vvl &nxt) -> mint{
+        vm dp(n+1);
+        dp[0] = 1;
+        rep(i, n) {
+            if(dp[i]==0) continue;
+            rep(z, Z) {
+                ll ni = nxt[z][i] + 1;
+                if(ni>=INF) continue;
+                dp[ni] += dp[i];
+            }
+        }
+        mint ret = 0;
+        rep1(i, n) ret += dp[i];
+        return ret;
     };
 
-    ll ss = s.total_days();
-    ll tt = t.total_days();
-    de(t.weekday())
-    de2(ss, tt)
-
-    ll ans = days(tt, 6) + days(tt, 5);
+    mint ans = calc(N, nxts);
     de(ans)
-    ans -= days(ss-1, 6) + days(ss-1, 5);
-    Out(ans);
+    ans += calc(M, nxtt);
+    de(ans)
 
+    vvm dp(N+1, vm(M+1));
+    dp[0][0] = 1;
+
+    rep(i, N+1) rep(j, M+1) {
+        if(dp[i][j]==0) continue;
+        if(i==N || j==M) continue;
+        rep(z, Z) {
+            ll ni = nxts[z][i] + 1;
+            ll nj = nxtt[z][j] + 1;
+            if(ni>=INF || nj>=INF) continue;
+            dp[ni][nj] += dp[i][j];
+        }
+    }
+
+    mint com = 0;
+    rep(i, N+1) rep(j, M+1) com += dp[i][j];
+    --com;
+
+    ans -= com;
+
+    Out(ans);
 
 
     
