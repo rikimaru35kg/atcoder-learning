@@ -272,6 +272,7 @@
 - 基本 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - 基本 Kの倍数の時だけ発車可能 [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
 - !復習価値高 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
+- !要復習 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
 
 ## 拡張ダイクストラ法（or 拡張BFS）
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
@@ -1303,12 +1304,14 @@
 - ゴールするまでの回数の期待値などは、後ろから考えると良い
 - あくまで感覚だが、ポイント的なもの（出目の総和など）を状態にもつカエル型DPが多い気がする
 - 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
+- 期待値の線形性を利用する問題もある
 ### 例題
 - !復習価値中 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
 - !復習価値中 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - !復習価値中 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 - !復習価値高 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3)
 - !要復習 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
+- !要復習 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
 
 ## 対称性を利用する
 ### 例題

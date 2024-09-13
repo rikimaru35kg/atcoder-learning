@@ -198,79 +198,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S, T);
-    ll N = SIZE(S), M = SIZE(T);
-    ll Z = 26;
+    LONG(H, W);
+    vvl C(H+2, vl(W+2, INF));
+    repk(i, 1, H+1) repk(j, 1, W+1) {
+        LONG(c);
+        C[i][j] = c;
+    }
+    C[1][1] = INF, C[H][W] = INF;
+    repk(i, 2, H+1) C[i][0] = 0;
+    repk(j, 1, W) C[H+1][j] = 0;
 
-    vvl nxts(Z, vl(N, INF)), nxtt(Z, vl(M, INF));
-    rep(z, Z) rep(i, N) nxts[S[i]-'a'][i] = i;
-    rep(z, Z) rep(i, M) nxtt[T[i]-'a'][i] = i;
-
-    rep(z, Z) repr(i, N-1) chmin(nxts[z][i], nxts[z][i+1]);
-    rep(z, Z) repr(i, M-1) chmin(nxtt[z][i], nxtt[z][i+1]);
-
-    auto calc=[&](ll n, vvl &nxt) -> mint{
-        vm dp(n+1);
-        dp[0] = 1;
-        rep(i, n) {
-            if(dp[i]==0) continue;
-            rep(z, Z) {
-                ll ni = nxt[z][i] + 1;
-                if(ni>=INF) continue;
-                dp[ni] += dp[i];
-            }
-        }
-        mint ret = 0;
-        rep1(i, n) ret += dp[i];
-        return ret;
+    vvl dist(H+2, vl(W+2, INF));
+    vvp pre(H+2, vp(W+2, Pr(-1,-1)));
+    priority_queue<t3, vt3, greater<t3>> que;
+    auto push=[&](ll i, ll j, ll d, ll pi=-1, ll pj=-1) {
+        if(dist[i][j]<=d) return;
+        dist[i][j] = d;
+        que.emplace(d, i, j);
+        pre[i][j] = Pr(pi, pj);
     };
-
-    mint ans = calc(N, nxts);
-    de(ans)
-    ans += calc(M, nxtt);
-    de(ans)
-
-    vvm dp(N+1, vm(M+1));
-    dp[0][0] = 1;
-
-    rep(i, N+1) rep(j, M+1) {
-        if(dp[i][j]==0) continue;
-        if(i==N || j==M) continue;
-        rep(z, Z) {
-            ll ni = nxts[z][i] + 1;
-            ll nj = nxtt[z][j] + 1;
-            if(ni>=INF || nj>=INF) continue;
-            dp[ni][nj] += dp[i][j];
+    repk(j, 2, W+1) push(0, j, 0);
+    repk(i, 1, H) push(i, W+1, 0);
+    while(que.size()) {
+        auto [d,i,j] = que.top(); que.pop();
+        if(dist[i][j]!=d) continue;
+        repk(di,-1,2) repk(dj,-1,2) {
+            if(di==0 && dj==0) continue;
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H+2,W+2)) continue;
+            ll c = C[ni][nj];
+            push(ni, nj, d+c, i, j);
         }
     }
 
-    mint com = 0;
-    rep(i, N+1) rep(j, M+1) com += dp[i][j];
-    --com;
-
-    ans -= com;
-
+    de(dist)
+    ll ans = INF;
+    ll ci=-1, cj=-1;
+    repk(i, 2, H+1) {
+        if(dist[i][0]<ans) ci=i, cj=0;
+        chmin(ans, dist[i][0]);
+    }
+    repk(j, 1, W) {
+        if(dist[H+1][j]<ans) ci=H+1, cj=j;
+        chmin(ans, dist[H+1][j]);
+    }
+    de2(ci,cj)
+    vs str(H+2, string(W+2, '.'));
+    while(pre[ci][cj].first!=-1) {
+        de2(ci,cj)
+        auto [ni, nj] = pre[ci][cj];
+        str[ni][nj] = '#';
+        ci = ni, cj = nj;
+    }
     Out(ans);
+    repk(i, 1, H+1) {
+        Out(str[i].substr(1,W));
+    }
 
-
-    
 }
-
-// ### test.cpp ###
