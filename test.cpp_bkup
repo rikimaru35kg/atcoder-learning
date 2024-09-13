@@ -198,44 +198,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        long long m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vvl vs;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), vs(n) {
+        rep(i, n) vs[i].push_back(i);
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    return ok;
-}
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        for(auto t: vs[x]) vs[y].push_back(t);
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N); LONG(Q);
+    WeightedUnionFind uf(N);
 
-    DOUBLE(a, b, c);
-
-    auto g=[&](db x) -> db {
-        return a*x*x*x*x*x + b*x + c;
-    };
-
-    auto f=[&](db x) -> bool {
-        if(g(x)>0 && g(1)>0) return true;
-        if(g(x)<0 && g(1)<0) return true;
-        return false;
-    };
-
-    db ans = binary_search(1.0, 2.0, f);
-    Out(ans);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(a, b);
+            uf.merge(a, b);
+        } else {
+            LONGM(a);
+            a = uf.leader(a);
+            vl ans = uf.vs[a];
+            sort(all(ans));
+            for(auto &x: ans) ++x;
+            Out(ans);
+        }
+    }
     
 }
 
