@@ -672,6 +672,7 @@
 - !復習価値高 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
 - !要復習 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !要復習 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
+- !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 永続データ構造
@@ -1427,6 +1428,7 @@
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
+- !復習価値高 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
 - !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - !復習価値高 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
