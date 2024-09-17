@@ -198,88 +198,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <class T>
+using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 int main () {
-    // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    VL(A, N);
-    rep(i, N) A[i]+=i;
+    LONG(N, Q);
+    VS(Str, N);
+    pset<pair<string,ll>> st;
+    rep(i, N) st.insert({Str[i], i});
 
-    rep(i, N) A[i] = -A[i];
-
-    vl lis(N, INF);
-    ll ans = 0;
-    rep(i, N) {
-        ll a = -A[i]; a-=i;
-        de2(N-1-i, a)
-        if(a<N-1-i) continue;
-        if(a>P-i) continue;
-        auto [n,x] = uppbou(lis, A[i]);
-        chmax(ans, n+1);
-        lis[n] = A[i];
+    rep(qi, Q) {
+        LONGM(x); STRING(t);
+        auto it = st.find_by_order(x);
+        auto [s,i] = *it;
+        st.erase(it);
+        st.insert({t,i});
+        Str[i] = t;
     }
-    de(lis)
-    Out(N-ans);
-
+    rep(i, N) {
+        cout<<Str[i];
+        printf("%c", i==N-1?'\n':' ');
+    }
     
 }
 
