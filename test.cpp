@@ -204,24 +204,32 @@ using namespace __gnu_pbds;
 template <class T>
 using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+
 int main () {
+    // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, Q);
-    VS(Str, N);
-    pset<pair<string,ll>> st;
-    rep(i, N) st.insert({Str[i], i});
+    VL(P, N);
+    pset<pair<ll,ll>> st;
+    rep(i, N) st.insert({P[i], i});
 
-    rep(qi, Q) {
-        LONGM(x); STRING(t);
-        auto it = st.find_by_order(x);
-        auto [s,i] = *it;
-        st.erase(it);
-        st.insert({t,i});
-        Str[i] = t;
-    }
-    rep(i, N) {
-        cout<<Str[i];
-        printf("%c", i==N-1?'\n':' ');
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(a, x); --a;
+            st.erase({P[a], a});
+            P[a] = x;
+            st.insert({x, a});
+        } else if (t==2) {
+            LONGM(a);
+            auto i = st.order_of_key({P[a], a});
+            Out(N-i);
+        } else {
+            LONG(r);
+            auto it = st.find_by_order(N-r);
+            auto [p,n] = *it;
+            Out(n+1);
+        }
     }
     
 }

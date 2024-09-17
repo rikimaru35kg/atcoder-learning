@@ -1,7 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -40,7 +38,6 @@ namespace std{
 #define vector vector_for_debugging
 #endif
 using namespace std;
-using namespace __gnu_pbds;
 using ll = long long;
 using ull = unsigned long long;
 using sll = __int128_t;
@@ -75,8 +72,6 @@ using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-template <class T>
-using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define rep(i, N) for (ll i=0; i<(ll)(N); i++)
 #define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
 #define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
@@ -203,9 +198,13 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <class T>
+using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 int main () {
-    // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, Q);
     VS(Str, N);

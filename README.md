@@ -604,6 +604,7 @@
 - !復習価値高 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 - !要復習 [L - 平均クエリ](https://atcoder.jp/contests/past16-open/tasks/past202309_l)
+- !要復習 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
 ## 双方向リスト
 - 要素の前後関係だけ保持するリスト
