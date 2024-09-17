@@ -198,39 +198,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template <class T>
-using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(P, N);
-    pset<pair<ll,ll>> st;
-    rep(i, N) st.insert({P[i], i});
-
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(a, x); --a;
-            st.erase({P[a], a});
-            P[a] = x;
-            st.insert({x, a});
-        } else if (t==2) {
-            LONGM(a);
-            auto i = st.order_of_key({P[a], a});
-            Out(N-i);
-        } else {
-            LONG(r);
-            auto it = st.find_by_order(N-r);
-            auto [p,n] = *it;
-            Out(n+1);
-        }
+    LONG(N, K);
+    vt3 ser;
+    rep(i, N) {
+        LONG(a, b, c);
+        ser.emplace_back(a,b,c);
     }
+
+    auto f=[&](ll x) -> bool {
+        ll cnt = 0;
+        for(auto [a,b,c]: ser) {
+            if(x<b) continue;
+            if(x>=b+(a-1)*c) {
+                cnt += a;
+                continue;
+            }
+            ll i = (x-b+c)/c;
+            cnt += i;
+        }
+        return cnt >= K;
+    };
+
+    ll ans = binary_search(INF, 0, f);
+    Out(ans);
+
     
 }
 

@@ -198,31 +198,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template <class T>
-using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
 int main () {
+    // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VS(Str, N);
-    pset<pair<string,ll>> st;
-    rep(i, N) st.insert({Str[i], i});
-
-    rep(qi, Q) {
-        LONGM(x); STRING(t);
-        auto it = st.find_by_order(x);
-        auto [s,i] = *it;
-        st.erase(it);
-        st.insert({t,i});
-        Str[i] = t;
-    }
+    LONG(N);
+    STRING(S);
+    vl A;
+    for(auto c: S) A.push_back(c-'0');
+    vl ans(N);
+    vl ngs;
     rep(i, N) {
-        cout<<Str[i];
-        printf("%c", i==N-1?'\n':' ');
+        if(A[i]==1) ans[i]=i+1;
+        else {
+            ngs.push_back(i);
+        }
     }
+
+    ll sz = SIZE(ngs);
+    if(sz==0) Outend(ans);
+    if(sz==1) Pm1
+    rep(i, sz) {
+        ans[ngs[i]] = ngs[(i+1)%sz]+1;
+    }
+    Out(ans);
     
 }
 

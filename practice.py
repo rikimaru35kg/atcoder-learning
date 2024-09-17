@@ -30,23 +30,10 @@ INF = int(3e18)
 from datetime import timedelta,datetime
 
 def main():
-    S = instr()
-    dt = datetime.strptime(S, "%Y/%m/%d")
-
-    while True:
-        y = f"{dt.year:04d}"
-        m = f"{dt.month:02d}"
-        d = f"{dt.day:02d}"
-        st = set()
-        for c in y: st.add(c)
-        for c in m: st.add(c)
-        for c in d: st.add(c)
-        if len(st)<=2:
-            print(f"{y}/{m}/{d}")
-            return 0
-        dt += timedelta(days=1)
-
-
+    N,X = inints()
+    A = invec()
+    ans = A.count(X)
+    print(ans)
 
 
 
