@@ -198,88 +198,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    CoordinateCompression cc;
-    vt3 ladder;
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        ladder.emplace_back(a,b,c);
-        cc.add(a); cc.add(b);
-    }
-    cc.add(0); cc.add(N-1);
-    ll K = cc.size();
+    STRING(S, T);
+    ll N = SIZE(S), M = SIZE(T);
 
-    vvp from(K);
-    rep(i, K-1) {
-        ll c = cc[i+1] - cc[i];
-        from[i].emplace_back(i+1, c);
-        from[i+1].emplace_back(i, c);
+    vvl dp(N+1, vl(M+1, -INF));
+    dp[0][0] = 0;
+    rep(i, N+1) rep(j, M+1) {
+        if(dp[i][j]==-INF) continue;
+        if(i<N) chmax(dp[i+1][j], dp[i][j]);
+        if(j<M) chmax(dp[i][j+1], dp[i][j]);
+        if(i<N && j<M && S[i]!=T[j]) chmax(dp[i+1][j+1], dp[i][j]+1);
     }
-    for(auto [a,b,c]: ladder) {
-        a = cc(a), b = cc(b);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-
-    vl dist(K, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
-        }
-    }
-    Out(dist.back());
+    Out(dp[N][M]);
     
 }
 

@@ -1884,6 +1884,7 @@
 - [L - 区間](https://atcoder.jp/contests/past202212-open/tasks/past202212_l)
 - [F - 薬剤師](https://atcoder.jp/contests/past202209-open/tasks/past202209_f)
 - [I - 対称変換](https://atcoder.jp/contests/past202203-open/tasks/past202203_i)
+- [I - 直通エレベーター](https://atcoder.jp/contests/past202112-open/tasks/past202112_i)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
