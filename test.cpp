@@ -198,88 +198,88 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
     }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
     }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
     }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
     }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    CoordinateCompression cc;
-    vt3 ladder;
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        ladder.emplace_back(a,b,c);
-        cc.add(a); cc.add(b);
-    }
-    cc.add(0); cc.add(N-1);
-    ll K = cc.size();
+    LONG(N, P);
+    VL(A, N);
+    rep(i, N) A[i]+=i;
 
-    vvp from(K);
-    rep(i, K-1) {
-        ll c = cc[i+1] - cc[i];
-        from[i].emplace_back(i+1, c);
-        from[i+1].emplace_back(i, c);
-    }
-    for(auto [a,b,c]: ladder) {
-        a = cc(a), b = cc(b);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
+    rep(i, N) A[i] = -A[i];
 
-    vl dist(K, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
-        }
+    vl lis(N, INF);
+    ll ans = 0;
+    rep(i, N) {
+        ll a = -A[i]; a-=i;
+        de2(N-1-i, a)
+        if(a<N-1-i) continue;
+        if(a>P-i) continue;
+        auto [n,x] = uppbou(lis, A[i]);
+        chmax(ans, n+1);
+        lis[n] = A[i];
     }
-    Out(dist.back());
+    de(lis)
+    Out(N-ans);
+
     
 }
 
