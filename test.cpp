@@ -198,70 +198,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(Pr p1, Pr p2) {
+    double ret = 0;
+    ret += (db)(p1.first - p2.first) * (p1.first - p2.first);
+    ret += (db)(p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
+    LONG(N);
+    VL(A, N);
+    ll S = accumulate(all(A), 0LL);
+    ll M = 100;
 
-    vb visited(N);
-    vl A(N, 1), B(N);
-    vl P(N, INF), Q(N, INF);
-    ll mn = -INF, mx = INF;
-    auto dfs=[&](auto f, ll v, ll a=1, ll b=0) -> void {
-        if(visited[v]) {
-            if(P[v]!=INF) {
-                if(a==1 && P[v] ==b) return;
-                if(a==1 && P[v] !=b) Pm1
-                if(a==-1) {
-                    ll z = (b-P[v]);
-                    if(z%2!=0) Pm1
-                    chmax(mn, z/2);
-                    chmin(mx, z/2);
-                }
-            } else {
-                if(a==-1 && Q[v]==b) return;
-                if(a==-1 && Q[v]!=b) Pm1
-                if(a==1) {
-                    ll z = (Q[v]-b);
-                    if(z%2!=0) Pm1
-                    chmax(mn, z/2);
-                    chmin(mx, z/2);
-                }
-            }
-            return;
+    vvd dp(M+1, vd(S+1, INF)); // last, sum
+    vvd edp = dp;
+    dp[0][0] = 0;
+    repk(i, 1, N) {
+        vvd pdp = edp; swap(pdp, dp);
+        rep(j, M+1) rep(k, S+1) rep(x, M+1) {
+            if(pdp[j][k]==INF) continue;
+            db d = euclid_distd({0,j},{1,x});
+            if(k+x<=S) chmin(dp[x][k+x], pdp[j][k]+d);
         }
-        visited[v] = true;
-        if(a==1) P[v] = b;
-        else Q[v] = b;
-        de3(v, a, b)
-        // A[v] = a, B[v] = b;
-        if(a>0) chmax(mn, -b);
-        if(a<0) chmin(mx, b);
-        for(auto [nv, c]: from[v]) {
-            f(f, nv, -a, c-b);
-        }
-    };
-
-    vl X(N, -1);
-    mn = -INF, mx = INF;
-    dfs(dfs, 0);
-    if(mn>mx) Pm1
-    ll x = mn;
-    de(x)
-    rep(v, N) {
-        ll a = 1, b = P[v];
-        if(P[v]==INF) a = -1, b = Q[v];
-        X[v] = x*a + b;
+        de(dp)
     }
-    for(auto x: X) Out(x);
-    de(P)de(Q)
-    
+    Out(dp[0][S]);
 }
-
-// ### test.cpp ###
