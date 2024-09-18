@@ -9,6 +9,7 @@ struct Vec {
     Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
     Vec operator+(const Vec& v) const { return Vec(*this) += v;}
     Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
+    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
     Vec& operator*=(double s) { x *= s; y *= s; return *this;}
     Vec operator*(double s) const { return Vec(*this) *= s;}
     Vec& operator/=(double s) { x /= s; y /= s; return *this;}
@@ -20,6 +21,12 @@ struct Vec {
     double norm() const { return sqrt(norm2());}
     Vec normalize() const { return *this/norm();}
     Vec rotate90() const { return Vec(y, -x);}
+    void rotate(double theta) {
+        Vec ret;
+        ret.x = cos(theta)*x - sin(theta)*y;
+        ret.y = sin(theta)*x + cos(theta)*y;
+        *this = ret;
+    }
     int ort() const { // orthant
     if (abs(x) < eps && abs(y) < eps) return 0;
     if (y > 0) return x>0 ? 1 : 2;

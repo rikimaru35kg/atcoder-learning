@@ -198,36 +198,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(Pr p1, Pr p2) {
-    double ret = 0;
-    ret += (db)(p1.first - p2.first) * (p1.first - p2.first);
-    ret += (db)(p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
+// Vector
+const double eps = 1e-8; // suppose max(x,y) <= 1e9;
+struct Vec {
+    double x, y;
+    Vec(double x=0, double y=0): x(x), y(y) {}
+    Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
+    Vec operator+(const Vec& v) const { return Vec(*this) += v;}
+    Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
+    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
+    Vec& operator*=(double s) { x *= s; y *= s; return *this;}
+    Vec operator*(double s) const { return Vec(*this) *= s;}
+    Vec& operator/=(double s) { x /= s; y /= s; return *this;}
+    Vec operator/(double s) const { return Vec(*this) /= s;}
+    double dot(const Vec& v) const { return x*v.x + y*v.y;}
+    // cross>0 means *this->v is counterclockwise.
+    double cross(const Vec& v) const { return x*v.y - v.x*y;}
+    double norm2() const { return x*x + y*y;}
+    double norm() const { return sqrt(norm2());}
+    Vec normalize() const { return *this/norm();}
+    Vec rotate90() const { return Vec(y, -x);}
+    void rotate(double theta) {
+        Vec ret;
+        ret.x = cos(theta)*x - sin(theta)*y;
+        ret.y = sin(theta)*x + cos(theta)*y;
+        *this = ret;
+    }
+    int ort() const { // orthant
+    if (abs(x) < eps && abs(y) < eps) return 0;
+    if (y > 0) return x>0 ? 1 : 2;
+    else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vec& v) const {
+      int o = ort(), vo = v.ort();
+      if (o != vo) return o < vo;
+      return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vec& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vec& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    ll S = accumulate(all(A), 0LL);
-    ll M = 100;
+    DOUBLE(x1, y1, x2, y2);
+    vector<Vec> mole(N);
+    rep(i, N) { cin>>mole[i]; }
+    Vec eye(x2-x1, y2-y1);
+    db dist = eye.norm();
+    db E = dist/2;
+    de(E)
 
-    vvd dp(M+1, vd(S+1, INF)); // last, sum
-    vvd edp = dp;
-    dp[0][0] = 0;
-    repk(i, 1, N) {
-        vvd pdp = edp; swap(pdp, dp);
-        rep(j, M+1) rep(k, S+1) rep(x, M+1) {
-            if(pdp[j][k]==INF) continue;
-            db d = euclid_distd({0,j},{1,x});
-            if(k+x<=S) chmin(dp[x][k+x], pdp[j][k]+d);
-        }
-        de(dp)
+    db theta = atan2(y2-y1, x2-x1);
+    Vec move(x1+E, y1);
+
+    rep(i, N) {
+        Vec p = mole[i];
+        Vec left(x1,y1);
+        p -= left;
+        p.rotate(-theta);
+        p += left;
+        p -= move;
+        auto [u, v] = p;
+        printf("%.10f %.10f\n", u, v);
     }
-    Out(dp[0][S]);
+    
 }
+
+// ### test.cpp ###

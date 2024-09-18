@@ -198,26 +198,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(Pr p1, Pr p2) {
+    double ret = 0;
+    ret += (db)(p1.first - p2.first) * (p1.first - p2.first);
+    ret += (db)(p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vl A;
-    ll three = 1;
-    while(N) {
-        ll r = N%3;
-        if (r==1) {
-            A.push_back(three);
-            N -= 1;
-        } else if (r==2) {
-            A.push_back(-three);
-            N += 1;
-        }
-        N /= 3;
-        three *= 3;
-    }
-    Out(SIZE(A));
-    Out(A);
-}
+    VL(A, N);
+    ll S = accumulate(all(A), 0LL);
+    ll M = 100;
 
-// ### test.cpp ###
+    vvd dp(M+1, vd(S+1, INF)); // last, sum
+    vvd edp = dp;
+    dp[0][0] = 0;
+    repk(i, 1, N) {
+        vvd pdp = edp; swap(pdp, dp);
+        rep(j, M+1) rep(k, S+1) rep(x, M+1) {
+            if(pdp[j][k]==INF) continue;
+            db d = euclid_distd({0,j},{1,x});
+            if(k+x<=S) chmin(dp[x][k+x], pdp[j][k]+d);
+        }
+        de(dp)
+    }
+    Out(dp[0][S]);
+}
