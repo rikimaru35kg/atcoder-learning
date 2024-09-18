@@ -1665,6 +1665,7 @@
 
 ## 最大フロー・最小カット
 - ACLで求める（実装は難しそう）
+- 計算量はO(min(n^(2/3)*m, m^(3/2))) or O(n^2 * m)
 ### 例題
 - !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 
@@ -1675,6 +1676,7 @@
 - !復習価値中 [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
 - !復習価値高 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
 - !復習価値高 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+- !要復習 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
 - !復習価値高 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 
 ## お堀問題（ニッチすぎてNote非掲載）

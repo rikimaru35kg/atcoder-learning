@@ -198,29 +198,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+// !Lazy Segtree for affine transformation
+// Edit here --> 
+using S = ll;
+S op(S a, S b) {return a+b;}
+S e() {return 0;}
+// <-- Edit here
+struct F {
+    ll a, b;
+    F(ll a, ll b):a(a), b(b) {}
+};
+S mapping(F f, S x) {
+    return f.a*x + f.b;
+}
+F composition(F f, F g) {
+    return F(f.a*g.a, f.a*g.b+f.b);
+}
+F id() {return F(1,0);}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vl A;
-    for(auto c: S) A.push_back(c-'0');
-    vl ans(N);
-    vl ngs;
-    rep(i, N) {
-        if(A[i]==1) ans[i]=i+1;
-        else {
-            ngs.push_back(i);
+    LONG(N, Q);
+    vl A(2*N);
+    rep(i, 2*N) A[i] = i;
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(A);
+
+    rep(i, Q) {
+        LONG(t, k); --k;
+        if(t==1) {
+            de(k)
+            ll x = seg.get(k);
+            Out(x+1);
+        } else {
+            ll l = N-1-k;
+            ll r = N+k;
+            de2(l, r)
+            seg.apply(l, r+1, F(-1, l+r));
         }
     }
-
-    ll sz = SIZE(ngs);
-    if(sz==0) Outend(ans);
-    if(sz==1) Pm1
-    rep(i, sz) {
-        ans[ngs[i]] = ngs[(i+1)%sz]+1;
-    }
-    Out(ans);
     
 }
 
