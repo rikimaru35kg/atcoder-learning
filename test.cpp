@@ -198,112 +198,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    LONG(N, M);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
 
-    vl Ss = Sc;
-    sort(all(Ss));
-    de(Ss)
-
-    auto f=[&](ll x) -> bool {
-        ll r = 0;
-        ll cnt = 0;
-        rep(l, N+1) {
-            while(r<N+1 && Ss[r]-Ss[l]<=x) ++r;
-            cnt += max(r-l-1, 0LL);
+    vb visited(N);
+    vl A(N, 1), B(N);
+    vl P(N, INF), Q(N, INF);
+    ll mn = -INF, mx = INF;
+    auto dfs=[&](auto f, ll v, ll a=1, ll b=0) -> void {
+        if(visited[v]) {
+            if(P[v]!=INF) {
+                if(a==1 && P[v] ==b) return;
+                if(a==1 && P[v] !=b) Pm1
+                if(a==-1) {
+                    ll z = (b-P[v]);
+                    if(z%2!=0) Pm1
+                    chmax(mn, z/2);
+                    chmin(mx, z/2);
+                }
+            } else {
+                if(a==-1 && Q[v]==b) return;
+                if(a==-1 && Q[v]!=b) Pm1
+                if(a==1) {
+                    ll z = (Q[v]-b);
+                    if(z%2!=0) Pm1
+                    chmax(mn, z/2);
+                    chmin(mx, z/2);
+                }
+            }
+            return;
         }
-        if(x==2) de(cnt)
-        return cnt >= K;
+        visited[v] = true;
+        if(a==1) P[v] = b;
+        else Q[v] = b;
+        de3(v, a, b)
+        // A[v] = a, B[v] = b;
+        if(a>0) chmax(mn, -b);
+        if(a<0) chmin(mx, b);
+        for(auto [nv, c]: from[v]) {
+            f(f, nv, -a, c-b);
+        }
     };
-    de(f(2))
 
-    ll ans = binary_search((ll)3e14+10, -1, f);
-    Out(ans);
+    vl X(N, -1);
+    mn = -INF, mx = INF;
+    dfs(dfs, 0);
+    if(mn>mx) Pm1
+    ll x = mn;
+    de(x)
+    rep(v, N) {
+        ll a = 1, b = P[v];
+        if(P[v]==INF) a = -1, b = Q[v];
+        X[v] = x*a + b;
+    }
+    for(auto x: X) Out(x);
+    de(P)de(Q)
     
 }
 
