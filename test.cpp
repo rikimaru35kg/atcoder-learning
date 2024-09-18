@@ -90,16 +90,17 @@ using cd = complex<double>;
 #define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
 #define CHAR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
-#define VI(ivec, n) vi ivec; input_ivec(ivec, n)
-#define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
-#define VL(lvec, n) vl lvec; input_lvec(lvec, n)
-#define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
-#define VC(cvec, n) vc cvec; input_cvec(cvec, n)
-#define VS(svec, n) vs svec; input_svec(svec, n)
-#define VD(dvec, n) vd dvec; input_dvec(dvec, n)
-#define VP(pvec, n) vp pvec; input_pvec(pvec, n)
-#define VPD(pvec, n) vpd pvec; input_pvecd(pvec, n)
-#define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
+#define VI(ivec, n) vi ivec(n); input_ivec(ivec, n)
+#define VIM(ivec, n) vi ivec(n); input_ivecm(ivec, n)
+#define VL(lvec, n) vl lvec(n); input_lvec(lvec, n)
+#define VLM(lvec, n) vl lvec(n); input_lvecm(lvec, n)
+#define VL2(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12(lvec1, lvec2, n)
+#define VC(cvec, n) vc cvec(n); input_cvec(cvec, n)
+#define VS(svec, n) vs svec(n); input_svec(svec, n)
+#define VD(dvec, n) vd dvec(n); input_dvec(dvec, n)
+#define VP(pvec, n) vp pvec(n); input_pvec(pvec, n)
+#define VPD(pvec, n) vpd pvec(n); input_pvecd(pvec, n)
+#define VPM(pvec, n) vp pvec(n); input_pvecm(pvec, n)
 #define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
@@ -124,20 +125,21 @@ inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
 template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
-inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(x);}}
-inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
-inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
-inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
-inline void input_cvec(vc &cvec, ll n) {rep (i, n) {char c; cin >> c; cvec.push_back(c);}}
-inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
-inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
-inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
-inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
-inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {double a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
-inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
-inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
-inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
-inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
+inline void input_ivec(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];}}
+inline void input_ivecm(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];--ivec[i];}}
+inline void input_lvec(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];}}
+inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];--lvec[i];}}
+inline void input_lvec12(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];}}
+inline void input_cvec(vc &cvec, ll n) {rep (i, n) {cin>>cvec[i];}}
+inline void input_svec(vs &svec, ll n) {rep (i, n) {cin>>svec[i];}}
+inline void input_dvec(vd &dvec, ll n) {rep (i, n) {cin>>dvec[i];}}
+inline void input_pvec(vp &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;}}
+inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;pvec[i].first--,pvec[i].second--;}}
+inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;}}
+inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {cin>>ivec2[i][j];}}
+inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];}}
+inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
+inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
 inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
@@ -198,97 +200,11 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-CoordinateCompression cc;
-struct S {
-    ll x, y;
-    S(ll x, ll y):x(x),y(y) {}
-};
-S op(S a, S b) {return S(a.x+b.x, a.y+b.y);}
-S e(){return S(0,0);}
-using F=ll;
-S mapping(F f, S x) {
-    if(f==0) return x;
-    swap(x.x, x.y);
-    return x;
-}
-F composition(F f, F g) {return f^g;}
-F id(){return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    vt3 data;
-    rep(i, Q) {
-        LONG(a,b,c,d);
-        data.emplace_back(a, b, d);
-        data.emplace_back(c, b, d);
-        cc.add(b), cc.add(d);
-    }
-    sort(all(data));
-    ll N = cc.size();
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N-1);
-    rep(i, N-1) {
-        seg.set(i, S(0, cc[i+1]-cc[i]));
-    }
-
-    ll pre = -INF;
-    ll ans = 0;
-    for(auto [x,y1,y2]: data) {
-        y1 = cc(y1), y2 = cc(y2);
-        // ll now = seg.prod(y1, y2).x;
-        ll now = seg.all_prod().x;
-        now *= x - pre;
-        de4(x,y1,y2,now)
-        ans += now;
-        seg.apply(y1, y2, 1);
-        pre = x;
-    }
-    Out(ans);
-
+    LONG(N);
+    VL2(A, B, N);
     
 }
 

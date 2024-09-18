@@ -198,6 +198,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
 class CoordinateCompression {
     bool oneindexed, init = false;
     vector<long long> vec;
@@ -238,40 +241,54 @@ public:
 #endif
 };
 
+CoordinateCompression cc;
+struct S {
+    ll x, y;
+    S(ll x, ll y):x(x),y(y) {}
+};
+S op(S a, S b) {return S(a.x+b.x, a.y+b.y);}
+S e(){return S(0,0);}
+using F=ll;
+S mapping(F f, S x) {
+    if(f==0) return x;
+    swap(x.x, x.y);
+    return x;
+}
+F composition(F f, F g) {return f^g;}
+F id(){return 0;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(Q);
-    vt4 query;
-    CoordinateCompression ccx, ccy;
+    vt3 data;
     rep(i, Q) {
         LONG(a,b,c,d);
-        ccx.add(a), ccx.add(c);
-        ccy.add(b), ccy.add(d);
-        query.emplace_back(a,b,c,d);
+        data.emplace_back(a, b, d);
+        data.emplace_back(c, b, d);
+        cc.add(b), cc.add(d);
     }
-    ll X = ccx.size();
-    ll Y = ccy.size();
-    vvl imos(X, vl(Y));
-    for(auto[a,b,c,d]: query) {
-        a = ccx(a), c = ccx(c);
-        b = ccy(b), d = ccy(d);
-        imos[c][d]++;
-        imos[c][b]--;
-        imos[a][d]--;
-        imos[a][b]++;
+    sort(all(data));
+    ll N = cc.size();
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N-1);
+    rep(i, N-1) {
+        seg.set(i, S(0, cc[i+1]-cc[i]));
     }
-    rep(i, X-1)rep(j, Y) imos[i+1][j] += imos[i][j];
-    rep(i, X)rep(j, Y-1) imos[i][j+1] += imos[i][j];
 
+    ll pre = -INF;
     ll ans = 0;
-    rep(i, X-1) rep(j, Y-1) {
-        if(imos[i][j]%2==0) continue;
-        ll dx = ccx[i+1] - ccx[i];
-        ll dy = ccy[j+1] - ccy[j];
-        ans += dx*dy;
+    for(auto [x,y1,y2]: data) {
+        y1 = cc(y1), y2 = cc(y2);
+        // ll now = seg.prod(y1, y2).x;
+        ll now = seg.all_prod().x;
+        now *= x - pre;
+        de4(x,y1,y2,now)
+        ans += now;
+        seg.apply(y1, y2, 1);
+        pre = x;
     }
     Out(ans);
+
     
 }
 
