@@ -664,6 +664,7 @@
 - 更新（＝作用）を組み合わせられる必要があるので、作用素モノイドが必要
 - 作用素モノイドは結合律に加え、合成できる事が必要
 - なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
+- モノイドにはありうるパターンが少なければ全て載せておいて、rotateやswapで変更するという手もある
 ### 例題
 - !復習価値中 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - !復習価値中 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
@@ -675,6 +676,7 @@
 - !要復習 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !要復習 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
+- !要復習 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 永続データ構造

@@ -198,75 +198,97 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Vector
-const double eps = 1e-8; // suppose max(x,y) <= 1e9;
-struct Vec {
-    double x, y;
-    Vec(double x=0, double y=0): x(x), y(y) {}
-    Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
-    Vec operator+(const Vec& v) const { return Vec(*this) += v;}
-    Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
-    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
-    Vec& operator*=(double s) { x *= s; y *= s; return *this;}
-    Vec operator*(double s) const { return Vec(*this) *= s;}
-    Vec& operator/=(double s) { x /= s; y /= s; return *this;}
-    Vec operator/(double s) const { return Vec(*this) /= s;}
-    double dot(const Vec& v) const { return x*v.x + y*v.y;}
-    // cross>0 means *this->v is counterclockwise.
-    double cross(const Vec& v) const { return x*v.y - v.x*y;}
-    double norm2() const { return x*x + y*y;}
-    double norm() const { return sqrt(norm2());}
-    Vec normalize() const { return *this/norm();}
-    Vec rotate90() const { return Vec(y, -x);}
-    void rotate(double theta) {
-        Vec ret;
-        ret.x = cos(theta)*x - sin(theta)*y;
-        ret.y = sin(theta)*x + cos(theta)*y;
-        *this = ret;
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    int ort() const { // orthant
-    if (abs(x) < eps && abs(y) < eps) return 0;
-    if (y > 0) return x>0 ? 1 : 2;
-    else return x>0 ? 4 : 3;
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
     }
-    bool operator<(const Vec& v) const {
-      int o = ort(), vo = v.ort();
-      if (o != vo) return o < vo;
-      return cross(v) > 0;
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
     }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
 };
-istream& operator>>(istream& is, Vec& v) {
-    is >> v.x >> v.y; return is;
+
+CoordinateCompression cc;
+struct S {
+    ll x, y;
+    S(ll x, ll y):x(x),y(y) {}
+};
+S op(S a, S b) {return S(a.x+b.x, a.y+b.y);}
+S e(){return S(0,0);}
+using F=ll;
+S mapping(F f, S x) {
+    if(f==0) return x;
+    swap(x.x, x.y);
+    return x;
 }
-ostream& operator<<(ostream& os, const Vec& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
+F composition(F f, F g) {return f^g;}
+F id(){return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    DOUBLE(x1, y1, x2, y2);
-    vector<Vec> mole(N);
-    rep(i, N) { cin>>mole[i]; }
-    Vec eye(x2-x1, y2-y1);
-    db dist = eye.norm();
-    db E = dist/2;
-    de(E)
-
-    db theta = atan2(y2-y1, x2-x1);
-    Vec move(x1+E, y1);
-
-    rep(i, N) {
-        Vec p = mole[i];
-        Vec left(x1,y1);
-        p -= left;
-        p.rotate(-theta);
-        p += left;
-        p -= move;
-        auto [u, v] = p;
-        printf("%.10f %.10f\n", u, v);
+    LONG(Q);
+    vt3 data;
+    rep(i, Q) {
+        LONG(a,b,c,d);
+        data.emplace_back(a, b, d);
+        data.emplace_back(c, b, d);
+        cc.add(b), cc.add(d);
     }
+    sort(all(data));
+    ll N = cc.size();
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N-1);
+    rep(i, N-1) {
+        seg.set(i, S(0, cc[i+1]-cc[i]));
+    }
+
+    ll pre = -INF;
+    ll ans = 0;
+    for(auto [x,y1,y2]: data) {
+        y1 = cc(y1), y2 = cc(y2);
+        // ll now = seg.prod(y1, y2).x;
+        ll now = seg.all_prod().x;
+        now *= x - pre;
+        de4(x,y1,y2,now)
+        ans += now;
+        seg.apply(y1, y2, 1);
+        pre = x;
+    }
+    Out(ans);
+
     
 }
 
