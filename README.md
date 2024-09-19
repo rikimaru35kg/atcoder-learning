@@ -587,7 +587,7 @@
 - !要復習 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
-## 集合（set）・連想配列（map/dict）
+## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que）
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
 - 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
 - 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
@@ -604,6 +604,7 @@
 - !復習価値高 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 - !要復習 [L - 平均クエリ](https://atcoder.jp/contests/past16-open/tasks/past202309_l)
+- !要復習 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
 - !要復習 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
 ## 双方向リスト
@@ -1895,6 +1896,7 @@
 - [F - 薬剤師](https://atcoder.jp/contests/past202209-open/tasks/past202209_f)
 - [I - 対称変換](https://atcoder.jp/contests/past202203-open/tasks/past202203_i)
 - [I - 直通エレベーター](https://atcoder.jp/contests/past202112-open/tasks/past202112_i)
+- [F - 安全装置](https://atcoder.jp/contests/past202104-open/tasks/past202104_f)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

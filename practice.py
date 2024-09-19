@@ -27,13 +27,17 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-from datetime import timedelta,datetime
-
 def main():
-    N,X = inints()
-    A = invec()
-    ans = A.count(X)
-    print(ans)
+    S = instr()
+    import re
+    a = S.find("post")
+    if(a<0): print("none"); return
+
+    print(a//4+1)
+
+
+
+
 
 
 

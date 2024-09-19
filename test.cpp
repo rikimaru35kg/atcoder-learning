@@ -203,8 +203,43 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL2(A, B, N);
+    LONG(N, M, Q);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        de3(a,b,c)
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+    VL(X, Q);
+
+    priority_queue<t3,vt3,greater<t3>> que;
+    for(auto [nv, c]: from[0]) {
+        que.emplace(c, 0, nv);
+    }
+
+    ll ans = 1;
+    vb visited(N);
+    visited[0] = true;
+    rep(i, Q) {
+        vl vs;
+        while(que.size()) {
+            auto [c,a,b] = que.top(); if(c>X[i]) break; que.pop();
+            if(visited[a]) swap(a, b);
+            if(visited[a]) continue;
+            visited[a] = true;
+            ++ans;
+            vs.push_back(a);
+        }
+        for(auto v: vs) {
+            for(auto [nv, cc]: from[v]) {
+                if(visited[nv]) continue;
+                que.emplace(cc, v, nv);
+            }
+        }
+        Out(ans);
+    }
+    
     
 }
 
