@@ -203,81 +203,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VPD(tower, N);
-    vt3d cross;
-    rep(i, M) {
-        DOUBLE(x, y, r);
-        cross.emplace_back(x, y, r);
-    }
+    LONG(N, H);
+    VL2(A, B, N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return A[i]*B[j] > A[j]*B[i];
+    });
 
-    auto calc = [&](ll i, ll j) -> db {
-        auto [x0, y0, r] = cross[j];
-        db d = euclid_distd(tower[i], {x0,y0});
-        return abs(d-r);
-    };
-    auto calcross=[&](ll i, ll j) -> db {
-        auto [x1, y1, r1] = cross[i];
-        auto [x2, y2, r2] = cross[j];
-        if(r1>r2) swap(x1,x2), swap(y1,y2), swap(r1, r2);
-        db d = euclid_distd({x1,y1},{x2,y2});
-        if(d>=r1+r2) return d-r1-r2;
-        if(d<=r2-r1) return r2-r1-d;
-        return 0;
-    };
-
-    vector<tuple<db,ll,ll>> edge;
-    rep(i, N) rep(j, i) {
-        db d = euclid_distd(tower[i], tower[j]);
-        edge.emplace_back(d, i, j);
-    }
-    rep(i, N) rep(j, M) {
-        db d = calc(i, j);
-        edge.emplace_back(d, i, N+j);
-    }
-    rep(i, M) rep(j, i) {
-        db d = calcross(i, j);
-        edge.emplace_back(d, N+i, N+j);
-    }
-    sort(all(edge));
-
-    auto proc=[&](ll s) -> db {
-        dsu uf(N+M);
-        db ret = 0;
-        for(auto [d, i, j]: edge) {
-            if(uf.same(i,j)) continue;
-            if(i>=N && ~s>>(i-N)&1) continue;
-            if(j>=N && ~s>>(j-N)&1) continue;
-            uf.merge(i, j);
-            ret += d;
+    vl dp(H+1, -INF);
+    dp[H] = 0;
+    ll ans = -INF;
+    for(auto i: p) {
+        vl pdp(H+1, -INF); swap(pdp, dp);
+        rep(j, H+1) {
+            if(pdp[j]==-INF) continue;
+            chmax(dp[j], pdp[j]);
+            ll nj = j - B[i];
+            ll po = j * A[i];
+            if(nj<0) {
+                chmax(ans, pdp[j]+po);
+                continue;
+            }
+            chmax(dp[nj], pdp[j]+po);
         }
-        // deb(s)de(ret)
-        return ret;
-    };
-    db ans = INF;
-    rep(s, 1<<M) {
-        chmin(ans, proc(s));
     }
+    rep(j, H) chmax(ans, dp[j]);
     Out(ans);
-
-
     
 }
 

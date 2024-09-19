@@ -929,6 +929,7 @@
 - !復習価値中 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
 - !要復習 おやつ [C - おやつ ](https://atcoder.jp/contests/arc042/tasks/arc042_c)
 - !復習価値高　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
+- !復習価値中 [N - 活動](https://atcoder.jp/contests/past202104-open/tasks/past202104_n)
 - !要復習 重さ制限付きタワー [X - Tower](https://atcoder.jp/contests/dp/tasks/dp_x)
 - !復習価値高 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
 - !復習価値高 アフィン変換最大化 [F - Maximum Composition](https://atcoder.jp/contests/abc366/tasks/abc366_f)
