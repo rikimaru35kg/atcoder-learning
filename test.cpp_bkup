@@ -64,10 +64,13 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using t3 = tuple<ll,ll,ll>;
+using t3d = tuple<db,db,db>;
 using t4 = tuple<ll,ll,ll,ll>;
 using vt3 = vector<t3>;
+using vt3d = vector<t3d>;
 using vt4 = vector<t4>;
 using vvt3 = vector<vector<t3>>;
+using vvt3d = vector<vector<t3d>>;
 using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
@@ -203,37 +206,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L, T, X);
-    VL2(A, B, N);
-    rep(i, N) {
-        if(A[i]>T && B[i]>=L) Outend("forever");
-    }
-    ll t = 0, bt = 0;
-    rep(i, N) {
-        ll a = A[i], b = B[i];
-        if(b<L) {
-            t += a;
-            bt = 0;
-            continue;
-        }
-        if(bt+a<T) {
-            bt += a;
-            t += a;
-            continue;
-        }
-        if(bt+a==T) {
-            bt = 0;
-            t += a + X;
-            continue;
-        }
-        t += a + X + T - bt;
-        bt = a;
-        if(a==T) {
-            t += X;
-            bt = 0;
-        }
-    }
-    Out(t);
+    LONG(N, M);
+    VPD(tower, N);
+    vpd cross; 
+    rep()
     
 }
 

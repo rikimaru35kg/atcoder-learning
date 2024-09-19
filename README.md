@@ -587,7 +587,7 @@
 - !要復習 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
-## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que）
+## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
 - 全要素を一斉更新（リセット、加算など）するようなクエリがある問題の場合、そのクエリがO(N)なので、全体としてO(NQ)となりTLEする
 - 全要素一斉更新の情報を一つのスカラー情報として持ち、回答クエリの時のみその情報を活用する方針が良い
