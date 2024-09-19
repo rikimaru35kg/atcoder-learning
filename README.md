@@ -1898,6 +1898,7 @@
 - [I - 対称変換](https://atcoder.jp/contests/past202203-open/tasks/past202203_i)
 - [I - 直通エレベーター](https://atcoder.jp/contests/past202112-open/tasks/past202112_i)
 - [F - 安全装置](https://atcoder.jp/contests/past202104-open/tasks/past202104_f)
+- [H - コンベア](https://atcoder.jp/contests/past202012-open/tasks/past202012_h)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)

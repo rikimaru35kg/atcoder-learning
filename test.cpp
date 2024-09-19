@@ -206,33 +206,6 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, H);
-    VL2(A, B, N);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return A[i]*B[j] > A[j]*B[i];
-    });
-
-    vl dp(H+1, -INF);
-    dp[H] = 0;
-    ll ans = -INF;
-    for(auto i: p) {
-        vl pdp(H+1, -INF); swap(pdp, dp);
-        rep(j, H+1) {
-            if(pdp[j]==-INF) continue;
-            chmax(dp[j], pdp[j]);
-            ll nj = j - B[i];
-            ll po = j * A[i];
-            if(nj<0) {
-                chmax(ans, pdp[j]+po);
-                continue;
-            }
-            chmax(dp[nj], pdp[j]+po);
-        }
-    }
-    rep(j, H) chmax(ans, dp[j]);
-    Out(ans);
     
 }
 
