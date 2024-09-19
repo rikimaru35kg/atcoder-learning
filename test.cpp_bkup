@@ -206,72 +206,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    LONGM(r, c);
-    VS(S, H);
+    LONG(N);
+    STRING(S, T);
 
-    queue<Pr> que;
-    vvb ok(H, vb(W));
-    auto push=[&](ll i, ll j) {
-        if(ok[i][j]) return;
-        ok[i][j]=true;
-        que.emplace(i, j);
-    };
-    push(r,c);
-    while(que.size()) {
-        auto [i,j] = que.front(); que.pop();
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            char x = S[ni][nj];
-            if(x=='#') continue;
-            if(x=='>') if(!(di==0&&dj==-1)) continue;
-            if(x=='<') if(!(di==0&&dj==1)) continue;
-            if(x=='v') if(!(di==-1&&dj==0)) continue;
-            if(x=='^') if(!(di==1&&dj==0)) continue;
-            push(ni, nj);
+    vvl dp(N+1, vl(N+1));
+    for(ll w=3; w<=N; ++w) {
+        rep(l, N+1-w) {
+            ll r = l+w;
+            for(ll m=l+1; m<r; ++m) {
+                chmax(dp[l][r], dp[l][m]+dp[m][r]);
+            }
+            // if(S.substr(l,1)==T.substr(0,1) && S.substr(r-2)==T.substr(1)) {
+            //     if(dp[l+1][r-2]==r-l-3) chmax(dp[l][r], r-l);
+            // }
+            // if(S.substr(l,2)==T.substr(0,2) && S.substr(r-1)==T.substr(2)) {
+            //     if(dp[l+2][r-1]==r-l-3) chmax(dp[l][r], r-l);
+            // }
+            if(S[l]==T[0]&&S[r-1]==T[2]) {
+                for(ll m=l+1; m<r-1; m+=3) {
+                    if(S[m]!=T[1]) continue;
+                    if(dp[l+1][m]*3!=m-l-1) continue;
+                    if(dp[m+1][r-1]*3!=r-m-2) continue;
+                    chmax(dp[l][r], (r-l)/3);
+                }
+            }
         }
     }
-
-    vs ans(H, string(W, '#'));
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='#') continue;
-        if(ok[i][j]) ans[i][j]='o';
-        else ans[i][j]='x';
-    }
-    Out(ans);
-
-
-    // vvb mem(H, vb(W));
-    // vvb seen(H, vb(W));
-    // auto dfs=[&](auto f, ll i, ll j) -> bool {
-    //     if(seen[i][j]) return mem[i][j];
-    //     if(i==r && j==c) return true;
-    //     seen[i][j] = true;
-    //     bool ret = false;
-    //     char c = S[i][j];
-    //     for(auto [di,dj]: dij) {
-    //         ll ni = i + di, nj = j + dj;
-    //         if(!isin(ni,nj,H,W)) continue;
-    //         if(c=='<' && !(di==0 && dj==-1)) continue;
-    //         if(c=='>' && !(di==0 && dj==1)) continue;
-    //         if(c=='^' && !(di==-1 && dj==0)) continue;
-    //         if(c=='v' && !(di==1 && dj==0)) continue;
-    //         if(S[ni][nj]=='#') continue;
-    //         if(seen[ni][nj]) continue;
-    //         bool b = f(f, ni, nj);
-    //         if(b) return mem[i][j] = true;
-    //     }
-    //     return mem[i][j] = ret;
-    // };
-
-    // vs ans(H, string(W, '#'));
-    // rep(i, H) rep(j, W) {
-    //     if(S[i][j]=='#') continue;
-    //     if(dfs(dfs, i, j)) ans[i][j]='o';
-    //     else ans[i][j]='x';
-    // }
-    // Out(ans);
+    de(dp)
+    Out(dp[0][N]);
     
 }
 
