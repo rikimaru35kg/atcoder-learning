@@ -1662,6 +1662,7 @@
 ## 平方分割
 ### 例題
 - !復習価値高 ホッピングすごろく [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
+- !要復習 [O - 通知](https://atcoder.jp/contests/past202012-open/tasks/past202012_o)
 - !要復習 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
 
 ## 牛ゲー

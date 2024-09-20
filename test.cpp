@@ -203,52 +203,129 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S {
-    ll l, r;
-    S(ll l, ll r): l(l),r(r) {}
-};
-S op(S a, S b) {
-    return S(max(a.l,b.l), min(a.r,b.r));
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
 }
-S e() {return S(-INF, INF);}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-
-    segtree<S,op,e> seg(N-1);
-    rep(i, N-1) {
-        LONG(l, r);
-        seg.set(i, S(l,r));
+    LONG(N, M);
+    vvl from(N);
+    vl deg(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a, b);
+        edge.emplace_back(a, b);
+        // from[a].emplace_back(b);
+        // from[b].emplace_back(a);
+        deg[a]++, deg[b]++;
     }
+    ll B = sqrt(2*M);
+    for(auto [a,b]: edge) {
+        if(deg[a]>deg[b]) swap(a,b);
+        if(deg[a]>=B || deg[b]<B) {
+            from[a].push_back(b);
+            from[b].push_back(a);
+        } else {
+            from[a].push_back(b);
+        }
 
+    }
+    // vl bigs;
+    // rep(i, N) if(deg[i]>=B) bigs.push_back(i);
+    // de(bigs)
+
+
+    vl rcv(N, -1);
+    vvl snd(N);
+    vl box(N);
+    LONG(Q);
     rep(i, Q) {
-        LONG(a, b); --b;
-        ll lft = -1, rht = -1;
-        { // left
-            ll r = b;
-            auto f = [&](S x) -> bool {
-                return (x.l <= a && x.r >= a);
-            };
-            ll l = seg.min_left(r, f);
-            lft = l;
-        }
-        {  // right
-            ll l = b;
-            auto f = [&](S x) -> bool {
-                return (x.l <= a && x.r >= a);
-            };
-            ll r = seg.max_right(l, f);
-            rht = r;
-        }
-        Out(rht-lft+1);
-    }
+        LONG(t, x); --x;
+        if(t==1) {
+            if(deg[x]>=B) {
+                snd[x].push_back(i);
+            } else {
+                for(auto nv: from[x]) {
+                    box[nv]++;
+                }
+            }
+        } else {
+            // if(deg[x]>=B) {
+                ll ans = box[x]; box[x] = 0;
+                ll last = rcv[x], now = i;
+                for(auto nv: from[x]) {
+                    if(deg[nv]<B) continue;
+                    auto [l, y1] = lowbou(snd[nv], last);
+                    auto [r, y2] = lowbou_r(snd[nv], now);
+                    ans += r-l+1;
+                    // if(snd[nv]>last && snd[nv]<now) ++ans;
+                }
+                Out(ans);
+                rcv[x] = i;
+            // } else {
 
+            // }
+        }
+    }
     
 }
 
 // ### test.cpp ###
+
