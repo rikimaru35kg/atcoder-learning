@@ -203,38 +203,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using D = pair<ll,string>;
-
-bool comp(D a, D b) {
-    return a.first > b.first;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VS(S, N);
-    umap<string,ll> mp;
+    LONG(N, M, AB, AC, BC);
+    STRING(S);
+    vvp from(N+6);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+    vl T;
+    for(auto c: S) T.push_back(c-'A');
     rep(i, N) {
-        mp[S[i]]++;
+        from[i].emplace_back(N+T[i], 0);
+        from[N+T[i]+3].emplace_back(i, 0);
     }
-    vector<pair<ll,string>> ps;
-    for(auto [k,v]: mp) {
-        ps.emplace_back(v, k);
-    }
-    sort(all(ps), comp);
+    from[N].emplace_back(N+4, AB);
+    from[N].emplace_back(N+5, AC);
+    from[N+1].emplace_back(N+3, AB);
+    from[N+1].emplace_back(N+5, BC);
+    from[N+2].emplace_back(N+3, AC);
+    from[N+2].emplace_back(N+4, BC);
 
-    ll M = SIZE(ps);
-    --K;
-
-    if(K<M-1) {
-        if(ps[K].first==ps[K+1].first) Outend("AMBIGUOUS");
+    vl dist(N+6, INF);
+    pq que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v]=d;
+        que.emplace(d, v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto [d,v]=que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv,c]: from[v]) {
+            push(nv, d+c);
+        }
     }
-    if(K>1) {
-        if(ps[K].first==ps[K-1].first) Outend("AMBIGUOUS");
-    }
-    Out(ps[K].second);
-
+    Out(dist[N-1]);
     
 }
 

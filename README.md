@@ -136,6 +136,7 @@
 - 全探索するとO(N^2)だが、BIT木を使えばO(NlogN)で可能。
 ### 例題
 - !復習価値低 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
+- !要復習 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
 - !復習価値中 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 - !要復習 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
 
@@ -547,7 +548,7 @@
 - !復習価値中 [C - 高橋君と国家](https://atcoder.jp/contests/arc029/tasks/arc029_3)
 - !復習価値中 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
 - !復習価値中 最小シュタイナー木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
-- !復習価値高 ワープ [J - ワープ](https://atcoder.jp/contests/past202010-open/tasks/past202010_j)
+- !復習価値中 ワープ [J - ワープ](https://atcoder.jp/contests/past202010-open/tasks/past202010_j)
 - !復習価値高 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
 - !要復習 [E - すぬけ君の地下鉄旅行](https://atcoder.jp/contests/arc061/tasks/arc061_c)
 

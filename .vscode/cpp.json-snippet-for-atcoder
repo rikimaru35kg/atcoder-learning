@@ -1302,7 +1302,7 @@
     "body": [
       "for(auto [di,dj]: dij) {",
       "    ll ni = i + di, nj = j + dj;",
-      "    if(!isin(ni,nj,*,*)) continue;",
+      "    if(!isin(ni,nj,$1,$2)) continue;",
       "}",
     ],
   },
@@ -1771,8 +1771,8 @@
   "Snippet(gid)": {
     "prefix": "gid",
     "body": [
-      "auto gid=[&](ll i, ll j) {return i*W+j;};",
-      "auto rid=[&](ll id) -> Pr {return {id/W, id%W};};",
+      "auto gid=[&](ll i, ll j) {return i*$1+j;};",
+      "auto rid=[&](ll id) -> Pr {return {id/$1, id%$1};};",
     ],
   },
 }

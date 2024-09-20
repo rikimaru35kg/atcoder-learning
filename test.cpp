@@ -203,53 +203,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-auto gid=[&](ll i, ll j) {return i*W+j;};
-auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
-
-#include <atcoder/dsu>
+#include <atcoder/fenwicktree>
 using namespace atcoder;
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VS(S, N);
-    dsu uf(N*M);
-
-
-    ll tot = 0;
-
-    rep(i, N) rep(j, M) {
-        if(S[i][j]=='#') continue;
-        ++tot;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,N,M)) continue;
-            if(S[ni][nj]=='#') continue;
-            uf.merge(gid(i,j), gid(ni,nj));
+    mint::set_mod((ll)1e9);
+    LONG(K);
+    vvl A(K);
+    rep(i, K) {
+        LONG(N);
+        VLM(a,N);
+        A[i] = a;
+    }
+    LONG(Q);
+    auto inv=[&](vl &A) -> mint {
+        ll M = SIZE(A);
+        fenwick_tree<ll> tree(30);
+        mint ret = 0;
+        rep(i, M) {
+            ret += tree.sum(A[i]+1, 30);
+            tree.add(A[i], 1);
         }
+        return ret;
+    };
+
+    vvl cnt(K, vl(20));
+    rep(i, K) {
+        ll sz = SIZE(A[i]);
+        rep(j, sz) cnt[i][A[i][j]]++;
     }
 
-    ll ans = 0;
-    rep(i, N) rep(j, M) {
-        if(S[i][j]=='.') continue;
-        ll cnt = 0;
-        vl ls;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,N,M)) continue;
-            if(S[ni][nj]=='#') continue;
-            ls.push_back(uf.leader(gid(ni,nj)));
+    vm invs(K);
+    rep(i, K) invs[i] = inv(A[i]);
+
+    mint ans = 0;
+    vm tcnt(20);
+    rep(i, Q) {
+        LONGM(b);
+        mint sum = 0;
+        rep(j, 20) {
+            mint now = 0;
+            repk(k, j+1, 20) {
+                now += cnt[b][j] * tcnt[k];
+            }
+            sum += now;
         }
-        sort(all(ls));
-        ls.erase(unique(all(ls)), ls.end());
-        for(auto l: ls) cnt += uf.size(l);
-        if(cnt==tot) {
-            de2(i,j)
-            ++ans;
+        ans += sum;
+        rep(j, 20) {
+            tcnt[j] += cnt[b][j];
         }
+        ans += invs[b];
     }
+
     Out(ans);
+
+
+
     
 }
 
