@@ -206,36 +206,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + A[i];
-    vvp from(N+1);
+    LONG(N, L);
+    ll M = L + 10;
+    vb obj(M);
     rep(i, N) {
-        from[i].emplace_back(i+1, A[i]);
-        from[i+1].emplace_back(i, 0);
+        LONG(x);
+        obj[x] = true;
     }
-    rep(i, M) {
-        LONG(l, r, c); --l;
-        from[l].emplace_back(r, c);
+    LONG(T1, T2, T3);
+    vl dp(M, INF);
+    dp[0] = 0;
+    rep(x, L) {
+        if(obj[x]) dp[x] += T3;
+        chmin(dp[x+1], dp[x]+T1);
+        chmin(dp[x+2], dp[x]+T1+T2);
+        chmin(dp[x+4], dp[x]+T1+3*T2);
     }
-
-    vl dist(N+1, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
-        }
-    }
-    ll ans = Sc[N] - dist[N];
+    ll ans = dp[L];
+    de(dp)
+    if(L>=1) chmin(ans, dp[L-1]+ T1/2 + T2/2);
+    if(L>=2) chmin(ans, dp[L-2]+ T1/2 + T2*3/2);
+    if(L>=3) chmin(ans, dp[L-3]+ T1/2 + T2*5/2);
     Out(ans);
     
 }

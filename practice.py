@@ -27,27 +27,29 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-def main():
-    from itertools import product
-    dis = [0,0,1,-1]
-    djs = [1,-1,0,0]
-    N,M=inints()
-    S = instrvec(N)
-    ans = [[0]*M for _ in range(N)]
-    for i in range(N):
-        for j in range(M):
-            cnt = 0
-            for di,dj in product(range(-1,2),range(-1,2)):
-                ni = i+di; nj = j+dj
-                if(ni<0 or nj<0 or ni>=N or nj>=M): continue
-                if(S[ni][nj]=='#'): cnt += 1
-            ans[i][j] = cnt
+digit = [\
+"###..#..###.###.#.#.###.###.###.###.###.",
+"#.#.##....#...#.#.#.#...#.....#.#.#.#.#.",
+"#.#..#..###.###.###.###.###...#.###.###.",
+"#.#..#..#.....#...#...#.#.#...#.#.#...#.",
+"###.###.###.###...#.###.###...#.###.###."
+]
 
+def main():
+    N = inint()
+    S = instrvec(5)
+
+    for x in range(10):
+        de(digit[0:5][x*4:x*4+3])
+
+    ans = str()
     for i in range(N):
-        x = ""
-        for j in range(M):
-            x += str(ans[i][j])
-        print(x)
+        for x in range(10):
+            if(S[:][i*4:i*4+3]==digit[:][x*4:x*4+3]):
+                ans += str(x)
+                break
+    print(ans)
+
 
 
 if __name__ == '__main__':
