@@ -206,28 +206,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    ll M = L + 10;
-    vb obj(M);
-    rep(i, N) {
-        LONG(x);
-        obj[x] = true;
+    LONG(N, Q);
+    vl top(N);
+    iota(all(top), 0);
+    vl below(N, -1);
+    rep(i, Q) {
+        LONGM(f, t, x);
+        ll bx = below[x];
+        ll tt = top[t];
+        ll tf = top[f];
+        below[x] = tt;
+        top[t] = tf;
+        top[f] = bx;
     }
-    LONG(T1, T2, T3);
-    vl dp(M, INF);
-    dp[0] = 0;
-    rep(x, L) {
-        if(obj[x]) dp[x] += T3;
-        chmin(dp[x+1], dp[x]+T1);
-        chmin(dp[x+2], dp[x]+T1+T2);
-        chmin(dp[x+4], dp[x]+T1+3*T2);
+    de(top)de(below)
+    vl ans(N);
+    rep(t, N) {
+        ll x = top[t];
+        if(x==-1) continue;
+        ans[x] = t+1;
+        while(below[x]!=-1) {
+            x = below[x];
+            ans[x] = t+1;
+        }
     }
-    ll ans = dp[L];
-    de(dp)
-    if(L>=1) chmin(ans, dp[L-1]+ T1/2 + T2/2);
-    if(L>=2) chmin(ans, dp[L-2]+ T1/2 + T2*3/2);
-    if(L>=3) chmin(ans, dp[L-3]+ T1/2 + T2*5/2);
-    Out(ans);
+    for(auto x: ans) Out(x);
     
 }
 

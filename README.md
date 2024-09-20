@@ -610,12 +610,13 @@
 - !要復習 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
 - !要復習 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
-## 双方向リスト
+## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
 - ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
 - 指定要素の削除もO(1)
 ### 例題
 - !復習価値低 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
+- !要復習 [K - コンテナの移動](https://atcoder.jp/contests/past202005-open/tasks/past202005_k)
 
 ## 小さい方からK個の和/max
 - 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる

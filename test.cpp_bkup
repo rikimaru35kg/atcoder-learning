@@ -195,7 +195,7 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
-const vp dij = {{1,0},{1,1},{0,1},{-1,1},{-1,0},{0,-1}};
+const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
@@ -203,39 +203,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    ll M = 210;
-    vvb obj(2*M+1, vb(2*M+1));
-    rep(i, N) {
-        LONG(x, y);
-        x += M, y += M;
-        obj[x][y] = true;
-    }
-
-    vvl dist(2*M+1, vl(2*M+1, INF));
-    queue<Pr> que;
-    auto push=[&](ll i, ll j, ll d) {
-        ll &x = dist[i][j];
-        if(x<=d) return;
-        x = d;
-        que.emplace(i, j);
-    };
-    push(M, M, 0);
-    while(que.size()) {
-        auto [i,j] = que.front(); que.pop();
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,2*M+1,2*M+1)) continue;
-            if(obj[ni][nj]) continue;
-            push(ni, nj, dist[i][j]+1);
+    LONG(N, M);
+    vl dis(N, 0);
+    rep(i, M) {
+        LONG(a);
+        auto f=[&](ll i) -> bool {
+            return dis[i]<a;
+        };
+        ll l = -1, r = N;
+        while(r-l>1) {
+            ll m = (l+r)/2;
+            if(f(m)) r = m;
+            else l = m;
+        }
+        // ll r = binary_search(N, -1, f);
+        if(r==N) Out(-1);
+        else {
+            Out(r+1);
+            dis[r] = a;
         }
     }
-    ll ans = dist[X+M][Y+M];
-    ch1(ans);
-    Out(ans);
     
 }
 
