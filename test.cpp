@@ -206,56 +206,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(H, N);
-    ll b0 = 0, b1 = 0;
-    umap<ll,ll> mp;
-    rep(i, N-1) {
-        if(i%2==0) {
-            mp[H[i+1]-H[i]]++;
-        } else {
-            mp[H[i]-H[i+1]]++;
+    LONG(N, M);
+    VL(A, N);
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    vvp from(N+1);
+    rep(i, N) {
+        from[i].emplace_back(i+1, A[i]);
+        from[i+1].emplace_back(i, 0);
+    }
+    rep(i, M) {
+        LONG(l, r, c); --l;
+        from[l].emplace_back(r, c);
+    }
+
+    vl dist(N+1, INF);
+    pq que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto [d, v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
         }
     }
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(v);
-            b0 += v;
-        } else if (t==2) {
-            LONG(v);
-            b1 += v;
-        } else {
-            LONG(u, v); --u;
-            if(u) {
-                ll l=u-1, r=u;
-                if(l%2==1) swap(l, r);
-                ll hl = H[l], hr = H[r];
-                mp[hr-hl]--;
-            }
-            if(u<N-1) {
-                ll l=u, r=u+1;
-                if(l%2==1) swap(l, r);
-                ll hl = H[l], hr = H[r];
-                mp[hr-hl]--;
-            }
-            H[u] += v;
-            if(u) {
-                ll l=u-1, r=u;
-                if(l%2==1) swap(l, r);
-                ll hl = H[l], hr = H[r];
-                mp[hr-hl]++;
-            }
-            if(u<N-1) {
-                ll l=u, r=u+1;
-                if(l%2==1) swap(l, r);
-                ll hl = H[l], hr = H[r];
-                mp[hr-hl]++;
-            }
-        }
-        de(mp)
-        Out(mp[b0-b1]);
-    }
+    ll ans = Sc[N] - dist[N];
+    Out(ans);
     
 }
 

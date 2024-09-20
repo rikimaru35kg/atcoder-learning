@@ -203,78 +203,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    mint::set_mod((ll)1e9);
-    LONG(K);
-    vvl A(K);
-    rep(i, K) {
-        LONG(N);
-        VLM(a,N);
-        A[i] = a;
-    }
-    LONG(Q);
-    auto inv=[&](vl &A) -> mint {
-        ll M = SIZE(A);
-        fenwick_tree<ll> tree(30);
-        mint ret = 0;
-        rep(i, M) {
-            ret += tree.sum(A[i]+1, 30);
-            tree.add(A[i], 1);
+    LONG(N, Q);
+    VL(H, N);
+    ll b0 = 0, b1 = 0;
+    umap<ll,ll> mp;
+    rep(i, N-1) {
+        if(i%2==0) {
+            mp[H[i+1]-H[i]]++;
+        } else {
+            mp[H[i]-H[i+1]]++;
         }
-        return ret;
-    };
-
-    vvl cnt(K, vl(20));
-    rep(i, K) {
-        ll sz = SIZE(A[i]);
-        rep(j, sz) cnt[i][A[i][j]]++;
     }
-
-    vm invs(K);
-    rep(i, K) invs[i] = inv(A[i]);
-
-    mint ans = 0;
-    vm tcnt(20);
     rep(i, Q) {
-        LONGM(b);
-        mint sum = 0;
-        rep(j, 20) {
-            mint now = 0;
-            repk(k, j+1, 20) {
-                now += cnt[b][j] * tcnt[k];
+        LONG(t);
+        if(t==1) {
+            LONG(v);
+            b0 += v;
+        } else if (t==2) {
+            LONG(v);
+            b1 += v;
+        } else {
+            LONG(u, v); --u;
+            if(u) {
+                ll l=u-1, r=u;
+                if(l%2==1) swap(l, r);
+                ll hl = H[l], hr = H[r];
+                mp[hr-hl]--;
             }
-            sum += now;
+            if(u<N-1) {
+                ll l=u, r=u+1;
+                if(l%2==1) swap(l, r);
+                ll hl = H[l], hr = H[r];
+                mp[hr-hl]--;
+            }
+            H[u] += v;
+            if(u) {
+                ll l=u-1, r=u;
+                if(l%2==1) swap(l, r);
+                ll hl = H[l], hr = H[r];
+                mp[hr-hl]++;
+            }
+            if(u<N-1) {
+                ll l=u, r=u+1;
+                if(l%2==1) swap(l, r);
+                ll hl = H[l], hr = H[r];
+                mp[hr-hl]++;
+            }
         }
-        ans += sum;
-        rep(j, 20) {
-            tcnt[j] += cnt[b][j];
-        }
-        ans += invs[b];
+        de(mp)
+        Out(mp[b0-b1]);
     }
-
-    Out(ans);
-
-
-
     
 }
 
