@@ -203,50 +203,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
+using D = pair<ll,string>;
 
-struct S {
-    ll l, r;
-    S(ll l, ll r): l(l),r(r) {}
-};
-S op(S a, S b) {
-    return S(max(a.l,b.l), min(a.r,b.r));
+bool comp(D a, D b) {
+    return a.first > b.first;
 }
-S e() {return S(-INF, INF);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-
-    segtree<S,op,e> seg(N-1);
-    rep(i, N-1) {
-        LONG(l, r);
-        seg.set(i, S(l,r));
+    LONG(N, K);
+    VS(S, N);
+    umap<string,ll> mp;
+    rep(i, N) {
+        mp[S[i]]++;
     }
-
-    rep(i, Q) {
-        LONG(a, b); --b;
-        ll lft = -1, rht = -1;
-        { // left
-            ll r = b;
-            auto f = [&](S x) -> bool {
-                return (x.l <= a && x.r >= a);
-            };
-            ll l = seg.min_left(r, f);
-            lft = l;
-        }
-        {  // right
-            ll l = b;
-            auto f = [&](S x) -> bool {
-                return (x.l <= a && x.r >= a);
-            };
-            ll r = seg.max_right(l, f);
-            rht = r;
-        }
-        Out(rht-lft+1);
+    vector<pair<ll,string>> ps;
+    for(auto [k,v]: mp) {
+        ps.emplace_back(v, k);
     }
+    sort(all(ps), comp);
+
+    ll M = SIZE(ps);
+    --K;
+
+    if(K<M-1) {
+        if(ps[K].first==ps[K+1].first) Outend("AMBIGUOUS");
+    }
+    if(K>1) {
+        if(ps[K].first==ps[K-1].first) Outend("AMBIGUOUS");
+    }
+    Out(ps[K].second);
 
     
 }

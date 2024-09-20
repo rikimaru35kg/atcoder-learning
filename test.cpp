@@ -203,129 +203,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
+auto gid=[&](ll i, ll j) {return i*W+j;};
+auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
+
+#include <atcoder/dsu>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
-    vl deg(N);
-    vp edge;
-    rep(i, M) {
-        LONGM(a, b);
-        edge.emplace_back(a, b);
-        // from[a].emplace_back(b);
-        // from[b].emplace_back(a);
-        deg[a]++, deg[b]++;
-    }
-    ll B = sqrt(2*M);
-    for(auto [a,b]: edge) {
-        if(deg[a]>deg[b]) swap(a,b);
-        if(deg[a]>=B || deg[b]<B) {
-            from[a].push_back(b);
-            from[b].push_back(a);
-        } else {
-            from[a].push_back(b);
-        }
-
-    }
-    // vl bigs;
-    // rep(i, N) if(deg[i]>=B) bigs.push_back(i);
-    // de(bigs)
+    VS(S, N);
+    dsu uf(N*M);
 
 
-    vl rcv(N, -1);
-    vvl snd(N);
-    vl box(N);
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t, x); --x;
-        if(t==1) {
-            if(deg[x]>=B) {
-                snd[x].push_back(i);
-            } else {
-                for(auto nv: from[x]) {
-                    box[nv]++;
-                }
-            }
-        } else {
-            // if(deg[x]>=B) {
-                ll ans = box[x]; box[x] = 0;
-                ll last = rcv[x], now = i;
-                for(auto nv: from[x]) {
-                    if(deg[nv]<B) continue;
-                    auto [l, y1] = lowbou(snd[nv], last);
-                    auto [r, y2] = lowbou_r(snd[nv], now);
-                    ans += r-l+1;
-                    // if(snd[nv]>last && snd[nv]<now) ++ans;
-                }
-                Out(ans);
-                rcv[x] = i;
-            // } else {
+    ll tot = 0;
 
-            // }
+    rep(i, N) rep(j, M) {
+        if(S[i][j]=='#') continue;
+        ++tot;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,N,M)) continue;
+            if(S[ni][nj]=='#') continue;
+            uf.merge(gid(i,j), gid(ni,nj));
         }
     }
+
+    ll ans = 0;
+    rep(i, N) rep(j, M) {
+        if(S[i][j]=='.') continue;
+        ll cnt = 0;
+        vl ls;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,N,M)) continue;
+            if(S[ni][nj]=='#') continue;
+            ls.push_back(uf.leader(gid(ni,nj)));
+        }
+        sort(all(ls));
+        ls.erase(unique(all(ls)), ls.end());
+        for(auto l: ls) cnt += uf.size(l);
+        if(cnt==tot) {
+            de2(i,j)
+            ++ans;
+        }
+    }
+    Out(ans);
     
 }
 
 // ### test.cpp ###
-

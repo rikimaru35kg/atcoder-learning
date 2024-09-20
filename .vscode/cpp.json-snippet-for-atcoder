@@ -1768,4 +1768,11 @@
       "}",
     ],
   },
+  "Snippet(gid)": {
+    "prefix": "gid",
+    "body": [
+      "auto gid=[&](ll i, ll j) {return i*W+j;};",
+      "auto rid=[&](ll id) -> Pr {return {id/W, id%W};};",
+    ],
+  },
 }

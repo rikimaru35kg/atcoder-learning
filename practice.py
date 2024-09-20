@@ -28,17 +28,26 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 def main():
-    S = instr()
-    import re
-    a = S.find("post")
-    if(a<0): print("none"); return
+    from itertools import product
+    dis = [0,0,1,-1]
+    djs = [1,-1,0,0]
+    N,M=inints()
+    S = instrvec(N)
+    ans = [[0]*M for _ in range(N)]
+    for i in range(N):
+        for j in range(M):
+            cnt = 0
+            for di,dj in product(range(-1,2),range(-1,2)):
+                ni = i+di; nj = j+dj
+                if(ni<0 or nj<0 or ni>=N or nj>=M): continue
+                if(S[ni][nj]=='#'): cnt += 1
+            ans[i][j] = cnt
 
-    print(a//4+1)
-
-
-
-
-
+    for i in range(N):
+        x = ""
+        for j in range(M):
+            x += str(ans[i][j])
+        print(x)
 
 
 if __name__ == '__main__':
