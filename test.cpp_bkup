@@ -203,46 +203,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, AB, AC, BC);
-    STRING(S);
-    vvp from(N+6);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+    mint::set_mod((ll)1e9);
+    LONG(K);
+    vvl A(K);
+    rep(i, K) {
+        LONG(N);
+        VLM(a,N);
+        A[i] = a;
     }
-    vl T;
-    for(auto c: S) T.push_back(c-'A');
-    rep(i, N) {
-        from[i].emplace_back(N+T[i], 0);
-        from[N+T[i]+3].emplace_back(i, 0);
-    }
-    from[N].emplace_back(N+4, AB);
-    from[N].emplace_back(N+5, AC);
-    from[N+1].emplace_back(N+3, AB);
-    from[N+1].emplace_back(N+5, BC);
-    from[N+2].emplace_back(N+3, AC);
-    from[N+2].emplace_back(N+4, BC);
-
-    vl dist(N+6, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v]=d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d,v]=que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv,c]: from[v]) {
-            push(nv, d+c);
+    LONG(Q);
+    auto inv=[&](vl &A) -> mint {
+        ll M = SIZE(A);
+        fenwick_tree<ll> tree(30);
+        mint ret = 0;
+        rep(i, M) {
+            ret += tree.sum(A[i]+1, 30);
+            tree.add(A[i], 1);
         }
+        return ret;
+    };
+
+    vvl cnt(K, vl(20));
+    rep(i, K) {
+        ll sz = SIZE(A[i]);
+        rep(j, sz) cnt[i][A[i][j]]++;
     }
-    Out(dist[N-1]);
+
+    vm invs(K);
+    rep(i, K) invs[i] = inv(A[i]);
+
+    mint ans = 0;
+    vm tcnt(20);
+    rep(i, Q) {
+        LONGM(b);
+        mint sum = 0;
+        rep(j, 20) {
+            mint now = 0;
+            repk(k, j+1, 20) {
+                now += cnt[b][j] * tcnt[k];
+            }
+            sum += now;
+        }
+        ans += sum;
+        rep(j, 20) {
+            tcnt[j] += cnt[b][j];
+        }
+        ans += invs[b];
+    }
+
+    Out(ans);
+
+
+
     
 }
 

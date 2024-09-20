@@ -601,6 +601,7 @@
 ### 例題
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
 - 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+- !復習価値中 [L - マンションの改築](https://atcoder.jp/contests/past202010-open/tasks/past202010_l)
 - !復習価値高 [E - Smart Infants](https://atcoder.jp/contests/abc170/tasks/abc170_e)
 - !復習価値高 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - !復習価値高 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
