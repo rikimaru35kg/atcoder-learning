@@ -940,6 +940,10 @@
 - !復習価値高 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
 - !復習価値高 アフィン変換最大化 [F - Maximum Composition](https://atcoder.jp/contests/abc366/tasks/abc366_f)
 
+## インラインDP
+### 例題
+- !要復習 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
+
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
@@ -1644,6 +1648,7 @@
 - 右スパンも同様に求まるので、最大面積も求まる
 ### 例題
 - 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
+- !復習価値高 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
 - !復習価値高 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）

@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### D.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -224,30 +224,44 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a, b);}
+S e() {return -INF;}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl dis(N, 0);
-    rep(i, M) {
-        LONG(a);
-        auto f=[&](ll i) -> bool {
-            return dis[i]<a;
+    LONG(N);
+    VL(H, N);
+    segtree<S,op,e> seg(H);
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        rep(i, N) {
+            cerr<< seg.get(i)  <<' ';
+        }
+        cerr<<endl;
+    #endif
+    };
+    dprint();
+
+    vl ans(N);
+    rep(i, N-1) {
+        ll l = i;
+        auto f = [&](ll r) -> bool {
+            ll h = H[r];
+            ll mx = seg.prod(l+1, r-1);
+            return mx<h;
         };
-        ll l = -1, r = N;
-        while(r-l>1) {
-            ll m = (l+r)/2;
-            if(f(m)) r = m;
-            else l = m;
-        }
-        // ll r = binary_search(N, -1, f);
-        if(r==N) Out(-1);
-        else {
-            Out(r+1);
-            dis[r] = a;
-        }
+        if(i==2)de(f(4))
+        ll r = binary_search(l+1, N, f);
+        de2(i, r)
+        ans[i] = r-l-1;
     }
+    Out(ans);
     
 }
 
-// ### test.cpp ###
+// ### D.cpp ###

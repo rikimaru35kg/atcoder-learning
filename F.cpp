@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### F.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -203,35 +203,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl top(N);
-    iota(all(top), 0);
-    vl below(N, -1);
-    rep(i, Q) {
-        LONGM(f, t, x);
-        ll bx = below[x];
-        ll tt = top[t];
-        ll tf = top[f];
-        below[x] = tt;
-        top[t] = tf;
-        top[f] = bx;
+    LONG(N, M, K);
+    auto m=[&](ll x) -> ll {
+        return (x%N + N ) % N ;
+    };
+    vp edge;
+    rep(i, M) {
+        LONGM(x, y);
+        edge.emplace_back(x, m(y-1));
     }
-    de(top)de(below)
-    vl ans(N);
-    rep(t, N) {
-        ll x = top[t];
-        if(x==-1) continue;
-        ans[x] = t+1;
-        while(below[x]!=-1) {
-            x = below[x];
-            ans[x] = t+1;
+
+    deque<mint> dp(N);
+    dp[0] = 1;
+    rep(k, K) {
+        vector<pair<mint,ll>> stck;
+        for(auto [x,y]: edge) {
+            stck.emplace_back(dp[x], y);
         }
+        for(auto [m,y]: stck) {
+            dp[y] += m; 
+        }
+        mint tmp = dp.back(); dp.pop_back();
+        dp.push_front(tmp);
     }
-    for(auto x: ans) Out(x);
+
+    mint ans = 0;
+    rep(i, N) ans += dp[i];
+    Out(ans);
+
     
 }
 
-// ### test.cpp ###
+// ### F.cpp ###
