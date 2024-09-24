@@ -206,7 +206,59 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(x);Out(x);
+    LONG(N);
+    vector<deque<ll>> deq(N);
+    rep(i, N) {
+        LONG(K);
+        rep(j, K) {
+            LONG(t);
+            deq[i].push_back(t);
+        }
+        rep(j, 2) deq[i].push_back(-1);
+    }
+    set<Pr, greater<Pr>> first, second;
+    rep(i, N) {
+        first.emplace(deq[i][0], i);
+        second.emplace(deq[i][1], i);
+    }
+    LONG(M);
+    VL(A, M);
+
+    auto erase=[&](ll i) {
+        first.erase({deq[i][0], i});
+        second.erase({deq[i][1], i});
+    };
+    auto add=[&](ll i) {
+        first.emplace(deq[i][0], i);
+        second.emplace(deq[i][1], i);
+    };
+
+    rep(i, M) {
+        if(A[i]==1) {
+            auto it=first.begin();
+            auto [t, j] = *it;
+            Out(t);
+            erase(j);
+            deq[j].pop_front();
+            add(j);
+        } else {
+            auto it1=first.begin();
+            auto [t1, j1] = *it1;
+            auto it2=second.begin();
+            auto [t2, j2] = *it2;
+            if(t1>t2) {
+                Out(t1);
+                erase(j1);
+                deq[j1].pop_front();
+                add(j1);
+            } else {
+                Out(t2);
+                erase(j2);
+                deq[j2].erase(deq[j2].begin()+1);
+                add(j2);
+            }
+        }
+    }
     
 }
 

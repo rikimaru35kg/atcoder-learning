@@ -1775,4 +1775,18 @@
       "auto rid=[&](ll id) -> Pr {return {id/$1, id%$1};};",
     ],
   },
+  "Snippet(count)": {
+    "prefix": "count",
+    "body": [
+      "//! count the # of t in s",
+      "long long count(string s, string t) {",
+      "    long long ret = 0;",
+      "    while(s.rfind(t)!=string::npos) {",
+      "        ++ret;",
+      "        s.erase(s.begin()+s.rfind(t), s.end());",
+      "    }",
+      "    return ret;",
+      "}",
+    ],
+  },
 }

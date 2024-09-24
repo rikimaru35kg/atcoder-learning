@@ -13,6 +13,16 @@ vector<string> split(string &s, char t) {
     return ret;
 }
 
+//! count the # of t in s
+long long count(string s, string t) {
+    long long ret = 0;
+    while(s.rfind(t)!=string::npos) {
+        ++ret;
+        s.erase(s.begin()+s.rfind(t), s.end());
+    }
+    return ret;
+}
+
 vector<long long> z_algo(string s) {
     long long n = s.size();
     vector<long long> a(n);

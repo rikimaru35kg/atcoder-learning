@@ -203,48 +203,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! count the # of t in s
+long long count(string s, string t) {
+    long long ret = 0;
+    while(s.rfind(t)!=string::npos) {
+        ++ret;
+        s.erase(s.begin()+s.rfind(t), s.end());
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, Q);
     STRING(S);
-    auto calc=[&](string &s) -> ll {
-        ll ret = 0;
-        ll cnt = 0;
-        if(s=="ABABC") {
-            cout<<"";
-        }
-        for(auto c: s) {
-            if(cnt==0) {
-                if(c=='A') ++cnt;
-                else cnt = 0;
-            } else if(cnt==1) {
-                if(c=='B') ++cnt;
-                else if(c=='A') cnt = 1;
-                else cnt = 0;
-            } else {
-                if(c=='C') cnt = 0, ++ret;
-                else if (c=='A') cnt = 1;
-                else cnt = 0;
-            }
-        }
-        return ret;
-    };
-    ll now = calc(S);
-    de(now)
+    count("","A");
+    S="";
+    ll now = count(S, "ABC");
     rep(i, Q) {
         LONGM(x); CHAR(c);
         ll l = x-5, r = x+5;
         chmax(l, 0LL);
         chmin(r, N-1);
         string ps = S.substr(l, r-l+1);
-        ll pre = calc(ps);
-        de(ps)de(pre)
+        ll pre = count(ps, "ABC");
 
         S[x] = c;
         string as = S.substr(l, r-l+1);
-        ll aft = calc(as);
-        de(as)de(aft)
+        ll aft = count(as, "ABC");
 
         now = now + aft - pre;
         chmax(now, 0LL);
