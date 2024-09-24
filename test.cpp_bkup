@@ -207,55 +207,32 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
+    vl C(M);
+    vl A(M);
     rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        STRING(s); LONG(c);
+        C[i] = c;
+        ll now = 0;
+        rep(j, N) now = now<<1 | (s[j]=='Y'?1:0);
+        A[i] = now;
     }
-    LONGM(ssv);
-    LONG(K);
-    VLM(T, K);
-    T.insert(T.begin(), ssv);
-    ++K;
 
-    auto bfs=[&](ll sv) -> vl {
-        vl dist(N, INF);
-        queue<ll> que;
-        auto push=[&](ll v, ll d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto nv: from[v]) {
-                push(nv, dist[v]+1);
-            }
-        }
-        return dist;
-    };
-
-    vvl dist(K+1, vl(N, INF));
-    rep(i, K) dist[i] = bfs(T[i]);
-
-    vvl dp(1<<K, vl(K, INF));
-    dp[1][0] = 0;
-    rep(s, 1<<K) {
-        rep(i, K) if(s>>i&1) {
-            rep(j, K) if(~s>>j&1) {
-                ll ns = s|1<<j;
-                chmin(dp[ns][j], dp[s][i]+dist[i][T[j]]);
-            }
+    vl dp(1<<N, INF);
+    dp[0] = 0;
+    rep(i, M) {
+        vl pdp(1<<N, INF); swap(pdp, dp);
+        rep(j, 1<<N) {
+            if(pdp[j]==INF) continue;
+            chmin(dp[j], pdp[j]);
+            ll nj = j|A[i];
+            chmin(dp[nj], pdp[j]+C[i]);
         }
     }
-    ll ans = INF;
-    rep(i, K) chmin(ans, dp[(1<<K)-1][i]);
+    ll ans = dp.back();
+    ch1(ans);
     Out(ans);
-
     
-
+    
 }
 
 // ### test.cpp ###

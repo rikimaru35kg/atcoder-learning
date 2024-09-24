@@ -206,38 +206,51 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl A(N);
-    iota(all(A), 1);
-    set<ll> st; st.insert(INF);
-    auto myswap=[&](ll x) {
-        if(x) { st.erase(x-1); }
-        st.erase(x);
-        if(x<N-1) {st.erase(x+1);}
-        swap(A[x], A[x+1]);
-        if(x) {
-            if(A[x-1]>A[x]) st.insert(x-1);
-        }
-        if(A[x]>A[x+1]) st.insert(x);
-        if(x<N-2) {
-            if(A[x+1]>A[x+2]) st.insert(x+1);
-        }
-    };
-    rep(i, Q) {
-        LONG(t, x, y); --x; --y;
-        if(t==1) {
-            myswap(x);
-        } else {
-            while(*st.lower_bound(x)<y) {
-                auto it = st.lower_bound(x);
-                myswap(*it);
+    LONG(H, W);
+    VVL(A, H, W);
+
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
+
+    vvl dist(H*W, vl(H*W, INF));
+    auto dirk=[&](ll sid) -> vl {
+        vl dist(H*W, INF);
+        pq que;
+        auto push=[&](ll id, ll d) {
+            auto &x = dist[id];
+            if(x<=d) return;
+            dist[id] = d;
+            que.emplace(d, id);
+        };
+        push(sid, 0);
+        while(que.size()) {
+            auto [d, id] = que.top(); que.pop();
+            if(dist[id]!=d) continue;
+            auto [i,j] = rid(id);
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                push(gid(ni,nj), d+A[ni][nj]);
             }
         }
-        cerr<<endl;
-        de(A)
-        de(st)
+        return dist;
+    };
+    rep(i, H) rep(j, W) {
+        dist[gid(i,j)] = dirk(gid(i,j));
     }
-    Out(A);
+    ll ans = INF;
+    ll sid = gid(H-1,0);
+    ll mid = gid(H-1,W-1);
+    ll eid = gid(0,W-1);
+    rep(i, H) rep(j, W) {
+        ll id = gid(i,j);
+        ll now = dist[sid][id];
+        now += dist[id][mid];
+        now += dist[id][eid];
+        chmin(ans, now);
+    }
+    Out(ans);
+
     
 }
 

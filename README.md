@@ -1912,6 +1912,7 @@
 - [I - 直通エレベーター](https://atcoder.jp/contests/past202112-open/tasks/past202112_i)
 - [F - 安全装置](https://atcoder.jp/contests/past202104-open/tasks/past202104_f)
 - [H - コンベア](https://atcoder.jp/contests/past202012-open/tasks/past202012_h)
+- [J - 地ならし](https://atcoder.jp/contests/past201912-open/tasks/past201912_j)
 
 ## ACできなかった問題
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
