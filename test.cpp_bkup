@@ -206,39 +206,56 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl A(N);
-    iota(all(A), 1);
-    set<ll> st; st.insert(INF);
-    auto myswap=[&](ll x) {
-        if(x) { st.erase(x-1); }
-        st.erase(x);
-        if(x<N-1) {st.erase(x+1);}
-        swap(A[x], A[x+1]);
-        if(x) {
-            if(A[x-1]>A[x]) st.insert(x-1);
-        }
-        if(A[x]>A[x+1]) st.insert(x);
-        if(x<N-2) {
-            if(A[x+1]>A[x+2]) st.insert(x+1);
-        }
-    };
-    rep(i, Q) {
-        LONG(t, x, y); --x; --y;
-        if(t==1) {
-            myswap(x);
-        } else {
-            while(*st.lower_bound(x)<y) {
-                auto it = st.lower_bound(x);
-                myswap(*it);
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    LONGM(ssv);
+    LONG(K);
+    VLM(T, K);
+    T.insert(T.begin(), ssv);
+    ++K;
+
+    auto bfs=[&](ll sv) -> vl {
+        vl dist(N, INF);
+        queue<ll> que;
+        auto push=[&](ll v, ll d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                push(nv, dist[v]+1);
             }
         }
-        cerr<<endl;
-        de(A)
-        de(st)
+        return dist;
+    };
+
+    vvl dist(K+1, vl(N, INF));
+    rep(i, K) dist[i] = bfs(T[i]);
+
+    vvl dp(1<<K, vl(K, INF));
+    dp[1][0] = 0;
+    rep(s, 1<<K) {
+        rep(i, K) if(s>>i&1) {
+            rep(j, K) if(~s>>j&1) {
+                ll ns = s|1<<j;
+                chmin(dp[ns][j], dp[s][i]+dist[i][T[j]]);
+            }
+        }
     }
-    Out(A);
+    ll ans = INF;
+    rep(i, K) chmin(ans, dp[(1<<K)-1][i]);
+    Out(ans);
+
     
+
 }
 
 // ### test.cpp ###
