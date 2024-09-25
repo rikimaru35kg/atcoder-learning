@@ -25,7 +25,7 @@
 - 10P5が必要だったとしても、next_permutationで10!回して、先頭の5つを取り出せば10P5の全列挙ができる（計算量が間に合うので）。nPr<=1e8かつn!>1e9のような場合には素直に再帰関数で実装するしかないと思われる
 ### 例題
 - 基本+実装少し工夫 [D - Send More Money](https://atcoder.jp/contests/abc198/tasks/abc198_d)
-- !復習価値高 長さKの回文含まない個数 [C - Avoid K Palindrome 2](https://atcoder.jp/contests/abc363/tasks/abc363_c)
+- 基本 長さKの回文含まない個数 [C - Avoid K Palindrome 2](https://atcoder.jp/contests/abc363/tasks/abc363_c)
 
 ## bit全探索
 - 各要素を選ぶ選ばないを2進数と考えループ

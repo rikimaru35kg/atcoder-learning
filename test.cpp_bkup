@@ -203,58 +203,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    CoordinateCompression cc(true);
-    rep(i, N) cc.add(A[i]);
-
-    vl ans(N);
-    rep(i, N) {
-        ans[i] = cc(A[i]);
+    LONG(X,Y,Z,K);
+    VL(A, X); VL(B, X); VL(C, X);
+    sort(allr(A)); sort(allr(B)); sort(allr(C));
+    vl stck;
+    rep(x, X) {
+        rep(y, Y) {
+            if(x*y>=K) break;
+            rep(z, Z) {
+                if(x*y*z>=K) break;
+                stck.push_back(A[x]+B[y]+C[z]);
+            }
+        }
     }
-    Out(ans);
+    sort(allr(stck));
+    rep(i, K) Out(stck[i]);
+
     
 }
 

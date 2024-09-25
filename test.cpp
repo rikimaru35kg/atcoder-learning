@@ -206,22 +206,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X,Y,Z,K);
-    VL(A, X); VL(B, X); VL(C, X);
-    sort(allr(A)); sort(allr(B)); sort(allr(C));
-    vl stck;
-    rep(x, X) {
-        rep(y, Y) {
-            if(x*y>=K) break;
-            rep(z, Z) {
-                if(x*y*z>=K) break;
-                stck.push_back(A[x]+B[y]+C[z]);
-            }
-        }
-    }
-    sort(allr(stck));
-    rep(i, K) Out(stck[i]);
+    LONG(N, K);
+    STRING(S);
+    sort(all(S));
 
+    auto palin=[&](string s) -> bool {
+        rep(i, K/2) {
+            if(s[i]!=s[K-1-i]) return false;
+        }
+        return true;
+    };
+
+    ll ans = 0;
+    do {
+        bool ok = true;
+        rep(i, N+1-K) {
+            if(palin(S.substr(i, K))) ok = false;
+        }
+        if(ok) ++ans;
+    } while(next_permutation(all(S)));
+    de(S)
+    Out(ans);
     
 }
 
