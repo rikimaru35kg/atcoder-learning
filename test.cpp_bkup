@@ -203,57 +203,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
     }
-    return ok;
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
     }
-    return ok;
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL2(A, B, N);
-    VL2(C, D, M);
-
-    auto calc=[&](ll a, ll b, ll k) -> db {
-        auto f=[&](db x) -> bool {
-            vd stck;
-            rep(i, N) stck.push_back((db)B[i]-x*A[i]);
-            sort(allr(stck));
-            db now = (db)b - a*x;
-            rep(i, k) now += stck[i];
-            return now >= 0;
-        };
-        de(f(2.4))
-        db ret = binary_search(0.0, (db)1e9, f);
-        // db ret  = 0;
-        return ret;
-    };
-
-    // db ans = 0;
-    db ans = calc(0, 0, 5);
-    // de(ans)
-    // de(calc(C[1],D[1],4))
-    rep(i, M) {
-        db now = calc(C[i], D[i], 4);
-        de2(i, now)
-        chmax(ans, now);
+    LONG(N);
+    STRING(S);
+    rep(i, N) {
+        if(i%2==0) continue;
+        if(S[i]=='A') S[i]='B';
+        else S[i]='A';
+    }
+    auto vpl = run_length_encoding(S);
+    mint ans = 1;
+    for(auto [c,n]: vpl) {
+        if(n<=2) continue;
+        ans *= Divceil(n, 2);
     }
     Out(ans);
     

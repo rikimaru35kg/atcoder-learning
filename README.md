@@ -1684,10 +1684,12 @@
 - !復習価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
 
 ## 最大フロー・最小カット
-- ACLで求める（実装は難しそう）
-- 計算量はO(min(n^(2/3)*m, m^(3/2))) or O(n^2 * m)
+- ACLで求める（自前実装は難しそう）
+- mf_graph<ll> flow(N), flow.add_edge(a, b, capacity), auto ans = flow.flow(s, t)のような形で求める
+- 計算量はcapacityが全て1のときO(min(n^(2/3)*m, m^(3/2)))、それ以外O(n^2 * m)
 ### 例題
 - !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
+- !要復習 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる

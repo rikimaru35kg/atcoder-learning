@@ -203,91 +203,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/fenwicktree>
+#include <atcoder/maxflow>
 using namespace atcoder;
-
-ll C = 0;
-struct D {
-    ll x, y, p;
-    D(ll x, ll y, ll p): x(x),y(y),p(p) {}
-    bool operator<(const D &o) const {
-        // return min(x,y-C) < min(o.x,o.y-C);
-        return x<o.x;
-    }
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, W); cin>>C;
-    vp event;
-    vl ls;
+    LONG(N, M);
+    ll K = 24;
+    mf_graph<ll> flow(2+N+K);
+    rep(i, N) flow.add_edge(0, i+1, 10);
+    VS(C, N);
     rep(i, N) {
-        LONG(x, y, p);
-        ll l = x - C + 1;
-        chmax(l, 0LL);
-        ll r = y;
-        event.emplace_back(l, p);
-        event.emplace_back(r, -p);
-        ls.emplace_back(l);
-        ls.emplace_back(r);
-    }
-    event.emplace_back(0, 0);
-    event.emplace_back(W-C, 0);
-    ls.emplace_back(0); ls.emplace_back(W-C);
-    sort(allr(event));
-    de(event)
-    sort(all(ls));
-    ll sum = 0;
-    ll ans = INF;
-    for(auto l: ls) {
-        if(l+C>W) break;
-        while(event.size() && event.back().first<=l) {
-            auto [x,p] = event.back(); event.pop_back();
-            sum += p;
+        rep(j, K) {
+            if(C[i][j]=='0') continue;
+            flow.add_edge(i+1, 1+N+j, 1);
         }
-        de2(l, sum)
-        chmin(ans, sum);
     }
-    Out(ans);
+    rep(i, K) {
+        flow.add_edge(1+N+i, 1+N+K, M);
+    }
+    ll mx = flow.flow(0, 1+N+K);
+    if(mx<K*M) PNo PYes
+    
 }
+
+// ### test.cpp ###
