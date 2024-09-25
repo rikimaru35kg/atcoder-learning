@@ -203,55 +203,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
+ll C = 0;
+struct D {
+    ll x, y, p;
+    D(ll x, ll y, ll p): x(x),y(y),p(p) {}
+    bool operator<(const D &o) const {
+        // return min(x,y-C) < min(o.x,o.y-C);
+        return x<o.x;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(A, H, W);
-
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
-
-    vvl dist(H*W, vl(H*W, INF));
-    auto dirk=[&](ll sid) -> vl {
-        vl dist(H*W, INF);
-        pq que;
-        auto push=[&](ll id, ll d) {
-            auto &x = dist[id];
-            if(x<=d) return;
-            dist[id] = d;
-            que.emplace(d, id);
-        };
-        push(sid, 0);
-        while(que.size()) {
-            auto [d, id] = que.top(); que.pop();
-            if(dist[id]!=d) continue;
-            auto [i,j] = rid(id);
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                push(gid(ni,nj), d+A[ni][nj]);
-            }
-        }
-        return dist;
-    };
-    rep(i, H) rep(j, W) {
-        dist[gid(i,j)] = dirk(gid(i,j));
+    LONG(N, W); cin>>C;
+    vp event;
+    vl ls;
+    rep(i, N) {
+        LONG(x, y, p);
+        ll l = x - C + 1;
+        chmax(l, 0LL);
+        ll r = y;
+        event.emplace_back(l, p);
+        event.emplace_back(r, -p);
+        ls.emplace_back(l);
+        ls.emplace_back(r);
     }
+    event.emplace_back(0, 0);
+    event.emplace_back(W-C, 0);
+    ls.emplace_back(0); ls.emplace_back(W-C);
+    sort(allr(event));
+    de(event)
+    sort(all(ls));
+    ll sum = 0;
     ll ans = INF;
-    ll sid = gid(H-1,0);
-    ll mid = gid(H-1,W-1);
-    ll eid = gid(0,W-1);
-    rep(i, H) rep(j, W) {
-        ll id = gid(i,j);
-        ll now = dist[sid][id];
-        now += dist[id][mid];
-        now += dist[id][eid];
-        chmin(ans, now);
+    for(auto l: ls) {
+        if(l+C>W) break;
+        while(event.size() && event.back().first<=l) {
+            auto [x,p] = event.back(); event.pop_back();
+            sum += p;
+        }
+        de2(l, sum)
+        chmin(ans, sum);
     }
     Out(ans);
-
-    
 }
-
-// ### test.cpp ###
