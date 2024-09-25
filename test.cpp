@@ -203,28 +203,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/maxflow>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    ll K = 24;
-    mf_graph<ll> flow(2+N+K);
-    rep(i, N) flow.add_edge(0, i+1, 10);
-    VS(C, N);
-    rep(i, N) {
-        rep(j, K) {
-            if(C[i][j]=='0') continue;
-            flow.add_edge(i+1, 1+N+j, 1);
+    LONG(X,Y,Z,K);
+    VL(A, X); VL(B, X); VL(C, X);
+    sort(allr(A)); sort(allr(B)); sort(allr(C));
+    vl stck;
+    rep(x, X) {
+        rep(y, Y) {
+            if(x*y>=K) break;
+            rep(z, Z) {
+                if(x*y*z>=K) break;
+                stck.push_back(A[x]+B[y]+C[z]);
+            }
         }
     }
-    rep(i, K) {
-        flow.add_edge(1+N+i, 1+N+K, M);
-    }
-    ll mx = flow.flow(0, 1+N+K);
-    if(mx<K*M) PNo PYes
+    sort(allr(stck));
+    rep(i, K) Out(stck[i]);
+
     
 }
 
