@@ -224,33 +224,60 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
+db average(ll N, vl &A) {
+    auto f=[&](db x) -> bool {
+        vd B(N);
+        rep(i, N) B[i] = A[i]-x;
+        vd dp(2, -INF);
+        dp[1] = 0;
+        rep(i, N) {
+            vd pdp(2, -INF); swap(pdp, dp);
+            rep(j, 2) {
+                if(pdp[j]==-INF) continue;
+                chmax(dp[1], pdp[j]+B[i]);
+                if(j==0) continue;
+                chmax(dp[0], pdp[j]);
+            }
+            // de(i)de(dp)
+        }
+        db mx = max(dp[0], dp[1]);
+        return mx>=0;
+    };
+    db ret = binary_search(0.0, 1e9+10, f);
+    return ret;
+    return 0;
+}
+
+ll median(ll N, vl &A) {
+    auto f=[&](ll x) -> bool {
+        vl B(N);
+        rep(i, N) B[i] = (A[i]>=x?1:-1);
+        vl dp(2, -INF);
+        dp[1] = 0;
+        rep(i, N) {
+            vl pdp(2, -INF); swap(pdp, dp);
+            rep(j, 2) {
+                if(pdp[j]==-INF) continue;
+                chmax(dp[1], pdp[j]+B[i]);
+                if(j==0) continue;
+                chmax(dp[0], pdp[j]);
+            }
+        }
+        ll mx = max(dp[0], dp[1]);
+        return mx >= 1;
+    };
+    ll ret = binary_search(0, (ll)1e9+10, f);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    STRING(S);
-    ll N2 = N+N;
-    S += S;
-    vl Sc(N2+1);
-    rep(i, N2) Sc[i+1] = S[i]=='x'?1:0;
-    rep(i, N2) Sc[i+1] += Sc[i];
-
-    auto f=[&](ll x) -> bool {
-        rep(i, N) {
-            ll len = x;
-            if(len>N*M-i) continue;
-            ll cycle = len/N;
-            ll rem = len%N;
-            ll cnt = Sc[N]*cycle + Sc[i+rem] - Sc[i];
-            if(cnt<=K) return true;
-        }
-        return false;
-    };
-
-
-    ll ans = binary_search(0, (ll)1e15, f);
-    Out(ans);
-    
+    LONG(N);
+    VL(A, N);
+    db avg = average(N, A);
+    ll med = median(N, A);
+    printf("%.10f %lld\n", avg, med);
 }
 
 // ### test.cpp ###
