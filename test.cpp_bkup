@@ -203,55 +203,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N);
+    vvl A(N, vl(5));
+    rep(i, N) {
+        rep(j, 5) {
+            LONG(a);
+            A[i][j] = a;
+        }
     }
 
-    vb used(N);
-    vl route;
-    auto dfs0=[&](auto f, ll v) -> void {
-        route.push_back(v);
-        used[v] = true;
-        for(auto nv: from[v]) if(!used[nv]) {
-            f(f, nv);
+    auto f=[&](ll x) -> bool {
+        vl person(N);
+        rep(i, N) {
+            ll now = 0;
+            rep(j, 5) now = now<<1 | (A[i][j]>=x?1:0);
+            person[i] = now;
         }
-    };
-    vl color(N, -1);
-    ll K = -1;
-    ll cnt = 0;
-    auto dfs1=[&](auto f, ll i) -> void {
-        if(i==K) {
-            ++cnt;
-            return;
-        }
-        ll v = route[i];
-        rep(c, 3) {
-            bool ok = true;
-            for(auto nv: from[v]) {
-                if(color[nv]==c) ok = false;
+        // rep(i, N) deb(person[i])
+        ll M = 3;
+        vvb dp(M+1, vb(1<<5));
+        vvb edp = dp;
+        dp[0][0] = true;
+        rep(i, N) {
+            vvb pdp = edp; swap(pdp, dp);
+            rep(j, M+1) rep(s, 1<<5) {
+                if(!pdp[j][s]) continue;
+                dp[j][s] = true;
+                ll ns = s | person[i];
+                if(j<M) dp[j+1][ns] = true;
             }
-            if(!ok) continue;
-            color[v] = c;
-            f(f, i+1);
         }
+        return dp[M][(1<<5)-1];
     };
-    ll ans = 1;
-    rep(i, N) {
-        if(used[i]) continue;
-        route = vl();
-        dfs0(dfs0, i);
-        K = SIZE(route);
-        cnt = 0;
-        dfs1(dfs1, 0);
-        ans *= cnt;
-    }
+
+    // de(f(4))
+    ll ans = binary_search(0, (ll)1e9+10, f);
     Out(ans);
     
 }

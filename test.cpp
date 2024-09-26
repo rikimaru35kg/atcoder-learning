@@ -203,47 +203,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); LONG(K);
-    VS(S, N);
+    LONG(N, M, K);
+    STRING(S);
+    ll N2 = N+N;
+    S += S;
+    vl Sc(N2+1);
+    rep(i, N2) Sc[i+1] = S[i]=='x'?1:0;
+    rep(i, N2) Sc[i+1] += Sc[i];
 
-    ll ans = 0;
-    set<vs> st;
-    vvb visited(N, vb(N));
-    auto dfs=[&](auto f, vs field) -> void {
-        if(st.count(field)) return;
-        st.insert(field);
-        ll cnt = 0;
-        rep(i, N) rep(j, N) if(field[i][j]=='@') ++cnt;
-        if(cnt==K) {
-            ++ans;
-            return;
+    auto f=[&](ll x) -> bool {
+        rep(i, N) {
+            ll len = x;
+            if(len>N*M-i) continue;
+            ll cycle = len/N;
+            ll rem = len%N;
+            ll cnt = Sc[N]*cycle + Sc[i+rem] - Sc[i];
+            if(cnt<=K) return true;
         }
-        rep(i, N) rep(j, N) {
-            if(field[i][j]!='@') continue;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,N,N)) continue;
-                if(field[ni][nj]!='.') continue;
-                if(visited[ni][nj]) continue;
-                visited[ni][nj] = true;
-                vs nf = field;
-                nf[ni][nj] = '@';
-                f(f, nf);
-                nf[ni][nj] = '.';
-                visited[ni][nj] = false;
-            }
-        }
+        return false;
     };
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='#') continue;
-        S[i][j] = '@';
-        dfs(dfs, S);
-        visited[i][j] = true;
-        S[i][j] = '#';
-    }
+
+
+    ll ans = binary_search(0, (ll)1e15, f);
     Out(ans);
     
 }
