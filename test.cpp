@@ -208,42 +208,76 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL2M(A, B, N);
-    vl cnt(N);
-    ll meet = 0;
-    vvl is(M);
-    rep(i, N) {
-        is[A[i]].push_back(i);
-        is[B[i]].push_back(i);
+    LONG(N, X, Y);
+    VL(A, N);
+    while(SIZE(A)%4!=0) A.push_back(0);
+    ll N2 = A.size();
+
+    auto partial=[&](vl A) -> vp {
+        ll N = SIZE(A);
+        vp ret;
+        rep(s, 1<<N) {
+            ll now = 0;
+            rep(i, N) {
+                if(s>>i&1) now += A[i];
+                else now -= A[i];
+            }
+            ret.emplace_back(s, now);
+        }
+        return ret;
+    };
+
+    auto calc=[&](vl A, ll X) -> ll {
+        ll N = SIZE(A);
+        vl a, b;
+        rep(i, N) {
+            if(i<N/2) a.push_back(A[i]);
+            else b.push_back(A[i]);
+        }
+        vp c1 = partial(a);
+        vp c2 = partial(b);
+        umap<ll,ll> mp;
+        for(auto [s,x2]: c2) {
+            mp[x2] = s;
+        }
+        for(auto [s,x1]: c1) {
+            if(mp.count(X-x1)) {
+                ll ret = s;
+                ret |= mp[X-x1]<<(N/2);
+                return ret;
+            }
+        }
+        return INF;
+    };
+
+
+    vl a, b;
+    rep(i, N2) {
+        if(i%2==0) a.push_back(A[i]);
+        else b.push_back(A[i]);
     }
 
-    ll r = 0;
-    vl imos(M+10);
-    rep(l, M) {
-        while(r<M && meet<N) {
-            for(auto i: is[r]) {
-                if(cnt[i]==0) ++meet;
-                cnt[i]++;
-            }
-            ++r;
-        }
-        de3(l, r, meet)
-        if(meet==N) {
-            ll len = r-l;
-            imos[len]++;
-            imos[M-l+1]--;
-            de(imos)
-        }
-        for(auto i: is[l]) {
-            cnt[i]--;
-            if(cnt[i]==0) --meet;
+    ll s1 = calc(a, Y);
+    ll s2 = calc(b, X);
+    if(s1==INF || s2==INF) PNo
+    puts("Yes");
+
+    ll dir = 1;
+    string ans;
+    rep(i, N) {
+        ll k = i/2;
+        if(i%2==0) {
+            if(dir==(s1>>k&1)) ans += 'L';
+            else ans += 'R';
+            dir = s1>>k&1;
+        } else {
+            if(dir!=(s2>>k&1)) ans += 'L';
+            else ans += 'R';
+            dir = s2>>k&1;
         }
     }
-    rep(i, M+9) imos[i+1] += imos[i];
-    vl ans;
-    rep1(i, M) ans.push_back(imos[i]);
     Out(ans);
+
     
 }
 
