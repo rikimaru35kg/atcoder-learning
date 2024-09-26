@@ -102,6 +102,7 @@ using cd = complex<double>;
 #define VL(lvec, n) vl lvec(n); input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec(n); input_lvecm(lvec, n)
 #define VL2(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12(lvec1, lvec2, n)
+#define VL2M(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12m(lvec1, lvec2, n)
 #define VC(cvec, n) vc cvec(n); input_cvec(cvec, n)
 #define VS(svec, n) vs svec(n); input_svec(svec, n)
 #define VD(dvec, n) vd dvec(n); input_dvec(dvec, n)
@@ -137,6 +138,7 @@ inline void input_ivecm(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];--ivec[i];}}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];--lvec[i];}}
 inline void input_lvec12(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];}}
+inline void input_lvec12m(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];--lvec1[i];--lvec2[i];}}
 inline void input_cvec(vc &cvec, ll n) {rep (i, n) {cin>>cvec[i];}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {cin>>svec[i];}}
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {cin>>dvec[i];}}

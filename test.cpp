@@ -98,6 +98,7 @@ using cd = complex<double>;
 #define VL(lvec, n) vl lvec(n); input_lvec(lvec, n)
 #define VLM(lvec, n) vl lvec(n); input_lvecm(lvec, n)
 #define VL2(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12(lvec1, lvec2, n)
+#define VL2M(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12m(lvec1, lvec2, n)
 #define VC(cvec, n) vc cvec(n); input_cvec(cvec, n)
 #define VS(svec, n) vs svec(n); input_svec(svec, n)
 #define VD(dvec, n) vd dvec(n); input_dvec(dvec, n)
@@ -133,6 +134,7 @@ inline void input_ivecm(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];--ivec[i];}}
 inline void input_lvec(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];}}
 inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];--lvec[i];}}
 inline void input_lvec12(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];}}
+inline void input_lvec12m(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];--lvec1[i];--lvec2[i];}}
 inline void input_cvec(vc &cvec, ll n) {rep (i, n) {cin>>cvec[i];}}
 inline void input_svec(vs &svec, ll n) {rep (i, n) {cin>>svec[i];}}
 inline void input_dvec(vd &dvec, ll n) {rep (i, n) {cin>>dvec[i];}}
@@ -203,51 +205,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VPD(P, N);
-
-    auto g=[&](db x, db y) -> db {
-        db ret = 0;
-        rep(i, N) {
-            chmax(ret, euclid_distd(P[i], {x,y}));
-        }
-        return ret;
-    };
-
-    auto f=[&](db x) -> db {
-        db l = -1000, r = 1000;
-        rep(_, 200) {
-            db m1 = (2*l+r)/3;
-            db m2 = (l+2*r)/3;
-            if(g(x,m1)<g(x,m2)) r = m2;
-            else l = m1;
-        }
-        return g(x,l);
-    };
-
-    db l = -1000, r = 1000;
-    rep(_, 200) {
-        db m1 = (2*l+r)/3;
-        db m2 = (l+2*r)/3;
-        if(f(m1)<f(m2)) r = m2;
-        else l = m1;
+    LONG(N, M);
+    VL2M(A, B, N);
+    vl cnt(N);
+    ll meet = 0;
+    vvl is(M);
+    rep(i, N) {
+        is[A[i]].push_back(i);
+        is[B[i]].push_back(i);
     }
 
-    Out(f(l));
+    ll r = 0;
+    vl imos(M+10);
+    rep(l, M) {
+        while(r<M && meet<N) {
+            for(auto i: is[r]) {
+                if(cnt[i]==0) ++meet;
+                cnt[i]++;
+            }
+            ++r;
+        }
+        de3(l, r, meet)
+        if(meet==N) {
+            ll len = r-l;
+            imos[len]++;
+            imos[M-l+1]--;
+            de(imos)
+        }
+        for(auto i: is[l]) {
+            cnt[i]--;
+            if(cnt[i]==0) --meet;
+        }
+    }
+    rep(i, M+9) imos[i+1] += imos[i];
+    vl ans;
+    rep1(i, M) ans.push_back(imos[i]);
+    Out(ans);
     
 }
 
