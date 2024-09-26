@@ -203,70 +203,14 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-db average(ll N, vl &A) {
-    auto f=[&](db x) -> bool {
-        vd B(N);
-        rep(i, N) B[i] = A[i]-x;
-        vd dp(2, -INF);
-        dp[1] = 0;
-        rep(i, N) {
-            vd pdp(2, -INF); swap(pdp, dp);
-            rep(j, 2) {
-                if(pdp[j]==-INF) continue;
-                chmax(dp[1], pdp[j]+B[i]);
-                if(j==0) continue;
-                chmax(dp[0], pdp[j]);
-            }
-            // de(i)de(dp)
-        }
-        db mx = max(dp[0], dp[1]);
-        return mx>=0;
-    };
-    db ret = binary_search(0.0, 1e9+10, f);
-    return ret;
-    return 0;
-}
-
-ll median(ll N, vl &A) {
-    auto f=[&](ll x) -> bool {
-        vl B(N);
-        rep(i, N) B[i] = (A[i]>=x?1:-1);
-        vl dp(2, -INF);
-        dp[1] = 0;
-        rep(i, N) {
-            vl pdp(2, -INF); swap(pdp, dp);
-            rep(j, 2) {
-                if(pdp[j]==-INF) continue;
-                chmax(dp[1], pdp[j]+B[i]);
-                if(j==0) continue;
-                chmax(dp[0], pdp[j]);
-            }
-        }
-        ll mx = max(dp[0], dp[1]);
-        return mx >= 1;
-    };
-    ll ret = binary_search(0, (ll)1e9+10, f);
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
     return ret;
 }
 
@@ -274,10 +218,37 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    db avg = average(N, A);
-    ll med = median(N, A);
-    printf("%.10f %lld\n", avg, med);
+    VPD(P, N);
+
+    auto g=[&](db x, db y) -> db {
+        db ret = 0;
+        rep(i, N) {
+            chmax(ret, euclid_distd(P[i], {x,y}));
+        }
+        return ret;
+    };
+
+    auto f=[&](db x) -> db {
+        db l = -1000, r = 1000;
+        rep(_, 200) {
+            db m1 = (2*l+r)/3;
+            db m2 = (l+2*r)/3;
+            if(g(x,m1)<g(x,m2)) r = m2;
+            else l = m1;
+        }
+        return g(x,l);
+    };
+
+    db l = -1000, r = 1000;
+    rep(_, 200) {
+        db m1 = (2*l+r)/3;
+        db m2 = (l+2*r)/3;
+        if(f(m1)<f(m2)) r = m2;
+        else l = m1;
+    }
+
+    Out(f(l));
+    
 }
 
 // ### test.cpp ###
