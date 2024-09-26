@@ -206,22 +206,53 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X,Y,Z,K);
-    VL(A, X); VL(B, X); VL(C, X);
-    sort(allr(A)); sort(allr(B)); sort(allr(C));
-    vl stck;
-    rep(x, X) {
-        rep(y, Y) {
-            if(x*y>=K) break;
-            rep(z, Z) {
-                if(x*y*z>=K) break;
-                stck.push_back(A[x]+B[y]+C[z]);
-            }
-        }
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    sort(allr(stck));
-    rep(i, K) Out(stck[i]);
 
+    vb used(N);
+    vl route;
+    auto dfs0=[&](auto f, ll v) -> void {
+        route.push_back(v);
+        used[v] = true;
+        for(auto nv: from[v]) if(!used[nv]) {
+            f(f, nv);
+        }
+    };
+    vl color(N, -1);
+    ll K = -1;
+    ll cnt = 0;
+    auto dfs1=[&](auto f, ll i) -> void {
+        if(i==K) {
+            ++cnt;
+            return;
+        }
+        ll v = route[i];
+        rep(c, 3) {
+            bool ok = true;
+            for(auto nv: from[v]) {
+                if(color[nv]==c) ok = false;
+            }
+            if(!ok) continue;
+            color[v] = c;
+            f(f, i+1);
+        }
+    };
+    ll ans = 1;
+    rep(i, N) {
+        if(used[i]) continue;
+        route = vl();
+        dfs0(dfs0, i);
+        K = SIZE(route);
+        cnt = 0;
+        dfs1(dfs1, 0);
+        ans *= cnt;
+    }
+    Out(ans);
     
 }
 

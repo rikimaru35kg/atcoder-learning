@@ -206,26 +206,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    STRING(S);
-    sort(all(S));
-
-    auto palin=[&](string s) -> bool {
-        rep(i, K/2) {
-            if(s[i]!=s[K-1-i]) return false;
-        }
-        return true;
-    };
+    LONG(N); LONG(K);
+    VS(S, N);
 
     ll ans = 0;
-    do {
-        bool ok = true;
-        rep(i, N+1-K) {
-            if(palin(S.substr(i, K))) ok = false;
+    set<vs> st;
+    vvb visited(N, vb(N));
+    auto dfs=[&](auto f, vs field) -> void {
+        if(st.count(field)) return;
+        st.insert(field);
+        ll cnt = 0;
+        rep(i, N) rep(j, N) if(field[i][j]=='@') ++cnt;
+        if(cnt==K) {
+            ++ans;
+            return;
         }
-        if(ok) ++ans;
-    } while(next_permutation(all(S)));
-    de(S)
+        rep(i, N) rep(j, N) {
+            if(field[i][j]!='@') continue;
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,N,N)) continue;
+                if(field[ni][nj]!='.') continue;
+                if(visited[ni][nj]) continue;
+                visited[ni][nj] = true;
+                vs nf = field;
+                nf[ni][nj] = '@';
+                f(f, nf);
+                nf[ni][nj] = '.';
+                visited[ni][nj] = false;
+            }
+        }
+    };
+    rep(i, N) rep(j, N) {
+        if(S[i][j]=='#') continue;
+        S[i][j] = '@';
+        dfs(dfs, S);
+        visited[i][j] = true;
+        S[i][j] = '#';
+    }
     Out(ans);
     
 }
