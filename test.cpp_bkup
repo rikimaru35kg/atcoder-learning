@@ -205,72 +205,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// [方針]
-// ab以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
-// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
-// （なお、x<min(A,B)とならない事は自明）
-// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
-// xの偶奇で場合分け可能。
-// 最大ペア積がab未満となる最大のxを二分探索すれば良い。
-// A==Bの時は最大ペア積を高橋が占領しているが、この時は
-// 答えが自明なので最初にはじいておく
-// なお、xが奇数かつ順位A<x<Bとなる場合は気になる
-// 1: ooooxoooo (A=5)
-// 2: ooooooooo (B>=10)
-// この場合、作れる組数は最大8組で最大ペア積の計算は面倒そうだが
-// 実はこの場合も5位×5位を最大ペア積として問題ない
-// なぜなら明らかにこれはA*Bより小さいから
-// また、以下のケースも最大ペア積は中心同士の積として良い
-// 実際にペアを線でつないでみれば分かる
-// 1: ooxoooooo (A=3)
-// 2: ooooooooo (B>=10)
-void solve() {
-    LONG(A, B);
-    if(A>B) swap(A,B);
-    if(A==B) { 
-        Out(2*(A-1)); return;
-    }
-    auto p2=[&](sll x){return x*x;};
-    auto f=[&](ll x) -> bool {
-        sll mx = -1;
-        if(x%2==1) {
-            mx = p2(Divceil(x,2));
-        } else {
-            mx = (sll)x/2 * ((sll)x/2+1);
-        }
-        return mx < A*B;
-    };
-
-    ll x = binary_search(0, (ll)2e9+10, f);
-    Out(x-1);
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
+    LONG(N, K);
+    vvi Sc(4*K+1, vi(4*K+1));
+    rep(i, N) {
+        INT(x, y); CHAR(c);
+        x %= 2*K, y %= 2*K;
+        if(c=='W') {
+            if(x < K) x += K;
+            else if(y < K) y += K;
+            else x -= K;
+        }
+        Sc[x+1][y+1]++;
+        Sc[x+2*K+1][y+1]++;
+        Sc[x+1][y+2*K+1]++;
+        Sc[x+2*K+1][y+2*K+1]++;
+    }
+    rep(i, 4*K) rep(j, 4*K+1) Sc[i+1][j] += Sc[i][j];
+    rep(i, 4*K+1) rep(j, 4*K) Sc[i][j+1] += Sc[i][j];
+
+    auto sum=[&](ll i, ll j) -> ll {
+        ll ret = 0;
+        ret += Sc[i+K][j+K];
+        ret -= Sc[i+K][j];
+        ret -= Sc[i][j+K];
+        ret += Sc[i][j];
+        return ret;
+    };
+
+    ll ans = 0;
+    rep(i, 2*K) rep(j, 2*K) {
+        ll now = sum(i, j) + sum(i+K, j+K);
+        chmax(ans, now);
+    }
+    Out(ans);
     
 }
 

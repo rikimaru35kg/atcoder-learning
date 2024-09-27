@@ -205,40 +205,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
-    vp event;
-    rep(i, N) event.emplace_back(A[i], 1);
-    rep(i, N) event.emplace_back(B[i], -1);
-    sort(all(event));
-    ll a = 0, b = 0;
-    mint ans = 1;
-    for(auto [x, t]: event) {
-        if(t==1) {
-            if(b>0) ans *= b, b--;
-            else a++;
-        } else {
-            if(a>0) ans *= a, a--;
-            else b++;
-        }
+    LONG(N);
+    vvi Sc(N+1, vi(N+1));
+    rep(i, N) rep(j, N) {
+        INT(d);
+        Sc[i+1][j+1] = d;
     }
-    Out(ans);
+    rep(i, N+1) rep(j, N) Sc[i][j+1] += Sc[i][j];
+    rep(i, N) rep(j, N+1) Sc[i+1][j] += Sc[i][j];
+
+    auto sum=[&](ll i, ll j, ll ei, ll ej) -> ll {
+        ll ret = 0;
+        ret += Sc[ei][ej];
+        ret -= Sc[i][ej];
+        ret -= Sc[ei][j];
+        ret += Sc[i][j];
+        return ret;
+    };
+
+    auto calc=[&](ll p) -> ll {
+        ll ret = 0;
+        rep(i, N) rep(j, N) {
+            rep1(h, N-i) {
+                ll w = p/h;
+                ll ei = i+h, ej = j+w;
+                chmin(ej, N);
+                ll now = sum(i, j, ei, ej);
+                chmax(ret, now);
+            }
+        }
+        return ret;
+    };
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(p);
+        ll ans = calc(p);
+        Out(ans);
+    }
     
 }
 

@@ -188,7 +188,7 @@
 ### 例題
 - 基本 [A - 惑星探査 (Planetary Exploration)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho1)
 - 基本 [D - AtCoder Express 2](https://atcoder.jp/contests/abc106/tasks/abc106_d)
-- !復習価値低 市松模様の最適場所 [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b) なお、この問題は何も考えずにlong longを使いすぎるとMLEする
+- 基本 市松模様の最適場所 [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b)
 - !復習価値中 たこ焼きおいしさmax [D - おいしいたこ焼きの焼き方](https://atcoder.jp/contests/abc005/tasks/abc005_4)
 
 ## IMOS法
