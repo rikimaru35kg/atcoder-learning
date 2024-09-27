@@ -205,99 +205,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
 #ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    CoordinateCompression ccx, ccy, ccz;
-    vt3 st, ed;
-    rep(i, N) {
-        LONG(x1,y1,z1); LONG(x2,y2,z2);
-        st.emplace_back(x1,y1,z1);
-        ed.emplace_back(x2,y2,z2);
-        ccx.add(x1), ccx.add(x2);
-        ccy.add(y1), ccy.add(y2);
-        ccz.add(z1), ccz.add(z2);
+    LONG(N, P);
+    STRING(S); reverse(all(S));
+    vl A;
+    for(auto c: S) A.push_back(c-'0');
+    if(P==2 || P==5) {
+        ll ans = 0;
+        rep(i, N) {
+            if(A[i]%P==0) ans += N-i;
+        }
+        Outend(ans);
     }
-    ll Nx = ccx.size(), Ny = ccy.size(), Nz = ccz.size();
-    vvvi imos(Nx, vvi(Ny, vi(Nz)));
-    vi dx(Nx), dy(Ny), dz(Nz);
-    rep(i, Nx-1) dx[i] = ccx[i+1] - ccx[i];
-    rep(i, Ny-1) dy[i] = ccy[i+1] - ccy[i];
-    rep(i, Nz-1) dz[i] = ccz[i+1] - ccz[i];
-    de(dx)de(dy)de(dz)
+    mint::set_mod(P);
 
-    auto add=[&](ll x1, ll y1, ll z1, ll x2, ll y2, ll z2) {
-        imos[x2][y2][z2]--;
-        imos[x1][y2][z2]++;
-        imos[x2][y1][z2]++;
-        imos[x2][y2][z1]++;
-        imos[x1][y1][z2]--;
-        imos[x1][y2][z1]--;
-        imos[x2][y1][z1]--;
-        imos[x1][y1][z1]++;
-    };
-
-    rep(i, N) {
-        auto [x1,y1,z1] = st[i];
-        auto [x2,y2,z2] = ed[i];
-        x1 = ccx(x1), x2 = ccx(x2);
-        y1 = ccy(y1), y2 = ccy(y2);
-        z1 = ccz(z1), z2 = ccz(z2);
-        add(x1,y1,z1,x2,y2,z2);
-    }
-
-    rep(i, Nx-1) rep(j, Ny) rep(k, Nz) imos[i+1][j][k] += imos[i][j][k];
-    rep(i, Nx) rep(j, Ny-1) rep(k, Nz) imos[i][j+1][k] += imos[i][j][k];
-    rep(i, Nx) rep(j, Ny) rep(k, Nz-1) imos[i][j][k+1] += imos[i][j][k];
-    de(imos)
-
+    mint ten = 1;
+    mint now = 0;
+    vl cnt(P);
+    cnt[0] = 1;
     ll ans = 0;
-    rep(i, Nx) rep(j, Ny) rep(k, Nz) {
-        if(imos[i][j][k]<K) continue;
-        ans += (ll)dx[i] * dy[j] * dz[k];
+    rep(i, N) {
+        now += ten*A[i];
+        ans += cnt[now.val()];
+        cnt[now.val()]++;
+        ten *= 10;
     }
     Out(ans);
+
+
 
     
 }

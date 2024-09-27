@@ -204,98 +204,25 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-using POS = tuple<int,int,int,int>;
-
-#include <atcoder/dsu>
-using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(X, Y, N);
-    CoordinateCompression ccx, ccy;
-    ccx.add(0), ccx.add(X);
-    ccy.add(0), ccy.add(Y);
-    
-    vector<POS> P;
-    rep(i, N) {
-        LONG(x1,y1,x2,y2);
-        ccx.add(x1), ccx.add(x2);
-        ccy.add(y1), ccy.add(y2);
-        P.emplace_back(x1,y1,x2,y2);
-    }
-    ll Nx = ccx.size(), Ny = ccy.size();
-    vvi imos(Nx, vi(Ny));
+    LONG(N, K);
+    VL(A, N);
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    rep(i, N+1) Sc[i] -= i;
+    rep(i, N+1) Sc[i] %= K;
+    umap<ll,ll> mp;
+    mp[0]++;
 
-    for(auto [x1,y1,x2,y2]: P) {
-        x1 = ccx(x1), x2 = ccx(x2);
-        y1 = ccy(y1), y2 = ccy(y2);
-        imos[x1][y1]++;
-        imos[x1][y2]--;
-        imos[x2][y1]--;
-        imos[x2][y2]++;
-    }
-    rep(i, Nx-1) rep(j, Ny) imos[i+1][j] += imos[i][j];
-    rep(i, Nx) rep(j, Ny-1) imos[i][j+1] += imos[i][j];
-    de(imos)
-
-    Nx--, Ny--;
-    auto gid=[&](ll i, ll j) {return i*Ny+j;};
-
-    dsu uf(Nx*Ny);
-    rep(i, Nx) rep(j, Ny) {
-        if(imos[i][j]!=0) continue;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,Nx,Ny)) continue;
-            if(imos[ni][nj]!=0) continue;
-            uf.merge(gid(i,j),gid(ni,nj));
-        }
-    }
     ll ans = 0;
-    rep(i, Nx) rep(j, Ny) {
-        if(imos[i][j]!=0) continue;
-        if(uf.leader(gid(i,j)) == gid(i,j)) { ++ans; }
+    rep(i, N) {
+        ll x = Sc[i+1];
+        if(i+1-K>=0) mp[Sc[i+1-K]]--;
+        ans += mp[x];
+        mp[x]++;
     }
     Out(ans);
     

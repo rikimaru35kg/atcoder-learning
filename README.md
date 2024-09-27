@@ -218,9 +218,9 @@
 - 基本 累積和がMの倍数となる区間の総数 [D - Candy Distribution](https://atcoder.jp/contests/abc105/tasks/abc105_d)
 - 基本 連続部分文字列がMOD Pで0になる個数 その1 [D - Multiple of 2019](https://atcoder.jp/contests/abc164/tasks/abc164_d)
 - 基本 [D - Three Days Ago](https://atcoder.jp/contests/abc295/tasks/abc295_d)
-- !復習価値中 区間の中でXに一致する個数 [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
-- !復習価値低 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
-- !復習価値高 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
+- 基本 区間の中でXに一致する個数 [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
+- 基本 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
+- 基本 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
 
 ## Mo's Algorithm
 - 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
