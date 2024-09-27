@@ -208,76 +208,44 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    VL(A, N);
-    while(SIZE(A)%4!=0) A.push_back(0);
-    ll N2 = A.size();
+    LONG(N, Q);
+    vl A(N);
+    iota(all(A), 1);
+    set<ll> rev;
+    rev.insert(-1); rev.insert(INF);
 
-    auto partial=[&](vl A) -> vp {
-        ll N = SIZE(A);
-        vp ret;
-        rep(s, 1<<N) {
-            ll now = 0;
-            rep(i, N) {
-                if(s>>i&1) now += A[i];
-                else now -= A[i];
-            }
-            ret.emplace_back(s, now);
+    auto upd=[&](ll x) {
+        if(A[x]>A[x+1]) rev.insert(x);
+        else rev.erase(x);
+        if(x) {
+            if(A[x-1]>A[x]) rev.insert(x-1);
+            else rev.erase(x-1);
         }
-        return ret;
+        if(x<N-2) {
+            if(A[x+1]>A[x+2]) rev.insert(x+1);
+            else rev.erase(x+1);
+        }
     };
-
-    auto calc=[&](vl A, ll X) -> ll {
-        ll N = SIZE(A);
-        vl a, b;
-        rep(i, N) {
-            if(i<N/2) a.push_back(A[i]);
-            else b.push_back(A[i]);
-        }
-        vp c1 = partial(a);
-        vp c2 = partial(b);
-        umap<ll,ll> mp;
-        for(auto [s,x2]: c2) {
-            mp[x2] = s;
-        }
-        for(auto [s,x1]: c1) {
-            if(mp.count(X-x1)) {
-                ll ret = s;
-                ret |= mp[X-x1]<<(N/2);
-                return ret;
-            }
-        }
-        return INF;
-    };
-
-
-    vl a, b;
-    rep(i, N2) {
-        if(i%2==0) a.push_back(A[i]);
-        else b.push_back(A[i]);
-    }
-
-    ll s1 = calc(a, Y);
-    ll s2 = calc(b, X);
-    if(s1==INF || s2==INF) PNo
-    puts("Yes");
-
-    ll dir = 1;
-    string ans;
-    rep(i, N) {
-        ll k = i/2;
-        if(i%2==0) {
-            if(dir==(s1>>k&1)) ans += 'L';
-            else ans += 'R';
-            dir = s1>>k&1;
+    rep(i, Q) {
+        LONG(t, x, y); --x; --y;
+        if(t==1) {
+            swap(A[x], A[x+1]);
+            upd(x);
         } else {
-            if(dir!=(s2>>k&1)) ans += 'L';
-            else ans += 'R';
-            dir = s2>>k&1;
+            while(*rev.lower_bound(x) < y) {
+                auto it = rev.lower_bound(x);
+                ll k = *it;
+                rev.erase(it);
+                swap(A[k], A[k+1]);
+                upd(k);
+            }
         }
+        // cerr<<endl;
+        // de3(t,x,y)
+        // de(rev)
+        // de(A)
     }
-    Out(ans);
-
+    Out(A);
     
 }
 

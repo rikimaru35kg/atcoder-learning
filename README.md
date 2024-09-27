@@ -137,8 +137,8 @@
 ### 例題
 - !復習価値低 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
 - !要復習 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
-- !復習価値中 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
-- !要復習 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
+- 基本 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
+- !復習価値高 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
 - !要復習 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
 
 ## ペア積（要素積）のmaxを最小化

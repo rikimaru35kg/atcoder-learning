@@ -205,57 +205,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VVL(A, N, N);
+    LONG(N); VL(A, N); VL(B, N);
+    rep(i, N) A[i] += i;
+    rep(i, N) B[i] += i;
+    vl sa = A, sb = B;
+    sort(all(sa)); sort(all(sb));
+    if(sa!=sb) Pm1
 
-    auto calc=[&](vvl &A) -> vvl {
-        vvl ret(N);
-        ret[0].push_back(A[0][0]);
-        rep(i, N-1) {
-            vvl pret(N); swap(pret, ret);
-            rep(j, i+1) {
-                for(auto x: pret[j]) {
-                    ll nx = x ^ A[i-j+1][j];
-                    ret[j].push_back(nx);
-                    nx = x ^ A[i-j][j+1];
-                    ret[j+1].push_back(nx);
-                }
-            }
-        }
-        return ret;
-    };
-    vvl v1 = calc(A);
-    auto flip=[&]() {
-        reverse(all(A));
-        rep(i, N) reverse(all(A[i]));
-    };
-    flip();
-    vvl v2 = calc(A);
-    reverse(all(v2));
-    flip();
+    umap<ll,vl> mp;
+    rep(i, N) {
+        mp[B[i]].push_back(i);
+    }
+    umap<ll,ll> cidx;
+    vl C;
+    rep(i, N) {
+        C.push_back(mp[A[i]][cidx[A[i]]]);
+        cidx[A[i]]++;
+    }
 
+    fenwick_tree<ll> tree(N);
     ll ans = 0;
     rep(i, N) {
-        vl a = v1[i], b = v2[i];
-        umap<ll,ll> mp;
-        for(auto x: b) { mp[x]++; }
-        // de(i)
-        // de(a)de(b)
-        // de(mp)
-
-        ll now = 0;
-        for(auto x: a) {
-            // de2(N-1-i, i)
-            x ^= A[N-1-i][i];
-            // de(x)
-            now += mp[x];
-        }
-        // de(now)
-        ans += now;
+        ans += tree.sum(C[i]+1, N);
+        tree.add(C[i], 1);
     }
     Out(ans);
+
+
+    
 
 
     
