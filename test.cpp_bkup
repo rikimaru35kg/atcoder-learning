@@ -208,36 +208,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(P, N);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return P[i]>P[j];
-    });
-    multiset<ll> st;
-    st.insert(N); st.insert(N);
-    st.insert(-1); st.insert(-1);
-
-    ll ans = 0;
-    for(auto i: p) {
-        auto it = st.insert(i);
-        vl rs(2), ls(2);
-        rep(i, 2) {
-            ++it;
-            rs[i] = *it;
-        }
-        it = st.find(i);
-        rep(i, 2) {
-            --it;
-            ls[i] = *it;
-        }
-        ll now = 0;
-        now += (i-ls[0]) * (rs[1]-rs[0]);
-        now += (ls[0]-ls[1]) * (rs[0]-i);
-        now *= P[i];
-        ans += now;
+    LONG(N, M, L);
+    vvp from(N), ifrom(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        ifrom[b].emplace_back(a, c);
     }
+
+    vvl dist(N, vl(M+1, INF));
+    priority_queue<t3,vt3,greater<t3>> que;
+    auto push=[&](ll v, ll m, ll d) {
+        ll &pd = dist[v][m];
+        if(pd<=d) return;
+        pd = d;
+        que.emplace(d, v, m);
+    };
+    push(0, 0, 0);
+    while(que.size()) {
+        auto [d,v,m] = que.top(); que.pop();
+        if(d!=dist[v][m]) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, m, d+c);
+        }
+        for(auto [nv, c]: ifrom[v]) {
+            if(m<M) push(nv, m+1, d+c);
+        }
+    }
+
+    ll ans = INF;
+    rep(m, M+1) {
+        if(dist[N-1][m]<=L) chmin(ans, m);
+    }
+    ch1(ans);
     Out(ans);
     
 }

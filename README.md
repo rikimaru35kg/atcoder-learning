@@ -13,7 +13,7 @@
 - 途中からループに意味がなくなる場合breakする事で探索量を減らせる。特にi*j<=Kでのみループを回す必要があるのであれば、計算量はO(KlogK)となり、i*j*k<=Kの3重ループならO(Klog^2K)?となる
 - 現在の探索値より真に良いものが何個あるか考えるとすっきりする
 ### 例題
-- !復習価値小 ループ探索計算量を考察する良問（chokudai氏解説動画が神） [D - Cake 123](https://atcoder.jp/contests/abc123/tasks/abc123_d)
+- !復習価値低 ループ探索計算量を考察する良問（chokudai氏解説動画が神） [D - Cake 123](https://atcoder.jp/contests/abc123/tasks/abc123_d)
 
 ## 順列全探索
 - 制約数が少なければ全探索を考える
@@ -94,7 +94,7 @@
 ### 例題
 - 基本 コンピュータ最短計算（double型の三分探索） [B - ムーアの法則](https://atcoder.jp/contests/arc054/tasks/arc054_b)
 - 基本 重力定数変えられる自由落下 [D - Freefall](https://atcoder.jp/contests/abc279/tasks/abc279_d)
-- !復習価値小 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
+- !復習価値低 最小包含円 [F - Enclose All](https://atcoder.jp/contests/abc151/tasks/abc151_f)
 
 ## 尺取り法（Two-pointer approach）
 - 単調性があるときに使用可能
@@ -110,7 +110,7 @@
 - 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
 - 基本 XORの性質 [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
 - 基本 min|x^2+y^2-D| [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
-- !復習価値小 最大値X最小値Yとなる区間の総数 [E - Max Min](https://atcoder.jp/contests/abc247/tasks/abc247_e)
+- !復習価値低 最大値X最小値Yとなる区間の総数 [E - Max Min](https://atcoder.jp/contests/abc247/tasks/abc247_e)
 - !復習価値高 交差1の数列が全要素を包含するか（snuke氏考察はオーバーキル） [E - At Least One](https://atcoder.jp/contests/abc260/tasks/abc260_e)
 
 ## 半分全列挙
@@ -156,7 +156,7 @@
 - 最適なつなぎ方の通り数を求めたい場合は、つなぐ時につなぎ方の場合の数を掛け合わせていけば良い
 ### 例題
 - 基本 [014 - We Used to Sing a Song Together（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_n)
-- !復習価値小 PC電源つなぎ方総数 [A - 1D Matching](https://atcoder.jp/contests/cf16-exhibition-final-open/tasks/cf16_exhibition_final_a)
+- !復習価値低 PC電源つなぎ方総数 [A - 1D Matching](https://atcoder.jp/contests/cf16-exhibition-final-open/tasks/cf16_exhibition_final_a)
 
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
@@ -201,7 +201,7 @@
 - 基本 [A - 鉄道旅行 (Railroad Trip)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_a)
 - 基本 二次元IMOS [028 - Cluttered Paper（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ab)
 - 基本 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
-- !復習価値小 海洋生息区域重なり [E - 魚の生息範囲 (Fish)](https://atcoder.jp/contests/joi2013yo/tasks/joi2013yo_e)
+- !復習価値低 海洋生息区域重なり [E - 魚の生息範囲 (Fish)](https://atcoder.jp/contests/joi2013yo/tasks/joi2013yo_e)
 - !復習価値高 分断領域の個数 [E - ペンキの色](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_e)
 
 ## 連続部分列問題
@@ -227,7 +227,7 @@
 - クエリ[l,r)を座標上にプロットし、sqrt(Q)個に分割（すなわち高さをN/sqrt(Q)に分割）し、各分割ブロックごとに小さい順に辿って行けば良い
 - r>=lの領域をはみ出さないように、さきに--lと++rをした方が良い
 ### 例題
-- !復習価値小 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
+- !復習価値低 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 - !復習価値高 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
 
 
@@ -241,14 +241,14 @@
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
 - !復習価値中 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
-- !復習価値小 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
+- !復習価値低 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
 
 # 最短経路問題
 
 ## BFS
 ### 例題
-- !復習価値高 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
+- !復習価値中 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能
@@ -273,7 +273,7 @@
 ### 例題
 - 基本 典型+α（snuke氏解説の実装がスマート） [E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e)
 - 基本 Kの倍数の時だけ発車可能 [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
-- !復習価値高 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
+- !復習価値低 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 - !要復習 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
 - !要復習 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
 
@@ -282,10 +282,10 @@
 - 例えば、辺に距離だけでなく金銭が必要な場合、所持金を状態としてキューに入れると良い
 ### 例題
 - 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
-- !復習価値中 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
-- !復習価値低 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
-- !復習価値中 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
-- !要復習 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
+- 基本 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
+- 基本 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
+- !復習価値低 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
+- !復習価値高 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
 - !復習価値低 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - !復習価値中 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 - !復習価値高 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
