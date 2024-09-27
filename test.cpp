@@ -205,72 +205,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// [方針]
-// ab以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
-// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
-// （なお、x<min(A,B)とならない事は自明）
-// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
-// xの偶奇で場合分け可能。
-// 最大ペア積がab未満となる最大のxを二分探索すれば良い。
-// A==Bの時は最大ペア積を高橋が占領しているが、この時は
-// 答えが自明なので最初にはじいておく
-// なお、xが奇数かつ順位A<x<Bとなる場合は気になる
-// 1: ooooxoooo (A=5)
-// 2: ooooooooo (B>=10)
-// この場合、作れる組数は最大8組で最大ペア積の計算は面倒そうだが
-// 実はこの場合も5位×5位を最大ペア積として問題ない
-// なぜなら明らかにこれはA*Bより小さいから
-// また、以下のケースも最大ペア積は中心同士の積として良い
-// 実際にペアを線でつないでみれば分かる
-// 1: ooxoooooo (A=3)
-// 2: ooooooooo (B>=10)
-void solve() {
-    LONG(A, B);
-    if(A>B) swap(A,B);
-    if(A==B) { 
-        Out(2*(A-1)); return;
-    }
-    auto p2=[&](sll x){return x*x;};
-    auto f=[&](ll x) -> bool {
-        sll mx = -1;
-        if(x%2==1) {
-            mx = p2(Divceil(x,2));
-        } else {
-            mx = (sll)x/2 * ((sll)x/2+1);
-        }
-        return mx < A*B;
-    };
-
-    ll x = binary_search(0, (ll)2e9+10, f);
-    Out(x-1);
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
+    LONG(N); VL(A, N); VL(B, N);
+    vp event;
+    rep(i, N) event.emplace_back(A[i], 1);
+    rep(i, N) event.emplace_back(B[i], -1);
+    sort(all(event));
+    ll a = 0, b = 0;
+    mint ans = 1;
+    for(auto [x, t]: event) {
+        if(t==1) {
+            if(b>0) ans *= b, b--;
+            else a++;
+        } else {
+            if(a>0) ans *= a, a--;
+            else b++;
+        }
+    }
+    Out(ans);
     
 }
 

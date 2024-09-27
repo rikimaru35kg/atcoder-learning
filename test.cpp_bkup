@@ -205,47 +205,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// [方針]
+// ab以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
+// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
+// （なお、x<min(A,B)とならない事は自明）
+// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
+// xの偶奇で場合分け可能。
+// 最大ペア積がab未満となる最大のxを二分探索すれば良い。
+// A==Bの時は最大ペア積を高橋が占領しているが、この時は
+// 答えが自明なので最初にはじいておく
+// なお、xが奇数かつ順位A<x<Bとなる場合は気になる
+// 1: ooooxoooo (A=5)
+// 2: ooooooooo (B>=10)
+// この場合、作れる組数は最大8組で最大ペア積の計算は面倒そうだが
+// 実はこの場合も5位×5位を最大ペア積として問題ない
+// なぜなら明らかにこれはA*Bより小さいから
+// また、以下のケースも最大ペア積は中心同士の積として良い
+// 実際にペアを線でつないでみれば分かる
+// 1: ooxoooooo (A=3)
+// 2: ooooooooo (B>=10)
+void solve() {
+    LONG(A, B);
+    if(A>B) swap(A,B);
+    if(A==B) { 
+        Out(2*(A-1)); return;
+    }
+    auto p2=[&](sll x){return x*x;};
+    auto f=[&](ll x) -> bool {
+        sll mx = -1;
+        if(x%2==1) {
+            mx = p2(Divceil(x,2));
+        } else {
+            mx = (sll)x/2 * ((sll)x/2+1);
+        }
+        return mx < A*B;
+    };
+
+    ll x = binary_search(0, (ll)2e9+10, f);
+    Out(x-1);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vl A(N);
-    iota(all(A), 1);
-    set<ll> rev;
-    rev.insert(-1); rev.insert(INF);
-
-    auto upd=[&](ll x) {
-        if(A[x]>A[x+1]) rev.insert(x);
-        else rev.erase(x);
-        if(x) {
-            if(A[x-1]>A[x]) rev.insert(x-1);
-            else rev.erase(x-1);
-        }
-        if(x<N-2) {
-            if(A[x+1]>A[x+2]) rev.insert(x+1);
-            else rev.erase(x+1);
-        }
-    };
-    rep(i, Q) {
-        LONG(t, x, y); --x; --y;
-        if(t==1) {
-            swap(A[x], A[x+1]);
-            upd(x);
-        } else {
-            while(*rev.lower_bound(x) < y) {
-                auto it = rev.lower_bound(x);
-                ll k = *it;
-                rev.erase(it);
-                swap(A[k], A[k+1]);
-                upd(k);
-            }
-        }
-        // cerr<<endl;
-        // de3(t,x,y)
-        // de(rev)
-        // de(A)
-    }
-    Out(A);
+    LONG(Q);
+    rep(i, Q) solve();
     
 }
 
