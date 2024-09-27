@@ -205,80 +205,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    LONG(Q);
-    VL2(L, R, Q);
-    rep(i, Q) L[i]--;
-
-    ll h = sqrt(Q);
-    vl p(Q);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        ll hi = R[i]/h, hj = R[j]/h;
-        if(hi==hj) return L[i]<L[j];
-        return hi<hj;
-    });
-
-    set<ll> st;
-    st.insert(-1), st.insert(INF);
-    umap<ll,ll> mp;
-
-    auto p2=[&](ll x) {return x*x;};
-
-    ll now = 0;
-    auto add=[&](ll x) {
-        if(mp[x]==0) {
-            st.insert(x);
-            auto it = st.find(x);
-            ll pre = *prev(it);
-            ll nxt = *next(it);
-            if(pre!=-1) now += p2(x-pre);
-            if(nxt!=INF) now += p2(x-nxt);
-            if(pre!=-1 && nxt!=INF) now -= p2(nxt-pre);
-        }
-        mp[x]++;
-    };
-    auto del=[&](ll x) {
-        mp[x]--;
-        if(mp[x]==0) {
-            auto it = st.find(x);
-            ll pre = *prev(it);
-            ll nxt = *next(it);
-            st.erase(it);
-            if(pre!=-1) now -= p2(x-pre);
-            if(nxt!=INF) now -= p2(x-nxt);
-            if(pre!=-1 && nxt!=INF) now += p2(nxt-pre);
-        }
-    };
-
-    // auto calc=[&]() -> ll {
-    //     auto it = st.begin();
-    //     ll ret = 0;
-    //     while(*it!=INF) {
-    //         ll x = *it;
-    //         ++it;
-    //         ll y = *it;
-    //         if(y==INF) break;
-    //         ret += p2(y-x);
-    //     }
-    //     return ret;
-    // };
-
-    ll l = 0, r = 0;
-    vl ans(Q);
-    for(auto i: p) {
-        ll lt = L[i], rt = R[i];
-        while(l>lt) --l, add(A[l]);
-        while(r<rt) add(A[r]), ++r;
-        while(l<lt) del(A[l]), ++l;
-        while(r>rt) --r, del(A[r]);
-
-        ans[i] = now;
+    LONG(N);
+    vt3 edge;
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        edge.emplace_back(c, a, b);
     }
-    for(auto x: ans) Out(x);
+
+    sort(all(edge));
+    dsu uf(N);
+    ll ans = 0;
+    for(auto [c,a,b]: edge) {
+        ans += c*uf.size(a) * uf.size(b);
+        uf.merge(a, b);
+    }
+    Out(ans);
     
 }
 

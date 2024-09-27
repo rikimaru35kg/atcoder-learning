@@ -208,47 +208,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N);
-    LONG(Q);
-    VL2(L, R, Q);
-    rep(i, Q) L[i]--;
-
-    ll h = sqrt(Q);
-    vl p(Q);
+    LONG(N);
+    VL(P, N);
+    vl p(N);
     iota(all(p), 0);
     sort(all(p), [&](ll i, ll j){
-        ll hi = R[i]/h, hj = R[j]/h;
-        if(hi==hj) {
-            return L[i]<L[j];
-        }
-        return hi<hj;
+        return P[i]>P[j];
     });
-    de(p)
+    multiset<ll> st;
+    st.insert(N); st.insert(N);
+    st.insert(-1); st.insert(-1);
 
     ll ans = 0;
-    vl cnt(N);
-
-    auto add=[&](ll x) {
-        cnt[x]++;
-        if(cnt[x]%2==0) ++ans;
-    };
-    auto del=[&](ll x) {
-        if(cnt[x]%2==0) --ans;
-        cnt[x]--;
-    };
-
-    vl vans(Q);
-    ll l = 0, r = 0;
     for(auto i: p) {
-        ll lt = L[i], rt = R[i];
-        while(l>lt) --l, add(A[l]);
-        while(r<rt) add(A[r]), ++r;
-        while(l<lt) del(A[l]), ++l;
-        while(r>rt) --r, del(A[r]);
-
-        vans[i] = ans;
+        auto it = st.insert(i);
+        vl rs(2), ls(2);
+        rep(i, 2) {
+            ++it;
+            rs[i] = *it;
+        }
+        it = st.find(i);
+        rep(i, 2) {
+            --it;
+            ls[i] = *it;
+        }
+        ll now = 0;
+        now += (i-ls[0]) * (rs[1]-rs[0]);
+        now += (ls[0]-ls[1]) * (rs[0]-i);
+        now *= P[i];
+        ans += now;
     }
-    for(auto x: vans) Out(x);
+    Out(ans);
     
 }
 
