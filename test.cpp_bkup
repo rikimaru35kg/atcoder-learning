@@ -205,51 +205,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    STRING(S); reverse(all(S));
-    vl A;
-    for(auto c: S) A.push_back(c-'0');
-    if(P==2 || P==5) {
-        ll ans = 0;
-        rep(i, N) {
-            if(A[i]%P==0) ans += N-i;
+    LONG(N); VLM(A, N);
+    LONG(Q);
+    VL2(L, R, Q);
+    rep(i, Q) L[i]--;
+
+    ll h = sqrt(Q);
+    vl p(Q);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = R[i]/h, hj = R[j]/h;
+        if(hi==hj) {
+            return L[i]<L[j];
         }
-        Outend(ans);
-    }
-    mint::set_mod(P);
+        return hi<hj;
+    });
+    de(p)
 
-    mint ten = 1;
-    mint now = 0;
-    vl cnt(P);
-    cnt[0] = 1;
     ll ans = 0;
-    rep(i, N) {
-        now += ten*A[i];
-        ans += cnt[now.val()];
-        cnt[now.val()]++;
-        ten *= 10;
+    vl cnt(N);
+
+    auto add=[&](ll x) {
+        cnt[x]++;
+        if(cnt[x]%2==0) ++ans;
+    };
+    auto del=[&](ll x) {
+        if(cnt[x]%2==0) --ans;
+        cnt[x]--;
+    };
+
+    vl vans(Q);
+    ll l = 0, r = 0;
+    for(auto i: p) {
+        ll lt = L[i], rt = R[i];
+        while(l>lt) --l, add(A[l]);
+        while(r<rt) add(A[r]), ++r;
+        while(l<lt) del(A[l]), ++l;
+        while(r>rt) --r, del(A[r]);
+
+        vans[i] = ans;
     }
-    Out(ans);
-
-
-
+    for(auto x: vans) Out(x);
     
 }
 

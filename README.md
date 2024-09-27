@@ -227,8 +227,8 @@
 - クエリ[l,r)を座標上にプロットし、sqrt(Q)個に分割（すなわち高さをN/sqrt(Q)に分割）し、各分割ブロックごとに小さい順に辿って行けば良い
 - r>=lの領域をはみ出さないように、さきに--lと++rをした方が良い
 ### 例題
-- !復習価値高 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
-- !復習価値中 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
+- !復習価値小 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
+- !復習価値高 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
 
 
 ## ある順列P{1,2,...,N}の区間max値の総和
