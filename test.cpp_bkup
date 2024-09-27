@@ -205,42 +205,100 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<long long> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (long long x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (long long x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    long long operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return 3e18;
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    vvi Sc(4*K+1, vi(4*K+1));
+    CoordinateCompression ccx, ccy, ccz;
+    vt3 st, ed;
     rep(i, N) {
-        INT(x, y); CHAR(c);
-        x %= 2*K, y %= 2*K;
-        if(c=='W') {
-            if(x < K) x += K;
-            else if(y < K) y += K;
-            else x -= K;
-        }
-        Sc[x+1][y+1]++;
-        Sc[x+2*K+1][y+1]++;
-        Sc[x+1][y+2*K+1]++;
-        Sc[x+2*K+1][y+2*K+1]++;
+        LONG(x1,y1,z1); LONG(x2,y2,z2);
+        st.emplace_back(x1,y1,z1);
+        ed.emplace_back(x2,y2,z2);
+        ccx.add(x1), ccx.add(x2);
+        ccy.add(y1), ccy.add(y2);
+        ccz.add(z1), ccz.add(z2);
     }
-    rep(i, 4*K) rep(j, 4*K+1) Sc[i+1][j] += Sc[i][j];
-    rep(i, 4*K+1) rep(j, 4*K) Sc[i][j+1] += Sc[i][j];
+    ll Nx = ccx.size(), Ny = ccy.size(), Nz = ccz.size();
+    vvvi imos(Nx, vvi(Ny, vi(Nz)));
+    vi dx(Nx), dy(Ny), dz(Nz);
+    rep(i, Nx-1) dx[i] = ccx[i+1] - ccx[i];
+    rep(i, Ny-1) dy[i] = ccy[i+1] - ccy[i];
+    rep(i, Nz-1) dz[i] = ccz[i+1] - ccz[i];
+    de(dx)de(dy)de(dz)
 
-    auto sum=[&](ll i, ll j) -> ll {
-        ll ret = 0;
-        ret += Sc[i+K][j+K];
-        ret -= Sc[i+K][j];
-        ret -= Sc[i][j+K];
-        ret += Sc[i][j];
-        return ret;
+    auto add=[&](ll x1, ll y1, ll z1, ll x2, ll y2, ll z2) {
+        imos[x2][y2][z2]--;
+        imos[x1][y2][z2]++;
+        imos[x2][y1][z2]++;
+        imos[x2][y2][z1]++;
+        imos[x1][y1][z2]--;
+        imos[x1][y2][z1]--;
+        imos[x2][y1][z1]--;
+        imos[x1][y1][z1]++;
     };
 
+    rep(i, N) {
+        auto [x1,y1,z1] = st[i];
+        auto [x2,y2,z2] = ed[i];
+        x1 = ccx(x1), x2 = ccx(x2);
+        y1 = ccy(y1), y2 = ccy(y2);
+        z1 = ccz(z1), z2 = ccz(z2);
+        add(x1,y1,z1,x2,y2,z2);
+    }
+
+    rep(i, Nx-1) rep(j, Ny) rep(k, Nz) imos[i+1][j][k] += imos[i][j][k];
+    rep(i, Nx) rep(j, Ny-1) rep(k, Nz) imos[i][j+1][k] += imos[i][j][k];
+    rep(i, Nx) rep(j, Ny) rep(k, Nz-1) imos[i][j][k+1] += imos[i][j][k];
+    de(imos)
+
     ll ans = 0;
-    rep(i, 2*K) rep(j, 2*K) {
-        ll now = sum(i, j) + sum(i+K, j+K);
-        chmax(ans, now);
+    rep(i, Nx) rep(j, Ny) rep(k, Nz) {
+        if(imos[i][j][k]<K) continue;
+        ans += (ll)dx[i] * dy[j] * dz[k];
     }
     Out(ans);
+
     
 }
 
