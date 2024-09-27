@@ -205,42 +205,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
-    rep(i, N) A[i] += i;
-    rep(i, N) B[i] += i;
-    vl sa = A, sb = B;
-    sort(all(sa)); sort(all(sb));
-    if(sa!=sb) Pm1
+    LONG(N, Q);
+    vl A(N);
+    iota(all(A), 1);
+    set<ll> rev;
+    rev.insert(-1); rev.insert(INF);
 
-    umap<ll,vl> mp;
-    rep(i, N) {
-        mp[B[i]].push_back(i);
+    auto upd=[&](ll x) {
+        if(A[x]>A[x+1]) rev.insert(x);
+        else rev.erase(x);
+        if(x) {
+            if(A[x-1]>A[x]) rev.insert(x-1);
+            else rev.erase(x-1);
+        }
+        if(x<N-2) {
+            if(A[x+1]>A[x+2]) rev.insert(x+1);
+            else rev.erase(x+1);
+        }
+    };
+    rep(i, Q) {
+        LONG(t, x, y); --x; --y;
+        if(t==1) {
+            swap(A[x], A[x+1]);
+            upd(x);
+        } else {
+            while(*rev.lower_bound(x) < y) {
+                auto it = rev.lower_bound(x);
+                ll k = *it;
+                rev.erase(it);
+                swap(A[k], A[k+1]);
+                upd(k);
+            }
+        }
+        // cerr<<endl;
+        // de3(t,x,y)
+        // de(rev)
+        // de(A)
     }
-    umap<ll,ll> cidx;
-    vl C;
-    rep(i, N) {
-        C.push_back(mp[A[i]][cidx[A[i]]]);
-        cidx[A[i]]++;
-    }
-
-    fenwick_tree<ll> tree(N);
-    ll ans = 0;
-    rep(i, N) {
-        ans += tree.sum(C[i]+1, N);
-        tree.add(C[i], 1);
-    }
-    Out(ans);
-
-
-    
-
-
+    Out(A);
     
 }
 
