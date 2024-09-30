@@ -209,42 +209,36 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N);
+    VL(H, N);
+    vvp from(N);
     rep(i, M) {
         LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        if(H[a]>H[b]) swap(a, b);
+        from[a].emplace_back(b, H[b]-H[a]);
+        from[b].emplace_back(a, 0);
     }
-    ll N2 = 1<<N;
-
-    vvl dist(N2, vl(N, INF));
-    queue<Pr> que;
-    auto push=[&](ll s, ll v, ll d) {
-        ll &pd = dist[s][v];
-        if(pd<=d) return;
-        pd = d;
-        que.emplace(s, v);
+    vl dist(N, INF);
+    pq que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
     };
-    rep(i, N) {
-        push(1<<i, i, 1);
-    }
+    push(0, 0);
     while(que.size()) {
-        auto [s, v] = que.front(); que.pop();
-        for(auto nv: from[v]) {
-            ll ns = s^1<<nv;
-            push(ns, nv, dist[s][v]+1);
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: from[v]) {
+            push(nv, d+c);
         }
     }
     ll ans = 0;
-    repk(s, 1, N2) {
-        ll mn = INF;
-        rep(i, N) {
-            chmin(mn, dist[s][i]);
-        }
-        ans += mn;
+    rep(i, N) {
+        ll gain = H[0] - H[i];
+        gain -= dist[i];
+        chmax(ans, gain);
     }
     Out(ans);
-
     
 }
 
