@@ -208,40 +208,41 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, L);
-    vvp from(N), ifrom(N);
+    LONG(N, M, Sini);
+    ll Mx = N*50;
+    chmin(Sini, Mx);
+    vvt3 from(N);
     rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        ifrom[b].emplace_back(a, c);
+        LONGM(a, b); LONG(s,c);
+        from[a].emplace_back(b, s, c);
+        from[b].emplace_back(a, s, c);
     }
+    VL2(S, C, N);
 
-    vvl dist(N, vl(M+1, INF));
     priority_queue<t3,vt3,greater<t3>> que;
-    auto push=[&](ll v, ll m, ll d) {
-        ll &pd = dist[v][m];
+    vvl dist(N, vl(Mx+1, INF));
+    auto push=[&](ll v, ll s, ll d) {
+        ll &pd = dist[v][s];
         if(pd<=d) return;
         pd = d;
-        que.emplace(d, v, m);
+        que.emplace(d, v, s);
     };
-    push(0, 0, 0);
+    push(0, Sini, 0);
     while(que.size()) {
-        auto [d,v,m] = que.top(); que.pop();
-        if(d!=dist[v][m]) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, m, d+c);
+        auto [d,v,s] = que.top(); que.pop();
+        if(d!=dist[v][s]) continue;
+        for(auto [nv, sc, c]: from[v]) {
+            if(sc>s) continue;
+            push(nv, s-sc, d+c);
         }
-        for(auto [nv, c]: ifrom[v]) {
-            if(m<M) push(nv, m+1, d+c);
-        }
+        push(v, min(s+S[v],Mx), d+C[v]);
     }
 
-    ll ans = INF;
-    rep(m, M+1) {
-        if(dist[N-1][m]<=L) chmin(ans, m);
+    repk(i, 1, N) {
+        ll ans = INF;
+        rep(s, Mx+1) chmin(ans, dist[i][s]);
+        Out(ans);
     }
-    ch1(ans);
-    Out(ans);
     
 }
 

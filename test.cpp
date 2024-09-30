@@ -205,54 +205,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    int v, t, x, d;
-    D(int v, int t, int x, int d): v(v),t(t),x(x),d(d) {}
-    bool operator<(const D &o) const {
-        return d>o.d;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, X);
-    VI(T, N);
-    vvp from(N);
+    LONG(N, M);
+    vvl from(N);
     rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+    ll N2 = 1<<N;
 
-    INF = 1001001001;
-    vvvi dist(N, vvi(3, vi(X+1, INF)));
-    priority_queue<D> que;
-    auto push=[&](ll v, ll t, ll x, ll d) {
-        int &pd = dist[v][t][x];
+    vvl dist(N2, vl(N, INF));
+    queue<Pr> que;
+    auto push=[&](ll s, ll v, ll d) {
+        ll &pd = dist[s][v];
         if(pd<=d) return;
         pd = d;
-        que.emplace(v,t,x,d);
+        que.emplace(s, v);
     };
-    push(0,T[0],0,0);
+    rep(i, N) {
+        push(1<<i, i, 1);
+    }
     while(que.size()) {
-        auto [v,t,x,d] = que.top(); que.pop();
-        if(dist[v][t][x]!=d) continue;
-        // de4(v,t,x,d)
-        for(auto [nv, c]: from[v]) {
-            if(T[nv]!=1) {
-                if(t!=T[nv] && x+c<X) continue;
-            }
-            ll nx = x + c;
-            chmin(nx, X);
-            if(T[nv]!=1) nx = 0;
-            ll nt = t;
-            if(T[nv]!=1) nt = T[nv];
-            push(nv, nt, nx, d+c);
+        auto [s, v] = que.front(); que.pop();
+        for(auto nv: from[v]) {
+            ll ns = s^1<<nv;
+            push(ns, nv, dist[s][v]+1);
         }
     }
-    ll ans = INF;
-    rep(t, 3) rep(x, X+1) chmin(ans, (ll)dist[N-1][t][x]);
+    ll ans = 0;
+    repk(s, 1, N2) {
+        ll mn = INF;
+        rep(i, N) {
+            chmin(mn, dist[s][i]);
+        }
+        ans += mn;
+    }
     Out(ans);
 
     
