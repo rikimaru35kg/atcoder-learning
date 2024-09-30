@@ -307,16 +307,16 @@
 - dist[i][i]=0で初期化しないと壊れるので注意！（chmin(d[i][i], d[i][k]+d[k][i]） の時に壊れる）
 - 負辺があっても使えるが、負閉路があると使えない（負辺がある場合、INFの辺を使って更新しない事！！！INF＋マイナスの値がINFより小さいので、更新してはいけないものを更新してしまう）
 - ただし負閉路検出は可能。自分自身への最短経路が負になった場合、負閉路ががあると検出できる！
-- 負閉路があると絶対値が指数関数的に増加するので、毎回のループの中でdist[i][i]<0となったらすぐに切り上げる事！
+- **負閉路があると絶対値が指数関数的に増加するので、毎回のループの中でdist[i][i]<0となったらすぐに切り上げる事！**
 - ワーシャルフロイド後の行列が与えられたとして、不要な辺を除く事を考える事もできる
 - まず完全グラフを行列の通り作成、次に全辺に対して、三角不等式が等号成立するような経由頂点が存在する場合はその辺を削除すれば良い
 - この時、同じ辺は1度だけ削除するように！（何度も削除しないように）
 - 当然だが、三角不等式が不成立の場合はおかしいので、この場合はワーシャルフロイド後の行列として間違っていたということ
 ### 例題
 - 基本問題 [D - バスと避けられない運命](https://atcoder.jp/contests/abc012/tasks/abc012_4)
-- !復習価値中 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
+- !復習価値低 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
 - 基本 仕組みを理解する教育的良問 [D - Shortest Path Queries 2](https://atcoder.jp/contests/abc208/tasks/abc208_d)
-- !復習価値低 ワーシャルフロイド後行列 [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
+- 基本 ワーシャルフロイド後行列 [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
 
 ## ベルマンフォード法
 - 負閉路があっても使える最短経路を求めるアルゴリズムで、計算量はO(NM)

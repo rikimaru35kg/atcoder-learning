@@ -208,35 +208,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(H, N);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        if(H[a]>H[b]) swap(a, b);
-        from[a].emplace_back(b, H[b]-H[a]);
-        from[b].emplace_back(a, 0);
+    LONG(N);
+    VVL(A, N, N);
+    rep(k, N) rep(i, N) rep(j, N) {
+        if(A[i][j]>A[i][k]+A[k][j]) Outend(-1);
     }
-    vl dist(N, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: from[v]) {
-            push(nv, d+c);
-        }
-    }
+
     ll ans = 0;
-    rep(i, N) {
-        ll gain = H[0] - H[i];
-        gain -= dist[i];
-        chmax(ans, gain);
+    rep(i, N) rep(j, i) {
+        bool ok = true;
+        rep(k, N) {
+            if(k==i || k==j) continue;
+            if(A[i][j]==A[i][k]+A[k][j]) ok = false;
+        }
+        if(ok) ans += A[i][j];
     }
     Out(ans);
     
