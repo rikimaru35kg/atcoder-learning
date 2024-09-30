@@ -208,59 +208,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL2(C, R, N);
-    vvl from(N);
-    rep(i, K) {
-        LONGM(a, b);
-        from[a].push_back(b);
-        from[b].push_back(a);
-    }
+    LONG(H, W, K);
+    LONGM(si, sj, gi, gj);
+    VS(C, H);
 
-    auto bfs=[&](ll sv) -> vl {
-        queue<ll> que;
-        vl dist(N, INF);
-        auto push=[&](ll v, ll d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto nv: from[v]) {
-                push(nv, dist[v]+1);
-            }
-        }
-        return dist;
+    priority_queue<t4,vt4,greater<t4>> que;
+    vvvl dist(H, vvl(W, vl(4, INF)));
+    auto push=[&](ll i, ll j, ll k, ll d) {
+        ll &pd = dist[i][j][k];
+        if(pd<=d) return;
+        pd = d;
+        que.emplace(d, i, j, k);
     };
-    vvp cfrom(N);
-    rep(v, N) {
-        vl dist = bfs(v);
-        rep(nv, N) {
-            if(v==nv) continue;
-            if(dist[nv]<=R[v]) cfrom[v].emplace_back(nv, C[v]);
-        }
-    }
-    de(cfrom)
-
-    vl dist(N, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
+    rep(k, 4) push(si, sj, k, 0);
     while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv, c]: cfrom[v]) {
-            push(nv, d+c);
+        auto [d,i,j,k] = que.top(); que.pop();
+        if(d!=dist[i][j][k]) continue;
+        auto [di, dj] = dij[k];
+        ll ni = i + di, nj = j + dj;
+        if(isin(ni,nj,H,W) && C[ni][nj]!='@') {
+            push(ni,nj,k,d+1);
         }
+        ll nd = Divceil(d, K) * K;
+        rep(z, 4) push(i,j,z,nd);
     }
-    de(dist)
-    Out(dist[N-1]);
+    ll ans = INF;
+    rep(k, 4) chmin(ans, dist[gi][gj][k]);
+    if(ans==INF) Pm1
+    ans = Divceil(ans, K);
+    Out(ans);
     
 }
 

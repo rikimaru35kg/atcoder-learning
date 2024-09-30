@@ -208,35 +208,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, L);
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
+    LONG(N, M);
+    vvt3 from(N);
     rep(i, M) {
-        LONGM(a, b); LONG(c);
-        dist[a][b] = c;
-        dist[b][a] = c;
-    }
-    rep(k, N) rep(i, N) rep(j, N) {
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
+        LONGM(a, b); LONG(d, t);
+        from[a].emplace_back(b, d, t);
+        from[b].emplace_back(a, d, t);
     }
 
-    vvl num(N, vl(N, INF));
-    rep(i, N) num[i][i] = 0;
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        if(dist[i][j]>L) continue;
-        if(dist[i][j]<=L) num[i][j] = 1;
+    ll N2 = 1<<N;
+    vvl dp(N2, vl(N, INF));
+    vvl num(N2, vl(N, 0));
+    for(auto [nv, d, t]: from[0]) {
+        if(d>t) continue;
+        dp[1<<nv][nv] = d;
+        num[1<<nv][nv] = 1;
     }
-    rep(k, N) rep(i, N) rep(j, N) {
-        chmin(num[i][j], num[i][k]+num[k][j]);
+    rep(s, N2) {
+        rep(v, N) if(s>>v&1) {
+            ll cd = dp[s][v];
+            ll cn = num[s][v];
+            if(cd==INF) continue;
+            for(auto [nv, d, t]: from[v]) {
+                if(s>>nv&1) continue;
+                if(cd+d>t) continue;
+                ll ns = s | 1<<nv;
+                if(dp[ns][nv]>cd+d) {
+                    dp[ns][nv] = cd+d;
+                    num[ns][nv] = cn;
+                } else if (dp[ns][nv]==cd+d) {
+                    num[ns][nv] += cn;
+                }
+            }
+        }
     }
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(s,t);
-        ll ans = num[s][t];
-        if(ans==INF) Out(-1);
-        else Out(ans-1);
-    }
+    de(dp)
+    ll ans = dp[N2-1][0];
+    if(ans==INF) Outend("IMPOSSIBLE");
+
+    printf("%lld %lld\n", ans, num[N2-1][0]);
     
 }
 
