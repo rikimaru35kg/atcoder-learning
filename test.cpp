@@ -208,22 +208,59 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VVL(A, N, N);
-    rep(k, N) rep(i, N) rep(j, N) {
-        if(A[i][j]>A[i][k]+A[k][j]) Outend(-1);
+    LONG(N, K);
+    VL2(C, R, N);
+    vvl from(N);
+    rep(i, K) {
+        LONGM(a, b);
+        from[a].push_back(b);
+        from[b].push_back(a);
     }
 
-    ll ans = 0;
-    rep(i, N) rep(j, i) {
-        bool ok = true;
-        rep(k, N) {
-            if(k==i || k==j) continue;
-            if(A[i][j]==A[i][k]+A[k][j]) ok = false;
+    auto bfs=[&](ll sv) -> vl {
+        queue<ll> que;
+        vl dist(N, INF);
+        auto push=[&](ll v, ll d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                push(nv, dist[v]+1);
+            }
         }
-        if(ok) ans += A[i][j];
+        return dist;
+    };
+    vvp cfrom(N);
+    rep(v, N) {
+        vl dist = bfs(v);
+        rep(nv, N) {
+            if(v==nv) continue;
+            if(dist[nv]<=R[v]) cfrom[v].emplace_back(nv, C[v]);
+        }
     }
-    Out(ans);
+    de(cfrom)
+
+    vl dist(N, INF);
+    pq que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv, c]: cfrom[v]) {
+            push(nv, d+c);
+        }
+    }
+    de(dist)
+    Out(dist[N-1]);
     
 }
 

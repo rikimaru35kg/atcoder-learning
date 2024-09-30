@@ -208,26 +208,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
+    LONG(N, M, L);
     vvl dist(N, vl(N, INF));
     rep(i, N) dist[i][i] = 0;
     rep(i, M) {
-        LONG(a, b); LONG(c);
+        LONGM(a, b); LONG(c);
         dist[a][b] = c;
+        dist[b][a] = c;
     }
-
     rep(k, N) rep(i, N) rep(j, N) {
-        if(dist[i][k]==INF || dist[k][j]==INF) continue;
         chmin(dist[i][j], dist[i][k]+dist[k][j]);
-        if(i!=j) continue;
-        if(dist[i][i]<0) Outend("NEGATIVE CYCLE");
     }
 
+    vvl num(N, vl(N, INF));
+    rep(i, N) num[i][i] = 0;
     rep(i, N) rep(j, N) {
-        if(dist[i][j]==INF) printf("INF");
-        else printf("%lld", dist[i][j]);
-        if(j==N-1) cout<<endl;
-        else cout<<' ';
+        if(i==j) continue;
+        if(dist[i][j]>L) continue;
+        if(dist[i][j]<=L) num[i][j] = 1;
+    }
+    rep(k, N) rep(i, N) rep(j, N) {
+        chmin(num[i][j], num[i][k]+num[k][j]);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(s,t);
+        ll ans = num[s][t];
+        if(ans==INF) Out(-1);
+        else Out(ans-1);
     }
     
 }
