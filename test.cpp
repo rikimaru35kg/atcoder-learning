@@ -205,65 +205,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvp from(N);
-    rep(i, N-1) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+    vvl from(N);
+    repk(i, 1, N) {
+        LONGM(p);
+        from[p].push_back(i);
     }
-    VL(D, N);
 
-    vl dp(N);
-    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
-        dp[v] = 0;
-        for(auto [nv, c]: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            chmax(dp[v], dp[nv]+c);
-            chmax(dp[v], c+D[nv]);
+    vvl vsbyd(N);
+    ll ord = 0;
+    vp span(N);
+    auto dfs=[&](auto f, ll v, ll d=0) -> void {
+        vsbyd[d].push_back(ord);
+        span[v].first = ord++;
+        for(auto nv: from[v]) {
+            f(f, nv, d+1);
         }
-    };
-    dfs0(dfs0, 0);
-    de(dp)
-
-    vl ans(N);
-    auto dfs=[&](auto f, ll v, ll pval=0, ll pc=0, ll p=-1) -> void {
-        vp nvs;
-        for(auto [nv,c]:from[v]) if(nv!=p) nvs.emplace_back(nv, c);
-        ll sz = SIZE(nvs);
-        vl Sf(sz+1), Sr(sz+1);
-        rep(i, sz) {
-            auto [nv, c] = nvs[i];
-            Sf[i+1] = max(Sf[i], max(dp[nv]+c, c+D[nv]));
-        }
-        repr(i, sz) {
-            auto [nv, c] = nvs[i];
-            Sr[i] = max(Sr[i+1], max(dp[nv]+c, c+D[nv]));
-        }
-        if(p!=-1) {
-            chmax(pval, pval+pc);
-            chmax(pval, pc+D[p]);
-        }
-        ll now = pval;
-        chmax(now, Sf[sz]);
-        ans[v] = now;
-
-        rep(i, sz) {
-            auto [nv, c] = nvs[i];
-            ll npval = pval;
-            chmax(npval, Sf[i]);
-            chmax(npval, Sr[i+1]);
-            f(f, nv, npval, c, v);
-        }
+        span[v].second = ord;
     };
     dfs(dfs, 0);
-    for(auto x: ans) Out(x);
-
-
-
+    LONG(Q);
+    rep(i, Q) {
+        LONG(u, d); --u;
+        auto [l,r] = span[u];
+        auto [n1, x1] = lowbou(vsbyd[d], l);
+        auto [n2, x2] = lowbou(vsbyd[d], r);
+        Out(n2-n1);
+    }
     
 }
 

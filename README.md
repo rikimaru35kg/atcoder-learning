@@ -378,7 +378,7 @@
 - 基本 [E - Tree and Hamilton Path 2](https://atcoder.jp/contests/abc361/tasks/abc361_e)
 - !復習価値高 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
 - !復習価値高 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
-- !復習価値高 任意の頂点からのコストmax点（全方位でも解いてね） [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
+- !復習価値中 任意の頂点からのコストmax点（全方位でも解いてね） [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
@@ -386,8 +386,8 @@
 - 各頂点を探索している時に、その頂点に対する操作をするのか、あるいは繋がっている全頂点に対する操作（場合の数をかける等）をするのか、色々バリエーションあり
 - 区間をぎっちり詰めたい場合は、葉の個数分だけの区間長になる（この場合は葉のたびにインクリメント）
 ### 例題
-- !復習価値低 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
-- !復習価値低 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+- 基本 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
+- 基本 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
 
 ## LCA（Lowest Common Ancester）
 - 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した
