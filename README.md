@@ -418,11 +418,11 @@
 - 連結頂点の判定はUnion-Find木を用いる
 ### 例題
 - 基本 [Minimum Spanning Tree](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja)
-- !復習価値低 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
-- !復習価値低 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
-- !復習価値高 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
-- !要復習 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
-- !要復習 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
+- 基本 典型+α [D - Built?](https://atcoder.jp/contests/abc065/tasks/arc076_b)
+- 基本 追加辺はMSTに使われるか？ [E - MST + 1](https://atcoder.jp/contests/abc235/tasks/abc235_e)
+- 基本 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
+- !復習価値低 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
+- !復習価値低 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
 
 ## 全域木
 - 無向グラフから全域木を構成すると見通しが良くなる事がある

@@ -205,60 +205,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M); VL(D, N);
-    vp edge;
-    rep(i, M) {
-        LONGM(a, b);
-        edge.emplace_back(a, b);
+    LONG(N, Q);
+    vt3 edge;
+    rep(i, Q) {
+        LONG(l, r, c); --l;--r;
+        edge.emplace_back(c, l, r);
     }
+    sort(all(edge));
+    set<ll> st;
+    st.insert(-1), st.insert(INF);
+    rep(i, N-1) st.insert(i);
 
-    auto judge=[&]() -> bool {
-        ll dtot = accumulate(all(D), 0LL);
-        if(dtot!=2*N-2) return false;
-        return true;
-    };
-    if(!judge()) Pm1
-
-    vp ans;
-    dsu uf(N);
-    vvl rems(N);
-    for(auto [a,b]: edge) {
-        if(uf.same(a,b)) Pm1
-        uf.merge(a, b);
-        D[a]--, D[b]--;
-        if(D[a]<0 || D[b]<0) Pm1
+    ll ans = 0;
+    for(auto [c,l,r]: edge) {
+        ans += c;
+        auto it = st.lower_bound(l);
+        while(*it<r) {
+            ans += c;
+            it = st.erase(it);
+            // ++it;
+        }
     }
-    rep(i, N) {
-        rep(d, D[i]) rems[uf.leader(i)].push_back(i);
-    }
-
-    set<Pr> st;
-    rep(i, N) if(uf.leader(i)==i) {
-        if(SIZE(rems[i])==0) Pm1
-        st.emplace(SIZE(rems[i]), i);
-    }
-
-    rep(i, N-M-1) {
-        auto it1 = st.begin();
-        auto [d1, a] = *it1;
-        auto it2 = st.end(); it2--;
-        auto [d2, b] = *it2;
-        st.erase(it1); st.erase(it2);
-        ll ba = rems[a].back(); rems[a].pop_back();
-        ll bb = rems[b].back(); rems[b].pop_back();
-        ans.emplace_back(ba+1, bb+1);
-        st.emplace(d2-1, b);
-    }
+    if(SIZE(st)>2) Pm1
     Out(ans);
-
     
 }
 
 // ### test.cpp ###
-
