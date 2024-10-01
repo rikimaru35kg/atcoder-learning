@@ -205,38 +205,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, K);
-    LONGM(si, sj, gi, gj);
-    VS(C, H);
-
-    priority_queue<t4,vt4,greater<t4>> que;
-    vvvl dist(H, vvl(W, vl(4, INF)));
-    auto push=[&](ll i, ll j, ll k, ll d) {
-        ll &pd = dist[i][j][k];
-        if(pd<=d) return;
-        pd = d;
-        que.emplace(d, i, j, k);
-    };
-    rep(k, 4) push(si, sj, k, 0);
-    while(que.size()) {
-        auto [d,i,j,k] = que.top(); que.pop();
-        if(d!=dist[i][j][k]) continue;
-        auto [di, dj] = dij[k];
-        ll ni = i + di, nj = j + dj;
-        if(isin(ni,nj,H,W) && C[ni][nj]!='@') {
-            push(ni,nj,k,d+1);
-        }
-        ll nd = Divceil(d, K) * K;
-        rep(z, 4) push(i,j,z,nd);
+    LONG(N, M);
+    mint::set_mod(M);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    ll ans = INF;
-    rep(k, 4) chmin(ans, dist[gi][gj][k]);
-    if(ans==INF) Pm1
-    ans = Divceil(ans, K);
+
+    vm dp(N);
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
+        mint now = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            now *= dp[nv]+1;
+        }
+        dp[v] = now;
+    };
+    dfs0(dfs0, 0);
+
+    vm ans(N);
+    auto dfs=[&](auto f, ll v, mint pval=0, ll p=-1) -> void {
+        vl nvs;
+        for(auto nv: from[v]) if(nv!=p) nvs.push_back(nv);
+        ll sz = SIZE(nvs);
+        vm Sf(sz+1, 1), Sr(sz+1, 1);
+        rep(i, sz) Sf[i+1] = Sf[i] * (dp[nvs[i]]+1);
+        repr(i, sz) Sr[i] = Sr[i+1] * (dp[nvs[i]]+1);
+
+        pval += 1;
+        mint now = 1;
+        now *= pval;
+        now *= Sf[sz];
+        ans[v] = now;
+
+        rep(i, sz) {
+            mint npval = pval * Sf[i] * Sr[i+1];
+            f(f, nvs[i], npval, v);
+        }
+    };
+    dfs(dfs, 0);
     Out(ans);
+
     
 }
 
