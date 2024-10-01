@@ -211,7 +211,8 @@ using namespace atcoder;
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M); VL(D, N);
+    LONG(N, M);
+    VL(D, N);
     vp edge;
     rep(i, M) {
         LONGM(a, b);
@@ -221,38 +222,68 @@ int main () {
     auto judge=[&]() -> bool {
         ll dtot = accumulate(all(D), 0LL);
         if(dtot!=2*N-2) return false;
+
+        dsu uf(N);
+        vl d = D;
+        for(auto [a,b]: edge) {
+            if(uf.same(a, b)) return false;
+            if(d[a]<=0 || d[b]<=0) return false;
+            uf.merge(a, b);
+            d[a]--, d[b]--;
+            if(d[a]<0 || d[b]<0) return false;
+        }
+        vl ldeg(N);
+        rep(i, N) {
+            ll l = uf.leader(i);
+            ldeg[l] += d[i];
+        }
+        rep(i, N) if(uf.leader(i)==i) {
+            if(ldeg[i]==0) return false;
+        }
         return true;
     };
+
     if(!judge()) Pm1
 
     vp ans;
+
     dsu uf(N);
     vvl rems(N);
-    for(auto [a,b]: edge) {
-        if(uf.same(a,b)) Pm1
-        uf.merge(a, b);
-        D[a]--, D[b]--;
-        if(D[a]<0 || D[b]<0) Pm1
-    }
     rep(i, N) {
-        rep(d, D[i]) rems[uf.leader(i)].push_back(i);
+        rep(d, D[i]) rems[i].push_back(i);
+    }
+
+    for(auto [a,b]: edge) {
+        a = uf.leader(a), b = uf.leader(b);
+        uf.merge(a, b);
+        rems[a].pop_back(), rems[b].pop_back();
+        ll l = uf.leader(a);
+        if(a==l) swap(a, b);
+        for(auto v: rems[a]) rems[b].push_back(v);
+        D[b] = SIZE(rems[b]);
     }
 
     set<Pr> st;
     rep(i, N) if(uf.leader(i)==i) {
-        if(SIZE(rems[i])==0) Pm1
         st.emplace(SIZE(rems[i]), i);
     }
 
     rep(i, N-M-1) {
         auto it1 = st.begin();
-        auto [d1, a] = *it1;
+        auto [d1, i1] = *it1;
         auto it2 = st.end(); it2--;
-        auto [d2, b] = *it2;
+        auto [d2, i2] = *it2;
         st.erase(it1); st.erase(it2);
+        ll a = uf.leader(i1);
+        ll b = uf.leader(i2);
+        uf.merge(a, b);
         ll ba = rems[a].back(); rems[a].pop_back();
         ll bb = rems[b].back(); rems[b].pop_back();
         ans.emplace_back(ba+1, bb+1);
+        ll l = uf.leader(a);
+        if(a==l) swap(a, b);
+        for(auto v: rems[a]) rems[b].push_back(v);
+        // D[b] += D[a] - 2;
         st.emplace(d2-1, b);
     }
     Out(ans);
@@ -261,4 +292,5 @@ int main () {
 }
 
 // ### test.cpp ###
+
 

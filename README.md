@@ -409,8 +409,8 @@
 ## 木の次数列
 - 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる
 ### 例題
-- !復習価値高 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
-- !復習価値高 [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
+- !復習価値中 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
+- !要復習 [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
 
 ## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
