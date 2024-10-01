@@ -205,29 +205,17 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vt3 edge;
+    LONG(N, M, K);
+    vvl from(N);
     rep(i, M) {
-        LONG(c, l, r); --l;
-        edge.emplace_back(c,l,r);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    sort(all(edge));
-
-    dsu uf(N+1);
-    ll ans = 0;
-    for(auto [c,l,r]: edge) {
-        if(uf.same(l,r)) continue;
-        uf.merge(l,r);
-        ans += c;
-    }
-    if(uf.size(0)!=N+1) Pm1
-    Out(ans);
+    if(K%2!=0) PNo
     
 }
 

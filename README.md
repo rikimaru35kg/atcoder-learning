@@ -430,8 +430,8 @@
 - DFS木の後退辺（未使用辺）は必ず祖先の関係になる
 - BFS木の未使用辺は必ず祖先の関係にならない
 ### 例題
-- !復習価値低 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
-- !復習価値中 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
+- 基本 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
+- 基本 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
 - !復習価値中 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 ## なもりグラフ（pseudo tree）とFunctional graph

@@ -205,31 +205,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vt3 edge;
-    rep(i, Q) {
-        LONG(l, r, c); --l;--r;
-        edge.emplace_back(c, l, r);
+    LONG(N, M, K);
+    vvp from(N);
+    dsu uf(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
+        uf.merge(a, b);
     }
-    sort(all(edge));
-    set<ll> st;
-    st.insert(-1), st.insert(INF);
-    rep(i, N-1) st.insert(i);
+    if(K%2!=0) PNo
 
-    ll ans = 0;
-    for(auto [c,l,r]: edge) {
-        ans += c;
-        auto it = st.lower_bound(l);
-        while(*it<r) {
-            ans += c;
-            it = st.erase(it);
-            // ++it;
-        }
+    ll sum = 0;
+    rep(i, N) if(uf.leader(i)==i) {
+        ll sz = uf.size(i);
+        sum += sz/2*2;
     }
-    if(SIZE(st)>2) Pm1
+    if(sum>=K) puts("Yes");
+    else PNo
+
+
+    vb used(N);
+    vl ans;
+    auto dfs=[&](auto f, ll v, ll ei=-1, ll p=-1) -> ll {
+        used[v] = true;
+        ll now = 0;
+        for(auto [nv, ei]: from[v]) if(!used[nv]) {
+            now ^= f(f, nv, ei, v);
+        }
+        if(p==-1) {
+            if(now) --K;
+            return 0;
+        }
+        ll tgt = 0;
+        if(K) tgt = 1;
+        ll ret = 0;
+        if(now!=tgt) {
+            ans.push_back(ei+1);
+            ret = 1;
+        }
+        if(tgt) --K;
+        return ret;
+    };
+
+    rep(i, N) {
+        if(used[i]) continue;
+        dfs(dfs, i);
+    }
+    Out(SIZE(ans));
     Out(ans);
     
 }

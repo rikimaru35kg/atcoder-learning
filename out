@@ -1,192 +1,25 @@
-In file included from /usr/include/c++/12/ext/alloc_traits.h:34,
-                 from /usr/include/c++/12/bits/basic_string.h:39,
-                 from /usr/include/c++/12/string:53,
-                 from /usr/include/c++/12/bits/locale_classes.h:40,
-                 from /usr/include/c++/12/bits/ios_base.h:41,
-                 from /usr/include/c++/12/ios:42,
-                 from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = std::tuple<long long int, long long int, long long int>; _Args = {std::pair<long long int, long long int>, long long int&, long long int&}; _Tp = std::tuple<long long int, long long int, long long int>; allocator_type = std::allocator<std::tuple<long long int, long long int, long long int> >]’:
-/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {std::pair<long long int, long long int>, long long int&, long long int&}; _Tp = std::tuple<long long int, long long int, long long int>; _Alloc = std::allocator<std::tuple<long long int, long long int, long long int> >; reference = std::tuple<long long int, long long int, long long int>&]’
-/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {std::pair<long long int, long long int>, long long int&, long long int&}; _Tp = std::tuple<long long int, long long int, long long int>; _Allocator = std::allocator<std::tuple<long long int, long long int, long long int> >; reference = std::tuple<long long int, long long int, long long int>&]’
-test.cpp:225:26:   required from here
-/usr/include/c++/12/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(std::tuple<long long int, long long int, long long int>*&, std::pair<long long int, long long int>, long long int&, long long int&)’
-  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
-      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/bits/stl_iterator.h:85,
-                 from /usr/include/c++/12/bits/stl_algobase.h:67,
-                 from /usr/include/c++/12/bits/specfun.h:45,
-                 from /usr/include/c++/12/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/12/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
-   94 |     construct_at(_Tp* __location, _Args&&... __args)
-      |     ^~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = std::tuple<long long int, long long int, long long int>; _Args = {std::pair<long long int, long long int>, long long int&, long long int&}]’:
-/usr/include/c++/12/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = std::tuple<long long int, long long int, long long int>; _Args = {std::pair<long long int, long long int>, long long int&, long long int&}; _Tp = std::tuple<long long int, long long int, long long int>; allocator_type = std::allocator<std::tuple<long long int, long long int, long long int> >]’
-/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {std::pair<long long int, long long int>, long long int&, long long int&}; _Tp = std::tuple<long long int, long long int, long long int>; _Alloc = std::allocator<std::tuple<long long int, long long int, long long int> >; reference = std::tuple<long long int, long long int, long long int>&]’
-/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {std::pair<long long int, long long int>, long long int&, long long int&}; _Tp = std::tuple<long long int, long long int, long long int>; _Allocator = std::allocator<std::tuple<long long int, long long int, long long int> >; reference = std::tuple<long long int, long long int, long long int>&]’
-test.cpp:225:26:   required from here
-/usr/include/c++/12/bits/stl_construct.h:96:17: error: no matching function for call to ‘std::tuple<long long int, long long int, long long int>::tuple(std::pair<long long int, long long int>, long long int&, long long int&)’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/functional:54,
+test.cpp: In function ‘int main()’:
+test.cpp:232:16: error: no match for ‘operator=’ (operand types are ‘vb’ {aka ‘std::__debug::vector<bool>’} and ‘vl’ {aka ‘std::__debug::vector<long long int>’})
+  232 |     used = vl(N);
+      |                ^
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62,
                  from stdc++.h:71:
-/usr/include/c++/12/tuple:888:9: note: candidate: ‘template<class _Alloc, class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, std::tuple<_Args2 ...>&&) [with _UElements = _Alloc; bool _Valid = {_UElements ...}; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> = _Valid; _Elements = {long long int, long long int, long long int}]’
-  888 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:888:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘long long int’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:876:9: note: candidate: ‘template<class _Alloc, class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, std::tuple<_Args2 ...>&&) [with _UElements = _Alloc; bool _Valid = {_UElements ...}; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> = _Valid; _Elements = {long long int, long long int, long long int}]’
-  876 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:876:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘long long int’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:865:9: note: candidate: ‘template<class _Alloc, class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, const std::tuple<_Args2 ...>&) [with _UElements = _Alloc; bool _Valid = {_UElements ...}; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> = _Valid; _Elements = {long long int, long long int, long long int}]’
-  865 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:865:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘const std::tuple<_UTypes ...>’ and ‘long long int’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:853:9: note: candidate: ‘template<class _Alloc, class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, const std::tuple<_Args2 ...>&) [with _UElements = _Alloc; bool _Valid = {_UElements ...}; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> = _Valid; _Elements = {long long int, long long int, long long int}]’
-  853 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:853:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘const std::tuple<_UTypes ...>’ and ‘long long int’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:845:9: note: candidate: ‘template<class _Alloc> constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, std::tuple< <template-parameter-1-1> >&&) [with _Elements = {long long int, long long int, long long int}]’
-  845 |         tuple(allocator_arg_t __tag, const _Alloc& __a, tuple&& __in)
-      |         ^~~~~
-/usr/include/c++/12/tuple:845:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   cannot convert ‘std::declval<pair<long long int, long long int> >()’ (type ‘std::pair<long long int, long long int>’) to type ‘std::allocator_arg_t’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:840:9: note: candidate: ‘template<class _Alloc> constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, const std::tuple< <template-parameter-1-1> >&) [with _Elements = {long long int, long long int, long long int}]’
-  840 |         tuple(allocator_arg_t __tag, const _Alloc& __a, const tuple& __in)
-      |         ^~~~~
-/usr/include/c++/12/tuple:840:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   cannot convert ‘std::declval<pair<long long int, long long int> >()’ (type ‘std::pair<long long int, long long int>’) to type ‘std::allocator_arg_t’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:833:9: note: candidate: ‘template<class _Alloc, class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, _UElements&& ...) [with _UElements = _Alloc; bool _Valid = {_UElements ...}; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> = _Valid; _Elements = {long long int, long long int, long long int}]’
-  833 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:833:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/tuple:830:55: error: no type named ‘type’ in ‘struct std::enable_if<false, bool>’
-  830 |                _ExplicitCtor<_Valid, _UElements...> = false>
-      |                                                       ^~~~~
-/usr/include/c++/12/tuple:823:9: note: candidate: ‘template<class _Alloc, class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, _UElements&& ...) [with _UElements = _Alloc; bool _Valid = {_UElements ...}; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> = _Valid; _Elements = {long long int, long long int, long long int}]’
-  823 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:823:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/tuple:821:55: error: no type named ‘type’ in ‘struct std::enable_if<false, bool>’
-  821 |                _ImplicitCtor<_Valid, _UElements...> = true>
-      |                                                       ^~~~
-/usr/include/c++/12/tuple:815:9: note: candidate: ‘template<class _Alloc, bool _NotEmpty, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<const long long int&, const long long int&, const long long int&>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, const _Elements& ...) [with bool _NotEmpty = _Alloc; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<const _Elements& ...>(), bool>::type <anonymous> = _NotEmpty; _Elements = {long long int, long long int, long long int}]’
-  815 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:815:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 5 arguments, 3 provided
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:807:9: note: candidate: ‘template<class _Alloc, bool _NotEmpty, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<const long long int&, const long long int&, const long long int&>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&, const _Elements& ...) [with bool _NotEmpty = _Alloc; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<const _Elements& ...>(), bool>::type <anonymous> = _NotEmpty; _Elements = {long long int, long long int, long long int}]’
-  807 |         tuple(allocator_arg_t __tag, const _Alloc& __a,
-      |         ^~~~~
-/usr/include/c++/12/tuple:807:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 5 arguments, 3 provided
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:801:9: note: candidate: ‘template<class _Alloc, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<std::is_object<_Tp>::value>::__is_implicitly_default_constructible(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::allocator_arg_t, const _Alloc&) [with typename std::enable_if<_TCC<std::is_object<_Alloc>::value>::__is_implicitly_default_constructible(), bool>::type <anonymous> = _Alloc; _Elements = {long long int, long long int, long long int}]’
-  801 |         tuple(allocator_arg_t __tag, const _Alloc& __a)
-      |         ^~~~~
-/usr/include/c++/12/tuple:801:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 2 arguments, 3 provided
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:792:9: note: candidate: ‘template<class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::tuple<_Args1 ...>&&) [with _UElements = {_UElements ...}; bool _Valid = _Valid; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  792 |         tuple(tuple<_UElements...>&& __in)
-      |         ^~~~~
-/usr/include/c++/12/tuple:792:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::tuple<_UTypes ...>’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:783:9: note: candidate: ‘template<class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(std::tuple<_Args1 ...>&&) [with _UElements = {_UElements ...}; bool _Valid = _Valid; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  783 |         tuple(tuple<_UElements...>&& __in)
-      |         ^~~~~
-/usr/include/c++/12/tuple:783:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::tuple<_UTypes ...>’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:773:9: note: candidate: ‘template<class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(const std::tuple<_Args1 ...>&) [with _UElements = {_UElements ...}; bool _Valid = _Valid; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  773 |         tuple(const tuple<_UElements...>& __in)
-      |         ^~~~~
-/usr/include/c++/12/tuple:773:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::tuple<_UTypes ...>’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:763:9: note: candidate: ‘template<class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(const std::tuple<_Args1 ...>&) [with _UElements = {_UElements ...}; bool _Valid = _Valid; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<const _UElements& ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  763 |         tuple(const tuple<_UElements...>& __in)
-      |         ^~~~~
-/usr/include/c++/12/tuple:763:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘const std::tuple<_UTypes ...>’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:750:9: note: candidate: ‘template<class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(_UElements&& ...) [with _UElements = {_UElements ...}; bool _Valid = _Valid; typename std::enable_if<_TCC<_Valid>::__is_explicitly_constructible<_UElements ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  750 |         tuple(_UElements&&... __elements)
-      |         ^~~~~
-/usr/include/c++/12/tuple:750:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/tuple:748:55: error: no type named ‘type’ in ‘struct std::enable_if<false, bool>’
-  748 |                _ExplicitCtor<_Valid, _UElements...> = false>
-      |                                                       ^~~~~
-/usr/include/c++/12/tuple:742:9: note: candidate: ‘template<class ... _UElements, bool _Valid, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(_UElements&& ...) [with _UElements = {_UElements ...}; bool _Valid = _Valid; typename std::enable_if<_TCC<_Valid>::__is_implicitly_constructible<_UElements ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  742 |         tuple(_UElements&&... __elements)
-      |         ^~~~~
-/usr/include/c++/12/tuple:742:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/tuple:740:55: error: no type named ‘type’ in ‘struct std::enable_if<false, bool>’
-  740 |                _ImplicitCtor<_Valid, _UElements...> = true>
-      |                                                       ^~~~
-/usr/include/c++/12/tuple:734:9: note: candidate: ‘template<bool _NotEmpty, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Cond>::__is_explicitly_constructible<const long long int&, const long long int&, const long long int&>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(const _Elements& ...) [with bool _NotEmpty = _NotEmpty; typename std::enable_if<_TCC<_Dummy>::__is_explicitly_constructible<const _Elements& ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  734 |         tuple(const _Elements&... __elements)
-      |         ^~~~~
-/usr/include/c++/12/tuple:734:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/tuple:732:64: error: no type named ‘type’ in ‘struct std::enable_if<false, bool>’
-  732 |                _ExplicitCtor<_NotEmpty, const _Elements&...> = false>
-      |                                                                ^~~~~
-/usr/include/c++/12/tuple:727:9: note: candidate: ‘template<bool _NotEmpty, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<_Cond>::__is_implicitly_constructible<const long long int&, const long long int&, const long long int&>(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple(const _Elements& ...) [with bool _NotEmpty = _NotEmpty; typename std::enable_if<_TCC<_Dummy>::__is_implicitly_constructible<const _Elements& ...>(), bool>::type <anonymous> = <anonymous>; _Elements = {long long int, long long int, long long int}]’
-  727 |         tuple(const _Elements&... __elements)
-      |         ^~~~~
-/usr/include/c++/12/tuple:727:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   cannot convert ‘std::declval<pair<long long int, long long int> >()’ (type ‘std::pair<long long int, long long int>’) to type ‘const long long int&’
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:720:9: note: candidate: ‘template<class _Dummy, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<std::is_void<_Tp>::value>::__is_explicitly_default_constructible(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple() [with typename std::enable_if<_TCC<std::is_void<_Dummy>::value>::__is_explicitly_default_constructible(), bool>::type <anonymous> = _Dummy; _Elements = {long long int, long long int, long long int}]’
-  720 |         tuple()
-      |         ^~~~~
-/usr/include/c++/12/tuple:720:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 0 arguments, 3 provided
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:713:9: note: candidate: ‘template<class _Dummy, typename std::enable_if<std::tuple<long long int, long long int, long long int>::_TCC<std::is_void<_Tp>::value>::__is_implicitly_default_constructible(), bool>::type <anonymous> > constexpr std::tuple< <template-parameter-1-1> >::tuple() [with typename std::enable_if<_TCC<std::is_void<_Dummy>::value>::__is_implicitly_default_constructible(), bool>::type <anonymous> = _Dummy; _Elements = {long long int, long long int, long long int}]’
-  713 |         tuple()
-      |         ^~~~~
-/usr/include/c++/12/tuple:713:9: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 0 arguments, 3 provided
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:756:17: note: candidate: ‘constexpr std::tuple< <template-parameter-1-1> >::tuple(std::tuple< <template-parameter-1-1> >&&) [with _Elements = {long long int, long long int, long long int}]’
-  756 |       constexpr tuple(tuple&&) = default;
-      |                 ^~~~~
-/usr/include/c++/12/tuple:756:17: note:   candidate expects 1 argument, 3 provided
-/usr/include/c++/12/tuple:754:17: note: candidate: ‘constexpr std::tuple< <template-parameter-1-1> >::tuple(const std::tuple< <template-parameter-1-1> >&) [with _Elements = {long long int, long long int, long long int}]’
-  754 |       constexpr tuple(const tuple&) = default;
-      |                 ^~~~~
-/usr/include/c++/12/tuple:754:17: note:   candidate expects 1 argument, 3 provided
+/usr/include/c++/12/debug/vector:239:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>& std::__debug::vector<_Tp, _Allocator>::operator=(const std::__debug::vector<_Tp, _Allocator>&) [with _Tp = bool; _Allocator = std::allocator<bool>]’
+  239 |       operator=(const vector&) = default;
+      |       ^~~~~~~~
+/usr/include/c++/12/debug/vector:239:17: note:   no known conversion for argument 1 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘const std::__debug::vector<bool>&’
+  239 |       operator=(const vector&) = default;
+      |                 ^~~~~~~~~~~~~
+/usr/include/c++/12/debug/vector:242:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>& std::__debug::vector<_Tp, _Allocator>::operator=(std::__debug::vector<_Tp, _Allocator>&&) [with _Tp = bool; _Allocator = std::allocator<bool>]’
+  242 |       operator=(vector&&) = default;
+      |       ^~~~~~~~
+/usr/include/c++/12/debug/vector:242:17: note:   no known conversion for argument 1 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘std::__debug::vector<bool>&&’
+  242 |       operator=(vector&&) = default;
+      |                 ^~~~~~~~
+/usr/include/c++/12/debug/vector:245:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>& std::__debug::vector<_Tp, _Allocator>::operator=(std::initializer_list<_Tp>) [with _Tp = bool; _Allocator = std::allocator<bool>]’
+  245 |       operator=(initializer_list<value_type> __l)
+      |       ^~~~~~~~
+/usr/include/c++/12/debug/vector:245:46: note:   no known conversion for argument 1 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘std::initializer_list<bool>’
+  245 |       operator=(initializer_list<value_type> __l)
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
