@@ -394,7 +394,7 @@
 - オイラーツアーの順に区間用のセグツリーやBIT木を適用すると色々対応可能
 ### 
 - 基本 [D - 閉路](https://atcoder.jp/contests/abc014/tasks/abc014_4)
-- !復習価値高（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
+- !復習価値低（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
 
 ## 完全二分木
 - 全ての葉が同じ深さを持ち、葉以外の全ての頂点が子を二つ持つ二分木を完全二分木と呼ぶ
