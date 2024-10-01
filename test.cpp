@@ -205,65 +205,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    mint::set_mod(M);
-    vvl from(N);
+    LONG(N);
+    vvp from(N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
+    VL(D, N);
 
-    vm dp(N);
+    vl dp(N);
     auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
-        mint now = 1;
-        for(auto nv: from[v]) if(nv!=p) {
+        dp[v] = 0;
+        for(auto [nv, c]: from[v]) if(nv!=p) {
             f(f, nv, v);
-            now *= dp[nv]+1;
+            chmax(dp[v], dp[nv]+c);
+            chmax(dp[v], c+D[nv]);
         }
-        dp[v] = now;
     };
     dfs0(dfs0, 0);
+    de(dp)
 
-    vm ans(N);
-    auto dfs=[&](auto f, ll v, mint pval=0, ll p=-1) -> void {
-        vl nvs;
-        for(auto nv: from[v]) if(nv!=p) nvs.push_back(nv);
+    vl ans(N);
+    auto dfs=[&](auto f, ll v, ll pval=0, ll pc=0, ll p=-1) -> void {
+        vp nvs;
+        for(auto [nv,c]:from[v]) if(nv!=p) nvs.emplace_back(nv, c);
         ll sz = SIZE(nvs);
-        vm Sf(sz+1, 1), Sr(sz+1, 1);
-        rep(i, sz) Sf[i+1] = Sf[i] * (dp[nvs[i]]+1);
-        repr(i, sz) Sr[i] = Sr[i+1] * (dp[nvs[i]]+1);
-
-        pval += 1;
-        mint now = 1;
-        now *= pval;
-        now *= Sf[sz];
+        vl Sf(sz+1), Sr(sz+1);
+        rep(i, sz) {
+            auto [nv, c] = nvs[i];
+            Sf[i+1] = max(Sf[i], max(dp[nv]+c, c+D[nv]));
+        }
+        repr(i, sz) {
+            auto [nv, c] = nvs[i];
+            Sr[i] = max(Sr[i+1], max(dp[nv]+c, c+D[nv]));
+        }
+        if(p!=-1) {
+            chmax(pval, pval+pc);
+            chmax(pval, pc+D[p]);
+        }
+        ll now = pval;
+        chmax(now, Sf[sz]);
         ans[v] = now;
 
         rep(i, sz) {
-            mint npval = pval * Sf[i] * Sr[i+1];
-            f(f, nvs[i], npval, v);
+            auto [nv, c] = nvs[i];
+            ll npval = pval;
+            chmax(npval, Sf[i]);
+            chmax(npval, Sr[i+1]);
+            f(f, nv, npval, c, v);
         }
     };
     dfs(dfs, 0);
-    Out(ans);
+    for(auto x: ans) Out(x);
+
+
 
     
 }
