@@ -1,0 +1,70 @@
+test.cpp: In function ‘int main()’:
+test.cpp:212:15: error: no matching function for call to ‘std::__debug::vector<std::__debug::vector<long long int> >::vector(int, int)’
+  212 |     vvl X(3, 3);
+      |               ^
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62,
+                 from stdc++.h:71:
+/usr/include/c++/12/debug/vector:200:9: note: candidate: ‘template<class _InputIterator, class> std::__debug::vector<_Tp, _Allocator>::vector(_InputIterator, _InputIterator, const _Allocator&) [with <template-parameter-2-2> = _InputIterator; _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >]’
+  200 |         vector(_InputIterator __first, _InputIterator __last,
+      |         ^~~~~~
+/usr/include/c++/12/debug/vector:200:9: note:   template argument deduction/substitution failed:
+In file included from /usr/include/c++/12/bits/stl_algobase.h:65,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/stl_iterator_base_types.h: In substitution of ‘template<class _InIter> using _RequireInputIter = std::__enable_if_t<std::is_convertible<typename std::iterator_traits< <template-parameter-1-1> >::iterator_category, std::input_iterator_tag>::value> [with _InIter = int]’:
+/usr/include/c++/12/debug/vector:196:9:   required from here
+/usr/include/c++/12/bits/stl_iterator_base_types.h:249:11: error: no type named ‘iterator_category’ in ‘struct std::iterator_traits<int>’
+  249 |     using _RequireInputIter =
+      |           ^~~~~~~~~~~~~~~~~
+/usr/include/c++/12/debug/vector:234:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(_Base_ref) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >]’
+  234 |       vector(_Base_ref __x)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:234:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:226:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::initializer_list<_Tp>, const allocator_type&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >; allocator_type = std::allocator<std::__debug::vector<long long int> >]’
+  226 |       vector(initializer_list<value_type> __l,
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:226:43: note:   no known conversion for argument 1 from ‘int’ to ‘std::initializer_list<std::__debug::vector<long long int> >’
+  226 |       vector(initializer_list<value_type> __l,
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:218:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>&&, std::__type_identity_t<_Alloc>&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >; std::__type_identity_t<_Alloc> = std::allocator<std::__debug::vector<long long int> >]’
+  218 |       vector(vector&& __x, const __type_identity_t<allocator_type>& __a)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:218:23: note:   no known conversion for argument 1 from ‘int’ to ‘std::__debug::vector<std::__debug::vector<long long int> >&&’
+  218 |       vector(vector&& __x, const __type_identity_t<allocator_type>& __a)
+      |              ~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:215:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const std::__debug::vector<_Tp, _Allocator>&, std::__type_identity_t<_Alloc>&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >; std::__type_identity_t<_Alloc> = std::allocator<std::__debug::vector<long long int> >]’
+  215 |       vector(const vector& __x, const __type_identity_t<allocator_type>& __a)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:215:28: note:   no known conversion for argument 1 from ‘int’ to ‘const std::__debug::vector<std::__debug::vector<long long int> >&’
+  215 |       vector(const vector& __x, const __type_identity_t<allocator_type>& __a)
+      |              ~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:213:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>&&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >]’
+  213 |       vector(vector&&) = default;
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:213:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:212:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const std::__debug::vector<_Tp, _Allocator>&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >]’
+  212 |       vector(const vector&) = default;
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:212:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:184:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(size_type, std::__type_identity_t<_Tp>&, const _Allocator&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >; size_type = long unsigned int; std::__type_identity_t<_Tp> = std::__debug::vector<long long int>]’
+  184 |       vector(size_type __n, const __type_identity_t<_Tp>& __value,
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:184:59: note:   no known conversion for argument 2 from ‘int’ to ‘std::__type_identity_t<std::__debug::vector<long long int> >&’ {aka ‘const std::__debug::vector<long long int>&’}
+  184 |       vector(size_type __n, const __type_identity_t<_Tp>& __value,
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+/usr/include/c++/12/debug/vector:181:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(size_type, const _Allocator&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >; size_type = long unsigned int]’
+  181 |       vector(size_type __n, const _Allocator& __a = _Allocator())
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:181:47: note:   no known conversion for argument 2 from ‘int’ to ‘const std::allocator<std::__debug::vector<long long int> >&’
+  181 |       vector(size_type __n, const _Allocator& __a = _Allocator())
+      |                             ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/debug/vector:176:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const _Allocator&) [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >]’
+  176 |       vector(const _Allocator& __a) _GLIBCXX_NOEXCEPT
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:176:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:172:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector() [with _Tp = std::__debug::vector<long long int>; _Allocator = std::allocator<std::__debug::vector<long long int> >]’
+  172 |       vector() = default;
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:172:7: note:   candidate expects 0 arguments, 2 provided

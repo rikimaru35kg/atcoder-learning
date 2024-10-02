@@ -205,86 +205,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, M);
+    vt3 edge;
+    CoordinateCompression<Pr> cc;
+    rep(i, M) {
+        LONGM(p, q, c);
+        edge.emplace_back(p,q,c);
+        cc.add({p,c});
+        cc.add({q,c});
     }
-    vl c(N);
-    ll white=0, black=0;
-    auto dfs=[&](auto f, ll v, ll x=0, ll p=-1) -> void {
-        if(x==0) ++white;
-        else ++black;
-        c[v] = x;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, x^1, v);
-        }
+
+    ll sz = cc.size();
+    cc.print();
+    vvp from(N+sz);
+    for(auto [p,q,c]: edge) {
+        ll np = cc({p,c})+N;
+        ll nq = cc({q,c})+N;
+        from[np].emplace_back(nq, 0);
+        from[nq].emplace_back(np, 0);
+    }
+    rep(i, sz) {
+        auto [p,c] = cc[i];
+        from[p].emplace_back(i+N, 1);
+        from[i+N].emplace_back(p, 0);
+    }
+    deque<ll> deq;
+    vl dist(N+sz, INF);
+    auto push=[&](ll v, ll d, bool fr) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        if(fr) deq.push_front(v);
+        else deq.push_back(v);
     };
-    dfs(dfs, 0);
-
-    if(white>black) {
-        swap(white, black);
-        rep(i, N) c[i] ^= 1;
-    }
-
-    ll zero=N/3, one=(N+2)/3, two=(N+1)/3;
-    ll cz = 3, co = 1, ct = 2;
-    vl ans(N, -1);
-    if(white<=zero) {
-        rep(i, N) {
-            if(c[i]==0) {
-                ans[i] = cz;
-                cz += 3;
-                zero--;
-            }
-        }
-        rep(i, N) {
-            if(c[i]!=0) {
-                if(zero) {
-                    ans[i] = cz;
-                    cz += 3;
-                    zero--;
-                } else if(one) {
-                    ans[i] = co;
-                    co += 3;
-                    one--;
-                } else {
-                    ans[i] = ct;
-                    ct += 3;
-                    two--;
-                }
-            }
-        }
-    } else {
-        rep(i, N) {
-            if(c[i]==0) {
-                if(one) {
-                    ans[i] = co;
-                    co += 3;
-                    one--;
-                } else {
-                    ans[i] = cz;
-                    cz += 3;
-                    zero--;
-                }
-            } else {
-                if(two) {
-                    ans[i] = ct;
-                    ct += 3;
-                    two--;
-                } else {
-                    ans[i] = cz;
-                    cz += 3;
-                    zero--;
-                }
-            }
+    push(0, 0, true);
+    while(deq.size()) {
+        auto v = deq.front(); deq.pop_front();
+        for(auto [nv, c]: from[v]) {
+            bool rule = true;
+            if(c==1) rule = false;
+            push(nv, dist[v]+c, rule);
         }
     }
+    ll ans = dist[N-1];
+    ch1(ans);
     Out(ans);
     
 }

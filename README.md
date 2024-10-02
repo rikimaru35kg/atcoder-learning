@@ -549,11 +549,11 @@
 - 仮想頂点を設ける事で、見通しが良くなる場合あり
 - 考察を進めた上で、辺が多すぎて張れないとなった時に有効な印象
 ### 例題
-- !復習価値中 [C - 高橋君と国家](https://atcoder.jp/contests/arc029/tasks/arc029_3)
-- !復習価値中 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
-- !復習価値中 最小シュタイナー木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
+- !復習価値低 [C - 高橋君と国家](https://atcoder.jp/contests/arc029/tasks/arc029_3)
+- !復習価値低 テレポーター最短経路 [F - Teleporter Setting](https://atcoder.jp/contests/abc257/tasks/abc257_f)
+- !復習価値低 最小シュタイナー木 [F - Transportation](https://atcoder.jp/contests/abc270/tasks/abc270_f)
 - !復習価値中 ワープ [J - ワープ](https://atcoder.jp/contests/past202010-open/tasks/past202010_j)
-- !復習価値高 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
+- !復習価値低 集合マージ [F - Merge Set](https://atcoder.jp/contests/abc302/tasks/abc302_f)
 - !要復習 [E - すぬけ君の地下鉄旅行](https://atcoder.jp/contests/arc061/tasks/arc061_c)
 
 ## 橋
