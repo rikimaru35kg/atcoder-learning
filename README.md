@@ -497,7 +497,7 @@
 - あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
 ### 例題
 - 基本 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
-- !復習価値中 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
+- !復習価値高 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 
 ## 強連結成分分解（SCC[Strongly Connected Components]分解）
 - 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する

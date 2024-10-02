@@ -205,73 +205,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, a); --a;
-    STRING(K);
-    VLM(B, N);
+    LONG(N, K);
+    VLM(P, N);
+    VL(C, N);
 
-    auto judge=[&](string &K) -> bool {
+    auto calc=[&](ll sv, ll k) -> ll {
+        ll ret = -INF;
         ll now = 0;
-        for(auto c: K) {
-            now = now * 10 + c-'0';
-            if(now>N) return false;
+        ll x = sv;
+        rep(i, k) {
+            x = P[x];
+            now += C[x];
+            chmax(ret, now);
         }
-        return true;
+        return ret;
     };
-
-    if(judge(K)) {
-        ll KK = stoll(K);
-        ll x = a;
-        rep(i, KK) {
-            x = B[x];
+    if(K<=N) {
+        ll ans = -INF;
+        rep(i, N) {
+            chmax(ans, calc(i, K));
         }
-        Outend(x+1);
+        Outend(ans);
     }
 
-    ll x = a;
+    ll ans = -INF;
     rep(i, N) {
-        x = B[x];
+        ll len = 1;
+        ll cp = C[i];
+        ll x = i;
+        while(P[x]!=i) {
+            x = P[x];
+            cp += C[x];
+            ++len;
+        }
+        de3(i, len, cp)
+        ll rem = K;
+        x = i;
+        ll val = 0;
+        rep(j, len) {
+            x = P[x];
+            val += C[x];
+            --rem;
+            if(cp>0) {
+                ll cycle = rem/len;
+                chmax(ans, cycle*cp+val);
+            }
+            chmax(ans, val);
+        }
     }
-
-    ll len = 1;
-    ll sx = x;
-    while(B[x]!=sx) {
-        x = B[x];
-        ++len;
-    }
-    de(len)
-
-    mint::set_mod(len);
-    mint rem = 0;
-    for(auto c: K) {
-        rem = rem*10 + c-'0';
-    }
-    rem -= N;
-    de(sx)
-    de(rem)
-
-    x = sx;
-    rep(i, rem.val()) {
-        x = B[x];
-    }
-    Out(x+1);
-    
+    Out(ans);
 }
-
-// ### test.cpp ###
