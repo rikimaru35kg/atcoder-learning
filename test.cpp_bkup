@@ -204,95 +204,62 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vvl from(N), ifrom(N);
-    SCC scc(N);
+    vvl from(N);
+    dsu uf(2*N);
+    bool bi = true;
     rep(i, M) {
-        LONG(a,b);
+        LONGM(a,b);
+        if(uf.same(a,b)) bi = false;
+        uf.merge(a,b+N);
+        uf.merge(b,a+N);
         from[a].push_back(b);
-        ifrom[b].push_back(a);
-        scc.add_edge(a,b);
+        from[b].push_back(a);
     }
-
-    auto grs = scc.scc();
-    if(SIZE(grs)==1) Pm0
 
     vb used(N);
-    ll outnum = 0, innum = 0;
-    for(auto gr: grs) {
-        for(auto v: gr) used[v] = true;
-        bool indeg=false, outdeg=false;
-        for(auto v: gr) {
-            for(auto nv: from[v]) {
-                if(used[nv]) continue;
-                outdeg=true;
-            }
+    ll one=0, zero=0;
+    auto dfs=[&](auto f, ll v, ll x=0) -> void {
+        if(used[v]) return;
+        used[v] = true;
+        if(x) ++one;
+        else ++zero;
+        for(auto nv: from[v]) {
+            f(f, nv, x^1);
         }
-        for(auto v: gr) {
-            for(auto nv: ifrom[v]) {
-                if(used[nv]) continue;
-                indeg=true;
-            }
-        }
-        if(!outdeg) outnum++;
-        if(!indeg) innum++;
-        for(auto v: gr) used[v] = false;
-        de(gr)
-        de2(outdeg, indeg)
-    }
-    de2(outnum, innum)
+    };
 
-    Out(max(outnum, innum));
+    if(bi) {
+        dfs(dfs, 0);
+        ll ans = one*zero - M;
+        Out(ans);
+    } else {
+        ll ans = nCr(N, 2) - M;
+        Out(ans);
+    }
     
 }
 

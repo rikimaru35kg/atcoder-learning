@@ -528,7 +528,7 @@
 - 実装方法としては、部分集合tの全列挙は1引いてsとのandを取るを繰り返せば良い
 - 計算量はO(N 2^N + 3^N) 3^18≒4e8（N=18）が限界
 ### 例題
-- !復習価値中 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
+- !復習価値低 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ
@@ -541,9 +541,9 @@
 - 何かが3の物に対して無限に操作を繰り返すタイプの問題は、二部グラフを疑っても良いかも
 ### 例題
 - !復習価値中 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
-- !復習価値中 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
-- !要復習 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
-- !要復習 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
+- !復習価値低 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
+- !復習価値低 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
+- !復習価値低 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
 
 ## 超頂点を設ける
 - 仮想頂点を設ける事で、見通しが良くなる場合あり

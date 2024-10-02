@@ -205,62 +205,88 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-#include <atcoder/scc>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VP(F, N);
-    LONG(M);
-    VP(S, M);
-    vl d2(N);
-    
-    rep(i, N) {
-        ll mn = INF;
-        rep(j, M) {
-            chmin(mn, euclid_dist2(F[i], S[j]));
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    vl c(N);
+    ll white=0, black=0;
+    auto dfs=[&](auto f, ll v, ll x=0, ll p=-1) -> void {
+        if(x==0) ++white;
+        else ++black;
+        c[v] = x;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, x^1, v);
         }
-        d2[i] = mn;
+    };
+    dfs(dfs, 0);
+
+    if(white>black) {
+        swap(white, black);
+        rep(i, N) c[i] ^= 1;
     }
 
-    vvi ifrom(N);
-    scc_graph scc(N);
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        if(euclid_dist2(F[i],F[j])<d2[i]) {
-            scc.add_edge(i, j);
-            ifrom[j].push_back(i);
-        }
-    }
-    auto grs = scc.scc();
-    vb used(N);
-    ll ans = 0;
-    for(auto gr: grs) {
-        for(auto v: gr) used[v] = true;
-        bool outside = false;
-        for(auto v: gr) {
-            for(auto nv: ifrom[v]) {
-                if(used[nv]) continue;
-                outside = true;
+    ll zero=N/3, one=(N+2)/3, two=(N+1)/3;
+    ll cz = 3, co = 1, ct = 2;
+    vl ans(N, -1);
+    if(white<=zero) {
+        rep(i, N) {
+            if(c[i]==0) {
+                ans[i] = cz;
+                cz += 3;
+                zero--;
             }
         }
-        if(!outside) ++ans;
-        for(auto v: gr) used[v] = false;
+        rep(i, N) {
+            if(c[i]!=0) {
+                if(zero) {
+                    ans[i] = cz;
+                    cz += 3;
+                    zero--;
+                } else if(one) {
+                    ans[i] = co;
+                    co += 3;
+                    one--;
+                } else {
+                    ans[i] = ct;
+                    ct += 3;
+                    two--;
+                }
+            }
+        }
+    } else {
+        rep(i, N) {
+            if(c[i]==0) {
+                if(one) {
+                    ans[i] = co;
+                    co += 3;
+                    one--;
+                } else {
+                    ans[i] = cz;
+                    cz += 3;
+                    zero--;
+                }
+            } else {
+                if(two) {
+                    ans[i] = ct;
+                    ct += 3;
+                    two--;
+                } else {
+                    ans[i] = cz;
+                    cz += 3;
+                    zero--;
+                }
+            }
+        }
     }
     Out(ans);
-
+    
 }
 
 // ### test.cpp ###
