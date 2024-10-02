@@ -208,43 +208,53 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    auto gid=[&](ll i, ll j) {return i*N+j;};
+    LONG(N, K);
+    VLM(P, N);
+    VL(C, N);
 
-    VVLM(A, N, N-1);
-    vvl from(N*N);
-    rep(i, N) {
-        rep(j, N-2) {
-            ll s1 = i, s2 = i;
-            ll e1 = A[i][j], e2 = A[i][j+1];
-            if(s1>e1) swap(s1,e1);
-            if(s2>e2) swap(s2,e2);
-            from[gid(s1,e1)].push_back(gid(s2,e2));
+    auto calc=[&](ll sv, ll k) -> ll {
+        ll ret = -INF;
+        ll now = 0;
+        ll x = sv;
+        rep(i, k) {
+            x = P[x];
+            now += C[x];
+            chmax(ret, now);
         }
+        return ret;
+    };
+    if(K<=N) {
+        ll ans = -INF;
+        rep(i, N) {
+            chmax(ans, calc(i, K));
+        }
+        Outend(ans);
     }
 
-    vl dist(N*N, -1);
-    vb finished(N*N);
-    auto dfs=[&](auto f, ll v) -> void {
-        dist[v] = 1;
-        for(auto nv: from[v]) {
-            if(finished[nv]) {
-                chmax(dist[v], dist[nv]+1);
-                continue;
-            }
-            if(dist[nv]!=-1) Pm1
-            f(f, nv);
-            chmax(dist[v], dist[nv]+1);
+    ll ans = -INF;
+    rep(i, N) {
+        ll len = 1;
+        ll cp = C[i];
+        ll x = i;
+        while(P[x]!=i) {
+            x = P[x];
+            cp += C[x];
+            ++len;
         }
-        finished[v] = true;
-    };
-    ll ans = 0;
-    rep(i, N*N) {
-        dfs(dfs, i);
-        chmax(ans, dist[i]);
+        de3(i, len, cp)
+        ll rem = K;
+        x = i;
+        ll val = 0;
+        rep(j, len) {
+            x = P[x];
+            val += C[x];
+            --rem;
+            if(cp>0) {
+                ll cycle = rem/len;
+                chmax(ans, cycle*cp+val);
+            }
+            chmax(ans, val);
+        }
     }
     Out(ans);
-    
 }
-
-// ### test.cpp ###

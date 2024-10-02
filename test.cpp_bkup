@@ -205,81 +205,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<long long> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (long long x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (long long x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    long long operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return 3e18;
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
 #ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, N);
-    CoordinateCompression cc;
-    vt3 nums;
-    rep(i, N) {
-        LONGM(r, c, a);
-        nums.emplace_back(r,c,a);
-        cc.add(a);
-    }
-    for(auto &[r,c,a]: nums) { a = cc(a); }
-    for(auto [r,c,a]: nums){
-        de3(r,c,a)
+    LONG(N, a); --a;
+    STRING(K);
+    VLM(B, N);
+
+    auto judge=[&](string &K) -> bool {
+        ll now = 0;
+        for(auto c: K) {
+            now = now * 10 + c-'0';
+            if(now>N) return false;
+        }
+        return true;
+    };
+
+    if(judge(K)) {
+        ll KK = stoll(K);
+        ll x = a;
+        rep(i, KK) {
+            x = B[x];
+        }
+        Outend(x+1);
     }
 
-    vvt3 pbynum(N);
+    ll x = a;
     rep(i, N) {
-        auto [r,c,a] = nums[i];
-        pbynum[a].emplace_back(r, c, i);
+        x = B[x];
     }
-    vl row(H, -1), col(W, -1);
-    vl ans(N);
-    repr(a, N) {
-        vp rowupd, colupd;
-        for(auto [r,c,qi]: pbynum[a]) {
-            chmax(ans[qi], row[r]+1);
-            chmax(ans[qi], col[c]+1);
-            rowupd.emplace_back(r, ans[qi]);
-            colupd.emplace_back(c, ans[qi]);
-        }
-        for(auto [r,m]: rowupd) chmax(row[r], m);
-        for(auto [c,m]: colupd) chmax(col[c], m);
+
+    ll len = 1;
+    ll sx = x;
+    while(B[x]!=sx) {
+        x = B[x];
+        ++len;
     }
-    for(auto x: ans) Out(x);
+    de(len)
+
+    mint::set_mod(len);
+    mint rem = 0;
+    for(auto c: K) {
+        rem = rem*10 + c-'0';
+    }
+    rem -= N;
+    de(sx)
+    de(rem)
+
+    x = sx;
+    rep(i, rem.val()) {
+        x = B[x];
+    }
+    Out(x+1);
     
 }
 

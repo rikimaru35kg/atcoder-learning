@@ -487,9 +487,9 @@
 - 基本 黒板ゲーム [E - Transition Game](https://atcoder.jp/contests/abc296/tasks/abc296_e)
 - 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
 - 基本 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
-- !復習価値中 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
-- !復習価値高 ダブリングだけでは解けない良問 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
-- !復習価値中（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
+- 基本 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
+- !復習価値低 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
+- !復習価値高（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
