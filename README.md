@@ -506,9 +506,10 @@
 - SCC後、強連結成分を縮約すると**トポロジカル順に並べたDAG**になっている
 ### 例題
 - 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
-- !要復習 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
-- !要復習 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)
-- !要復習 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
+- !復習価値中 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
+- !復習価値低 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)  
+  雑証明: SCCを縮約したあと、非連結なもの同士を先につないでいく。これで入次数と出次数を両方とも1ずつ減らせる。この操作でSCCが新たにできる事はない。次に、トポソして最後の頂点から最初の頂点に結ぶ。この操作でSCCが新たに発生しなければ次数が両方とも1減る。SCCが発生する場合、どちらかの次数が1つ減る。両方減らない場合、それはすなわち全体がSCCになったという事なので、操作終了。
+- 基本 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く

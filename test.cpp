@@ -205,101 +205,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<x)
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] >= x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
 }
-// return minimum index i where a[i] > x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of a.size() means a.back() is not over x (a.back()<=x)
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] > x) r = m;
-        else l = m;
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>x)
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] <= x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-// vector a must be pre-sorted in ascending (normal) order!
-// return value of -1 means a[0] is already over x (a[0]>=x)
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if (a[m] < x) l = m;
-        else r = m;
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
+
+#include <atcoder/scc>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q, X);
-    VL(W, N);
-    vl Sc(2*N+1);
-    rep(i, N) Sc[i+1] = W[i];
-    rep(i, N) Sc[i+N+1] = W[i];
-    rep(i, 2*N) Sc[i+1] += Sc[i];
-
-    ll tot = Sc[N];
-    ll K = 40;
-    vvl to(K+1, vl(N)); 
-    vl num(N);
-
-    ll cycle = X / tot;
-    ll rem = X % tot;
-    ll r = 0;
-    rep(l, N) {
-        while(sum<rem)
+    LONG(N);
+    VP(F, N);
+    LONG(M);
+    VP(S, M);
+    vl d2(N);
+    
+    rep(i, N) {
+        ll mn = INF;
+        rep(j, M) {
+            chmin(mn, euclid_dist2(F[i], S[j]));
+        }
+        d2[i] = mn;
     }
 
-de(num)
-    rep(k, K) rep(i, N) to[k+1][i] = to[k][to[k][i]];
-    rep(i, Q) {
-        LONGM(x);
-        ll y = 0;
-        rep(k, K+1) {
-            if(x>>k&1) {
-                y = to[k][y];
+    vvi ifrom(N);
+    scc_graph scc(N);
+    rep(i, N) rep(j, N) {
+        if(i==j) continue;
+        if(euclid_dist2(F[i],F[j])<d2[i]) {
+            scc.add_edge(i, j);
+            ifrom[j].push_back(i);
+        }
+    }
+    auto grs = scc.scc();
+    vb used(N);
+    ll ans = 0;
+    for(auto gr: grs) {
+        for(auto v: gr) used[v] = true;
+        bool outside = false;
+        for(auto v: gr) {
+            for(auto nv: ifrom[v]) {
+                if(used[nv]) continue;
+                outside = true;
             }
         }
-        ll ans = num[y];
-        Out(ans);
+        if(!outside) ++ans;
+        for(auto v: gr) used[v] = false;
     }
-    
+    Out(ans);
+
 }
 
 // ### test.cpp ###
