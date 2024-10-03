@@ -205,46 +205,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/dsu>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N);
+    vt3 P, Q;
+    rep(i, N) {
+        LONG(x, y);
+        P.emplace_back(x, y, i);
+    }
+    sort(all(P));
+    dsu uf(N);
+
+    set<Pr> st;
+    for(auto [x,y,i]: P) {
+        ll ymn = INF;
+        while(st.size()) {
+            auto it = st.lower_bound(Pr(y,-1));
+            if(it==st.begin()) break;
+            auto [py, pi] = *prev(it);
+            st.erase(prev(it));
+            chmin(ymn, py);
+            uf.merge(pi, i);
+        }
+        if(ymn==INF) st.emplace(y, i);
+        else st.emplace(ymn, i);
+        de3(x,y,i)
+        de(st)
+    }
+    rep(i, N) {
+        Out(uf.size(i));
     }
 
-    vm dp(N);
-    dp[0] = 1;
-    rep(i, K) {
-        vm pdp(N); swap(pdp, dp);
-        mint sum = 0;
-        rep(j, N) sum += pdp[j];
-        rep(v, N) {
-            dp[v] = sum - pdp[v];
-            for(auto nv: from[v]) {
-                dp[v] -= pdp[nv];
-            }
-        }
-        de(dp)
-    }
-    Out(dp[0]);
     
 }
 
