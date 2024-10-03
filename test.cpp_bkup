@@ -150,6 +150,7 @@ inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -208,51 +209,41 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(H, N);
-    H.insert(H.begin(), INF);
-    H.push_back(INF);
-    N += 2;
-    umap<ll,ll> mp1, mp2;
-    rep(i, N-1) {
-        ll dh = H[i+1]-H[i];
-        if(i%2==0) {
-            mp2[dh]++;
-        } else {
-            mp1[dh]++;
-        }
+    LONG(N, M, Q);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
+    VL(X, Q);
 
-    auto add=[&](ll i, ll c) {
-        {
-            ll dh = H[i+1]-H[i];
-            if(i%2==1) mp1[dh] += c;
-            else mp2[dh] += c;
-        }
-        {
-            ll dh = H[i]-H[i-1];
-            if(i%2==1) mp2[dh] += c;
-            else mp1[dh] += c;
+    pq que;
+    vb visited(N);
+    ll num = 0;
+    auto push=[&](ll v, vp &wait)  {
+        if(visited[v]) return;
+        visited[v] = true;
+        ++num;
+        for(auto [nv, c]: from[v]) {
+            wait.emplace_back(c, nv);
         }
     };
-    ll base = 0;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(v);
-            base += v;
-        } else if (t==2) {
-            LONG(v);
-            base -= v;
-        } else {
-            LONG(u, v);
-            add(u, -1);
-            H[u] += v;
-            add(u, +1);
+    vp wait;
+    push(0, wait);
+    for(auto [c,v]: wait) { que.emplace(c, v); }
+    for(auto x: X) {
+        vp wait;
+        while(que.size() && que.top().first<=x) {
+            auto [c, v] = que.top(); que.pop();
+            push(v, wait);
         }
-        ll ans = mp1[base] + mp2[-base];
-        Out(ans);
+        Out(num);
+        for(auto [c,v]: wait) { que.emplace(c, v); }
     }
+    
+
+
     
 }
 
