@@ -206,79 +206,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.contains(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.contains(x)) return;
-            stK.erase(stK.find(x));
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vp query;
-    query.emplace_back(1, 0);
+    LONG(N);
+    vp down, up;
     rep(i, N) {
-        LONG(t, y);
-        query.emplace_back(t, y);
+        LONG(a, b);
+        if(a<=b) down.emplace_back(a, b);
+        else up.emplace_back(b, a);
     }
-    reverse(all(query));
-    HeadK hk(K);
-    ll ans = -INF;
-    ll sum = 0;
-    for(auto [t,y]: query) {
-        if(t==2) {
-            sum += y;
-            if(y<0) hk.add(y);
-        } else {
-            ll now = hk.get_sum();
-            chmax(ans, y+sum-now);
-            de4(y, sum, now, y+sum-now)
-            --K;
-            if(K<0) break;
-            hk.decK(K);
-        }
+    sort(all(down)); sort(allr(up));
+    ll now = 0;
+    ll ans = 0;
+    for(auto [a, b]: down) {
+        now += a;
+        chmax(ans, now);
+        now -= b;
+    }
+    for(auto [b, a]: up) {
+        now += a;
+        chmax(ans, now);
+        now -= b;
     }
     Out(ans);
     
