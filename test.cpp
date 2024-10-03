@@ -150,6 +150,7 @@ inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -205,41 +206,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vt3 P, Q;
-    rep(i, N) {
-        LONG(x, y);
-        P.emplace_back(x, y, i);
-    }
-    sort(all(P));
-    dsu uf(N);
+    LONG(N, Q);
+    ll Msc = 2e5+10;
+    VL2(rate, school, N);
+    rep(i, N) school[i]--;
+    vector<multiset<ll>> ratedstr(Msc);
+    multiset<ll> rateall;
 
-    set<Pr> st;
-    for(auto [x,y,i]: P) {
-        ll ymn = INF;
-        while(st.size()) {
-            auto it = st.lower_bound(Pr(y,-1));
-            if(it==st.begin()) break;
-            auto [py, pi] = *prev(it);
-            st.erase(prev(it));
-            chmin(ymn, py);
-            uf.merge(pi, i);
+    // rep(i, Msc) { ratedstr[i].insert(-INF); }
+    rep(i, N) {
+        ratedstr[school[i]].insert(rate[i]);
+    }
+    // rep(i, Msc) {
+    //     auto st = ratedstr[i];
+    //     if(st.size()==0) continue;
+    //     de(st);
+    // }
+    rep(i, Msc) {
+        if(SIZE(ratedstr[i])==0) continue;
+        ll mx = *ratedstr[i].rbegin();
+        rateall.insert(mx);
+    }
+    de(rateall)
+
+    auto del=[&](ll i) {
+        ll sch = school[i];
+        auto &st = ratedstr[sch];
+        ll pmx = *st.rbegin();
+        erase(st, rate[i]);
+        // st.erase(st.find(rate[i]));
+        if(SIZE(st)==0) {
+            erase(rateall, rate[i]);
+            // rateall.erase(rateall.find(rate[i]));
+            return;
         }
-        if(ymn==INF) st.emplace(y, i);
-        else st.emplace(ymn, i);
-        de3(x,y,i)
-        de(st)
-    }
-    rep(i, N) {
-        Out(uf.size(i));
-    }
+        ll cmx = *st.rbegin();
+        if(pmx==cmx) return;
+        erase(rateall, pmx);
+        // rateall.erase(rateall.find(pmx));
+        rateall.insert(cmx);
+    };
+    auto add=[&](ll i) {
+        ll sch = school[i];
+        auto &st = ratedstr[sch];
+        if(SIZE(st)==0) {
+            st.insert(rate[i]);
+            rateall.insert(rate[i]);
+            return;
+        }
+        ll pmx = *st.rbegin();
+        st.insert(rate[i]);
+        ll cmx = *st.rbegin();
+        if(pmx==cmx) return;
+        erase(rateall, pmx);
+        // rateall.erase(rateall.find(pmx));
+        rateall.insert(cmx);
+    };
 
+    rep(i, Q) {
+        LONGM(c, d);
+        del(c);
+        school[c] = d;
+        add(c);
+        ll ans = *rateall.begin();
+        Out(ans);
+        de(rateall)
+    }
     
 }
 
