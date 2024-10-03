@@ -205,54 +205,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
+    LONG(N, M, K);
     vvl from(N);
     rep(i, M) {
-        LONG(a, b);
+        LONGM(a, b);
         from[a].emplace_back(b);
         from[b].emplace_back(a);
     }
 
-    vb used(N);
-    vl ord(N); vl low(N, INF);
-    ll idx = 0;
-    vl ans;
-    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
-        used[v] = true;
-        ord[v] = idx++;
-        low[v] = ord[v];
-        for(auto nv: from[v]) if(nv!=p) {
-            if(used[nv]) {
-                chmin(low[v], ord[nv]);
-            } else {
-                f(f, nv, v);
-                chmin(low[v], low[nv]);
+    vm dp(N);
+    dp[0] = 1;
+    rep(i, K) {
+        vm pdp(N); swap(pdp, dp);
+        mint sum = 0;
+        rep(j, N) sum += pdp[j];
+        rep(v, N) {
+            dp[v] = sum - pdp[v];
+            for(auto nv: from[v]) {
+                dp[v] -= pdp[nv];
             }
         }
-    };
-
-    auto dfs1=[&](auto f, ll v, ll p=-1) -> void {
-        used[v] = true;
-        ll numc=0;
-        bool find = false;
-        for(auto nv: from[v]) if(nv!=p) {
-            if(used[nv]) continue;
-            ++numc;
-            f(f, nv, v);
-            if(low[nv]>=ord[v]) find = true;
-        }
-        if(p==-1 && numc>=2) ans.push_back(v);
-        if(p!=-1 && find) ans.push_back(v);
-    };
-    dfs0(dfs0, 0);
-    de(ord)de(low)
-    used = vb(N);
-    dfs1(dfs1, 0);
-    sort(all(ans));
-    for(auto x: ans) Out(x);
+        de(dp)
+    }
+    Out(dp[0]);
     
 }
 

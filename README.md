@@ -576,7 +576,7 @@
 - 各辺は確定頂点からしか呼ばれる事はなく、各辺は2頂点としか繋がっていない為、高々2回しか呼ばれない
 - グラフを用いたDPなどでも、同じ議論は成り立つので、計算量はO(NM)ではなくO(N+M)かもしれない事に注意せよ
 ### 例題
-- !復習価値中 グラフ上K日旅程の場合の数 [E - Safety Journey](https://atcoder.jp/contests/abc212/tasks/abc212_e)
+- !復習価値低 グラフ上K日旅程の場合の数 [E - Safety Journey](https://atcoder.jp/contests/abc212/tasks/abc212_e)
 
 # データ構造
 
