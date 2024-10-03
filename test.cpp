@@ -206,32 +206,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template <class T>
-using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    pset<pair<string,ll>> st;
+    LONG(N, K);
+    map<ll,vl> mp;
     rep(i, N) {
-        STRING(s);
-        st.insert({s,i});
+        LONG(t, d);
+        mp[t].push_back(d);   
     }
-    rep(i, Q) {
-        LONGM(x); STRING(t);
-        auto it = st.find_by_order(x);
-        auto [s, k] = *it;
-        st.erase(it);
-        st.insert({t,k});
+    vl top, other;
+    for(auto [k,v]: mp) {
+        sort(allr(v));
+        top.push_back(v[0]);
+        ll sz = SIZE(v);
+        repk(i, 1, sz) other.push_back(v[i]);
     }
-    vs ans(N);
-    for(auto [s, k]: st) {
-        ans[k] = s;
+    sort(allr(top));
+    sort(allr(other));
+    ll Nt = SIZE(top), No = SIZE(other);
+    vl Sc(No+1);
+    rep(i, No) Sc[i+1] = Sc[i] + other[i];
+    de(top)de(other)
+
+    ll deli = 0;
+    ll ans = 0;
+    rep(n, Nt) {
+        deli += top[n];
+        ll rem = K-(n+1);
+        if(rem<0) break;
+        de3(n+1, rem, No)
+        if(No<rem) continue;;
+        ll now = (n+1)*(n+1);
+        now += Sc[rem] + deli;
+        chmax(ans, now);
+        de2(n+1, now)
     }
     Out(ans);
     
