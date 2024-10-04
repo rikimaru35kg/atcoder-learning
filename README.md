@@ -654,9 +654,9 @@
 - 累積和のlower_boundも実装する事ができるので、ある値以下に何個存在するかも求める事ができる
 ### 例題
 - !復習価値低 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
-- !復習価値中 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
+- 基本 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
 - !要復習 [O - 整地クエリ](https://atcoder.jp/contests/past17-open/tasks/past17_o)
-- !復習価値高 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
+- !復習価値低 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
 ## セグメントツリー（Segment tree）
 - atcoder libraryで使える

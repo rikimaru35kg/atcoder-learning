@@ -206,61 +206,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    T _sum (long long i) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    // ![CAUTION]   0 <= l,r <= _n
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
-        }
-    }
-    T get (long long i) {
-        return _sum(i);
-    }
-};
+#include <atcoder/fenwicktree>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    SpanBIT<ll> bit(N);
-    rep(i, N) {
-        LONG(a);
-        bit.add(i, i+1, a);
-    }
+    LONG(H, W, M);
+    vl row(H, W), col(W, H);
     rep(i, M) {
-        LONG(b);
-        ll x = bit.get(b);
-        ll cycle = x/N;
-        ll rem = x%N;
-        bit.add(b,b+1, -x);
-        bit.add(0, N, cycle);
-        ll l = (b+1)%N;
-        ll r = (l+rem)%N;
-        bit.add(l, r, 1);
+        LONGM(x, y);
+        chmin(row[x], y);
+        chmin(col[y], x);
     }
-    vl ans;
-    rep(i, N) {
-        ans.push_back(bit.get(i));
+    ll H0 = col[0], W0 = row[0];
+
+    ll ans = 0;
+    rep(i, H0) { ans += row[i]; }
+    rep(j, W0) { ans += col[j]; }
+    de(ans)
+
+    vvl cs(H+1);
+    rep(j, W0) {
+        cs[col[j]].push_back(j);
     }
+
+    ll sum = 0;
+    fenwick_tree<ll> tree(W);
+    rep(j, W0) tree.add(j, 1);
+
+    rep(i, H0) {
+        if(i) {
+            for(auto c: cs[i]) {
+                tree.add(c, -1);
+            }
+        }
+        sum += tree.sum(0, row[i]);
+    }
+    ans -= sum;
     Out(ans);
     
 }

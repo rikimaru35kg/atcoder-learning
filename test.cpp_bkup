@@ -40,7 +40,6 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using sll = __int128_t;
 using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
@@ -64,13 +63,10 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using t3 = tuple<ll,ll,ll>;
-using t3d = tuple<db,db,db>;
 using t4 = tuple<ll,ll,ll,ll>;
 using vt3 = vector<t3>;
-using vt3d = vector<t3d>;
 using vt4 = vector<t4>;
 using vvt3 = vector<vector<t3>>;
-using vvt3d = vector<vector<t3d>>;
 using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
@@ -93,18 +89,16 @@ using cd = complex<double>;
 #define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
 #define CHAR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
-#define VI(ivec, n) vi ivec(n); input_ivec(ivec, n)
-#define VIM(ivec, n) vi ivec(n); input_ivecm(ivec, n)
-#define VL(lvec, n) vl lvec(n); input_lvec(lvec, n)
-#define VLM(lvec, n) vl lvec(n); input_lvecm(lvec, n)
-#define VL2(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12(lvec1, lvec2, n)
-#define VL2M(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12m(lvec1, lvec2, n)
-#define VC(cvec, n) vc cvec(n); input_cvec(cvec, n)
-#define VS(svec, n) vs svec(n); input_svec(svec, n)
-#define VD(dvec, n) vd dvec(n); input_dvec(dvec, n)
-#define VP(pvec, n) vp pvec(n); input_pvec(pvec, n)
-#define VPD(pvec, n) vpd pvec(n); input_pvecd(pvec, n)
-#define VPM(pvec, n) vp pvec(n); input_pvecm(pvec, n)
+#define VI(ivec, n) vi ivec; input_ivec(ivec, n)
+#define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
+#define VL(lvec, n) vl lvec; input_lvec(lvec, n)
+#define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
+#define VC(cvec, n) vc cvec; input_cvec(cvec, n)
+#define VS(svec, n) vs svec; input_svec(svec, n)
+#define VD(dvec, n) vd dvec; input_dvec(dvec, n)
+#define VP(pvec, n) vp pvec; input_pvec(pvec, n)
+#define VPD(pvec, n) vpd pvec; input_pvecd(pvec, n)
+#define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
@@ -129,28 +123,25 @@ inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
 template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
-inline void input_ivec(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];}}
-inline void input_ivecm(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];--ivec[i];}}
-inline void input_lvec(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];}}
-inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];--lvec[i];}}
-inline void input_lvec12(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];}}
-inline void input_lvec12m(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];--lvec1[i];--lvec2[i];}}
-inline void input_cvec(vc &cvec, ll n) {rep (i, n) {cin>>cvec[i];}}
-inline void input_svec(vs &svec, ll n) {rep (i, n) {cin>>svec[i];}}
-inline void input_dvec(vd &dvec, ll n) {rep (i, n) {cin>>dvec[i];}}
-inline void input_pvec(vp &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;}}
-inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;pvec[i].first--,pvec[i].second--;}}
-inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;}}
-inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {cin>>ivec2[i][j];}}
-inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];}}
-inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
-inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
+inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(x);}}
+inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
+inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
+inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
+inline void input_cvec(vc &cvec, ll n) {rep (i, n) {char c; cin >> c; cvec.push_back(c);}}
+inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
+inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
+inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
+inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
+inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {double a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
+inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
+inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
+inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
+inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
 inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
-template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -206,30 +197,100 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp down, up;
-    rep(i, N) {
-        LONG(a, b);
-        if(a<=b) down.emplace_back(a, b);
-        else up.emplace_back(b, a);
+    LONG(N); VL(A, N);
+    vl B = A;
+    sort(all(B));
+    fenwick_tree<ll> tree(N);
+    rep(i, N) tree.add(i, B[i]);
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(k, d); --k;
+            ll a = A[k];
+            auto [l, x1] = lowbou(B, a);
+            auto [r, x2] = lowbou_r(B, a);
+            if(d==1) B[r] += d, tree.add(r, d);
+            else B[l] += d, tree.add(l, d);
+            A[k] += d;
+        } else {
+            LONG(x);
+            auto [n, y] = uppbou_r(B, x);
+            ll ans = 0;
+            ++n;
+            ans += n*x;
+            ans -= tree.sum(0, n);
+            ans -= (N-n)*x;
+            ans += tree.sum(n, N);
+            Out(ans);
+        }
     }
-    sort(all(down)); sort(allr(up));
-    ll now = 0;
-    ll ans = 0;
-    for(auto [a, b]: down) {
-        now += a;
-        chmax(ans, now);
-        now -= b;
-    }
-    for(auto [b, a]: up) {
-        now += a;
-        chmax(ans, now);
-        now -= b;
-    }
-    Out(ans);
     
 }
 
