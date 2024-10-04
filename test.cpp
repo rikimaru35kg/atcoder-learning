@@ -206,45 +206,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
+#include <atcoder/segtree>
 using namespace atcoder;
+
+struct S {
+    ll mn, mx;
+    S(ll mn=-INF, ll mx=INF): mn(mn),mx(mx) {}
+};
+S op(S a, S b) {
+    return S(max(a.mn,b.mn), min(a.mx,b.mx));
+}
+S e() {return S();}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, M);
-    vl row(H, W), col(W, H);
-    rep(i, M) {
-        LONGM(x, y);
-        chmin(row[x], y);
-        chmin(col[y], x);
+    LONG(N, Q);
+    vector<S> v(N-1);
+    rep(i, N-1) {
+        LONG(l, r);
+        v[i] = S(l,r);
     }
-    ll H0 = col[0], W0 = row[0];
+    segtree<S,op,e> seg(v);
+auto segprint=[&](){
+#ifdef __DEBUG
+    de("-- segprint --")
+    ll sz = seg.max_right(0,[](S x)->bool{return true;x=S();});
+    rep(i, sz) fprintf(stderr, " ");
+    cerr<<endl;
+#endif
+};
+auto dprint=[&](){
+#ifdef __DEBUG
+    de("-- dprint --")
+    rep(i, N) fprintf(stderr, " ");
+    cerr<<endl;
+#endif
+};
+    segprint();
+    dprint();
+    rep(i, Q) {
+        LONG(a, b); --b;
+        auto f=[&](S x) -> bool {
+            if(x.mn<=a && a<=x.mx) return true;
+            return false;
+        };
+        ll r = seg.max_right(b, f);
+        ll l = seg.min_left(b, f);
+        de3(i,l,r)
+        de2(seg.prod(l,b).mn, seg.prod(l,b).mx)
+        de2(seg.prod(b,r).mn, seg.prod(b, r).mx)
+        Out(r-l+1);
 
-    ll ans = 0;
-    rep(i, H0) { ans += row[i]; }
-    rep(j, W0) { ans += col[j]; }
-    de(ans)
-
-    vvl cs(H+1);
-    rep(j, W0) {
-        cs[col[j]].push_back(j);
     }
 
-    ll sum = 0;
-    fenwick_tree<ll> tree(W);
-    rep(j, W0) tree.add(j, 1);
 
-    rep(i, H0) {
-        if(i) {
-            for(auto c: cs[i]) {
-                tree.add(c, -1);
-            }
-        }
-        sum += tree.sum(0, row[i]);
-    }
-    ans -= sum;
-    Out(ans);
     
 }
 

@@ -428,19 +428,6 @@
       "",
     ],
   },
-  "dprint (Snippet)": {
-    "prefix": "dprint",
-    "body": [
-      "auto dprint=[&](){",
-      "#ifdef __DEBUG",
-      "    rep(i, N) {",
-      "        cerr<<   <<' ';",
-      "    }",
-      "    cerr<<endl;",
-      "#endif",
-      "};",
-    ],
-  },
   "BidirectionalList": {
     "prefix": "bidirectional_list",
     "body": [
@@ -1790,6 +1777,31 @@
       "    }",
       "#else",
       "    void print() {}",
+      "#endif",
+      "};",
+    ],
+  },
+  "Snippet(segprint)": {
+    "prefix": "segprint",
+    "body": [
+      "auto segprint=[&](){",
+      "#ifdef __DEBUG",
+      "    de(\"-- segprint --\")",
+      "    ll sz = seg.max_right(0,[](S x)->bool{return true;x=S();});",
+      "    rep(i, sz) fprintf(stderr, \" \");",
+      "    cerr<<endl;",
+      "#endif",
+      "};",
+    ],
+  },
+  "Snippet(dprint)": {
+    "prefix": "dprint",
+    "body": [
+      "auto dprint=[&](){",
+      "#ifdef __DEBUG",
+      "    de(\"-- dprint --\")",
+      "    rep(i, N) fprintf(stderr, \" \");",
+      "    cerr<<endl;",
       "#endif",
       "};",
     ],
