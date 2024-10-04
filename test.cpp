@@ -206,61 +206,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/lazysegtree>
 using namespace atcoder;
 
+const ll Mx = 9;
+ll D = 9;
 struct S {
-    ll mn, mx;
-    S(ll mn=-INF, ll mx=INF): mn(mn),mx(mx) {}
+    ll d[Mx];
+    S() {rep(i, Mx) d[i]=0;}
 };
 S op(S a, S b) {
-    return S(max(a.mn,b.mn), min(a.mx,b.mx));
+    rep(i, Mx) a.d[i] ^= b.d[i];
+    return a;
 }
 S e() {return S();}
+using F = ll;
+S mapping(F f, S x) {
+    f %= D;
+    rotate(x.d, x.d+f, x.d+D);
+    return x;
+}
+F composition(F f, F g) {
+    return f+g;
+}
+F id() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vector<S> v(N-1);
-    rep(i, N-1) {
-        LONG(l, r);
-        v[i] = S(l,r);
+    LONG(N); cin>> D;
+    VS(A, N);
+
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    rep(i, N) {
+        string s = A[i];
+        S tmp;
+        rep(j, D) {
+            ll x = stoll(s);
+            tmp.d[j] = x;
+            rotate(s.begin(), s.begin()+1, s.end());
+        }
+        seg.set(i, tmp);
     }
-    segtree<S,op,e> seg(v);
-auto segprint=[&](){
-#ifdef __DEBUG
-    de("-- segprint --")
-    ll sz = seg.max_right(0,[](S x)->bool{return true;x=S();});
-    rep(i, sz) fprintf(stderr, " ");
-    cerr<<endl;
-#endif
-};
-auto dprint=[&](){
-#ifdef __DEBUG
-    de("-- dprint --")
-    rep(i, N) fprintf(stderr, " ");
-    cerr<<endl;
-#endif
-};
-    segprint();
-    dprint();
+
+    auto segprint=[&](){
+    #ifdef __DEBUG
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).d[0]);
+        cerr<<endl;
+    #endif
+    };
+
+
+    LONG(Q);
+    ll si = 0;
     rep(i, Q) {
-        LONG(a, b); --b;
-        auto f=[&](S x) -> bool {
-            if(x.mn<=a && a<=x.mx) return true;
-            return false;
-        };
-        ll r = seg.max_right(b, f);
-        ll l = seg.min_left(b, f);
-        de3(i,l,r)
-        de2(seg.prod(l,b).mn, seg.prod(l,b).mx)
-        de2(seg.prod(b,r).mn, seg.prod(b, r).mx)
-        Out(r-l+1);
-
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            si += x;
+            si %= N;
+        } else if (t==2) {
+            LONG(l, r, y);
+            --l, --r;
+            l += si, r += si;
+            l %= N, r %= N;
+            if(l<=r) {
+                seg.apply(l, r+1, y);
+            } else {
+                seg.apply(l, N, y);
+                seg.apply(0, r+1, y);
+            }
+        } else {
+            LONG(l, r);
+            --l, --r;
+            l += si, r += si;
+            l %= N, r %= N;
+            de2(l,r)
+            ll ans = 0;
+            if(l<=r) {
+                ans = seg.prod(l, r+1).d[0];
+            } else {
+                ans = seg.prod(l, N).d[0];
+                ans ^= seg.prod(0, r+1).d[0];
+            }
+            Out(ans);
+        }
+        segprint();
     }
-
-
     
 }
 

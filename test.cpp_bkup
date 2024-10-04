@@ -206,114 +206,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/segtree>
+#include <atcoder/lazysegtree>
 using namespace atcoder;
 
-using S = ll;
-S op(S a, S b){return a+b;}
-S e() {return 0;}
+const ll Mx = 11;
+struct S {
+    ll sum, w, cnt[Mx];
+    S(ll sum, ll w, bool sub=false): sum(sum), w(w) {
+        rep(i, Mx) cnt[i] = 0;
+        if(sub) cnt[sum] = 1;
+    }
+};
+S op(S a, S b) {
+    rep(i, Mx) a.cnt[i] += b.cnt[i];
+    a.sum += b.sum;
+    a.w += b.w;
+    return a;
+}
+S e() {return S(0,0);}
+using F = ll;
+S mapping (F f, S x) {
+    if(f==-1) return x;
+    x.sum = f*x.w;
+    rep(i, Mx) {
+        if(i==f) x.cnt[i] = x.w;
+        else x.cnt[i] = 0;
+    }
+    return x;
+}
+F composition(F f, F g) {
+    if(f==-1) return g;
+    return f;
+}
+F id(){return -1;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, Q);
-    VL(P, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(P[i]);
-    umap<ll,ll> idx;
-    rep(i, N) idx[P[i]] = i;
+    VL(A, N);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    rep(i, N) seg.set(i, S(A[i], 1, true));
 
-    vt3 query;
-    rep(i, Q) {
-        LONG(t);
-        ll a=-1,b=-1;
-        if(t==1) {
-            cin>>a>>b; --a;
-            cc.add(b);
-        } else if(t==2) {
-            cin>>a; --a;
-        } else {
-            cin>>a;
-        }
-        query.emplace_back(t,a,b);
-    }
-
-    ll M = cc.size();
-    segtree<S,op,e> seg(M);
-    rep(i, N) seg.set(cc(P[i]), 1);
-
-    cc.print();
-
-    for(auto [t,a,b]: query) {
-        if(t==1) {
-            seg.set(cc(P[a]), 0);
-            P[a] = b;
-            seg.set(cc(P[a]), 1);
-            idx[P[a]] = a;
-        } else if (t==2) {
-            ll cnt =  seg.prod(cc(P[a]), M);
-            Out(cnt);
-        } else {
-            auto f=[&](S x) -> bool {
-                return x<a;
-            };
-            ll p = seg.min_left(M, f);
-            ll x = idx[cc[p-1]];
-            Out(x+1);
-        }
-        auto dprint=[&](){
-        #ifdef __DEBUG
-            rep(i, M) {
-                cerr<< seg.get(i)  <<' ';
-            }
-            cerr<<endl;
-        #endif
-        };
+    auto segprint=[&](){
+    #ifdef __DEBUG
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).sum);
         cerr<<endl;
-        dprint();
-    }
+    #endif
+    };
 
+    rep(i, Q) {
+        LONG(c, l, r); --l;
+        if(c==1) {
+            S m = seg.prod(l, r);
+            ll idx = l;
+            rep(a, Mx) {
+                seg.apply(idx, idx+m.cnt[a], a);
+                idx += m.cnt[a];
+            }
+        } else if (c==2) {
+            S m = seg.prod(l, r);
+            ll idx = l;
+            for(ll a=10; a>=0; --a) {
+                seg.apply(idx, idx+m.cnt[a], a);
+                idx += m.cnt[a];
+            }
+        } else {
+            S m = seg.prod(l, r);
+            Out(m.sum);
+        }
+        segprint();
+    }
     
 }
 

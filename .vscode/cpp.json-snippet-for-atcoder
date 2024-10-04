@@ -1781,19 +1781,6 @@
       "};",
     ],
   },
-  "Snippet(segprint)": {
-    "prefix": "segprint",
-    "body": [
-      "auto segprint=[&](){",
-      "#ifdef __DEBUG",
-      "    de(\"-- segprint --\")",
-      "    ll sz = seg.max_right(0,[](S x)->bool{return true;x=S();});",
-      "    rep(i, sz) fprintf(stderr, \" \");",
-      "    cerr<<endl;",
-      "#endif",
-      "};",
-    ],
-  },
   "Snippet(dprint)": {
     "prefix": "dprint",
     "body": [
@@ -1801,6 +1788,19 @@
       "#ifdef __DEBUG",
       "    de(\"-- dprint --\")",
       "    rep(i, N) fprintf(stderr, \" \");",
+      "    cerr<<endl;",
+      "#endif",
+      "};",
+    ],
+  },
+  "Snippet(segprint)": {
+    "prefix": "segprint",
+    "body": [
+      "auto segprint=[&](){",
+      "#ifdef __DEBUG",
+      "    de(\"-- segprint --\")",
+      "    ll sz = seg.max_right(0,[](S x)->bool{return true;});",
+      "    rep(i, sz) fprintf(stderr, \"%lld \", seg.get(i));",
       "    cerr<<endl;",
       "#endif",
       "};",
