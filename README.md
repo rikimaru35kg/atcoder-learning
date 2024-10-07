@@ -697,13 +697,13 @@
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける
 ### 例題
-- !復習価値高 [E - Notebook](https://atcoder.jp/contests/abc273/tasks/abc273_e)
+- 基本 [E - Notebook](https://atcoder.jp/contests/abc273/tasks/abc273_e)
 
 ## Sparse Table
 - 全ての区間を二つの区間の和集合で表せる
 - RMQにO(1)で回答可能（ただし構築にはsegtreeよりもメモリ消費が大きい）
 ### 例題
-- !復習価値中 Sparse Tableの考え方 [F - Union of Two Sets](https://atcoder.jp/contests/abc282/tasks/abc282_f)
+- 基本 Sparse Tableの考え方 [F - Union of Two Sets](https://atcoder.jp/contests/abc282/tasks/abc282_f)
 
 # 動的計画法（DP）
 

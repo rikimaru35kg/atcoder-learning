@@ -209,37 +209,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll w = 1;
-    map<Pr,ll> mp;
-    vp span;
-    while(w<=N) {
-        rep(l, N+1-w) {
-            ll r = l+w;
-            mp[{l,r}] = span.size();
-            span.emplace_back(l+1, r);
-        }
-        w <<= 1;
-    }
-    Out(span.size());
-    cout<<flush;
-    Out(span);
-    cout<<flush;
-    de(span)
-
     LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        ll w = 1;
-        while(2*w<=r-l) w<<=1;
-
-        ll l1 = l, r1 = l1+w;
-        ll r2 = r, l2 = r2-w;
-        de(w)
-        de4(l1,r1,l2,r2)
-        ll i1 = mp[{l1,r1}], i2 = mp[{l2,r2}];
-        printf("%lld %lld\n", i1+1, i2+1);
-        cout<<flush;
+    vl p(Q+10, -1);
+    p[0] = 0;
+    vl ed(Q+10, -1);
+    ll sz = 0;
+    umap<ll,ll> p2v;
+    ll v = 0;
+    rep(_, Q) {
+        STRING(s);
+        if(s=="ADD"){
+            LONG(x);
+            ++sz;
+            p[sz] = v;
+            ed[sz] = x;
+            v = sz;
+        }else if(s=="DELETE") {
+            v = p[v];
+        }else if(s=="LOAD") {
+            LONG(z);
+            v = p2v[z];
+        }else {
+            LONG(y);
+            p2v[y] = v;
+        }
+        Out(ed[v]);
     }
     
 }
