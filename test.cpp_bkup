@@ -209,36 +209,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        dist[a][b] = c;
-    }
+    LONG(N);
+    VVL(A, N, N);
 
-    rep(k, N) rep(i, N) rep(j, N) {
-        if(dist[i][k]==INF || dist[k][j]==INF) continue;
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
-    }
-
-    vvl dp(1<<N, vl(N, INF));
-    rep(i, N) dp[1<<i][i] = 0;
-
+    vl point(1<<N);
     rep(s, 1<<N) {
-        rep(i, N) if(s>>i&1) {
-            if(dp[s][i]==INF) continue;
-            rep(j, N) if(~s>>j&1) {
-                ll d = dist[i][j];
-                if(d==INF) continue;
-                ll ns = s|1<<j;
-                chmin(dp[ns][j], dp[s][i]+d);
-            }
+        ll now = 0;
+        rep(i, N) rep(j, i) {
+            if(~s>>i&1) continue;
+            if(~s>>j&1) continue;
+            now += A[i][j];
+        }
+        point[s] = now;
+    }
+
+    vl dp(1<<N, -INF);
+    dp.back() = 0;
+    repr(s, 1<<N) {
+        for(ll t=s; t>0; t=(t-1)&s) {
+            ll ns = s^t;
+            ll p = point[t];
+            chmax(dp[ns], dp[s]+p);
         }
     }
-    ll ans = INF;
-    rep(i, N) chmin(ans, dp[(1<<N)-1][i]);
-    if(ans==INF) PNo
+    ll ans = dp[0];
     Out(ans);
     
 }

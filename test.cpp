@@ -206,54 +206,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, P);
-    ll M = 8000;
+    LONG(N, D);
+    VD(W, N);
+    db ave = accumulate(all(W), 0.0);
+    ave /= D;
 
-    vl dp(M, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(M, INF); swap(pdp, dp);
-        LONG(c); VL(A, K);
-        de(c)de(A)
-        rep(j, M) {
-            if(pdp[j]==INF) continue;
-            chmin(dp[j], pdp[j]);
-            auto v = separate_digit(j, 6, K);
-            rep(k, K) v[k] = min(v[k]+A[k], P);
-            ll nj = consolidate_digit(v, 6);
-            chmin(dp[nj], pdp[j]+c);
+    auto p2=[&](db x) {return x*x;};
+
+    auto calc=[&](ll s) -> db {
+        db w = 0;
+        rep(i, N) if(s>>i&1) {
+            w += W[i];
+        }
+        db ret = p2(w-ave)/D;
+        return ret;
+    };
+    vd cost(1<<N);
+    rep(s, 1<<N) cost[s] = calc(s);
+
+    vd dp(1<<N, INF);
+    dp[(1<<N)-1] = 0;
+    rep(i, D) {
+        vd pdp(1<<N, INF); swap(pdp, dp);
+        repr(s, 1<<N) {
+            for(ll t=s; t>=0; t=(t-1)&s) {
+                db c = cost[t];
+                ll ns = s^t;
+                chmin(dp[ns], pdp[s]+c);
+                if(t==0) break;
+            }
         }
     }
-    vl tgt(K, P);
-    ll s = consolidate_digit(tgt, 6);
-    ll ans = dp[s];
-    ch1(ans);
+    db ans = dp[0];
     Out(ans);
     
 }
