@@ -1708,6 +1708,7 @@
 - これが出題された場合、基本的にはDPで解くしかない
 - DPでも解けない場合、もしかしたら一部貪欲で計算量を押さえられる可能性あり
 ### 例題
+- 基本 [B - Bought Review](https://atcoder.jp/contests/arc174/tasks/arc174_b)
 - !要復習 [E - Sensor Optimization Dilemma 2](https://atcoder.jp/contests/abc374/tasks/abc374_e)
 
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）

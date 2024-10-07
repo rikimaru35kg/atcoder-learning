@@ -206,9 +206,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+void solve() {
+    VL(A, 5); VL(P, 5);
+    ll k = 2*A[0]+A[1]-A[3]-2*A[4];
+    ll ans = INF;
+    de(k)
+    {
+        ll x = 0;
+        ll y = max(Divceil(k-x, 2), 0LL);
+        ll now = P[3]*x + P[4]*y;
+        chmin(ans, now);
+        de2(1, now)
+    }
+    {
+        ll x = 1;
+        ll y = max(Divceil(k-x, 2), 0LL);
+        ll now = P[3]*x + P[4]*y;
+        chmin(ans, now);
+        de2(2, now)
+    }
+    {
+        ll y = 0;
+        ll x = max(Divceil(k-2*y, 1), 0LL);
+        ll now = P[3]*x + P[4]*y;
+        chmin(ans, now);
+        de2(3, now)
+    }
+    Out(ans);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 
