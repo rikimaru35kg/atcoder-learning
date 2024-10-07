@@ -206,95 +206,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-const ll Mx = 9;
-ll D = 9;
-struct S {
-    ll d[Mx];
-    S() {rep(i, Mx) d[i]=0;}
-};
-S op(S a, S b) {
-    rep(i, Mx) a.d[i] ^= b.d[i];
-    return a;
-}
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    f %= D;
-    rotate(x.d, x.d+f, x.d+D);
-    return x;
-}
-F composition(F f, F g) {
-    return f+g;
-}
-F id() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); cin>> D;
-    VS(A, N);
-
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
-    rep(i, N) {
-        string s = A[i];
-        S tmp;
-        rep(j, D) {
-            ll x = stoll(s);
-            tmp.d[j] = x;
-            rotate(s.begin(), s.begin()+1, s.end());
-        }
-        seg.set(i, tmp);
-    }
-
-    auto segprint=[&](){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).d[0]);
-        cerr<<endl;
-    #endif
-    };
-
-
-    LONG(Q);
-    ll si = 0;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            si += x;
-            si %= N;
-        } else if (t==2) {
-            LONG(l, r, y);
-            --l, --r;
-            l += si, r += si;
-            l %= N, r %= N;
-            if(l<=r) {
-                seg.apply(l, r+1, y);
-            } else {
-                seg.apply(l, N, y);
-                seg.apply(0, r+1, y);
-            }
-        } else {
-            LONG(l, r);
-            --l, --r;
-            l += si, r += si;
-            l %= N, r %= N;
-            de2(l,r)
-            ll ans = 0;
-            if(l<=r) {
-                ans = seg.prod(l, r+1).d[0];
-            } else {
-                ans = seg.prod(l, N).d[0];
-                ans ^= seg.prod(0, r+1).d[0];
-            }
-            Out(ans);
-        }
-        segprint();
-    }
     
 }
 

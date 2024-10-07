@@ -29,10 +29,6 @@ INF = int(3e18)
 
 
 def main():
-    S = instr()
-    if(not S.isdecimal()): print("error")
-    else:
-        print(int(S)*2)
 
 
 

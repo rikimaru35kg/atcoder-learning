@@ -731,7 +731,7 @@
 - !復習価値中 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
 - !復習価値高 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
-## ナップザックDP
+## ナップサックDP
 - 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
 - 全探索では計算量が間に合わず、幾つか要素がある場合はこれが使えないか検討してみる
 - 個数制限なしのバージョンは、通常のDPのように、i個目までを選んでという状態を取ってしまうと、個数制限がないのでiを1つ進めるたびにN回のループが発生してしまう
@@ -1702,6 +1702,13 @@
 ### 例題
 - !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 - !要復習 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
+
+## 整数計画問題（線形計画問題）を工夫して解く
+- 一般に整数計画問題はNP困難（ナップサック問題など）
+- これが出題された場合、基本的にはDPで解くしかない
+- DPでも解けない場合、もしかしたら一部貪欲で計算量を押さえられる可能性あり
+### 例題
+- !要復習 [E - Sensor Optimization Dilemma 2](https://atcoder.jp/contests/abc374/tasks/abc374_e)
 
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
