@@ -209,40 +209,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D);
-    VD(W, N);
-    db ave = accumulate(all(W), 0.0);
-    ave /= D;
-
-    auto p2=[&](db x) {return x*x;};
-
-    auto calc=[&](ll s) -> db {
-        db w = 0;
-        rep(i, N) if(s>>i&1) {
-            w += W[i];
-        }
-        db ret = p2(w-ave)/D;
-        return ret;
-    };
-    vd cost(1<<N);
-    rep(s, 1<<N) cost[s] = calc(s);
-
-    vd dp(1<<N, INF);
-    dp[(1<<N)-1] = 0;
-    rep(i, D) {
-        vd pdp(1<<N, INF); swap(pdp, dp);
-        repr(s, 1<<N) {
-            for(ll t=s; t>=0; t=(t-1)&s) {
-                db c = cost[t];
-                ll ns = s^t;
-                chmin(dp[ns], pdp[s]+c);
-                if(t==0) break;
+    LONG(N); VL(A, N);
+    ll S = 5;
+    vl dp(S, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(S, INF); swap(pdp, dp);
+        rep(j, S) repk(k, j, S) {
+            if(k==0 || k==4) chmin(dp[k], pdp[j]+A[i]);
+            if(k==1 || k==3)  {
+                if(A[i]<=2) chmin(dp[k], pdp[j]+(2-A[i]));
+                else chmin(dp[k], pdp[j]+A[i]%2);
+            }
+            if(k==2) {
+                chmin(dp[k], pdp[j]+((A[i]%2)^1));
             }
         }
     }
-    db ans = dp[0];
+    ll ans = INF;
+    rep(s, S) chmin(ans, dp[s]);
     Out(ans);
-    
 }
 
 // ### test.cpp ###

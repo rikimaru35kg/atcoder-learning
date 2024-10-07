@@ -779,7 +779,7 @@
 - 一つずつ進む状態をキーに持つDP
 ### 例題
 - 基本 [008 - AtCounter（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_h)
-- !要復習 耳DPの由来 [D - Ears](https://atcoder.jp/contests/yahoo-procon2019-qual/tasks/yahoo_procon2019_qual_d)
+- 基本 耳DPの由来 [D - Ears](https://atcoder.jp/contests/yahoo-procon2019-qual/tasks/yahoo_procon2019_qual_d)
 
 ## LCS（Longest Common Subsequence）
 - 文字列SとTのそれぞれの部分列（連続でなくてもよい）で一致する最長の長さをLCSという

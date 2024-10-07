@@ -209,30 +209,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VVL(A, N, N);
+    LONG(N, D);
+    VD(W, N);
+    db ave = accumulate(all(W), 0.0);
+    ave /= D;
 
-    vl point(1<<N);
-    rep(s, 1<<N) {
-        ll now = 0;
-        rep(i, N) rep(j, i) {
-            if(~s>>i&1) continue;
-            if(~s>>j&1) continue;
-            now += A[i][j];
-        }
-        point[s] = now;
-    }
+    auto p2=[&](db x) {return x*x;};
 
-    vl dp(1<<N, -INF);
-    dp.back() = 0;
-    repr(s, 1<<N) {
-        for(ll t=s; t>0; t=(t-1)&s) {
-            ll ns = s^t;
-            ll p = point[t];
-            chmax(dp[ns], dp[s]+p);
+    auto calc=[&](ll s) -> db {
+        db w = 0;
+        rep(i, N) if(s>>i&1) {
+            w += W[i];
         }
-    }
-    ll ans = dp[0];
+        db ret = p2(w-ave)/D;
+        return ret;
+    };
+    vd cost(1<<N);
+    rep(s, 1<<N) cost[s] = calc(s);
+
+    vd dp(1<<N, INF);
+    dp[(1<<N)-1] = 0;
+    rep(i, D) {
+        vd pdp(1<<N, INF); swap(pdp, dp);
+        repr(s, 1<<N) {
+            for(ll t=s; t>=0; t=(t-1)&s) {
+                db c = cost[t];
+                ll ns = s^t;
+                chmin(dp[ns], pdp[s]+c);
+                if(t==0) break;
+            }
+        }
+    }bc 
+    db ans = dp[0];
     Out(ans);
     
 }
