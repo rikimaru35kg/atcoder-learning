@@ -206,29 +206,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll S = 5;
-    vl dp(S, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(S, INF); swap(pdp, dp);
-        rep(j, S) repk(k, j, S) {
-            if(k==0 || k==4) chmin(dp[k], pdp[j]+A[i]);
-            if(k==1 || k==3)  {
-                if(A[i]<=2) chmin(dp[k], pdp[j]+(2-A[i]));
-                else chmin(dp[k], pdp[j]+A[i]%2);
-            }
-            if(k==2) {
-                chmin(dp[k], pdp[j]+((A[i]%2)^1));
-            }
-        }
+    LONG(N, M);
+    VL(S, N); VL(T, M);
+
+    vvm dp(N+1, vm(M+1));
+    dp[0][0] = 1;
+    rep(i, N+1) rep(j, M+1) {
+        if(i<N) dp[i+1][j] += dp[i][j];
+        if(j<M) dp[i][j+1] += dp[i][j];
+        if(i==N || j==M) continue;
+        if(S[i]==T[j]) dp[i+1][j+1] += dp[i][j];
+        dp[i+1][j+1] -= dp[i][j];
     }
-    ll ans = INF;
-    rep(s, S) chmin(ans, dp[s]);
-    Out(ans);
+    Out(dp[N][M]);
+
+    
 }
 
 // ### test.cpp ###
