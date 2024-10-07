@@ -206,35 +206,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    vl p(Q+10, -1);
-    p[0] = 0;
-    vl ed(Q+10, -1);
-    ll sz = 0;
-    umap<ll,ll> p2v;
-    ll v = 0;
-    rep(_, Q) {
-        STRING(s);
-        if(s=="ADD"){
-            LONG(x);
-            ++sz;
-            p[sz] = v;
-            ed[sz] = x;
-            v = sz;
-        }else if(s=="DELETE") {
-            v = p[v];
-        }else if(s=="LOAD") {
-            LONG(z);
-            v = p2v[z];
-        }else {
-            LONG(y);
-            p2v[y] = v;
+    LONG(N, S);
+    VL(A, N);
+
+    vm dp(S+1);
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp(S+1); swap(dp, pdp);
+        rep(j, S+1) {
+            dp[j] += 2*pdp[j];
+            if(j+A[i]<=S) dp[j+A[i]] += pdp[j];
         }
-        Out(ed[v]);
     }
+    Out(dp[S]);
     
 }
 

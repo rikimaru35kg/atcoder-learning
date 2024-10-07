@@ -209,38 +209,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll w = 1;
-    map<Pr,ll> mp;
-    vp span;
-    while(w<=N) {
-        rep(l, N+1-w) {
-            ll r = l+w;
-            mp[{l,r}] = span.size();
-            span.emplace_back(l+1, r);
+    LONG(N); VL(A, N);
+    ll ofs = 2;
+    ll M = 2*ofs+1;
+
+    vvl dp(M, vl(2, -INF));
+    vvl edp = dp;
+    dp[0+ofs][0] = 0;
+    rep(i, N) {
+        vvl pdp = edp; swap(pdp, dp);
+        rep(j, M) rep(k, 2) {
+            // no selection
+            if(j) chmax(dp[j-1][0], pdp[j][k]);
+            // selection
+            if(k) continue;
+            if(j<M-1) chmax(dp[j+1][1], pdp[j][k]+A[i]);
         }
-        w <<= 1;
     }
-    Out(span.size());
-    cout<<flush;
-    Out(span);
-    cout<<flush;
-    de(span)
-
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        ll w = 1;
-        while(2*w<=r-l) w<<=1;
-
-        ll l1 = l, r1 = l1+w;
-        ll r2 = r, l2 = r2-w;
-        de(w)
-        de4(l1,r1,l2,r2)
-        ll i1 = mp[{l1,r1}], i2 = mp[{l2,r2}];
-        printf("%lld %lld\n", i1+1, i2+1);
-        cout<<flush;
-    }
+    ll ans = -INF;
+    if(N%2==0) chmax(ans, max(dp[ofs][0], dp[ofs][1]));
+    else chmax(ans, max(dp[ofs-1][0], dp[ofs-1][1]));
+    Out(ans);
     
 }
 

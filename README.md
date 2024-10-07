@@ -726,10 +726,10 @@
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
 - 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
-- !復習価値中 グリッド上AB差の最小値 [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
-- !復習価値中 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
-- !復習価値中 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
-- !復習価値高 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
+- !復習価値低 グリッド上AB差の最小値 [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
+- 基本 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
+- !復習価値低 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
+- !復習価値低 工夫するとdpの状態オーダーを減らせる [F - Select Half](https://atcoder.jp/contests/abc162/tasks/abc162_f)
 
 ## ナップサックDP
 - 縦に要素、横にパターンや最大コスト等を並べて順次更新していく
