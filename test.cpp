@@ -206,30 +206,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    ll ofs = 2;
-    ll M = 2*ofs+1;
+    LONG(H, W);
+    VS(S, H);
 
-    vvl dp(M, vl(2, -INF));
-    vvl edp = dp;
-    dp[0+ofs][0] = 0;
-    rep(i, N) {
-        vvl pdp = edp; swap(pdp, dp);
-        rep(j, M) rep(k, 2) {
-            // no selection
-            if(j) chmax(dp[j-1][0], pdp[j][k]);
-            // selection
-            if(k) continue;
-            if(j<M-1) chmax(dp[j+1][1], pdp[j][k]+A[i]);
+    vvm dp(H, vm(W));
+    dp[0][0] = 1;
+    vvm right(H, vm(W));
+    vvm down(H, vm(W));
+    vvm slant(H, vm(W));
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='#') {
+            dp[i][j] = 0;
+            right[i][j] = 0;
+            down[i][j] = 0;
+            slant[i][j] = 0;
+            continue;
+        }
+        dp[i][j] += right[i][j] + down[i][j] + slant[i][j];
+        if(j<W-1) {
+            right[i][j+1] += dp[i][j];
+            right[i][j+1] += right[i][j];
+        }
+        if(i<H-1) {
+            down[i+1][j] += dp[i][j];
+            down[i+1][j] += down[i][j];
+        }
+        if(j<W-1 && i<H-1) {
+            slant[i+1][j+1] += dp[i][j];
+            slant[i+1][j+1] += slant[i][j];
         }
     }
-    ll ans = -INF;
-    if(N%2==0) chmax(ans, max(dp[ofs][0], dp[ofs][1]));
-    else chmax(ans, max(dp[ofs-1][0], dp[ofs-1][1]));
-    Out(ans);
+    Out(dp.back().back());
+
     
 }
 

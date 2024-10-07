@@ -738,7 +738,7 @@
 - 重さ制限、残り体力など、通常2つ目に使う状態のみで実は十分。個数制限がない為、i個目まで使ってとか考える必要がないから
 - インラインDPで昇順にするだけという話もある
 ### 例題
-- !復習価値高 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
+- !復習価値低 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
 
 ## 経路数問題
@@ -746,8 +746,8 @@
 - 座標が大きい場合、map<Pair,ll> dpというdpテーブルを作れば良い（配列にこだわる必要なし）
 - 一つの頂点から複数の頂点に行ける場合（飛車など）、累積和用のDPテーブルを持っておき、それぞれ遷移すれば良い（DP->DP、累積DP->累積DP、DP->累積DP、累積DP->DP）
 ### 例題
-- !復習価値中（実装面） 大きい座標上の経路数 [E - Warp](https://atcoder.jp/contests/abc265/tasks/abc265_e)
-- !復習価値高（考察＆実装）　クイーン経路数 [E - Queen on Grid](https://atcoder.jp/contests/abc183/tasks/abc183_e)
+- 基本 大きい座標上の経路数 [E - Warp](https://atcoder.jp/contests/abc265/tasks/abc265_e)
+- !復習価値低　クイーン経路数 [E - Queen on Grid](https://atcoder.jp/contests/abc183/tasks/abc183_e)
 
 ## bit DP
 - N個の集合から1つずつ何かに割り当てていくとき、O(N!)なのをO(N*2^N)やO(N^2*2^N)ぐらいに落とせる手法
