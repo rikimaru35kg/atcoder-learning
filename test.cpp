@@ -206,55 +206,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
+    LONG(N, K, P);
+    ll M = 8000;
 
-    vvm dp(H, vm(W));
-    dp[0][0] = 1;
-    vvm right(H, vm(W));
-    vvm down(H, vm(W));
-    vvm slant(H, vm(W));
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='#') {
-            dp[i][j] = 0;
-            right[i][j] = 0;
-            down[i][j] = 0;
-            slant[i][j] = 0;
-            continue;
-        }
-        dp[i][j] += right[i][j] + down[i][j] + slant[i][j];
-        if(j<W-1) {
-            right[i][j+1] += dp[i][j];
-            right[i][j+1] += right[i][j];
-        }
-        if(i<H-1) {
-            down[i+1][j] += dp[i][j];
-            down[i+1][j] += down[i][j];
-        }
-        if(j<W-1 && i<H-1) {
-            slant[i+1][j+1] += dp[i][j];
-            slant[i+1][j+1] += slant[i][j];
+    vl dp(M, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(M, INF); swap(pdp, dp);
+        LONG(c); VL(A, K);
+        de(c)de(A)
+        rep(j, M) {
+            if(pdp[j]==INF) continue;
+            chmin(dp[j], pdp[j]);
+            auto v = separate_digit(j, 6, K);
+            rep(k, K) v[k] = min(v[k]+A[k], P);
+            ll nj = consolidate_digit(v, 6);
+            chmin(dp[nj], pdp[j]+c);
         }
     }
-    Out(dp.back().back());
-
+    vl tgt(K, P);
+    ll s = consolidate_digit(tgt, 6);
+    ll ans = dp[s];
+    ch1(ans);
+    Out(ans);
     
 }
 

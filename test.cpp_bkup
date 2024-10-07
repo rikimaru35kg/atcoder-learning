@@ -206,47 +206,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    VL2(A, B, 3);
-    set<Pr> obs;
+    vvl dist(N, vl(N, INF));
+    rep(i, N) dist[i][i] = 0;
     rep(i, M) {
-        LONG(x,y);
-        obs.emplace(x,y);
+        LONGM(a, b); LONG(c);
+        dist[a][b] = c;
     }
 
-    map<Pr,mint> dp;
-    dp[{0,0}] = 1;
-    rep(_, N) {
-        map<Pr,mint> pdp; swap(pdp, dp);
-        for(auto [p,v]: pdp) {
-            auto [x,y] = p;
-            rep(i, 3) {
-                ll nx = x + A[i]; ll ny = y + B[i];
-                if(obs.count({nx,ny})) continue;
-                dp[{nx,ny}] += v;
+    rep(k, N) rep(i, N) rep(j, N) {
+        if(dist[i][k]==INF || dist[k][j]==INF) continue;
+        chmin(dist[i][j], dist[i][k]+dist[k][j]);
+    }
+
+    vvl dp(1<<N, vl(N, INF));
+    rep(i, N) dp[1<<i][i] = 0;
+
+    rep(s, 1<<N) {
+        rep(i, N) if(s>>i&1) {
+            if(dp[s][i]==INF) continue;
+            rep(j, N) if(~s>>j&1) {
+                ll d = dist[i][j];
+                if(d==INF) continue;
+                ll ns = s|1<<j;
+                chmin(dp[ns][j], dp[s][i]+d);
             }
         }
     }
-
-    mint ans = 0;
-    for(auto [p,v]: dp) ans += v;
+    ll ans = INF;
+    rep(i, N) chmin(ans, dp[(1<<N)-1][i]);
+    if(ans==INF) PNo
     Out(ans);
     
 }
