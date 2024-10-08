@@ -206,89 +206,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// return minimum index i where a[i] >= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<x)
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] >= x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return minimum index i where a[i] > x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of a.size() means a.back() is not over x (a.back()<=x)
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x) {
+    long long n = a.size();
+    T l = -1, r = n;
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] > x) r = m;
+        else l = m;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, (T)3e18);
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>x)
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] <= x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
+// return maximum index i where a[i] < x, and its value a[i]
+// vector a must be pre-sorted in ascending (normal) order!
+// return value of -1 means a[0] is already over x (a[0]>=x)
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        T m = (l + r) / 2;
+        if (a[m] < x) l = m;
+        else r = m;
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, (T)-3e18);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S, T);
-    ll N = SIZE(S), M = SIZE(T);
-    ll K = 26;
+    LONG(N); VL(A, N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
 
-    auto calnxt=[&](string &S) -> vvl {
-        ll N = SIZE(S);
-        vvl nxt(K, vl(N, INF));
-        rep(i, N) {
-            nxt[S[i]-'a'][i] = i;
+    vl lis(N, INF);
+    vl ans(N);
+    auto dfs=[&](auto f, ll v, ll now=0, ll p=-1) -> void {
+        auto [n,x] = lowbou(lis, A[v]);
+        ll pre = lis[n];
+        lis[n] = A[v];
+        chmax(now, n+1);
+        ans[v] = max(now, n+1);
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, now, v);
         }
-        rep(k, K) repr(i, N-1) nxt[k][i] = min(nxt[k][i+1], nxt[k][i]);
-        return nxt;
+        lis[n] = pre;
     };
-    vvl nxts = calnxt(S), nxtt = calnxt(T);
-
-    auto caldbl = [&]() -> mint {
-        mint ret = 0;
-        vvm dp(N+1, vm(M+1));
-        dp[0][0] = 1;
-        rep(i, N) rep(j, M) {
-            rep(k, K) {
-                ll ni = nxts[k][i];
-                ll nj = nxtt[k][j];
-                if(ni==INF || nj==INF) continue;
-                ni++, nj++;
-                dp[ni][nj] += dp[i][j];
-            }
-        }
-        rep(i, N+1) rep(j, M+1) {
-            if(i==0 || j==0) continue;
-            ret += dp[i][j];
-        }
-        return ret;
-    };
-
-    auto calsgl=[&](string &s, vvl &nxt) -> mint {
-        mint ret = 0;
-        ll N = SIZE(s);
-        vm dp(N+1);
-        dp[0] = 1;
-        rep(i, N) {
-            rep(k, K) {
-                ll ni = nxt[k][i];
-                if(ni==INF) continue;
-                ++ni;
-                dp[ni] += dp[i];
-            }
-        }
-        rep(i, N+1) if(i) {
-            ret += dp[i];
-        }
-        return ret;
-    };
-
-    mint ans = calsgl(S, nxts);
-    de(ans)
-    ans += calsgl(T, nxtt);
-    de(ans)
-    ans -= caldbl();
+    dfs(dfs, 0);
     Out(ans);
-
-
-    // mint ans = caldbl();
-    // de(ans)
-
-
     
 }
 
