@@ -209,39 +209,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
+    LONG(N); VL(A, N); VL(B, N);
+    rotate(B.begin(), B.begin()+N-1, B.end());
+    de(A)de(B)
 
-    vvb dp(1<<N, vb(N));
-    rep(i, N) dp[1<<(N-1)][i] = false;
-    repr(s, 1<<N) {
-        rep(i, N) if(s>>i&1) {
-            if(s==1 && i==0) {
-                cout<<"";
+    ll ans = INF;
+    rep(ri, 2) {
+        vl dp(2, INF);
+        dp[ri] = 0;
+        rep(i, N) {
+            vl pdp(2, INF); swap(pdp, dp);
+            rep(j, 2) rep(k, 2) {
+                ll cost = 0;
+                if(k) cost += A[i];
+                if(j==k) cost += B[i];
+                chmin(dp[k], pdp[j]+cost);
             }
-            bool find = false;
-            rep(j, N) if(~s>>j&1) {
-                if(S[i].back()!=S[j][0]) continue;
-                ll ns = s|1<<j;
-                if(!dp[ns][j]) find = true;
-            }
-            if(find) dp[s][i] = true;
-            else dp[s][i] = false;
         }
+        chmin(ans, dp[ri]);
     }
-
-    // ll st=0;
-    // st |= 1<<0; st |= 1<<6;
-    // de(dp[st][6])
-    // de(dp[1][0])
-    rep(i, N) {
-        if(!dp[1<<i][i]) {
-            de(i)
-            Outend("First");
-        }
-    }
-    Out("Second");
-
+    Out(ans);
 
     
 }

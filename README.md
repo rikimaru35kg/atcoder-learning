@@ -858,9 +858,9 @@
 - 円環のどこかに必ず固定できる点があるのであれば、それを1番目かつN+1番目の要素とする事で、円環を固定できる場合あり
 ### 例題
 - !復習価値高 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
-- !復習価値高 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
-- !復習価値高 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
-- !復習価値中 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
+- !復習価値中 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
+- 基本 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
+- !復習価値低 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
 
 ## 木DP
 - DFSをしながら部分木に対する処理を実行していく
