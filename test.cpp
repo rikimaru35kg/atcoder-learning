@@ -206,96 +206,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N); STRING(S);
+    vl A;
+    for(auto c: S) A.push_back(c-'A');
+    ll M = (N+1)/2;
+
+    vm dp(2);
+    dp[0] = 1;
+    rep(i, M) {
+        vm pdp(2); swap(pdp, dp);
+        rep(j, 2) rep(x, 26) {
+            if(pdp[j]==0) continue;
+            if(j==0 && x>A[i]) continue;
+            ll nj = j;
+            if(x<A[i]) nj = 1;
+            dp[nj] += pdp[j];
         }
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    T l = -1, r = n;
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, (T)3e18);
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        T m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, (T)-3e18);
+
+    de(dp)
+    mint ans = dp[1];
+    ll K = N/2;
+    string fs = S.substr(0, N-K);
+    de(fs)
+    string bs = S.substr(0, K);
+    de(bs)
+    reverse(all(bs));
+    fs += bs;
+    de(fs)
+    if(fs<=S) ++ans;
+    Out(ans);
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, P);
-    VL(A, N);
-    vl B = A;
-    rep(i, N) B[i] += i;
-    vl dis(N, -INF);
-    rep(i, N) {
-        ll mn = N-1-i, mx = P-i;
-        if(A[i]<mn) continue;
-        if(A[i]>mx) continue;
-        auto [n,x] = uppbou(dis, B[i], false);
-        dis[n] = B[i];
+    LONG(T);
+    rep(i, T) {
+        solve();
+        // break;
     }
-    de(dis)
-    auto [len,x] = lowbou(dis, -INF, false);
-    Out(N-len);
-
+    
 }
 
 // ### test.cpp ###

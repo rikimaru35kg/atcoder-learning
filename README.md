@@ -690,7 +690,6 @@
 - !要復習 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
 - !要復習 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !要復習 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
-- !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 - !要復習 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
@@ -819,7 +818,6 @@
 ### 例題
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
-- 要復習 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値高 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
 - !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
@@ -831,13 +829,13 @@
 - 引き算の筆算のように、下位桁から考えるDPもある。繰り下がりの有無で状態を持つ
 - この時、繰り下がる＝引く数を＋1すると考えると良い
 ### 例題
-- !復習価値中 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
-- !復習価値低 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
-- !復習価値低 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
-- !復習価値中 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
-- !復習価値中 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
-- !復習価値高 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
-- !復習価値高 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
+- 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
+- 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
+- 基本 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
+- !復習価値低 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
+- おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
+- !復習価値低 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
+- !復習価値低 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
@@ -1664,6 +1662,13 @@
 - 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 - !復習価値高 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
 - !復習価値高 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
+
+## 階段状にかさ増しする
+- 相異なる必要がある場合、事前にかさ増しすると上手くいく
+- 他にもかさ増しが有効な場合があるが、言語化できていない
+### 例題
+- 要復習 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
+- !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
