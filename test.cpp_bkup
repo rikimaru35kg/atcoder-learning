@@ -209,32 +209,47 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    VL(A, N);
-    reverse(all(A));
-    vl x(N);
-    rep(i, N) {
-        x[i] = X/A[i];
-        X %= A[i];
-    }
-    reverse(all(A));
-    reverse(all(x));
+    LONG(N);
+    STRING(S, X);
+    vl A;
+    for(auto c: S) A.push_back(c-'0');
 
-    vl dp(2, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(2, INF); swap(pdp, dp);
-        rep(j, 2) {
-            ll xx = x[i];
-            if(j==1) xx++;
-            chmin(dp[0], pdp[j]+xx);
-            if(i<N-1) {
-                chmin(dp[1], pdp[j]-xx+A[i+1]/A[i]);
-            }
+    vvl mem(N, vl(7, -1));
+    auto f=[&](auto f, ll i, ll r) -> bool {
+        if(i==N) {
+            if(r==0) return true;
+            else return false;
         }
-        de(dp)
-    }
-    Out(dp[0]);
+        if(mem[i][r]!=-1) return mem[i][r];
+        bool ret;
+        if(X[i]=='A') {
+            ret = true;
+            {  // 0
+                bool b = f(f, i+1, r*10%7);
+                if(!b) ret = false;
+            }
+            {  // A[i]
+                bool b = f(f, i+1, (r*10+A[i])%7);
+                if(!b) ret = false;
+            }
+        } else {
+            ret = false;
+            {  // 0
+                bool b = f(f, i+1, r*10%7);
+                if(b) ret = true;
+            }
+            {  // A[i]
+                bool b = f(f, i+1, (r*10+A[i])%7);
+                if(b) ret = true;
+            }
+
+        }
+        mem[i][r] = (ll)ret;
+        return ret;
+    };
+    if(f(f, 0, 0)) puts("Takahashi");
+    else puts("Aoki");
+    de(mem)
     
 }
 

@@ -843,11 +843,11 @@
 - 再帰の方が分かりやすい場合は迷わず再帰で書く！再帰で書けば逆順をあまり意識しなくて良くなるので
 ### 例題
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
-- !復習価値低 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
+- 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
-- !復習価値中 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
-- !復習価値中 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
-- !復習価値高 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
+- 基本 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
+- !復習価値低 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
+- !復習価値中 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 
 ## 円環DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
