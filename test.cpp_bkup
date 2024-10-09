@@ -206,28 +206,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    vl sum(2*N-1);
-    ll now = 0;
-    rep(i, 2*N-1) {
-        sum[i] = now;
-        now += A[i/2];
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
 
-    vl dp(N+1, -INF);
-    dp[0] = 0;
-    rep1(i, N) {
-        ll now = 0;
-        rep(j, i) {
-            chmax(now, dp[j]+sum[i-j-1]);
+    vvm dp(N, vm(2, 1));
+    vl ords(N);
+    ll ord=0;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        // 到達の瞬間の処理
+        for(auto nv: from[v]) if(nv!=p) {
+            // 潜る手前 /////////////////////
+            // 処理
+
+            // 潜る
+            f(f, nv, v);
+
+            // 戻ってきた直後 ///////////////////
+            // 処理
+            dp[v][0] *= dp[nv][0] + dp[nv][1];
+            dp[v][1] *= dp[nv][0];
         }
-        dp[i] = now;
-    }
-    Out(dp[N]);
+        // 帰る瞬間の処理
+    };
+    dfs(dfs, 0);
+    Out(dp[0][0]+dp[0][1]);
     
 }
 
