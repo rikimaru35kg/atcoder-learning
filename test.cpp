@@ -209,45 +209,39 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    vl A;
-    for(auto c: S) {
-        if(c=='?') A.push_back(-1);
-        else A.push_back(c-'0');
-    }
+    LONG(N, L, D);
+    ll M = N + D + 10;
 
-    ll M = 10;
-    vvi dp(N+1, vi(M));
-    vvt3 pre(N+1, vt3(M, t3(-1,-1,-1)));
-    dp[0][0] = true;
-    rep(i, N) {
-        rep(j, M) {
-            if(A[i]==-1) {
-                rep(x, 10) {
-                    ll ni = i + 1;
-                    ll nj = (j+x*(i+1))%M;
-                    if(dp[i][j]) pre[ni][nj] = {i,j,x};
-                    dp[ni][nj] |= dp[i][j];
-                }
-            } else {
-                ll ni = i + 1;
-                ll nj = (j+A[i]*(i+1))%M;
-                if(dp[i][j]) pre[ni][nj] = {i,j,A[i]};
-                dp[ni][nj] |= dp[i][j];
-            }
+    vd dealer(M);
+    dealer[0] = 1;
+    db sum = 1;
+    rep1(i, L+D) {
+        if(i-D-1>=0) sum -= dealer[i-D-1];
+        dealer[i] = sum/D;
+        if(i<L) sum += dealer[i];
+    }
+    rep(i, L) dealer[i] = 0;
+    rep(i, M-1) dealer[i+1] += dealer[i];
+
+    vd player(M);
+    sum = 0;
+    for(ll x=N; x>=0; --x) {
+        sum -= player[x+D+1];
+        db win = 0;
+        { // no dice
+            db now = 0;
+            if(x) now = dealer[x-1] + (1-dealer[N]);
+            chmax(win, now);
         }
+        {  // dice
+            db now = sum/D;
+            chmax(win, now);
+        }
+        player[x] = win;
+        sum += player[x];
     }
-    if(!dp[N][0]) PNo
-    puts("Yes");
-    ll i = N, j = 0;
-    string ans;
-    while(get<0>(pre[i][j])!=-1) {
-        auto [pi, pj, x] = pre[i][j];
-        ans += x+'0';
-        i = pi, j = pj;
-    }
-    reverse(all(ans));
-    Out(ans);
+    Out(player[0]);
+
     
 }
 
