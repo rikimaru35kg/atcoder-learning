@@ -206,48 +206,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VC(C, N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N); STRING(S);
+    vl A;
+    for(auto c: S) {
+        if(c=='?') A.push_back(-1);
+        else A.push_back(c-'0');
     }
 
-    vvm dp(N, vm(4));
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ll x = 0;
-        if(C[v]=='a') x |= 1<<0;
-        if(C[v]=='b') x |= 1<<1;
-        dp[v][x] = 1; dp[v][3] = 1;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            dp[v][x] *= dp[nv][x] + dp[nv][3];
-            dp[v][3] *= dp[nv][1] + dp[nv][2] + 2*dp[nv][3];
+    ll M = 10;
+    vvi dp(N+1, vi(M));
+    vvt3 pre(N+1, vt3(M, t3(-1,-1,-1)));
+    dp[0][0] = true;
+    rep(i, N) {
+        rep(j, M) {
+            if(A[i]==-1) {
+                rep(x, 10) {
+                    ll ni = i + 1;
+                    ll nj = (j+x*(i+1))%M;
+                    if(dp[i][j]) pre[ni][nj] = {i,j,x};
+                    dp[ni][nj] |= dp[i][j];
+                }
+            } else {
+                ll ni = i + 1;
+                ll nj = (j+A[i]*(i+1))%M;
+                if(dp[i][j]) pre[ni][nj] = {i,j,A[i]};
+                dp[ni][nj] |= dp[i][j];
+            }
         }
-        dp[v][3] -= dp[v][x];
-    };
-    dfs(dfs, 0);
-    de(dp)
-    Out(dp[0][3]);
+    }
+    if(!dp[N][0]) PNo
+    puts("Yes");
+    ll i = N, j = 0;
+    string ans;
+    while(get<0>(pre[i][j])!=-1) {
+        auto [pi, pj, x] = pre[i][j];
+        ans += x+'0';
+        i = pi, j = pj;
+    }
+    reverse(all(ans));
+    Out(ans);
     
 }
 

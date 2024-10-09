@@ -206,52 +206,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    STRING(S); ll N = SIZE(S);
 
-    vvm dp(N, vm(2, 1));
-    vl ords(N);
-    ll ord=0;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        // 到達の瞬間の処理
-        for(auto nv: from[v]) if(nv!=p) {
-            // 潜る手前 /////////////////////
-            // 処理
+    vvl dp(N+1, vl(N+1));
 
-            // 潜る
-            f(f, nv, v);
-
-            // 戻ってきた直後 ///////////////////
-            // 処理
-            dp[v][0] *= dp[nv][0] + dp[nv][1];
-            dp[v][1] *= dp[nv][0];
+    for(ll w=3; w<=N; ++w) {
+        rep(l, N+1-w) {
+            ll r = l + w;
+            for(ll m=l+1; m<r; ++m) {
+                chmax(dp[l][r], dp[l][m]+dp[m][r]);
+            }
+            if((r-l)%3!=0) continue;
+            if(S.substr(l,2)=="iw" && S[r-1]=='i') {
+                if(3*dp[l+2][r-1]==r-l-3) dp[l][r] = (r-l)/3;
+            }
+            if(S[l]=='i' && S.substr(r-2,2)=="wi") {
+                if(3*dp[l+1][r-2]==r-l-3) dp[l][r] = (r-l)/3;
+            }
+            if(S[l]=='i' && S[r-1]=='i') {
+                for(ll m=l+1; m<r; ++m) {
+                    if(S[m]!='w') continue;
+                    if(3*dp[l+1][m]==m-l-1 && 3*dp[m+1][r-1]==r-m-2) dp[l][r] = (r-l)/3;
+                }
+            }
         }
-        // 帰る瞬間の処理
-    };
-    dfs(dfs, 0);
-    Out(dp[0][0]+dp[0][1]);
+    }
+    de(dp)
+    Out(dp[0][N]);
     
 }
 

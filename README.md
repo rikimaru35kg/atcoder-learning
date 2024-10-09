@@ -890,17 +890,17 @@
 ### 例題
 - 基本 [Matrix Chain Multiplication](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_B&lang=ja)
 - 基本 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
-- !復習価値中 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
-- !復習価値高 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-- !要復習 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
+- 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
+- !復習価値低 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
+- !復習価値中 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 
-## DP経路復元（想定解が復元ではないのでNote非掲載）
+## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
 - ただし、i=0以外ににも始点がある場合、遡るのを途中でやめなければならない
 - 2経路の復元の場合は、常に異なる戦略を取って逆順に辿れば良い
 - 複数経路復元は非常に難しい（D - Happy Birthday! 2のsnuke氏解説動画参照）
 ### 例題
-- !復習価値中 [K - 正しいチェックディジット](https://atcoder.jp/contests/past17-open/tasks/past17_k)
+- !復習価値低 [K - 正しいチェックディジット](https://atcoder.jp/contests/past17-open/tasks/past17_k)
 <!-- - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d) -->
 
 ## DP高速化
