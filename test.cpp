@@ -209,39 +209,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L, D);
-    ll M = N + D + 10;
+    LONG(H, W, K);
+    LONGM(si, sj);
+    VVL(A, H, W);
+    ll M = min(K, H*W);
 
-    vd dealer(M);
-    dealer[0] = 1;
-    db sum = 1;
-    rep1(i, L+D) {
-        if(i-D-1>=0) sum -= dealer[i-D-1];
-        dealer[i] = sum/D;
-        if(i<L) sum += dealer[i];
-    }
-    rep(i, L) dealer[i] = 0;
-    rep(i, M-1) dealer[i+1] += dealer[i];
-
-    vd player(M);
-    sum = 0;
-    for(ll x=N; x>=0; --x) {
-        sum -= player[x+D+1];
-        db win = 0;
-        { // no dice
-            db now = 0;
-            if(x) now = dealer[x-1] + (1-dealer[N]);
-            chmax(win, now);
+    vvl dp(H, vl(W, -INF));
+    dp[si][sj] = 0;
+    rep(m, M) {
+        vvl pdp(H, vl(W, -INF)); swap(pdp, dp);
+        rep(i, H) rep(j, W) {
+            if(pdp[i][j]==-INF) continue;
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                chmax(dp[ni][nj], pdp[i][j]+A[ni][nj]);
+            }
+            chmax(dp[i][j], pdp[i][j]+A[i][j]);
         }
-        {  // dice
-            db now = sum/D;
-            chmax(win, now);
-        }
-        player[x] = win;
-        sum += player[x];
+        de(dp)
     }
-    Out(player[0]);
-
+    K -= M;
+    ll ans = 0;
+    rep(i, H) rep(j, W) {
+        ll now = dp[i][j];
+        now += K * A[i][j];
+        chmax(ans, now);
+    }
+    Out(ans);
     
 }
 

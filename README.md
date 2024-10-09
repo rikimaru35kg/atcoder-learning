@@ -923,9 +923,9 @@
 - 何回操作したか等の長さもキーにするDP
 - 制約が小さいときに見かけがち
 ### 例題
-- !要復習 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
-- !復習価値高 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
-- !復習価値中 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
+- !復習価値中 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
+- 基本 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
+- 基本 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
 
 ## ひねりDP
 - 状態を工夫する事でDPに落とし込める問題
