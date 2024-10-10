@@ -223,31 +223,23 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vp edge;
-    rep(i, M) {
-        LONGM(x,y);
-        edge.emplace_back(x,y);
-    }
+    LONG(Q, K);
 
-    deque<mint> dp(N);
+    vm dp(K+1);
     dp[0] = 1;
-    rep(i, K) {
-        vector<pair<ll,mint>> stck;
-        for(auto [a,b]: edge) {
-            stck.emplace_back(b, dp[a]);
+    rep(i, Q) {
+        CHAR(c); LONG(x);
+        if(c=='+') {
+            repr(j, K+1) {
+                if(j+x<=K) dp[j+x] += dp[j];
+            }
+        } else {
+            rep(j, K+1) {
+                if(j+x<=K) dp[j+x] -= dp[j];
+            }
         }
-        dp.push_front(dp.back());
-        dp.pop_back();
-        for(auto [b, x]: stck) {
-            dp[b] += x;
-        }
+        Out(dp[K]);
     }
-    mint ans = 0;
-    rep(i, N) ans += dp[i];
-    Out(ans);
-
-
     
 }
 

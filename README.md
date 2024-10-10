@@ -969,8 +969,8 @@
 -　戻す操作は進める操作と全く逆にするとすれば理解は容易い（インラインDPの動きで逆順にする）
 - あるいは、元のDP配列がa,b,c,d,eで、加える値が2の場合はa,b,a+c,b+d,c+eとなる事を考えれば、戻す操作の手順が理解できるはず
 ### 例題
-- !復習価値高 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
-- !要復習 [D - No Need](https://atcoder.jp/contests/arc070/tasks/arc070_b)
+- 基本 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
+- !復習価値高 [D - No Need](https://atcoder.jp/contests/arc070/tasks/arc070_b)
 
 ## 挿入DP
 - 順列を作るとき、決めた長さまでの数字を使い{1,3,2}のように埋めておいて、次に2とする場合は2以上を繰り上げて{1,4,3,2}とする

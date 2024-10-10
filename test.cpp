@@ -223,35 +223,38 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-
-    ll M = 10;
-    ll K = 11;
-    vm dp(1<<K);
-    dp[1] = 1;
-    ll mask = (1<<K)-1;
+    LONG(N, K);
+    vl A;
+    ll need = 0;
     rep(i, N) {
-        vm pdp(1<<K); swap(pdp, dp);
-        rep(s, 1<<K) {
-            if(pdp[s]==0) continue;
-            for(ll a=1; a<=min(M,A[i]); ++a) {
-                ll ns = s|s<<a;
-                ns &= mask;
-                dp[ns] += pdp[s];
-            }
-            ll rem = max(A[i]-M, 0LL);
-            dp[s] += rem*pdp[s];
+        LONG(a);
+        if(a>=K) ++need;
+        else A.push_back(a);
+    }
+    ll Z = SIZE(A);
+    ll M = 1e4+10;
+    vm dp(M);
+    dp[0] = 1;
+    rep(i, Z) {
+        repr(j, M) {
+            if(j+A[i]<M) dp[j+A[i]] += dp[j];
         }
     }
-    mint ans = 0;
-    rep(s, 1<<K) {
-        if(~s>>M&1) continue;
-        ans += dp[s];
+    de(A)
+
+    rep(i, Z) {
+        rep(j, M) {
+            if(j+A[i]<M) dp[j+A[i]] -= dp[j];
+        }
+        mint sum = 0;
+        repk(x, K-A[i], K) sum += dp[x];
+        if(sum!=0) need++;
+        repr(j, M) {
+            if(j+A[i]<M) dp[j+A[i]] += dp[j];
+        }
     }
-    mint tot = 1;
-    rep(i, N) tot *= A[i];
-    ans /= tot;
-    Out(ans);
+    Out(N-need);
+
     
 }
 
