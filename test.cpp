@@ -206,49 +206,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(S);
-
-    vm dp(N);
-    dp[0] = 1;
-    rep(i, N-1) {
-        vm pdp(N); swap(pdp, dp);
-        vm Sc(N+1);
-        rep(j, N) Sc[j+1] = Sc[j] + pdp[j];
-
-        if(S[i]=='<') {
-            rep(j, i+2) {
-                dp[j] = Sc[j];
-            }
+    map<ll,Pr> mp;
+    rep(i, N) {
+        LONG(x, c);
+        if(mp.count(c)) {
+            chmin(mp[c].first, x);
+            chmax(mp[c].second, x);
         } else {
-            rep(j, i+2) {
-                dp[j] = Sc[N] - Sc[j];
-            }
+            mp[c] = {x,x};
         }
+    }
+    mp[INF] = {0,0};
+
+    vp dp(2);
+    for(auto[c,p]: mp) {
+        vp pdp(2, Pr(INF,-1)); swap(pdp, dp);
+        auto [x1, x2] = p;
+        auto [t1, xmn] = pdp[0];
+        auto [t2, xmx] = pdp[1];
+
+        chmin(dp[0], Pr(t1 + abs(xmn-x2)+abs(x2-x1), x1));
+        chmin(dp[0], Pr(t2 + abs(xmx-x2)+abs(x2-x1), x1));
+        chmin(dp[1], Pr(t1 + abs(xmn-x1)+abs(x1-x2), x2));
+        chmin(dp[1], Pr(t2 + abs(xmx-x1)+abs(x1-x2), x2));
+        de(c)
         de(dp)
     }
-    mint ans = 0;
-    rep(i, N) ans += dp[i];
+
+    ll ans = dp[0].first;
     Out(ans);
-
-
     
 }
 

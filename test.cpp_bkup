@@ -206,55 +206,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct B {
+    ll v, c;
+    B(ll v=-INF, ll c=-1): v(v),c(c) {}
+    bool operator<(const B &o) const {
+        return v<o.v;
+    }
+};
+
+struct D {
+    B b1, b2;
+    D(B b1=B(), B b2=B(-INF,-2)):b1(b1),b2(b2) {}
+
+    void upd(B b) {
+        if(b2<b) swap(b, b2);
+        if(b1<b2) swap(b1, b2);
+        if(b1.c==b2.c) swap(b2,b);
+    }
+    void upd(D d) {
+        upd(d.b1);
+        upd(d.b2);
+    }
+};
+
+using vD=vector<D>;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    vl A;
-    ll need = 0;
+    VL2(C, V, N);
+    rep(i, N) C[i]--;
+
+
+    vD dp(K+1);
+    dp[0] = D(B(0,-1),B(-INF,-2));
+    auto prnt=[&]() {
+        cout<<endl;
+        rep(j, K+1) {
+            printf("({%lld %lld},{%lld %lld}) ", dp[j].b1.v, dp[j].b1.c, dp[j].b2.v, dp[j].b2.c);
+            cout<<endl;
+        }
+    };
+    // prnt();
+
     rep(i, N) {
-        LONG(a);
-        if(a>=K) ++need;
-        else A.push_back(a);
-    }
-    ll Z = SIZE(A);
-    ll M = 1e4+10;
-    vm dp(M);
-    dp[0] = 1;
-    rep(i, Z) {
-        repr(j, M) {
-            if(j+A[i]<M) dp[j+A[i]] += dp[j];
+        vD pdp(K+1); swap(pdp, dp);
+        rep(j, K+1) {
+            if(j<K) dp[j+1].upd(pdp[j]);
+            B pre = pdp[j].b1;
+            if(pre.c==C[i]) pre = pdp[j].b2;
+            if(pre.v==-INF) continue;
+            B nxt = B(pre.v+V[i], C[i]);
+            dp[j].upd(nxt);
         }
+        // prnt();
     }
-    de(A)
 
-    rep(i, Z) {
-        rep(j, M) {
-            if(j+A[i]<M) dp[j+A[i]] -= dp[j];
-        }
-        mint sum = 0;
-        repk(x, K-A[i], K) sum += dp[x];
-        if(sum!=0) need++;
-        repr(j, M) {
-            if(j+A[i]<M) dp[j+A[i]] += dp[j];
-        }
-    }
-    Out(N-need);
-
+    ll ans = dp[K].b1.v;
+    if(ans==-INF) Pm1
+    Out(ans);
     
 }
 
