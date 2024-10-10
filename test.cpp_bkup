@@ -223,23 +223,38 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q, K);
-
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, Q) {
-        CHAR(c); LONG(x);
-        if(c=='+') {
-            repr(j, K+1) {
-                if(j+x<=K) dp[j+x] += dp[j];
-            }
-        } else {
-            rep(j, K+1) {
-                if(j+x<=K) dp[j+x] -= dp[j];
-            }
-        }
-        Out(dp[K]);
+    LONG(N, K);
+    vl A;
+    ll need = 0;
+    rep(i, N) {
+        LONG(a);
+        if(a>=K) ++need;
+        else A.push_back(a);
     }
+    ll Z = SIZE(A);
+    ll M = 1e4+10;
+    vm dp(M);
+    dp[0] = 1;
+    rep(i, Z) {
+        repr(j, M) {
+            if(j+A[i]<M) dp[j+A[i]] += dp[j];
+        }
+    }
+    de(A)
+
+    rep(i, Z) {
+        rep(j, M) {
+            if(j+A[i]<M) dp[j+A[i]] -= dp[j];
+        }
+        mint sum = 0;
+        repk(x, K-A[i], K) sum += dp[x];
+        if(sum!=0) need++;
+        repr(j, M) {
+            if(j+A[i]<M) dp[j+A[i]] += dp[j];
+        }
+    }
+    Out(N-need);
+
     
 }
 

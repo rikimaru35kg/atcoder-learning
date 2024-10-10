@@ -208,7 +208,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint1000000007;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -223,37 +223,31 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vl A;
-    ll need = 0;
-    rep(i, N) {
-        LONG(a);
-        if(a>=K) ++need;
-        else A.push_back(a);
-    }
-    ll Z = SIZE(A);
-    ll M = 1e4+10;
-    vm dp(M);
-    dp[0] = 1;
-    rep(i, Z) {
-        repr(j, M) {
-            if(j+A[i]<M) dp[j+A[i]] += dp[j];
-        }
-    }
-    de(A)
+    LONG(N);
+    STRING(S);
 
-    rep(i, Z) {
-        rep(j, M) {
-            if(j+A[i]<M) dp[j+A[i]] -= dp[j];
+    vm dp(N);
+    dp[0] = 1;
+    rep(i, N-1) {
+        vm pdp(N); swap(pdp, dp);
+        vm Sc(N+1);
+        rep(j, N) Sc[j+1] = Sc[j] + pdp[j];
+
+        if(S[i]=='<') {
+            rep(j, i+2) {
+                dp[j] = Sc[j];
+            }
+        } else {
+            rep(j, i+2) {
+                dp[j] = Sc[N] - Sc[j];
+            }
         }
-        mint sum = 0;
-        repk(x, K-A[i], K) sum += dp[x];
-        if(sum!=0) need++;
-        repr(j, M) {
-            if(j+A[i]<M) dp[j+A[i]] += dp[j];
-        }
+        de(dp)
     }
-    Out(N-need);
+    mint ans = 0;
+    rep(i, N) ans += dp[i];
+    Out(ans);
+
 
     
 }

@@ -976,7 +976,7 @@
 - 順列を作るとき、決めた長さまでの数字を使い{1,3,2}のように埋めておいて、次に2とする場合は2以上を繰り上げて{1,4,3,2}とする
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
-- !復習価値高 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+- !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
 
 ## 決め打ちDP
 - ある条件を決め打ってDPする事で、問題が解けるようになる場合あり
