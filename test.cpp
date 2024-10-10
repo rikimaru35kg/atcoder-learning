@@ -287,36 +287,39 @@ struct hash<mints> {
 };
 }
 
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(T);
-    mints h1 = 0, h2 = 0;
-    rep(i, N) { h2 = h2*base + T[i]; }
-    for(ll i=2*N-1; i>=N; --i) { h1 = h1*base + T[i]; }
+    VS(S, N);
 
-    vector<mints> bn(N+1);
-    bn[0] = 1;
-    rep(i, N) bn[i+1] = bn[i] * base;
-
-    rep(i, N+1) {
-        if(h1==h2) {
-            string ans = T.substr(i, N);
-            reverse(all(ans));
-            Out(ans);
-            Out(i);
-            return 0;
+    unordered_map<mints,ll> mp;
+    rep(i, N) {
+        mints h=0;
+        for(auto c: S[i]) {
+            h = h*base + c;
+            mp[h]++;
         }
-        h1 += bn[i] * T[i];
-        h1 -= bn[i] * T[i+N];
-        h2 -= bn[N-1]*T[i];
-        h2 *= base;
-        h2 += T[i+N];
-
-        if(i==N) break;
     }
-    Pm1
+    ll ans = 0;
+    for(auto [h,n]:mp) ans += nCr(n, 2);
+    cout << ans << endl;
     
 }
 

@@ -1027,8 +1027,8 @@
 - 文字列を辞書順に並べた場合、S[i]とS[j]のLCPは区間minで求まる
 - LCPは全接頭辞の個数を事前に調べておけば解決できる問題も多く、ロリハが有用な事が多い
 ### 例題 (普通の解法だけでなくロリハでも解いてみよう)
-- !復習価値高 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
-- !復習価値高 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+- !復習価値中 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
+- !復習価値中 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 
 ## Z-algorithm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
