@@ -206,66 +206,128 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct B {
-    ll v, c;
-    B(ll v=-INF, ll c=-1): v(v),c(c) {}
-    bool operator<(const B &o) const {
-        return v<o.v;
+const long long base = 12345;
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
     }
 };
 
-struct D {
-    B b1, b2;
-    D(B b1=B(), B b2=B(-INF,-2)):b1(b1),b2(b2) {}
-
-    void upd(B b) {
-        if(b2<b) swap(b, b2);
-        if(b1<b2) swap(b1, b2);
-        if(b1.c==b2.c) swap(b2,b);
-    }
-    void upd(D d) {
-        upd(d.b1);
-        upd(d.b2);
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
     }
 };
+}
 
-using vD=vector<D>;
+#include <atcoder/segtree>
+using namespace atcoder;
+
+struct S {
+    mints h, w;
+    S(mints h=0, mints w=1):h(h),w(w) {}
+};
+S op(S a, S b) {
+    return S(a.h*b.w+b.h, a.w*b.w);
+}
+S e() {return S();}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL2(C, V, N);
-    rep(i, N) C[i]--;
+    LONG(N, Q);
+    STRING(Str);
 
-
-    vD dp(K+1);
-    dp[0] = D(B(0,-1),B(-INF,-2));
-    auto prnt=[&]() {
-        cout<<endl;
-        rep(j, K+1) {
-            printf("({%lld %lld},{%lld %lld}) ", dp[j].b1.v, dp[j].b1.c, dp[j].b2.v, dp[j].b2.c);
-            cout<<endl;
-        }
-    };
-    // prnt();
-
+    vector<S> v;
     rep(i, N) {
-        vD pdp(K+1); swap(pdp, dp);
-        rep(j, K+1) {
-            if(j<K) dp[j+1].upd(pdp[j]);
-            B pre = pdp[j].b1;
-            if(pre.c==C[i]) pre = pdp[j].b2;
-            if(pre.v==-INF) continue;
-            B nxt = B(pre.v+V[i], C[i]);
-            dp[j].upd(nxt);
-        }
-        // prnt();
+        v.emplace_back(Str[i], base);
     }
+    segtree<S,op,e> seg1(v);
+    reverse(all(v));
+    segtree<S,op,e> seg2(v);
+    reverse(all(v));
 
-    ll ans = dp[K].b1.v;
-    if(ans==-INF) Pm1
-    Out(ans);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x); CHAR(c); --x;
+            seg1.set(x, S(c, base));
+            seg2.set(N-1-x, S(c, base));
+        } else {
+            LONG(l, r); --l;
+            mints h1 = seg1.prod(l,r).h;
+            mints h2 = seg2.prod(N-r,N-l).h;
+            if(h1==h2) puts("Yes");
+            else puts("No");
+        }
+    }
     
 }
 

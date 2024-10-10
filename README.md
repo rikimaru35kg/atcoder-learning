@@ -1017,8 +1017,8 @@
 - mintsの演算は定数倍（10倍ぐらい？）が重いので要注意！特にセグ木と使うなら、**opの中でlog**をつけてはだめだし、**初期化**もサボったら駄目。**素数の数**もいたずらに増やさない方が良い（2個で済むなら2個が無難）
 - また、ハッシュ一致判定で**mapやumap**を使うなら、その定数倍も重い（5倍ぐらい？）ので注意！
 ### 例題
-- !復習価値高 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
-- !復習価値高 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
+- !復習価値低 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+- !復習価値低 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
 
 ## LCP（Longest Common Prefix）最長共通接頭辞
 - Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造
