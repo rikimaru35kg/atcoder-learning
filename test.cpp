@@ -206,27 +206,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL2(A,B,N);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return A[j]*B[i]+B[j] > A[i]*B[j] + B[i];
-    });
+    LONG(N); VL(A, N);
 
-    vl dp(K+1, -INF);
-    dp[0] = 1;
-    for(auto i: p) {
-        repr(j, K+1) {
-            if (dp[j]==-INF) continue;
-            if(j<K) chmax(dp[j+1], dp[j]*A[i]+B[i]);
+    ll M = 10;
+    ll K = 11;
+    vm dp(1<<K);
+    dp[1] = 1;
+    ll mask = (1<<K)-1;
+    rep(i, N) {
+        vm pdp(1<<K); swap(pdp, dp);
+        rep(s, 1<<K) {
+            if(pdp[s]==0) continue;
+            for(ll a=1; a<=min(M,A[i]); ++a) {
+                ll ns = s|s<<a;
+                ns &= mask;
+                dp[ns] += pdp[s];
+            }
+            ll rem = max(A[i]-M, 0LL);
+            dp[s] += rem*pdp[s];
         }
     }
-    Out(dp[K]);
-
+    mint ans = 0;
+    rep(s, 1<<K) {
+        if(~s>>M&1) continue;
+        ans += dp[s];
+    }
+    mint tot = 1;
+    rep(i, N) tot *= A[i];
+    ans /= tot;
+    Out(ans);
+    
 }
 
 // ### test.cpp ###
