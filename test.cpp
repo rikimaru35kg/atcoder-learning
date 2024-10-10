@@ -206,76 +206,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Data {
-    ll n, x;
-    Data(ll n=INF, ll x=-1): n(n),x(x) {}
-    bool operator<(const Data &o) const {
-        if(n==o.n) return x>o.x;
-        return n<o.n;
-    }
-    Data operator+(const Data &o) const {
-        return Data(n+o.n, x+o.x);
-    }
-};
-using vD = vector<Data>;
-using vvD = vector<vD>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VVL(P, N, N); VVL(R, N, N-1); VVL(D, N-1, N);
-    
-    auto gid=[&](ll i, ll j) {return i*N+j;};
-    auto rid=[&](ll id) -> Pr {return {id/N, id%N};};
-    
-    ll N2 =N*N;
+    LONG(N, K);
+    VL2(A,B,N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return A[j]*B[i]+B[j] > A[i]*B[j] + B[i];
+    });
 
-    vvD dp(N2, vD(N2));
-    dp[gid(0,0)][gid(0,0)] = Data(0,0);
-
-    rep(id, N2) rep(mid, N2) {
-        auto [i,j] = rid(id);
-        auto [mi, mj] = rid(mid);
-        auto [n, x] = dp[id][mid];
-        if(n==INF) continue;
-        auto upd=[&](ll ni, ll nj, ll cost) {
-            ll nmi = mi, nmj = mj;
-            if(P[mi][mj]<P[ni][nj]) nmi = ni, nmj = nj;
-            if(x>=cost) {
-                chmin(dp[gid(ni,nj)][gid(nmi,nmj)], dp[id][mid]+Data(1,-cost));
-            } else {
-                ll k = Divceil(cost-x, P[mi][mj]);
-                chmin(dp[gid(ni,nj)][gid(nmi,nmj)], dp[id][mid]+Data(k+1, k*P[mi][mj]-cost));
-            }
-        };
-        if(j<N-1) { // right
-            ll ni = i, nj = j+1;
-            ll cost = R[i][j];
-            upd(ni,nj,cost);
-        }
-        if(i<N-1) {  // down
-            ll ni = i+1, nj = j;
-            ll cost = D[i][j];
-            upd(ni,nj,cost);
+    vl dp(K+1, -INF);
+    dp[0] = 1;
+    for(auto i: p) {
+        repr(j, K+1) {
+            if (dp[j]==-INF) continue;
+            if(j<K) chmax(dp[j+1], dp[j]*A[i]+B[i]);
         }
     }
-
-    Data ans;
-    rep(i, N) rep(j, N) {
-        chmin(ans, dp[gid(N-1,N-1)][gid(i,j)]);
-    }
-    Out(ans.n);
-    // rep(i, N) rep(j, N) {
-    //     Data now;
-    //     rep(mi, N) rep(mj, N) {
-    //         chmin(now, dp[gid(i,j)][gid(mi,mj)]);
-    //     }
-    //     auto [n,x] = now;
-    //     de4(i,j,n,x);
-    // }
-
-
+    Out(dp[K]);
 
 }
 

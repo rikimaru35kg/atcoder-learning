@@ -210,32 +210,28 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(D, N);
-    LONG(L1,C1,K1);
-    LONG(L2,C2,K2);
+    VL2(H, P, N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return H[i]+P[i] < H[j]+P[j];
+    });
 
-    vl dp(K1+1, INF);
+    vl dp(N+1, INF);
     dp[0] = 0;
-    rep(i, N) {
-        vl pdp(K1+1, INF); swap(pdp, dp);
-        rep(j, K1+1) {
-            if(pdp[j]==INF) continue;
-            rep(x, K1+1) {
-                if(j+x>K1) break;
-                ll y = Divceil(D[i]-x*L1, L2);
-                chmax(y, 0LL);
-                chmin(dp[j+x], pdp[j]+y);
-            }
+    for(auto i: p) {
+        de(i)
+        repr(j, N+1) {
+            if(dp[j]==INF) continue;
+            if(dp[j]>H[i]) continue;
+            if(j<N) chmin(dp[j+1], dp[j]+P[i]);
         }
+        de(dp)
     }
-
-    ll ans = INF;
-    rep(i, K1+1) {
-        if(dp[i]>K2) continue;
-        ll now = i*C1 + dp[i]*C2;
-        chmin(ans, now);
+    ll ans = 0;
+    rep(i, N+1) if(dp[i]!=INF) {
+        chmax(ans, i);
     }
-    ch1(ans);
     Out(ans);
     
 }
