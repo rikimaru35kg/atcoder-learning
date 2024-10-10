@@ -209,31 +209,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    VL(A, N);
+    LONG(N);
+    VL(D, N);
+    LONG(L1,C1,K1);
+    LONG(L2,C2,K2);
 
-    auto calc=[&](ll K) -> ll {
-        vvl dp(K+1, vl(K, -INF));
-        dp[0][0] = 0;
-        rep(i, N) {
-            vvl pdp(K+1, vl(K, -INF)); swap(pdp, dp);
-            rep(j, K+1) rep(m, K) {
-                if(pdp[j][m]==-INF) continue;
-                chmax(dp[j][m], pdp[j][m]);
-                if(j<K) chmax(dp[j+1][(m+A[i])%K], pdp[j][m]+A[i]);
+    vl dp(K1+1, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(K1+1, INF); swap(pdp, dp);
+        rep(j, K1+1) {
+            if(pdp[j]==INF) continue;
+            rep(x, K1+1) {
+                if(j+x>K1) break;
+                ll y = Divceil(D[i]-x*L1, L2);
+                chmax(y, 0LL);
+                chmin(dp[j+x], pdp[j]+y);
             }
         }
-        ll ret = dp[K][X%K];
-        return ret;
-    };
+    }
 
     ll ans = INF;
-    rep1(k, N) {
-        ll s = calc(k);
-        if(s==-INF) continue;
-        de2(k, s)
-        chmin(ans, (X-s)/k);
+    rep(i, K1+1) {
+        if(dp[i]>K2) continue;
+        ll now = i*C1 + dp[i]*C2;
+        chmin(ans, now);
     }
+    ch1(ans);
     Out(ans);
     
 }
