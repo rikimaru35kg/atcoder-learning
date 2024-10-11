@@ -206,31 +206,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return gcd(a,b);}
-S e() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(A, N); VL(B, N);
-
-    segtree<S,op,e> sega(N), segb(N);
-    rep(i, N-1) sega.set(i, A[i+1]-A[i]);
-    rep(i, N-1) segb.set(i, B[i+1]-B[i]);
-    rep(i, Q) {
-        LONGM(h1, h2, w1, w2);
-        ll g = A[h1]+B[w1];
-        ll tmp = sega.prod(h1, h2);
-        g = gcd(g, tmp);
-        tmp = segb.prod(w1, w2);
-        g = gcd(g, tmp);
-        Out(g);
+    LONG(N);
+    vvp num(N);
+    umap<ll,ll> mx;
+    rep(i, N) {
+        LONG(M);
+        rep(j, M) {
+            LONGM(p, e);
+            num[i].emplace_back(p, e);
+            chmax(mx[p], e);
+        }
     }
+
+    umap<ll,ll> cnt;
+    rep(i, N) {
+        for(auto [p,e]: num[i]) {
+            if(mx[p]==e) cnt[p]++;
+        }
+    }
+    ll ans = 1;
+    rep(i, N) {
+        bool unique = false;
+        for(auto [p,e]: num[i]) {
+            if(mx[p]==e && cnt[p]==1) {
+                unique = true;
+                break;
+            }
+        }
+        if(unique)++ans;
+    }
+    chmin(ans, N);
+
+    Out(ans);
     
 }
 

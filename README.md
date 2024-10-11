@@ -1169,8 +1169,8 @@
 - 最小公倍数は各素因数の最大指数を選んだものとなる
 - 最小公倍数はオーバーフローに注意（1e9以下同士であれば大丈夫だが、それ以上の場合はgcdを求めてオーバーフロー判定する必要あり）
 ### 例題
-- !復習価値中 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
-- !復習価値低 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
+- 基本 半公倍数 [D - Semi Common Multiple](https://atcoder.jp/contests/abc150/tasks/abc150_d)
+- 基本 最大公約数の種類数 [E - LCM on Whiteboard](https://atcoder.jp/contests/abc259/tasks/abc259_e)
 
 ## 素数判定
 - sqrt(N)まで試して割れなければ素数である

@@ -206,27 +206,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
-}
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(A,B);
-    auto [g,x,y] = extgcd(B, -A);
-    if(g<0) x = -x, y = -y, g = -g;
-    if(g!=1 && g!=2) Pm1
-    if(g==1) {
-        x *= 2;
-        y *= 2;
+    LONG(N, M);
+    VL(A, N);
+    rep(i, N) A[i]>>=1;
+
+    ll cnt = 0;
+    while(A[0]%2==0) cnt++, A[0]>>=1;
+    repk(i, 1, N) {
+        ll now = 0;
+        while(A[i]%2==0) now++, A[i]>>=1;
+        if(cnt!=now) Pm0
     }
-    printf("%lld %lld\n", x, y);
+
+    ll lc = 1;
+    rep(i, N) {
+        lc = lcm(lc, A[i]);
+        if(lc>M) Pm0
+    }
+
+    lc *= 1LL<<cnt;
+    de(lc)
+
+    ll ans = Div(M, lc);
+    ans -= Div(M, lc*2);
+    Out(ans);
 
 
     
