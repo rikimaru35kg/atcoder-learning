@@ -206,13 +206,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    sll x = (sll)N*N;
-    if(x<M) Pm1
-
+    LONG(N);
+    VL2(A, B, N);
+    auto da = listup_divisor(A[0]);
+    auto db = listup_divisor(B[0]);
+    
+    ll ans = 1;
+    for(auto a: da) for(auto b: db) {
+        bool ok = true;
+        rep(i, N) {
+            if(A[i]%a==0 && B[i]%b==0) continue;
+            if(B[i]%a==0 && A[i]%b==0) continue;
+            ok = false; break;
+        }
+        if(ok) chmax(ans, lcm(a, b));
+    }
+    Out(ans);
 
     
 }

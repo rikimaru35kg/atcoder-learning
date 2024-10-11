@@ -29,7 +29,7 @@ INF = int(3e18)
 
 
 def main():
-
+    pass
 
 
 if __name__ == '__main__':
