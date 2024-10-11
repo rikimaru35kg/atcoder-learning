@@ -1079,8 +1079,8 @@
 - この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
-- !復習価値低 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
-- !復習価値高 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
+- 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
+- !復習価値低 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値高 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !要復習 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
 
@@ -1088,13 +1088,13 @@
 - ORは各ビットの和集合
 - ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
 ### 例題
-- [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
+- !要復習 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
 
 ## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
 - Nに対し、切り上げと切り捨ての両方で2で割る操作を繰り返して出てくる数は高々2×log(N)個。2進数で考えると明快に分かる（切り捨てのみ繰り返すのと切り上げのみ繰り返すのとの差は高々1しか生まれない）
 ### 例題
-- !復習価値中 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
+- 基本 2進数情報量を利用 [E - Bad Juice](https://atcoder.jp/contests/abc337/tasks/abc337_e)
 - 基本（直接的な2進数問題でないのでNote非掲載） [C - Divide and Divide](https://atcoder.jp/contests/abc340/tasks/abc340_c)
 
 ## MEX（Minimum Excluded value）

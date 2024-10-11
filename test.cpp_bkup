@@ -206,96 +206,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
 
-// !Lazy Segtree for affine transformation
-// Edit here --> 
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e() {return 0;}
-// <-- Edit here
-struct F {
-    ll a, b;
-    F(ll a, ll b):a(a), b(b) {}
-};
-S mapping(F f, S x) {
-    return f.a*x + f.b;
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
 }
-F composition(F f, F g) {
-    return F(f.a*g.a, f.a*g.b+f.b);
-}
-F id() {return F(1,0);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    ll N = SIZE(Str);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
-    rep(i, N) seg.set(i, i);
+    LONG(N, K);
+    VL2(A, B, N);
 
-    vector<pair<char,ll>> stck;
-    ll flip=0;
-    vl flips(N);
-    vp ope;
-
-    rep(i, N) {
-        if(Str[i]=='(' || Str[i]==')') flip ^= 1;
-        flips[i] = flip;
-        if(Str[i]==')') {
-            ll prei = -1;
-            while(stck.size()) {
-                auto [c,pi] = stck.back(); stck.pop_back();
-                if(c!='(') continue;
-                prei = pi;
-                break;
+    ll ans = 0;
+    ll mask = 0;
+    rep(d, 30) {
+        if(K>>d&1) {
+            ll x = K;
+            ll now = 0;
+            x &= ~(1LL<<d);
+            x |= mask;
+            rep(i, N) {
+                if((A[i]&x)==A[i]) now += B[i];
             }
-            de2(prei, i)
-            // seg.apply(prei, i+1, F(-1,prei+i));
-            ope.emplace_back(prei, i);
-        } else {
-            stck.emplace_back(Str[i], i);
+            chmax(ans, now);
         }
-        // de(i)
-        // for(auto [c,j]: stck) {
-        //     fprintf(stderr,"{%c %lld} ", c, j);
-        //     cerr<<endl;
-        // }
+        mask = mask<<1|1;
     }
-    while(ope.size()) {
-        auto [prei, i] = ope.back(); ope.pop_back();
-        seg.apply(prei, i+1, F(-1,prei+i));
-    }
-
-    auto segprint=[&](){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
-        cerr<<endl;
-    #endif
-    };
-    segprint();
-
-    string ans(N, '.');
+    ll now = 0;
     rep(i, N) {
-        if(Str[i]=='(' || Str[i]==')') continue;
-        ll x = seg.get(i);
-        char c = Str[i];
-        if(flips[i]) {
-            if(islower(c)) c = toupper(c);
-            else c = tolower(c);
-        }
-        ans[x] = c;
+        if((A[i]&K)==A[i]) now += B[i];
     }
-    de(ans)
-    string ans2;
-    rep(i, N) if(ans[i]!='.') ans2+=ans[i];
-    Out(ans2);
+    chmax(ans, now);
 
-
-    
+    Out(ans);
 }
-
-// ### test.cpp ###

@@ -206,51 +206,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-#include <atcoder/string>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S); ll N = SIZE(S);
-    LONG(Q);
-    auto v = suffix_array(S);
-    rep(i, Q) {
-        STRING(s);
-        auto f=[&](ll x) -> bool {
-            string t = S.substr(v[x], SIZE(s));
-            return s<=t;
-        };
-        auto g=[&](ll x) -> bool {
-            string t = S.substr(v[x], SIZE(s));
-            return s<t;
-        };
-        ll l = binary_search(N, -1, f);
-        ll r = binary_search(N, -1, g);
-        Out(r-l);
+    LONG(N);
+    ll M = 1;
+    while((1LL<<M) < N) M++;
+    Out(M);
+    cout<<flush;
+    vvl juice(M);
+    rep(s, N) {
+        rep(i, M) {
+            if(s>>i&1) {
+                juice[i].push_back(s+1);
+            }
+        }
     }
-
+    reverse(all(juice));
+    rep(i, M) {
+        printf("%lld", SIZE(juice[i]));
+        for(auto x: juice[i]) {
+            printf(" %lld", x);
+        }
+        cout<<endl;
+    }
+    STRING(S);
+    ll x = stoll(S,nullptr, 2);
+    Out(x+1);
+    cout<<flush;
+   
     
 }
 
