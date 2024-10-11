@@ -1037,21 +1037,21 @@
 - どこまで探索を省略できるかで頭が混乱しがちなので、かつっぱ氏のyoutubeを見ると理解できる
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
-- !復習価値中 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+- !復習価値低 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
 ## 区間反転操作
 - 区間を反転させても内部に影響がない場合、区間の端だけ考えて考察すると良い
 - ランレングス圧縮と相性が良い
 ### 例題
 - 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
-- !復習価値中 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
-- !要復習 括弧列内文字反転 [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
+- 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+- !復習価値高 括弧列内文字反転 [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 
 ## Suffix Array
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
 - O(N)で求まるらしい（ACLにある）
 ### 例題
-- !要復習 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
+- !復習価値高 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
 
 # 数
 
