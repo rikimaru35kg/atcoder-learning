@@ -206,155 +206,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
+#include <atcoder/segtree>
+using namespace atcoder;
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
+using S = ll;
+S op(S a, S b) {return gcd(a,b);}
+S e() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    Sieve sieve(100);
-    vl ps;
-    rep1(k, 100) {
-        if(sieve.is_prime(k)) ps.push_back(k);
-    }
-    ll M = 16;
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
 
-    ll Mx = 1e17;
-    vp cand;
-    vl cnts(M);
-    auto dfs=[&](auto f, ll i, ll x, vl cnts) -> void {
-        if(x>Mx) return;
-        ll sum = 1;
-        rep(j, M) sum *= cnts[j]+1;
-        cand.emplace_back(x, sum);
-        if(i==0 || cnts[i]<cnts[i-1]) {
-            vl ncnts = cnts;
-            ncnts[i]++;
-            f(f, i, x*ps[i], ncnts);
-        }
-        if(i<M-1) {
-            vl ncnts = cnts;
-            ncnts[i+1]++;
-            f(f, i+1, x*ps[i+1], ncnts);
-        }
-    };
-    dfs(dfs, 0, 1, cnts);
-    sort(all(cand));
-    ll cmx = 0;
-    vp nums;
-    for(auto [x,n]: cand) {
-        if(n<=cmx) continue;
-        nums.emplace_back(x, n);
-        cmx = n;
-    }
-
+    segtree<S,op,e> sega(N), segb(N);
+    rep(i, N-1) sega.set(i, A[i+1]-A[i]);
+    rep(i, N-1) segb.set(i, B[i+1]-B[i]);
     rep(i, Q) {
-        LONG(z);
-        auto [j,x] = lowbou_r(nums, Pr(z, INF));
-        printf("%lld %lld\n", x.second, x.first);
+        LONGM(h1, h2, w1, w2);
+        ll g = A[h1]+B[w1];
+        ll tmp = sega.prod(h1, h2);
+        g = gcd(g, tmp);
+        tmp = segb.prod(w1, w2);
+        g = gcd(g, tmp);
+        Out(g);
     }
-
     
 }
 

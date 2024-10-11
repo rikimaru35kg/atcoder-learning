@@ -1150,7 +1150,7 @@
 - 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
 - 基本 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 - !要復習 max(LCM,GCD) [C - LCM of GCDs](https://atcoder.jp/contests/arc124/tasks/arc124_c)
-- !要復習 高度合成数を求める [D - 2016](https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_d)
+- !復習価値低 高度合成数を求める [D - 2016](https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_d)
 
 ## GCD最大公約数と拡張ユークリッドの互除法
 - 最大公約数は各素因数の最小指数を選んだもの
@@ -1161,9 +1161,9 @@
 - xの一般解は、特殊解との差から求められる x=x0+i(M/g)
 - rep(i,N) g=gcd(g,a[i])は1回の操作ごとに、gが変わらない（O(1)）か、gが半分以下になるかのどちらかである。すなわちセグ木に乗せた場合、毎回のop演算でlogMかかる訳ではなく、全体でlogMかかるだけなので、セグ木一回当たりのprod計算量はlogN+logMとなる
 ### 例題
-- !復習価値高 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
-- !復習価値中 [F - S = 1](https://atcoder.jp/contests/abc340/tasks/abc340_f)
-- !復習価値中 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
+- !復習価値中 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- 基本 [F - S = 1](https://atcoder.jp/contests/abc340/tasks/abc340_f)
+- !復習価値低 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
 
 ## LCM最小公倍数
 - 最小公倍数は各素因数の最大指数を選んだものとなる
