@@ -206,55 +206,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL2(A, B, N);
+    LONG(N, Q); VL(A, N);
+    set<ll> st;
+    vl cnt(N);
+    rep(i, N+1) st.insert(i);
 
-    ll ans = 0;
-    ll mask = 0;
-    rep(d, 30) {
-        if(K>>d&1) {
-            ll x = K;
-            ll now = 0;
-            x &= ~(1LL<<d);
-            x |= mask;
-            rep(i, N) {
-                if((A[i]&x)==A[i]) now += B[i];
-            }
-            chmax(ans, now);
-        }
-        mask = mask<<1|1;
-    }
-    ll now = 0;
-    rep(i, N) {
-        if((A[i]&K)==A[i]) now += B[i];
-    }
-    chmax(ans, now);
+    auto add=[&](ll x) {
+        if(x>=N) return;
+        cnt[x]++;
+        st.erase(x);
+    };
+    auto del=[&](ll x) {
+        if(x>=N) return;
+        cnt[x]--;
+        if(cnt[x]==0) st.insert(x);
+    };
+    rep(i, N) add(A[i]);
 
-    Out(ans);
+    rep(j, Q) {
+        LONG(i, x); --i;
+        del(A[i]);
+        A[i] = x;
+        add(A[i]);
+        ll ans = *st.begin();
+        Out(ans);
+    }
+    
 }
+
+// ### test.cpp ###

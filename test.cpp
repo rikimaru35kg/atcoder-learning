@@ -209,32 +209,32 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll M = 1;
-    while((1LL<<M) < N) M++;
-    Out(M);
-    cout<<flush;
-    vvl juice(M);
-    rep(s, N) {
-        rep(i, M) {
-            if(s>>i&1) {
-                juice[i].push_back(s+1);
-            }
+    LONG(N, M); VL(A, N);
+    vvl event(M);
+    rep(i, N) {
+        ll l = Divceil(-A[i], i+1) - 1;
+        ll r = Div(N-A[i], i+1);
+        chmax(l, 0LL);
+        chmin(r, M);
+        repk(j, l, r) {
+            event[j].push_back(A[i]+(j+1)*(i+1));
         }
     }
-    reverse(all(juice));
+    de(event)
     rep(i, M) {
-        printf("%lld", SIZE(juice[i]));
-        for(auto x: juice[i]) {
-            printf(" %lld", x);
+        ll sz = SIZE(event[i]);
+        vb exst(sz);
+        for(auto x: event[i]) {
+            if(x>=sz) continue;
+            exst[x] = true;
         }
-        cout<<endl;
+        ll ans = 0;
+        rep(i, sz) {
+            if(exst[i]) ++ans;
+            else break;
+        }
+        Out(ans);
     }
-    STRING(S);
-    ll x = stoll(S,nullptr, 2);
-    Out(x+1);
-    cout<<flush;
-   
     
 }
 
