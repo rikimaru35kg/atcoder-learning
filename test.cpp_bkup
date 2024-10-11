@@ -209,31 +209,11 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q); VL(A, N);
-    set<ll> st;
-    vl cnt(N);
-    rep(i, N+1) st.insert(i);
+    LONG(N, M);
+    sll x = (sll)N*N;
+    if(x<M) Pm1
 
-    auto add=[&](ll x) {
-        if(x>=N) return;
-        cnt[x]++;
-        st.erase(x);
-    };
-    auto del=[&](ll x) {
-        if(x>=N) return;
-        cnt[x]--;
-        if(cnt[x]==0) st.insert(x);
-    };
-    rep(i, N) add(A[i]);
 
-    rep(j, Q) {
-        LONG(i, x); --i;
-        del(A[i]);
-        A[i] = x;
-        add(A[i]);
-        ll ans = *st.begin();
-        Out(ans);
-    }
     
 }
 

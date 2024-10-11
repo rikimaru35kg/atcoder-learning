@@ -1120,19 +1120,19 @@
 - xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
 ### 例題
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
-- !復習価値高 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
+- !復習価値低 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - !復習価値高 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
-- !復習価値低 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
-- !要復習 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
-- !復習価値高 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
-- !復習価値低 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
-- !復習価値中 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
+- 基本 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
+- !復習価値中 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
+- 基本 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
+- 基本 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
+- 基本 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 
 ## 積分解
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
-- !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+- 基本 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
 
 
 ## 約数
