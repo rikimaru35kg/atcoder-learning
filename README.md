@@ -570,6 +570,7 @@
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - !復習価値低 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
 - !要復習 解放チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
+- !要復習 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
 
 ## グラフに関する問題の計算量見積り（個人的な苦手問題なのでNote非掲載）
 - ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
