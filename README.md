@@ -1205,7 +1205,7 @@
 - gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
 ### 例題
 - !復習価値低 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
-- !復習価値中 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
+- 基本 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 
 ## 約数系包除
 - 最大公約数GCDがgとなる数字組合せ数え上げなどに応用可能
