@@ -216,6 +216,16 @@ long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p
     return ret;
 }
 
+//! judge x + y <= z (or x + y < z)
+//! where x^2, y^2, z^2 are provided
+//! [NOTE] (x2,y2,z2<=1e9) to avoid overflowing
+bool lessthan(long long x2, long long y2, long long z2, bool eq) {
+    long long d = z2-x2-y2;
+    if(d<0) return false;
+    if(eq) return 4*x2*y2 <= d*d;
+    else return 4*x2*y2 < d*d;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
@@ -224,13 +234,6 @@ int main () {
     de(P)
 
     auto p2=[&](ll x) {return x*x;};
-    // x+y<=z;
-    auto lessthan=[&](ll x2, ll y2, ll z2, bool eq) -> bool {
-        ll data = z2-x2-y2;
-        if(data<0) return false;
-        if(eq) return 4*x2*y2 <= p2(data);
-        else return 4*x2*y2 < p2(data);
-    };
 
     auto inposter=[&](ll i, ll j) -> bool {
         if(i==5 && j==6) {
