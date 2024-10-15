@@ -237,43 +237,48 @@ public:
     }
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+//! n,k >= 0
+//! O(log kM) M=3e18
+long long kth_root(long long n, long long k) {
+    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
+    auto f=[&](long long x) -> bool {
+        long long x_to_kpow = 1;
+        for(long long i=0; i<k; ++i) {
+            if(x>n/x_to_kpow) return false;
+            x_to_kpow *= x;
+        }
+        return x_to_kpow <= n;
+    };
+    long long l = 0, r = 3e18;
+    while(r-l>1) {
+        long long m = (l+r)/2;
+        if(f(m)) l = m;
+        else r = m;
+    }
+    return l;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    Sieve sieve(1e6);
-
+    LONG(N);
     ll M = 1e6;
-    vl mx(M);
-    rep(i, N) {
-        auto vp = sieve.factorize(A[i]);
-        for(auto [p,n]: vp) {
-            chmax(mx[p], n);
-        }
+    Sieve sieve(M);
+    vl pc(M);
+    rep(i, M) {
+        if(sieve.is_prime(i)) pc[i]++;
     }
+    rep(i, M-1) pc[i+1] += pc[i];
 
-    mint lc = 1;
-    rep(p, M) {
-        lc *= mint(p).pow(mx[p]);
-    }
-
-    mint ans = 0;
-    rep(i, N) {
-        ans += lc/A[i];
+    ll ans = 0;
+    for(ll p=2;p*p*p*p<=N;++p) {
+        if(!sieve.is_prime(p)) continue;
+        ll q3 = N/p;
+        if(q3<=1) break;
+        ll q = kth_root(q3, 3);
+        if(p>=q) break;
+        de3(p, q, pc[q]-pc[p])
+        ans += pc[q]-pc[p];
     }
     Out(ans);
     
