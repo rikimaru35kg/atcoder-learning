@@ -206,26 +206,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n,k >= 0
-//! O(log kM) M=3e18
-long long kth_root(long long n, long long k) {
-    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
-    auto f=[&](long long x) -> bool {
-        long long x_to_kpow = 1;
-        for(long long i=0; i<k; ++i) {
-            if(x>n/x_to_kpow) return false;
-            x_to_kpow *= x;
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
         }
-        return x_to_kpow <= n;
-    };
-    long long l = 0, r = 3e18;
-    while(r-l>1) {
-        long long m = (l+r)/2;
-        if(f(m)) l = m;
-        else r = m;
     }
-    return l;
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
 }
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 class Sieve {
     long long n;
@@ -276,18 +281,26 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    Mobius mu(60);
-
-    ll M = 60;
-    vl f(M);
-    ll ans = 0;
-    for(ll b=M-1; b>=2; --b) {
-        ll a = kth_root(N, b);
-        f[b] = max(a-1, 0LL);
-        ans -= mu(b)*f[b];
+    STRING(S);
+    vl ds = listup_divisor(N, true);
+    vm two(N, 1);
+    Mobius mu(N);
+    rep(i, N-1) two[i+1] = two[i]*2;
+    mint ans;
+    for(auto d: ds) {
+        if(d==N) continue;
+        vb dot(d);
+        rep(i, N) {
+            if(S[i]=='.') dot[i%d] = true;
+        }
+        ll cnt = 0;
+        rep(i, d) if(!dot[i]) ++cnt;
+        ans += -mu(N/d)*two[cnt];
     }
-    ans++;
     Out(ans);
+
+
+
     
 }
 

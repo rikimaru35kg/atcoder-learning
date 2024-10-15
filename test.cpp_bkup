@@ -206,6 +206,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! n,k >= 0
+//! O(log kM) M=3e18
+long long kth_root(long long n, long long k) {
+    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
+    auto f=[&](long long x) -> bool {
+        long long x_to_kpow = 1;
+        for(long long i=0; i<k; ++i) {
+            if(x>n/x_to_kpow) return false;
+            x_to_kpow *= x;
+        }
+        return x_to_kpow <= n;
+    };
+    long long l = 0, r = 3e18;
+    while(r-l>1) {
+        long long m = (l+r)/2;
+        if(f(m)) l = m;
+        else r = m;
+    }
+    return l;
+}
+
 class Sieve {
     long long n;
     vector<long long> sieve;
@@ -237,39 +258,35 @@ public:
     }
 };
 
+struct Mobius {
+    long long n;
+    vector<long long> mu;
+    Sieve sieve;
+    Mobius (long long n): n(n), sieve(n) {}
+    long long operator()(long long x) {
+        auto v = sieve.factorize(x);
+        for(auto [p,n]: v) {
+            if(n>=2) return 0;
+        }
+        return v.size()%2?-1:1;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N);
+    Mobius mu(60);
 
-    LONG(L, R);
-    auto p2=[](ll x) {return x*x;};
-
-    Sieve sieve(R);
-
-
-    vl f(R+1);
+    ll M = 60;
+    vl f(M);
     ll ans = 0;
-    for(ll g=R; g>=2; --g) {
-        ll num = R/g - (L-1)/g;
-        auto v = sieve.factorize(g);
-        bool find = false;
-        for(auto [p,n]: v) {
-            if(n>=2) {
-                find = true;
-            }
-        }
-        ll mu = 0;
-        if(!find) mu = SIZE(v)%2==0?-1:1;
-        // for (ll x=2*g; x<=R; x+=g) {
-        //     f[g] -= f[x];
-        // }
-        de2(g, mu)
-        f[g] = p2(num) * mu;
-        ans += f[g];
-        if(g>=L) ans -= num*2 - 1;
-        // de2(g, ans)
+    for(ll b=M-1; b>=2; --b) {
+        ll a = kth_root(N, b);
+        f[b] = max(a-1, 0LL);
+        ans -= mu(b)*f[b];
     }
-    // de(f)
+    ans++;
     Out(ans);
     
 }
