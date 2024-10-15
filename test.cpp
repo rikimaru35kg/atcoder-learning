@@ -206,79 +206,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-};
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
     return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    ll M = 2e5+10;
-    vl cnt(M);
-    Sieve sieve(M);
+    LONG(N, W, H);
+    VP(P, N);
+    de(P)
+
+    auto p2=[&](ll x) {return x*x;};
+    // x+y<=z;
+    auto lessthan=[&](ll x2, ll y2, ll z2, bool eq) -> bool {
+        ll data = z2-x2-y2;
+        if(data<0) return false;
+        if(eq) return 4*x2*y2 <= p2(data);
+        else return 4*x2*y2 < p2(data);
+    };
+
+    auto inposter=[&](ll i, ll j) -> bool {
+        if(i==5 && j==6) {
+            cout<<"";
+        }
+        auto [x1,y1] = P[i];
+        ll r2 = euclid_dist2(P[i],P[j]);
+        if(!lessthan(p2(x1), r2, p2(W), true)) return false;
+        if(!lessthan(0, r2, p2(x1), true)) return false;
+        if(!lessthan(p2(y1), r2, p2(H), true)) return false;
+        if(!lessthan(0, r2, p2(y1), true)) return false;
+        return true;
+    };
+
+    vl p(N);
+    iota(all(p), 0);
     ll ans = 0;
-    ll zero = 0;
-    rep(i, N) {
-        if(A[i]==0) {
-            ++zero; continue;
-        }
-        auto v = sieve.factorize(A[i]);
-        ll now = 1;
-        for(auto [p,n]: v) {
-            if(n%2==0) continue;
-            now *= p;
-        }
-        de2(i, now)
-        ans += cnt[now];
-        cnt[now]++;
+    rep(i, N) rep(j, N) rep(k, N) rep(m, N) {
+        if(i==j || i==k || i==m) continue;
+        if(j==k || j==m) continue;
+        if(k==m) continue;
+        if(!inposter(i, j)) continue;
+        if(!inposter(k, m)) continue;
+        ll r12 = euclid_dist2(P[i],P[j]);
+        ll r22 = euclid_dist2(P[k],P[m]);
+        ll d2 = euclid_dist2(P[i],P[k]);
+        if(!lessthan(d2, r22, r12, false)) continue;
+        ++ans;
     }
-    ans += zero * (N-zero);
-    ans += nCr(zero, 2);
     Out(ans);
     
 }
