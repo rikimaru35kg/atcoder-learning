@@ -195,12 +195,14 @@ vector<vector<int>> listup_combinations(int n, int k) {
 }
 
 //! Legendre's Formura
-//! ret = Σ{i=1-∞}floor(n/p^i)
-long long legendre_formula(long long n, long long p) {
+//! ret = Σ{i=1-∞}floor(n/x^i)
+long long legendre_formula(long long n, long long x) {
+    if(x<=0) assert(0&&"[Error] ledendre_formula x<=0");
+    if(x==1) return (long long)3e18;
     long long ret = 0;
     while(n) {
-        ret += n/p;
-        n /= p;
+        ret += n/x;
+        n /= x;
     }
     return ret;
 }
