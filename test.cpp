@@ -206,32 +206,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 class Sieve {
     long long n;
     vector<long long> sieve;
@@ -263,44 +237,44 @@ public:
     }
 };
 
-struct Mobius {
-    long long n;
-    vector<long long> mu;
-    Sieve sieve;
-    Mobius (long long n): n(n), sieve(n) {}
-    long long operator()(long long x) {
-        auto v = sieve.factorize(x);
-        for(auto [p,n]: v) {
-            if(n>=2) return 0;
-        }
-        return v.size()%2?-1:1;
-    }
-};
+#include <atcoder/math>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vl ds = listup_divisor(N, true);
-    vm two(N, 1);
-    Mobius mu(N);
-    rep(i, N-1) two[i+1] = two[i]*2;
-    mint ans;
-    for(auto d: ds) {
-        if(d==N) continue;
-        vb dot(d);
-        rep(i, N) {
-            if(S[i]=='.') dot[i%d] = true;
+    // Sieve sieve(100);
+    vl ps = {4,9,5,7,11,13,17,19,23};
+    // vl ps = {2,3};
+    // ll lc = 1;
+    // for(auto p:ps) {
+    //     lc *= p;
+    // }
+    // de(accumulate(all(ps), 0LL));
+    ll M = accumulate(all(ps), 0LL); 
+    vl A;
+    ll st = 1;
+    for(auto p: ps) {
+        rep(i, p) {
+            A.push_back((i+1)%p+st);
         }
-        ll cnt = 0;
-        rep(i, d) if(!dot[i]) ++cnt;
-        ans += -mu(N/d)*two[cnt];
+        st += p;
     }
-    Out(ans);
-
-
-
+    Out(M);
+    cout<<flush;
+    Out(A);
+    cout<<flush;
+    VL(B, M);
+    ll si = 0;
+    vl fw;
+    for(auto p: ps) {
+        ll now = (B[si]-(si+1)+p)%p;
+        fw.push_back(now);
+        si += p;
+    }
+    de(fw)de(ps)
+    auto [t,x] = crt(fw, ps);
+    Out(t);
     
 }
 

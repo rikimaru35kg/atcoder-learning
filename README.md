@@ -1232,15 +1232,15 @@
 - sはLCM(C,D)であり、s==0の場合は解なし
 - なお、Cx+a=Dy+bの形にしてextgcdを使って解く事も可能だが、ハマりポイントが幾つかあるので注意
 - ax+by=gの特殊解を(x0,y0)とすると、一般解は(x0+b'k, y0-a'k)と書ける
-- ax+by=rを求めるならxもyもr/g倍する
-- この後、xはb'で割った余りにしておかないと後々オーバーフローする可能性あり
+- ax+by=rを求めるならx0とy0もr/g倍し、一般解は(x0+b'k, y0-a'k)と書ける
+- この後、xはb'で割った余りにしておかないと後々オーバーフローする可能性あり（r/gが大きい可能性がある為）
 - ax+zの最小値を求めたいときは、ax+zをLCM(a,b)で割った余りとすれば良い
 - [この提出](https://atcoder.jp/contests/abc193/submissions/55467607)を参考に
 - あるいは、ax+zに__int128_tを使っても良い
 - ハマりポイントが多いので、CRTライブラリを推奨する
 ### 例題
-- !復習価値中 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
-- !復習価値高 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
+- 基本 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
+- 基本 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
