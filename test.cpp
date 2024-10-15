@@ -206,64 +206,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-//! judge x + y <= z (or x + y < z)
-//! where x^2, y^2, z^2 are provided
-//! [NOTE] (x2,y2,z2<=1e9) to avoid overflowing
-bool lessthan(long long x2, long long y2, long long z2, bool eq) {
-    long long d = z2-x2-y2;
-    if(d<0) return false;
-    if(eq) return 4*x2*y2 <= d*d;
-    else return 4*x2*y2 < d*d;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, W, H);
-    VP(P, N);
-    de(P)
+    LONG(K);
 
-    auto p2=[&](ll x) {return x*x;};
-
-    auto inposter=[&](ll i, ll j) -> bool {
-        if(i==5 && j==6) {
-            cout<<"";
-        }
-        auto [x1,y1] = P[i];
-        ll r2 = euclid_dist2(P[i],P[j]);
-        if(!lessthan(p2(x1), r2, p2(W), true)) return false;
-        if(!lessthan(0, r2, p2(x1), true)) return false;
-        if(!lessthan(p2(y1), r2, p2(H), true)) return false;
-        if(!lessthan(0, r2, p2(y1), true)) return false;
-        return true;
-    };
-
-    vl p(N);
-    iota(all(p), 0);
-    ll ans = 0;
-    rep(i, N) rep(j, N) rep(k, N) rep(m, N) {
-        if(i==j || i==k || i==m) continue;
-        if(j==k || j==m) continue;
-        if(k==m) continue;
-        if(!inposter(i, j)) continue;
-        if(!inposter(k, m)) continue;
-        ll r12 = euclid_dist2(P[i],P[j]);
-        ll r22 = euclid_dist2(P[k],P[m]);
-        ll d2 = euclid_dist2(P[i],P[k]);
-        if(!lessthan(d2, r22, r12, false)) continue;
-        ++ans;
+    vl dist(K, INF);
+    deque<ll> que;
+    vvp from(K);
+    rep(v, K) {
+        from[v].emplace_back((v+1)%K, 1);
+        from[v].emplace_back(v*10%K, 0);
     }
-    Out(ans);
+    auto push=[&](ll v, ll d, ll c) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        if(!c) que.push_front(v);
+        else que.push_back(v);
+    };
+    push(1, 1, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop_front();
+        for(auto [nv,c]: from[v]) {
+            push(nv, dist[v]+c, c);
+        }
+    }
+    Out(dist[0]);
     
 }
 
