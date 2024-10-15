@@ -237,44 +237,49 @@ public:
     }
 };
 
-#include <atcoder/math>
-using namespace atcoder;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    // Sieve sieve(100);
-    vl ps = {4,9,5,7,11,13,17,19,23};
-    // vl ps = {2,3};
-    // ll lc = 1;
-    // for(auto p:ps) {
-    //     lc *= p;
-    // }
-    // de(accumulate(all(ps), 0LL));
-    ll M = accumulate(all(ps), 0LL); 
-    vl A;
-    ll st = 1;
-    for(auto p: ps) {
-        rep(i, p) {
-            A.push_back((i+1)%p+st);
+    LONG(N);
+    VL(A, N);
+    ll M = 2e5+10;
+    vl cnt(M);
+    Sieve sieve(M);
+    ll ans = 0;
+    ll zero = 0;
+    rep(i, N) {
+        if(A[i]==0) {
+            ++zero; continue;
         }
-        st += p;
+        auto v = sieve.factorize(A[i]);
+        ll now = 1;
+        for(auto [p,n]: v) {
+            if(n%2==0) continue;
+            now *= p;
+        }
+        de2(i, now)
+        ans += cnt[now];
+        cnt[now]++;
     }
-    Out(M);
-    cout<<flush;
-    Out(A);
-    cout<<flush;
-    VL(B, M);
-    ll si = 0;
-    vl fw;
-    for(auto p: ps) {
-        ll now = (B[si]-(si+1)+p)%p;
-        fw.push_back(now);
-        si += p;
-    }
-    de(fw)de(ps)
-    auto [t,x] = crt(fw, ps);
-    Out(t);
+    ans += zero * (N-zero);
+    ans += nCr(zero, 2);
+    Out(ans);
     
 }
 

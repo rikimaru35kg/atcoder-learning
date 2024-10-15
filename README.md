@@ -1249,7 +1249,7 @@
 - 指数をMOD 2するには、素因数分解までは不要で、平方数で割れるだけ割ればよい
 ### 例題
 - 基本 平方数数え上げ [D - Together Square](https://atcoder.jp/contests/abc254/tasks/abc254_d)
-- !復習価値低 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
+- 基本 平方数数え上げ [D - Square Pair](https://atcoder.jp/contests/abc342/tasks/abc342_d)
 
 ## 分数・有理数
 - 有理数を小数で扱うと誤差が出てしまう
