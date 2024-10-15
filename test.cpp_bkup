@@ -206,24 +206,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, D, K);
-    de3(N,D,K)
-    --K;
-    ll g = gcd(N, D);
-    ll Nd = N/g;
-    ll si = K/Nd;
-    K %= Nd;
-    ll ans = (si + D*K)%N;
-    de4(g,Nd,si,K)
-    Out(ans);
-}
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+
+    LONG(L, R);
+    auto p2=[](ll x) {return x*x;};
+
+    Sieve sieve(R);
+
+
+    vl f(R+1);
+    ll ans = 0;
+    for(ll g=R; g>=2; --g) {
+        ll num = R/g - (L-1)/g;
+        auto v = sieve.factorize(g);
+        bool find = false;
+        for(auto [p,n]: v) {
+            if(n>=2) {
+                find = true;
+            }
+        }
+        ll mu = 0;
+        if(!find) mu = SIZE(v)%2==0?-1:1;
+        // for (ll x=2*g; x<=R; x+=g) {
+        //     f[g] -= f[x];
+        // }
+        de2(g, mu)
+        f[g] = p2(num) * mu;
+        ans += f[g];
+        if(g>=L) ans -= num*2 - 1;
+        // de2(g, ans)
+    }
+    // de(f)
+    Out(ans);
     
 }
 

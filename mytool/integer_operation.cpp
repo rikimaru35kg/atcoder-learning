@@ -207,6 +207,51 @@ long long legendre_formula(long long n, long long x) {
     return ret;
 }
 
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
+
+struct Mobius {
+    long long n;
+    vector<long long> mu;
+    Sieve sieve;
+    Mobius (long long n): n(n), sieve(n) {}
+    long long operator()(long long x) {
+        auto v = sieve.factorize(x);
+        for(auto [p,n]: v) {
+            if(n>=2) return 0;
+        }
+        return v.size()%2?-1:1;
+    }
+};
+
 int main () {
     long long K; cin >> K;
     auto v = listup_divisor(K, true);

@@ -1220,8 +1220,8 @@
 - しかしながら、周期Tの列を考えると、Tの約数周期の列も重複して数えていることになる
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
-- !復習価値低 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
-- !復習価値高 互いに素となる組合せ数え上げ [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
+- 基本 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+- !復習価値低（ただしメビウス関数で解くなら） 互いに素となる組合せ数え上げ（動画解説にメビウス関数あり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値高 a^bと表せる数の個数 （動画解説にメビウス関数の気持ちあり）[F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値高 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 
