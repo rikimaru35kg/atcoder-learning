@@ -1286,19 +1286,19 @@
 ## 組合せの数
 - combinationを使う事が多い印象
 ### 例題
-- !復習価値低 [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
-- !復習価値中 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
-- !復習価値高 [D - 11](https://atcoder.jp/contests/arc077/tasks/arc077_b)
-- !復習価値低 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
-- !復習価値中 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
-- !要復習 2つの正方形を配置する場合の数 [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
-- !復習価値高 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
-- !要復習 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
+- 基本 [D - Blue and Red Balls](https://atcoder.jp/contests/abc132/tasks/abc132_d)
+- 基本 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
+- 基本 [D - 11](https://atcoder.jp/contests/arc077/tasks/arc077_b)
+- 基本 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
+- !復習価値低 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- !復習価値低 2つの正方形を配置する場合の数 [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
+- !復習価値中 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
+- !復習価値中 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 
-## Lucasの定理（頻度少なさそうなのでNote非掲載）
+## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
 ### 例題
-- !要復習 [C - Tricolor Pyramid](https://atcoder.jp/contests/arc117/tasks/arc117_c)
+- 基本 [C - Tricolor Pyramid](https://atcoder.jp/contests/arc117/tasks/arc117_c)
 
 ## 包除原理
 - AでもBでもない場合の数はU-A-B+A∩Bで求まる

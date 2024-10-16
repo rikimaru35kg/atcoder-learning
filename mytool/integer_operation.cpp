@@ -252,6 +252,16 @@ struct Mobius {
     }
 };
 
+long long lucas(long long n, long long r, long long m) {
+    if(n<0 || r>n || r<0) return 0;
+    long long ret = 1;
+    while(n || r) {
+        (ret *= nCr(n%m, r%m)) %= m;
+        n /= m, r /= m;
+    }
+    return ret;
+}
+
 int main () {
     long long K; cin >> K;
     auto v = listup_divisor(K, true);

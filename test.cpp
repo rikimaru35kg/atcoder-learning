@@ -206,32 +206,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
+long long lucas(long long n, long long r, long long m) {
+    if(n<0 || r>n || r<0) return 0;
+    long long ret = 1;
+    while(n || r) {
+        (ret *= nCr(n%m, r%m)) %= m;
+        n /= m, r /= m;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-
-    vl dist(K, INF);
-    deque<ll> que;
-    vvp from(K);
-    rep(v, K) {
-        from[v].emplace_back((v+1)%K, 1);
-        from[v].emplace_back(v*10%K, 0);
+    LONG(N);
+    STRING(C);
+    ll ans = 0;
+    umap<char,ll> mp;
+    mp['B'] = 0;
+    mp['W'] = 1;
+    mp['R'] = 2;
+    umap<ll,char> rmp;
+    rmp[0] = 'B';
+    rmp[1] = 'W';
+    rmp[2] = 'R';
+    rep(i, N) {
+        ll comb = lucas(N-1, i, 3) * mp[C[i]];
+        if(N%2==0) comb = -comb;
+        comb = (comb + 3) % 3;
+        ans += comb;
+        ans %= 3;
     }
-    auto push=[&](ll v, ll d, ll c) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        if(!c) que.push_front(v);
-        else que.push_back(v);
-    };
-    push(1, 1, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop_front();
-        for(auto [nv,c]: from[v]) {
-            push(nv, dist[v]+c, c);
-        }
-    }
-    Out(dist[0]);
+    Out(rmp[ans]);
     
 }
 

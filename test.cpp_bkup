@@ -206,64 +206,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-//! judge x + y <= z (or x + y < z)
-//! where x^2, y^2, z^2 are provided
-//! [NOTE] (x2,y2,z2<=1e9) to avoid overflowing
-bool lessthan(long long x2, long long y2, long long z2, bool eq) {
-    long long d = z2-x2-y2;
-    if(d<0) return false;
-    if(eq) return 4*x2*y2 <= d*d;
-    else return 4*x2*y2 < d*d;
-}
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, W, H);
-    VP(P, N);
-    de(P)
-
-    auto p2=[&](ll x) {return x*x;};
-
-    auto inposter=[&](ll i, ll j) -> bool {
-        if(i==5 && j==6) {
-            cout<<"";
+    LONG(N);
+    Combination comb(N, M107);
+    rep1(k, N) {
+        ll n = Divceil(N, k);
+        mint ans;
+        rep1(r, n) {
+            ll num = N - (k-1)*(r-1);
+            ans += comb(num, r);
         }
-        auto [x1,y1] = P[i];
-        ll r2 = euclid_dist2(P[i],P[j]);
-        if(!lessthan(p2(x1), r2, p2(W), true)) return false;
-        if(!lessthan(0, r2, p2(x1), true)) return false;
-        if(!lessthan(p2(y1), r2, p2(H), true)) return false;
-        if(!lessthan(0, r2, p2(y1), true)) return false;
-        return true;
-    };
-
-    vl p(N);
-    iota(all(p), 0);
-    ll ans = 0;
-    rep(i, N) rep(j, N) rep(k, N) rep(m, N) {
-        if(i==j || i==k || i==m) continue;
-        if(j==k || j==m) continue;
-        if(k==m) continue;
-        if(!inposter(i, j)) continue;
-        if(!inposter(k, m)) continue;
-        ll r12 = euclid_dist2(P[i],P[j]);
-        ll r22 = euclid_dist2(P[k],P[m]);
-        ll d2 = euclid_dist2(P[i],P[k]);
-        if(!lessthan(d2, r22, r12, false)) continue;
-        ++ans;
+        Out(ans);
     }
-    Out(ans);
     
 }
 
