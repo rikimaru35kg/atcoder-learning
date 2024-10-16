@@ -206,69 +206,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        ret *= n-k+1;
-        ret /= k;
     }
-    return ret;
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
 }
 
-long long lucas(long long n, long long r, long long m) {
-    if(n<0 || r>n || r<0) return 0;
-    long long ret = 1;
-    while(n || r) {
-        (ret *= nCr(n%m, r%m)) %= m;
-        n /= m, r /= m;
-    }
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(C);
-    ll ans = 0;
-    umap<char,ll> mp;
-    mp['B'] = 0;
-    mp['W'] = 1;
-    mp['R'] = 2;
-    umap<ll,char> rmp;
-    rmp[0] = 'B';
-    rmp[1] = 'W';
-    rmp[2] = 'R';
+    LONG(N, M);
+    vl A;
     rep(i, N) {
-        ll comb = lucas(N-1, i, 3) * mp[C[i]];
-        if(N%2==0) comb = -comb;
-        comb = (comb + 3) % 3;
-        ans += comb;
-        ans %= 3;
+        LONG(a);
+        if(M%a!=0) continue;
+        A.push_back(a);
     }
-    Out(rmp[ans]);
+    N = SIZE(A);
+
+    auto pvec = prime_factorization(M);
+    ll K = SIZE(pvec);
+    vl cnt(1LL<<K);
+    rep(i, N) {
+        ll a = A[i];
+        ll idx = 0, now=0;
+        for(auto [p,n]: pvec) {
+            bool ok = true;
+            rep(j, n) {
+                if(a%p!=0) {
+                    ok = false;
+                    break;
+                }
+                a /= p;
+            }
+            if(ok) now |= 1LL<<idx;
+            ++idx;
+        }
+        cnt[now]++;
+    }
+
+    vm two(N+1, 1);
+    rep(i, N) two[i+1] = two[i]*2;
+
+    rep(i, K) rep(s, 1<<K) if(~s>>i&1) {
+        ll ns = s | 1LL<<i;
+        cnt[ns] += cnt[s];
+    }
+
+    mint ans;
+    rep(s, 1<<K) {
+        ll sum = 0;
+        // rep(t, 1<<K) {
+        //     if((t|s)!=s) continue;
+        //     sum += cnt[t];
+        // }
+        sum = cnt[s];
+        mint x = two[sum]-1;
+        if((K-pcnt(s))%2) ans -= x;
+        else ans += x;
+    }
+    Out(ans);
     
 }
 
