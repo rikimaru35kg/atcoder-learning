@@ -206,23 +206,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
-
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -237,59 +220,71 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vl A;
-    rep(i, N) {
-        LONG(a);
-        if(M%a!=0) continue;
-        A.push_back(a);
-    }
-    N = SIZE(A);
+    ll M = 26;
+    LONG(K); VL(C, M);
+    Combination comb(K, M998);
 
-    auto pvec = prime_factorization(M);
-    ll K = SIZE(pvec);
-    vl cnt(1LL<<K);
-    rep(i, N) {
-        ll a = A[i];
-        ll idx = 0, now=0;
-        for(auto [p,n]: pvec) {
-            bool ok = true;
-            rep(j, n) {
-                if(a%p!=0) {
-                    ok = false;
-                    break;
-                }
-                a /= p;
+    vm dp(K+1);
+    dp[0] = 1;
+    rep(i, M) {
+        vm pdp(K+1); swap(pdp, dp);
+        rep(j, K+1) {
+            if(pdp[j]==0) continue;
+            rep(x, C[i]+1) {
+                if(j+x<=K) dp[j+x] += pdp[j] * comb.get_factinv(x);
             }
-            if(ok) now |= 1LL<<idx;
-            ++idx;
         }
-        cnt[now]++;
     }
-
-    vm two(N+1, 1);
-    rep(i, N) two[i+1] = two[i]*2;
-
-    rep(i, K) rep(s, 1<<K) if(~s>>i&1) {
-        ll ns = s | 1LL<<i;
-        cnt[ns] += cnt[s];
-    }
-
-    mint ans;
-    rep(s, 1<<K) {
-        ll sum = 0;
-        // rep(t, 1<<K) {
-        //     if((t|s)!=s) continue;
-        //     sum += cnt[t];
-        // }
-        sum = cnt[s];
-        mint x = two[sum]-1;
-        if((K-pcnt(s))%2) ans -= x;
-        else ans += x;
-    }
+    mint ans = 0;
+    rep1(k, K) ans += comb.get_fact(k) * dp[k];
     Out(ans);
     
 }
