@@ -206,86 +206,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll M = 26;
-    LONG(K); VL(C, M);
-    Combination comb(K, M998);
+    LONG(N, D, X, Y);
+    if(X%D!=0) Pm0
+    if(Y%D!=0) Pm0
+    X /= D, Y /= D;
+    if(abs(X) > N) Pm0
+    if(abs(Y) > N) Pm0
+    de2(X,Y)
+    vvd pascal(N+1, vd(N+1));
+    pascal[0][0] = 1;
+    rep(i, N) rep(j, N) {
+        if(pascal[i][j]==0) continue;
+        pascal[i+1][j] += pascal[i][j]*0.5;
+        pascal[i+1][j+1] += pascal[i][j]*0.5;
+    }
 
-    vm dp(K+1);
-    dp[0] = 1;
-    rep(i, M) {
-        vm pdp(K+1); swap(pdp, dp);
-        rep(j, K+1) {
-            if(pdp[j]==0) continue;
-            rep(x, C[i]+1) {
-                if(j+x<=K) dp[j+x] += pdp[j] * comb.get_factinv(x);
+    auto calc=[&](ll n, ll x) -> db {
+        if(abs(x)>n) return 0;
+        ll M = 2*n+1;
+        vd dp(M);
+        dp[n] = 1;
+        rep(i, n) {
+            vd pdp(M); swap(pdp, dp);
+            rep(j, M) {
+                if(pdp[j]==0) continue;
+                dp[j+1] += pdp[j] * 0.5;
+                dp[j-1] += pdp[j] * 0.5;
             }
         }
+        return dp[n+x];
+        // if((n+x)%2!=0) return 0;
+        // if(n-x<0) return 0;
+        // ll a = (n+x)/2, b = (n-x)/2;
+        // de4(n,x,dp[n+x], pascal[n][a])
+        // return pascal[n][a];
+    };
+
+
+    db ans=0;
+    rep(i, N+1) {
+        db now = 1;
+        now *= calc(i, X);
+        now *= calc(N-i, Y);
+        now *= pascal[N][i];
+        // de4(i, calc(i,X),calc(N-i,Y),now)
+        ans += now;
     }
-    mint ans = 0;
-    rep1(k, K) ans += comb.get_fact(k) * dp[k];
     Out(ans);
+
     
 }
 

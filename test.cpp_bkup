@@ -206,39 +206,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N);
-    ll M = 2e5+10;
-    vl cnt1(M);
-    rep(i, N) { cnt1[A[i]]++; }
-
-    ll K = 3;
-    vl dp(K+1);
-    dp[0] = 1;
-    rep(i, M) {
-        repr(j, K) {
-            dp[j+1] += dp[j] * cnt1[i];
-        }
+    LONG(N, Q);
+    vt4 cond;
+    rep(i, Q) {
+        LONGM(x,y,z); LONG(w);
+        cond.emplace_back(x,y,z,w);
     }
-    Out(dp[K]);
+
+    mint ans = 1;
+    rep(d, 60) {
+        ll cnt = 0;
+        rep(s, 1<<N) {
+            bool ok = true;
+            for(auto [x,y,z,w]: cond) {
+                if(((s>>x&1) | (s>>y&1) | (s>>z&1))!=(w>>d&1)) ok = false;
+            }
+            if(ok) ++cnt;
+        }
+        ans *= cnt;
+    }
+    Out(ans);
     
 }
 
