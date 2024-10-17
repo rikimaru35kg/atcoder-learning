@@ -206,31 +206,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(C, N);
-    vl A(N);  // C[i]の約数となっているコインの枚数
-    rep(i, N) {
-        rep(j, N) {
-            if(i==j) continue;
-            if(C[i]%C[j]==0) ++A[i];
-        }
+    LONG(N, Q); VLM(C, N);
+    vt3 query;
+    rep(i, Q) {
+        LONG(l, r); --l;
+        query.emplace_back(l,r,i);
     }
-    // 解法のポイントは、同様に確からしいものは1通りとして数えるという事。
-    // 約数と自分自身の並べ型をpとする。
-    // 全てのpについて、それ以外のコインをどこに置くか、どう並べるかの場合の数は同じ。
-    // 全てのpについて、約数の並べ方の場合の数（=A[i]!）は同じ。
-    // よって各pを1通りとして考え、自分より左側に偶数枚の約数コインが並ぶ確率を
-    // 考えれば良い。
-    db ans = 0;
+    sort(allr(query));
+    vl pidx(N, -1);
+    vp span;
     rep(i, N) {
-        db now = (db)Divceil(A[i]+1,2) / (A[i]+1);
-        ans += now;
+        if(pidx[C[i]]==-1) {
+            pidx[C[i]] = i; continue;
+        }
+        span.emplace_back(pidx[C[i]], i);
+        pidx[C[i]] = i;
+    }
+    sort(all(span));
+
+    fenwick_tree<ll> tree(N);
+    vl ans(Q);
+    for(auto [l,r,qi]: query) {
+        while(span.size() && span.back().first>=l) {
+            auto [ls, rs] = span.back(); span.pop_back();
+            tree.add(rs, 1);
+        }
+        ll x = r-l-tree.sum(0, r);
+        ans[qi] = x;
     }
     Out(ans);
-
+    
 }
 
 // ### test.cpp ###

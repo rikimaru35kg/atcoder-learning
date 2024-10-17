@@ -1353,8 +1353,8 @@
 
 ## 対称性を利用する
 ### 例題
-- !復習価値高 黒いボール位置の期待値 [E - Random Swaps of Balls](https://atcoder.jp/contests/abc360/tasks/abc360_e)
-- !復習価値高 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
+- !復習価値低 黒いボール位置の期待値 [E - Random Swaps of Balls](https://atcoder.jp/contests/abc360/tasks/abc360_e)
+- !復習価値低 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 
 # 2変数問題
 
@@ -1369,10 +1369,10 @@
 ### 例題
 - 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 - 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
-- !復習価値中 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
-- !復習価値中 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
-- !復習価値中 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
-- !復習価値中 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
+- !復習価値低 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
+- 基本 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
+- 基本 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
+- !復習価値低 xy min距離の最大値（120msぐらいで解きたい） [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
 
 ## XY独立に考える
 ### 例題

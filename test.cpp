@@ -206,35 +206,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/fenwicktree>
 using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(X, N);
-    vm C(N, 1);
-    repk(n, 2, N) {
-        C[n] = C[n-1] + mint(n).inv();
-    }
+    LONG(N);
+    VP(P, N);
+    sort(all(P));
 
-    mint ans = 0;
-    rep(i, N-1) {
-        mint d  =X[i+1] - X[i];
-        ans += d * C[i+1];
-    }
-    rep1(i, N-1) ans *= i;
+    auto f=[&](ll D) -> bool {
+        multiset<ll> st;
+        queue<Pr> booking;
+        for(auto [x,y]: P) {
+            while(booking.size() && booking.front().first<=x-D) {
+                auto [cx, cy] = booking.front(); booking.pop();
+                st.insert(cy);
+            }
+            {
+                auto it = st.lower_bound(y+D);
+                if(it!=st.end()) return true;
+            }
+            {
+                auto it = st.upper_bound(y-D);
+                if(it!=st.begin()) return true;
+            }
+            booking.emplace(x,y);
+        }
+        return false;
+    };
+
+    ll ans = binary_search(0, (ll)1e9+1, f);
     Out(ans);
     
 }
