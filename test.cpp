@@ -206,9 +206,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
-
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
@@ -233,32 +230,40 @@ double binary_search (double ok, double ng, auto f) {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VP(P, N);
-    sort(all(P));
+    LONG(N, K);
+    VL2(X,Y,N);
+    sort(all(X));
+    sort(all(Y));
+    vl dbycx(N), dbycy(N);
+    rep(i, N-1) {
+        ll dx = X[i+1]-X[i];
+        ll dy = Y[i+1]-Y[i];
+        ll cost = min(i+1, N-1-i);
+        dbycx[cost] += dx;
+        dbycy[cost] += dy;
+    }
+    de(dbycx)de(dbycy)
+    ll xini = X[N-1] - X[0];
+    ll yini = Y[N-1] - Y[0];
 
-    auto f=[&](ll D) -> bool {
-        multiset<ll> st;
-        queue<Pr> booking;
-        for(auto [x,y]: P) {
-            while(booking.size() && booking.front().first<=x-D) {
-                auto [cx, cy] = booking.front(); booking.pop();
-                st.insert(cy);
-            }
-            {
-                auto it = st.lower_bound(y+D);
-                if(it!=st.end()) return true;
-            }
-            {
-                auto it = st.upper_bound(y-D);
-                if(it!=st.begin()) return true;
-            }
-            booking.emplace(x,y);
+    auto calc=[&](vl &dbyc, ll d) -> ll {
+        if(d<=0) return 0;
+        ll ret = 0;
+        rep(c, N) {
+            ll dx = min(d, dbyc[c]);
+            ret += dx*c;
+            d -= dx;
         }
-        return false;
+        return ret;
+    };
+    auto f=[&](ll d) -> bool {
+        ll cnt = 0;
+        cnt += calc(dbycx, xini-d);
+        cnt += calc(dbycy, yini-d);
+        return cnt <= K;
     };
 
-    ll ans = binary_search(0, (ll)1e9+1, f);
+    ll ans = binary_search((ll)1e9+1, -1, f);
     Out(ans);
     
 }
