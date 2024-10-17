@@ -209,31 +209,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, C);
-    VVL(A, H, W);
+    LONG(N);
+    umap<ll,ll> row, col;
+    umap<ll,vp> csbyrow;
+    rep(i, N) {
+        LONG(r,c,x);
+        row[r]+=x;
+        col[c]+=x;
+        csbyrow[r].emplace_back(c, x);
+    }
+    multiset<ll> st;
+    for(auto [k,v]: col) {
+        st.insert(v);
+    }
 
-    auto calc=[&]() {
-        vvl mn(H, vl(W, INF));
-        rep(i, H) rep(j, W) {
-            chmin(mn[i][j], A[i][j]-C*(i+j));
-            if(i) chmin(mn[i][j], mn[i-1][j]);
-            if(j) chmin(mn[i][j], mn[i][j-1]);
+    ll ans = 0;
+    for(auto [r,rsum] : row) {
+        for(auto [c,x]: csbyrow[r]) {
+            ll now = rsum + col[c] - x;
+            chmax(ans, now);
         }
-        ll ret = INF;
-        rep(i, H) rep(j, W) {
-            ll now = INF;
-            if(i) chmin(now, mn[i-1][j]);
-            if(j) chmin(now, mn[i][j-1]);
-            now += A[i][j]+C*(i+j);
-            chmin(ret, now);
+        for(auto [c,x]: csbyrow[r]) {
+            erase(st, col[c]);
         }
-        return ret;
-    };
-
-    ll ans = INF;
-    chmin(ans, calc());
-    reverse(all(A));
-    chmin(ans, calc());
+        if(st.size()) {
+            ll now = rsum + *st.rbegin();
+            chmax(ans, now);
+        }
+        for(auto [c,x]: csbyrow[r]) {
+            st.insert(col[c]);
+        }
+    }
     Out(ans);
     
 }

@@ -1392,8 +1392,8 @@
 - Sparseな行列の場合、意味のある部分だけ特別扱いする事で計算量が改善しないか検討すると良い
 ### 例題
 - 基本 十字領域総和 [E - Bomber](https://atcoder.jp/contests/abc176/tasks/abc176_e)
-- !復習価値低 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
-- !復習価値高 十字領域で丁度K個 [C - 収集王](https://atcoder.jp/contests/abc023/tasks/abc023_c)
+- 基本 十字領域総和の最大化 [F - Rook Score](https://atcoder.jp/contests/abc298/tasks/abc298_f)
+- !復習価値低 十字領域で丁度K個 [C - 収集王](https://atcoder.jp/contests/abc023/tasks/abc023_c)
 
 # 貪欲法
 

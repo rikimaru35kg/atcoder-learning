@@ -206,43 +206,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return -INF;}
-
-using SEG = segtree<S,op,e>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C);
-    SEG segp(N), segm(N);
-
-    auto upd=[&](SEG &seg, ll i, ll x) {
-        seg.set(i, max(seg.get(i), x));
-    };
-    upd(segp, 0, 0);
-    upd(segm, 0, 0);
-
-    vl dp(N, -INF);
-    dp[0] = 0;
-
-    LONG(M);
-    rep(i, M) {
-        LONG(t, p); --t;
-        ll now = -INF;
-        chmax(now, p-C*t+segp.prod(0, t));
-        chmax(now, p+C*t+segm.prod(t, N));
-        chmax(dp[t], now);
-
-        upd(segp, t, now+C*t);
-        upd(segm, t, now-C*t);
+    LONG(H, W, K);
+    LONG(N);
+    vl row(H), col(W);
+    vvl csbyrow(H);
+    rep(i, N) {
+        LONGM(r,c);
+        row[r]++;
+        col[c]++;
+        csbyrow[r].push_back(c);
     }
-    ll ans = -INF;
-    rep(i, N) chmax(ans, dp[i]);
+
+    vl exstbycnt(N+1);
+    rep(j, W) {
+        exstbycnt[col[j]]++;
+    }
+
+    ll ans = 0;
+    rep(r, H) {
+        if(K<row[r]) continue;
+        for(auto c: csbyrow[r]) {
+            ll sum = row[r] + col[c] - 1;
+            if(sum==K) ++ans;
+        }
+        for(auto c: csbyrow[r]) {
+            exstbycnt[col[c]]--;
+        }
+        ans += exstbycnt[K-row[r]];
+        for(auto c: csbyrow[r]) {
+            exstbycnt[col[c]]++;
+        }
+    }
     Out(ans);
     
 }
