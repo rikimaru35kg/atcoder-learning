@@ -1384,8 +1384,8 @@
 - ΣiΣjf(i, j)のようにi,jのループだと計算が間に合わない場合、もしf(i,j) = g(i)h(j)とできればΣig(i)Σjh(j)と分離でき計算量を抑えられる
 - min{f(i,j)}を求める問題でf(i,j)=g(i)+h(j)なら、min(g(i)+h(j))=min(g(i))+min(h(j))と選択肢を分離できる
 ### 例題
-- !復習価値低 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
-- !復習価値高 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
+- 基本 路線構築の最小コスト [D - National Railway](https://atcoder.jp/contests/abc210/tasks/abc210_d)
+- !復習価値低 絶対値付きトラベル [G - Merchant Takahashi](https://atcoder.jp/contests/abc353/tasks/abc353_g)
 
 ## 十字領域
 - 1変数を固定して、もう1変数に対する探索を高速化できないか検討すると計算量が改善するケースあり

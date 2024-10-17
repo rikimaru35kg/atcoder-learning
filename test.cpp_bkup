@@ -206,71 +206,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, H);
-    LONG(N);
-    STRING(S);
-    mint::set_mod(10000000);
-    ll dir = 0;
-    if(S[0]=='L') dir = 0;
-    else dir = 1;
-    vb right, up;
-    if(dir==0) right.push_back(true);
-    else up.push_back(true);
-    for(auto c: S) {
-        if(c=='L') dir = (dir+1)%4;
-        else dir = (dir+3)%4;
-        if(dir==0) right.push_back(true);
-        if(dir==1) up.push_back(true);
-        if(dir==2) right.push_back(false);
-        if(dir==3) up.push_back(false);
-    }
+    LONG(H, W, C);
+    VVL(A, H, W);
 
-    de(right)de(up)
-    
-    auto calc=[&](vb &right, ll W) -> mint {
-        vm dp(W+1);
-        dp[0] = 1;
-        ll n = SIZE(right);
-        rep(i, n) {
-            vm pdp(W+1); swap(pdp, dp);
-            mint sum = 0;
-            if(right[i]) {
-                rep(j, W+1) {
-                    dp[j] = sum;
-                    sum += pdp[j];
-                }
-            } else {
-                repr(j, W+1) {
-                    dp[j] = sum;
-                    sum += pdp[j];
-                }
-            }
-            de(dp)
+    auto calc=[&]() {
+        vvl mn(H, vl(W, INF));
+        rep(i, H) rep(j, W) {
+            chmin(mn[i][j], A[i][j]-C*(i+j));
+            if(i) chmin(mn[i][j], mn[i-1][j]);
+            if(j) chmin(mn[i][j], mn[i][j-1]);
         }
-        return dp[W];
+        ll ret = INF;
+        rep(i, H) rep(j, W) {
+            ll now = INF;
+            if(i) chmin(now, mn[i-1][j]);
+            if(j) chmin(now, mn[i][j-1]);
+            now += A[i][j]+C*(i+j);
+            chmin(ret, now);
+        }
+        return ret;
     };
 
-    mint ans = calc(right, W);
-    ans *= calc(up, H);
+    ll ans = INF;
+    chmin(ans, calc());
+    reverse(all(A));
+    chmin(ans, calc());
     Out(ans);
-
     
 }
 
