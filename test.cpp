@@ -206,57 +206,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, D, X, Y);
-    if(X%D!=0) Pm0
-    if(Y%D!=0) Pm0
-    X /= D, Y /= D;
-    if(abs(X) > N) Pm0
-    if(abs(Y) > N) Pm0
-    de2(X,Y)
-    vvd pascal(N+1, vd(N+1));
-    pascal[0][0] = 1;
-    rep(i, N) rep(j, N) {
-        if(pascal[i][j]==0) continue;
-        pascal[i+1][j] += pascal[i][j]*0.5;
-        pascal[i+1][j+1] += pascal[i][j]*0.5;
+    LONG(N); VL(X, N);
+    vm C(N, 1);
+    repk(n, 2, N) {
+        C[n] = C[n-1] + mint(n).inv();
     }
 
-    auto calc=[&](ll n, ll x) -> db {
-        if(abs(x)>n) return 0;
-        ll M = 2*n+1;
-        vd dp(M);
-        dp[n] = 1;
-        rep(i, n) {
-            vd pdp(M); swap(pdp, dp);
-            rep(j, M) {
-                if(pdp[j]==0) continue;
-                dp[j+1] += pdp[j] * 0.5;
-                dp[j-1] += pdp[j] * 0.5;
-            }
-        }
-        return dp[n+x];
-        // if((n+x)%2!=0) return 0;
-        // if(n-x<0) return 0;
-        // ll a = (n+x)/2, b = (n-x)/2;
-        // de4(n,x,dp[n+x], pascal[n][a])
-        // return pascal[n][a];
-    };
-
-
-    db ans=0;
-    rep(i, N+1) {
-        db now = 1;
-        now *= calc(i, X);
-        now *= calc(N-i, Y);
-        now *= pascal[N][i];
-        // de4(i, calc(i,X),calc(N-i,Y),now)
-        ans += now;
+    mint ans = 0;
+    rep(i, N-1) {
+        mint d  =X[i+1] - X[i];
+        ans += d * C[i+1];
     }
+    rep1(i, N-1) ans *= i;
     Out(ans);
-
     
 }
 
