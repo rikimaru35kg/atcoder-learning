@@ -1412,9 +1412,9 @@
 - 区間スケジューリング類似問題は、何らかの形で範囲の形として表せれば、解法が思いつきやすい。あるいは範囲を考える問題では貪欲法を疑ってみると良い
 - 貪欲法の場合、**左から見るか右から見るかで結果が変わる**ので、順序も重要!
 ### 例題
-- !復習価値中 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
-- !復習価値低 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
-- !復習価値中 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
+- 基本 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
+- 基本 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
+- 基本 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
 
 ## その他貪欲法
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い

@@ -206,98 +206,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +-*/ leads to overflowing
-//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
-//! BE CAREFUL ABOUT CALCULATION COST!
-//! O(logM) just for initializing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b == 0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return *this + Frac(x);
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
-    }
-    Frac operator-(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return *this - Frac(x);
-    }
-    Frac operator-(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
-    }
-    Frac operator*(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return Frac(p*x, q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    Frac operator/(const ll x) {
-        if (q == 0 || x == 0) return Frac(1, 0);
-        return Frac(p, q*x);
-    }
-    Frac operator/(const Frac &rhs) {
-        if (q == 0 || rhs.p == 0) return Frac(1, 0);
-        return Frac(p*rhs.q, q*rhs.p);
-    }
-    bool operator<(const ll x) const {
-        return *this < Frac(x);
-    }
-    bool operator<(const Frac &rhs) const { return p*rhs.q - q*rhs.p < 0; }
-    bool operator<=(const ll x) const { return *this <= Frac(x); }
-    bool operator<=(const Frac &rhs) const { return p*rhs.q - q*rhs.p <= 0; }
-    bool operator>(const ll x) const { return *this > Frac(x); }
-    bool operator>(const Frac &rhs) const { return p*rhs.q - q*rhs.p > 0; }
-    bool operator>=(const ll x) const { return *this >= Frac(x); }
-    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }
-    bool operator==(const ll x) const { return (q==1 && p==x); }
-    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }
-};
-
-bool comp(const Pr p1, const Pr p2) {
-    auto [y1,x1] = p1;
-    auto [y2,x2] = p2;
-    return y1*x2 < y2*x1;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<pair<Pr,Pr>> P;
+    LONG(N, M);
+    vvl job(M);
     rep(i, N) {
-        LONG(x,y);
-        P.emplace_back(Pr(y,x-1),Pr(y-1,x));
+        LONG(a,b);
+        ll d = M-a;
+        if(d<0) continue;
+        job[d].push_back(b);
     }
+    priority_queue<ll> que;
 
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return comp(P[i].first, P[j].first);
-    });
-
-    Pr mx(-1,1);
     ll ans = 0;
-    for(auto i: p) {
-        Pr l = P[i].second;
-        Pr r = P[i].first;
-        if(comp(l,mx)) continue;
-        ++ans;
-        mx = r;
+    repr(d, M) {
+        for(auto b: job[d]) que.push(b);
+        if(que.size()) {
+            ll b = que.top(); que.pop();
+            ans += b;
+        }
     }
     Out(ans);
     
