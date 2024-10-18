@@ -208,7 +208,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! n*n matrix
-const int MX = 50;  // DEFINE PROPERLY!!
+const int MX = 2;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
 public:
@@ -276,7 +276,7 @@ public:
         Mat tmp = pow_recursive(b, k/2);
         return ret * tmp * tmp;
     }
-    long long ij(long long i, long long j) {
+    T ij(long long i, long long j) {
         return a[i][j];
     }
 #ifdef __DEBUG
@@ -295,7 +295,7 @@ public:
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -307,24 +307,21 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    mint A[N][N];
-    rep(i, N) rep(j, N) {
-        LONG(a);
-        A[i][j] = a;
-    }
-    Mat<mint> mat(N, *A);
-    mat.transpose();
+    LONG(K, M);
+    mint::set_mod(M);
 
-    vm x(N, 1);
-    mat.pow(K);
-    vm y = mat*x;
     mint ans = 0;
-    rep(i, N) ans += y[i];
+    mint a[2][2] = {{1,1},{0,10}};
+    Mat<mint> mat(2, *a);
+    rep(i, K) {
+        LONG(c, d);
+        Mat<mint> now = mat;
+        now.pow(d);
+        ans = ans * mint(10).pow(d) + c*now.ij(0,1);
+    }
     Out(ans);
     
 }

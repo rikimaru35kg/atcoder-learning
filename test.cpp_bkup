@@ -207,50 +207,132 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! n*n matrix
+const int MX = 6;  // DEFINE PROPERLY!!
+template <typename T>
+class Mat {
+public:
+    int n; T a[MX][MX];
+    // Initialize n*n matrix as unit matrix
+    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
+        }
+    }
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
+    }
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
+    }
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    void transpose() {
+        for(long long i=0; i<n; ++i) for(long long j=0; j<i; ++j) {
+            swap(a[i][j], a[j][i]);
+        }
+    }
+    // power k (A^k)
+    void pow(long long k) {
+        *this = pow_recursive(*this, k);
+    }
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
+    }
+    long long ij(long long i, long long j) {
+        return a[i][j];
+    }
+#ifdef __DEBUG
+    void print(string debugname="------") {  // for debug
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j] << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+    }
+#else
+    void print(string debugname="------") {}
+#endif
+};
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using uint = unsigned int;
+
+using S = Mat<uint>;
+S op(S a, S b) {return b*a;}
+S e() {return Mat<uint>(MX);}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    LONG(A,B,C);
-    LONG(T);
-    VLM(S, M);
-    S.push_back(N);
-
-    auto calc=[&](ll t, ll n) -> vl {
-        ll i = 0;
-        vl ret(K+1);
-        if(t>T) return ret;
-        ll num = Div(T-t, A) + 1;
-        ret[0] = min(num, n-i);
-        i = num;
-        t += num*C;
-        rep1(k, K) {
-            if(i>=n) return ret;
-            if(t>T) return ret;
-            ll num = Div(T-t, A) + 1;
-            ret[k] = min(num, n-i);
-            i += num;
-            t +=num*C;
-        }
-        return ret;
-    };
-
-    vvl gain(M, vl(K+1));
-    ll ans = 0;
-    vl cand;
-    rep(i, M) {
-        gain[i] = calc(B*S[i], S[i+1]-S[i]);
-        rep(j, SIZE(gain[i])) {
-            if(j==0) continue;
-            cand.push_back(gain[i][j]);
-        }
-        ans += gain[i][0];
+    STRING(Str);
+    ll K = 5;
+    uint a[K][MX][MX];
+    rep(k, K) rep(i, MX) rep(j, MX) {
+        if(i==j) a[k][i][j]=1;
+        else a[k][i][j] = 0;
     }
-    sort(allr(cand));
-    rep(i, K-M) ans += cand[i];
-    ans--;
-    Out(ans);
-
+    rep(k, K) {
+        a[k][k+1][k] = 1;
+    }
+    ll N = SIZE(Str);
+    vector<S> ini(N, e());
+    rep(i, N) {
+        if(Str[i]=='D') ini[i] = S(MX, *a[0]);
+        if(Str[i]=='I') ini[i] = S(MX, *a[1]);
+        if(Str[i]=='S') ini[i] = S(MX, *a[2]);
+        if(Str[i]=='C') ini[i] = S(MX, *a[3]);
+        if(Str[i]=='O') ini[i] = S(MX, *a[4]);
+    }
+    segtree<S,op,e> seg(ini);
+    LONG(Q);
+    vector<uint> x(MX); x[0] = 1;
+    rep(i, Q) {
+        LONG(l, r); --l;
+        S mat = seg.prod(l, r);
+        auto y = mat*x;
+        Out(y[K]);
+    }
     
 }
 

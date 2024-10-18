@@ -1907,7 +1907,7 @@
       "        Mat tmp = pow_recursive(b, k/2);",
       "        return ret * tmp * tmp;",
       "    }",
-      "    long long ij(long long i, long long j) {",
+      "    T ij(long long i, long long j) {",
       "        return a[i][j];",
       "    }",
       "#ifdef __DEBUG",
