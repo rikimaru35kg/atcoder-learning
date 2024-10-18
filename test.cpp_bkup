@@ -75,10 +75,11 @@ using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
-#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
-#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
-#define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
+#define rep(i, N) for (ll i=0; i<(ll)(N); ++i)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; --i)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); ++i)
+#define rep1(i, N) for (ll i=1; i<(ll)(N+1); ++i)
+#define rep1r(i, N) for (ll i=(ll)(N); i>0; i--)
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
@@ -209,19 +210,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); A.push_back(0);
-    ll p = 1000, n = 0;
-    rep(i, N) {
-        if(A[i]<A[i+1]) {
-            ll num = p/A[i];
-            n += num;
-            p -= num*A[i];
-        } else if(A[i]>A[i+1]) {
-            p += n*A[i];
-            n = 0;
-        }
+    LONG(N, L);
+    VL(A, N);
+    ll rem = L - accumulate(all(A), 0LL);
+    if(rem>0) A.push_back(rem);
+    N = SIZE(A);
+    priority_queue<ll,vl,greater<ll>> que;
+    for(auto a: A) que.push(a);
+    de(A)
+
+    ll ans = 0;
+    while(que.size()>=2) {
+        auto a1 = que.top(); que.pop();
+        auto a2 = que.top(); que.pop();
+        ans += a1+a2;
+        que.push(a1+a2);
     }
-    Out(p);
+    Out(ans);
     
 }
 

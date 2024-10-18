@@ -210,24 +210,47 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    STRING(S);
-    ll M = 26;
-    vvl nxt(M, vl(N,INF));
-    rep(i, N) { nxt[S[i]-'a'][i] = i; }
-    rep(m, M) repr(i, N-1) chmin(nxt[m][i], nxt[m][i+1]);
+    LONG(N, M, K);
+    LONG(A,B,C);
+    LONG(T);
+    VLM(S, M);
+    S.push_back(N);
 
-    string ans;
-    ll idx = 0;
-    rep1r(k, K) {
-        rep(m, M) {
-            if(nxt[m][idx]>N-k) continue;
-            ans += m+'a';
-            idx = nxt[m][idx] + 1;
-            break;
+    auto calc=[&](ll t, ll n) -> vl {
+        ll i = 0;
+        vl ret(K+1);
+        if(t>T) return ret;
+        ll num = Div(T-t, A) + 1;
+        ret[0] = min(num, n-i);
+        i = num;
+        t += num*C;
+        rep1(k, K) {
+            if(i>=n) return ret;
+            if(t>T) return ret;
+            ll num = Div(T-t, A) + 1;
+            ret[k] = min(num, n-i);
+            i += num;
+            t +=num*C;
         }
+        return ret;
+    };
+
+    vvl gain(M, vl(K+1));
+    ll ans = 0;
+    vl cand;
+    rep(i, M) {
+        gain[i] = calc(B*S[i], S[i+1]-S[i]);
+        rep(j, SIZE(gain[i])) {
+            if(j==0) continue;
+            cand.push_back(gain[i][j]);
+        }
+        ans += gain[i][0];
     }
+    sort(allr(cand));
+    rep(i, K-M) ans += cand[i];
+    ans--;
     Out(ans);
+
     
 }
 

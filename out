@@ -1,698 +1,93 @@
-test.cpp: In instantiation of ‘void debug_view(std::__debug::vector<_Tp>&) [with T = std::tuple<long long int, long long int, long long int>]’:
-test.cpp:224:5:   required from here
-test.cpp:176:79: error: no match for ‘operator<<’ (operand types are ‘std::ostream’ {aka ‘std::basic_ostream<char>’} and ‘std::tuple<long long int, long long int, long long int>’)
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/istream:39,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/ostream:108:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(__ostream_type& (*)(__ostream_type&)) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  108 |       operator<<(__ostream_type& (*__pf)(__ostream_type&))
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:108:36: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘std::basic_ostream<char>::__ostream_type& (*)(std::basic_ostream<char>::__ostream_type&)’ {aka ‘std::basic_ostream<char>& (*)(std::basic_ostream<char>&)’}
-  108 |       operator<<(__ostream_type& (*__pf)(__ostream_type&))
-      |                  ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/ostream:117:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(__ios_type& (*)(__ios_type&)) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>; __ios_type = std::basic_ios<char>]’
-  117 |       operator<<(__ios_type& (*__pf)(__ios_type&))
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:117:32: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘std::basic_ostream<char>::__ios_type& (*)(std::basic_ostream<char>::__ios_type&)’ {aka ‘std::basic_ios<char>& (*)(std::basic_ios<char>&)’}
-  117 |       operator<<(__ios_type& (*__pf)(__ios_type&))
-      |                  ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/ostream:127:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::ios_base& (*)(std::ios_base&)) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  127 |       operator<<(ios_base& (*__pf) (ios_base&))
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:127:30: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘std::ios_base& (*)(std::ios_base&)’
-  127 |       operator<<(ios_base& (*__pf) (ios_base&))
-      |                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
-/usr/include/c++/12/ostream:166:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long int) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  166 |       operator<<(long __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:166:23: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘long int’
-  166 |       operator<<(long __n)
-      |                  ~~~~~^~~
-/usr/include/c++/12/ostream:170:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  170 |       operator<<(unsigned long __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:170:32: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘long unsigned int’
-  170 |       operator<<(unsigned long __n)
-      |                  ~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/ostream:174:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(bool) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  174 |       operator<<(bool __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:174:23: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘bool’
-  174 |       operator<<(bool __n)
-      |                  ~~~~~^~~
-In file included from /usr/include/c++/12/ostream:833:
-/usr/include/c++/12/bits/ostream.tcc:96:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(short int) [with _CharT = char; _Traits = std::char_traits<char>]’
-   96 |     basic_ostream<_CharT, _Traits>::
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/ostream.tcc:97:22: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘short int’
-   97 |     operator<<(short __n)
-      |                ~~~~~~^~~
-/usr/include/c++/12/ostream:181:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(short unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  181 |       operator<<(unsigned short __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:181:33: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘short unsigned int’
-  181 |       operator<<(unsigned short __n)
-      |                  ~~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/bits/ostream.tcc:110:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(int) [with _CharT = char; _Traits = std::char_traits<char>]’
-  110 |     basic_ostream<_CharT, _Traits>::
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/ostream.tcc:111:20: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘int’
-  111 |     operator<<(int __n)
-      |                ~~~~^~~
-/usr/include/c++/12/ostream:192:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  192 |       operator<<(unsigned int __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:192:31: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘unsigned int’
-  192 |       operator<<(unsigned int __n)
-      |                  ~~~~~~~~~~~~~^~~
-/usr/include/c++/12/ostream:201:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long long int) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  201 |       operator<<(long long __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:201:28: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘long long int’
-  201 |       operator<<(long long __n)
-      |                  ~~~~~~~~~~^~~
-/usr/include/c++/12/ostream:205:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long long unsigned int) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  205 |       operator<<(unsigned long long __n)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:205:37: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘long long unsigned int’
-  205 |       operator<<(unsigned long long __n)
-      |                  ~~~~~~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/ostream:220:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(double) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  220 |       operator<<(double __f)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:220:25: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘double’
-  220 |       operator<<(double __f)
-      |                  ~~~~~~~^~~
-/usr/include/c++/12/ostream:224:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(float) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  224 |       operator<<(float __f)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:224:24: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘float’
-  224 |       operator<<(float __f)
-      |                  ~~~~~~^~~
-/usr/include/c++/12/ostream:232:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(long double) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  232 |       operator<<(long double __f)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:232:30: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘long double’
-  232 |       operator<<(long double __f)
-      |                  ~~~~~~~~~~~~^~~
-/usr/include/c++/12/ostream:245:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(const void*) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  245 |       operator<<(const void* __p)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:245:30: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘const void*’
-  245 |       operator<<(const void* __p)
-      |                  ~~~~~~~~~~~~^~~
-/usr/include/c++/12/ostream:250:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(std::nullptr_t) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>; std::nullptr_t = std::nullptr_t]’
-  250 |       operator<<(nullptr_t)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:250:18: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘std::nullptr_t’
-  250 |       operator<<(nullptr_t)
-      |                  ^~~~~~~~~
-/usr/include/c++/12/ostream:257:7: note: candidate: ‘std::basic_ostream<_CharT, _Traits>::__ostream_type& std::basic_ostream<_CharT, _Traits>::operator<<(const volatile void*) [with _CharT = char; _Traits = std::char_traits<char>; __ostream_type = std::basic_ostream<char>]’
-  257 |       operator<<(const volatile void* __p)
-      |       ^~~~~~~~
-/usr/include/c++/12/ostream:257:39: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘const volatile void*’
-  257 |       operator<<(const volatile void* __p)
-      |                  ~~~~~~~~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/bits/ostream.tcc:124:5: note: candidate: ‘std::basic_ostream<_CharT, _Traits>& std::basic_ostream<_CharT, _Traits>::operator<<(__streambuf_type*) [with _CharT = char; _Traits = std::char_traits<char>; __streambuf_type = std::basic_streambuf<char>]’
-  124 |     basic_ostream<_CharT, _Traits>::
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/ostream.tcc:125:34: note:   no known conversion for argument 1 from ‘std::tuple<long long int, long long int, long long int>’ to ‘std::basic_ostream<char>::__streambuf_type*’ {aka ‘std::basic_streambuf<char>*’}
-  125 |     operator<<(__streambuf_type* __sbin)
-      |                ~~~~~~~~~~~~~~~~~~^~~~~~
-In file included from /usr/include/c++/12/regex:66,
-                 from stdc++.h:110:
-/usr/include/c++/12/bits/regex.h:1689:5: note: candidate: ‘template<class _Ch_type, class _Ch_traits, class _Bi_iter> std::basic_ostream<_CharT, _Traits>& std::__cxx11::operator<<(std::basic_ostream<_CharT, _Traits>&, const sub_match<_Bi_iter>&)’
- 1689 |     operator<<(basic_ostream<_Ch_type, _Ch_traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1689:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::__cxx11::sub_match<_Bi_iter>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/bitset:1598,
-                 from stdc++.h:66:
-/usr/include/c++/12/debug/bitset:408:5: note: candidate: ‘template<class _CharT, class _Traits, long unsigned int _Nb> std::basic_ostream<_CharT, _Traits>& std::__debug::operator<<(std::basic_ostream<_CharT, _Traits>&, const bitset<_Nb>&)’
-  408 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/bitset:408:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::__debug::bitset<_Nb>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from stdc++.h:45:
-/usr/include/c++/12/cstddef:124:5: note: candidate: ‘template<class _IntegerType> constexpr std::__byte_op_t<_IntegerType> std::operator<<(byte, _IntegerType)’
-  124 |     operator<<(byte __b, _IntegerType __shift) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/cstddef:124:5: note:   template argument deduction/substitution failed:
-test.cpp:176:74: note:   cannot convert ‘std::cerr’ (type ‘std::ostream’ {aka ‘std::basic_ostream<char>’}) to type ‘std::byte’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ^~~~
-In file included from /usr/include/c++/12/bits/basic_string.h:47,
+In file included from /usr/include/c++/12/ext/alloc_traits.h:34,
+                 from /usr/include/c++/12/bits/basic_string.h:39,
                  from /usr/include/c++/12/string:53,
                  from /usr/include/c++/12/bits/locale_classes.h:40,
                  from /usr/include/c++/12/bits/ios_base.h:41,
                  from /usr/include/c++/12/ios:42,
-                 from /usr/include/c++/12/istream:38:
-/usr/include/c++/12/string_view:672:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, basic_string_view<_CharT, _Traits>)’
-  672 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:672:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/basic_string.h:3891:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
- 3891 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3891:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/bits/ios_base.h:46:
-/usr/include/c++/12/system_error:335:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const error_code&)’
-  335 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const error_code& __e)
-      |     ^~~~~~~~
-/usr/include/c++/12/system_error:335:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const std::error_code&’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:507:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _CharT)’
-  507 |     operator<<(basic_ostream<_CharT, _Traits>& __out, _CharT __c)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:507:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   deduced conflicting types for parameter ‘_CharT’ (‘char’ and ‘std::tuple<long long int, long long int, long long int>’)
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:517:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, char)’
-  517 |     operator<<(basic_ostream<_CharT, _Traits>& __out, char __c)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:517:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:523:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, char)’
-  523 |     operator<<(basic_ostream<char, _Traits>& __out, char __c)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:523:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:534:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, signed char)’
-  534 |     operator<<(basic_ostream<char, _Traits>& __out, signed char __c)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:534:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘signed char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:539:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, unsigned char)’
-  539 |     operator<<(basic_ostream<char, _Traits>& __out, unsigned char __c)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:539:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘unsigned char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:548:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, wchar_t)’ (deleted)
-  548 |     operator<<(basic_ostream<char, _Traits>&, wchar_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:548:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘wchar_t’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:553:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, char8_t)’ (deleted)
-  553 |     operator<<(basic_ostream<char, _Traits>&, char8_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:553:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘char8_t’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:558:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, char16_t)’ (deleted)
-  558 |     operator<<(basic_ostream<char, _Traits>&, char16_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:558:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘char16_t’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:562:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, char32_t)’ (deleted)
-  562 |     operator<<(basic_ostream<char, _Traits>&, char32_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:562:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘char32_t’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:568:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(basic_ostream<wchar_t, _Traits>&, char8_t)’ (deleted)
-  568 |     operator<<(basic_ostream<wchar_t, _Traits>&, char8_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:568:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘wchar_t’ and ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:573:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(basic_ostream<wchar_t, _Traits>&, char16_t)’ (deleted)
-  573 |     operator<<(basic_ostream<wchar_t, _Traits>&, char16_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:573:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘wchar_t’ and ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:577:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(basic_ostream<wchar_t, _Traits>&, char32_t)’ (deleted)
-  577 |     operator<<(basic_ostream<wchar_t, _Traits>&, char32_t) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:577:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘wchar_t’ and ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:598:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const _CharT*)’
-  598 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const _CharT* __s)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:598:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘const _CharT*’ and ‘std::tuple<long long int, long long int, long long int>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/ostream.tcc:307:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const char*)’
-  307 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const char* __s)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/ostream.tcc:307:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const char*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:615:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const char*)’
-  615 |     operator<<(basic_ostream<char, _Traits>& __out, const char* __s)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:615:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const char*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:628:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const signed char*)’
-  628 |     operator<<(basic_ostream<char, _Traits>& __out, const signed char* __s)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:628:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const signed char*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:633:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const unsigned char*)’
-  633 |     operator<<(basic_ostream<char, _Traits>& __out, const unsigned char* __s)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:633:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const unsigned char*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:642:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const wchar_t*)’ (deleted)
-  642 |     operator<<(basic_ostream<char, _Traits>&, const wchar_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:642:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const wchar_t*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:647:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const char8_t*)’ (deleted)
-  647 |     operator<<(basic_ostream<char, _Traits>&, const char8_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:647:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const char8_t*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:652:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const char16_t*)’ (deleted)
-  652 |     operator<<(basic_ostream<char, _Traits>&, const char16_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:652:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const char16_t*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:656:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(basic_ostream<char, _Traits>&, const char32_t*)’ (deleted)
-  656 |     operator<<(basic_ostream<char, _Traits>&, const char32_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:656:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const char32_t*’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/ostream:662:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(basic_ostream<wchar_t, _Traits>&, const char8_t*)’ (deleted)
-  662 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char8_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:662:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘wchar_t’ and ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:667:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(basic_ostream<wchar_t, _Traits>&, const char16_t*)’ (deleted)
-  667 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char16_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:667:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘wchar_t’ and ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:671:5: note: candidate: ‘template<class _Traits> std::basic_ostream<wchar_t, _Traits>& std::operator<<(basic_ostream<wchar_t, _Traits>&, const char32_t*)’ (deleted)
-  671 |     operator<<(basic_ostream<wchar_t, _Traits>&, const char32_t*) = delete;
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:671:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   mismatched types ‘wchar_t’ and ‘char’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/ostream:754:5: note: candidate: ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&)’
-  754 |     operator<<(_Ostream&& __os, const _Tp& __x)
-      |     ^~~~~~~~
-/usr/include/c++/12/ostream:754:5: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/ostream: In substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::tuple<long long int, long long int, long long int>]’:
-test.cpp:176:79:   required from ‘void debug_view(std::__debug::vector<_Tp>&) [with T = std::tuple<long long int, long long int, long long int>]’
-test.cpp:224:5:   required from here
-/usr/include/c++/12/ostream:754:5: error: template constraint failure for ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&&’
-/usr/include/c++/12/ostream:754:5: note: constraints not satisfied
-/usr/include/c++/12/ostream: In substitution of ‘template<class _Os, class _Tp>  requires (__derived_from_ios_base<_Os>) && requires(_Os& __os, const _Tp& __t) {__os << __t;} using __rvalue_stream_insertion_t = _Os&& [with _Os = std::basic_ostream<char>&; _Tp = std::tuple<long long int, long long int, long long int>]’:
-/usr/include/c++/12/ostream:754:5:   required by substitution of ‘template<class _Ostream, class _Tp> _Ostream&& std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = std::basic_ostream<char>&; _Tp = std::tuple<long long int, long long int, long long int>]’
-test.cpp:176:79:   required from ‘void debug_view(std::__debug::vector<_Tp>&) [with T = std::tuple<long long int, long long int, long long int>]’
-test.cpp:224:5:   required from here
-/usr/include/c++/12/ostream:721:13:   required for the satisfaction of ‘__derived_from_ios_base<_Os>’ [with _Os = std::basic_ostream<char, std::char_traits<char> >&]
-/usr/include/c++/12/ostream:721:39: note: the expression ‘is_class_v<_Tp> [with _Tp = std::basic_ostream<char, std::char_traits<char> >&]’ evaluated to ‘false’
-  721 |     concept __derived_from_ios_base = is_class_v<_Tp>
-      |                                       ^~~~~~~~~~~~~~~
-test.cpp: In instantiation of ‘void debug_view(std::__debug::vector<_Tp>&) [with T = std::tuple<long long int, long long int, long long int>]’:
-test.cpp:224:5:   required from here
-/usr/include/c++/12/complex:555:5: note: candidate: ‘template<class _Tp, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const complex<_Tp>&)’
-  555 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const complex<_Tp>& __x)
-      |     ^~~~~~~~
-/usr/include/c++/12/complex:555:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::complex<_Tp>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from stdc++.h:72:
-/usr/include/c++/12/iomanip:79:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Resetiosflags)’
-   79 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Resetiosflags __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:79:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘std::_Resetiosflags’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/iomanip:109:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Setiosflags)’
-  109 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setiosflags __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:109:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘std::_Setiosflags’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/iomanip:143:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Setbase)’
-  143 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setbase __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:143:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘std::_Setbase’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/iomanip:178:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Setfill<_CharT>)’
-  178 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setfill<_CharT> __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:178:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘std::_Setfill<_CharT>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/iomanip:208:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Setprecision)’
-  208 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setprecision __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:208:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘std::_Setprecision’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/iomanip:238:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Setw)’
-  238 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Setw __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:238:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘std::_Setw’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/iomanip:311:5: note: candidate: ‘template<class _CharT, class _Traits, class _MoneyT> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Put_money<_MoneyT>)’
-  311 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_money<_MoneyT> __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:311:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘std::_Put_money<_MoneyT>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/iomanip:363:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, _Put_time<_CharT>)’
-  363 |     operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_time<_CharT> __f)
-      |     ^~~~~~~~
-/usr/include/c++/12/iomanip:363:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘std::_Put_time<_CharT>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/memory:75,
-                 from stdc++.h:82:
-/usr/include/c++/12/bits/unique_ptr.h:1137:5: note: candidate: ‘template<class _CharT, class _Traits, class _Tp, class _Dp> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const unique_ptr<_Up, _Ep>&) requires requires{std::operator<<::__os << std::operator<<::__p->get();}’
- 1137 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:1137:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::unique_ptr<_Up, _Ep>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/memory:76:
-/usr/include/c++/12/bits/shared_ptr.h:70:5: note: candidate: ‘template<class _Ch, class _Tr, class _Tp, __gnu_cxx::_Lock_policy _Lp> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const __shared_ptr<_Tp, _Lp>&)’
-   70 |     operator<<(std::basic_ostream<_Ch, _Tr>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:70:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/12/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
-  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
-  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
-  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
-  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__shift_left, typename _Dom1::value_type>::result_type> std::operator<<(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
-  413 |     _DEFINE_EXPR_BINARY_OPERATOR(<<, struct std::__shift_left)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:413:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const valarray<_Tp>&, const valarray<_Tp>&)’
- 1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1194:1: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::valarray<_Tp>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
- 1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1194:1: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::ostream’ {aka ‘std::basic_ostream<char>’} is not derived from ‘const std::valarray<_Tp>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/valarray:1194:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__shift_left, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__shift_left, _Tp>::result_type> std::operator<<(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
- 1194 | _DEFINE_BINARY_OPERATOR(<<, __shift_left)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1194:1: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::valarray<_Tp>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/random:49,
-                 from stdc++.h:108:
-/usr/include/c++/12/bits/random.h:1312:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __w, class _UIntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const independent_bits_engine<_RandomNumberEngine, __w, _UIntType>&)’
- 1312 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.h:1312:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from /usr/include/c++/12/random:51:
-/usr/include/c++/12/bits/random.tcc:907:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const uniform_int_distribution<_IntType>&)’
-  907 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:907:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::uniform_int_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:965:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const uniform_real_distribution<_IntType>&)’
-  965 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:965:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::uniform_real_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2150:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const cauchy_distribution<_RealType>&)’
- 2150 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2150:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::cauchy_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1026:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const bernoulli_distribution&)’
- 1026 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1026:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘const std::bernoulli_distribution&’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
-/usr/include/c++/12/bits/random.tcc:1107:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const geometric_distribution<_IntType>&)’
- 1107 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1107:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::geometric_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1759:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const exponential_distribution<_RealType>&)’
- 1759 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1759:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::exponential_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2544:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const weibull_distribution<_RealType>&)’
- 2544 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2544:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::weibull_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2618:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const extreme_value_distribution<_RealType>&)’
- 2618 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2618:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::extreme_value_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:156:5: note: candidate: ‘template<class _UIntType, _UIntType __a, _UIntType __c, _UIntType __m, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const linear_congruential_engine<_UIntType, __a, __c, __m>&)’
-  156 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:156:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::linear_congruential_engine<_UIntType, __a, __c, __m>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:477:5: note: candidate: ‘template<class _UIntType1, long unsigned int __w1, long unsigned int __n1, long unsigned int __m1, long unsigned int __r1, _UIntType1 __a1, long unsigned int __u1, _UIntType1 __d1, long unsigned int __s1, _UIntType1 __b1, long unsigned int __t1, _UIntType1 __c1, long unsigned int __l1, _UIntType1 __f1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>&)’
-  477 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:477:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:632:5: note: candidate: ‘template<class _UIntType, long unsigned int __w, long unsigned int __s, long unsigned int __r, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const subtract_with_carry_engine<_UIntType, __w, __s, __r>&)’
-  632 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:632:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:701:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __p, long unsigned int __r, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const discard_block_engine<_RandomNumberEngine, __p, __r>&)’
-  701 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:701:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::discard_block_engine<_RandomNumberEngine, __p, __r>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:863:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __k, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const shuffle_order_engine<_RandomNumberEngine, __k>&)’
-  863 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:863:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::shuffle_order_engine<_RandomNumberEngine, __k>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1221:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const negative_binomial_distribution<_IntType>&)’
- 1221 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1221:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::negative_binomial_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1431:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const poisson_distribution<_IntType>&)’
- 1431 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1431:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::poisson_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1697:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const binomial_distribution<_IntType>&)’
- 1697 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1697:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::binomial_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1925:5: note: candidate: ‘template<class _RealType1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const normal_distribution<_RealType>&)’
- 1925 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1925:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::normal_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:1992:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const lognormal_distribution<_RealType>&)’
- 1992 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:1992:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::lognormal_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2064:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const chi_squared_distribution<_RealType>&)’
- 2064 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2064:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::chi_squared_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2225:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const fisher_f_distribution<_RealType>&)’
- 2225 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2225:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::fisher_f_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2299:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const student_t_distribution<_RealType>&)’
- 2299 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2299:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::student_t_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2468:5: note: candidate: ‘template<class _RealType1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const gamma_distribution<_RealType>&)’
- 2468 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2468:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::gamma_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2754:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const discrete_distribution<_IntType>&)’
- 2754 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2754:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::discrete_distribution<_IntType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:2976:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const piecewise_constant_distribution<_RealType>&)’
- 2976 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:2976:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::piecewise_constant_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-/usr/include/c++/12/bits/random.tcc:3182:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, const piecewise_linear_distribution<_RealType>&)’
- 3182 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/random.tcc:3182:5: note:   template argument deduction/substitution failed:
-test.cpp:176:79: note:   ‘std::tuple<long long int, long long int, long long int>’ is not derived from ‘const std::piecewise_linear_distribution<_RealType>’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                          ~~~~~^~~~
-In file included from stdc++.h:113:
-/usr/include/c++/12/thread:95:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(basic_ostream<_CharT, _Traits>&, thread::id)’
-   95 |     operator<<(basic_ostream<_CharT, _Traits>& __out, thread::id __id)
-      |     ^~~~~~~~
-/usr/include/c++/12/thread:95:5: note:   template argument deduction/substitution failed:
-test.cpp:176:82: note:   cannot convert ‘e’ (type ‘std::tuple<long long int, long long int, long long int>’) to type ‘std::thread::id’
-  176 | template<typename T> inline void debug_view(vector<T> &v){for(auto e: v){cerr << e << " ";} cerr << endl;}
-      |                                                                                  ^
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/sstream:38,
+                 from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = std::pair<long long int, long long int>; _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; allocator_type = std::allocator<std::pair<long long int, long long int> >]’:
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+/usr/include/c++/12/bits/stl_queue.h:756:18:   required from ‘void std::priority_queue<_Tp, _Sequence, _Compare>::emplace(_Args&& ...) [with _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; _Sequence = std::__debug::vector<std::pair<long long int, long long int> >; _Compare = std::less<std::pair<long long int, long long int> >]’
+test.cpp:256:20:   required from here
+/usr/include/c++/12/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(std::pair<long long int, long long int>*&, long long int&)’
+  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
+      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_iterator.h:85,
+                 from /usr/include/c++/12/bits/stl_algobase.h:67,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
+   94 |     construct_at(_Tp* __location, _Args&&... __args)
+      |     ^~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = std::pair<long long int, long long int>; _Args = {long long int&}]’:
+/usr/include/c++/12/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = std::pair<long long int, long long int>; _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; allocator_type = std::allocator<std::pair<long long int, long long int> >]’
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; _Allocator = std::allocator<std::pair<long long int, long long int> >; reference = std::pair<long long int, long long int>&]’
+/usr/include/c++/12/bits/stl_queue.h:756:18:   required from ‘void std::priority_queue<_Tp, _Sequence, _Compare>::emplace(_Args&& ...) [with _Args = {long long int&}; _Tp = std::pair<long long int, long long int>; _Sequence = std::__debug::vector<std::pair<long long int, long long int> >; _Compare = std::less<std::pair<long long int, long long int> >]’
+test.cpp:256:20:   required from here
+/usr/include/c++/12/bits/stl_construct.h:96:17: error: no matching function for call to ‘std::pair<long long int, long long int>::pair(long long int&)’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_algobase.h:64:
+/usr/include/c++/12/bits/stl_pair.h:297:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<_U1, _U2>() constexpr std::pair<_T1, _T2>::pair(std::pair<_U1, _U2>&&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  297 |         pair(pair<_U1, _U2>&& __p)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:297:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘long long int’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:288:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<const _U1&, const _U2&>() constexpr std::pair<_T1, _T2>::pair(const std::pair<_U1, _U2>&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  288 |         pair(const pair<_U1, _U2>& __p)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:288:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘const std::pair<_T1, _T2>’ and ‘long long int’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:279:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<_U1, _U2>() constexpr std::pair<_T1, _T2>::pair(_U1&&, _U2&&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  279 |         pair(_U1&& __x, _U2&& __y)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:279:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 2 arguments, 1 provided
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:217:9: note: candidate: ‘template<class ... _Args1, long unsigned int ..._Indexes1, class ... _Args2, long unsigned int ..._Indexes2> constexpr std::pair<_T1, _T2>::pair(std::tuple<_Args1 ...>&, std::tuple<_Args2 ...>&, std::_Index_tuple<_Indexes1 ...>, std::_Index_tuple<_Indexes2 ...>) [with _Args1 = {_Args1 ...}; long unsigned int ..._Indexes1 = {_Indexes1 ...}; _Args2 = {_Args2 ...}; long unsigned int ..._Indexes2 = {_Indexes2 ...}; _T1 = long long int; _T2 = long long int]’
+  217 |         pair(tuple<_Args1...>&, tuple<_Args2...>&,
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:217:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘long long int’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:200:9: note: candidate: ‘template<class ... _Args1, class ... _Args2> constexpr std::pair<_T1, _T2>::pair(std::piecewise_construct_t, std::tuple<_Args1 ...>, std::tuple<_Args2 ...>) [with _Args1 = {_Args1 ...}; _Args2 = {_Args2 ...}; _T1 = long long int; _T2 = long long int]’
+  200 |         pair(piecewise_construct_t, tuple<_Args1...>, tuple<_Args2...>);
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:200:9: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h:96:17: note:   candidate expects 3 arguments, 1 provided
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:269:7: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(const _T1&, const _T2&) requires  _S_constructible<const _T1&, const _T2&>() [with _T1 = long long int; _T2 = long long int]’
+  269 |       pair(const _T1& __x, const _T2& __y)
+      |       ^~~~
+/usr/include/c++/12/bits/stl_pair.h:269:7: note:   candidate expects 2 arguments, 1 provided
+/usr/include/c++/12/bits/stl_pair.h:228:7: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair() requires (is_default_constructible_v<_T1>) && (is_default_constructible_v<_T2>) [with _T1 = long long int; _T2 = long long int]’
+  228 |       pair()
+      |       ^~~~
+/usr/include/c++/12/bits/stl_pair.h:228:7: note:   candidate expects 0 arguments, 1 provided
+/usr/include/c++/12/bits/stl_pair.h:196:17: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(std::pair<_T1, _T2>&&) [with _T1 = long long int; _T2 = long long int]’
+  196 |       constexpr pair(pair&&) = default;         ///< Move constructor
+      |                 ^~~~
+/usr/include/c++/12/bits/stl_pair.h:196:22: note:   no known conversion for argument 1 from ‘long long int’ to ‘std::pair<long long int, long long int>&&’
+  196 |       constexpr pair(pair&&) = default;         ///< Move constructor
+      |                      ^~~~~~
+/usr/include/c++/12/bits/stl_pair.h:195:17: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(const std::pair<_T1, _T2>&) [with _T1 = long long int; _T2 = long long int]’
+  195 |       constexpr pair(const pair&) = default;    ///< Copy constructor
+      |                 ^~~~
+/usr/include/c++/12/bits/stl_pair.h:195:22: note:   no known conversion for argument 1 from ‘long long int’ to ‘const std::pair<long long int, long long int>&’
+  195 |       constexpr pair(const pair&) = default;    ///< Copy constructor
+      |                      ^~~~~~~~~~~
