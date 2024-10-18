@@ -241,35 +241,50 @@ struct XorBase {
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
-
-    ll M = 60;
-    auto calbase=[&](vl &A) -> vl {
-        vl base(M);
-        rep(i, N) {
-            ll a = A[i];
-            rep(j, M) if(a>>j&1) a ^= base[j];
-            rep(j, M) {
-                if(a>>j&1) {
-                    base[j] = a;
-                    rep(k, M) {
-                        if(j==k) continue;
-                        if(~base[k]>>j&1) continue;
-                        base[k] ^= base[j];
-                    }
-                    break;
-                }
-            }
+    LONG(N, M);
+    vBS base(N);
+    rep(i, N) {
+        LONG(t);
+        rep(j, t) {
+            LONGM(a);
+            base[i][a] = 1;
         }
-        return base;
-    };
-
-    vl basea = calbase(A), baseb = calbase(B);
-    if(basea==baseb) PYes PNo
+    }
+    VL(S, M);
+    XorBase xb(base);
+    BS now;
+    vBS nbase = xb.get_base();
+    rep(i, M) {
+        if(now[i]==S[i]) continue;
+        rep(j, N) {
+            if(!nbase[j][i]) continue;
+            now ^= nbase[j];
+            break;
+        }
+    }
+    rep(j, M) {
+        if(now[j]!=S[j]) Pm0
+    }
+    ll rank = xb.get_rank();
+    mint ans = mint(2).pow(N-rank);
+    Out(ans);
 
     
 }
