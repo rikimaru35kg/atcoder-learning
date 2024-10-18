@@ -209,35 +209,19 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp event;
+    LONG(N); VL(A, N); A.push_back(0);
+    ll p = 1000, n = 0;
     rep(i, N) {
-        LONG(t, d);
-        event.emplace_back(t, t+d);
-    }
-    sort(allr(event));
-
-    ll t = 0, ans = 0;
-    priority_queue<ll,vl,greater<ll>> que;
-    while(event.size() || que.size()) {
-        while(event.size() && event.back().first<=t) {
-            auto [l,r] = event.back(); event.pop_back();
-            que.push(r);
-        }
-
-        while(que.size() && que.top()<t) que.pop();
-        if(que.size()) {
-            que.pop();
-            ++ans;
-        }
-
-        if(que.size()) ++t;
-        else if(!event.size()) break;
-        else {
-            t = event.back().first;
+        if(A[i]<A[i+1]) {
+            ll num = p/A[i];
+            n += num;
+            p -= num*A[i];
+        } else if(A[i]>A[i+1]) {
+            p += n*A[i];
+            n = 0;
         }
     }
-    Out(ans);
+    Out(p);
     
 }
 

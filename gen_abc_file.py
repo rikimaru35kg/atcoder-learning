@@ -79,10 +79,11 @@ using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
-#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
-#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
-#define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
+#define rep(i, N) for (ll i=0; i<(ll)(N); ++i)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; --i)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); ++i)
+#define rep1(i, N) for (ll i=1; i<(ll)(N+1); ++i)
+#define rep1r(i, N) for (ll i=(ll)(N); i>0; i--)
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())

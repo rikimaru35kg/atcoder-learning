@@ -75,10 +75,11 @@ using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
-#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
-#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
-#define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
+#define rep(i, N) for (ll i=0; i<(ll)(N); ++i)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; --i)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); ++i)
+#define rep1(i, N) for (ll i=1; i<(ll)(N+1); ++i)
+#define rep1r(i, N) for (ll i=(ll)(N); i>0; i--)
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
@@ -209,22 +210,21 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl job(M);
-    rep(i, N) {
-        LONG(a,b);
-        ll d = M-a;
-        if(d<0) continue;
-        job[d].push_back(b);
-    }
-    priority_queue<ll> que;
+    LONG(N, K);
+    STRING(S);
+    ll M = 26;
+    vvl nxt(M, vl(N,INF));
+    rep(i, N) { nxt[S[i]-'a'][i] = i; }
+    rep(m, M) repr(i, N-1) chmin(nxt[m][i], nxt[m][i+1]);
 
-    ll ans = 0;
-    repr(d, M) {
-        for(auto b: job[d]) que.push(b);
-        if(que.size()) {
-            ll b = que.top(); que.pop();
-            ans += b;
+    string ans;
+    ll idx = 0;
+    rep1r(k, K) {
+        rep(m, M) {
+            if(nxt[m][idx]>N-k) continue;
+            ans += m+'a';
+            idx = nxt[m][idx] + 1;
+            break;
         }
     }
     Out(ans);
