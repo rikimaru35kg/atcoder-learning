@@ -207,122 +207,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-const int MX = 2;  // DEFINE PROPERLY!!
-template <typename T>
-class Mat {
-public:
-    int n; T a[MX][MX];
-    // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
+//! O(ROW * COL^2 / 64?)
+const int COL = 16;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
+struct XorBase {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(vBS mat): base(mat) {
+        ROW = SIZE(base);
+        for(int j=0; j<COL; ++j) {
+            int pi = -1;  // pivot i
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
+                pi = i; break;
             }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(long long i=0; i<n; ++i) for(long long j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    T ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
-};
+            if(pi==-1) continue;
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+            swap(base[rank], base[pi]);
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
+            }
+            ++rank;
+        }
+    }
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K, M);
-    mint::set_mod(M);
+    LONG(N);
+    vp spice;
+    rep1(i, (1LL<<N)-1) {
+        LONG(c);
+        spice.emplace_back(c, i);
+    }
+    sort(all(spice));
 
-    mint ans = 0;
-    mint a[2][2] = {{1,1},{0,10}};
-    Mat<mint> mat(2, *a);
-    rep(i, K) {
-        LONG(c, d);
-        Mat<mint> now = mat;
-        now.pow(d);
-        ans = ans * mint(10).pow(d) + c*now.ij(0,1);
+    vl base(N);
+
+    ll ans = 0;
+    for(auto [c, si]: spice) {
+        rep(i, N) if(si>>i&1) si ^= base[i];
+        if(si==0) continue;
+        rep(i, N) {
+            if(si>>i&1) {
+                base[i] = si;
+                ans += c;
+                break;
+            }
+        }
+        rep(i, N) deb(base[i])
     }
     Out(ans);
+
     
 }
 

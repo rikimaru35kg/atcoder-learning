@@ -207,143 +207,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-const int MX = 3;  // DEFINE PROPERLY!!
-template <typename T>
-class Mat {
-public:
-    int n; T a[MX][MX];
-    // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
+//! O(ROW * COL^2 / 64?)
+const int COL = 300;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
+struct XorBase {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(vBS mat): base(mat) {
+        ROW = SIZE(base);
+        for(int j=0; j<COL; ++j) {  // find pivot for column j
+            int pi = -1;  // pivot i
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
+                pi = i; break;
             }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
+            if(pi==-1) continue;  // no pivot at column j
+
+            swap(base[rank], base[pi]);
+            // delete all other 1 at column j
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
             }
+            ++rank;
         }
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(long long i=0; i<n; ++i) for(long long j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    T ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
+    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
+    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Mat<ll> mat(3);
-    LONG(N);
-    VP(P, N);
-    de(P)
-    LONG(M);
-    vp operation;
-    rep(i, M) {
-        LONG(t);
-        if(t==1 || t==2) operation.emplace_back(t, -1);
-        else {
-            LONG(p);
-            operation.emplace_back(t, p);
-        }
-    }
-    de(operation)
-    LONG(Q);
-    vvp query(M+1);
-    rep(i, Q) {
-        LONG(a,b); --b;
-        query[a].emplace_back(b,i);
-    }
+    LONG(N); VL(A, N); VL(B, N);
 
-    vp ans(Q);
-    for(auto [b,qi]: query[0]) {
-        ans[qi] = P[b];
-    }
-    ll a1[MX][MX] = {{0,1,0},{-1,0,0},{0,0,1}};
-    ll a2[MX][MX] = {{0,-1,0},{1,0,0},{0,0,1}};
-    rep(oi, M) {
-        auto [t, p] = operation[oi];
-        if(t==1) {
-            mat = Mat<ll>(MX, *a1) * mat;
-        } else if (t==2) {
-            mat = Mat<ll>(MX, *a2) * mat;
-        } else if (t==3) {
-            ll a3[MX][MX] = {{-1,0,2*p},{0,1,0},{0,0,1}};
-            mat = Mat<ll>(MX, *a3) * mat;
-        } else {
-            ll a4[MX][MX] = {{1,0,0},{0,-1,2*p},{0,0,1}};
-            mat = Mat<ll>(MX, *a4) * mat;
+    ll M = 60;
+    auto calbase=[&](vl &A) -> vl {
+        vl base(M);
+        rep(i, N) {
+            ll a = A[i];
+            rep(j, M) if(a>>j&1) a ^= base[j];
+            rep(j, M) {
+                if(a>>j&1) {
+                    base[j] = a;
+                    rep(k, M) {
+                        if(j==k) continue;
+                        if(~base[k]>>j&1) continue;
+                        base[k] ^= base[j];
+                    }
+                    break;
+                }
+            }
         }
-        for(auto [b,qi]: query[oi+1]) {
-            vl x = {P[b].first, P[b].second, 1};
-            auto y = mat * x;
-            ans[qi] = {y[0], y[1]};
-        }
-    }
-    Out(ans);
+        return base;
+    };
+
+    vl basea = calbase(A), baseb = calbase(B);
+    if(basea==baseb) PYes PNo
+
     
 }
 
