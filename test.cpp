@@ -207,85 +207,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 300;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(vBS mat): base(mat) {
-        ROW = SIZE(base);
-        for(int j=0; j<COL; ++j) {  // find pivot for column j
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;  // no pivot at column j
-
-            swap(base[rank], base[pi]);
-            // delete all other 1 at column j
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
-        }
-    }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
-    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vBS base(N);
-    rep(i, N) {
-        LONG(t);
-        rep(j, t) {
-            LONGM(a);
-            base[i][a] = 1;
+    LONG(N);
+    VL2(L,R,N);
+    db ans = 0;
+    rep(r, N) rep(l, r) {
+        db now = 0;
+        db wl = R[l]-L[l]+1;
+        db wr = R[r]-L[r]+1;
+        repk(x, L[r], R[r]+1) {
+            ll cnt = max(R[l]-x, 0LL);
+            chmin(cnt, (ll)wl);
+            now += cnt;
         }
+        now /= wl*wr;
+        ans += now;
     }
-    VL(S, M);
-    XorBase xb(base);
-    BS now;
-    vBS nbase = xb.get_base();
-    rep(i, M) {
-        if(now[i]==S[i]) continue;
-        rep(j, N) {
-            if(!nbase[j][i]) continue;
-            now ^= nbase[j];
-            break;
-        }
-    }
-    rep(j, M) {
-        if(now[j]!=S[j]) Pm0
-    }
-    ll rank = xb.get_rank();
-    mint ans = mint(2).pow(N-rank);
     Out(ans);
-
     
 }
 

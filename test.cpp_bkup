@@ -207,70 +207,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 300;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(vBS mat): base(mat) {
-        ROW = SIZE(base);
-        for(int j=0; j<COL; ++j) {  // find pivot for column j
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;  // no pivot at column j
-
-            swap(base[rank], base[pi]);
-            // delete all other 1 at column j
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
+        ret *= n-k+1;
+        ret /= k;
     }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
-    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
-};
-
+    return ret;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N); VL(B, N);
+    LONG(N); VLM(A, N);
+    vvl idx(N);
+    rep(i, N) {
+        idx[A[i]].push_back(i);
+    }
+    de(idx)
 
-    ll M = 60;
-    auto calbase=[&](vl &A) -> vl {
-        vl base(M);
-        rep(i, N) {
-            ll a = A[i];
-            rep(j, M) if(a>>j&1) a ^= base[j];
-            rep(j, M) {
-                if(a>>j&1) {
-                    base[j] = a;
-                    rep(k, M) {
-                        if(j==k) continue;
-                        if(~base[k]>>j&1) continue;
-                        base[k] ^= base[j];
-                    }
-                    break;
-                }
-            }
+    ll ans = 0;
+    rep(i, N) {
+        // if(SIZE(idx[i])==0) continue;
+        idx[i].push_back(N);
+        ll now = nCr(N+1,2);
+        ll pi = -1;
+        ll M = SIZE(idx[i]);
+        rep(j, M) {
+            now -= nCr(idx[i][j]-pi, 2);
+            pi = idx[i][j];
         }
-        return base;
-    };
-
-    vl basea = calbase(A), baseb = calbase(B);
-    if(basea==baseb) PYes PNo
-
+        de2(i, now)
+        ans += now;
+    }
+    Out(ans);
     
 }
 

@@ -1348,6 +1348,7 @@
 - E[X+Y] = E[X] + E[Y]
 - 場合の数が途方もない時、ある要素に注目すると計算量が押さえられる事がある（主客転倒的な発想）
 ### 例題
+- !復習価値低 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - !復習価値高 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - !要復習 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
 
@@ -1460,8 +1461,7 @@
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
-- !復習価値高 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
-- !復習価値高 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
+- !復習価値低 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
 - !復習価値高 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値高 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - !復習価値高 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
