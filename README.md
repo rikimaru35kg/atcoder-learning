@@ -1434,7 +1434,7 @@
 - こうなる理由はEDPC R - Walkの解説参照
 - Nが50以下（本当？100ぐらいでも大丈夫な気がするが…）、Kがかなり大きい（10^9～10^18）の場合、行列累乗が使える可能性あり
 ### 例題
-- !復習価値中 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
+- 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 - !要復習（何も考えず実装するとMLEするので注意） [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !要復習 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
 
