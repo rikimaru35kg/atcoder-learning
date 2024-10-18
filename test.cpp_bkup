@@ -208,7 +208,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! n*n matrix
-const int MX = 6;  // DEFINE PROPERLY!!
+const int MX = 2;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
 public:
@@ -276,7 +276,7 @@ public:
         Mat tmp = pow_recursive(b, k/2);
         return ret * tmp * tmp;
     }
-    long long ij(long long i, long long j) {
+    T ij(long long i, long long j) {
         return a[i][j];
     }
 #ifdef __DEBUG
@@ -293,46 +293,36 @@ public:
 #endif
 };
 
-#include <atcoder/segtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-using uint = unsigned int;
-
-using S = Mat<uint>;
-S op(S a, S b) {return b*a;}
-S e() {return Mat<uint>(MX);}
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(Str);
-    ll K = 5;
-    uint a[K][MX][MX];
-    rep(k, K) rep(i, MX) rep(j, MX) {
-        if(i==j) a[k][i][j]=1;
-        else a[k][i][j] = 0;
+    LONG(K, M);
+    mint::set_mod(M);
+
+    mint ans = 0;
+    mint a[2][2] = {{1,1},{0,10}};
+    Mat<mint> mat(2, *a);
+    rep(i, K) {
+        LONG(c, d);
+        Mat<mint> now = mat;
+        now.pow(d);
+        ans = ans * mint(10).pow(d) + c*now.ij(0,1);
     }
-    rep(k, K) {
-        a[k][k+1][k] = 1;
-    }
-    ll N = SIZE(Str);
-    vector<S> ini(N, e());
-    rep(i, N) {
-        if(Str[i]=='D') ini[i] = S(MX, *a[0]);
-        if(Str[i]=='I') ini[i] = S(MX, *a[1]);
-        if(Str[i]=='S') ini[i] = S(MX, *a[2]);
-        if(Str[i]=='C') ini[i] = S(MX, *a[3]);
-        if(Str[i]=='O') ini[i] = S(MX, *a[4]);
-    }
-    segtree<S,op,e> seg(ini);
-    LONG(Q);
-    vector<uint> x(MX); x[0] = 1;
-    rep(i, Q) {
-        LONG(l, r); --l;
-        S mat = seg.prod(l, r);
-        auto y = mat*x;
-        Out(y[K]);
-    }
+    Out(ans);
     
 }
 

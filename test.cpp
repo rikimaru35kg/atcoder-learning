@@ -208,7 +208,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! n*n matrix
-const int MX = 2;  // DEFINE PROPERLY!!
+const int MX = 3;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
 public:
@@ -293,34 +293,55 @@ public:
 #endif
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K, M);
-    mint::set_mod(M);
+    Mat<ll> mat(3);
+    LONG(N);
+    VP(P, N);
+    de(P)
+    LONG(M);
+    vp operation;
+    rep(i, M) {
+        LONG(t);
+        if(t==1 || t==2) operation.emplace_back(t, -1);
+        else {
+            LONG(p);
+            operation.emplace_back(t, p);
+        }
+    }
+    de(operation)
+    LONG(Q);
+    vvp query(M+1);
+    rep(i, Q) {
+        LONG(a,b); --b;
+        query[a].emplace_back(b,i);
+    }
 
-    mint ans = 0;
-    mint a[2][2] = {{1,1},{0,10}};
-    Mat<mint> mat(2, *a);
-    rep(i, K) {
-        LONG(c, d);
-        Mat<mint> now = mat;
-        now.pow(d);
-        ans = ans * mint(10).pow(d) + c*now.ij(0,1);
+    vp ans(Q);
+    for(auto [b,qi]: query[0]) {
+        ans[qi] = P[b];
+    }
+    ll a1[MX][MX] = {{0,1,0},{-1,0,0},{0,0,1}};
+    ll a2[MX][MX] = {{0,-1,0},{1,0,0},{0,0,1}};
+    rep(oi, M) {
+        auto [t, p] = operation[oi];
+        if(t==1) {
+            mat = Mat<ll>(MX, *a1) * mat;
+        } else if (t==2) {
+            mat = Mat<ll>(MX, *a2) * mat;
+        } else if (t==3) {
+            ll a3[MX][MX] = {{-1,0,2*p},{0,1,0},{0,0,1}};
+            mat = Mat<ll>(MX, *a3) * mat;
+        } else {
+            ll a4[MX][MX] = {{1,0,0},{0,-1,2*p},{0,0,1}};
+            mat = Mat<ll>(MX, *a4) * mat;
+        }
+        for(auto [b,qi]: query[oi+1]) {
+            vl x = {P[b].first, P[b].second, 1};
+            auto y = mat * x;
+            ans[qi] = {y[0], y[1]};
+        }
     }
     Out(ans);
     

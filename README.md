@@ -1442,7 +1442,7 @@
 - x, yが1次を保ったまま変換される場合は、アフィン変換可能
 - アフィン行列を構造体として定義し、アフィン行列同士の積を定義すれば実装が楽になる
 ### 例題
-- !復習価値中 [E - Rotate and Flip](https://atcoder.jp/contests/abc189/tasks/abc189_e)
+- 基本 [E - Rotate and Flip](https://atcoder.jp/contests/abc189/tasks/abc189_e)
 
 ## 掃き出し法
 - M*N行列の場合、O(M*N^2)となるので使えるかどうか計算量に注意
