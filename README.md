@@ -1470,7 +1470,7 @@
 ### 例題
 - 基本 [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - 復習価値低 [D - すぬけ君の塗り絵](https://atcoder.jp/contests/abc045/tasks/arc061_b)
-- !復習価値中 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
+- !復習価値低 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
 - !復習価値高 取り除く石 [N - 整地](https://atcoder.jp/contests/past201912-open/tasks/past201912_n)
 
 ## 時系列順に処理する

@@ -207,48 +207,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    return ret;
-}
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N);
-
-    vl cnt(N);
-    rep(i, N) cnt[A[i]]++;
-    ll same = 0;
+    LONG(N, W, C);
+    CoordinateCompression<ll> cc;
+    vl L(N), R(N), P(N);
     rep(i, N) {
-        same += nCr(cnt[i], 2);
+        LONG(l,r,p);
+        L[i] = l, R[i]=r, P[i]=p;
+        cc.add(max(l-C+1,0LL));
+        cc.add(min(r,W-C+1));
     }
-    auto del=[&](ll x) {
-        same -= nCr(cnt[x], 2);
-        cnt[x]--;
-        same += nCr(cnt[x], 2);
-    };
-    ll l = 0, r = N;
-    ll ans = 0;
-    while(l<r) {
-        ans += nCr(r-l, 2) - same;
-        del(A[l]);
-        del(A[r-1]);
-        ++l, --r;
-    }
-    Out(ans);
+    cc.add(0); cc.add(W-C+1);
 
+    ll M = cc.size();
+    vl imos(M);
+    rep(i, N) {
+        ll l = L[i], r=R[i], p =P[i];
+        l = max(l-C+1, 0LL);
+        r = min(r, W-C+1);
+        if(l>r) continue;
+        l = cc(l), r = cc(r);
+        imos[l] += p, imos[r] -= p;
+    }
+    rep(i, M-1) imos[i+1] += imos[i];
+    de(imos)
+    ll ans = INF;
+    rep(i, M-1) chmin(ans, imos[i]);
+    Out(ans);
     
 }
 
