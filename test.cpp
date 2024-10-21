@@ -207,26 +207,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL2(L,R,N);
-    db ans = 0;
-    rep(r, N) rep(l, r) {
-        db now = 0;
-        db wl = R[l]-L[l]+1;
-        db wr = R[r]-L[r]+1;
-        repk(x, L[r], R[r]+1) {
-            ll cnt = max(R[l]-x, 0LL);
-            chmin(cnt, (ll)wl);
-            now += cnt;
-        }
-        now /= wl*wr;
-        ans += now;
-    }
-    Out(ans);
     
 }
 
