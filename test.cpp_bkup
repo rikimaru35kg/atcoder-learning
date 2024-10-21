@@ -210,24 +210,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(S, N-1);
-    VL(X, M);
-    ll a = 1, b = 0;
-    umap<ll,ll> mp;
-    rep(j, M) {
-        mp[(X[j]-b)*a]++;
+    LONG(N, C);
+    vp event;
+    rep(i, N) {
+        LONG(a, b, c);
+        event.emplace_back(a, c);
+        event.emplace_back(b+1, -c);
     }
-    rep(i, N-1) {
-        a = -a;
-        b = S[i]-b;
-        rep(j, M) {
-            mp[(X[j]-b)*a]++;
-        }
-    }
+    sort(all(event));
+
+    ll tp = -INF;
+    ll sum = 0;
     ll ans = 0;
-    for(auto [k,v]: mp) {
-        chmax(ans, v);
+    for(auto [t,c]: event) {
+        ll cost = min(sum, C);
+        ans += (t-tp)*cost;
+        sum += c;
+        tp = t;
     }
     Out(ans);
     

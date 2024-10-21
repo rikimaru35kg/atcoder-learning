@@ -1478,7 +1478,7 @@
 - イベントで処理する場合、時刻が同時のイベントが複数あっても基本はバグらない（時刻差分が0になるだけで何も更新されないので） 
 - 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
-- !復習価値低 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
+- 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 - !要復習 電車発車の最小遅れ問題（考察も実装も勉強になる） [ E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
 
 ## 後ろから考える

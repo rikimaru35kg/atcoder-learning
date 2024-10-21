@@ -207,76 +207,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+struct Train {
+    ll i, a, b, s, t;
+    Train(ll i, ll a, ll b, ll s, ll t):i(i),a(a),b(b),s(s),t(t) {}
+    bool operator<(const Train &o) const {
+        return s<o.s;
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, W, C);
-    CoordinateCompression<ll> cc;
-    vl L(N), R(N), P(N);
-    rep(i, N) {
-        LONG(l,r,p);
-        L[i] = l, R[i]=r, P[i]=p;
-        cc.add(max(l-C+1,0LL));
-        cc.add(min(r,W-C+1));
+    LONG(N, M, X1);
+    vector<Train> train;
+    rep(i, M) {
+        LONGM(a,b); LONG(s,t);
+        train.emplace_back(i,a,b,s,t);
     }
-    cc.add(0); cc.add(W-C+1);
+    sort(all(train));
 
-    ll M = cc.size();
-    vl imos(M);
-    rep(i, N) {
-        ll l = L[i], r=R[i], p =P[i];
-        l = max(l-C+1, 0LL);
-        r = min(r, W-C+1);
-        if(l>r) continue;
-        l = cc(l), r = cc(r);
-        imos[l] += p, imos[r] -= p;
+    vl X(M);
+    X[0] = X1;
+    // vector<priority_queue<Pr,vp,greater<Pr>>> ques(N);
+    vector<priority_queue<ll,vl,greater<ll>>> ques(N);
+    vl mx(N, -INF);
+
+    for(auto [i,a,b,s,t]: train) {
+        while(ques[a].size() && ques[a].top()<=s) {
+            auto pt] = ques[a].top(); ques[a].pop();
+            chmax(mx[a], ptx);
+        }
+        if(i!=0) X[i] = max(mx[a]-s, 0LL);
+        ques[b].emplace(t, t+X[i]);
     }
-    rep(i, M-1) imos[i+1] += imos[i];
-    de(imos)
-    ll ans = INF;
-    rep(i, M-1) chmin(ans, imos[i]);
-    Out(ans);
+    repk(i, 1, M) {
+        printf("%lld ", X[i]);
+    }
+    cout<<endl;
     
 }
 
