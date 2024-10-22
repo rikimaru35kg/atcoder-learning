@@ -40,7 +40,6 @@ namespace std{
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using sll = __int128_t;
 using db = double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
@@ -64,22 +63,18 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using t3 = tuple<ll,ll,ll>;
-using t3d = tuple<db,db,db>;
 using t4 = tuple<ll,ll,ll,ll>;
 using vt3 = vector<t3>;
-using vt3d = vector<t3d>;
 using vt4 = vector<t4>;
 using vvt3 = vector<vector<t3>>;
-using vvt3d = vector<vector<t3d>>;
 using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-#define rep(i, N) for (ll i=0; i<(ll)(N); ++i)
-#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; --i)
-#define repk(i, k, N) for (ll i = k; i < (ll)(N); ++i)
-#define rep1(i, N) for (ll i=1; i<(ll)(N+1); ++i)
-#define rep1r(i, N) for (ll i=(ll)(N); i>0; i--)
+#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
+#define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
@@ -94,18 +89,16 @@ using cd = complex<double>;
 #define DOUBLE(...) double __VA_ARGS__; in(__VA_ARGS__)
 #define CHAR(...) char __VA_ARGS__; in(__VA_ARGS__)
 #define STRING(...) string __VA_ARGS__; in(__VA_ARGS__)
-#define VI(ivec, n) vi ivec(n); input_ivec(ivec, n)
-#define VIM(ivec, n) vi ivec(n); input_ivecm(ivec, n)
-#define VL(lvec, n) vl lvec(n); input_lvec(lvec, n)
-#define VLM(lvec, n) vl lvec(n); input_lvecm(lvec, n)
-#define VL2(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12(lvec1, lvec2, n)
-#define VL2M(lvec1, lvec2, n) vl lvec1(n), lvec2(n); input_lvec12m(lvec1, lvec2, n)
-#define VC(cvec, n) vc cvec(n); input_cvec(cvec, n)
-#define VS(svec, n) vs svec(n); input_svec(svec, n)
-#define VD(dvec, n) vd dvec(n); input_dvec(dvec, n)
-#define VP(pvec, n) vp pvec(n); input_pvec(pvec, n)
-#define VPD(pvec, n) vpd pvec(n); input_pvecd(pvec, n)
-#define VPM(pvec, n) vp pvec(n); input_pvecm(pvec, n)
+#define VI(ivec, n) vi ivec; input_ivec(ivec, n)
+#define VIM(ivec, n) vi ivec; input_ivecm(ivec, n)
+#define VL(lvec, n) vl lvec; input_lvec(lvec, n)
+#define VLM(lvec, n) vl lvec; input_lvecm(lvec, n)
+#define VC(cvec, n) vc cvec; input_cvec(cvec, n)
+#define VS(svec, n) vs svec; input_svec(svec, n)
+#define VD(dvec, n) vd dvec; input_dvec(dvec, n)
+#define VP(pvec, n) vp pvec; input_pvec(pvec, n)
+#define VPD(pvec, n) vpd pvec; input_pvecd(pvec, n)
+#define VPM(pvec, n) vp pvec; input_pvecm(pvec, n)
 #define VVI(ivec2, h, w) vvi ivec2(h, vi(w)); input_ivec2(ivec2, h, w)
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
@@ -130,28 +123,25 @@ inline void mi(void) {return;}
 template<typename T1, typename... T2> void mi(T1& f, T2&... r) {--f; mi(r...);}
 template<class... T> void in(T&... x) {(cin >> ... >> x);}
 template<class... T> void inm(T&... x) {(cin >> ... >> x); mi(x...);}
-inline void input_ivec(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];}}
-inline void input_ivecm(vi &ivec, int n) {rep(i, n) {cin>>ivec[i];--ivec[i];}}
-inline void input_lvec(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];}}
-inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {cin>>lvec[i];--lvec[i];}}
-inline void input_lvec12(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];}}
-inline void input_lvec12m(vl &lvec1, vl &lvec2, ll n) {rep(i, n) {cin>>lvec1[i]>>lvec2[i];--lvec1[i];--lvec2[i];}}
-inline void input_cvec(vc &cvec, ll n) {rep (i, n) {cin>>cvec[i];}}
-inline void input_svec(vs &svec, ll n) {rep (i, n) {cin>>svec[i];}}
-inline void input_dvec(vd &dvec, ll n) {rep (i, n) {cin>>dvec[i];}}
-inline void input_pvec(vp &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;}}
-inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;pvec[i].first--,pvec[i].second--;}}
-inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {cin>>pvec[i].first>>pvec[i].second;}}
-inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {cin>>ivec2[i][j];}}
-inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];}}
-inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
-inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
+inline void input_ivec(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(x);}}
+inline void input_ivecm(vi &ivec, int n) {rep(i, n) {int x; cin >> x; ivec.push_back(--x);}}
+inline void input_lvec(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(x);}}
+inline void input_lvecm(vl &lvec, ll n) {rep(i, n) {ll x; cin >> x; lvec.push_back(--x);}}
+inline void input_cvec(vc &cvec, ll n) {rep (i, n) {char c; cin >> c; cvec.push_back(c);}}
+inline void input_svec(vs &svec, ll n) {rep (i, n) {string s; cin >> s; svec.push_back(s);}}
+inline void input_dvec(vd &dvec, ll n) {rep (i, n) {double d; cin >> d; dvec.push_back(d);}}
+inline void input_pvec(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
+inline void input_pvecm(vp &pvec, ll n) {rep (i, n) {ll a, b; cin >> a >> b; pvec.emplace_back(--a, --b);}}
+inline void input_pvecd(vpd &pvec, ll n) {rep (i, n) {double a, b; cin >> a >> b; pvec.emplace_back(a, b);}}
+inline void input_ivec2(vvi &ivec2, int h, int w) {rep(i, h) rep(j, w) {int x; cin >> x; ivec2[i][j] = x;}}
+inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = x;}}
+inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {ll x; cin >> x; lvec2[i][j] = --x;}}
+inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {char c; cin >> c; cvec2[i][j] = c;}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
 inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
-template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -196,7 +186,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -213,40 +203,41 @@ int main () {
     LONG(N);
     VS(S, N);
     ll si=-1, sj=-1;
-    vp goals;
+    set<Pr> gs;
     rep(i, N) rep(j, N) {
-        if(S[i][j]=='S') si=i, sj=j;
-        if(S[i][j]=='G') goals.emplace_back(i,j);
+        if(S[i][j]=='S') si=i, sj=j, S[i][j]='.';
+        if(S[i][j]=='G') gs.emplace(i, j), S[i][j]='.';
     }
-    // INF = 10;
-    vvl dist(N, vl(N, INF));
-    vvl row(N, vl(N+1)), col(N, vl(N+1));
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='X') {
-            row[i][j+1] = 1;
-            col[j][i+1] = 1;
-        }
-    }
-    rep(i, N) rep(j, N) row[i][j+1] += row[i][j];
-    rep(j, N) rep(i, N) col[j][i+1] += col[j][i];
-    de(row)de(col)
 
-    auto sumr = [&](ll r, ll i, ll j) -> ll {
-        if(i>j) swap(i, j);
-        ++j;
-        return row[r][j] - row[r][i];
-    };
-    auto sumc = [&](ll c, ll i, ll j) -> ll {
-        if(i>j) swap(i, j);
-        ++j;
-        return col[c][j] - col[c][i];
+    vvl Sc(N+1, vl(N+1));
+    rep(i, N) rep(j, N) {
+        if(S[i][j]!='X') continue;
+        Sc[i+1][j+1] = 1;
+    }
+    rep(i, N+1) rep(j, N) Sc[i][j+1] += Sc[i][j];
+    rep(i, N) rep(j, N+1) Sc[i+1][j] += Sc[i][j];
+
+    auto sum=[&](ll i1, ll j1, ll i2, ll j2) -> ll {
+        if(i1>i2) swap(i1, i2), swap(j1, j2);
+        if(j1>j2) swap(i1, i2), swap(j1, j2);
+        de4(i1,i2,j1,j2)
+        ++i2, ++j2;
+        ll ret = 0;
+        ret += Sc[i2][j2];
+        ret -= Sc[i1][j2];
+        ret -= Sc[i2][j1];
+        ret += Sc[i1][j1];
+        return ret;
     };
 
     rep1(k, N-1) {
+        ll ans = INF;
         queue<Pr> que;
+        map<Pr,ll> dist;
         auto push=[&](ll i, ll j, ll d) {
-            if(dist[i][j]<=d) return;
-            dist[i][j] = d;
+            if(gs.count({i,j})) chmin(ans, d);
+            if(dist.count({i,j})) return;
+            dist[{i,j}] = d;
             que.emplace(i, j);
         };
         push(si, sj, 0);
@@ -255,22 +246,14 @@ int main () {
             for(auto [di,dj]: dij) {
                 ll ni = i + di*k, nj = j + dj*k;
                 if(!isin(ni,nj,N,N)) continue;
-                if(S[ni][nj]=='X') continue;
-                if(ni==i && sumr(i,j,nj)>0) continue;
-                if(nj==j && sumc(j,i,ni)>0) continue;
-                push(ni, nj, dist[i][j]+1);
+                if(sum(i,j,ni,nj)!=0) continue;
+                push(ni,nj,dist[{i,j}]+1);
             }
         }
-        de(dist)
-        ll ans = INF;
-        for(auto [i,j]: goals) chmin(ans, dist[i][j]);
         ch1(ans);
         Out(ans);
-        ll ci = si%k, cj = sj%k;
-        for(ll i=ci; i<N; i+=k) for(ll j=cj; j<N; j+=k) {
-            dist[i][j] = INF;
-        }
     }
+
     
 }
 

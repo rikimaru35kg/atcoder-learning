@@ -1514,10 +1514,10 @@
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
 ### 例題
-- !復習価値低 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
-- !復習価値高 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
+- 基本 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
+- !復習価値中 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
-- !要復習 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
+- !復習価値中 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - !要復習 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
 
 ## データ構造をマージする一般的なテク
