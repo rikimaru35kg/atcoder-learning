@@ -1508,7 +1508,7 @@
 ### 例題
 - 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
-- !復習価値高 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
+- !復習価値低 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 
 ## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
