@@ -207,33 +207,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! count the # of t in s
+long long count(string s, string t) {
+    long long ret = 0;
+    while(s.rfind(t)!=string::npos) {
+        ++ret;
+        s.erase(s.begin()+s.rfind(t), s.end());
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl item(N);
-    queue<ll> que;
-    rep(i, N) {
-        LONGM(a,b);
-        item[a].push_back(i);
-        item[b].push_back(i);
-        if(a==i || b==i) que.push(i);
+    STRING(S);
+    vl A;
+    for(auto c: S) {
+        if(c=='J') A.push_back(0);
+        if(c=='O') A.push_back(1);
+        if(c=='I') A.push_back(2);
     }
-    vb white(N);
-    vl ans;
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        if(white[v]) continue;
-        white[v] = true;
-        ans.push_back(v+1);
-        for(auto nv: item[v]) {
-            que.push(nv);
+    auto calc = [&](vl &a) -> ll {
+        ll ret = 0;
+        ll n = SIZE(a);
+        vl cntf(3), cntr(3);
+        rep(i, n) cntr[a[i]]++;
+        rep(i, n) {
+            cntr[a[i]]--;
+            if(a[i]==1) {
+                ret += cntf[0] * cntr[2];
+            }
+            cntf[a[i]]++;
         }
+        return ret;
+    };
+    auto calmx=[&](vl &a) -> ll {
+        ll ret = 0;
+        ll n = SIZE(a);
+        vl cntf(3), cntr(3);
+        rep(i, n) cntr[a[i]]++;
+        rep(i, n+1) {
+            chmax(ret, cntf[0]*cntr[2]);
+            if(i==n) break;
+            cntf[a[i]]++;
+            cntr[a[i]]--;
+        }
+        return ret;
+    };
+    
+    ll ans = 0;
+    { // J
+        vl na = A;
+        na.insert(na.begin(), 0LL);
+        chmax(ans, calc(na));
     }
-    if(SIZE(ans)!=N) Pm1
-    reverse(all(ans));
-    for(auto x: ans) Out(x);
-
+    { // I
+        vl na = A;
+        na.insert(na.end(), 2LL);
+        chmax(ans, calc(na));
+    }
+    { // O
+        ll base = calc(A);
+        ll mx = calmx(A);
+        chmax(ans, base+mx);
+    }
+    Out(ans);
     
 }
 

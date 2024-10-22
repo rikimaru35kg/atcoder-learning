@@ -42,6 +42,7 @@ using ll = long long;
 using ull = unsigned long long;
 using sll = __int128_t;
 using db = double;
+using sdb = long double;
 using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
@@ -195,8 +196,10 @@ ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
-const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+// const double PI = acos(-1);
+const sdb PI = acos((sdb)-1);
+// const double EPS = 1e-11;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
+const sdb EPS = 1e-17;  //eg) if x=1e6, EPS >= 1e6/1e30(=1e-24)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -207,36 +210,149 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
+using PD = pair<sdb,sdb>;
+using VPD = vector<pair<sdb,sdb>>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C, D);
-    vp item;
-    item.emplace_back(1, 0);
+    LONG(N);
+    VPD P;
     rep(i, N) {
-        LONG(d, a);
-        item.emplace_back(d, a);
+        // DOUBLE(x, y);
+        sdb x, y; cin>>x>>y;
+        P.emplace_back(x,y);
     }
-    reverse(all(item));
 
-    priority_queue<ll> que;
-    ll pd = D;
-    ll ans = 0;
-    for(auto [d,a]: item) {
-        ll dd = pd - d;
-        C -= dd;
-        if(C<0) {
-            while(C<0 && que.size()) {
-                auto gain = que.top(); que.pop();
-                ++ans;
-                C += gain;
-            }
-            if(C<0) Pm1
+    auto calc=[&](PD &po, VPD &ps) -> Pr {
+        auto [xo, yo] = po;
+        // vd ang;
+        vector<sdb> ang;
+        for(auto [x,y]: ps) {
+            sdb theta = (sdb)atan2(y-yo, x-xo)*180/PI;
+            ang.push_back(theta);
+            ang.push_back(theta+360);
         }
-        que.push(a);
-        pd = d;
+        sort(all(ang));
+
+        ll right = 0;
+        for(auto [x,y]: ps) {
+            sdb theta = (sdb)atan2(y-yo, x-xo)*180/PI;
+            auto [l,z1] = lowbou(ang, theta+90-EPS);
+            auto [r,z2] = lowbou(ang, theta+90+EPS);
+            right += max(r-l, 0LL);
+        }
+
+        ll obt = 0;
+        for(auto [x,y]: ps) {
+            sdb theta = (sdb)atan2(y-yo, x-xo)*180/PI;
+            auto [l,z1] = lowbou(ang, theta+90+EPS);
+            auto [r,z2] = lowbou(ang, theta+180-EPS);
+            obt += max(r-l, 0LL);
+        }
+        return {obt,right};
+    };
+    ll act = 0, obt = 0, right = 0;
+    rep(i, N) {
+        auto po = P[i];
+        VPD ps;
+        rep(j, N) {
+            if(i==j) continue;
+            ps.emplace_back(P[j]);
+        }
+        auto [o,r] = calc(po, ps);
+        obt += o;
+        right += r;
     }
-    Out(ans);
+    act = nCr(N, 3) - obt - right;
+    printf("%lld %lld %lld\n", act, right, obt);
     
 }
 

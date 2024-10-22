@@ -200,7 +200,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};

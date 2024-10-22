@@ -1494,8 +1494,8 @@
 
 ## 三つ組は真ん中を固定
 ### 例題
-- !復習価値中 [B - スタンプラリー 2 (Collecting Stamps 2)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_b)
-- !要復習 [D - 三角形の分類](https://atcoder.jp/contests/abc033/tasks/abc033_d)
+- 基本 [B - スタンプラリー 2 (Collecting Stamps 2)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_b)
+- 基本 [D - 三角形の分類](https://atcoder.jp/contests/abc033/tasks/abc033_d)
 
 ## マンハッタン距離・チェビシェフ距離
 - 45度回転して√2倍拡大（座標系視点なら1/√2倍拡大）した座標系を(a,b)とすると、max(|ai-aj|, |bi-bj|)、つまりab座標でのチェビシェフ距離がxy座標でのマンハッタン距離となる
