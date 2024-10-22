@@ -207,43 +207,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Train {
-    ll i, a, b, s, t;
-    Train(ll i, ll a, ll b, ll s, ll t):i(i),a(a),b(b),s(s),t(t) {}
-    bool operator<(const Train &o) const {
-        return s<o.s;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, X1);
-    vector<Train> train;
-    rep(i, M) {
-        LONGM(a,b); LONG(s,t);
-        train.emplace_back(i,a,b,s,t);
+    LONG(N, C, D);
+    vp item;
+    item.emplace_back(1, 0);
+    rep(i, N) {
+        LONG(d, a);
+        item.emplace_back(d, a);
     }
-    sort(all(train));
+    reverse(all(item));
 
-    vl X(M);
-    X[0] = X1;
-    // vector<priority_queue<Pr,vp,greater<Pr>>> ques(N);
-    vector<priority_queue<ll,vl,greater<ll>>> ques(N);
-    vl mx(N, -INF);
-
-    for(auto [i,a,b,s,t]: train) {
-        while(ques[a].size() && ques[a].top()<=s) {
-            auto pt] = ques[a].top(); ques[a].pop();
-            chmax(mx[a], ptx);
+    priority_queue<ll> que;
+    ll pd = D;
+    ll ans = 0;
+    for(auto [d,a]: item) {
+        ll dd = pd - d;
+        C -= dd;
+        if(C<0) {
+            while(C<0 && que.size()) {
+                auto gain = que.top(); que.pop();
+                ++ans;
+                C += gain;
+            }
+            if(C<0) Pm1
         }
-        if(i!=0) X[i] = max(mx[a]-s, 0LL);
-        ques[b].emplace(t, t+X[i]);
+        que.push(a);
+        pd = d;
     }
-    repk(i, 1, M) {
-        printf("%lld ", X[i]);
-    }
-    cout<<endl;
+    Out(ans);
     
 }
 

@@ -210,25 +210,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, C);
-    vp event;
+    LONG(N);
+    vvl item(N);
+    queue<ll> que;
     rep(i, N) {
-        LONG(a, b, c);
-        event.emplace_back(a, c);
-        event.emplace_back(b+1, -c);
+        LONGM(a,b);
+        item[a].push_back(i);
+        item[b].push_back(i);
+        if(a==i || b==i) que.push(i);
     }
-    sort(all(event));
+    vb white(N);
+    vl ans;
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        if(white[v]) continue;
+        white[v] = true;
+        ans.push_back(v+1);
+        for(auto nv: item[v]) {
+            que.push(nv);
+        }
+    }
+    if(SIZE(ans)!=N) Pm1
+    reverse(all(ans));
+    for(auto x: ans) Out(x);
 
-    ll tp = -INF;
-    ll sum = 0;
-    ll ans = 0;
-    for(auto [t,c]: event) {
-        ll cost = min(sum, C);
-        ans += (t-tp)*cost;
-        sum += c;
-        tp = t;
-    }
-    Out(ans);
     
 }
 
