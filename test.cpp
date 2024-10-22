@@ -207,70 +207,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
+    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
+    auto [x1,y1] = p1; auto [x2,y2] = p2;
+    long long a = 0, b = 0, c = 0;
+    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
+    long long g = gcd(gcd(a,b),c);
+    a /= g, b /= g, c /= g;
+    if(a==0 && b<0) b=-b, c=-c;
+    if(a<0) a=-a, b=-b, c=-c;
+    return {a,b,c};
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VS(S, N);
-    ll si=-1, sj=-1;
-    vp goals;
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='S') si=i, sj=j;
-        if(S[i][j]=='G') goals.emplace_back(i,j);
+    LONG(N, K);
+    VP(P, N);
+    if(K==1) Outend("Infinity");
+    map<t3,ll> mp;
+    rep(i, N) rep(j, i) {
+        auto tmp = get_line(P[i], P[j]);
+        mp[tmp] = 0;
     }
-    // INF = 10;
-    vvl dist(N, vl(N, INF));
-    vvl row(N, vl(N+1)), col(N, vl(N+1));
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='X') {
-            row[i][j+1] = 1;
-            col[j][i+1] = 1;
+    for(auto [t,v]: mp) {
+        auto [a,b,c] = t;
+        rep(i, N) {
+            auto [x,y] = P[i];
+            if(a*x + b*y + c == 0) mp[t]++;
         }
     }
-    rep(i, N) rep(j, N) row[i][j+1] += row[i][j];
-    rep(j, N) rep(i, N) col[j][i+1] += col[j][i];
-    de(row)de(col)
-
-    auto sumr = [&](ll r, ll i, ll j) -> ll {
-        if(i>j) swap(i, j);
-        ++j;
-        return row[r][j] - row[r][i];
-    };
-    auto sumc = [&](ll c, ll i, ll j) -> ll {
-        if(i>j) swap(i, j);
-        ++j;
-        return col[c][j] - col[c][i];
-    };
-
-    rep1(k, N-1) {
-        queue<Pr> que;
-        auto push=[&](ll i, ll j, ll d) {
-            if(dist[i][j]<=d) return;
-            dist[i][j] = d;
-            que.emplace(i, j);
-        };
-        push(si, sj, 0);
-        while(que.size()) {
-            auto [i,j] = que.front(); que.pop();
-            for(auto [di,dj]: dij) {
-                ll ni = i + di*k, nj = j + dj*k;
-                if(!isin(ni,nj,N,N)) continue;
-                if(S[ni][nj]=='X') continue;
-                if(ni==i && sumr(i,j,nj)>0) continue;
-                if(nj==j && sumc(j,i,ni)>0) continue;
-                push(ni, nj, dist[i][j]+1);
-            }
-        }
-        de(dist)
-        ll ans = INF;
-        for(auto [i,j]: goals) chmin(ans, dist[i][j]);
-        ch1(ans);
-        Out(ans);
-        ll ci = si%k, cj = sj%k;
-        for(ll i=ci; i<N; i+=k) for(ll j=cj; j<N; j+=k) {
-            dist[i][j] = INF;
-        }
+    ll ans = 0;
+    for(auto [t,v]: mp) {
+        if(v>=K) ++ans;
     }
+    Out(ans);
     
 }
 

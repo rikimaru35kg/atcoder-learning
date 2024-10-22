@@ -1524,8 +1524,8 @@
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
 - 二分木を下（葉）から足していく際、総和=Σ頂点のコスト*高さとなるので、葉が決まっている際に最小和を求めるためには、小さい順にマージしていけばよい
 ### 例題
-- !復習価値低 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
-- !復習価値高 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
+- 基本 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+- !復習価値低 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
@@ -1533,7 +1533,7 @@
 - ちなみに傾き∞の場合は(p,q,bq)=(1,0,-x)となり、同一標準形で扱える
 - もちろんax+by+c=0と考えても良いので考えやすい方で
 ### 例題
-- !復習価値高 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
+- !復習価値低 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
 - !復習価値高 内積ペアを選ばない総数（難しいが良問） [E - ∙ (Bullet)](https://atcoder.jp/contests/abc168/tasks/abc168_e)
 
 ## 差分を考える

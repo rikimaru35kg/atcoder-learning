@@ -27,13 +27,16 @@ import random as rnd
 MIN_VAL = 1
 MAX_VAL = 10
 
+
 def gen_rnd():
     return rnd.randint(MIN_VAL, MAX_VAL+1)
+
 
 def N_An(N):
     A = [gen_rnd() for _ in range(N)]
     print(N)
     print(*A)
+
 
 def N_An_Bn(N, vertical=False):
     A = [gen_rnd() for _ in range(N)]
@@ -45,12 +48,15 @@ def N_An_Bn(N, vertical=False):
     for t in combined:
         print(*t)
 
+
 def H_W_Matrix(H, W):
     mat = [ [gen_rnd() for _ in range(W)]
             for _ in range(H) ]
     print(H, W)
     for t in mat:
         print(*t)
+
+
 def N_M_graph(N, M, directed=False):
     edge_cand = []
     for b in range(N):
@@ -68,6 +74,8 @@ def N_M_graph(N, M, directed=False):
     print(N, M)
     for t in frm:
         print(*t)
+
+
 def tree_graph(N):
     edge_cand = []
     for b in range(N):
@@ -83,6 +91,8 @@ def tree_graph(N):
     print(N)
     for t in frm:
         print(*t)
+
+
 def field(N):
     print(N)
     lst = ['.']*100 + ['X'] + ['G']
