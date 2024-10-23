@@ -208,7 +208,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 const long long base = 12345;
-const long long MX = 5;
+const long long MX = 1;
 const long long ps[12] = {1000000007, 1000000009, 1000000021,
                           1000000033, 1000000087, 1000000093,
                           1000000097, 1000000103, 1000000123,
@@ -288,27 +288,31 @@ struct hash<mints> {
 };
 }
 
+long long mersenne(long long mn, long long mx) {
+    static mt19937_64 mt64(0);
+    uniform_int_distribution<long long> get(mn, mx);
+    return get(mt64);
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    umap<mints,ll> mp;
-    vector<mints> Ms;
-    rep(i, N) {
-        STRING(a);
-        mints h = 0;
-        for(auto c: a) {
-            h = h * 10 + (c-'0');
+    LONG(N, Q); VL(A, N); VL(B, N);
+    map<ll,ll> mp;
+    rep(i, N) mp[A[i]] = mersenne(1, INF);
+    rep(i, N) mp[B[i]] = mersenne(1, INF);
+
+    vector<mints> Sa(N+1), Sb(N+1);
+    rep(i, N) Sa[i+1] = Sa[i] + mp[A[i]];
+    rep(i, N) Sb[i+1] = Sb[i] + mp[B[i]];
+    rep(i, Q) {
+        LONG(l,r,L,R); --l, --L;
+        if(r-l!=R-L) {
+            puts("No"); continue;
         }
-        mp[h]++;
-        Ms.push_back(h);
+        if(Sa[r]-Sa[l]==Sb[R]-Sb[L]) puts("Yes");
+        else puts("No");
     }
-    ll ans = 0;
-    rep(i, N) rep(j, N) {
-        mints h = mints(Ms[i])*Ms[j];
-        ans += mp[h];
-    }
-    Out(ans);
     
 }
 
