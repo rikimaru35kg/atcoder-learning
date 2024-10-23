@@ -207,91 +207,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)>0) ok = m;
+        else ng = m;
     }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if (n > mx) return 0;
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if (n > mx) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, K);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    LONG(N, K); VL(A, N);
+    ll tot = accumulate(all(A), 0LL);
+    ll Z = 20;
 
-    ll odd=0, even=0;
-    rep(i, N) {
-        if(SIZE(from[i])%2) odd++;
-        else even++;
-    }
+    auto f=[&](ll x) -> ll {
+        ll r = 0; ll sum = 0;
+        vvl to(Z, vl(N));
+        vvl d(Z, vl(N));
+        rep(l, N) {
+            while(sum<x) {
+                sum += A[r];
+                r = (r+1)%N;
+            }
+            to[0][l] = r;
+            d[0][l] = ((r-l) + N)%N;
+            sum -= A[l];
+        }
+        rep(z, Z-1) rep(i, N) to[z+1][i] = to[z][to[z][i]];
+        rep(z, Z-1) rep(i, N) d[z+1][i] = d[z][i] + d[z][to[z][i]];
+        ll num = 0;
+        rep(i, N) {
+            ll dist = 0, v = i;
+            rep(z, Z) if(K>>z&1) {
+                dist += d[z][v];
+                v = to[z][v];
+            }
+            if(dist<=N) { ++num; }
+        }
+        return num;
+    };
 
-    Combination comb(N, M998);
-
-    mint ans = 0;
-    for(ll k=0; k<=K; k+=2) {
-        mint now = 1;
-        now *= comb(odd, k);
-        now *= comb(even, K-k);
-        ans += now;
-    }
-    Out(ans);
-
+    ll x = binary_search(1, tot/K+1, f);
+    ll num = N-f(x);
+    printf("%lld %lld\n", x, num);
+    
+    
 }
+
+// ### test.cpp ###

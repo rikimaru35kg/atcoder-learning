@@ -207,21 +207,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
+    LONG(N, M);
     VL(A, N);
-    ll mcnt = 0;
-    ll sum = 0;
-    ll mn = INF;
-    rep(i, N) {
-        sum += abs(A[i]);
-        chmin(mn, abs(A[i]));
-        if(A[i]<0) ++mcnt;
+    mint::set_mod(M);
+    vl cnt(M);
+    rep(i, N) A.push_back(A[i]);
+    ll N2 = N+N;
+    vm Sc(N2+1);
+    rep(i, N2) Sc[i+1] = Sc[i] + A[i];
+
+    rep(i, N-1) {
+        cnt[Sc[i].val()]++;
     }
-    if(mcnt%2==0) Outend(sum);
-    Out(sum-2*mn);
+    ll ans = 0;
+    rep(i, N) {
+        ll sum = Sc[i+N-1].val();
+        ans += cnt[sum];
+        cnt[Sc[i].val()]--;
+        cnt[sum]++;
+    }
+    Out(ans);
+
 
     
 }
