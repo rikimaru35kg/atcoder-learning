@@ -207,73 +207,118 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Vector
-const double eps = 1e-8; // suppose max(x,y) <= 1e9;
-struct Vec {
-    double x, y;
-    Vec(double x=0, double y=0): x(x), y(y) {}
-    Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
-    Vec operator+(const Vec& v) const { return Vec(*this) += v;}
-    Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
-    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
-    Vec& operator*=(double s) { x *= s; y *= s; return *this;}
-    Vec operator*(double s) const { return Vec(*this) *= s;}
-    Vec& operator/=(double s) { x /= s; y /= s; return *this;}
-    Vec operator/(double s) const { return Vec(*this) /= s;}
-    double dot(const Vec& v) const { return x*v.x + y*v.y;}
-    // cross>0 means *this->v is counterclockwise.
-    double cross(const Vec& v) const { return x*v.y - v.x*y;}
-    double norm2() const { return x*x + y*y;}
-    double norm() const { return sqrt(norm2());}
-    Vec normalize() const { return *this/norm();}
-    Vec rotate90() const { return Vec(y, -x);}
-    void rotate(double theta) {
-        Vec ret;
-        ret.x = cos(theta)*x - sin(theta)*y;
-        ret.y = sin(theta)*x + cos(theta)*y;
-        *this = ret;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
     }
-    int ort() const { // orthant
-    if (abs(x) < eps && abs(y) < eps) return 0;
-    if (y > 0) return x>0 ? 1 : 2;
-    else return x>0 ? 4 : 3;
-    }
-    bool operator<(const Vec& v) const {
-      int o = ort(), vo = v.ort();
-      if (o != vo) return o < vo;
-      return cross(v) > 0;
-    }
-};
-istream& operator>>(istream& is, Vec& v) {
-    is >> v.x >> v.y; return is;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
 }
-ostream& operator<<(ostream& os, const Vec& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    LONG(N); VL(A, N);
+    auto callis=[&](vl &A) -> vl {
+        vl lis(N, INF);
+        vl ret(N);
+        rep(i, N) {
+            auto [n,x] = lowbou(lis, A[i]);
+            ret[i] = n+1;
+            lis[n] = A[i];
+        }
+        return ret;
+    };
+
+    auto flip=[&]() {
+        reverse(all(A));
+        rep(i, N) A[i]=-A[i];
+    };
+    vl fr = callis(A);
+    flip();
+    vl rr = callis(A);
+    flip();
+    reverse(all(rr));
+
+    ll lis = 0;
+    rep(i, N) chmax(lis, fr[i]);
+
+    vl ans;
+    rep(i, N) {
+        if(fr[i]+rr[i]-1==lis) ans.push_back(i+1);
+    }
+    Out(SIZE(ans));
+    Out(ans);
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vector<Vec> A(N), B(N);
-    rep(i, N) cin>>A[i];
-    rep(i, N) cin>>B[i];
-
-    auto calrad=[&](vector<Vec> P) -> db {
-        Vec o;
-        rep(i, N) {
-            o += P[i];
-        }
-        o /= N;
-        db ret = 0;
-        rep(i, N) {
-            chmax(ret, (P[i]-o).norm());
-        }
-        return ret;
-    };
-
-    db ans = calrad(B)/calrad(A);
-    Out(ans);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 

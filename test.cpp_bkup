@@ -210,20 +210,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
+    LONG(N, K, C);
+    STRING(S);
 
-    ll s0 = 0, s1=0;
-    umap<ll,ll> mp;
-    mp[s1-s0]++;
-    ll ans = 0;
+    auto calc=[&](string s) -> vl {
+        vl Sc(N+1);
+        ll pre = -INF;
+        rep(i, N) {
+            if(s[i]=='x') continue;
+            if(i>pre+C) {
+                Sc[i+1]++;
+                pre = i;
+            }
+        }
+        rep(i, N) Sc[i+1] += Sc[i];
+        return Sc;
+    };
+    vl fr=calc(S);
+    reverse(all(S));
+    vl rr=calc(S);
+    reverse(all(S));
+    reverse(all(rr));
+    de(fr)de(rr)
+
+    vl days;
     rep(i, N) {
-        if(i%2) s1+=A[i];
-        else s0+=A[i];
-        ans += mp[s1-s0];
-        mp[s1-s0]++;
-        de2(i, s1-s0)
+        if(S[i]=='x') continue;
+        if(fr[i]+rr[i+1]-rr[N]<K) days.push_back(i+1);
     }
-    Out(ans);
+    for(auto x: days) Out(x);
+
     
 }
 
