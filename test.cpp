@@ -207,41 +207,99 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
-    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
-    auto [x1,y1] = p1; auto [x2,y2] = p2;
-    long long a = 0, b = 0, c = 0;
-    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
-    long long g = gcd(gcd(a,b),c);
-    a /= g, b /= g, c /= g;
-    if(a==0 && b<0) b=-b, c=-c;
-    if(a<0) a=-a, b=-b, c=-c;
-    return {a,b,c};
-}
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VP(P, N);
-    if(K==1) Outend("Infinity");
-    map<t3,ll> mp;
-    rep(i, N) rep(j, i) {
-        auto tmp = get_line(P[i], P[j]);
-        mp[tmp] = 0;
+    LONG(N);
+    VL(A, N);
+
+    if(N==1) {
+        if(A[0]==0) Pm0
+        Outend(1);
     }
-    for(auto [t,v]: mp) {
-        auto [a,b,c] = t;
-        rep(i, N) {
-            auto [x,y] = P[i];
-            if(a*x + b*y + c == 0) mp[t]++;
+    CoordinateCompression<ll> cc;
+    cc.add(0);
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) A[i] = cc(A[i]);
+
+    ll M = cc.size();
+
+    vvl isbyh(M);
+    rep(i, N) isbyh[A[i]].push_back(i);
+
+    vb land(N);
+    ll now = 0, ans = 0;
+
+    rep(i, N) if(A[i]) land[i] = true;
+    ll ph = 0;
+    rep(i, N) {
+        if(ph==0 && A[i]>0) ++now;
+        ph = A[i];
+    }
+    de(now)
+    ans = now;
+    cc.print();
+
+    rep(i, M) {
+        if(i==0) continue;
+        for(auto idx: isbyh[i]) {
+            land[idx] = false;
+            if(idx==0) {
+                if(!land[idx+1]) --now;
+            } else if (idx==N-1) {
+                if(!land[idx-1]) --now;
+            } else {
+                if(!land[idx-1] && !land[idx+1]) --now;
+                if(land[idx-1] && land[idx+1]) ++now;
+            }
         }
-    }
-    ll ans = 0;
-    for(auto [t,v]: mp) {
-        if(v>=K) ++ans;
+        de2(i, now)
+        de(land)
+        chmax(ans, now);
     }
     Out(ans);
+
     
 }
 
