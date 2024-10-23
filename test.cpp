@@ -207,65 +207,73 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)>0) ok = m;
-        else ng = m;
+// Vector
+const double eps = 1e-8; // suppose max(x,y) <= 1e9;
+struct Vec {
+    double x, y;
+    Vec(double x=0, double y=0): x(x), y(y) {}
+    Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
+    Vec operator+(const Vec& v) const { return Vec(*this) += v;}
+    Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
+    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
+    Vec& operator*=(double s) { x *= s; y *= s; return *this;}
+    Vec operator*(double s) const { return Vec(*this) *= s;}
+    Vec& operator/=(double s) { x /= s; y /= s; return *this;}
+    Vec operator/(double s) const { return Vec(*this) /= s;}
+    double dot(const Vec& v) const { return x*v.x + y*v.y;}
+    // cross>0 means *this->v is counterclockwise.
+    double cross(const Vec& v) const { return x*v.y - v.x*y;}
+    double norm2() const { return x*x + y*y;}
+    double norm() const { return sqrt(norm2());}
+    Vec normalize() const { return *this/norm();}
+    Vec rotate90() const { return Vec(y, -x);}
+    void rotate(double theta) {
+        Vec ret;
+        ret.x = cos(theta)*x - sin(theta)*y;
+        ret.y = sin(theta)*x + cos(theta)*y;
+        *this = ret;
     }
-    return ok;
+    int ort() const { // orthant
+    if (abs(x) < eps && abs(y) < eps) return 0;
+    if (y > 0) return x>0 ? 1 : 2;
+    else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vec& v) const {
+      int o = ort(), vo = v.ort();
+      if (o != vo) return o < vo;
+      return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vec& v) {
+    is >> v.x >> v.y; return is;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+ostream& operator<<(ostream& os, const Vec& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K); VL(A, N);
-    ll tot = accumulate(all(A), 0LL);
-    ll Z = 20;
+    LONG(N);
+    vector<Vec> A(N), B(N);
+    rep(i, N) cin>>A[i];
+    rep(i, N) cin>>B[i];
 
-    auto f=[&](ll x) -> ll {
-        ll r = 0; ll sum = 0;
-        vvl to(Z, vl(N));
-        vvl d(Z, vl(N));
-        rep(l, N) {
-            while(sum<x) {
-                sum += A[r];
-                r = (r+1)%N;
-            }
-            to[0][l] = r;
-            d[0][l] = ((r-l) + N)%N;
-            sum -= A[l];
-        }
-        rep(z, Z-1) rep(i, N) to[z+1][i] = to[z][to[z][i]];
-        rep(z, Z-1) rep(i, N) d[z+1][i] = d[z][i] + d[z][to[z][i]];
-        ll num = 0;
+    auto calrad=[&](vector<Vec> P) -> db {
+        Vec o;
         rep(i, N) {
-            ll dist = 0, v = i;
-            rep(z, Z) if(K>>z&1) {
-                dist += d[z][v];
-                v = to[z][v];
-            }
-            if(dist<=N) { ++num; }
+            o += P[i];
         }
-        return num;
+        o /= N;
+        db ret = 0;
+        rep(i, N) {
+            chmax(ret, (P[i]-o).norm());
+        }
+        return ret;
     };
 
-    ll x = binary_search(1, tot/K+1, f);
-    ll num = N-f(x);
-    printf("%lld %lld\n", x, num);
-    
+    db ans = calrad(B)/calrad(A);
+    Out(ans);
     
 }
 
