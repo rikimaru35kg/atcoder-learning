@@ -1586,7 +1586,7 @@
 - クエリを先読みすると楽に処理できる事がある
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
-- !復習価値中 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+- 基本 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
@@ -1603,9 +1603,9 @@
 - Pを1e9ぐらい、AB-Cが1e2000ぐらいだとすると、Pぐらいの大きさの素数は最大で200個ぐらい存在
 - Pを1e9～2e9から選ぶとすると、1e6個ぐらい素数があり、その中で200個の素数がアウトなので、衝突確率は200/1e6ぐらい
 ### 例題
-- !復習価値中 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
-- !復習価値高 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
-- !要復習 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
+- 基本 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
+- !復習価値低 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+- !復習価値中 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
 
 ## NIMとgrundy数
 - NIMは残り山の石の個数のxorが0なら負け、非0なら勝

@@ -207,39 +207,108 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+const long long base = 12345;
+const long long MX = 5;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K, C);
-    STRING(S);
-
-    auto calc=[&](string s) -> vl {
-        vl Sc(N+1);
-        ll pre = -INF;
-        rep(i, N) {
-            if(s[i]=='x') continue;
-            if(i>pre+C) {
-                Sc[i+1]++;
-                pre = i;
-            }
-        }
-        rep(i, N) Sc[i+1] += Sc[i];
-        return Sc;
-    };
-    vl fr=calc(S);
-    reverse(all(S));
-    vl rr=calc(S);
-    reverse(all(S));
-    reverse(all(rr));
-    de(fr)de(rr)
-
-    vl days;
+    LONG(N);
+    umap<mints,ll> mp;
+    vector<mints> Ms;
     rep(i, N) {
-        if(S[i]=='x') continue;
-        if(fr[i]+rr[i+1]-rr[N]<K) days.push_back(i+1);
+        STRING(a);
+        mints h = 0;
+        for(auto c: a) {
+            h = h * 10 + (c-'0');
+        }
+        mp[h]++;
+        Ms.push_back(h);
     }
-    for(auto x: days) Out(x);
-
+    ll ans = 0;
+    rep(i, N) rep(j, N) {
+        mints h = mints(Ms[i])*Ms[j];
+        ans += mp[h];
+    }
+    Out(ans);
     
 }
 
