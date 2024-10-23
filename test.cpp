@@ -207,100 +207,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
 #ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
+
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-
-    if(N==1) {
-        if(A[0]==0) Pm0
-        Outend(1);
-    }
-    CoordinateCompression<ll> cc;
-    cc.add(0);
-    rep(i, N) cc.add(A[i]);
-    rep(i, N) A[i] = cc(A[i]);
-
-    ll M = cc.size();
-
-    vvl isbyh(M);
-    rep(i, N) isbyh[A[i]].push_back(i);
-
-    vb land(N);
-    ll now = 0, ans = 0;
-
-    rep(i, N) if(A[i]) land[i] = true;
-    ll ph = 0;
-    rep(i, N) {
-        if(ph==0 && A[i]>0) ++now;
-        ph = A[i];
-    }
-    de(now)
-    ans = now;
-    cc.print();
-
+    LONG(N, M, K);
+    vvl from(N);
     rep(i, M) {
-        if(i==0) continue;
-        for(auto idx: isbyh[i]) {
-            land[idx] = false;
-            if(idx==0) {
-                if(!land[idx+1]) --now;
-            } else if (idx==N-1) {
-                if(!land[idx-1]) --now;
-            } else {
-                if(!land[idx-1] && !land[idx+1]) --now;
-                if(land[idx-1] && land[idx+1]) ++now;
-            }
-        }
-        de2(i, now)
-        de(land)
-        chmax(ans, now);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+
+    ll odd=0, even=0;
+    rep(i, N) {
+        if(SIZE(from[i])%2) odd++;
+        else even++;
+    }
+
+    Combination comb(N, M998);
+
+    mint ans = 0;
+    for(ll k=0; k<=K; k+=2) {
+        mint now = 1;
+        now *= comb(odd, k);
+        now *= comb(even, K-k);
+        ans += now;
     }
     Out(ans);
 
-    
 }
-
-// ### test.cpp ###

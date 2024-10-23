@@ -1549,7 +1549,7 @@
 - 更に、反転しても要素数（例えば黒の数）の偶奇は変わらない。
 - 同様に隣り合う要素をswapできる場合、任意の2要素を反転できる事と等しい（バブルソートの仕組みに通じる）
 ### 例題
-- !復習価値低 隣り合う要素の符号を反転 [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
+- 基本 隣り合う要素の符号を反転 [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
 - !復習価値高 グラフの2彩色場合の数 [E - Red and Blue Graph](https://atcoder.jp/contests/abc262/tasks/abc262_e)
 
 ## MODで考えてみる
