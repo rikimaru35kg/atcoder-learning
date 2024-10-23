@@ -1613,9 +1613,9 @@
 - NIMでは石の数がgrundy数だが、一般には遷移先のMEX（非負非除最小整数）が各山のgrundy数となる
 - NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
 ### 例題
-- !復習価値高 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
+- 基本 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 - !復習価値高 [031 - VS AtCoder（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ae)
-- !要復習 [C - 笑いをとれるかな？](https://atcoder.jp/contests/arc013/tasks/arc013_3)
+- 基本 [C - 笑いをとれるかな？](https://atcoder.jp/contests/arc013/tasks/arc013_3)
 
 ## 鳩の巣原理
 ### 例題

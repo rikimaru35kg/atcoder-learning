@@ -207,35 +207,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long calmex(vector<long long> &x) {
-    long long N = SIZE(x);
-    vector<bool> used(N);
-    for(long long i=0; i<N; ++i) if(x[i]<N) used[x[i]] = true;
-    long long ret = 0;
-    while(ret<N && used[ret]) ++ret;
-    return ret;
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L, R);
-    VL(A, N);
-    
-    // ll M = 50;
-    // vl grundy(M+1);
-    // rep1(i, M) {
-    //     vl ms;
-    //     ll l = i-R, r = i-L;
-    //     if(r<0) { continue; }
-    //     chmax(l, 0LL);
-    //     repk(x, l, r+1) {
-    //         ms.push_back(grundy[x]);
-    //     }
-    //     ll now = calmex(ms);
-    //     grundy[i] = now;
-    // }
-    // de(grundy)
+    LONG(N);
+    ll xo = 0;
+    rep(i, N) {
+        LONG(X,Y,Z);
+        ll xmn=INF, xmx=-INF;
+        ll ymn=INF, ymx=-INF;
+        ll zmn=INF, zmx=-INF;
+        LONG(M);
+        rep(j, M) {
+            LONG(x,y,z);
+            chmin(xmn, x); chmax(xmx, x);
+            chmin(ymn, y); chmax(ymx, y);
+            chmin(zmn, z); chmax(zmx, z);
+        }
+        xo ^= xmn; xo ^= X-xmx-1;
+        xo ^= ymn; xo ^= Y-ymx-1;
+        xo ^= zmn; xo ^= Z-zmx-1;
+        de2(xmn, X-xmx-1)
+        de2(ymn, Y-ymx-1)
+        de2(zmn, Z-zmx-1)
+    }
+    if(xo) puts("WIN");
+    else puts("LOSE");
     
 }
 
