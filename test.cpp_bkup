@@ -210,33 +210,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(S,T,M);
-    vvl from(S);
-    rep(i, M) {
-        LONGM(a,b);
-        from[a].push_back(b);
+    STRING(S);
+    ll N = SIZE(S);
+    if(S[0]==S.back()) {
+        if((N-3)%2) puts("First");
+        else puts("Second");
+    } else {
+        if((N-2)%2) puts("First");
+        else puts("Second");
     }
 
-    vvl exist(T, vl(T, -1));
-    rep(s, S) {
-        ll sz = SIZE(from[s]);
-        rep(j, sz) rep(i, j) {
-            ll a = from[s][i], b = from[s][j];
-            ll ma = a-S, mb = b-S;
-            if(ma>mb) swap(ma,mb);
-            if(exist[ma][mb]!=-1) {
-                vl c;
-                c.push_back(exist[ma][mb]+1);
-                c.push_back(a+1);
-                c.push_back(s+1);
-                c.push_back(b+1);
-                Out(c);
-                exit(0);
-            }
-            exist[ma][mb] = s;
-        }
-    }
-    Pm1
+    // while(SIZE(S)>2) {
+    //     ll n = SIZE(S);
+    //     bool find = false;
+    //     repk(i, 1, n-1) {
+    //         if(S[i-1]!=S[i+1]) {
+    //             S.erase(S.begin()+i);
+    //             find = true;
+    //             break;
+    //         }
+    //     }
+    //     if(!find) {
+    //         de(S)
+    //         Outend(N-SIZE(S));
+    //     }
+    // }
+    // de(S)
+    // Outend(N-SIZE(S));
     
 }
 
