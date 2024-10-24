@@ -1687,8 +1687,8 @@
 ## 偏角ソート
 - snuke libraryが良い！
 ### 例題
-- !復習価値高 [009 - Three Point Angle（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_i)
-- !要復習 [F - Engines](https://atcoder.jp/contests/abc139/tasks/abc139_f)
+- !復習価値低 [009 - Three Point Angle（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_i)
+- !復習価値高 [F - Engines](https://atcoder.jp/contests/abc139/tasks/abc139_f)
 
 ## 平方分割
 ### 例題
