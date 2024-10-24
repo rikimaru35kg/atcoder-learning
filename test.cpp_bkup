@@ -207,37 +207,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VLM(A, N); VLM(B, N);
-    vl cnta(N), cntb(N);
-    rep(i, N) cnta[A[i]]++, cntb[B[i]]++;
-    if(cnta!=cntb) PNo
-    rep(i, N) if(cnta[i]>=2) PYes
-
-    auto calc=[&](vl &a, vl &cnt) -> ll {
-        dsu uf(N);
-        rep(i, N) {
-            uf.merge(a[i], i);
+    VL(H, N);
+    reverse(all(H));
+    stack<ll> stck;
+    vl ans;
+    rep(i, N) {
+        ans.push_back(SIZE(stck));
+        while(stck.size()) {
+            if(stck.top()>H[i]) break;
+            stck.pop();
         }
-        ll ret = 0;
-        rep(i, N) {
-            if(cnt[i]==0) continue;
-            if(uf.leader(i)==i) ++ret;
-        }
-        return ret;
-    };
-
-    ll ca = calc(A, cnta);
-    ll cb = calc(B, cntb);
-    de2(ca, cb)
-    if(ca%2==cb%2) PYes PNo
-
+        stck.push(H[i]);
+    }
+    reverse(all(ans));
+    Out(ans);
     
 }
 

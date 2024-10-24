@@ -1654,7 +1654,7 @@
 ## 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
 ### 例題
-- !復習価値低 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
+- 基本 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
 
 ## ヒストグラム最大長方形（スパン）
 - ヒストグラムの中で取りうる長方形の最大面積をO(N)で求める問題
@@ -1663,8 +1663,8 @@
 - 右スパンも同様に求まるので、最大面積も求まる
 ### 例題
 - 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
-- !復習価値高 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
-- !復習価値高 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
+- 基本 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
+- !復習価値中 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
 
 ## 階段状にかさ増しする
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
