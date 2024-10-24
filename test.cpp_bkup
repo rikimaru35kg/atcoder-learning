@@ -207,36 +207,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
-    if(S[0]==S.back()) {
-        if((N-3)%2) puts("First");
-        else puts("Second");
-    } else {
-        if((N-2)%2) puts("First");
-        else puts("Second");
-    }
+    LONG(N);
+    VLM(A, N); VLM(B, N);
+    vl cnta(N), cntb(N);
+    rep(i, N) cnta[A[i]]++, cntb[B[i]]++;
+    if(cnta!=cntb) PNo
+    rep(i, N) if(cnta[i]>=2) PYes
 
-    // while(SIZE(S)>2) {
-    //     ll n = SIZE(S);
-    //     bool find = false;
-    //     repk(i, 1, n-1) {
-    //         if(S[i-1]!=S[i+1]) {
-    //             S.erase(S.begin()+i);
-    //             find = true;
-    //             break;
-    //         }
-    //     }
-    //     if(!find) {
-    //         de(S)
-    //         Outend(N-SIZE(S));
-    //     }
-    // }
-    // de(S)
-    // Outend(N-SIZE(S));
+    auto calc=[&](vl &a, vl &cnt) -> ll {
+        dsu uf(N);
+        rep(i, N) {
+            uf.merge(a[i], i);
+        }
+        ll ret = 0;
+        rep(i, N) {
+            if(cnt[i]==0) continue;
+            if(uf.leader(i)==i) ++ret;
+        }
+        return ret;
+    };
+
+    ll ca = calc(A, cnta);
+    ll cb = calc(B, cntb);
+    de2(ca, cb)
+    if(ca%2==cb%2) PYes PNo
+
     
 }
 

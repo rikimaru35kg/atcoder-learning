@@ -207,37 +207,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
+//! T must be mint
+template<typename T>
+class Combination {
+    long long mx;
+    vector<T> facts, ifacts;
+public:
+    Combination(long long mx): mx(mx), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i;
+        ifacts[mx] = facts[mx].inv();
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1);
+    }
+    T operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    T nCr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[r] * ifacts[n-r];
+    }
+    T nPr(long long n, long long r) {
+        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        return facts[n] * ifacts[n-r];
+    }
+    T nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    T get_fact(long long n) {
+        if (n > mx) return 0;
+        return facts[n];
+    }
+    T get_factinv(long long n) {
+        if (n > mx) return 0;
+        return ifacts[n];
+    }
+};
+
+#include <atcoder/modint>
 using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N); VLM(B, N);
-    vl cnta(N), cntb(N);
-    rep(i, N) cnta[A[i]]++, cntb[B[i]]++;
-    if(cnta!=cntb) PNo
-    rep(i, N) if(cnta[i]>=2) PYes
+    LONG(r1,c1,r2,c2);
+    Combination<mint> comb(2e6+10);
 
-    auto calc=[&](vl &a, vl &cnt) -> ll {
-        dsu uf(N);
-        rep(i, N) {
-            uf.merge(a[i], i);
-        }
-        ll ret = 0;
-        rep(i, N) {
-            if(cnt[i]==0) continue;
-            if(uf.leader(i)==i) ++ret;
-        }
-        return ret;
+    auto calc=[&](ll r, ll c) -> mint {
+        mint ret = 0;
+        ret = comb(r+2+c, c+1);
+        return ret-1;
     };
-
-    ll ca = calc(A, cnta);
-    ll cb = calc(B, cntb);
-    de2(ca, cb)
-    if(ca%2==cb%2) PYes PNo
-
+    r1--, c1--;
+    mint ans = 0;
+    ans += calc(r2,c2);
+    ans -= calc(r1,c2);
+    ans -= calc(r2,c1);
+    ans += calc(r1,c1);
+    Out(ans);
+    de(calc(-1,3))
     
 }
 
