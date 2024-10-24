@@ -207,49 +207,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long calmex(vector<long long> &x) {
-    long long N = SIZE(x);
-    vector<bool> used(N);
-    for(long long i=0; i<N; ++i) if(x[i]<N) used[x[i]] = true;
-    long long ret = 0;
-    while(ret<N && used[ret]) ++ret;
-    return ret;
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(W, N); VL(B, N);
-
-    ll M = 51, K = 1500;
-    // ll M = 10, K = 70;
-    vvl grundy(M, vl(K));
-    rep(w, M) rep(b, K) {
-        vl gs;
-        if(w) {
-            ll nw = w-1, nb = b+w;
-            if(nb>=K) continue;
-            ll g = grundy[nw][nb];
-            gs.push_back(g);
-        }
-        rep1(k, b/2) {
-            ll nw = w, nb = b-k;
-            ll g = grundy[nw][nb];
-            gs.push_back(g);
-        }
-        ll now = calmex(gs);
-        grundy[w][b] = now;
+    LONG(S,T,M);
+    vvl from(S);
+    rep(i, M) {
+        LONGM(a,b);
+        from[a].push_back(b);
     }
-    // de(grundy)
 
-    ll xo = 0;
-    rep(i, N) {
-        xo ^= grundy[W[i]][B[i]];
+    vvl exist(T, vl(T, -1));
+    rep(s, S) {
+        ll sz = SIZE(from[s]);
+        rep(j, sz) rep(i, j) {
+            ll a = from[s][i], b = from[s][j];
+            ll ma = a-S, mb = b-S;
+            if(ma>mb) swap(ma,mb);
+            if(exist[ma][mb]!=-1) {
+                vl c;
+                c.push_back(exist[ma][mb]+1);
+                c.push_back(a+1);
+                c.push_back(s+1);
+                c.push_back(b+1);
+                Out(c);
+                exit(0);
+            }
+            exist[ma][mb] = s;
+        }
     }
-    if(xo) puts("First");
-    else puts("Second");
-
+    Pm1
     
 }
 

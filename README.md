@@ -1620,12 +1620,12 @@
 ## 鳩の巣原理
 ### 例題
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
-- !要復習 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
-- !復習価値高 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
+- 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
+- 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 
 ## 最終形を考える
 ### 例題
-- !要復習 [D - An Ordinary Game](https://atcoder.jp/contests/abc048/tasks/arc064_b)
+- !復習価値低 [D - An Ordinary Game](https://atcoder.jp/contests/abc048/tasks/arc064_b)
 
 ## max(max())の形に帰着させる
 - maxの中にmaxがある形にできれば、簡単に解ける

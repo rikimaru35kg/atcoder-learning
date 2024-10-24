@@ -210,29 +210,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll xo = 0;
-    rep(i, N) {
-        LONG(X,Y,Z);
-        ll xmn=INF, xmx=-INF;
-        ll ymn=INF, ymx=-INF;
-        ll zmn=INF, zmx=-INF;
-        LONG(M);
-        rep(j, M) {
-            LONG(x,y,z);
-            chmin(xmn, x); chmax(xmx, x);
-            chmin(ymn, y); chmax(ymx, y);
-            chmin(zmn, z); chmax(zmx, z);
-        }
-        xo ^= xmn; xo ^= X-xmx-1;
-        xo ^= ymn; xo ^= Y-ymx-1;
-        xo ^= zmn; xo ^= Z-zmx-1;
-        de2(xmn, X-xmx-1)
-        de2(ymn, Y-ymx-1)
-        de2(zmn, Z-zmx-1)
+    STRING(S);
+    ll N = SIZE(S);
+    if(S[0]==S.back()) {
+        if((N-3)%2) puts("First");
+        else puts("Second");
+    } else {
+        if((N-2)%2) puts("First");
+        else puts("Second");
     }
-    if(xo) puts("WIN");
-    else puts("LOSE");
+
+    // while(SIZE(S)>2) {
+    //     ll n = SIZE(S);
+    //     bool find = false;
+    //     repk(i, 1, n-1) {
+    //         if(S[i-1]!=S[i+1]) {
+    //             S.erase(S.begin()+i);
+    //             find = true;
+    //             break;
+    //         }
+    //     }
+    //     if(!find) {
+    //         de(S)
+    //         Outend(N-SIZE(S));
+    //     }
+    // }
+    // de(S)
+    // Outend(N-SIZE(S));
     
 }
 
