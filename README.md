@@ -1701,7 +1701,7 @@
 - 線形計画法のLP双対により、最短経路問題に帰着できる
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
-- !復習価値高 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+- !復習価値低 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
 
 ## 最大フロー・最小カット
 - ACLで求める（自前実装は難しそう）

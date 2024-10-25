@@ -207,50 +207,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp edge;
-    vl deg(N);
-    rep(i, M) {
-        LONGM(a,b);
-        edge.emplace_back(a,b);
-        deg[a]++, deg[b]++;
-    }
-    ll B = sqrt(2*M);
-    vb large(N);
-    rep(i, N) if(deg[i]>=B) large[i]=true;
-    vvl fromsmall(N), tolarge(N);
-    for(auto [a,b]: edge) {
-        if(!large[a]) fromsmall[a].push_back(b);
-        else tolarge[b].push_back(a);
-        if(!large[b]) fromsmall[b].push_back(a);
-        else tolarge[a].push_back(b);
-    }
+    LONG(N, X);
+    vl A(N),P(N),B(N),Q(N);
+    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
 
-    vl rcv(N), snd(N), read(N);
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t,x); --x;
-        if(t==1) {
-            if(large[x]) {
-                snd[x]++;
-            } else {
-                for(auto nx: fromsmall[x]) {
-                    rcv[nx]++;
-                }
+    auto f=[&](ll w) -> bool {
+        ll cost = 0;
+        rep(i, N) {
+            ll a=A[i],b=B[i],p=P[i],q=Q[i];
+            if(b*p<a*q) swap(a,b), swap(p,q);  // aが得->bが得
+            ll now = INF;
+            rep(x, b) {
+                ll y = Divceil(w-x*a, b);
+                chmax(y, 0LL);
+                ll tmp = x*p + y*q;
+                chmin(now, tmp);
             }
-        } else {
-            ll sum = rcv[x];
-            for(auto nx: tolarge[x]) {
-                sum += snd[nx];
-            }
-            ll ans = sum - read[x];
-            Out(ans);
-            read[x] = sum;
+            cost += now;
+            if(cost>X) return false;
         }
-    }
+        return cost <= X;
+    };
+
+    ll ans = binary_search(0, (ll)1e9+10, f);
+    Out(ans);
+
     
 }
 

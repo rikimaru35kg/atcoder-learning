@@ -63,6 +63,27 @@ vector<long long> z_algo(vector<long long> s) {
     return a;
 }
 
+//! Change 26 to an appropriate number
+string excel_string(long long n, char base='A') {
+    const long long m = 26;
+    string ret;
+    while(n) {
+        --n;
+        ret += n%m + base;
+        n /= m;
+    }
+    reverse(all(ret));
+    return ret;
+}
+long long num_of_excel_string(string s, char base='A') {
+    const long long m = 26;
+    long long ret = 0;
+    for(auto c: s) {
+        ret = ret*m + c-base + 1;
+    }
+    return ret;
+}
+
 int main () {
     // string s; cin >> s;
     int n; cin >> n;

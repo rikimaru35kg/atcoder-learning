@@ -207,58 +207,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+//! Change 26 to an appropriate number
+string excel_string(long long n, char base='A') {
+    const long long m = 26;
+    string ret;
+    while(n) {
+        --n;
+        ret += n%m + base;
+        n /= m;
+    }
+    reverse(all(ret));
+    return ret;
+}
+long long num_of_excel_string(string s, char base='A') {
+    const long long m = 26;
+    long long ret = 0;
+    for(auto c: s) {
+        ret = ret*m + c-base + 1;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vp edge;
-    vl deg(N);
-    rep(i, M) {
-        LONGM(a,b);
-        edge.emplace_back(a,b);
-        deg[a]++, deg[b]++;
-    }
-    ll B = sqrt(2*M);
-    vl large(N);
-    rep(i, N) if(deg[i]>=B) large[i]=true;
-
-    vvl fromsmall(N), tolarge(N);
-    for(auto [a,b]: edge) {
-        if(large[a]) tolarge[b].push_back(a);
-        else fromsmall[a].push_back(b);
-        if(large[b]) tolarge[a].push_back(b);
-        else fromsmall[b].push_back(a);
-    }
-
-    vl color(N, 1);
-    vl lc(N, -1);
-    vl paint(N, -1);
-    vl lp(N, -1);
-    LONG(Q);
-    rep(i, Q) {
-        LONG(x, y); --x;
-        ll ans = color[x];
-        ll lt = lc[x];
-        for(auto nx: tolarge[x]) {
-            if(lp[nx]<=lt) continue;
-            ans = paint[nx];
-            lt = lp[nx];
-        }
-        Out(ans);
-        color[x] = y;
-        lc[x] = i;
-        if(large[x]) {
-            paint[x] = y;
-            lp[x] = i;
-        } else {
-            for(auto nx: fromsmall[x]) {
-                color[nx] = y;
-                lc[nx] = i;
-            }
-        }
-    }
-
-    
+    LONG(N);
+    string tmp = excel_string(N, 'a');
+    ll M = num_of_excel_string(tmp, 'a');
+    assert(N==M);
+    Out(tmp);
 }
-
-// ### test.cpp ###
