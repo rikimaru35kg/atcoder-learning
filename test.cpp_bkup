@@ -210,39 +210,48 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Ha, Wa);
-    VS(A, Ha);
-    LONG(Hb, Wb);
-    VS(B, Hb);
-    LONG(Hx, Wx);
-    VS(X, Hx);
+    LONG(N, H, W);
+    VL2(A, B, N);
 
-    repk(dai, -10, 11) repk(daj, -10, 11) repk(dbi, -10, 11) repk(dbj, -10, 11) {
-        vs s(Hx, string(Wx, '.'));
-        bool ok = true;
-        [&]{rep(i, Ha) rep(j, Wa) {
-            if(A[i][j]=='.') continue;
-            ll ci = i+dai, cj = j+daj;
-            if(!isin(ci,cj,Hx,Wx)) {
-                ok = false; return;
+    auto getij=[&](vvl &field) -> Pr {
+        rep(i, H) rep(j, W) {
+            if(field[i][j]==-1) {
+                return {i,j};
             }
-            s[ci][cj] = '#';
-        }}();
-        if(!ok) continue;
-        [&]{rep(i, Hb) rep(j, Wb) {
-            if(B[i][j]=='.') continue;
-            ll ci = i+dbi, cj = j+dbj;
-            if(!isin(ci,cj,Hx,Wx)) {
-                ok = false; return;
-            }
-            s[ci][cj] = '#';
-        }}();
-        if(!ok) continue;
-        if(X==s) {
-            de4(dai,daj,dbi,dbj)
-            PYes
         }
-    }
+        return {-1,-1};
+    };
+
+    vl p(N);
+    iota(all(p), 0);
+    do { rep(s, 1<<N) {
+        vvl field(H, vl(W, -1));
+        bool ttime = true;
+        for(auto pi: p) {
+            auto [si,sj] = getij(field);
+            if(si==-1) {
+                de(field) PYes
+            }
+            ll a = A[pi], b = B[pi];
+            if(s>>pi&1) swap(a, b);
+            bool ok = true;
+            [&](){rep(i, a) rep(j, b) {
+                ll ci = si+i, cj = sj+j;
+                if(!isin(ci,cj,H,W)) { ok = false; return; }
+                if(field[ci][cj]!=-1) { ok = false; return; }
+                field[ci][cj] = pi;
+            }}();
+            if(!ok) {
+                ttime = false; break;
+            }
+        }
+        if(ttime) {
+            auto [si,sj] = getij(field);
+            if(si==-1) {
+                de(field) PYes
+            }
+        }
+    }} while(next_permutation(all(p)));
     PNo
     
 }

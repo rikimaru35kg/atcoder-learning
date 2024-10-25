@@ -207,74 +207,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> transpose(vector<string> &s) {
-    long long h = s.size(), w = s[0].size();
-    vector<string> ret(w, string(h, '.'));
-    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
-        ret[j][i] = s[i][j];
-    }
-    return ret;
-}
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(R, C);
+    LONG(H, W, K);
+    VS(S, H);
+    vvl A(H, vl(W));
+    rep(i, H) rep(j, W) A[i][j] = S[i][j]-'0';
 
-
-    vl a(N), b(N), c(N);
-    iota(all(a), 0); iota(all(b), 0); iota(all(c), 0);
-
-    auto check1row=[&](vs &s) -> bool {
-        rep(i, N) {
-            vl cnt(3);
-            rep(j, N) {
-                if(s[i][j]=='.') continue;
-                cnt[s[i][j]-'A']++;
+    ll ans = INF;
+    rep(s, 1<<(H-1)) {
+        vvl B(1, vl(W));
+        rep(i, H) {
+            rep(j, W) {
+                B.back()[j] += A[i][j];
             }
-            if(cnt[0]!=1 || cnt[1]!=1 || cnt[2]!=1) return false;
+            if(s>>i&1) B.push_back(vl(W));
         }
-        return true;
-    };
-    auto checkrow=[&](vs &s, string &r) -> bool {
-        rep(i, N) {
-            ll cj=-1;
-            rep(j, N) {
-                if(s[i][j]!='.') {
-                    cj=j; break;
+        ll M = SIZE(B);
+        ll cut = 0;
+        ll l=0, r = 0;
+        bool ng = false;
+        if(s==7) {
+            cout<<"";
+        }
+        while(l<W) {
+            vl sum(M);
+            auto judge=[&](ll r) -> bool {
+                rep(j, M) {
+                    if(sum[j] + B[j][r] > K) return false;;
                 }
+                return true;
+            };
+            while(r<W && judge(r)) {
+                rep(j, M) sum[j] += B[j][r];
+                ++r;
             }
-            if(s[i][cj]!=r[i]) return false;
+            if(l==r) {
+                ng = true; break;
+            }
+            ++cut;
+            if(r==W) break;
+            l = r;
         }
-        return true;
-    };
-    vs base={
-        "AC..B",
-        ".BA.C",
-        "C.BA.",
-        "BA.C.",
-        "..CBA"};
-    do {
-    do {
-    do {
-        vs field(N, string(N, '.'));
-        rep(i, N) field[i][a[i]] = 'A';
-        rep(i, N) field[i][b[i]] = 'B';
-        rep(i, N) field[i][c[i]] = 'C';
-        if(!check1row(field)) continue;
-        if(!checkrow(field, R)) continue;
-        field = transpose(field);
-        if(!check1row(field)) continue;
-        if(!checkrow(field, C)) continue;
-        field = transpose(field);
-        puts("Yes");
-        Outend(field);
-    } while(next_permutation(all(a)));
-    } while(next_permutation(all(b)));
-    } while(next_permutation(all(c)));
-    PNo
+        if(ng) continue;
+        ll tot = pcnt(s) + cut - 1;
+        chmin(ans, tot);
+    }
+    Out(ans);
     
 }
 
