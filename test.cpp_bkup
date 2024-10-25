@@ -207,52 +207,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, Y);
-    vvp lands(Y+1);
-    vvl A(H+2, vl(W+2));
-    rep(i, H) rep(j, W) {
-        LONG(a);
-        A[i+1][j+1] = a;
-    }
-    H += 2, W += 2;
-    rep(i, H) rep(j, W) {
-        if(A[i][j]>Y) continue;
-        lands[A[i][j]].emplace_back(i, j);
-    }
+    LONG(Ha, Wa);
+    VS(A, Ha);
+    LONG(Hb, Wb);
+    VS(B, Hb);
+    LONG(Hx, Wx);
+    VS(X, Hx);
 
-    vvb sink(H, vb(W, true));
-    rep(i, H-2) rep(j, W-2) sink[i+1][j+1] = false;
-    ll remain = (H-2)*(W-2);
-    rep(y, Y+1) {
-        auto dfs=[&](auto f, ll i, ll j) -> void {
-            if(sink[i][j]) return;
-            sink[i][j] = true;
-            remain--; 
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(A[ni][nj]<=y) f(f, ni, nj);
+    repk(dai, -10, 11) repk(daj, -10, 11) repk(dbi, -10, 11) repk(dbj, -10, 11) {
+        vs s(Hx, string(Wx, '.'));
+        bool ok = true;
+        [&]{rep(i, Ha) rep(j, Wa) {
+            if(A[i][j]=='.') continue;
+            ll ci = i+dai, cj = j+daj;
+            if(!isin(ci,cj,Hx,Wx)) {
+                ok = false; return;
             }
-        };
-        for(auto [i,j]: lands[y]) {
-            bool ok = false;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(sink[ni][nj]) ok = true;
+            s[ci][cj] = '#';
+        }}();
+        if(!ok) continue;
+        [&]{rep(i, Hb) rep(j, Wb) {
+            if(B[i][j]=='.') continue;
+            ll ci = i+dbi, cj = j+dbj;
+            if(!isin(ci,cj,Hx,Wx)) {
+                ok = false; return;
             }
-            if(ok) dfs(dfs, i, j);
-        }
-        if(y) {
-            Out(remain);
+            s[ci][cj] = '#';
+        }}();
+        if(!ok) continue;
+        if(X==s) {
+            de4(dai,daj,dbi,dbj)
+            PYes
         }
     }
+    PNo
     
 }
 

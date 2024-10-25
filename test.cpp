@@ -207,110 +207,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
     }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
-    }
-};
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    if((v2-v1).cross(v3-v1) * (v2-v1).cross(v4-v1) > 0) return false;
-    if((v4-v3).cross(v1-v3) * (v4-v3).cross(v2-v3) > 0) return false;
-    return true;
+    return ret;
 }
 
-// Vector
-const double eps = 1e-8; // suppose max(x,y) <= 1e6;
-struct Vecd {
-    double x, y;
-    Vecd(double x=0, double y=0): x(x), y(y) {}
-    Vecd& operator+=(const Vecd& v) { x += v.x; y += v.y; return *this;}
-    Vecd operator+(const Vecd& v) const { return Vecd(*this) += v;}
-    Vecd& operator-=(const Vecd& v) { x -= v.x; y -= v.y; return *this;}
-    Vecd operator-(const Vecd& v) const { return Vecd(*this) -= v;}
-    Vecd& operator*=(double s) { x *= s; y *= s; return *this;}
-    Vecd operator*(double s) const { return Vecd(*this) *= s;}
-    Vecd& operator/=(double s) { x /= s; y /= s; return *this;}
-    Vecd operator/(double s) const { return Vecd(*this) /= s;}
-    double dot(const Vecd& v) const { return x*v.x + y*v.y;}
-    // cross>0 means *this->v is counterclockwise.
-    double cross(const Vecd& v) const { return x*v.y - v.x*y;}
-    double norm2() const { return x*x + y*y;}
-    double norm() const { return sqrt(norm2());}
-    Vecd normalize() const { return *this/norm();}
-    Vecd rotate90() const { return Vecd(y, -x);}
-    void rotate(double theta) {
-        Vecd ret;
-        ret.x = cos(theta)*x - sin(theta)*y;
-        ret.y = sin(theta)*x + cos(theta)*y;
-        *this = ret;
-    }
-    int ort() const { // orthant
-    if (abs(x) < eps && abs(y) < eps) return 0;
-    if (y > 0) return x>0 ? 1 : 2;
-    else return x>0 ? 4 : 3;
-    }
-    bool operator<(const Vecd& v) const {
-      int o = ort(), vo = v.ort();
-      if (o != vo) return o < vo;
-      return cross(v) > 0;
-    }
-};
-istream& operator>>(istream& is, Vecd& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecd& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Vecll s, t;
-    cin>>s>>t;
-
     LONG(N);
-    vector<Vecll> P;
-    rep(i, N) {
-        LONG(x,y);
-        P.emplace_back(x,y);
-    }
-    ll cnt = 0;
-    rep(i, N) {
-        Vecll v1 = P[i], v2 = P[(i+1)%N];
-        bool ok = false;
-        ok = crossing(s,t,v1,v2);
-        if(ok) ++cnt;
-    }
-    ll cut = cnt/2;
-    ll ans = 1 + cut;
-    Out(ans);
+    STRING(R, C);
 
 
+    vl a(N), b(N), c(N);
+    iota(all(a), 0); iota(all(b), 0); iota(all(c), 0);
+
+    auto check1row=[&](vs &s) -> bool {
+        rep(i, N) {
+            vl cnt(3);
+            rep(j, N) {
+                if(s[i][j]=='.') continue;
+                cnt[s[i][j]-'A']++;
+            }
+            if(cnt[0]!=1 || cnt[1]!=1 || cnt[2]!=1) return false;
+        }
+        return true;
+    };
+    auto checkrow=[&](vs &s, string &r) -> bool {
+        rep(i, N) {
+            ll cj=-1;
+            rep(j, N) {
+                if(s[i][j]!='.') {
+                    cj=j; break;
+                }
+            }
+            if(s[i][cj]!=r[i]) return false;
+        }
+        return true;
+    };
+    vs base={
+        "AC..B",
+        ".BA.C",
+        "C.BA.",
+        "BA.C.",
+        "..CBA"};
+    do {
+    do {
+    do {
+        vs field(N, string(N, '.'));
+        rep(i, N) field[i][a[i]] = 'A';
+        rep(i, N) field[i][b[i]] = 'B';
+        rep(i, N) field[i][c[i]] = 'C';
+        if(!check1row(field)) continue;
+        if(!checkrow(field, R)) continue;
+        field = transpose(field);
+        if(!check1row(field)) continue;
+        if(!checkrow(field, C)) continue;
+        field = transpose(field);
+        puts("Yes");
+        Outend(field);
+    } while(next_permutation(all(a)));
+    } while(next_permutation(all(b)));
+    } while(next_permutation(all(c)));
+    PNo
     
 }
 

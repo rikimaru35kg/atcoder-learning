@@ -63,6 +63,15 @@ vector<string> rot90(vector<string> &field, bool clockwise=true) {
     return ret;
 }
 
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
+    }
+    return ret;
+}
+
 int main () {
     int n; cin >> n;
     vector<string> s(n);

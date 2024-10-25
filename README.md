@@ -1738,22 +1738,22 @@
 ## 線分交差判定（ニッチすぎてNote非掲載）
 - 外積を4回使うと良い
 ### 例題
-- !復習価値高 [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
+- !復習価値低（snippet練習） [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
 
 ## 構築系問題
 - 構築させる問題
 ### 例題
 - 基本 [D - At Most 3 (Contestant ver.)](https://atcoder.jp/contests/abc251/tasks/abc251_d)
 - 基本 [D - Five, Five Everywhere](https://atcoder.jp/contests/abc096/tasks/abc096_d)
-- !復習価値中 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
+- 基本 [F - Three Variables Game](https://atcoder.jp/contests/abc166/tasks/abc166_f)
 - 基本 [F - XOR Matching](https://atcoder.jp/contests/abc126/tasks/abc126_f)
-- !復習価値中 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
+- 基本 被らない試合方法 [E - Rotation Matching](https://atcoder.jp/contests/abc165/tasks/abc165_e)
 
 # 実装系問題
 ### 例題
-- !復習価値高 がっかりビンゴ（解説コードが神） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
-- !復習価値中 シート重ね合わせ [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
-- !復習価値低 ABCパズル [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
+- 基本 がっかりビンゴ（解説コードが神） [C - False Hope](https://atcoder.jp/contests/abc319/tasks/abc319_c)
+- 基本 シート重ね合わせ [C - Ideal Sheet](https://atcoder.jp/contests/abc307/tasks/abc307_c)
+- 基本 ABCパズル [D - ABC Puzzle](https://atcoder.jp/contests/abc326/tasks/abc326_d)
 - !復習価値低 タイル置き [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 - !復習価値中 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
 - !復習価値高 クッキー消し [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
