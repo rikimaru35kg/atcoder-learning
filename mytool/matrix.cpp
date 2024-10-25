@@ -1,28 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Vector
-const double eps = 1e-8; // suppose max(x,y) <= 1e9;
-struct Vec {
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    if((v2-v1).cross(v3-v1) * (v2-v1).cross(v4-v1) > 0) return false;
+    if((v4-v3).cross(v1-v3) * (v4-v3).cross(v2-v3) > 0) return false;
+    return true;
+}
+
+const double eps = 1e-8; // suppose max(x,y) <= 1e6;
+struct Vecd {
     double x, y;
-    Vec(double x=0, double y=0): x(x), y(y) {}
-    Vec& operator+=(const Vec& v) { x += v.x; y += v.y; return *this;}
-    Vec operator+(const Vec& v) const { return Vec(*this) += v;}
-    Vec& operator-=(const Vec& v) { x -= v.x; y -= v.y; return *this;}
-    Vec operator-(const Vec& v) const { return Vec(*this) -= v;}
-    Vec& operator*=(double s) { x *= s; y *= s; return *this;}
-    Vec operator*(double s) const { return Vec(*this) *= s;}
-    Vec& operator/=(double s) { x /= s; y /= s; return *this;}
-    Vec operator/(double s) const { return Vec(*this) /= s;}
-    double dot(const Vec& v) const { return x*v.x + y*v.y;}
+    Vecd(double x=0, double y=0): x(x), y(y) {}
+    Vecd& operator+=(const Vecd& v) { x += v.x; y += v.y; return *this;}
+    Vecd operator+(const Vecd& v) const { return Vecd(*this) += v;}
+    Vecd& operator-=(const Vecd& v) { x -= v.x; y -= v.y; return *this;}
+    Vecd operator-(const Vecd& v) const { return Vecd(*this) -= v;}
+    Vecd& operator*=(double s) { x *= s; y *= s; return *this;}
+    Vecd operator*(double s) const { return Vecd(*this) *= s;}
+    Vecd& operator/=(double s) { x /= s; y /= s; return *this;}
+    Vecd operator/(double s) const { return Vecd(*this) /= s;}
+    double dot(const Vecd& v) const { return x*v.x + y*v.y;}
     // cross>0 means *this->v is counterclockwise.
-    double cross(const Vec& v) const { return x*v.y - v.x*y;}
+    double cross(const Vecd& v) const { return x*v.y - v.x*y;}
     double norm2() const { return x*x + y*y;}
     double norm() const { return sqrt(norm2());}
-    Vec normalize() const { return *this/norm();}
-    Vec rotate90() const { return Vec(y, -x);}
+    Vecd normalize() const { return *this/norm();}
+    Vecd rotate90() const { return Vecd(y, -x);}
     void rotate(double theta) {
-        Vec ret;
+        Vecd ret;
         ret.x = cos(theta)*x - sin(theta)*y;
         ret.y = sin(theta)*x + cos(theta)*y;
         *this = ret;
@@ -32,16 +67,16 @@ struct Vec {
     if (y > 0) return x>0 ? 1 : 2;
     else return x>0 ? 4 : 3;
     }
-    bool operator<(const Vec& v) const {
+    bool operator<(const Vecd& v) const {
       int o = ort(), vo = v.ort();
       if (o != vo) return o < vo;
       return cross(v) > 0;
     }
 };
-istream& operator>>(istream& is, Vec& v) {
+istream& operator>>(istream& is, Vecd& v) {
     is >> v.x >> v.y; return is;
 }
-ostream& operator<<(ostream& os, const Vec& v) {
+ostream& operator<<(ostream& os, const Vecd& v) {
     os<<"("<<v.x<<","<<v.y<<")"; return os;
 }
 

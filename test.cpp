@@ -207,144 +207,110 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
     }
-    return ok;
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    if((v2-v1).cross(v3-v1) * (v2-v1).cross(v4-v1) > 0) return false;
+    if((v4-v3).cross(v1-v3) * (v4-v3).cross(v2-v3) > 0) return false;
+    return true;
 }
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
+// Vector
+const double eps = 1e-8; // suppose max(x,y) <= 1e6;
+struct Vecd {
+    double x, y;
+    Vecd(double x=0, double y=0): x(x), y(y) {}
+    Vecd& operator+=(const Vecd& v) { x += v.x; y += v.y; return *this;}
+    Vecd operator+(const Vecd& v) const { return Vecd(*this) += v;}
+    Vecd& operator-=(const Vecd& v) { x -= v.x; y -= v.y; return *this;}
+    Vecd operator-(const Vecd& v) const { return Vecd(*this) -= v;}
+    Vecd& operator*=(double s) { x *= s; y *= s; return *this;}
+    Vecd operator*(double s) const { return Vecd(*this) *= s;}
+    Vecd& operator/=(double s) { x /= s; y /= s; return *this;}
+    Vecd operator/(double s) const { return Vecd(*this) /= s;}
+    double dot(const Vecd& v) const { return x*v.x + y*v.y;}
+    // cross>0 means *this->v is counterclockwise.
+    double cross(const Vecd& v) const { return x*v.y - v.x*y;}
+    double norm2() const { return x*x + y*y;}
+    double norm() const { return sqrt(norm2());}
+    Vecd normalize() const { return *this/norm();}
+    Vecd rotate90() const { return Vecd(y, -x);}
+    void rotate(double theta) {
+        Vecd ret;
+        ret.x = cos(theta)*x - sin(theta)*y;
+        ret.y = sin(theta)*x + cos(theta)*y;
+        *this = ret;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
+    int ort() const { // orthant
+    if (abs(x) < eps && abs(y) < eps) return 0;
+    if (y > 0) return x>0 ? 1 : 2;
+    else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vecd& v) const {
+      int o = ort(), vo = v.ort();
+      if (o != vo) return o < vo;
+      return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecd& v) {
+    is >> v.x >> v.y; return is;
 }
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
+ostream& operator<<(ostream& os, const Vecd& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S, T);
-    ll Ns = SIZE(S); ll Nt = SIZE(T);
-    vl A, B;
-    for(auto c: S) A.push_back(c-'a');
-    for(auto c: T) B.push_back(c-'a');
-    ll M = 26;
-    vvl idx(M);
-    rep(i, Ns) idx[A[i]].push_back(i);
+    Vecll s, t;
+    cin>>s>>t;
 
-    rep(i, Nt) if(SIZE(idx[B[i]])==0) Pm0
-
-    auto f=[&](ll x) -> bool {
-        --x;  // ピッタリ合わせてからx-1回進む
-        ll ci = 0;
-        rep(i, Nt) {
-            vl &cidx = idx[B[i]];
-            ll sz = SIZE(cidx);
-            ll cycle = x/sz;
-            if(cycle>N) return false;  // オーバーフロー回避
-            ll rem = x%sz;
-            ci += cycle * Ns;  // cycle分進める
-
-            // ピッタリ合わせる
-            auto [n, st] = lowbou(cidx, ci%Ns);
-            if(n==sz) {
-                n = 0; st = cidx[0];
-                ci = ci/Ns*Ns + Ns + st;
-            } else {
-                ci = ci/Ns*Ns + st; 
-            }
-
-            // rem回進める
-            ll nst = cidx[(n+rem)%sz];
-            if(nst>=st) ci = ci/Ns*Ns + nst;
-            else ci = ci/Ns*Ns + Ns + nst;
-            // 1進める
-            ci++;
-        }
-        return ci <= Ns*N;
-    };
-
-    ll ans = binary_search(0, Ns*N/Nt+10, f);
+    LONG(N);
+    vector<Vecll> P;
+    rep(i, N) {
+        LONG(x,y);
+        P.emplace_back(x,y);
+    }
+    ll cnt = 0;
+    rep(i, N) {
+        Vecll v1 = P[i], v2 = P[(i+1)%N];
+        bool ok = false;
+        ok = crossing(s,t,v1,v2);
+        if(ok) ++cnt;
+    }
+    ll cut = cnt/2;
+    ll ans = 1 + cut;
     Out(ans);
+
+
     
 }
 

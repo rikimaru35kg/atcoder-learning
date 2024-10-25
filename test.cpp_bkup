@@ -207,112 +207,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/fenwicktree>
+#include <atcoder/dsu>
 using namespace atcoder;
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + A[i];
-    sort(all(Sc));
+    LONG(H, W, Y);
+    vvp lands(Y+1);
+    vvl A(H+2, vl(W+2));
+    rep(i, H) rep(j, W) {
+        LONG(a);
+        A[i+1][j+1] = a;
+    }
+    H += 2, W += 2;
+    rep(i, H) rep(j, W) {
+        if(A[i][j]>Y) continue;
+        lands[A[i][j]].emplace_back(i, j);
+    }
 
-    auto f=[&](ll x) -> bool {
-        ll cnt = 0;
-        ll r = 0;
-        ll M = N+1;
-        rep(l, M) {
-            while(r<M && Sc[r]-Sc[l]<=x) {
-                cnt += r-l;  // rを固定した時のSr-Sl<=xとなるペアを数える
-                ++r;
+    vvb sink(H, vb(W, true));
+    rep(i, H-2) rep(j, W-2) sink[i+1][j+1] = false;
+    ll remain = (H-2)*(W-2);
+    rep(y, Y+1) {
+        auto dfs=[&](auto f, ll i, ll j) -> void {
+            if(sink[i][j]) return;
+            sink[i][j] = true;
+            remain--; 
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                if(A[ni][nj]<=y) f(f, ni, nj);
             }
+        };
+        for(auto [i,j]: lands[y]) {
+            bool ok = false;
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                if(sink[ni][nj]) ok = true;
+            }
+            if(ok) dfs(dfs, i, j);
         }
-        return cnt >= K;
-    };
-
-    ll ans = binary_search((ll)1e15, -1, f);
-    Out(ans);
+        if(y) {
+            Out(remain);
+        }
+    }
     
 }
 
