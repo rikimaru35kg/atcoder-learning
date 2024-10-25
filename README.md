@@ -1723,10 +1723,10 @@
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
 - K番目を考える時、二分探索するのも典型
 ### 例題
-- !復習価値中 [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
-- !復習価値高 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
-- !復習価値高 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
-- !要復習 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
+- !復習価値低（snipett練習） [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
+- !復習価値低 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
+- 基本 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+- !復習価値高 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
 - !復習価値高 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 
 ## お堀問題（ニッチすぎてNote非掲載）

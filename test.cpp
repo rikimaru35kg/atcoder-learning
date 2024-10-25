@@ -207,56 +207,145 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    reverse(ret.begin(), ret.end());
-    return ret;
+    return ok;
 }
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
     }
-    return ret;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
 }
-
-//! Change 26 to an appropriate number
-string excel_string(long long n, char base='A') {
-    const long long m = 26;
-    string ret;
-    while(n) {
-        --n;
-        ret += n%m + base;
-        n /= m;
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
     }
-    reverse(all(ret));
-    return ret;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
 }
-long long num_of_excel_string(string s, char base='A') {
-    const long long m = 26;
-    long long ret = 0;
-    for(auto c: s) {
-        ret = ret*m + c-base + 1;
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
     }
-    return ret;
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    string tmp = excel_string(N, 'a');
-    ll M = num_of_excel_string(tmp, 'a');
-    assert(N==M);
-    Out(tmp);
+    LONG(N); STRING(S, T);
+    ll Ns = SIZE(S); ll Nt = SIZE(T);
+    vl A, B;
+    for(auto c: S) A.push_back(c-'a');
+    for(auto c: T) B.push_back(c-'a');
+    ll M = 26;
+    vvl idx(M);
+    rep(i, Ns) idx[A[i]].push_back(i);
+
+    rep(i, Nt) if(SIZE(idx[B[i]])==0) Pm0
+
+    auto f=[&](ll x) -> bool {
+        --x;  // ピッタリ合わせてからx-1回進む
+        ll ci = 0;
+        rep(i, Nt) {
+            vl &cidx = idx[B[i]];
+            ll sz = SIZE(cidx);
+            ll cycle = x/sz;
+            if(cycle>N) return false;  // オーバーフロー回避
+            ll rem = x%sz;
+            ci += cycle * Ns;  // cycle分進める
+
+            // ピッタリ合わせる
+            auto [n, st] = lowbou(cidx, ci%Ns);
+            if(n==sz) {
+                n = 0; st = cidx[0];
+                ci = ci/Ns*Ns + Ns + st;
+            } else {
+                ci = ci/Ns*Ns + st; 
+            }
+
+            // rem回進める
+            ll nst = cidx[(n+rem)%sz];
+            if(nst>=st) ci = ci/Ns*Ns + nst;
+            else ci = ci/Ns*Ns + Ns + nst;
+            // 1進める
+            ci++;
+        }
+        return ci <= Ns*N;
+    };
+
+    ll ans = binary_search(0, Ns*N/Nt+10, f);
+    Out(ans);
+    
 }
+
+// ### test.cpp ###

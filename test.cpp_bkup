@@ -228,34 +228,91 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X);
-    vl A(N),P(N),B(N),Q(N);
-    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
+    LONG(N, K);
+    VL(A, N);
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    sort(all(Sc));
 
-    auto f=[&](ll w) -> bool {
-        ll cost = 0;
-        rep(i, N) {
-            ll a=A[i],b=B[i],p=P[i],q=Q[i];
-            if(b*p<a*q) swap(a,b), swap(p,q);  // aが得->bが得
-            ll now = INF;
-            rep(x, b) {
-                ll y = Divceil(w-x*a, b);
-                chmax(y, 0LL);
-                ll tmp = x*p + y*q;
-                chmin(now, tmp);
+    auto f=[&](ll x) -> bool {
+        ll cnt = 0;
+        ll r = 0;
+        ll M = N+1;
+        rep(l, M) {
+            while(r<M && Sc[r]-Sc[l]<=x) {
+                cnt += r-l;  // rを固定した時のSr-Sl<=xとなるペアを数える
+                ++r;
             }
-            cost += now;
-            if(cost>X) return false;
         }
-        return cost <= X;
+        return cnt >= K;
     };
 
-    ll ans = binary_search(0, (ll)1e9+10, f);
+    ll ans = binary_search((ll)1e15, -1, f);
     Out(ans);
-
     
 }
 
