@@ -110,6 +110,7 @@
 - 基本 [C - 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)
 - 基本 XORの性質 [D - Xor Sum 2](https://atcoder.jp/contests/abc098/tasks/arc098_b)
 - 基本 min|x^2+y^2-D| [C - Minimize Abs 2](https://atcoder.jp/contests/abc330/tasks/abc330_c)
+- !復習価値中 O(N)でも解きたい [D - Many Segments 2](https://atcoder.jp/contests/abc377/tasks/abc377_d)
 - !復習価値低 最大値X最小値Yとなる区間の総数 [E - Max Min](https://atcoder.jp/contests/abc247/tasks/abc247_e)
 - !復習価値高 交差1の数列が全要素を包含するか（snuke氏考察はオーバーキル） [E - At Least One](https://atcoder.jp/contests/abc260/tasks/abc260_e)
 
@@ -1030,6 +1031,7 @@
 ### 例題 (普通の解法だけでなくロリハでも解いてみよう)
 - !復習価値中 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 - !復習価値中 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+- !要復習 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 
 ## Z-algorithm（Zアルゴリズム）
 - 要素iからの部分文字列が要素0からの部分文字列と一致する最大長さを求めるアルゴリズム
@@ -1631,12 +1633,16 @@
 - maxの中にmaxがある形にできれば、簡単に解ける
 - 基本 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
 
-## 偶置換・奇置換
-- 順列を置換した回数で分類（順列である必要はないが重複要素があっては駄目）
-- サイクル個数の偶奇と置換の偶奇は一対一対応する（N=偶数なら一致、N=奇数なら逆）
+## 置換
+- iをPiで置き換える操作は有向グラフを考えると見通しが良くなるので、123456の下に遷移先P（342651等）を書いて考察すると良い
+- あるいはそのfunctional graphを書いて考察すると良い
+- 任意の2要素のスワップは、順列を置換した回数で分類（順列である必要はないが重複要素があっては駄目）できる
+- サイクル個数の偶奇と置換の偶奇（偶置換・奇置換）は一対一対応する（N=偶数なら一致、N=奇数なら逆）
 - 重複要素のある数列は偶置換でも奇置換でもあると見なせる（同じ要素に異なる番号をふるが、適宜入れ替えできる為）
 - 例えばN=8で7が二つある場合、7に7,8を割り当てれば置換が定義できるが、7に8,7と割り当てても良い事を考えれば、偶置換と奇置換のどちらにもなりえる
 ### 例題
+- !復習価値低 [E - Permute K times](https://atcoder.jp/contests/abc367/tasks/abc367_e)
+- ! 要復習 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
 - !復習価値高 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
 
 ## パスカルの三角形
