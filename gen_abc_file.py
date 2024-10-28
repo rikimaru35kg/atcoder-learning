@@ -156,6 +156,7 @@ inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercen
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
+template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
