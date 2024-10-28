@@ -1909,8 +1909,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [F - Playing Tag on Tree](https://atcoder.jp/contests/abc148/tasks/abc148_f)
-- 動画解説綺麗 [F - Numbered Checker](https://atcoder.jp/contests/abc269/tasks/abc269_f)
 - [C - Counting Squares](https://atcoder.jp/contests/abc275/tasks/abc275_c)
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
 - [E - NAND repeatedly](https://atcoder.jp/contests/abc310/tasks/abc310_e)

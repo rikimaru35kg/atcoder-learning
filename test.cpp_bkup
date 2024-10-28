@@ -152,6 +152,7 @@ inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercen
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
+template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -207,9 +208,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -227,58 +225,40 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(2*N-1);
-    vl top(2*N-1);
-    ll n = N;
-    rep(i, N) top[i] = i;
+    LONG(N, M, Q);
+    auto cals=[&](mint a, mint d, mint n) -> mint {
+        mint e = a + (n-1)*d;
+        mint ret = n*(a+e)/2;
+        return ret;
+    };
+    auto sum=[&](ll x, ll y) -> mint {
+        mint ret = 0;
+        { //odd
+            ll k = Divceil(y, 2);
+            mint a = cals(1, 2, k);
+            mint d = 2*M*k;
+            ll m = Divceil(x, 2);
+            ret += cals(a, d, m);
+        }
+        { // even
+            ll k = Div(y, 2);
+            mint a = cals(2+M, 2, k);
+            mint d = 2*M*k;
+            ll m = Div(x, 2);
+            ret += cals(a, d, m);
+        }
+        return ret;
+    };
 
-    dsu uf(2*N);
-    rep(i, N-1) {
-        LONGM(p, q);
-        cerr<<endl;
-        de2(p,q)
-        p = uf.leader(p); q = uf.leader(q);
-        ll tp = top[p], tq = top[q];
-        de2(tp,tq)
-        from[n].push_back(tp);
-        from[n].push_back(tq);
-        uf.merge(n, tp);
-        uf.merge(n, tq);
-        ll nl = uf.leader(tp);
-        top[nl] = n;
-        ++n;
+    rep(i, Q) {
+        LONG(a,b,c,d); --a, --c;
+        mint ans = 0;
+        ans += sum(b, d);
+        ans -= sum(a, d);
+        ans -= sum(b, c);
+        ans += sum(a, c);
+        Out(ans);
     }
-    de(from)
-
-    vl sz(2*N-1);
-    auto dfs0=[&](auto f, ll v) -> void {
-        if(v<N) {
-            sz[v] = 1;
-            return;
-        }
-        for(auto nv: from[v]) {
-            f(f, nv);
-            sz[v] += sz[nv];
-        }
-    };
-    dfs0(dfs0, 2*N-2);
-
-    vm ans(N);
-    auto dfs=[&](auto f, ll v, mint x) -> void {
-        if(v<N) {
-            ans[v] = x;
-            return;
-        }
-        ll den = sz[v];
-        for(auto nv: from[v]) {
-            ll num = sz[nv];
-            f(f, nv, x + (mint)num/den);
-        }
-    };
-    dfs(dfs, 2*N-2, 0);
-    Out(ans);
-
     
 }
 

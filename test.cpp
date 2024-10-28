@@ -208,71 +208,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
+    }
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    if((v2-v1).cross(v3-v1) * (v2-v1).cross(v4-v1) > 0) return false;
+    if((v4-v3).cross(v1-v3) * (v4-v3).cross(v2-v3) > 0) return false;
+    return true;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    ll minus = 0, plus = 0;
-    vl ps, ms;
-    rep(i, N) {
-        if(A[i]>=0) ps.push_back(A[i]), plus++;
-        else ms.push_back(-A[i]), minus++;
-    }
-    sort(all(ps)); sort(all(ms));
+    ll N = 9;
+    VS(S, N);
+    auto valid=[&](Vecll &v) -> bool {
+        return isin(v.x, v.y, N, N);
+    };
+    auto sharp=[&](Vecll &v) -> bool {
+        return S[v.x][v.y] == '#';
+    };
+    ll ans = 0;
+    rep(i1, N) rep(j1, N) rep(i2, N) rep(j2, N) {
+        if(i1==i2 && j1==j2) continue;
+        Vecll p1(i1, j1), p2(i2, j2);
+        if(!sharp(p1) || !sharp(p2)) continue;
 
-    bool ok = false;
-    rep(i, K+1) {
-        if(i>minus) break;
-        if(K-i>plus) continue;
-        if(i%2==0) ok = true;
+        Vecll p3 = (p2-p1).rot90(true) + p1;
+        Vecll p4 = (p1-p2).rot90(false) + p2;
+        if(!valid(p3)) continue;
+        if(!valid(p4)) continue;
+        if(!sharp(p3) || !sharp(p4)) continue;
+        ++ans;
     }
-
-    if(!ok) {
-        vl B;
-        rep(i, N) B.push_back(abs(A[i]));
-        sort(all(B));
-        de(B)
-        mint ans = -1;
-        rep(i, K) ans *= B[i];
-        Out(ans);
-        return 0;
-    }
-
-    mint ans = 1;
-    if(K%2) {
-        ans *= ps.back(); ps.pop_back();
-        --K;
-    }
-    vl cand;
-    while(ps.size()>=2) {
-        ll now = pop(ps) * pop(ps);
-        cand.push_back(now);
-    }
-    while(ms.size()>=2) {
-        ll now = pop(ms) * pop(ms);
-        cand.push_back(now);
-    }
-    sort(allr(cand));
-    rep(i, K/2) {
-        ans *= cand[i];
-    }
-    Out(ans);
-
+    Out(ans/4);
     
 }
 

@@ -12,6 +12,10 @@ struct Vecll {
     long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
     long long norm2() const { return x*x + y*y; }
     double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
+    }
     int ort() const { // orthant
         if (x==0 && y==0 ) return 0;
         if (y>0) return x>0 ? 1 : 2;
