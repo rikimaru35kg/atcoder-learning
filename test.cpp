@@ -240,39 +240,34 @@ istream& operator>>(istream& is, Vecll& v) {
 ostream& operator<<(ostream& os, const Vecll& v) {
     os<<"("<<v.x<<","<<v.y<<")"; return os;
 }
+bool overlapping(long long l1, long long r1, long long l2, long long r2) {
+    if(l1>r1) swap(l1, r1);
+    if(l2>r2) swap(l2, r2);
+    long long lmax = max(l1, l2);
+    long long rmin = min(r1, r2);
+    return lmax <= rmin;
+}
 // v1-v2 cross v3-v4?
 // just point touch -> true
 bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    if((v2-v1).cross(v3-v1) * (v2-v1).cross(v4-v1) > 0) return false;
-    if((v4-v3).cross(v1-v3) * (v4-v3).cross(v2-v3) > 0) return false;
+    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
+    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
+    if(c12_13 * c12_14 > 0) return false;
+    if(c34_31 * c34_32 > 0) return false;
+    if(c12_13==0 && c12_14==0) {
+        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
+           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
+        else return false;
+    }
     return true;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll N = 9;
-    VS(S, N);
-    auto valid=[&](Vecll &v) -> bool {
-        return isin(v.x, v.y, N, N);
-    };
-    auto sharp=[&](Vecll &v) -> bool {
-        return S[v.x][v.y] == '#';
-    };
-    ll ans = 0;
-    rep(i1, N) rep(j1, N) rep(i2, N) rep(j2, N) {
-        if(i1==i2 && j1==j2) continue;
-        Vecll p1(i1, j1), p2(i2, j2);
-        if(!sharp(p1) || !sharp(p2)) continue;
-
-        Vecll p3 = (p2-p1).rot90(true) + p1;
-        Vecll p4 = (p1-p2).rot90(false) + p2;
-        if(!valid(p3)) continue;
-        if(!valid(p4)) continue;
-        if(!sharp(p3) || !sharp(p4)) continue;
-        ++ans;
-    }
-    Out(ans/4);
+    Vecll v1, v2, v3, v4;
+    cin>>v1>>v2>>v3>>v4;
+    if(crossing(v1,v2, v3,v4)) PYes PNo
     
 }
 

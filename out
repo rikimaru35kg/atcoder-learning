@@ -1,0 +1,58 @@
+test.cpp: In function ‘int main()’:
+test.cpp:220:10: warning: variable ‘rid’ set but not used [-Wunused-but-set-variable]
+  220 |     auto rid=[&](ll id) -> Pr {return {id/C, id%C};};
+      |          ^~~
+In file included from /usr/include/c++/12/ext/alloc_traits.h:34,
+                 from /usr/include/c++/12/bits/basic_string.h:39,
+                 from /usr/include/c++/12/string:53,
+                 from /usr/include/c++/12/bits/locale_classes.h:40,
+                 from /usr/include/c++/12/bits/ios_base.h:41,
+                 from /usr/include/c++/12/ios:42,
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/sstream:38,
+                 from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = long long int; _Args = {long long int, long long int&}; _Tp = long long int; allocator_type = std::allocator<long long int>]’:
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int, long long int&}; _Tp = long long int; _Alloc = std::allocator<long long int>; reference = long long int&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int, long long int&}; _Tp = long long int; _Allocator = std::allocator<long long int>; reference = long long int&]’
+test.cpp:223:36:   required from here
+/usr/include/c++/12/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(long long int*&, long long int, long long int&)’
+  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
+      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_iterator.h:85,
+                 from /usr/include/c++/12/bits/stl_algobase.h:67,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
+   94 |     construct_at(_Tp* __location, _Args&&... __args)
+      |     ^~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = long long int; _Args = {long long int, long long int&}]’:
+/usr/include/c++/12/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = long long int; _Args = {long long int, long long int&}; _Tp = long long int; allocator_type = std::allocator<long long int>]’
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int, long long int&}; _Tp = long long int; _Alloc = std::allocator<long long int>; reference = long long int&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int, long long int&}; _Tp = long long int; _Allocator = std::allocator<long long int>; reference = long long int&]’
+test.cpp:223:36:   required from here
+/usr/include/c++/12/bits/stl_construct.h:96:17: error: new initializer expression list treated as compound expression [-fpermissive]
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = long long int; _Args = {long long int, int}; _Tp = long long int; allocator_type = std::allocator<long long int>]’:
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int, int}; _Tp = long long int; _Alloc = std::allocator<long long int>; reference = long long int&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int, int}; _Tp = long long int; _Allocator = std::allocator<long long int>; reference = long long int&]’
+test.cpp:230:36:   required from here
+/usr/include/c++/12/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(long long int*&, long long int, int)’
+  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
+      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
+   94 |     construct_at(_Tp* __location, _Args&&... __args)
+      |     ^~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/12/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = long long int; _Args = {long long int, int}]’:
+/usr/include/c++/12/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = long long int; _Args = {long long int, int}; _Tp = long long int; allocator_type = std::allocator<long long int>]’
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int, int}; _Tp = long long int; _Alloc = std::allocator<long long int>; reference = long long int&]’
+/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int, int}; _Tp = long long int; _Allocator = std::allocator<long long int>; reference = long long int&]’
+test.cpp:230:36:   required from here
+/usr/include/c++/12/bits/stl_construct.h:96:17: error: new initializer expression list treated as compound expression [-fpermissive]
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
