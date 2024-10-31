@@ -1929,3 +1929,4 @@
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
+- [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
