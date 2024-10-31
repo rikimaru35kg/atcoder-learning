@@ -208,39 +208,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    vl X(N);
+    LONG(N, Q);
+    vp bill;
     rep(i, N) {
-        char c = S[i];
-        if(c=='R') X[i]=1; if(c=='G') X[i]=2; if(c=='B') X[i]=3;
+        LONG(x, h);
+        bill.emplace_back(x, h);
     }
-    LONG(A,B,C);
-    vl dp(5, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(5, INF); swap(pdp, dp);
-        rep(s, 5) rep(ns, 5) {
-            if(pdp[s]==INF) continue;
-            if(s==0 && (ns==2 || ns==3)) continue;
-            if(s==1 && ns!=2) continue;
-            if(s==2 && ns!=3) continue;
-            if(s==3 && !(ns==1 || ns==4)) continue;
-            if(s==4 && ns!=4) continue;
-
-            if(ns==0) { chmin(dp[ns], pdp[s]+A); }
-            else if(ns==4) { chmin(dp[ns], pdp[s]+B); }
-            else if(ns==X[i]) chmin(dp[ns], pdp[s]);
-            else chmin(dp[ns], pdp[s]+C);
-        }
-    }
-    ll ans = INF;
-    chmin(ans, dp[0]); chmin(ans, dp[3]); chmin(ans, dp[4]);
-    Out(ans);
+    sort(all(bill));
     
-}
+    auto del=[&]() {
+        vp nbill;
+        ll hmx = -1;
+        for(auto [x,h]: bill) {
+            if(h<=hmx) continue;
+            chmax(hmx, h);
+            nbill.emplace_back(x, h);
+        }
+        swap(nbill, bill);
+    };
+    del();
 
-// ### test.cpp ###
+    N = SIZE(bill);
+    rep(qi, Q) {
+        LONG(t);
+
+        auto f=[&](ll i) -> bool {
+            auto [x,h] = bill[i];
+            return x+h<=t;
+        };
+        ll mountmx = binary_search(-1, N, f);
+        
+        ll ans = 0;
+        if(mountmx>=0) {
+            chmax(ans, bill[mountmx].second);
+        }
+        if(mountmx<N-1) {
+            chmax(ans, t-bill[mountmx+1].first);
+        }
+        Out(ans);
+    }
+
+}

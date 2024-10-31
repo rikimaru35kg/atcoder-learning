@@ -1926,6 +1926,7 @@
 - [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
+- [A - ロケット打ち上げ (Rocket Launching) ](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_a)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
