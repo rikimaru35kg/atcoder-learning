@@ -208,26 +208,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp P;
-    rep(i, N) {
-        LONG(x, e);
-        ll X = x+e, Y = -x+e;
-        P.emplace_back(X,Y);
+    LONG(H, W);
+    VVL(A, H, W);
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
+
+    ll HW = H*W;
+    dsu uf(HW);
+    rep(i, H) rep(j, W) {
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(A[i][j]==A[ni][nj]) uf.merge(gid(i,j), gid(ni,nj));
+        }
     }
 
-    sort(allr(P));
+    vvl from(H*W);
+    set<Pr> st;
+    rep(i, H) rep(j, W) {
+        ll l = uf.leader(gid(i,j));
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            ll nl = uf.leader(gid(ni,nj));
+            if(l==nl) continue;
+            if(st.count({l,nl})) continue;
+            st.emplace(l,nl);
+            from[l].push_back(nl);
+        }
+    }
+
+
     ll ans = 0;
-    ll ymx = -INF;
-    for(auto [x,y]: P) {
-        if(y<=ymx) continue;
-        ++ans;
-        chmax(ymx, y);
+    rep(i, H) rep(j, W) {
+        ll id = gid(i,j);
+        ll l = uf.leader(id);
+        if(l!=id) continue;
+        umap<ll,ll> mp;
+        for(auto nid: from[id]) {
+            auto [ni,nj] = rid(nid);
+            mp[A[ni][nj]] += uf.size(nid);
+        }
+        ll mx = 0;
+        for(auto [k,v]: mp) {
+            chmax(mx, v);
+        }
+        chmax(ans, uf.size(id) + mx);
     }
     Out(ans);
 
-
+    
 }
+
+// ### test.cpp ###

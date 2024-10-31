@@ -594,6 +594,7 @@
 - 発展的な重み付きUnion Findもある
 ### 例題
 - !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- 基本 [C - 塗りつぶし (Painting)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_c)
 - !要復習 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
 - !復習価値低 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - !復習価値低 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
@@ -1512,6 +1513,7 @@
 - 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - !復習価値低 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
+- !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 
 ## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
@@ -1927,7 +1929,6 @@
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
 - [A - ロケット打ち上げ (Rocket Launching) ](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_a)
-- [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
