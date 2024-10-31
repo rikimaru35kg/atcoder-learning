@@ -208,31 +208,156 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    VL(X, N);
-    vb hurdle(L+10);
+    LONG(N, M);
+    LONG(S,T,L,K); --S, --T;
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+
+    auto dijk=[&](ll sv) -> vl {
+        vl dist(N, INF);
+        pq que;
+        auto push=[&](ll v, ll d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d,v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv,c]: from[v]) {
+                push(nv, c+d);
+            }
+        }
+        return dist;
+    };
+
+    vl dist1=dijk(S); vl dist2=dijk(T);
+    de(dist1)de(dist2)
+    if(dist1[T]<=K) {
+        ll ans = nCr(N, 2);
+        Outend(ans);
+    }
+
+    // ll same = 0;
+    // rep(i, N) {
+    //     if(dist1[i]+dist2[i]+L<=K) ++same;
+    // }
+    // ll extra = 0;
+    // ll bridge = 0;
+    // rep(i, N) {
+    //     for(auto [ni, c]: from[i]) {
+    //         if(dist1[i]+dist2[ni]+L<=K) ++extra;
+    //         if(dist1[i]+dist2[ni]+min(L,c)<=K) ++bridge;
+    //     }
+    // }
+    sort(all(dist1)); sort(all(dist2));
+
+    auto calc=[&](ll d, vl &v) -> ll {
+        auto [n,x] = uppbou(v, K-L-d);
+        return n;
+    };
+    ll ans = 0;
     rep(i, N) {
-        hurdle[X[i]] = true;
+        ans += calc(dist1[i], dist2);
     }
-    de(hurdle)
-    LONG(T1,T2,T3);
-    vl dp(L+10, INF);
-    dp[0] = 0;
-    rep(x, L) {
-        if(hurdle[x]) dp[x] += T3;
-        chmin(dp[x+1], dp[x]+T1);
-        chmin(dp[x+2], dp[x] + T1 + T2);
-        chmin(dp[x+4], dp[x] + T1 + 3*T2);
-    }
-    de(dp)
-    ll ans = dp[L];
-    chmin(ans, dp[L-1]+  T1/2 + T2*1/2);
-    chmin(ans, dp[L-2] + T1/2 + T2*3/2);
-    if(L>=3) chmin(ans, dp[L-3] + T1/2 + T2*5/2);
+    de(ans)
     Out(ans);
+    
 }
 
 // ### test.cpp ###

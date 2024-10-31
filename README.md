@@ -780,6 +780,7 @@
 - 一つずつ進む状態をキーに持つDP
 ### 例題
 - 基本 [008 - AtCounter（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_h)
+- 基本 [C - 白色光 2 (White Light 2)](https://atcoder.jp/contests/joi2024yo2/tasks/joi2024_yo2_c)
 - 基本 耳DPの由来 [D - Ears](https://atcoder.jp/contests/yahoo-procon2019-qual/tasks/yahoo_procon2019_qual_d)
 
 ## LCS（Longest Common Subsequence）
