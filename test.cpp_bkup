@@ -56,6 +56,7 @@ using vvi = vector<vector<int>>;
 using vvc = vector<vector<char>>;
 using vvl = vector<vector<ll>>;
 using vvp = vector<vector<Pr>>;
+using vvvp = vector<vvp>;
 using vvb = vector<vector<bool>>;
 using vvd = vector<vector<double>>;
 using vvs = vector<vector<string>>;
@@ -208,24 +209,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll N = SIZE(S);
+    LONG(N); VL(A, N);
+    ll sum = accumulate(all(A), 0LL);
+    ll M = 100;
+    vvd dp(M+1, vd(M+1, INF));
+    vvd edp = dp;
+    vvvp pre(N-1, vvp(M+1, vp(M+1, Pr(-1,-1))));
+    dp[0][0] = 0;
     rep(i, N-1) {
-        if(S[i]==S[i+1]) {
-            printf("%lld %lld\n", i+1, i+2);
-            return 0;
+        vvd pdp = edp; swap(pdp, dp);
+        rep(j, M+1) rep(k, M+1) rep(x, M+1) {
+            if(pdp[j][k] == INF) continue;
+            db cost = euclid_distd({0,j},{1,x});
+            if(k+x<=M) {
+                if(dp[x][k+x] > pdp[j][k]+cost) {
+                    pre[i][x][k+x] = Pr(j,k);
+                }
+                chmin(dp[x][k+x], pdp[j][k]+cost);
+            }
         }
     }
-    rep(i, N-2) {
-        if(S[i]==S[i+2]) {
-            printf("%lld %lld\n", i+1, i+3);
-            return 0;
-        }
+    db ans = dp[0][sum];
+    Out(ans);
+    Pr now(0, sum);
+    repr(i, N-1) {
+        auto [j,k] = now;
+        de2(j,k)
+        // Pr pr = pre[j][k];
+        // if(i==0) break;
+        now = pre[i][j][k];
     }
-    puts("-1 -1");
+    auto [j,k] = now;
+    de2(j,k)
     
 }
 

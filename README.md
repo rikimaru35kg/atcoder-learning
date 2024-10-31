@@ -2,7 +2,7 @@
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
 ## 最後の一斉復習日
-2024/8/26
+2024/10/31
 
 # 全探索
 
@@ -1909,17 +1909,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [M - 線分の交差判定](https://atcoder.jp/contests/past16-open/tasks/past202309_m)
-- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
-- [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
-- [J - 横断](https://atcoder.jp/contests/past202212-open/tasks/past202212_j)
-- [L - 区間](https://atcoder.jp/contests/past202212-open/tasks/past202212_l)
-- [F - 薬剤師](https://atcoder.jp/contests/past202209-open/tasks/past202209_f)
-- [I - 対称変換](https://atcoder.jp/contests/past202203-open/tasks/past202203_i)
-- [I - 直通エレベーター](https://atcoder.jp/contests/past202112-open/tasks/past202112_i)
-- [F - 安全装置](https://atcoder.jp/contests/past202104-open/tasks/past202104_f)
-- [H - コンベア](https://atcoder.jp/contests/past202012-open/tasks/past202012_h)
-- [J - 地ならし](https://atcoder.jp/contests/past201912-open/tasks/past201912_j)
 - [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
 - [D - バレンタインデー](https://atcoder.jp/contests/abc018/tasks/abc018_4)
 - [ 052 - Dice Product（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_az)
@@ -1931,18 +1920,12 @@
 - [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
 - [D - AtCoDeerくんと変なじゃんけん](https://atcoder.jp/contests/abc046/tasks/arc062_b)
 - [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
+- [M - 線分の交差判定](https://atcoder.jp/contests/past16-open/tasks/past202309_m)
+- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
+- [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
+- [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
+- [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
 
 ## ACできなかった問題
-- [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
-- [D - Decrease (Contestant ver.)](https://atcoder.jp/contests/abc068/tasks/arc079_b)
-- [A - ST and TS Palindrome](https://atcoder.jp/contests/arc155/tasks/arc155_a)
-- [D - Anything Goes to Zero](https://atcoder.jp/contests/aising2020/tasks/aising2020_d)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
-- [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
-- [C - 数列ゲーム](https://atcoder.jp/contests/abc031/tasks/abc031_c)
-- [C - ハイスコア](https://atcoder.jp/contests/abc017/tasks/abc017_3)
-- [K - 整数屋さん](https://atcoder.jp/contests/past202212-open/tasks/past202212_k)
-- [C - Go Further](https://atcoder.jp/contests/past202203-open/tasks/past202203_c)
-- [H - 折れ線グラフ](https://atcoder.jp/contests/past202107-open/tasks/past202107_h)
-- [H - ハードル走](https://atcoder.jp/contests/past202005-open/tasks/past202005_h)

@@ -208,67 +208,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    Vecll rot90(bool counterclockwise=true) { 
-        if(counterclockwise) return Vecll(-y, x);
-        else return Vecll(y, -x);
-    }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
-    }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
-    }
-};
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-bool overlapping(long long l1, long long r1, long long l2, long long r2) {
-    if(l1>r1) swap(l1, r1);
-    if(l2>r2) swap(l2, r2);
-    long long lmax = max(l1, l2);
-    long long rmin = min(r1, r2);
-    return lmax <= rmin;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
-    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
-    if(c12_13 * c12_14 > 0) return false;
-    if(c34_31 * c34_32 > 0) return false;
-    if(c12_13==0 && c12_14==0) {
-        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
-           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
-        else return false;
-    }
-    return true;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    Vecll v1, v2, v3, v4;
-    cin>>v1>>v2>>v3>>v4;
-    if(crossing(v1,v2, v3,v4)) PYes PNo
-    
+    LONG(N, L);
+    VL(X, N);
+    vb hurdle(L+10);
+    rep(i, N) {
+        hurdle[X[i]] = true;
+    }
+    de(hurdle)
+    LONG(T1,T2,T3);
+    vl dp(L+10, INF);
+    dp[0] = 0;
+    rep(x, L) {
+        if(hurdle[x]) dp[x] += T3;
+        chmin(dp[x+1], dp[x]+T1);
+        chmin(dp[x+2], dp[x] + T1 + T2);
+        chmin(dp[x+4], dp[x] + T1 + 3*T2);
+    }
+    de(dp)
+    ll ans = dp[L];
+    chmin(ans, dp[L-1]+  T1/2 + T2*1/2);
+    chmin(ans, dp[L-2] + T1/2 + T2*3/2);
+    if(L>=3) chmin(ans, dp[L-3] + T1/2 + T2*5/2);
+    Out(ans);
 }
 
 // ### test.cpp ###
