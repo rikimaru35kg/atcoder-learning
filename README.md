@@ -1927,6 +1927,7 @@
 - [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
 - [A - ロケット打ち上げ (Rocket Launching) ](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_a)
+- [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

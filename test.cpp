@@ -208,68 +208,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    vp bill;
+    LONG(N);
+    vp P;
     rep(i, N) {
-        LONG(x, h);
-        bill.emplace_back(x, h);
+        LONG(x, e);
+        ll X = x+e, Y = -x+e;
+        P.emplace_back(X,Y);
     }
-    sort(all(bill));
-    
-    auto del=[&]() {
-        vp nbill;
-        ll hmx = -1;
-        for(auto [x,h]: bill) {
-            if(h<=hmx) continue;
-            chmax(hmx, h);
-            nbill.emplace_back(x, h);
-        }
-        swap(nbill, bill);
-    };
-    del();
 
-    N = SIZE(bill);
-    rep(qi, Q) {
-        LONG(t);
-
-        auto f=[&](ll i) -> bool {
-            auto [x,h] = bill[i];
-            return x+h<=t;
-        };
-        ll mountmx = binary_search(-1, N, f);
-        
-        ll ans = 0;
-        if(mountmx>=0) {
-            chmax(ans, bill[mountmx].second);
-        }
-        if(mountmx<N-1) {
-            chmax(ans, t-bill[mountmx+1].first);
-        }
-        Out(ans);
+    sort(allr(P));
+    ll ans = 0;
+    ll ymx = -INF;
+    for(auto [x,y]: P) {
+        if(y<=ymx) continue;
+        ++ans;
+        chmax(ymx, y);
     }
+    Out(ans);
+
 
 }
