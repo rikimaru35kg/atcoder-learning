@@ -211,67 +211,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    uset<string> st;
-    LONG(N, Q);
-    auto f=[&](auto f, string s) -> void {
-        if(SIZE(s)==N) {
-            st.insert(s); return;
-        }
-        if(s.size()) {
-            for(char c=s.back(); c<='C'; ++c) {
-                f(f, s+c);
-            }
-        } else {
-            f(f, "A");
-            f(f, "B");
-            f(f, "C");
-        }
-    };
-    f(f, "");
+    LONG(M, R);
+    vvl from(10);
+    from[0] = {1};
+    from[1] = {0,2,4};
+    from[2] = {1,3,5};
+    from[3] = {2,6};
+    from[4] = {1,5,7};
+    from[5] = {2,4,6,8};
+    from[6] = {3,5,9};
+    from[7] = {4,8};
+    from[8] = {5,7,9};
+    from[9] = {6,8};
 
-    auto gid = [&](string s) -> ll {
-        ll ret=0;
-        rep(i, N) ret = ret*3+s[i]-'A';
-        return ret;
+    vvl dist(10, vl(M, INF));
+    queue<Pr> que;
+    auto push=[&](ll x, ll r, ll d) {
+        if(dist[x][r]<=d) return;
+        dist[x][r] = d;
+        que.emplace(x, r);
     };
-    auto rid = [&](ll id) -> string {
-        string ret;
-        rep(i, N) {
-            ret += id%3 + 'A';
-            id /= 3;
+    push(0, 0, 0);
+    while(que.size()) {
+        auto [x,r] = que.front(); que.pop();
+        ll d = dist[x][r];
+        push(x, (10*r+x)%M, d+1);
+        for(auto nx: from[x]) {
+            push(nx, r, d+1);
         }
-        reverse(all(ret));
-        return ret;
-    };
-
-    ll M = 2e6;
-    vl dist(M, INF);
-    auto bfs=[&](string ss) {
-        ll sid = gid(ss);
-        queue<ll> que;
-        auto push=[&](ll id, ll d) {
-            if(dist[id]<=d) return;
-            dist[id] = d;
-            que.push(id);
-        };
-        push(sid, 0);
-        while(que.size()) {
-            ll id = que.front(); que.pop();
-            string s = rid(id);
-            repk(k, 2, N+1) {
-                string fr = s.substr(0, k);
-                reverse(all(fr));
-                string ns = fr + s.substr(k);
-                push(gid(ns), dist[id]+1);
-            }
-        }
-    };
-    for(auto s: st) { bfs(s); }
-
-    rep(i, Q) {
-        STRING(s);
-        Out(dist[gid(s)]);
     }
+    ll ans = INF;
+    rep(x, 10) {
+        chmin(ans, dist[x][R]);
+    }
+    Out(ans);
     
 }
 

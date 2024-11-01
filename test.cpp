@@ -208,43 +208,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, R);
-    vvl from(10);
-    from[0] = {1};
-    from[1] = {0,2,4};
-    from[2] = {1,3,5};
-    from[3] = {2,6};
-    from[4] = {1,5,7};
-    from[5] = {2,4,6,8};
-    from[6] = {3,5,9};
-    from[7] = {4,8};
-    from[8] = {5,7,9};
-    from[9] = {6,8};
+    LONG(N, M);
+    vp paint;
+    rep(i, N) {
+        LONG(s, v);
+        paint.emplace_back(s,v);
+    }
+    sort(all(paint));
+    VL(C, M);
+    sort(allr(C));
 
-    vvl dist(10, vl(M, INF));
-    queue<Pr> que;
-    auto push=[&](ll x, ll r, ll d) {
-        if(dist[x][r]<=d) return;
-        dist[x][r] = d;
-        que.emplace(x, r);
-    };
-    push(0, 0, 0);
-    while(que.size()) {
-        auto [x,r] = que.front(); que.pop();
-        ll d = dist[x][r];
-        push(x, (10*r+x)%M, d+1);
-        for(auto nx: from[x]) {
-            push(nx, r, d+1);
+    priority_queue<Pr> que;
+    for(auto [s,v]: paint) {
+        que.emplace(v,s);
+    }
+    ll ans = 0;
+    for(auto c: C) {
+        while(que.size() && que.top().second>c) que.pop();
+        if(que.size()) {
+            que.pop();
+            ++ans;
         }
     }
-    ll ans = INF;
-    rep(x, 10) {
-        chmin(ans, dist[x][R]);
-    }
     Out(ans);
+
     
 }
 
