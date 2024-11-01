@@ -260,6 +260,7 @@
 - ボードゲームの全探索にも使用可能。各マスの状態を並べたベクトルを状態ベクトルとしてqueueに突っ込む
 ### 例題
 - !復習価値中 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
+- !復習価値低 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能

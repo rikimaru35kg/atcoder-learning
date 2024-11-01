@@ -211,36 +211,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl B;
-    rep(i, N-1) B.push_back(A[i+1]-A[i]);
-    vl x(N), y(N);
-    {
-        ll sum = 0;
-        rep(i, N-1) {
-            if(B[i]>0) x[i+1] = sum;
-            else {
-                x[i+1] = sum + 1-B[i];
-                sum += 1-B[i];
-            }
-        }
-    }
-    {
-        ll sum = 0;
-        repr(i, N-1) {
-            if(B[i]<0) y[i] = sum;
-            else {
-                y[i] = sum + 1+B[i];
-                sum += 1+B[i];
-            }
-        }
-    }
-    ll ans = INF;
-    rep(i, N) {
-        ll cut = max(x[i],y[i]);
-        chmin(ans, cut);
-    }
-    Out(ans);
-
-
+    
 }
+
+// ### test.cpp ###
