@@ -211,6 +211,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(M, R);
+    vvl from(10);
+    from[0] = {1};
+    from[1] = {0,2,4};
+    from[2] = {1,3,5};
+    from[3] = {2,6};
+    from[4] = {1,5,7};
+    from[5] = {2,4,6,8};
+    from[6] = {3,5,9};
+    from[7] = {4,8};
+    from[8] = {5,7,9};
+    from[9] = {6,8};
+
+    vvl dist(10, vl(M, INF));
+    queue<Pr> que;
+    auto push=[&](ll x, ll r, ll d) {
+        if(dist[x][r]<=d) return;
+        dist[x][r] = d;
+        que.emplace(x, r);
+    };
+    push(0, 0, 0);
+    while(que.size()) {
+        auto [x,r] = que.front(); que.pop();
+        ll d = dist[x][r];
+        push(x, (10*r+x)%M, d+1);
+        for(auto nx: from[x]) {
+            push(nx, r, d+1);
+        }
+    }
+    ll ans = INF;
+    rep(x, 10) {
+        chmin(ans, dist[x][R]);
+    }
+    Out(ans);
     
 }
 
