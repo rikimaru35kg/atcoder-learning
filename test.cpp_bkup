@@ -208,44 +208,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+// struct S {
+//     ll x, i;
+//     S(ll x=0, ll i=-1): x(x), i(i) {};
+//     bool operator<(const S &o) const {
+//         if(x!=o.x) return x<o.x;
+//         return i>o.i;
+//     }
+// };
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
+using SEG = segtree<S,op,e>;
+using vseg = vector<SEG>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    vt3 spanl, spanr;
-    rep(i, N) {
-        LONG(l, r);
-        r += K;
-        spanl.emplace_back(r, l, -1);
-        spanr.emplace_back(-l, -r, -1);
-        spanl.emplace_back(l, INF, i);
-        spanr.emplace_back(-r, INF, i);
-    }
+    VL(A, N);
 
-    auto calc=[&](vt3 &span) -> vl {
-        vl ret(N);
-        sort(all(span));
-        ll mxr = -INF;
-        ll now = 0;
-        for(auto [r,l,i]: span) {
-            if(i!=-1) {
-                ret[i] = now;
-                continue;
-            }
-            if(l<mxr) continue;
-            ++now;
-            chmax(mxr, r);
+    vvl dp(N+1, vl(N+1));
+    vvl dm(N+1, vl(N+1));
+    rep(i, N) {
+        rep(j, i+1) {
+            ll mx = 0;
+            ll kmax = j-1;
+            chmin(kmax, i+1-K);
+            chmax(kmax, 0LL);
+            // for(ll k=0; k<=kmax; ++k) {
+            //     chmax(mx, dp[j][k]);
+            // }
+            mx = dm[j][kmax];
+            chmax(dp[i+1][j], mx + A[i]);
+            chmax(dm[i+1][j], dp[i+1][j]);
+            if(j<N) chmax(dm[i+1][j+1], dm[i+1][j]); 
         }
-        return ret;
-    };
-    vl left = calc(spanl);
-    vl right = calc(spanr);
-    de(left)de(right)
-    rep(i, N) {
-        ll ans = left[i]+right[i]+1;
-        Out(ans);
     }
-    
+    ll ans = 0;
+    rep(i, N+1) rep(j, N+1) {
+        chmax(ans, dp[i][j]);
+    }
+    Out(ans);
 }
-
-// ### test.cpp ###

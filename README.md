@@ -919,6 +919,7 @@
 - 基本 飛び飛びの場合の経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
 - 基本 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - !復習価値低 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
+- !要復習 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
 - !要復習 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
 - !復習価値高 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値中 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
@@ -997,6 +998,7 @@
 - 関数(1) 色が与えられたとき、異なる色での最大値を返す（i番目におけるpdp[j]からの最大ペアを求める為）
 - 関数(2) 新しい（色、値）のペアが来た際、Top2を更新する（入替する）
 ### 例題
+- 基本 [E - エゴイ展 (EGOI Exhibition)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_e)
 - !復習価値高 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
@@ -1931,6 +1933,7 @@
 - [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
 - [A - ロケット打ち上げ (Rocket Launching) ](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_a)
 - [B - JOIG ツアー (JOIG Tour)](https://atcoder.jp/contests/joigsc2022/tasks/joigsc2022_b)
+- [C - 国土分割 (Land Division)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_c)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

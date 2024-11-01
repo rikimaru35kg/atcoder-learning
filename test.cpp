@@ -208,56 +208,86 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N); VL(B, N);
+    LONG(H, W);
+    VVL(A, H, W);
+    ll tot = 0;
+    rep(i, H) rep(j, W) {
+        tot += A[i][j];
+    }
+    de(tot)
+    auto ds = listup_divisor(tot);
 
-    auto f=[&](ll k) -> bool {
-        sll rem = N*M;
-        rep(i, N) {
-            if(A[i]>B[i]) {
-                ll cls = Divceil(k, A[i]);
-                if(cls<=M) {
-                    rem -= cls;
-                } else {
-                    rem -= M;
-                    ll self = Divceil(k-A[i]*M, B[i]);
-                    rem -= self;
-                }
-            } else {
-                ll self = Divceil(k, B[i]);
-                rem -= self;
+    vl B(H);
+    rep(i, H) rep(j, W) { B[i] += A[i][j]; }
+    auto judge=[&](vl &B, ll d) -> pair<bool,vvl> {
+        ll nh = tot/d;
+        vvl ret(nh, vl(W));
+        ll N = SIZE(B);
+        ll l = 0, r = 0;
+        ll sum = 0;
+        ll idx = 0;
+        while(l<N) {
+            while(r<N && sum+B[r]<=d) {
+                sum += B[r]; ++r;
             }
+            if(sum != d) return {false, ret};
+            repk(row, l, r) rep(col, W) ret[idx][col] += A[row][col];
+            ++idx;
+            sum = 0;
+            l = r;
         }
-        return rem>=0;
+        return {true,ret};
+    };
+    auto judge2=[&](vvl &C, ll d) -> bool {
+        ll nh = SIZE(C);
+        vl sum(nh);
+        ll l = 0, r = 0;
+        while(l<W) {
+            auto sjudge=[&]() -> bool {
+                rep(i, nh) if(sum[i]+C[i][r] > d) return false;
+                return true;
+            };
+            while(r<W && sjudge()) {
+                rep(i, nh) sum[i] += C[i][r];
+                ++r;
+            }
+            rep(i, nh) if(sum[i]!=d) return false;
+            sum = vl(nh);
+            l = r;
+        }
+        return true;
     };
 
-
-    ll ans = binary_search(0, INF, f);
-    Out(ans);
+    ll ans=0;
+    for(auto d1: ds) {
+        ll num = tot/d1;
+        if(num>H) continue;
+        auto [b, C] = judge(B,d1);
+        if(!b) continue;
+        de(d1)de(C)
+        auto lds = listup_divisor(d1);
+        for(auto d2: lds) {
+            ll num = d1/d2;
+            if(num>W) continue;
+            if(judge2(C,d2)) ++ans;
+        }
+    }
+    Out(ans-1);
     
 }
 
