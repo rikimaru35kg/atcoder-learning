@@ -1047,13 +1047,14 @@
 ### 例題
 - !復習価値低 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
-## 区間反転操作
-- 区間を反転させても内部に影響がない場合、区間の端だけ考えて考察すると良い
-- ランレングス圧縮と相性が良い
+## 区間操作
+- 区間に操作させても内部に影響がない場合、区間の端だけ考えて考察すると良い
+- 反転操作の場合、ランレングス圧縮と相性が良い場合あり
 ### 例題
 - 基本 反転時交互列最大化 良問 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
-- !復習価値高 括弧列内文字反転 [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
+- !復習価値高 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
+- !要復習 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 
 ## Suffix Array
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
