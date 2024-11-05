@@ -211,31 +211,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp item;
-    rep(i, N) {
-        LONG(a,b);
-        item.emplace_back(a,b);
+    LONG(N, M);
+    VL(A, N);
+    vl mnl(N);
+    rep(i, N) mnl[i] = i;
+    rep(i, M) {
+        LONGM(l, r);
+        chmin(mnl[r], l);
     }
-    sort(all(item));
+    repr(i, N-1) chmin(mnl[i], mnl[i+1]);
 
-    auto [a0,b0] = item[0];
-    ll mn = -a0;
-    ll sum = 0;
-    ll ans = -INF;
+    vl dp(N);
+    vl dm(N+1);
     rep(i, N) {
-        auto [a,b] = item[i];
-        sum += b;
-        ll now = sum-a-mn;
-        chmax(ans, now);
-
-        if(i==N-1) break;
-        auto [a1,b1] = item[i+1];
-        chmin(mn, sum-a1);
+        ll a = A[i];
+        ll mx = dm[mnl[i]];
+        dp[i] = mx + a;
+        chmax(dm[i+1], max(dm[i], dp[i]));
     }
+    ll ans = 0;
+    rep(i, N) chmax(ans, dp[i]);
     Out(ans);
-
-
     
 }
 
