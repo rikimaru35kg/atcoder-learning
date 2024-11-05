@@ -943,6 +943,7 @@
 - !復習価値低 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - 基本 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !復習価値低 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
+- !復習価値中 [D - 水ようかん (Mizuyokan)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_d)
 - !復習価値高 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)

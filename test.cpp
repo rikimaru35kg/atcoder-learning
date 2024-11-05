@@ -208,33 +208,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+void solve(ll N, vl L) {
+    ll ret = INF;
+    rep(s, 1<<(N-1)) {
+        if(s==0) continue;
+        ll now = 0;
+        ll mn = INF, mx = -INF;
+        rep(i, N) {
+            now += L[i];
+            if(~s>>i&1) continue;
+            chmin(mn, now);
+            chmax(mx, now);
+            now = 0;
+        }
+        chmin(mn, now);
+        chmax(mx, now);
+        
+        if(mx-mn==2) deb(s)
+        chmin(ret, mx-mn);
+    }
+    de(ret)
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp item;
-    rep(i, N) {
-        LONG(a,b);
-        item.emplace_back(a,b);
+    LONG(N); VL(L, N);
+    // solve(N, L);
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + L[i];
+    vl mns;
+    repk(r, 1, N+1) rep(l, r) {
+        if(l==0 && r==N) continue;
+        ll mn = Sc[r] - Sc[l];
+        mns.push_back(mn);
     }
-    sort(all(item));
 
-    auto [a0,b0] = item[0];
-    ll mn = -a0;
-    ll sum = 0;
-    ll ans = -INF;
-    rep(i, N) {
-        auto [a,b] = item[i];
-        sum += b;
-        ll now = sum-a-mn;
-        chmax(ans, now);
-
-        if(i==N-1) break;
-        auto [a1,b1] = item[i+1];
-        chmin(mn, sum-a1);
+    ll ans = INF;
+    for(auto mn: mns) {
+        vl dp(N+1, INF);
+        dp[0] = 0;
+        rep(i, N) {
+            if(dp[i]==INF) continue;
+            repk(ni, i+1, N+1) {
+                if(i==0 && ni==N) continue;
+                ll sum = Sc[ni] - Sc[i];
+                if(sum<mn) continue;
+                chmin(dp[ni], max(dp[i],sum));
+            }
+        }
+        chmin(ans, dp[N]-mn);
     }
     Out(ans);
-
 
     
 }

@@ -211,26 +211,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    vl mnl(N);
-    rep(i, N) mnl[i] = i;
-    rep(i, M) {
-        LONGM(l, r);
-        chmin(mnl[r], l);
-    }
-    repr(i, N-1) chmin(mnl[i], mnl[i+1]);
+    LONG(H, W); VVL(A, H, W);
+    ll K = H*W+10;
 
-    vl dp(N);
-    vl dm(N+1);
-    rep(i, N) {
-        ll a = A[i];
-        ll mx = dm[mnl[i]];
-        dp[i] = mx + a;
-        chmax(dm[i+1], max(dm[i], dp[i]));
+    vvvl dp(H, vvl(W, vl(K, INF)));
+    dp[0][0][0] = 0;
+
+    rep(k, K) {
+        rep(i, H) rep(j, W) {
+            if(dp[i][j][k]==INF) continue;
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                ll cost = (2*k+1) * A[ni][nj];
+                if(k<K-1) chmin(dp[ni][nj][k+1], dp[i][j][k]+cost);
+            }
+        }
     }
-    ll ans = 0;
-    rep(i, N) chmax(ans, dp[i]);
+    ll ans = INF;
+    rep(k, K) chmin(ans, dp[H-1][W-1][k]);
     Out(ans);
     
 }
