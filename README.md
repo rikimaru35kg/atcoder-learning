@@ -473,6 +473,7 @@
 - 基本 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
 - !復習価値低 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 - !復習価値低 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
+- !要復習 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
 
 ## サイクル検出
 - 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）

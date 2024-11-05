@@ -208,60 +208,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve(ll N, vl L) {
-    ll ret = INF;
-    rep(s, 1<<(N-1)) {
-        if(s==0) continue;
-        ll now = 0;
-        ll mn = INF, mx = -INF;
-        rep(i, N) {
-            now += L[i];
-            if(~s>>i&1) continue;
-            chmin(mn, now);
-            chmax(mx, now);
-            now = 0;
-        }
-        chmin(mn, now);
-        chmax(mx, now);
-        
-        if(mx-mn==2) deb(s)
-        chmin(ret, mx-mn);
-    }
-    de(ret)
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(L, N);
-    // solve(N, L);
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + L[i];
-    vl mns;
-    repk(r, 1, N+1) rep(l, r) {
-        if(l==0 && r==N) continue;
-        ll mn = Sc[r] - Sc[l];
-        mns.push_back(mn);
+    LONG(H, W);
+    VVL(V, H, W);
+    vp idx;
+    rep(i, H) rep(j, W) {
+        idx.emplace_back(i, j);
+    }
+    sort(all(idx), [&](Pr p1, Pr p2){
+        auto [i1, j1] = p1;
+        auto [i2, j2] = p2;
+        return V[i1][j1] < V[i2][j2];
+    });
+
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+
+    vvl dest(H, vl(W, -1));
+    rep(i, H) rep(j, W) {
+        bool end = true;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(V[ni][nj]>=V[i][j]) continue;
+            end = false;
+        }
+        if(end) dest[i][j] = gid(i,j);
     }
 
-    ll ans = INF;
-    for(auto mn: mns) {
-        vl dp(N+1, INF);
-        dp[0] = 0;
-        rep(i, N) {
-            if(dp[i]==INF) continue;
-            repk(ni, i+1, N+1) {
-                if(i==0 && ni==N) continue;
-                ll sum = Sc[ni] - Sc[i];
-                if(sum<mn) continue;
-                chmin(dp[ni], max(dp[i],sum));
-            }
+    vvb one(H, vb(W));
+    ll ans = 0;
+    for(auto [i,j]: idx) {
+        if(dest[i][j]!=-1) continue;
+        uset<ll> st;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(V[ni][nj]>=V[i][j]) continue;
+            if(one[ni][nj]) one[i][j] = true;
+            else st.insert(dest[ni][nj]);
         }
-        chmin(ans, dp[N]-mn);
+        if(one[i][j]) {
+            ++ans; continue;
+        }
+        if(SIZE(st)>=2) one[i][j] = true;
+        else dest[i][j] = *st.begin();
+        if(one[i][j]) ++ans;
     }
     Out(ans);
-
     
 }
 
 // ### test.cpp ###
+

@@ -208,29 +208,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+void solve(ll N, vl L) {
+    ll ret = INF;
+    rep(s, 1<<(N-1)) {
+        if(s==0) continue;
+        ll now = 0;
+        ll mn = INF, mx = -INF;
+        rep(i, N) {
+            now += L[i];
+            if(~s>>i&1) continue;
+            chmin(mn, now);
+            chmax(mx, now);
+            now = 0;
+        }
+        chmin(mn, now);
+        chmax(mx, now);
+        
+        if(mx-mn==2) deb(s)
+        chmin(ret, mx-mn);
+    }
+    de(ret)
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W); VVL(A, H, W);
-    ll K = H*W+10;
+    LONG(N); VL(L, N);
+    // solve(N, L);
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + L[i];
+    vl mns;
+    repk(r, 1, N+1) rep(l, r) {
+        if(l==0 && r==N) continue;
+        ll mn = Sc[r] - Sc[l];
+        mns.push_back(mn);
+    }
 
-    vvvl dp(H, vvl(W, vl(K, INF)));
-    dp[0][0][0] = 0;
-
-    rep(k, K) {
-        rep(i, H) rep(j, W) {
-            if(dp[i][j][k]==INF) continue;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                ll cost = (2*k+1) * A[ni][nj];
-                if(k<K-1) chmin(dp[ni][nj][k+1], dp[i][j][k]+cost);
+    ll ans = INF;
+    for(auto mn: mns) {
+        vl dp(N+1, INF);
+        dp[0] = 0;
+        rep(i, N) {
+            if(dp[i]==INF) continue;
+            repk(ni, i+1, N+1) {
+                if(i==0 && ni==N) continue;
+                ll sum = Sc[ni] - Sc[i];
+                if(sum<mn) continue;
+                chmin(dp[ni], max(dp[i],sum));
             }
         }
+        chmin(ans, dp[N]-mn);
     }
-    ll ans = INF;
-    rep(k, K) chmin(ans, dp[H-1][W-1][k]);
     Out(ans);
+
     
 }
 
