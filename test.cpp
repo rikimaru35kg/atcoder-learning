@@ -208,74 +208,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    vp paint;
-    rep(i, N) {
-        LONG(s, v);
-        paint.emplace_back(s,v);
+    VL(A, N);
+    vl mnl(N);
+    rep(i, N) mnl[i] = i;
+    rep(i, M) {
+        LONGM(l, r);
+        chmin(mnl[r], l);
     }
-    sort(all(paint));
-    VL(C, M);
-    sort(allr(C));
+    repr(i, N-1) chmin(mnl[i], mnl[i+1]);
 
-    priority_queue<Pr> que;
-    for(auto [s,v]: paint) {
-        que.emplace(v,s);
+    vl dp(N);
+    vl dm(N+1);
+    rep(i, N) {
+        ll a = A[i];
+        ll mx = dm[mnl[i]];
+        dp[i] = mx + a;
+        chmax(dm[i+1], max(dm[i], dp[i]));
     }
     ll ans = 0;
-    for(auto c: C) {
-        while(que.size() && que.top().second>c) que.pop();
-        if(que.size()) {
-            que.pop();
-            ++ans;
-        }
-    }
+    rep(i, N) chmax(ans, dp[i]);
     Out(ans);
-
     
 }
 
