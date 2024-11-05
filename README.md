@@ -1942,6 +1942,7 @@
 - [B - JOIG ツアー (JOIG Tour)](https://atcoder.jp/contests/joigsc2022/tasks/joigsc2022_b)
 - [C - 国土分割 (Land Division)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_c)
 - [E - イルミネーション (Illumination)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_e)
+- [B - 愉快なロゴデザイン](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_b)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

@@ -211,54 +211,46 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(V, H, W);
-    vp idx;
-    rep(i, H) rep(j, W) {
-        idx.emplace_back(i, j);
+    LONG(K);
+    STRING(S);
+    ll N = SIZE(S);
+    vl Sj(N+1), So(N+1), Si(N+1);
+    rep(i, N) {
+        if(S[i]=='J') Sj[i+1]++;
+        if(S[i]=='O') So[i+1]++;
+        if(S[i]=='I') Si[i+1]++;
     }
-    sort(all(idx), [&](Pr p1, Pr p2){
-        auto [i1, j1] = p1;
-        auto [i2, j2] = p2;
-        return V[i1][j1] < V[i2][j2];
-    });
+    rep(i, N) Sj[i+1] += Sj[i];
+    rep(i, N) So[i+1] += So[i];
+    rep(i, N) Si[i+1] += Si[i];
 
-    auto gid=[&](ll i, ll j) {return i*W+j;};
+    auto sum=[&](vl &Sc, ll l, ll r) -> ll {
+        l = l % N, r = r % N;
+        if(l<=r) return Sc[r] - Sc[l];
+        return Sc[N]-Sc[l] + Sc[r]-Sc[0];
+    };
 
-    vvl dest(H, vl(W, -1));
-    rep(i, H) rep(j, W) {
-        bool end = true;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            if(V[ni][nj]>=V[i][j]) continue;
-            end = false;
-        }
-        if(end) dest[i][j] = gid(i,j);
-    }
+    vl four(K+5, 1);
+    rep(i, K+4) four[i+1] = four[i] * 4;
 
-    vvb one(H, vb(W));
-    ll ans = 0;
-    for(auto [i,j]: idx) {
-        if(dest[i][j]!=-1) continue;
-        uset<ll> st;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            if(V[ni][nj]>=V[i][j]) continue;
-            if(one[ni][nj]) one[i][j] = true;
-            else st.insert(dest[ni][nj]);
-        }
-        if(one[i][j]) {
-            ++ans; continue;
-        }
-        if(SIZE(st)>=2) one[i][j] = true;
-        else dest[i][j] = *st.begin();
-        if(one[i][j]) ++ans;
+    auto f=[&](auto f, ll si, ll k) -> ll {
+        if(k==0) return 0;
+        ll w = four[k-1];
+        ll ret = 0;
+        ret += w - sum(Sj, si, si+w);
+        ret += w - sum(So, si+w, si+2*w);
+        ret += w - sum(Si, si+2*w, si+3*w);
+        ret += f(f, si+3*w, k-1);
+        return ret;
+    };
+
+    ll ans = INF;
+    rep(si, N) {
+        ll now = f(f, si, K);
+        chmin(ans, now);
     }
     Out(ans);
     
 }
 
 // ### test.cpp ###
-
