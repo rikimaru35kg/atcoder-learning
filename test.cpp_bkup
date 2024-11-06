@@ -210,51 +210,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const ll Ma = 5010, Mb = 3;
-ll dp[Ma][Mb];
-ll pdp[Ma][Mb];
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(V, N-1);
-    V.push_back(0);
+    LONG(N, M, H, K);
+    VL(S, N);
+    vvl amida(H);
+    rep(i, M) {
+        LONGM(a, h);
+        amida[h].push_back(a);
+    }
+    repr(h, H) {
+        for(auto a: amida[h]) { swap(S[a], S[a+1]); }
+    }
 
-    auto init=[&](ll *v) {
-        rep(i, Ma) rep(j, Mb) {
-            v[i*Mb+j] = INF;
-        }
-    };
-    init(*dp);
-    dp[0][0] = 0;
-    rep(i, N) {
-        init(*pdp); swap(pdp, dp);
-        rep(j, N/2+1) rep(k, 3) rep(nk, 3) {
-            if(k==1 && nk==2) continue;
-            if(k==2 && nk==1) continue;
-            ll cost = 0;
-            if(nk==0) cost = V[i];
-            if(k==0) {
-                if(nk==0) {
-                    if(j<N/2) chmin(dp[j+1][nk], pdp[j][k]+cost);
-                    chmin(dp[j][nk], pdp[j][k]+cost);
-                } else if(nk==1) {
-                    if(j<N/2) chmin(dp[j+1][nk], pdp[j][k]+cost);
-                } else {
-                    chmin(dp[j][nk], pdp[j][k]+cost);
-                }
-            } else {
-                ll nj = j;
-                if(k==1) nj++;
-                if(nj<=N/2) chmin(dp[nj][nk], pdp[j][k]+cost);
-            }
+    vl p(N);
+    iota(all(p), 0);
+    set<Pr> swapok;
+    rep(h, H) {
+        for(auto a: amida[h]) {
+            ll x = p[a], y = p[a+1];
+            if(x>y) swap(x,y);
+            swapok.emplace(x,y);
+            swap(p[a], p[a+1]);
         }
     }
-    ll ans = dp[N/2][0];
+    vl org(N+1-K);
+    ll sum = 0;
+    rep(i, K) sum += S[i];
+    rep(i, N+1-K) {
+        org[i] = sum;
+        if(i==N-K) break;
+        sum -= S[i];
+        sum += S[i+K];
+    }
+    de(org)
+    vl dec(N+1-K);
+    for(auto [x,y]: swapok) {
+        ll l = max(y-K+1,x+1);
+        ll r = min(y, N-K);
+        if(S[x]>S[y]) {
+            l = max(x-K+1, 0LL);
+            r = min(x, y-K);
+        }
+        ll ds = abs(S[x]-S[y]);
+        for(ll i=l; i<=r; ++i) {
+            chmax(dec[i], ds);
+        }
+    }
+    ll ans = org[0]-dec[0];
+    // rep(i, N+1-K) {
+    //     chmin(ans, org[i]-dec[i]);
+    // }
     Out(ans);
     
+
 }
 
 // ### test.cpp ###
-

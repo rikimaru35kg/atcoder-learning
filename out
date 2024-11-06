@@ -1,119 +1,64 @@
 test.cpp: In function ‘int main()’:
-test.cpp:234:14: error: use of deleted function ‘std::__debug::unordered_set<_Key, _Hash, _Pred, _Allocator>::unordered_set() [with _Value = std::pair<long long int, long long int>; _Hash = std::hash<std::pair<long long int, long long int> >; _Pred = std::equal_to<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::pair<long long int, long long int> >]’
-  234 |     uset<Pr> swapok;
-      |              ^~~~~~
-In file included from /usr/include/c++/12/unordered_set:52,
-                 from stdc++.h:118:
-/usr/include/c++/12/debug/unordered_set:112:7: note: ‘std::__debug::unordered_set<_Key, _Hash, _Pred, _Allocator>::unordered_set() [with _Value = std::pair<long long int, long long int>; _Hash = std::hash<std::pair<long long int, long long int> >; _Pred = std::equal_to<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::pair<long long int, long long int> >]’ is implicitly deleted because the default definition would be ill-formed:
-  112 |       unordered_set() = default;
-      |       ^~~~~~~~~~~~~
-/usr/include/c++/12/debug/unordered_set:112:7: error: use of deleted function ‘std::__cxx1998::unordered_set<_Value, _Hash, _Pred, _Alloc>::unordered_set() [with _Value = std::pair<long long int, long long int>; _Hash = std::hash<std::pair<long long int, long long int> >; _Pred = std::equal_to<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::pair<long long int, long long int> >]’
-In file included from /usr/include/c++/12/unordered_set:47:
-/usr/include/c++/12/bits/unordered_set.h:135:7: note: ‘std::__cxx1998::unordered_set<_Value, _Hash, _Pred, _Alloc>::unordered_set() [with _Value = std::pair<long long int, long long int>; _Hash = std::hash<std::pair<long long int, long long int> >; _Pred = std::equal_to<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::pair<long long int, long long int> >]’ is implicitly deleted because the default definition would be ill-formed:
-  135 |       unordered_set() = default;
-      |       ^~~~~~~~~~~~~
-/usr/include/c++/12/bits/unordered_set.h:135:7: error: use of deleted function ‘std::_Hashtable<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::_Hashtable() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _RehashPolicy = std::__detail::_Prime_rehash_policy; _Traits = std::__detail::_Hashtable_traits<true, true, true>]’
-In file included from /usr/include/c++/12/unordered_map:46,
-                 from /usr/include/c++/12/functional:61,
+test.cpp:232:26: error: no matching function for call to ‘std::__debug::vector<std::__debug::vector<atcoder::dynamic_modint<-1> > >::vector(ll, vl)’
+  232 |     vvm dp(N*N+1, vl(S+1));
+      |                          ^
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62,
                  from stdc++.h:71:
-/usr/include/c++/12/bits/hashtable.h:531:7: note: ‘std::_Hashtable<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::_Hashtable() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _RehashPolicy = std::__detail::_Prime_rehash_policy; _Traits = std::__detail::_Hashtable_traits<true, true, true>]’ is implicitly deleted because the default definition would be ill-formed:
-  531 |       _Hashtable() = default;
-      |       ^~~~~~~~~~
-/usr/include/c++/12/bits/hashtable.h:531:7: error: use of deleted function ‘std::__detail::_Hashtable_base<_Key, _Value, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _Traits>::_Hashtable_base() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _Traits = std::__detail::_Hashtable_traits<true, true, true>]’
-In file included from /usr/include/c++/12/bits/hashtable.h:35:
-/usr/include/c++/12/bits/hashtable_policy.h:1674:7: note: ‘std::__detail::_Hashtable_base<_Key, _Value, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _Traits>::_Hashtable_base() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _Traits = std::__detail::_Hashtable_traits<true, true, true>]’ is implicitly deleted because the default definition would be ill-formed:
- 1674 |       _Hashtable_base() = default;
-      |       ^~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1674:7: error: use of deleted function ‘std::__detail::_Hash_code_base<_Key, _Value, _ExtractKey, _Hash, _RangeHash, _Unused, __cache_hash_code>::_Hash_code_base() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _ExtractKey = std::__detail::_Identity; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; bool __cache_hash_code = true]’
-/usr/include/c++/12/bits/hashtable_policy.h: In instantiation of ‘std::__detail::_Hashtable_ebo_helper<_Nm, _Tp, true>::_Hashtable_ebo_helper() [with int _Nm = 1; _Tp = std::hash<std::pair<long long int, long long int> >]’:
-/usr/include/c++/12/bits/hashtable_policy.h:1261:7:   required from here
-/usr/include/c++/12/bits/hashtable_policy.h:1178:49: error: use of deleted function ‘std::hash<std::pair<long long int, long long int> >::hash()’
- 1178 |       _Hashtable_ebo_helper() noexcept(noexcept(_Tp())) : _Tp() { }
-      |                                                 ^~~~~
-In file included from /usr/include/c++/12/string_view:43,
-                 from /usr/include/c++/12/bits/basic_string.h:47,
-                 from /usr/include/c++/12/string:53,
-                 from /usr/include/c++/12/bits/locale_classes.h:40,
-                 from /usr/include/c++/12/bits/ios_base.h:41,
-                 from /usr/include/c++/12/ios:42,
-                 from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/bits/functional_hash.h:102:12: note: ‘std::hash<std::pair<long long int, long long int> >::hash()’ is implicitly deleted because the default definition would be ill-formed:
-  102 |     struct hash : __hash_enum<_Tp>
-      |            ^~~~
-/usr/include/c++/12/bits/functional_hash.h:102:12: error: no matching function for call to ‘std::__hash_enum<std::pair<long long int, long long int>, false>::__hash_enum()’
-/usr/include/c++/12/bits/functional_hash.h:83:7: note: candidate: ‘std::__hash_enum<_Tp, <anonymous> >::__hash_enum(std::__hash_enum<_Tp, <anonymous> >&&) [with _Tp = std::pair<long long int, long long int>; bool <anonymous> = false]’
-   83 |       __hash_enum(__hash_enum&&);
-      |       ^~~~~~~~~~~
-/usr/include/c++/12/bits/functional_hash.h:83:7: note:   candidate expects 1 argument, 0 provided
-/usr/include/c++/12/bits/functional_hash.h:102:12: error: ‘std::__hash_enum<_Tp, <anonymous> >::~__hash_enum() [with _Tp = std::pair<long long int, long long int>; bool <anonymous> = false]’ is private within this context
-  102 |     struct hash : __hash_enum<_Tp>
-      |            ^~~~
-/usr/include/c++/12/bits/functional_hash.h:84:7: note: declared private here
-   84 |       ~__hash_enum();
-      |       ^
-/usr/include/c++/12/bits/hashtable_policy.h:1261:7: note: ‘std::__detail::_Hash_code_base<_Key, _Value, _ExtractKey, _Hash, _RangeHash, _Unused, __cache_hash_code>::_Hash_code_base() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _ExtractKey = std::__detail::_Identity; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; bool __cache_hash_code = true]’ is implicitly deleted because the default definition would be ill-formed:
- 1261 |       _Hash_code_base() = default;
-      |       ^~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1261:7: error: use of deleted function ‘std::__detail::_Hashtable_ebo_helper<1, std::hash<std::pair<long long int, long long int> >, true>::~_Hashtable_ebo_helper()’
-/usr/include/c++/12/bits/hashtable_policy.h:1175:12: note: ‘std::__detail::_Hashtable_ebo_helper<1, std::hash<std::pair<long long int, long long int> >, true>::~_Hashtable_ebo_helper()’ is implicitly deleted because the default definition would be ill-formed:
- 1175 |     struct _Hashtable_ebo_helper<_Nm, _Tp, true>
-      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1175:12: error: use of deleted function ‘std::hash<std::pair<long long int, long long int> >::~hash()’
-/usr/include/c++/12/bits/functional_hash.h:102:12: note: ‘std::hash<std::pair<long long int, long long int> >::~hash()’ is implicitly deleted because the default definition would be ill-formed:
-  102 |     struct hash : __hash_enum<_Tp>
-      |            ^~~~
-/usr/include/c++/12/bits/functional_hash.h:102:12: error: ‘std::__hash_enum<_Tp, <anonymous> >::~__hash_enum() [with _Tp = std::pair<long long int, long long int>; bool <anonymous> = false]’ is private within this context
-/usr/include/c++/12/bits/functional_hash.h:84:7: note: declared private here
-   84 |       ~__hash_enum();
-      |       ^
-/usr/include/c++/12/bits/hashtable_policy.h:1674:7: error: use of deleted function ‘std::__detail::_Hash_code_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::__detail::_Identity, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, true>::~_Hash_code_base()’
- 1674 |       _Hashtable_base() = default;
-      |       ^~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1239:12: note: ‘std::__detail::_Hash_code_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::__detail::_Identity, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, true>::~_Hash_code_base()’ is implicitly deleted because the default definition would be ill-formed:
- 1239 |     struct _Hash_code_base
-      |            ^~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1239:12: error: use of deleted function ‘std::__detail::_Hashtable_ebo_helper<1, std::hash<std::pair<long long int, long long int> >, true>::~_Hashtable_ebo_helper()’
-/usr/include/c++/12/bits/hashtable.h:531:7: error: use of deleted function ‘std::__detail::_Hashtable_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Hashtable_traits<true, true, true> >::~_Hashtable_base()’
-  531 |       _Hashtable() = default;
-      |       ^~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1631:12: note: ‘std::__detail::_Hashtable_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Hashtable_traits<true, true, true> >::~_Hashtable_base()’ is implicitly deleted because the default definition would be ill-formed:
- 1631 |     struct _Hashtable_base
-      |            ^~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1631:12: error: use of deleted function ‘std::__detail::_Hash_code_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::__detail::_Identity, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, true>::~_Hash_code_base()’
-/usr/include/c++/12/bits/hashtable.h:531:7: error: use of deleted function ‘constexpr std::_Enable_default_constructor<false, _Tag>::_Enable_default_constructor() [with _Tag = std::__detail::_Hash_node_base]’
-  531 |       _Hashtable() = default;
-      |       ^~~~~~~~~~
-In file included from /usr/include/c++/12/bits/hashtable.h:36:
-/usr/include/c++/12/bits/enable_special_members.h:113:15: note: declared here
-  113 |     constexpr _Enable_default_constructor() noexcept = delete;
-      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable.h: In instantiation of ‘std::_Hashtable<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::~_Hashtable() [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _RehashPolicy = std::__detail::_Prime_rehash_policy; _Traits = std::__detail::_Hashtable_traits<true, true, true>]’:
-/usr/include/c++/12/bits/unordered_set.h:97:11:   required from here
-/usr/include/c++/12/bits/hashtable.h:1586:5: error: use of deleted function ‘std::__detail::_Hashtable_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Hashtable_traits<true, true, true> >::~_Hashtable_base()’
- 1586 |     }
-      |     ^
-/usr/include/c++/12/bits/hashtable.h:1578:21: error: static assertion failed: Cache the hash code or qualify your functors involved in hash code and bucket index computation with noexcept
- 1578 |       static_assert(noexcept(declval<const __hash_code_base_access&>()
-      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 1579 |                         ._M_bucket_index(declval<const __node_value_type&>(),
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 1580 |                                          (std::size_t)0)),
-      |                                          ~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable.h:1578:21: note: ‘false’ evaluates to false
-/usr/include/c++/12/bits/hashtable_policy.h: In instantiation of ‘std::__detail::_Hash_code_base<_Key, _Value, _ExtractKey, _Hash, _RangeHash, _Unused, __cache_hash_code>::__hash_code std::__detail::_Hash_code_base<_Key, _Value, _ExtractKey, _Hash, _RangeHash, _Unused, __cache_hash_code>::_M_hash_code(const _Key&) const [with _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _ExtractKey = std::__detail::_Identity; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; bool __cache_hash_code = true; __hash_code = long unsigned int]’:
-/usr/include/c++/12/bits/hashtable.h:2073:41:   required from ‘std::pair<typename std::__detail::_Insert<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::iterator, bool> std::_Hashtable<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::_M_emplace(std::true_type, _Args&& ...) [with _Args = {long long int&, long long int&}; _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _RehashPolicy = std::__detail::_Prime_rehash_policy; _Traits = std::__detail::_Hashtable_traits<true, true, true>; typename std::__detail::_Insert<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::iterator = std::__detail::_Insert_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::allocator<std::pair<long long int, long long int> >, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, true, true> >::iterator; typename _Traits::__constant_iterators = std::__detail::_Hashtable_traits<true, true, true>::__constant_iterators; std::true_type = std::integral_constant<bool, true>]’
-/usr/include/c++/12/bits/hashtable.h:950:21:   required from ‘std::_Hashtable<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::__ireturn_type std::_Hashtable<_Key, _Value, _Alloc, _ExtractKey, _Equal, _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::emplace(_Args&& ...) [with _Args = {long long int&, long long int&}; _Key = std::pair<long long int, long long int>; _Value = std::pair<long long int, long long int>; _Alloc = std::allocator<std::pair<long long int, long long int> >; _ExtractKey = std::__detail::_Identity; _Equal = std::equal_to<std::pair<long long int, long long int> >; _Hash = std::hash<std::pair<long long int, long long int> >; _RangeHash = std::__detail::_Mod_range_hashing; _Unused = std::__detail::_Default_ranged_hash; _RehashPolicy = std::__detail::_Prime_rehash_policy; _Traits = std::__detail::_Hashtable_traits<true, true, true>; __ireturn_type = std::_Hashtable<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::allocator<std::pair<long long int, long long int> >, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, true, true> >::__ireturn_type]’
-/usr/include/c++/12/bits/unordered_set.h:378:23:   required from ‘std::pair<typename std::_Hashtable<_Value, _Value, _Alloc, std::__detail::_Identity, _Pred, _Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<std::__not_<std::__and_<std::__is_fast_hash<_Hash>, std::__is_nothrow_invocable<const _Hash&, const _Tp&> > >::value, true, true> >::iterator, bool> std::__cxx1998::unordered_set<_Value, _Hash, _Pred, _Alloc>::emplace(_Args&& ...) [with _Args = {long long int&, long long int&}; _Value = std::pair<long long int, long long int>; _Hash = std::hash<std::pair<long long int, long long int> >; _Pred = std::equal_to<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::pair<long long int, long long int> >; typename std::_Hashtable<_Value, _Value, _Alloc, std::__detail::_Identity, _Pred, _Hash, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<std::__not_<std::__and_<std::__is_fast_hash<_Hash>, std::__is_nothrow_invocable<const _Hash&, const _Tp&> > >::value, true, true> >::iterator = std::__detail::_Insert_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::allocator<std::pair<long long int, long long int> >, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, true, true> >::iterator]’
-/usr/include/c++/12/debug/unordered_set:330:31:   required from ‘std::pair<__gnu_debug::_Safe_iterator<typename std::__cxx1998::unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>::iterator, std::__debug::unordered_set<_Key, _Hash, _Pred, _Allocator> >, bool> std::__debug::unordered_set<_Key, _Hash, _Pred, _Allocator>::emplace(_Args&& ...) [with _Args = {long long int&, long long int&}; _Value = std::pair<long long int, long long int>; _Hash = std::hash<std::pair<long long int, long long int> >; _Pred = std::equal_to<std::pair<long long int, long long int> >; _Alloc = std::allocator<std::pair<long long int, long long int> >; typename std::iterator_traits<typename std::__cxx1998::unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>::iterator>::iterator_category = std::forward_iterator_tag; typename std::__cxx1998::unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>::iterator = std::__detail::_Insert_base<std::pair<long long int, long long int>, std::pair<long long int, long long int>, std::allocator<std::pair<long long int, long long int> >, std::__detail::_Identity, std::equal_to<std::pair<long long int, long long int> >, std::hash<std::pair<long long int, long long int> >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, true, true> >::iterator]’
-test.cpp:239:27:   required from here
-/usr/include/c++/12/bits/hashtable_policy.h:1268:23: error: static assertion failed: hash function must be invocable with an argument of key type
- 1268 |         static_assert(__is_invocable<const _Hash&, const _Key&>{},
-      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/hashtable_policy.h:1268:23: note: ‘std::__is_invocable<const std::hash<std::pair<long long int, long long int> >&, const std::pair<long long int, long long int>&>()’ evaluates to false
-/usr/include/c++/12/bits/hashtable_policy.h:1270:25: error: no match for call to ‘(const std::hash<std::pair<long long int, long long int> >) (const std::pair<long long int, long long int>&)’
- 1270 |         return _M_hash()(__k);
-      |                ~~~~~~~~~^~~~~
+/usr/include/c++/12/debug/vector:200:9: note: candidate: ‘template<class _InputIterator, class> std::__debug::vector<_Tp, _Allocator>::vector(_InputIterator, _InputIterator, const _Allocator&) [with <template-parameter-2-2> = _InputIterator; _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  200 |         vector(_InputIterator __first, _InputIterator __last,
+      |         ^~~~~~
+/usr/include/c++/12/debug/vector:200:9: note:   template argument deduction/substitution failed:
+test.cpp:232:26: note:   deduced conflicting types for parameter ‘_InputIterator’ (‘long long int’ and ‘std::__debug::vector<long long int>’)
+  232 |     vvm dp(N*N+1, vl(S+1));
+      |                          ^
+/usr/include/c++/12/debug/vector:234:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(_Base_ref) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  234 |       vector(_Base_ref __x)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:234:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:226:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::initializer_list<_Tp>, const allocator_type&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >; allocator_type = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  226 |       vector(initializer_list<value_type> __l,
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:226:43: note:   no known conversion for argument 1 from ‘ll’ {aka ‘long long int’} to ‘std::initializer_list<std::__debug::vector<atcoder::dynamic_modint<-1> > >’
+  226 |       vector(initializer_list<value_type> __l,
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:218:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>&&, std::__type_identity_t<_Alloc>&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >; std::__type_identity_t<_Alloc> = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  218 |       vector(vector&& __x, const __type_identity_t<allocator_type>& __a)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:218:23: note:   no known conversion for argument 1 from ‘ll’ {aka ‘long long int’} to ‘std::__debug::vector<std::__debug::vector<atcoder::dynamic_modint<-1> > >&&’
+  218 |       vector(vector&& __x, const __type_identity_t<allocator_type>& __a)
+      |              ~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:215:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const std::__debug::vector<_Tp, _Allocator>&, std::__type_identity_t<_Alloc>&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >; std::__type_identity_t<_Alloc> = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  215 |       vector(const vector& __x, const __type_identity_t<allocator_type>& __a)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:215:28: note:   no known conversion for argument 1 from ‘ll’ {aka ‘long long int’} to ‘const std::__debug::vector<std::__debug::vector<atcoder::dynamic_modint<-1> > >&’
+  215 |       vector(const vector& __x, const __type_identity_t<allocator_type>& __a)
+      |              ~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:213:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(std::__debug::vector<_Tp, _Allocator>&&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  213 |       vector(vector&&) = default;
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:213:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:212:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const std::__debug::vector<_Tp, _Allocator>&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  212 |       vector(const vector&) = default;
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:212:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:184:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(size_type, std::__type_identity_t<_Tp>&, const _Allocator&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >; size_type = long unsigned int; std::__type_identity_t<_Tp> = std::__debug::vector<atcoder::dynamic_modint<-1> >]’
+  184 |       vector(size_type __n, const __type_identity_t<_Tp>& __value,
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:184:59: note:   no known conversion for argument 2 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘std::__type_identity_t<std::__debug::vector<atcoder::dynamic_modint<-1> > >&’ {aka ‘const std::__debug::vector<atcoder::dynamic_modint<-1> >&’}
+  184 |       vector(size_type __n, const __type_identity_t<_Tp>& __value,
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+/usr/include/c++/12/debug/vector:181:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(size_type, const _Allocator&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >; size_type = long unsigned int]’
+  181 |       vector(size_type __n, const _Allocator& __a = _Allocator())
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:181:47: note:   no known conversion for argument 2 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘const std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >&’
+  181 |       vector(size_type __n, const _Allocator& __a = _Allocator())
+      |                             ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/debug/vector:176:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector(const _Allocator&) [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  176 |       vector(const _Allocator& __a) _GLIBCXX_NOEXCEPT
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:176:7: note:   candidate expects 1 argument, 2 provided
+/usr/include/c++/12/debug/vector:172:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::vector() [with _Tp = std::__debug::vector<atcoder::dynamic_modint<-1> >; _Allocator = std::allocator<std::__debug::vector<atcoder::dynamic_modint<-1> > >]’
+  172 |       vector() = default;
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:172:7: note:   candidate expects 0 arguments, 2 provided

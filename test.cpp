@@ -210,61 +210,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, H, K);
-    VL(S, N);
-    vvl amida(H);
-    rep(i, M) {
-        LONGM(a, h);
-        amida[h].push_back(a);
-    }
-    repr(h, H) {
-        for(auto a: amida[h]) { swap(S[a], S[a+1]); }
-    }
-
-    vl p(N);
-    iota(all(p), 0);
-    set<Pr> swapok;
-    rep(h, H) {
-        for(auto a: amida[h]) {
-            ll x = p[a], y = p[a+1];
-            if(x>y) swap(x,y);
-            swapok.emplace(x,y);
-            swap(p[a], p[a+1]);
+    LONG(N, M, S);
+    mint::set_mod(100000);
+    vvm dp(N*N+1, vm(S+1));
+    dp[0][0] = 1;
+    rep1(m, M) {
+        repr(j, N*N+1) rep(k, S+1) {
+            if(j<N*N && k+m<=S) dp[j+1][k+m] += dp[j][k];
         }
     }
-    vl org(N+1-K);
-    ll sum = 0;
-    rep(i, K) sum += S[i];
-    rep(i, N+1-K) {
-        org[i] = sum;
-        if(i==N-K) break;
-        sum -= S[i];
-        sum += S[i+K];
-    }
-    de(org)
-    vl dec(N+1-K);
-    for(auto [x,y]: swapok) {
-        ll l = max(y-K+1,x+1);
-        ll r = min(y, N-K);
-        if(S[x]>S[y]) {
-            l = max(x-K+1, 0LL);
-            r = min(x, y-K);
-        }
-        ll ds = abs(S[x]-S[y]);
-        for(ll i=l; i<=r; ++i) {
-            chmax(dec[i], ds);
-        }
-    }
-    ll ans = org[0]-dec[0];
-    // rep(i, N+1-K) {
-    //     chmin(ans, org[i]-dec[i]);
-    // }
+    mint ans = dp[N*N][S];
     Out(ans);
     
-
 }
 
 // ### test.cpp ###
