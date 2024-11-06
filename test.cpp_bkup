@@ -192,7 +192,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de4(var1,var2,var3,var4) {}
 #define deb(var) {}
 #endif
-ll INF = 3e18;
+int INF = 1001001001;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
@@ -211,54 +211,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(V, H, W);
-    vp idx;
-    rep(i, H) rep(j, W) {
-        idx.emplace_back(i, j);
+    LONG(N, M);
+    STRING(S, T);
+    // reverse(all(S)); reverse(all(T));
+    vi A, B;
+    for(auto c: S) A.push_back(c=='O'?0:1);
+    for(auto c: T) B.push_back(c=='O'?0:1);
+
+    vvvi dp(N+1, vvi(M+1, vi(2, -INF)));
+    // dp[1][0][A[0]] = 1;
+    // dp[0][1][B[0]] = 1;
+    rep(i, N+1) rep(j, M+1) rep(k, 2) {
+        int now = dp[i][j][k];
+        // if(now==-INF) continue;
+        if(i<N) {
+            if(k!=A[i] && now!=-INF) chmax(dp[i+1][j][A[i]], now+1);
+            else if(A[i]==1) chmax(dp[i+1][j][A[i]], 1);
+        }
+        if(j<M) {
+            if(k!=B[j] && now!=-INF) chmax(dp[i][j+1][B[j]], now+1);
+            else if(B[j]==1) chmax(dp[i][j+1][B[j]], 1);
+        }
     }
-    sort(all(idx), [&](Pr p1, Pr p2){
-        auto [i1, j1] = p1;
-        auto [i2, j2] = p2;
-        return V[i1][j1] < V[i2][j2];
-    });
-
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-
-    vvl dest(H, vl(W, -1));
-    rep(i, H) rep(j, W) {
-        bool end = true;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            if(V[ni][nj]>=V[i][j]) continue;
-            end = false;
-        }
-        if(end) dest[i][j] = gid(i,j);
-    }
-
-    vvb one(H, vb(W));
-    ll ans = 0;
-    for(auto [i,j]: idx) {
-        if(dest[i][j]!=-1) continue;
-        uset<ll> st;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            if(V[ni][nj]>=V[i][j]) continue;
-            if(one[ni][nj]) one[i][j] = true;
-            else st.insert(dest[ni][nj]);
-        }
-        if(one[i][j]) {
-            ++ans; continue;
-        }
-        if(SIZE(st)>=2) one[i][j] = true;
-        else dest[i][j] = *st.begin();
-        if(one[i][j]) ++ans;
+    // vvi ndp(N+1, vi(M+1));
+    // rep(i, N+1) rep(j, M+1) {
+    //     int mx = max(dp[i][j][0], dp[i][j][1]);
+    //     ndp[i][j] = mx;
+    // }
+    // de(ndp)
+    int ans = 0;
+    rep(i, N+1) rep(j, M+1) {
+        chmax(ans, dp[i][j][1]);
     }
     Out(ans);
     
 }
 
 // ### test.cpp ###
-

@@ -192,6 +192,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de4(var1,var2,var3,var4) {}
 #define deb(var) {}
 #endif
+int IINF = 1001001001;
 ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
@@ -203,52 +204,56 @@ const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
+const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K);
-    STRING(S);
-    ll N = SIZE(S);
-    vl Sj(N+1), So(N+1), Si(N+1);
+    LONG(N); STRING(S);
+    LONG(M);
+    int K = 26;
+    vvb ok(K, vb(K, true));
+    rep(i, M) {
+        CHAR(a, b);
+        ok[a-'A'][b-'A'] = false;
+    }
+
+    mint::set_mod((int)1e7);
+    vvi nxt(K, vi(N, IINF));
+    rep(i, N) { nxt[S[i]-'A'][i] = i; }
+    rep(k, K) repr(i, N-1) chmin(nxt[k][i], nxt[k][i+1]);
+
+    vm dp(N+1);
+    dp[0] = 1;
     rep(i, N) {
-        if(S[i]=='J') Sj[i+1]++;
-        if(S[i]=='O') So[i+1]++;
-        if(S[i]=='I') Si[i+1]++;
+        rep(k, K) {
+            int ni = nxt[k][i];
+            if(ni==IINF) continue;
+            if(i!=0 && !ok[S[i-1]-'A'][k]) continue;
+            dp[ni+1] += dp[i];
+        }
     }
-    rep(i, N) Sj[i+1] += Sj[i];
-    rep(i, N) So[i+1] += So[i];
-    rep(i, N) Si[i+1] += Si[i];
 
-    auto sum=[&](vl &Sc, ll l, ll r) -> ll {
-        l = l % N, r = r % N;
-        if(l<=r) return Sc[r] - Sc[l];
-        return Sc[N]-Sc[l] + Sc[r]-Sc[0];
-    };
-
-    vl four(K+5, 1);
-    rep(i, K+4) four[i+1] = four[i] * 4;
-
-    auto f=[&](auto f, ll si, ll k) -> ll {
-        if(k==0) return 0;
-        ll w = four[k-1];
-        ll ret = 0;
-        ret += w - sum(Sj, si, si+w);
-        ret += w - sum(So, si+w, si+2*w);
-        ret += w - sum(Si, si+2*w, si+3*w);
-        ret += f(f, si+3*w, k-1);
-        return ret;
-    };
-
-    ll ans = INF;
-    rep(si, N) {
-        ll now = f(f, si, K);
-        chmin(ans, now);
-    }
+    mint ans = 0;
+    rep1(i, N) ans += dp[i];
     Out(ans);
     
 }
