@@ -210,52 +210,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+const ll Ma = 5010, Mb = 3;
+ll dp[Ma][Mb];
+ll pdp[Ma][Mb];
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); STRING(S);
-    LONG(M);
-    int K = 26;
-    vvb ok(K, vb(K, true));
-    rep(i, M) {
-        CHAR(a, b);
-        ok[a-'A'][b-'A'] = false;
-    }
+    LONG(N);
+    VL(V, N-1);
+    V.push_back(0);
 
-    mint::set_mod((int)1e7);
-    vvi nxt(K, vi(N, IINF));
-    rep(i, N) { nxt[S[i]-'A'][i] = i; }
-    rep(k, K) repr(i, N-1) chmin(nxt[k][i], nxt[k][i+1]);
-
-    vm dp(N+1);
-    dp[0] = 1;
+    auto init=[&](ll *v) {
+        rep(i, Ma) rep(j, Mb) {
+            v[i*Mb+j] = INF;
+        }
+    };
+    init(*dp);
+    dp[0][0] = 0;
     rep(i, N) {
-        rep(k, K) {
-            int ni = nxt[k][i];
-            if(ni==IINF) continue;
-            if(i!=0 && !ok[S[i-1]-'A'][k]) continue;
-            dp[ni+1] += dp[i];
+        init(*pdp); swap(pdp, dp);
+        rep(j, N/2+1) rep(k, 3) rep(nk, 3) {
+            if(k==1 && nk==2) continue;
+            if(k==2 && nk==1) continue;
+            ll cost = 0;
+            if(nk==0) cost = V[i];
+            if(k==0) {
+                if(nk==0) {
+                    if(j<N/2) chmin(dp[j+1][nk], pdp[j][k]+cost);
+                    chmin(dp[j][nk], pdp[j][k]+cost);
+                } else if(nk==1) {
+                    if(j<N/2) chmin(dp[j+1][nk], pdp[j][k]+cost);
+                } else {
+                    chmin(dp[j][nk], pdp[j][k]+cost);
+                }
+            } else {
+                ll nj = j;
+                if(k==1) nj++;
+                if(nj<=N/2) chmin(dp[nj][nk], pdp[j][k]+cost);
+            }
         }
     }
-
-    mint ans = 0;
-    rep1(i, N) ans += dp[i];
+    ll ans = dp[N/2][0];
     Out(ans);
     
 }
 
 // ### test.cpp ###
+

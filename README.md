@@ -1013,6 +1013,7 @@
 - 経路問題、進んだステップ数もキーにする場合あり
 ### 例題
 - !復習価値低 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
+- !要復習 [B - お菓子の分割](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_b)
 
 # 文字列
 
@@ -1525,6 +1526,7 @@
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - !復習価値低 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
+- !要復習 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
 
 ## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
