@@ -210,34 +210,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, S);
-    mint::set_mod(100000);
-    vvm dp(N*N+1, vm(S+1));
-    dp[0][0] = 1;
-    rep1(m, M) {
-        repr(j, N*N+1) rep(k, S+1) {
-            if(j<N*N && k+m<=S) dp[j+1][k+m] += dp[j][k];
+    LONG(N, Day);
+
+    ll K = 3;
+    vvl dp(N, vl(K, INF));
+
+    auto getmn=[&](vvl &dp) {
+        ll mn = INF;
+        rep(j, N) rep(k, K) { chmin(mn, dp[j][k]); }
+        return mn;
+    };
+    rep(i, N) dp[i][0] = 0;
+    rep(i, Day) {
+        vvl pdp(N, vl(K, INF)); swap(pdp, dp);
+        VL(X, N);
+        rep(j, N) rep(k, K) {
+            ll price = X[j];
+            if(k==1) price = X[j]/10*9;
+            if(k==2) price = X[j]/10*7;
+            ll nk = min(k+1, 2LL);
+            chmin(dp[j][nk], pdp[j][k]+price);
         }
+        ll mn = getmn(pdp);
+        rep(j, N) { chmin(dp[j][1], mn+X[j]); }
     }
-    mint ans = dp[N*N][S];
+
+    ll ans = getmn(dp);
     Out(ans);
+
     
 }
 
