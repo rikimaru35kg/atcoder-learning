@@ -214,41 +214,32 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    vvl from(N);
-    vb chld(N);
-    vp ratio(N);
+    VL2(A, C, N);
+    rep(i, N) C[i]--;
+    Pr mx(-INF, -1);
     rep(i, N) {
-        LONG(a,b,c1,c2); --c1, --c2;
-        if(c1!=-1) chld[c1]=true;
-        if(c2!=-1) chld[c2]=true;
-        from[i].push_back(c1); from[i].push_back(c2);
-        ratio[i] = {a,b};
+        chmax(mx, Pr(A[i], C[i]));
     }
-    ll p=-1;
-    rep(i, N) if(!chld[i]) p=i;
-
-    de(from)
-
-    vl w(N);
-    auto dfs=[&](auto f, ll v) -> void {
-        auto [a,b] = ratio[v];
-        ll c1 = from[v][0], c2 = from[v][1];
-        ll w1 = 1, w2 = 1;
-        if(c1!=-1) {
-            f(f, c1);
-            w1 = w[c1];
-        }
-        if(c2!=-1) {
-            f(f, c2);
-            w2 = w[c2];
-        }
-        ll c = w2*b, d = w1*a;
-        ll g = gcd(c, d);
-        c /= g, d /= g;
-        w[v] = c*w1 + d*w2;
-    };
-    dfs(dfs, p);
-    Out(w[p]);
+    ll mxc = mx.second;
+    vl first, second;
+    rep(i, N) {
+        if(C[i]==mxc) first.push_back(A[i]);
+        else second.push_back(A[i]);
+    }
+    sort(allr(first));
+    sort(allr(second));
+    if(SIZE(second)==0) Pm0;
+    ll ans = 0;
+    while(SIZE(second)>=2) {
+        ll p = pop(second);
+        ans += max(first[0]+p, 0LL);
+    }
+    while(SIZE(first)>=2) {
+        ll p = pop(first);
+        ans += max(second[0]+p, 0LL);
+    }
+    ans += max(first[0] + second[0], 0LL);
+    Out(ans);
     
 }
 

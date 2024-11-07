@@ -1443,6 +1443,7 @@
 - 辞書順最小を求めたい場合、貪欲で求まることが多い
 ### 例題
 - !復習価値低（コーディング不要。なぜ貪欲できるかだけ考えて） 株の売買 [D - Road to Millionaire](https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_d)
+- !要復習 [E - カードゲーム 3 (Card Game 3)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_e)
 - 基本 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - 基本 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
