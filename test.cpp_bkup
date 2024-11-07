@@ -213,33 +213,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    vvb edge(N, vb(N));
-    rep(i, M) {
-        LONGM(a,b);
-        from[a].push_back(b);
-        edge[a][b] = true;
-    }
-
-    vl ans;
-    vb used(N);
-    auto dfs=[&](auto f, ll v) -> void {
-        if(used[v]) return;
-        used[v] = true;
-        for(auto nv: from[v]) { f(f, nv); }
-        ans.push_back(v+1);
-    };
+    LONG(N);
+    VL2(A, C, N);
+    rep(i, N) C[i]--;
+    Pr mx(-INF, -1);
     rep(i, N) {
-        dfs(dfs, i);
+        chmax(mx, Pr(A[i], C[i]));
     }
-    reverse(all(ans));
-    for(auto x: ans) Out(x);
-    rep(i, N-1) {
-        if(!edge[ans[i]-1][ans[i+1]-1]) Outend(1);
+    ll mxc = mx.second;
+    vl first, second;
+    rep(i, N) {
+        if(C[i]==mxc) first.push_back(A[i]);
+        else second.push_back(A[i]);
     }
-    Pm0
-
+    sort(allr(first));
+    sort(allr(second));
+    if(SIZE(second)==0) Pm0;
+    ll ans = 0;
+    while(SIZE(second)>=2) {
+        ll p = pop(second);
+        ans += max(first[0]+p, 0LL);
+    }
+    while(SIZE(first)>=2) {
+        ll p = pop(first);
+        ans += max(second[0]+p, 0LL);
+    }
+    ans += max(first[0] + second[0], 0LL);
+    Out(ans);
     
 }
 

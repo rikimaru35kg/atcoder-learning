@@ -214,32 +214,16 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL2(A, C, N);
-    rep(i, N) C[i]--;
-    Pr mx(-INF, -1);
-    rep(i, N) {
-        chmax(mx, Pr(A[i], C[i]));
+    VL(X, N);
+    sort(all(X));
+
+    vl dp(N+1, INF);
+    dp[0] = 0;
+    rep(i, N-1) {
+        chmin(dp[i+2], dp[i]+X[i+1]-X[i]);
+        if(i+2<N) chmin(dp[i+3], dp[i]+X[i+2]-X[i]);
     }
-    ll mxc = mx.second;
-    vl first, second;
-    rep(i, N) {
-        if(C[i]==mxc) first.push_back(A[i]);
-        else second.push_back(A[i]);
-    }
-    sort(allr(first));
-    sort(allr(second));
-    if(SIZE(second)==0) Pm0;
-    ll ans = 0;
-    while(SIZE(second)>=2) {
-        ll p = pop(second);
-        ans += max(first[0]+p, 0LL);
-    }
-    while(SIZE(first)>=2) {
-        ll p = pop(first);
-        ans += max(second[0]+p, 0LL);
-    }
-    ans += max(first[0] + second[0], 0LL);
-    Out(ans);
+    Out(dp[N]);
     
 }
 
