@@ -210,33 +210,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, S);
-    mint::set_mod(100000);
-    vvm dp(N*N+1, vm(S+1));
-    dp[0][0] = 1;
-    rep1(m, M) {
-        repr(j, N*N+1) rep(k, S+1) {
-            if(j<N*N && k+m<=S) dp[j+1][k+m] += dp[j][k];
+    // =============================================================
+    //  DO NOT FORGET TO UNDO THE DEBUG CHANGES!!
+    // =============================================================
+    LONG(N, M);
+    VL2(X, Y, M);
+    sort(all(X)); sort(all(Y));
+
+    auto count=[&](vl &v, ll d) -> ll {
+        ll now = -INF;
+        ll ret = 0;
+        rep(i, M) {
+            if(v[i]<=now+d) continue;
+            ++ret;
+            now = v[i];
         }
-    }
-    mint ans = dp[N*N][S];
+        return ret;
+    };
+
+    auto f = [&](ll d) -> bool {
+        ll cnt = 0;
+        cnt += count(X, d);
+        cnt += count(Y, d);
+        return cnt <= N;
+    };
+
+    // de(f(2))
+    // de(f(3))
+    // de(f(4))
+    ll ans = binary_search((ll)1e9+10, -1, f);
     Out(ans);
     
 }

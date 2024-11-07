@@ -880,6 +880,7 @@
 ### 例題
 - 基本 [D - 塗り絵](https://atcoder.jp/contests/abc036/tasks/abc036_d)
 - 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
+- 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/editorial)
 - !復習価値中 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 
 ## 全方位木DP（難しい全方位は青コーダーになるには不要と思われる）

@@ -213,34 +213,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Day);
-
-    ll K = 3;
-    vvl dp(N, vl(K, INF));
-
-    auto getmn=[&](vvl &dp) {
-        ll mn = INF;
-        rep(j, N) rep(k, K) { chmin(mn, dp[j][k]); }
-        return mn;
-    };
-    rep(i, N) dp[i][0] = 0;
-    rep(i, Day) {
-        vvl pdp(N, vl(K, INF)); swap(pdp, dp);
-        VL(X, N);
-        rep(j, N) rep(k, K) {
-            ll price = X[j];
-            if(k==1) price = X[j]/10*9;
-            if(k==2) price = X[j]/10*7;
-            ll nk = min(k+1, 2LL);
-            chmin(dp[j][nk], pdp[j][k]+price);
-        }
-        ll mn = getmn(pdp);
-        rep(j, N) { chmin(dp[j][1], mn+X[j]); }
+    LONG(N);
+    vvl from(N);
+    vl P(N);
+    rep(i, N) {
+        LONG(a, b);
+        P[i] = b;
+        if(a==0) continue;
+        --a;
+        from[a].emplace_back(i);
     }
 
-    ll ans = getmn(dp);
+    vl mx(N, -INF);
+    ll ans = -INF;
+    auto dfs=[&](auto f, ll v) -> void {
+        mx[v] = P[v];
+        for(auto nv: from[v]) {
+            f(f, nv);
+            if(mx[nv]>0) mx[v] += mx[nv];
+        }
+        chmax(ans, mx[v]);
+    };
+    dfs(dfs, 0);
+    de(mx)
     Out(ans);
-
     
 }
 
