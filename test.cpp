@@ -210,56 +210,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Edge {
+    ll to, c, m;
+    Edge(ll to, ll c, ll m): to(to),c(c),m(m) {}
+};
+
+using vE = vector<Edge>;
+using vvE = vector<vE>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N,H,W);
-    VVLM(A, H, W);
-    vl minx(N, INF), miny(N, INF);
-    vl maxx(N, -INF), maxy(N, -INF);
-    rep(i, H) rep(j, W) {
-        ll a = A[i][j];
-        if(a==-1) continue;
-        chmin(minx[a], i); chmin(miny[a], j);
-        chmax(maxx[a], i); chmax(maxy[a], j);
-    }
-    vvvl colors(H, vvl(W));
-    rep(i, H) rep(j, W) {
-        if(A[i][j]==-1) continue;
-        rep(k, N) {
-            if(i>=minx[k] && i<=maxx[k] && j>=miny[k] && j<=maxy[k]) {
-                colors[i][j].push_back(k);
-            }
-        }
-    }
-    set<Pr> st;
-    rep(i, H) rep(j, W) {
-        ll tp = A[i][j];
-        if(tp==-1) continue;
-        for(auto c: colors[i][j]) {
-            if(c==tp) continue;
-            st.emplace(c, tp);
-        }
-    }
-    vvl from(N);
-    for(auto [a,b]: st) {
-        from[a].push_back(b);
-    }
-    vl ans;
-    vb used(N);
-    auto dfs=[&](auto f, ll v) -> void {
-        if(used[v]) return;
-        used[v] = true;
-        for(auto nv: from[v]) {
-            f(f, nv);
-        }
-        ans.push_back(v+1);
-    };
+    LONG(N, M);
+    vvt3 stone(N);
+    ll id = 1;
     rep(i, N) {
-        if(used[i]) continue;
-        dfs(dfs, i);
+        LONG(K);
+        rep(j, K) {
+            LONG(x, d);
+            stone[i].emplace_back(x, d, id++);
+        }
     }
-    reverse(all(ans));
+    ll Mx = id+1;
+    vvE from(Mx);
+    rep(i, N-1) {
+        for(auto [x,d,pi]: stone[i]) for(auto [nx,nd,ni]: stone[i+1]) {
+            from[pi].emplace_back(ni, abs(nx-x)*(d+nd), 0);
+        }
+    }
+    rep(i, N-2) {
+        for(auto [x,d,pi]: stone[i]) for(auto [nx,nd,ni]: stone[i+2]) {
+            from[pi].emplace_back(ni, abs(nx-x)*(d+nd), 1);
+        }
+    }
+    for(auto [x,d,i]: stone[0]) { from[0].emplace_back(i,0,0); }
+    for(auto [x,d,i]: stone[1]) { from[0].emplace_back(i,0,1); }
+    for(auto [x,d,i]: stone[N-1]) { from[i].emplace_back(Mx-1,0,0); }
+    for(auto [x,d,i]: stone[N-2]) { from[i].emplace_back(Mx-1,0,1); }
+    // rep(i, Mx) {
+    //     de(i)
+    //     for(auto [to,c,m]: from[i]) {
+    //         de3(to,c,m)
+    //     }
+    // }
+    vvl dist(Mx, vl(M+1, INF));
+    priority_queue<t3,vt3,greater<t3>> que;
+    auto push=[&](ll v, ll m, ll d) {
+        if(dist[v][m]<=d) return;
+        dist[v][m] = d;
+        que.emplace(d, v, m);
+    };
+    push(0, 0, 0);
+    while(que.size()) {
+        auto [d,v,m] = que.top(); que.pop();
+        if(dist[v][m]!=d) continue;
+        for(auto [nv, c, mc]: from[v]) {
+            ll nd = d + c;
+            ll nm = m + mc;
+            if(nm>M) continue;
+            push(nv, nm, nd);
+        }
+    }
+    ll ans = INF;
+    rep(m, M+1) chmin(ans, dist[Mx-1][m]);
     Out(ans);
 
     

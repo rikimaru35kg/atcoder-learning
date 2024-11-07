@@ -213,64 +213,54 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, D, K);
-    vvl ys(D+1);
-    repk(x, 0, D+1) {
-        repk(y, -D, D+1) {
-            if(x*x+y*y>D*D) continue;
-            ys[x].push_back(y);
+    LONG(N,H,W);
+    VVLM(A, H, W);
+    vl minx(N, INF), miny(N, INF);
+    vl maxx(N, -INF), maxy(N, -INF);
+    rep(i, H) rep(j, W) {
+        ll a = A[i][j];
+        if(a==-1) continue;
+        chmin(minx[a], i); chmin(miny[a], j);
+        chmax(maxx[a], i); chmax(maxy[a], j);
+    }
+    vvvl colors(H, vvl(W));
+    rep(i, H) rep(j, W) {
+        if(A[i][j]==-1) continue;
+        rep(k, N) {
+            if(i>=minx[k] && i<=maxx[k] && j>=miny[k] && j<=maxy[k]) {
+                colors[i][j].push_back(k);
+            }
         }
     }
-    VP(P, N);
-    ll Z = 1000;
-    vvvl is(Z, vvl(Z));
-    rep(i, N) {
-        auto [x,y] = P[i];
-        is[x][y].push_back(i);
+    set<Pr> st;
+    rep(i, H) rep(j, W) {
+        ll tp = A[i][j];
+        if(tp==-1) continue;
+        for(auto c: colors[i][j]) {
+            if(c==tp) continue;
+            st.emplace(c, tp);
+        }
     }
     vvl from(N);
-    rep(i, N) {
-        auto [x,y] = P[i];
-        repk(dx, 0, D+1) {
-            for(auto dy: ys[dx]) {
-                ll nx = x + dx, ny = y + dy;
-                if(!isin(nx,ny,Z,Z)) continue;;
-                for(auto ni: is[nx][ny]) {
-                    if(i==ni) continue;
-                    from[i].push_back(ni);
-                    from[ni].push_back(i);
-                }
-            }
-        }
+    for(auto [a,b]: st) {
+        from[a].push_back(b);
     }
-
-    queue<ll> que;
-    vl dist(N, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);
+    vl ans;
+    vb used(N);
+    auto dfs=[&](auto f, ll v) -> void {
+        if(used[v]) return;
+        used[v] = true;
+        for(auto nv: from[v]) {
+            f(f, nv);
+        }
+        ans.push_back(v+1);
     };
-    push(0, 0);
-    rep(i, K) {
-        queue<ll> pque; swap(pque, que);
-        while(pque.size()) {
-            auto v = pque.front(); pque.pop();
-            for(auto nv: from[v]) {
-                push(nv, dist[v]+1);
-            }
-        }
-    }
-
-    ll ans = 0;
     rep(i, N) {
-        if(dist[i]==INF) continue;
-        if(K-dist[i]<M) ++ans;
+        if(used[i]) continue;
+        dfs(dfs, i);
     }
+    reverse(all(ans));
     Out(ans);
-
-
-
 
     
 }
