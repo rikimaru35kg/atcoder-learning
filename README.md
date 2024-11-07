@@ -951,7 +951,6 @@
 - 基本 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !復習価値低 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
 - !復習価値中 [D - 水ようかん (Mizuyokan)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_d)
-- !要復習 [A - いっしょ (Together)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a)
 - !復習価値高 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
@@ -1749,6 +1748,12 @@
 - 基本 [B - Bought Review](https://atcoder.jp/contests/arc174/tasks/arc174_b)
 - !要復習 [E - Sensor Optimization Dilemma 2](https://atcoder.jp/contests/abc374/tasks/abc374_e)
 
+## 木を見て森を見る
+全体を考えると難しくても、局所を見るだけで大丈夫な場合があります。
+### 例題
+- !復習価値中 [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
+- !要復習 [A - いっしょ (Together)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a)
+
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
 - K番目を考える時、二分探索するのも典型
@@ -1943,7 +1948,6 @@
 - [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
 - [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
 - [D - AtCoDeerくんと変なじゃんけん](https://atcoder.jp/contests/abc046/tasks/arc062_b)
-- [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
 - [M - 線分の交差判定](https://atcoder.jp/contests/past16-open/tasks/past202309_m)
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
