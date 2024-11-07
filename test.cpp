@@ -210,71 +210,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Edge {
-    ll to, c, m;
-    Edge(ll to, ll c, ll m): to(to),c(c),m(m) {}
-};
-
-using vE = vector<Edge>;
-using vvE = vector<vE>;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvt3 stone(N);
-    ll id = 1;
-    rep(i, N) {
-        LONG(K);
-        rep(j, K) {
-            LONG(x, d);
-            stone[i].emplace_back(x, d, id++);
-        }
-    }
-    ll Mx = id+1;
-    vvE from(Mx);
-    rep(i, N-1) {
-        for(auto [x,d,pi]: stone[i]) for(auto [nx,nd,ni]: stone[i+1]) {
-            from[pi].emplace_back(ni, abs(nx-x)*(d+nd), 0);
-        }
-    }
-    rep(i, N-2) {
-        for(auto [x,d,pi]: stone[i]) for(auto [nx,nd,ni]: stone[i+2]) {
-            from[pi].emplace_back(ni, abs(nx-x)*(d+nd), 1);
-        }
-    }
-    for(auto [x,d,i]: stone[0]) { from[0].emplace_back(i,0,0); }
-    for(auto [x,d,i]: stone[1]) { from[0].emplace_back(i,0,1); }
-    for(auto [x,d,i]: stone[N-1]) { from[i].emplace_back(Mx-1,0,0); }
-    for(auto [x,d,i]: stone[N-2]) { from[i].emplace_back(Mx-1,0,1); }
-    // rep(i, Mx) {
-    //     de(i)
-    //     for(auto [to,c,m]: from[i]) {
-    //         de3(to,c,m)
-    //     }
-    // }
-    vvl dist(Mx, vl(M+1, INF));
-    priority_queue<t3,vt3,greater<t3>> que;
-    auto push=[&](ll v, ll m, ll d) {
-        if(dist[v][m]<=d) return;
-        dist[v][m] = d;
-        que.emplace(d, v, m);
-    };
-    push(0, 0, 0);
-    while(que.size()) {
-        auto [d,v,m] = que.top(); que.pop();
-        if(dist[v][m]!=d) continue;
-        for(auto [nv, c, mc]: from[v]) {
-            ll nd = d + c;
-            ll nm = m + mc;
-            if(nm>M) continue;
-            push(nv, nm, nd);
-        }
-    }
-    ll ans = INF;
-    rep(m, M+1) chmin(ans, dist[Mx-1][m]);
-    Out(ans);
+    STRING(S);
+    ll N = SIZE(S);
+    ll M = 26;
+    vl cnt(M);
+    for(auto c: S) cnt[c-'A']++;
+    vl fact(M, 1);
+    rep1(i, M-1) fact[i] = fact[i-1]*i;
 
+    auto calnum = [&](vl &cnt) {
+        ll tot = 0;
+        rep(i, M) tot += cnt[i];
+        ll ret = fact[tot];
+        rep(i, M) { ret /= fact[cnt[i]]; }
+        return ret;
+    };
+
+    ll ans = 1;
+    rep(i, N) {
+        ll c = S[i]-'A';
+        ll now = 0;
+        rep(j, c) {
+            if(cnt[j]==0) continue;
+            cnt[j]--;
+            now += calnum(cnt);
+            de(calnum(cnt))
+            cnt[j]++;
+        }
+        ans += now;
+        cnt[c]--;
+    }
+    Out(ans);
     
 }
 
