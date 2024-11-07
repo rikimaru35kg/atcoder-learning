@@ -213,30 +213,55 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl from(N);
-    vl P(N);
-    rep(i, N) {
-        LONG(a, b);
-        P[i] = b;
-        if(a==0) continue;
-        --a;
-        from[a].emplace_back(i);
+    LONG(N,H,W);
+    VVLM(A, H, W);
+    vl minx(N, INF), miny(N, INF);
+    vl maxx(N, -INF), maxy(N, -INF);
+    rep(i, H) rep(j, W) {
+        ll a = A[i][j];
+        if(a==-1) continue;
+        chmin(minx[a], i); chmin(miny[a], j);
+        chmax(maxx[a], i); chmax(maxy[a], j);
     }
-
-    vl mx(N, -INF);
-    ll ans = -INF;
+    vvvl colors(H, vvl(W));
+    rep(i, H) rep(j, W) {
+        if(A[i][j]==-1) continue;
+        rep(k, N) {
+            if(i>=minx[k] && i<=maxx[k] && j>=miny[k] && j<=maxy[k]) {
+                colors[i][j].push_back(k);
+            }
+        }
+    }
+    set<Pr> st;
+    rep(i, H) rep(j, W) {
+        ll tp = A[i][j];
+        if(tp==-1) continue;
+        for(auto c: colors[i][j]) {
+            if(c==tp) continue;
+            st.emplace(c, tp);
+        }
+    }
+    vvl from(N);
+    for(auto [a,b]: st) {
+        from[a].push_back(b);
+    }
+    vl ans;
+    vb used(N);
     auto dfs=[&](auto f, ll v) -> void {
-        mx[v] = P[v];
+        if(used[v]) return;
+        used[v] = true;
         for(auto nv: from[v]) {
             f(f, nv);
-            if(mx[nv]>0) mx[v] += mx[nv];
         }
-        chmax(ans, mx[v]);
+        ans.push_back(v+1);
     };
-    dfs(dfs, 0);
-    de(mx)
+    rep(i, N) {
+        if(used[i]) continue;
+        dfs(dfs, i);
+    }
+    reverse(all(ans));
     Out(ans);
+
     
 }
 
