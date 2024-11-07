@@ -1954,6 +1954,7 @@
 - [flu - インフルエンザ (Flu)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_flu)
 - [D - ぴょんぴょん川渡り](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_d)
 - [anagram - アナグラム (Anagram)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_anagra)
+- [route - 象使い (Route)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_route)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
