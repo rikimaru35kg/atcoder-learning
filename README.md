@@ -1966,6 +1966,7 @@
 - [D - ぴょんぴょん川渡り](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_d)
 - [anagram - アナグラム (Anagram)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_anagra)
 - [route - 象使い (Route)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_route)
+- [B - JJOOII 2 (JJOOII 2)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_b)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

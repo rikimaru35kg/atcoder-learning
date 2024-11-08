@@ -210,36 +210,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vp P;
-    rep(i, N) {
-        LONG(a, b);
-        P.emplace_back(b, a);
-    }
+    LONG(N, M, D);
+    VP(P, N);
     sort(all(P));
-    vl amin(N+1, INF), abmin(N+1, INF);
-    rep(i, N) {
-        auto [b,a] = P[i];
-        amin[i+1] = min(amin[i], a);
-    }
-    repr(i, N) {
-        auto [b,a] = P[i];
-        abmin[i] = min(abmin[i+1], a+b);
-    }
 
-    ll ans = INF;
-    repk(i, 1, N-1) {
-        auto [b,a] = P[i];
-        ll now = a + b;
-        ll left_min = amin[i];
-        now += left_min;
-        ll right_min = abmin[i+1];
-        now += right_min;
-        chmin(ans, now);
-    }
+    auto f=[&](ll t) -> bool {
+        ll cnt = 0;
+        ll px = -INF;
+        for(auto [x,v]: P) {
+            if(v<t) continue;
+            if(x-px<D) continue;
+            ++cnt;
+            px = x;
+        }
+        return cnt >= M;
+    };
+
+    ll ans = binary_search(-1, (ll)1e9+10, f);
     Out(ans);
     
 }
