@@ -213,30 +213,28 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S);
-    ll sj=0, so=0, si=0;
-    ll M = 2e6+10;
-    auto hash=[&](ll sj, ll so, ll si, ll i) -> ll {
-        ll ret = 3*sj-i;
-        ret = ret*M + 3*so-i;
-        ret = ret*M + 3*si-i;
-        return ret;
-    };
-    umap<ll,ll> mp;
-    mp[0] = 0;
-    ll ans = 0;
+    LONG(M, N);
+    VL(P, M);
+    sort(allr(P));
+    vl Sc(M+1);
+    rep(i, M) Sc[i+1] = Sc[i] + P[i];
+
+    vl dp(M+1, -INF);
+    dp[0] = 0;
     rep(i, N) {
-        if(S[i]=='J') sj++;
-        if(S[i]=='O') so++;
-        if(S[i]=='I') si++;
-        ll chash = hash(sj,so,si,i+1);
-        if(mp.count(chash)) {
-            chmax(ans, i+1-mp[chash]);
+        vl pdp(M+1, -INF); swap(pdp, dp);
+        LONG(c, e);
+        rep(j, M+1) {
+            if(pdp[j]==-INF) continue;
+            chmax(dp[j], pdp[j]);
+            ll nj = min(j+c, M);
+            ll price = Sc[nj] - Sc[j];
+            chmax(dp[nj], pdp[j]+price-e);
         }
-        if(mp.count(chash)) continue;
-        else mp[chash] = i+1;
     }
+
+    ll ans = 0;
+    rep(i, M+1) chmax(ans, dp[i]);
     Out(ans);
     
 }

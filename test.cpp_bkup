@@ -213,48 +213,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, T, Q);
-    vt3 person;
-    vl X(N);
-    vl D(N);
+    LONG(N);
+    STRING(S);
+    ll sj=0, so=0, si=0;
+    ll M = 2e6+10;
+    auto hash=[&](ll sj, ll so, ll si, ll i) -> ll {
+        ll ret = 3*sj-i;
+        ret = ret*M + 3*so-i;
+        ret = ret*M + 3*si-i;
+        return ret;
+    };
+    umap<ll,ll> mp;
+    mp[0] = 0;
+    ll ans = 0;
     rep(i, N) {
-        LONG(x, d);
-        X[i] = x;
-        D[i] = d;
-        person.emplace_back(x, d, i);
-    }
-    sort(all(person));
-
-    vl contact(N, INF);
-    rep(i, N-1) {
-        auto [x1, d1, i1] = person[i];
-        auto [x2, d2, i2] = person[i+1];
-        if(d2!=2) continue;
-        if(d1==1) { contact[i2] = (x1+x2)/2; }
-        else contact[i2] = contact[i1];
-    }
-    repr(i, N-1) {
-        auto [x1, d1, i1] = person[i];
-        auto [x2, d2, i2] = person[i+1];
-        if(d1!=1) continue;
-        if(d2==2) { contact[i1] = (x1+x2)/2; }
-        else contact[i1] = contact[i2];
-    }
-    rep(i, Q) {
-        LONGM(p);
-        ll x = X[p];
-        ll d = D[p];
-        de2(x,d)
-        if(d==1) x += T;
-        else x -= T;
-        if(contact[p]==INF) Out(x);
-        else {
-            if(d==1) chmin(x, contact[p]);
-            else chmax(x, contact[p]);
-            Out(x);
+        if(S[i]=='J') sj++;
+        if(S[i]=='O') so++;
+        if(S[i]=='I') si++;
+        ll chash = hash(sj,so,si,i+1);
+        if(mp.count(chash)) {
+            chmax(ans, i+1-mp[chash]);
         }
-
+        if(mp.count(chash)) continue;
+        else mp[chash] = i+1;
     }
+    Out(ans);
     
 }
 
