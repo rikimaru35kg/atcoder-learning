@@ -1585,7 +1585,9 @@
 - 円環はそのままでは扱いにくいので、(1)2つ繋げて列にするか、(2)頂点1から頂点1までの区間長Nの列にするか、(3)頂点1から頂点Nまでの区間長N-1の列にするかで考えると見通しが良くなる
 - 貪欲時に円環のどこからスタートすべきか分からない時、スタート地点と着地地点のfunctional graphを作ってダブリングすると良い
 ### 例題
+- !復習価値低 [C - Ideal Holidays](https://atcoder.jp/contests/abc347/tasks/abc347_c)
 - !復習価値中 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
+- !要復習 [A - 室温 (Room Temperature)](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_a)
 - 基本 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
 - !復習価値中 [D - Menagerie](https://atcoder.jp/contests/abc055/tasks/arc069_b)
 - !復習価値低 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)

@@ -213,17 +213,20 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(X, N);
-    sort(all(X));
+    LONG(N, A, B);
+    VL(D, N);
+    ll M = A+B;
+    rep(i, N) D[i] %= M;
+    sort(all(D));
+    rep(i, N) D.push_back(D[i]+M);
+    de(D)
 
-    vl dp(N+1, INF);
-    dp[0] = 0;
-    rep(i, N-1) {
-        chmin(dp[i+2], dp[i]+X[i+1]-X[i]);
-        if(i+2<N) chmin(dp[i+3], dp[i]+X[i+2]-X[i]);
+    ll mn = INF;
+    rep(l, N) {
+        chmin(mn, D[l+N-1]-D[l]);
     }
-    Out(dp[N]);
+    if(mn<A) PYes PNo
+
     
 }
 
