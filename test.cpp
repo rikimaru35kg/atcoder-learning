@@ -213,33 +213,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    vp stck;
-    uset<ll> color;
-    rep(i, N) {
-        ll c = A[i];
-        if(!color.count(c)) {
-            stck.emplace_back(i, c);
-            color.insert(c);
-            continue;
-        }
-        while(stck.size() && stck.back().second!=c) {
-            auto [pos, pc] = pop(stck);
-            color.erase(pc);
-        }
+    LONG(H, W);
+    VS(S, H);
+    vl row(H), col(W);
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='.') continue;
+        row[i]++; col[j]++;
     }
-    vl ans(N);
-    stck.emplace_back(N, -1);
-    ll sz = SIZE(stck);
-    rep(i, sz-1) {
-        auto [p1, c1] = stck[i];
-        auto [p2, c2] = stck[i+1];
-        repk(j, p1, p2) ans[j] = c1;
-    }
-    for(auto x: ans) Out(x);
 
-    
+    ll ans = 0;
+    rep(i, H) {
+        ll sum = 0;
+        rep(j, W) {
+            if(S[i][j]=='#') col[j]--;
+            else col[j]++;
+            sum += col[j];
+        }
+        ll mx = *max_element(all(col));
+        ll head = mx, tail = H-mx;
+        sum -= head;
+        sum += tail;
+        chmax(ans, sum);
+
+        rep(j, W) {
+            if(S[i][j]=='#') col[j]++;
+            else col[j]--;
+        }
+    }
+    printf("%lld %lld\n", ans, H*W-ans);
+
+
 }
 
 // ### test.cpp ###

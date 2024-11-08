@@ -210,108 +210,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q);
-    vvl pbyt(M);
-    vvl idxbyt(M);
-    vl P;
+    LONG(N);
+    VL(A, N);
+    vp stck;
+    uset<ll> color;
     rep(i, N) {
-        LONG(p, a); --a;
-        P.push_back(p);
-        pbyt[a].push_back(p);
-        idxbyt[a].push_back(i);
+        ll c = A[i];
+        if(!color.count(c)) {
+            stck.emplace_back(i, c);
+            color.insert(c);
+            continue;
+        }
+        while(stck.size() && stck.back().second!=c) {
+            auto [pos, pc] = pop(stck);
+            color.erase(pc);
+        }
     }
-    auto makesum=[&](vl &v) -> vl {
-        ll n = SIZE(v);
-        vl ret(n+1);
-        rep(i, n) ret[i+1] = ret[i] + v[i];
-        return ret;
-    };
-    vl Sc = makesum(P);
-    vvl Sbyt(M);
-    rep(i, M) { Sbyt[i] = makesum(pbyt[i]); }
+    vl ans(N);
+    stck.emplace_back(N, -1);
+    ll sz = SIZE(stck);
+    rep(i, sz-1) {
+        auto [p1, c1] = stck[i];
+        auto [p2, c2] = stck[i+1];
+        repk(j, p1, p2) ans[j] = c1;
+    }
+    for(auto x: ans) Out(x);
 
-    rep(i, Q) {
-        LONG(t, l, r); --t, --l;
-        ll ans = Sc[r]-Sc[l];
-        auto [il, xl] = lowbou(idxbyt[t], l);
-        auto [ir, xr] = lowbou(idxbyt[t], r);
-        ans -= (Sbyt[t][ir] - Sbyt[t][il])/2;
-        Out(ans);
-    }
     
 }
 
