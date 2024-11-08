@@ -210,113 +210,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+#include <atcoder/segtree>
+using namespace atcoder;
+
+struct S {
+    ll mn, mx;
+    S(ll mn, ll mx): mn(mn),mx(mx) {}
+};
+S op(S a, S b) {return S(min(a.mn,b.mn), max(a.mx, b.mx));}
+S e() {return S(INF, -INF);}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    STRING(S);
-    vl A;
-    for(auto c: S) {
-        if(c=='J') A.push_back(0);
-        if(c=='O') A.push_back(1);
-        if(c=='I') A.push_back(2);
-    }
-    vvl Sc(3, vl(N+1));
-    rep(i, N) Sc[A[i]][i+1]++;
-    rep(j, 3) rep(i, N) Sc[j][i+1] += Sc[j][i];
-
-
-    ll ans = INF;
+    LONG(N, M, K);
+    VL(A, N);
+    segtree<S,op,e> seg(N);
     rep(i, N) {
-        ll ci = i;
-        bool ok = true;
-        ll now = 0;
-        rep(j, 3) {
-            ll csum = Sc[j][ci];
-            auto [n,x] = lowbou(Sc[j], csum+K);
-            if(n==N+1){
-                ok = false;
-                break;
-            }
-            now += n-ci-(Sc[j][n]-Sc[j][ci]);
-            ci = n;
-        }
-        if(!ok) continue;
-        chmin(ans, now);
+        seg.set(i, S(A[i],A[i]));
     }
-    ch1(ans);
-    Out(ans);
+
+    vl dp(M, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(M, INF); swap(pdp, dp);
+        rep(j, M) {
+            ll now = pdp[j];
+            if(now==INF) continue;
+            ll pi = i-j;
+            auto [mn,mx] = seg.prod(pi, i);
+            chmin(mn, A[i]); chmax(mx, A[i]);
+            ll cost = K + (j+1)*(mx-mn);
+            chmin(dp[0], now+cost);
+            if(j<M-1) {
+                chmin(dp[j+1], now);
+            }
+        }
+    }
+    Out(dp[0]);
+
     
 }
 

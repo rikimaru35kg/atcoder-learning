@@ -1967,6 +1967,7 @@
 - [anagram - アナグラム (Anagram)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_anagra)
 - [route - 象使い (Route)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_route)
 - [B - JJOOII 2 (JJOOII 2)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_b)
+- [A - オレンジの出荷 (Oranges)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_a)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

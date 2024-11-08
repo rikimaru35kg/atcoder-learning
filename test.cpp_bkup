@@ -210,47 +210,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, D);
-    VP(P, N);
-    sort(all(P));
+    LONG(N);
+    VL(A, N+1);
+    VL(B, N);
+    sort(all(B));
 
-    auto f=[&](ll t) -> bool {
-        ll cnt = 0;
-        ll px = -INF;
-        for(auto [x,v]: P) {
-            if(v<t) continue;
-            if(x-px<D) continue;
-            ++cnt;
-            px = x;
-        }
-        return cnt >= M;
+    vl p(N+1);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return A[i]<A[j];
+    });
+    multiset<ll> st;
+    auto add=[&](ll ai, ll bi) {
+        ll val = max(A[ai]-B[bi], 0LL);
+        st.insert(val);
     };
+    auto del=[&](ll ai, ll bi) {
+        ll val = max(A[ai]-B[bi], 0LL);
+        erase(st, val);
+    };
+    rep(i, N) add(p[i+1], i);
 
-    ll ans = binary_search(-1, (ll)1e9+10, f);
+    vl ans(N+1);
+    rep(i, N+1) {
+        ll mx = *st.rbegin();
+        ans[p[i]] = mx;
+        if(i==N) break;
+        add(p[i], i);
+        del(p[i+1], i);
+    }
     Out(ans);
     
 }
