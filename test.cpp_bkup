@@ -214,31 +214,33 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    VL(A, N);
-    vp stck;
-    uset<ll> color;
+    vp P;
     rep(i, N) {
-        ll c = A[i];
-        if(!color.count(c)) {
-            stck.emplace_back(i, c);
-            color.insert(c);
-            continue;
-        }
-        while(stck.size() && stck.back().second!=c) {
-            auto [pos, pc] = pop(stck);
-            color.erase(pc);
-        }
+        LONG(a, b);
+        P.emplace_back(b, a);
     }
-    vl ans(N);
-    stck.emplace_back(N, -1);
-    ll sz = SIZE(stck);
-    rep(i, sz-1) {
-        auto [p1, c1] = stck[i];
-        auto [p2, c2] = stck[i+1];
-        repk(j, p1, p2) ans[j] = c1;
+    sort(all(P));
+    vl amin(N+1, INF), abmin(N+1, INF);
+    rep(i, N) {
+        auto [b,a] = P[i];
+        amin[i+1] = min(amin[i], a);
     }
-    for(auto x: ans) Out(x);
+    repr(i, N) {
+        auto [b,a] = P[i];
+        abmin[i] = min(abmin[i+1], a+b);
+    }
 
+    ll ans = INF;
+    repk(i, 1, N-1) {
+        auto [b,a] = P[i];
+        ll now = a + b;
+        ll left_min = amin[i];
+        now += left_min;
+        ll right_min = abmin[i+1];
+        now += right_min;
+        chmin(ans, now);
+    }
+    Out(ans);
     
 }
 

@@ -61,6 +61,7 @@
 - 全組合せは膨大すぎて調べられない場合、目的の値（得点など）を二分探索するとO(logN)になる。N=1e18でもlogNは60程度
 - 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
+- 基本 超ど典型として人に紹介したい問題 [D - 展覧会 2 (Exhibition 2)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_d)
 - 基本 丸太切り [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - 基本 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
 - 基本 幸福度最大握手 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)

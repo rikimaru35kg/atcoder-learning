@@ -210,39 +210,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    vl row(H), col(W);
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='.') continue;
-        row[i]++; col[j]++;
-    }
+    LONG(N, M, D);
+    VP(P, N);
+    sort(all(P));
 
-    ll ans = 0;
-    rep(i, H) {
-        ll sum = 0;
-        rep(j, W) {
-            if(S[i][j]=='#') col[j]--;
-            else col[j]++;
-            sum += col[j];
+    auto f=[&](ll t) -> bool {
+        ll cnt = 0;
+        ll px = -INF;
+        for(auto [x,v]: P) {
+            if(v<t) continue;
+            if(x-px<D) continue;
+            ++cnt;
+            px = x;
         }
-        ll mx = *max_element(all(col));
-        ll head = mx, tail = H-mx;
-        sum -= head;
-        sum += tail;
-        chmax(ans, sum);
+        return cnt >= M;
+    };
 
-        rep(j, W) {
-            if(S[i][j]=='#') col[j]++;
-            else col[j]--;
-        }
-    }
-    printf("%lld %lld\n", ans, H*W-ans);
-
-
+    ll ans = binary_search(-1, (ll)1e9+10, f);
+    Out(ans);
+    
 }
 
 // ### test.cpp ###
