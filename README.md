@@ -1696,6 +1696,7 @@
 - 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 - 基本 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
 - !復習価値中 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
+- !復習価値低 想定解は非スタックなのでNote非掲載（どう解いても良い） [A - 碁石ならべ 2 (Stone Arranging 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_a)
 
 ## 階段状にかさ増しする
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく

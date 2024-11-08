@@ -1,37 +1,115 @@
 test.cpp: In function ‘int main()’:
-test.cpp:234:24: error: no matching function for call to ‘min(ll, int)’
-  234 |             ll nk = min(k+1, 2);
-      |                     ~~~^~~~~~~~
-In file included from /usr/include/c++/12/bits/specfun.h:45,
+test.cpp:312:26: error: no match for ‘operator-’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} and ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’})
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
+                 from /usr/include/c++/12/bits/specfun.h:45,
                  from /usr/include/c++/12/cmath:1935,
                  from stdc++.h:41:
-/usr/include/c++/12/bits/stl_algobase.h:230:5: note: candidate: ‘template<class _Tp> constexpr const _Tp& std::min(const _Tp&, const _Tp&)’
-  230 |     min(const _Tp& __a, const _Tp& __b)
-      |     ^~~
-/usr/include/c++/12/bits/stl_algobase.h:230:5: note:   template argument deduction/substitution failed:
-test.cpp:234:24: note:   deduced conflicting types for parameter ‘const _Tp’ (‘long long int’ and ‘int’)
-  234 |             ll nk = min(k+1, 2);
-      |                     ~~~^~~~~~~~
-/usr/include/c++/12/bits/stl_algobase.h:278:5: note: candidate: ‘template<class _Tp, class _Compare> constexpr const _Tp& std::min(const _Tp&, const _Tp&, _Compare)’
-  278 |     min(const _Tp& __a, const _Tp& __b, _Compare __comp)
-      |     ^~~
-/usr/include/c++/12/bits/stl_algobase.h:278:5: note:   template argument deduction/substitution failed:
-test.cpp:234:24: note:   deduced conflicting types for parameter ‘const _Tp’ (‘long long int’ and ‘int’)
-  234 |             ll nk = min(k+1, 2);
-      |                     ~~~^~~~~~~~
-In file included from /usr/include/c++/12/algorithm:61,
-                 from stdc++.h:65:
-/usr/include/c++/12/bits/stl_algo.h:5726:5: note: candidate: ‘template<class _Tp> constexpr _Tp std::min(initializer_list<_Tp>)’
- 5726 |     min(initializer_list<_Tp> __l)
-      |     ^~~
-/usr/include/c++/12/bits/stl_algo.h:5726:5: note:   template argument deduction/substitution failed:
-test.cpp:234:24: note:   mismatched types ‘std::initializer_list<_Tp>’ and ‘long long int’
-  234 |             ll nk = min(k+1, 2);
-      |                     ~~~^~~~~~~~
-/usr/include/c++/12/bits/stl_algo.h:5736:5: note: candidate: ‘template<class _Tp, class _Compare> constexpr _Tp std::min(initializer_list<_Tp>, _Compare)’
- 5736 |     min(initializer_list<_Tp> __l, _Compare __comp)
-      |     ^~~
-/usr/include/c++/12/bits/stl_algo.h:5736:5: note:   template argument deduction/substitution failed:
-test.cpp:234:24: note:   mismatched types ‘std::initializer_list<_Tp>’ and ‘long long int’
-  234 |             ll nk = min(k+1, 2);
-      |                     ~~~^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:621:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr decltype ((__y.base() - __x.base())) std::operator-(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&)’
+  621 |     operator-(const reverse_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:621:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/bits/stl_iterator.h:1796:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr decltype ((__x.base() - __y.base())) std::operator-(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&)’
+ 1796 |     operator-(const move_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:1796:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::move_iterator<_IteratorL>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+In file included from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/complex:362:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator-(const complex<_Tp>&, const complex<_Tp>&)’
+  362 |     operator-(const complex<_Tp>& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:362:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::complex<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/complex:371:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator-(const complex<_Tp>&, const _Tp&)’
+  371 |     operator-(const complex<_Tp>& __x, const _Tp& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:371:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::complex<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/complex:380:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator-(const _Tp&, const complex<_Tp>&)’
+  380 |     operator-(const _Tp& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:380:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::complex<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/complex:457:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator-(const complex<_Tp>&)’
+  457 |     operator-(const complex<_Tp>& __x)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:457:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::complex<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+In file included from /usr/include/c++/12/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/12/bits/valarray_after.h:406:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__minus, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__minus, typename _Dom1::value_type>::result_type> std::operator-(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  406 |     _DEFINE_EXPR_BINARY_OPERATOR(-, struct std::__minus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:406:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/bits/valarray_after.h:406:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__minus, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__minus, typename _Dom1::value_type>::result_type> std::operator-(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  406 |     _DEFINE_EXPR_BINARY_OPERATOR(-, struct std::__minus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:406:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/bits/valarray_after.h:406:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__minus, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__minus, typename _Dom1::value_type>::result_type> std::operator-(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  406 |     _DEFINE_EXPR_BINARY_OPERATOR(-, struct std::__minus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:406:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/bits/valarray_after.h:406:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__minus, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__minus, typename _Dom1::value_type>::result_type> std::operator-(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  406 |     _DEFINE_EXPR_BINARY_OPERATOR(-, struct std::__minus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:406:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/bits/valarray_after.h:406:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__minus, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__minus, typename _Dom1::value_type>::result_type> std::operator-(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  406 |     _DEFINE_EXPR_BINARY_OPERATOR(-, struct std::__minus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:406:5: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/valarray:1187:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__minus, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__minus, _Tp>::result_type> std::operator-(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1187 | _DEFINE_BINARY_OPERATOR(-, __minus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1187:1: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::valarray<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/valarray:1187:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__minus, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__minus, _Tp>::result_type> std::operator-(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1187 | _DEFINE_BINARY_OPERATOR(-, __minus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1187:1: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::valarray<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+/usr/include/c++/12/valarray:1187:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__minus, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__minus, _Tp>::result_type> std::operator-(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1187 | _DEFINE_BINARY_OPERATOR(-, __minus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1187:1: note:   template argument deduction/substitution failed:
+test.cpp:312:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::valarray<_Tp>’
+  312 |         ans -= (Sbyt[ir] - Sbyt[il])/2;
+      |                                   ^
+test.cpp:209:4: note: candidate: ‘Pr operator-(Pr, Pr)’
+  209 | Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
+      |    ^~~~~~~~
+test.cpp:209:18: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
+  209 | Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
+      |               ~~~^

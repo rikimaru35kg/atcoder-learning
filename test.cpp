@@ -213,19 +213,31 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, A, B);
-    VL(D, N);
-    ll M = A+B;
-    rep(i, N) D[i] %= M;
-    sort(all(D));
-    rep(i, N) D.push_back(D[i]+M);
-    de(D)
-
-    ll mn = INF;
-    rep(l, N) {
-        chmin(mn, D[l+N-1]-D[l]);
+    LONG(N);
+    VL(A, N);
+    vp stck;
+    uset<ll> color;
+    rep(i, N) {
+        ll c = A[i];
+        if(!color.count(c)) {
+            stck.emplace_back(i, c);
+            color.insert(c);
+            continue;
+        }
+        while(stck.size() && stck.back().second!=c) {
+            auto [pos, pc] = pop(stck);
+            color.erase(pc);
+        }
     }
-    if(mn<A) PYes PNo
+    vl ans(N);
+    stck.emplace_back(N, -1);
+    ll sz = SIZE(stck);
+    rep(i, sz-1) {
+        auto [p1, c1] = stck[i];
+        auto [p2, c2] = stck[i+1];
+        repk(j, p1, p2) ans[j] = c1;
+    }
+    for(auto x: ans) Out(x);
 
     
 }
