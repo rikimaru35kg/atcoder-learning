@@ -1699,6 +1699,7 @@
 - 基本 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
 - !復習価値中 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
 - !復習価値低 想定解は非スタックなのでNote非掲載（どう解いても良い） [A - 碁石ならべ 2 (Stone Arranging 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_a)
+- !復習価値高 [F - Buildings 2](https://atcoder.jp/contests/abc379/tasks/abc379_f)
 
 ## 階段状にかさ増しする
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
@@ -1970,6 +1971,7 @@
 - [B - JJOOII 2 (JJOOII 2)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_b)
 - [A - オレンジの出荷 (Oranges)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_a)
 - [B - IOI 饅頭 (IOI Manju)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho2)
+- [C - Sowing Stones](https://atcoder.jp/contests/abc379/tasks/abc379_c)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
