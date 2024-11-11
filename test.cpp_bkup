@@ -212,113 +212,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    mint::set_mod(1234567);
-    LONG(N, P);
+    LONG(N, L);
     VL(A, N);
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + A[i];
+    A.insert(A.begin(), 0);
+    A.push_back(0);
+    N += 2;
+    ll t = 0;
+    priority_queue<Pr> que;
+    vb pushed(N);
 
-    vm dp(N+1);
-    dp[0] = 1;
-    vm ds(N+2);
-    ds[1] = 1;
-    rep1(i, N) {
-        mint now = 0;
-        auto [n,x] = lowbou(Sc, Sc[i]-P);
-        now = ds[i] - ds[n];
-        dp[i] = now;
-        ds[i+1] = ds[i] + dp[i];
+    auto push=[&](ll i) {
+        if(i==0 || i==N-1) return;
+        if(pushed[i]) return;
+        if(A[i]>A[i-1] && A[i]>A[i+1]) {
+            que.emplace(A[i]-t, i);
+            pushed[i] = true;
+        }
+    };
+
+    repk(i, 1, N-1) { push(i); }
+
+    while(que.size()) {
+        auto [a, i] = que.top(); que.pop();
+        A[i] = 0;
+        ll len = t+a;
+        ll dt = L-len;
+        de4(a,i,len,dt)
+        t += dt;
+        push(i-1);
+        push(i+1);
     }
-    mint ans = dp[N];
-    Out(ans);
+    Out(t);
     
 }
 

@@ -212,40 +212,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct D {
+    ll d, i, j, k, t;
+    D(ll d, ll i, ll j, ll k, ll t):d(d),i(i),j(j),k(k),t(t) {}
+    bool operator<(const D &o) const {
+        return d<o.d;
+    }
+};
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+using vvvvm = vector<vvvm>;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    VL(A, N);
-    A.insert(A.begin(), 0);
-    A.push_back(0);
-    N += 2;
-    ll t = 0;
-    priority_queue<Pr> que;
-    vb pushed(N);
+    LONG(W, H);
+    mint::set_mod(100000);
 
-    auto push=[&](ll i) {
-        if(i==0 || i==N-1) return;
-        if(pushed[i]) return;
-        if(A[i]>A[i-1] && A[i]>A[i+1]) {
-            que.emplace(A[i]-t, i);
-            pushed[i] = true;
+    vvvvm dp(H, vvvm(W, vvm(2, vm(2))));
+    dp[0][0][0][0] = 1;
+    dp[0][0][1][0] = 1;
+    rep(i, H) rep(j, W) rep(k, 2) rep(t, 2) {
+        mint now = dp[i][j][k][t];
+        if(now==0) continue;
+        de4(i,j,k,t)
+        de(now)
+        { // no turn
+            if(j<W-1 && k==0) dp[i][j+1][k][0] += now;
+            if(i<H-1 && k==1) dp[i+1][j][k][0] += now;
         }
-    };
-
-    repk(i, 1, N-1) { push(i); }
-
-    while(que.size()) {
-        auto [a, i] = que.top(); que.pop();
-        A[i] = 0;
-        ll len = t+a;
-        ll dt = L-len;
-        de4(a,i,len,dt)
-        t += dt;
-        push(i-1);
-        push(i+1);
+        if(t==0) { // turn
+            if(j<W-1 && k==0) dp[i][j+1][k^1][1] += now;
+            if(i<H-1 && k==1) dp[i+1][j][k^1][1] += now;
+        }
     }
-    Out(t);
+
+    mint ans = 0;
+    rep(k, 2) {
+        ans += dp[H-1][W-1][k][0];
+    }
+    Out(ans);
     
 }
 
