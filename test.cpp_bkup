@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -206,8 +202,6 @@ const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
-const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
-const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
 const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
@@ -219,23 +213,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, T, S);
+
+    vl dp(T+1);
+    rep(i, N) {
+        LONG(a, b);
+        vl pdp(T+1); swap(pdp, dp);
+        rep(j, T+1) {
+            chmax(dp[j], pdp[j]);
+            if(j+b>T) continue;
+            if(j<S && S<j+b) continue;
+            chmax(dp[j+b], pdp[j]+a);
+        }
+    }
+    ll ans = 0;
+    rep(i, T+1) chmax(ans, dp[i]);
+    Out(ans);
     
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### test.cpp ###
