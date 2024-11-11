@@ -215,37 +215,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    VL(A, N);
-    A.insert(A.begin(), 0);
-    A.push_back(0);
-    N += 2;
-    ll t = 0;
-    priority_queue<Pr> que;
-    vb pushed(N);
-
-    auto push=[&](ll i) {
-        if(i==0 || i==N-1) return;
-        if(pushed[i]) return;
-        if(A[i]>A[i-1] && A[i]>A[i+1]) {
-            que.emplace(A[i]-t, i);
-            pushed[i] = true;
+    LONG(N);
+    umap<ll,ll> mp;
+    LONG(H, W);
+    W++;
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
+    rep(i, N) {
+        LONG(p,q,r,s); --p, --q;
+        for(ll a=p;a<r;++a) for(ll b=q;b<s;++b) {
+            mp[gid(a,b)]++;
         }
-    };
-
-    repk(i, 1, N-1) { push(i); }
-
-    while(que.size()) {
-        auto [a, i] = que.top(); que.pop();
-        A[i] = 0;
-        ll len = t+a;
-        ll dt = L-len;
-        de4(a,i,len,dt)
-        t += dt;
-        push(i-1);
-        push(i+1);
     }
-    Out(t);
+    ll mx = 0;
+    for(auto [id,v]:mp) {
+        auto [x,y] = rid(id);
+        chmax(mx, v);
+    }
+    ll ans = 0;
+    for(auto [id,v]:mp) {
+        if(v==mx) ++ans;
+    }
+    Out(mx);
+    Out(ans);
     
 }
 

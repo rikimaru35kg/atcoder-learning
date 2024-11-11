@@ -212,57 +212,106 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    ll d, i, j, k, t;
-    D(ll d, ll i, ll j, ll k, ll t):d(d),i(i),j(j),k(k),t(t) {}
-    bool operator<(const D &o) const {
-        return d<o.d;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
     }
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-using vvvvm = vector<vvvm>;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, H);
-    mint::set_mod(100000);
-
-    vvvvm dp(H, vvvm(W, vvm(2, vm(2))));
-    dp[0][0][0][0] = 1;
-    dp[0][0][1][0] = 1;
-    rep(i, H) rep(j, W) rep(k, 2) rep(t, 2) {
-        mint now = dp[i][j][k][t];
-        if(now==0) continue;
-        de4(i,j,k,t)
-        de(now)
-        { // no turn
-            if(j<W-1 && k==0) dp[i][j+1][k][0] += now;
-            if(i<H-1 && k==1) dp[i+1][j][k][0] += now;
-        }
-        if(t==0) { // turn
-            if(j<W-1 && k==0) dp[i][j+1][k^1][1] += now;
-            if(i<H-1 && k==1) dp[i+1][j][k^1][1] += now;
-        }
+    LONG(N);
+    vvl v(4);
+    rep(i, 4) {
+        VL(A, N);
+        A.push_back(-INF-i);
+        A.push_back(INF+i);
+        sort(all(A));
+        v[i] = A;
     }
 
-    mint ans = 0;
-    rep(k, 2) {
-        ans += dp[H-1][W-1][k][0];
+    ll ans = INF;
+    repk(i, 1, N+1) {
+        rep(s, 8) {
+            vl p;
+            ll a = v[0][i];
+            p.push_back(a);
+            rep1(j, 3) {
+                auto [n,x] = lowbou(v[j], a);
+                if(s>>(j-1)&1) --n;
+                ll na = v[j][n];
+                p.push_back(na);
+                a = na;
+            }
+            sort(all(p));
+            chmin(ans, p.back()-p[0]);
+        }
     }
     Out(ans);
     
