@@ -215,27 +215,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(A, H, W);
-    auto count=[&](ll i, ll j) -> ll {
-        vl cnt(8);
-        rep(k, W) {
-            ll a = A[i][k], b = A[j][k];
-            ll s = 1<<a | 1<<b;
-            cnt[s]++;
+    LONG(N, L);
+    VL(A, N);
+    A.insert(A.begin(), 0);
+    A.push_back(0);
+    N += 2;
+    ll t = 0;
+    priority_queue<Pr> que;
+    vb pushed(N);
+
+    auto push=[&](ll i) {
+        if(i==0 || i==N-1) return;
+        if(pushed[i]) return;
+        if(A[i]>A[i-1] && A[i]>A[i+1]) {
+            que.emplace(A[i]-t, i);
+            pushed[i] = true;
         }
-        ll ret = 0;
-        rep(s, 8) rep(ns, s) {
-            if((s|ns)!=7) continue;
-            ret += cnt[s] * cnt[ns];
-        }
-        return ret;
     };
-    ll ans = 0;
-    rep(j, H) rep(i, j) {
-        ans += count(i, j);
+
+    repk(i, 1, N-1) { push(i); }
+
+    while(que.size()) {
+        auto [a, i] = que.top(); que.pop();
+        A[i] = 0;
+        ll len = t+a;
+        ll dt = L-len;
+        de4(a,i,len,dt)
+        t += dt;
+        push(i-1);
+        push(i+1);
     }
-    Out(ans);
+    Out(t);
     
 }
 
