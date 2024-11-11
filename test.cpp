@@ -212,31 +212,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    VLM(B, N);
-    ll tot = accumulate(all(A), 0LL);
-
-    segtree<S,op,e> seg(N);
-
-    ll tmp = 0;
-    rep(i, N) {
-        auto a = seg.prod(0, B[i]);
-        a += A[B[i]];
-        chmax(tmp, a);
-        seg.set(B[i], a);
+    LONG(H, W);
+    VVL(A, H, W);
+    auto count=[&](ll i, ll j) -> ll {
+        vl cnt(8);
+        rep(k, W) {
+            ll a = A[i][k], b = A[j][k];
+            ll s = 1<<a | 1<<b;
+            cnt[s]++;
+        }
+        ll ret = 0;
+        rep(s, 8) rep(ns, s) {
+            if((s|ns)!=7) continue;
+            ret += cnt[s] * cnt[ns];
+        }
+        return ret;
+    };
+    ll ans = 0;
+    rep(j, H) rep(i, j) {
+        ans += count(i, j);
     }
-    ll ans = 2*tot - 2*tmp;
     Out(ans);
     
 }
