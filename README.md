@@ -1731,6 +1731,13 @@
 - !復習価値中 [O - 通知](https://atcoder.jp/contests/past202012-open/tasks/past202012_o)
 - !復習価値低 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
 
+## 挿入ソート
+- ネタばれになるので取り合えず解法は書かない
+### 例題
+- 基本 [D - トランプ挿入ソート](https://atcoder.jp/contests/abc006/tasks/abc006_4)
+- [bookshelf - 本棚 (Bookshelf)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_bookshelf)
+
+
 ## 牛ゲー
 - 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題
 - 線形計画法のLP双対により、最短経路問題に帰着できる
@@ -1972,6 +1979,7 @@
 - [A - オレンジの出荷 (Oranges)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_a)
 - [B - IOI 饅頭 (IOI Manju)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho2)
 - [C - Sowing Stones](https://atcoder.jp/contests/abc379/tasks/abc379_c)
+- [E - イルミネーション (Illumination)](https://atcoder.jp/contests/joi2012yo/tasks/joi2012yo_e)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

@@ -201,6 +201,7 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
+const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -211,53 +212,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
+#include <atcoder/segtree>
 using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, H);
-    vvl A(H+2, vl(W+2));
-    repk(i, 1, H+1) repk(j, 1, W+1) {
-        LONG(a);
-        if(a==0) continue;
-        A[i][j] = 1;
-    }
-    ll H2 = H+2, W2 = W+2;
-    auto gid=[&](ll i, ll j) {return i*W2+j;};
-    auto rid=[&](ll id) -> Pr {return {id/W2, id%W2};};
+    LONG(N);
+    VL(A, N);
+    VLM(B, N);
+    ll tot = accumulate(all(A), 0LL);
 
-    dsu uf(H2*W2);
-    rep(i, H2) rep(j, W2) {
-        if(A[i][j]==1)continue;
-        vp dij;
-        if(i%2==0) dij = hex0;
-        else dij = hex1;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H2,W2)) continue;
-            if(A[ni][nj]==1) continue;
-            uf.merge(gid(i,j), gid(ni,nj));
-        }
-    }
-    auto outside=[&](ll i, ll j)-> bool {
-        return uf.same(gid(i,j), gid(0,0));
-    };
+    segtree<S,op,e> seg(N);
 
-    ll ans = 0;
-    rep(i, H2) rep(j, W2) {
-        if(A[i][j]==0) continue;
-        vp dij;
-        if(i%2==0) dij = hex0;
-        else dij = hex1;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H2,W2)) continue;
-            if(!outside(ni,nj)) continue;
-            ++ans;
-        }
+    ll tmp = 0;
+    rep(i, N) {
+        auto a = seg.prod(0, B[i]);
+        a += A[B[i]];
+        chmax(tmp, a);
+        seg.set(B[i], a);
     }
+    ll ans = 2*tot - 2*tmp;
     Out(ans);
     
 }
