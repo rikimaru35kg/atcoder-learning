@@ -1989,9 +1989,11 @@
 - [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
 - [E - 通勤経路](https://atcoder.jp/contests/joi2010yo/tasks/joi2010yo_e)
 - [A - ストーブ (Stove)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_a)
+- [A - JJOOII (JJOOII)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho1)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [D - コイン集め 2 (Coin Collecting 2)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_d)
+- [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)

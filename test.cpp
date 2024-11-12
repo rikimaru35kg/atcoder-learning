@@ -215,21 +215,30 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(T, N);
-    priority_queue<ll,vl,greater<ll>> que;
-    rep(i, N-1) {
-        que.push(T[i+1]-T[i]-1);
-    }
+    STRING(S);
+    ll N = SIZE(S);
 
-    ll ans = N;
-    ll sz = N;
-    while(sz>K) {
-        auto x = que.top(); que.pop();
-        ans += x;
-        --sz;
+    ll i = 0;
+    ll ans = 0;
+    while(i<N) {
+        if(S[i]!='O') {
+            ++i; continue;
+        }
+        ll j = i;
+        while(j<N && S[j]=='O') ++j;
+        ll k = j-i;
+        if(i-k<0 || S.substr(i-k, k)!=string(k, 'J')) {
+            i=j; continue;
+        }
+        if(S.substr(j, k)!=string(k, 'I')) {
+            i=j; continue;
+        }
+        chmax(ans, k);
+        i=j;
     }
     Out(ans);
+    string tmp = "ABCD";
+    de(tmp.substr(4, 1001));
     
 }
 

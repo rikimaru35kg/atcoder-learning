@@ -215,38 +215,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VS(S, H);
-    vvl Sr(H), Sc(W);
+    LONG(N, M);
+    VI(A, N); VI(B, M);
 
-    auto calc=[&](string s, char c) -> vl {
-        ll n = SIZE(s);
-        vl Sc(n+1);
-        rep(i, n) if(s[i]==c) Sc[i] = 1;
-        repr(i, n) {
-            Sc[i] += Sc[i+1];
+    auto calc=[&](ll j) -> ll {
+        ll ret = 0;
+        rep(i, N) {
+            if(A[i]==B[j]) {
+                ++j; ++ret;
+            }
+            if(j==M) break;
         }
-        return Sc;
+        return ret;
     };
 
-
-    rep(i, H) {
-        Sr[i] = calc(S[i], 'O');
-    }
-    rep(j, W) {
-        string tmp;
-        rep(i, H) tmp += S[i][j];
-        Sc[j] = calc(tmp, 'I');
-    }
-
     ll ans = 0;
-    rep(i, H) rep(j, W) {
-        if(S[i][j]!='J') continue;
-        ll now = Sr[i][j+1] * Sc[j][i+1];
-        ans += now;
+    rep(j, M) {
+        chmax(ans, calc(j));
     }
     Out(ans);
-    
 }
-
-// ### test.cpp ###
