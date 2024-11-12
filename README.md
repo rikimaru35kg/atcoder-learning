@@ -1988,6 +1988,7 @@
 - [stairs - 階段 (Stairs)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_stairs)
 - [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
 - [E - 通勤経路](https://atcoder.jp/contests/joi2010yo/tasks/joi2010yo_e)
+- [A - ストーブ (Stove)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_a)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

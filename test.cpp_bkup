@@ -215,28 +215,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    umap<ll,ll> mp;
     LONG(H, W);
-    W++;
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-    auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
-    rep(i, N) {
-        LONG(p,q,r,s); --p, --q;
-        for(ll a=p;a<r;++a) for(ll b=q;b<s;++b) {
-            mp[gid(a,b)]++;
+    VS(S, H);
+    vvl Sr(H), Sc(W);
+
+    auto calc=[&](string s, char c) -> vl {
+        ll n = SIZE(s);
+        vl Sc(n+1);
+        rep(i, n) if(s[i]==c) Sc[i] = 1;
+        repr(i, n) {
+            Sc[i] += Sc[i+1];
         }
+        return Sc;
+    };
+
+
+    rep(i, H) {
+        Sr[i] = calc(S[i], 'O');
     }
-    ll mx = 0;
-    for(auto [id,v]:mp) {
-        auto [x,y] = rid(id);
-        chmax(mx, v);
+    rep(j, W) {
+        string tmp;
+        rep(i, H) tmp += S[i][j];
+        Sc[j] = calc(tmp, 'I');
     }
+
     ll ans = 0;
-    for(auto [id,v]:mp) {
-        if(v==mx) ++ans;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]!='J') continue;
+        ll now = Sr[i][j+1] * Sc[j][i+1];
+        ans += now;
     }
-    Out(mx);
     Out(ans);
     
 }
