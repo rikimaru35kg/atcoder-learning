@@ -212,48 +212,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    auto vp = prime_factorization(N);
+    LONG(N, K);
+    ll x = 0;
+    vl A;
+    rep(i, K) {
+        LONG(a);
+        if(a==0) {
+            x = 1; continue;
+        }
+        A.push_back(a);
+    }
+    K = SIZE(A);
+    sort(all(A));
+    if(K==0) Outend(1);
 
-    auto calc=[&](ll x, ll p) {
-        ll ret = 0;
-        while(x%p==0) {
-            x /= p;
-            ++ret;
+    vp v;
+    rep(i, K) {
+        if(v.empty()) {
+            v.emplace_back(A[i],1);
+        } else if (A[i]==A[i-1]+1) {
+            v.back().second++;
+        } else {
+            v.emplace_back(A[i],1);
         }
-        return ret;
-    };
-    ll ans = 2;
-    for(auto [p,n]: vp) {
-        ll cnt = 0;
-        ll y = p;
-        for(ll x=p; cnt<n; x+=p) {
-            cnt += calc(x, p);
-            chmax(y, x);
-        }
-        chmax(ans, y);
+    }
+    ll ans = 0;
+    for(auto [a,n]: v) {
+        chmax(ans, n);
+    }
+    ll Z = SIZE(v);
+    if(x==0) Outend(ans);
+
+    ans++;
+    if(Z==1) Outend(ans);
+
+    rep(i, Z-1) {
+        auto [a1,n1] = v[i];
+        auto [a2,n2] = v[i+1];
+        if(a1+n1+1==a2) chmax(ans, n1+n2+1);
     }
     Out(ans);
+
+
     
 }
 

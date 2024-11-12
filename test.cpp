@@ -215,47 +215,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    ll x = 0;
-    vl A;
+    LONG(a, b, c);
+    ll N = a+b+c;
+    LONG(K);
+    vl status(N, 2);
+    vt3 cond;
     rep(i, K) {
-        LONG(a);
-        if(a==0) {
-            x = 1; continue;
-        }
-        A.push_back(a);
-    }
-    K = SIZE(A);
-    sort(all(A));
-    if(K==0) Outend(1);
-
-    vp v;
-    rep(i, K) {
-        if(v.empty()) {
-            v.emplace_back(A[i],1);
-        } else if (A[i]==A[i-1]+1) {
-            v.back().second++;
+        LONGM(x,y,z); LONG(t);
+        de4(x,y,z,t)
+        if(t==1) {
+            status[x] = 1;
+            status[y] = 1;
+            status[z] = 1;
         } else {
-            v.emplace_back(A[i],1);
+            cond.emplace_back(x,y,z);
         }
     }
-    ll ans = 0;
-    for(auto [a,n]: v) {
-        chmax(ans, n);
+    de(status)
+    for(auto [x,y,z]: cond) {
+        ll cnt = 0;
+        if(status[x]==1) ++cnt;
+        if(status[y]==1) ++cnt;
+        if(status[z]==1) ++cnt;
+        if(cnt==2) {
+            if(status[x]==2) status[x] = 0;
+            if(status[y]==2) status[y] = 0;
+            if(status[z]==2) status[z] = 0;
+        }
     }
-    ll Z = SIZE(v);
-    if(x==0) Outend(ans);
-
-    if(Z==1) Outend(ans+1);
-
-    rep(i, Z-1) {
-        auto [a1,n1] = v[i];
-        auto [a2,n2] = v[i+1];
-        if(a1+n1+1==a2) chmax(ans, n1+n2+1);
+    for(auto x: status) {
+        Out(x);
     }
-    Out(ans);
-
-
     
 }
 

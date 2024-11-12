@@ -1992,6 +1992,7 @@
 - [A - JJOOII (JJOOII)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho1)
 - [A - IOIOI](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_a)
 - [B - 最長の階段](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_b)
+- [E - 品質検査](https://atcoder.jp/contests/joi2007yo/tasks/joi2007yo_e)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
