@@ -1990,6 +1990,7 @@
 - [E - 通勤経路](https://atcoder.jp/contests/joi2010yo/tasks/joi2010yo_e)
 - [A - ストーブ (Stove)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_a)
 - [A - JJOOII (JJOOII)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho1)
+- [A - IOIOI](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_a)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

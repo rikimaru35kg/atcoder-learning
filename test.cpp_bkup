@@ -216,22 +216,34 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, M);
-    VI(A, N); VI(B, M);
+    STRING(S);
 
-    auto calc=[&](ll j) -> ll {
-        ll ret = 0;
-        rep(i, N) {
-            if(A[i]==B[j]) {
-                ++j; ++ret;
-            }
-            if(j==M) break;
+    ll r = 0;
+    vl lens;
+    ll l = 0;
+    while(l<M) {
+        if(S.substr(l, 3)!="IOI") {
+            ++l;
+            continue;
         }
-        return ret;
-    };
+        r = l+3;
+        while(r<M && S.substr(r, 2)=="OI") {
+            r += 2;
+        }
+        lens.push_back(r-l);
+        de2(l,r)
 
+        l = r;
+    }
+    de(lens)
     ll ans = 0;
-    rep(j, M) {
-        chmax(ans, calc(j));
+    for(auto x: lens) {
+        ll leni = Divceil(x, 2);
+        ll level = N+1;
+        ans += max(leni-level+1,0LL);
     }
     Out(ans);
+    
 }
+
+// ### test.cpp ###

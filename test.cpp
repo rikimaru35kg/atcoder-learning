@@ -212,33 +212,114 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+const long long base = 12345;
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N, M);
     STRING(S);
-    ll N = SIZE(S);
+    ll w = 2*N+1;
+    if(M<w) Pm0
 
-    ll i = 0;
+    mints bh;
+    rep(i, w) {
+        if(i%2==0) bh = bh * base + 'I';
+        else bh = bh * base + 'O';
+    }
+    mints now;
+    rep(i, w) { now = now * base + S[i]; }
+
     ll ans = 0;
-    while(i<N) {
-        if(S[i]!='O') {
-            ++i; continue;
-        }
-        ll j = i;
-        while(j<N && S[j]=='O') ++j;
-        ll k = j-i;
-        if(i-k<0 || S.substr(i-k, k)!=string(k, 'J')) {
-            i=j; continue;
-        }
-        if(S.substr(j, k)!=string(k, 'I')) {
-            i=j; continue;
-        }
-        chmax(ans, k);
-        i=j;
+    mints po = 1;
+    rep(i, w-1) po *= base;
+    rep(i, M+1-w) {
+        if(now==bh) ++ans;
+
+        if(i==M-w) break;
+        now -= po*S[i];
+        now = now * base + S[i+w];
     }
     Out(ans);
-    string tmp = "ABCD";
-    de(tmp.substr(4, 1001));
     
 }
 
