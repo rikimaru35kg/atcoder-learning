@@ -212,39 +212,104 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(a, b, c);
-    ll N = a+b+c;
-    LONG(K);
-    vl status(N, 2);
-    vt3 cond;
-    rep(i, K) {
-        LONGM(x,y,z); LONG(t);
-        de4(x,y,z,t)
-        if(t==1) {
-            status[x] = 1;
-            status[y] = 1;
-            status[z] = 1;
-        } else {
-            cond.emplace_back(x,y,z);
+    LONG(N, M);
+    VL2(A, B, N);
+
+    vl mem(M+1, -1);
+    auto f=[&](auto f, ll x) -> ll {
+        if(x==0) return 0;
+        if(mem[x]!=-1) return mem[x];
+        ll ret = 0;
+        rep(i, N) {
+            if(x-A[i]<0) continue;
+            ll now = f(f, x-A[i]+B[i]) + B[i];
+            chmax(ret, now);
         }
+        return mem[x] = ret;
+    };
+
+    vl choco;
+    rep1(k, M) {
+        choco.push_back(f(f,k)+k);
     }
-    de(status)
-    for(auto [x,y,z]: cond) {
-        ll cnt = 0;
-        if(status[x]==1) ++cnt;
-        if(status[y]==1) ++cnt;
-        if(status[z]==1) ++cnt;
-        if(cnt==2) {
-            if(status[x]==2) status[x] = 0;
-            if(status[y]==2) status[y] = 0;
-            if(status[z]==2) status[z] = 0;
-        }
-    }
-    for(auto x: status) {
-        Out(x);
+    rep1(k, M) {
+        auto [n,x] = lowbou(choco, k);
+        ll ans = n+1;
+        Out(ans);
     }
     
 }
