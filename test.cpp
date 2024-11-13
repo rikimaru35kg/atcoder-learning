@@ -212,65 +212,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    vt3 smart;
-    vl dead;
-    rep(i, N) {
-        LONG(l,r,c);
-        smart.emplace_back(l,r,c);
-        dead.emplace_back(r);
-    }
-    sort(all(smart));
+    LONG(H, W);
+    VVL(A, H, W);
+    
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    // auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
 
-    pq que;
-auto queprint=[&]() {
-#ifdef __DEBUG
-    vp save;
-    while(que.size()) {
-        auto [a,b] = que.top(); que.pop();
-        fprintf(stderr, "{%lld,%lld} ", a, b);
-        save.emplace_back(a, b);
-    }
-    cerr<<endl;
-    while(save.size()) {
-        auto [a, b] = save.back(); save.pop_back();
-        que.emplace(a, b);
-    }
-#endif
-};
-
-auto segprint=[&](){
-#ifdef __DEBUG
-    de("-- segprint --")
-    ll sz = seg.max_right(0,[](S x)->bool{return true;});
-    rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
-    cerr<<endl;
-#endif
-};
-
-    ll lt = -INF;
-    ll ans = 0;
-    for(auto [l,r,c,t]: event) {
-        while(que.size() && que.top().first<l-1) que.pop();
-        ll rem = l - lt;
-        while(que.size() && rem) {
-            auto [dead, n] = que.top(); que.pop();
-            ll x = min(rem, n);
-            ans += x;
-            n -= x;
-            rem -= x;
-            if(n>0) {
-                que.emplace(dead, n); break;
+    ll HW = H*W;
+    auto calc=[&]() -> vl {
+        dsu uf(HW);
+        vl ret(W-1);
+        ll now = HW;
+        auto merge=[&](ll id1, ll id2) {
+            if(uf.same(id1, id2)) return;
+            uf.merge(id1, id2);
+            --now;
+        };
+        rep(i, H-1) {
+            if(A[i][0]==A[i+1][0]) { merge(gid(i,0), gid(i+1,0)); }
+        }
+        rep(j, W-1) {
+            ret[j] = now - H*(W-(j+1));
+            rep(i, H-1) {
+                if(A[i][j+1]==A[i+1][j+1]) { merge(gid(i,j+1), gid(i+1,j+1)); }
+            }
+            rep(i, H) {
+                if(A[i][j]==A[i][j+1]) { merge(gid(i,j), gid(i,j+1)); }
             }
         }
-        if(t==0) que.emplace(r, c);
-        // print();
-        lt = l;
+        return ret;
+    };
+
+    vl left = calc();
+    rep(i, H) reverse(all(A[i]));
+    vl right = calc();
+    rep(i, H) reverse(all(A[i]));
+    reverse(all(right));
+
+    ll ans = INF;
+    rep(j, W-1) {
+        ll now = left[j] + right[j];
+        chmin(ans, now);
     }
     Out(ans);
+
+
     
 }
 
