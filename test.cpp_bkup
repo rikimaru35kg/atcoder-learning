@@ -215,6 +215,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(N,M,T,K,L);
+    VL(A, M);
+    sort(all(A));
+
+    vvl road(N, vl(1, -L));
+    set<Pr> st;
+    rep(i, N) st.emplace(0, i);
+
+    rep(i, M) {
+        auto it = st.upper_bound({A[i], -1});
+        if(it==st.begin()) Pm1
+        --it;
+        auto [t, ni] = *it;
+        if(t+L>T) Pm1
+        road[ni].push_back(A[i]);
+        st.erase(it);
+        st.emplace(A[i]+L, ni);
+    }
+    de(road)
     
 }
 

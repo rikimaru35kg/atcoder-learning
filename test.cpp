@@ -212,57 +212,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(A, H, W);
-    
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-    // auto rid=[&](ll id) -> Pr {return {id/W, id%W};};
-
-    ll HW = H*W;
-    auto calc=[&]() -> vl {
-        dsu uf(HW);
-        vl ret(W-1);
-        ll now = HW;
-        auto merge=[&](ll id1, ll id2) {
-            if(uf.same(id1, id2)) return;
-            uf.merge(id1, id2);
-            --now;
-        };
-        rep(i, H-1) {
-            if(A[i][0]==A[i+1][0]) { merge(gid(i,0), gid(i+1,0)); }
-        }
-        rep(j, W-1) {
-            ret[j] = now - H*(W-(j+1));
-            rep(i, H-1) {
-                if(A[i][j+1]==A[i+1][j+1]) { merge(gid(i,j+1), gid(i+1,j+1)); }
-            }
-            rep(i, H) {
-                if(A[i][j]==A[i][j+1]) { merge(gid(i,j), gid(i,j+1)); }
-            }
-        }
-        return ret;
-    };
-
-    vl left = calc();
-    rep(i, H) reverse(all(A[i]));
-    vl right = calc();
-    rep(i, H) reverse(all(A[i]));
-    reverse(all(right));
-
-    ll ans = INF;
-    rep(j, W-1) {
-        ll now = left[j] + right[j];
-        chmin(ans, now);
+    LONG(N, M, Q, L);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c); --c;
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    Out(ans);
-
-
+    priority_queue<t3,vt3,greater<t3>> que;
+    ll K = 30;
+    vvl dist(N, vl(K, INF));
+    auto push=[&](ll v, ll k, ll d) {
+        if(k>=K) return;
+        if(dist[v][k] <= d) return;
+        dist[v][k] = d;
+        que.emplace(d, v, k);
+    };
+    push(0, 0, 1);
+    while(que.size()) {
+        auto [d,v,k] = que.top(); que.pop();
+        if(dist[v][k]!=d) continue;
+        for(auto [nv,c]: from[v]) {
+            ll cost = 1LL<<k;
+            push(nv, k+c, d+cost);
+        }
+    }
+    rep(i, Q) {
+        LONGM(v);
+        ll ans = INF;
+        rep(k, K) {
+            if(dist[v][k]>L) continue;
+            chmin(ans, dist[v][k]);
+        }
+        if(ans==INF) puts("Large");
+        else Out(ans);
+    }
     
 }
 

@@ -305,6 +305,7 @@
 - 基本 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 基本 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 - !復習価値高 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
+- !要復習 [F - タクシー 2 (Taxis 2)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_f)
 
 ## ポテンシャル法
 - ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる
