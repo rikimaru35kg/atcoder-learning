@@ -1504,7 +1504,8 @@
 - 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
 - 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
-- !要復習 電車発車の最小遅れ問題（考察も実装も勉強になる） [ E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
+- !復習価値高 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
+- !要復習 電車発車の最小遅れ問題（考察も実装も勉強になる） [E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
 
 ## 後ろから考える
 - 後勝ち操作の場合
