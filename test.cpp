@@ -212,114 +212,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N, K);
-    STRING(Str);
-    vl A;
-    for(auto c: Str) {
-        ll x = 0;
-        if(c=='G') x = 1;
-        if(c=='B') x = 2;
-        A.push_back(x);
+    vt3 smart;
+    vl dead;
+    rep(i, N) {
+        LONG(l,r,c);
+        smart.emplace_back(l,r,c);
+        dead.emplace_back(r);
     }
+    sort(all(smart));
 
-    using SEG = segtree<S,op,e>;
-    vector<SEG> seg(3, SEG(N+1));
-    seg[2].set(0, 0);
+    pq que;
+auto queprint=[&]() {
+#ifdef __DEBUG
+    vp save;
+    while(que.size()) {
+        auto [a,b] = que.top(); que.pop();
+        fprintf(stderr, "{%lld,%lld} ", a, b);
+        save.emplace_back(a, b);
+    }
+    cerr<<endl;
+    while(save.size()) {
+        auto [a, b] = save.back(); save.pop_back();
+        que.emplace(a, b);
+    }
+#endif
+};
 
-    auto upd=[&](SEG &seg, ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
-    };
+auto segprint=[&](){
+#ifdef __DEBUG
+    de("-- segprint --")
+    ll sz = seg.max_right(0,[](S x)->bool{return true;});
+    rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
+    cerr<<endl;
+#endif
+};
 
-    rep1(r, N) {
-        ll a = A[r-1];
-        upd(seg[a], r, seg[(a+2)%3].get(r-1));
-        rep(c, 3) {
-            ll l = max(r-K, 0LL);
-            upd(seg[c], r, seg[c].prod(l, r) + 1);
+    ll lt = -INF;
+    ll ans = 0;
+    for(auto [l,r,c,t]: event) {
+        while(que.size() && que.top().first<l-1) que.pop();
+        ll rem = l - lt;
+        while(que.size() && rem) {
+            auto [dead, n] = que.top(); que.pop();
+            ll x = min(rem, n);
+            ans += x;
+            n -= x;
+            rem -= x;
+            if(n>0) {
+                que.emplace(dead, n); break;
+            }
         }
+        if(t==0) que.emplace(r, c);
+        // print();
+        lt = l;
     }
-
-    ll ans = seg[2].get(N);
     Out(ans);
     
 }

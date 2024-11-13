@@ -212,6 +212,12 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+using S = ll;
+S op(S a, S b) {return min(a,b);}
+S e() {return INF;}
+
 // return minimum index i where a[i] >= x, and its value a[i]
 template<typename T>
 pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
@@ -286,31 +292,35 @@ pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL2(A, B, N);
+    LONG(N, K);
+    STRING(Str);
+    vl A;
+    for(auto c: Str) {
+        ll x = 0;
+        if(c=='G') x = 1;
+        if(c=='B') x = 2;
+        A.push_back(x);
+    }
 
-    vl mem(M+1, -1);
-    auto f=[&](auto f, ll x) -> ll {
-        if(x==0) return 0;
-        if(mem[x]!=-1) return mem[x];
-        ll ret = 0;
-        rep(i, N) {
-            if(x-A[i]<0) continue;
-            ll now = f(f, x-A[i]+B[i]) + B[i];
-            chmax(ret, now);
-        }
-        return mem[x] = ret;
+    using SEG = segtree<S,op,e>;
+    vector<SEG> seg(3, SEG(N+1));
+    seg[2].set(0, 0);
+
+    auto upd=[&](SEG &seg, ll i, ll x) {
+        seg.set(i, op(seg.get(i), x));
     };
 
-    vl choco;
-    rep1(k, M) {
-        choco.push_back(f(f,k)+k);
+    rep1(r, N) {
+        ll a = A[r-1];
+        upd(seg[a], r, seg[(a+2)%3].get(r-1));
+        rep(c, 3) {
+            ll l = max(r-K, 0LL);
+            upd(seg[c], r, seg[c].prod(l, r) + 1);
+        }
     }
-    rep1(k, M) {
-        auto [n,x] = lowbou(choco, k);
-        ll ans = n+1;
-        Out(ans);
-    }
+
+    ll ans = seg[2].get(N);
+    Out(ans);
     
 }
 
