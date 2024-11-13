@@ -933,6 +933,7 @@
 - !要復習 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
 - !要復習 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
 - !要復習 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
+- !要復習 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f)
 - !復習価値高 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値中 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !要復習（解説見ても難しく解いていない。余裕があれば挑戦しても良いかも。NOTE非掲載） [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
