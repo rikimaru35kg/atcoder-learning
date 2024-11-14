@@ -1779,6 +1779,10 @@
 - !復習価値中 [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
 - !要復習 [A - いっしょ (Together)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a)
 
+## 周期に着目する
+### 例題
+- !復習価値中 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
+
 ## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
 - K番目を考える時、二分探索するのも典型

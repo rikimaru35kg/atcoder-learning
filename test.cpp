@@ -215,63 +215,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, L);
-    VL(X, N); VL(T, N);
-    X.insert(X.begin(), 0);
-    T.insert(T.begin(), -1);
-    N++;
-    X.push_back(L);
-    T.push_back(-1);
-
-    vvvl dpl(N+1, vvl(N+1, vl(N+1, INF)));
-    vvvl dpr(N+1, vvl(N+1, vl(N+1, INF)));
-    dpl[0][N][0] = 0;
-    dpr[0][N][0] = 0;
-    rep(l, N) {
-        for(ll r=N; r>l+1; --r) {
-            rep(k, N) {
-                ll now = dpl[l][r][k];
-                if(now==INF) continue;
-                { // left
-                    ll gain = 0;
-                    if(now+X[l+1]-X[l]<=T[l+1]) gain = 1;
-                    chmin(dpl[l+1][r][k+gain], now+X[l+1]-X[l]);
-                }
-                { // right
-                    ll gain = 0;
-                    if(now+X[l]+L-X[r-1]<=T[r-1]) gain = 1;
-                    chmin(dpr[l][r-1][k+gain], now+X[l]+L-X[r-1]);
-                }
-            }
-            rep(k, N) {
-                ll now = dpr[l][r][k];
-                if(now==INF) continue;
-                { // right
-                    ll gain = 0;
-                    if(now+X[r]-X[r-1]<=T[r-1]) gain = 1;
-                    chmin(dpr[l][r-1][k+gain], now+X[r]-X[r-1]);
-                }
-                { // left
-                    ll gain = 0;
-                    if(now+L-X[r]+X[l+1]<=T[l+1]) gain = 1;
-                    chmin(dpl[l+1][r][k+gain], now+L-X[r]+X[l+1]);
-                }
-            }
+    LONG(N, Q);
+    VL(D, N);
+    vl C(N);
+    ll pc = 1;
+    rep(i, N) {
+        ll now = Divceil(D[i], pc) * pc;
+        C[i] = now;
+        pc = C[i];
+    }
+    auto calc=[&](ll t) {
+        vl ret(N);
+        rep(i, N) {
+            ret[i] = -(i+1) + Div(t, C[i]) * C[i];
         }
-    }
-    ll ans = 0;
-    rep(l, N+1) rep(r, N+1) rep(k, N+1) {
-        if(dpl[l][r][k]==INF) continue;
-        chmax(ans, k);
-    }
-    rep(l, N+1) rep(r, N+1) rep(k, N+1) {
-        if(dpr[l][r][k]==INF) continue;
-        chmax(ans, k);
-    }
-    Out(ans);
+        de(ret)
+    };
+    // rep1(t, 7) calc(t);
+    rep(i, Q) {
+        LONG(t, l, r);
+        // de3(t, l, r)
+        // calc(t);
+        auto f =[&](ll i) -> bool {
+            ll now = -(i+1) + Div(t, C[i]) * C[i];
+            return now<=r;
+        };
+        auto g =[&](ll i) -> bool {
+            ll now = -(i+1) + Div(t, C[i]) * C[i];
+            return now<=l-1;
+        };
 
-
+        ll ri = binary_search(N, -1, f);
+        ll li = binary_search(N, -1, g);
+        ll ans = li - ri;
+        if(t>=l && t<=r) ++ans;
+        Out(ans);
+    }
+    
 }
+
+// ### test.cpp ###
