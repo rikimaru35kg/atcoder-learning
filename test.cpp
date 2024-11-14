@@ -310,16 +310,18 @@ int main () {
     if(B) dp[1][0] = 1;
     ll a = 0, b = 0;
     for(auto [x, p]: X) {
-        ll &idx = a, lim = A, olim = B;
+        ll idx = a, lim = A, olim = B;
         if(p==1) idx = b, lim = B, olim = A;
         ll now = dp[p][idx];
-        if(idx<lim) chmax(dp[p][idx+1], now+1);
+        if(idx<lim-1) chmax(dp[p][idx+1], now+1);
         ll nx = x + now*K+D;
         auto [j,y] = uppbou(S[p^1], nx);
         if(j!=olim) chmax(dp[p^1][j], now+1);
         de5(x,p,nx,j,now)
+        de(idx)
         de(dp)
-        ++idx;
+        if(p==0) ++a;
+        else ++b;
     }
     ll ans = 0;
     rep(i, 2) rep(j, A+B+10) chmax(ans, dp[i][j]);

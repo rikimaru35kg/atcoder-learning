@@ -961,6 +961,7 @@
 - !復習価値高 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
+- !要復習 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
