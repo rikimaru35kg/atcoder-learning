@@ -212,48 +212,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q); VL(X, N);
-    VL(W, Q);
-    vp span;
-    rep(i, N-1) { span.emplace_back(X[i+1]-X[i], i); }
-    sort(all(span));
+    LONG(N, K);
+    VL(A, N);
+    VL(B, N);
 
-    ll L=0, R=0;
-    ll v = 0;
-    ll idx = 0;
-    vl ans(N);
-    rep(i, Q) {
-        v += W[i];
-        ll nR = max(R, v);
-        ll nL = max(L, -v);
-        while(idx<N-1 && span[idx].first<=nR+nL) {
-            auto [T, si] = span[idx];
-            if(W[i]>0) {
-                ans[si] += T-L;
-                ans[si+1] += L;
-            } else {
-                ans[si] += R;
-                ans[si+1] += T-R;
+    auto f=[&](ll t) -> bool {
+        ll cnt = 0;
+        ll rem = 0;
+        repr(i, N) {
+            ll b = B[i];
+            ll consume = min(b, rem);
+            ll den = t-A[i];
+            b -= consume;
+            rem -= consume;
+            ll now = Divceil(b, den);
+            cnt += now;
+            if(cnt>K) return false;
+            if(b%den!=0) {
+                rem += den-b%den;
             }
-            ++idx;
         }
-        R = nR;
-        L = nL;
-    }
-    for(ll i=idx; i<N-1; ++i) {
-        auto [T,si] = span[i];
-        ans[si] += R;
-        ans[si+1] += L;
-    }
-    ans[0] += L;
-    ans[N-1] += R;
+        return cnt <= K;
+    };
+
+    ll ans = binary_search((ll)1e15, A[N-1], f);
     Out(ans);
-
-
-
     
 }
 

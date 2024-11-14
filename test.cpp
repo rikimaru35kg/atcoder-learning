@@ -158,10 +158,12 @@ template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return r
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
 #define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
+#define de5(var1,var2,var3,var4,var5) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<' '<<#var5<<": "; debug_view(var1,var2,var3,var4,var5);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
+template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -190,6 +192,7 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de2(var1,var2) {}
 #define de3(var1,var2,var3) {}
 #define de4(var1,var2,var3,var4) {}
+#define de5(var1,var2,var3,var4,var5) {}
 #define deb(var) {}
 #endif
 int IINF = 1001001001;
@@ -212,54 +215,114 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
     }
-    return ok;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
     }
-    return ok;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(A, N);
-    VL(B, N);
+    LONG(N, D, K);
+    vvl S(2);
+    vp X;
+    rep(i, N) {
+        LONGM(p); LONG(s);
+        S[p].push_back(s);
+        X.emplace_back(s, p);
+    }
+    // X.emplace_back(0,0); X.emplace_back(0,1);
+    // S[0].push_back(0); S[1].push_back(0);
+    sort(all(S[0])); sort(all(S[1]));
+    sort(all(X));
+    ll A = SIZE(S[0]), B = SIZE(S[1]);
+    de(S)
 
-    auto f=[&](ll t) -> bool {
-        ll cnt = 0;
-        ll rem = 0;
-        repr(i, N) {
-            ll b = B[i];
-            ll consume = min(b, rem);
-            ll den = t-A[i];
-            b -= consume;
-            rem -= consume;
-            ll now = Divceil(b, den);
-            cnt += now;
-            if(cnt>K) return false;
-            if(b%den!=0) {
-                rem += den-b%den;
-            }
-        }
-        return cnt <= K;
-    };
-
-    ll ans = binary_search((ll)1e15, A[N-1], f);
+    vvl dp(2, vl(A+B+10));
+    de2(A,B)
+    if(A) dp[0][0] = 1;
+    if(B) dp[1][0] = 1;
+    ll a = 0, b = 0;
+    for(auto [x, p]: X) {
+        ll &idx = a, lim = A, olim = B;
+        if(p==1) idx = b, lim = B, olim = A;
+        ll now = dp[p][idx];
+        if(idx<lim) chmax(dp[p][idx+1], now+1);
+        ll nx = x + now*K+D;
+        auto [j,y] = uppbou(S[p^1], nx);
+        if(j!=olim) chmax(dp[p^1][j], now+1);
+        de5(x,p,nx,j,now)
+        de(dp)
+        ++idx;
+    }
+    ll ans = 0;
+    rep(i, 2) rep(j, A+B+10) chmax(ans, dp[i][j]);
     Out(ans);
     
 }
