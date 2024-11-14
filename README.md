@@ -55,6 +55,7 @@
 # 工夫した探索
 
 ## 二分探索法
+- ***注意点！！！*** 上下限の見積、オーバーフロー、配列を書き換えない
 - lower_boundやupper_boundは二分探索で計算量はO(logN)
 - lower_boundの第4引数にgreater<ll>()を指定すると降順ソート列のx以下となるイテレータを返すようになる（upperはx未満）
 - 最小値の最大化を二分探索で求められる事が多いのは、最小値（正確には下界）=Xが成立となるかどうかを貪欲法で求められる事が多いから
@@ -72,6 +73,7 @@
 - !復習価値中 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - !復習価値高 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - !復習価値中 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
+- !要復習 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
 
 ## 二分探索による中央値探索
 ### 例題

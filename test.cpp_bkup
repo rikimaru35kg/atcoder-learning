@@ -215,41 +215,45 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q, L);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c); --c;
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-    priority_queue<t3,vt3,greater<t3>> que;
-    ll K = 30;
-    vvl dist(N, vl(K, INF));
-    auto push=[&](ll v, ll k, ll d) {
-        if(k>=K) return;
-        if(dist[v][k] <= d) return;
-        dist[v][k] = d;
-        que.emplace(d, v, k);
-    };
-    push(0, 0, 1);
-    while(que.size()) {
-        auto [d,v,k] = que.top(); que.pop();
-        if(dist[v][k]!=d) continue;
-        for(auto [nv,c]: from[v]) {
-            ll cost = 1LL<<k;
-            push(nv, k+c, d+cost);
-        }
-    }
+    LONG(N, Q); VL(X, N);
+    VL(W, Q);
+    vp span;
+    rep(i, N-1) { span.emplace_back(X[i+1]-X[i], i); }
+    sort(all(span));
+
+    ll L=0, R=0;
+    ll v = 0;
+    ll idx = 0;
+    vl ans(N);
     rep(i, Q) {
-        LONGM(v);
-        ll ans = INF;
-        rep(k, K) {
-            if(dist[v][k]>L) continue;
-            chmin(ans, dist[v][k]);
+        v += W[i];
+        ll nR = max(R, v);
+        ll nL = max(L, -v);
+        while(idx<N-1 && span[idx].first<=nR+nL) {
+            auto [T, si] = span[idx];
+            if(W[i]>0) {
+                ans[si] += T-L;
+                ans[si+1] += L;
+            } else {
+                ans[si] += R;
+                ans[si+1] += T-R;
+            }
+            ++idx;
         }
-        if(ans==INF) puts("Large");
-        else Out(ans);
+        R = nR;
+        L = nL;
     }
+    for(ll i=idx; i<N-1; ++i) {
+        auto [T,si] = span[i];
+        ans[si] += R;
+        ans[si+1] += L;
+    }
+    ans[0] += L;
+    ans[N-1] += R;
+    Out(ans);
+
+
+
     
 }
 
