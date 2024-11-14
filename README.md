@@ -2005,3 +2005,4 @@
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [D - コイン集め 2 (Coin Collecting 2)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_d)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
+- [B - 雪玉 (Snowball)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_b)
