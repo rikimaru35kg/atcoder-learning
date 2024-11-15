@@ -215,83 +215,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, Q);
-    vvl from0(N);
-    vp edge;
+    LONG(N,M,K);
+    vt4 edge;
     rep(i, M) {
-        LONGM(a, b);
-        from0[a].emplace_back(b);
-        from0[b].emplace_back(a);
-        edge.emplace_back(a, b);
+        LONGM(a,b); LONG(c);
+        edge.emplace_back(c,a,b,i);
     }
-    vl dist(N, INF);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv: from0[v]) {
-            push(nv, dist[v]+1);
-        }
-    }
-    VLM(query, Q);
+    sort(allr(edge));
 
-    vvl from(N);
-    vl deg(N);
-    for(auto [a,b]: edge) {
-        if(dist[a]==dist[b]) continue;
-        if(dist[a]>dist[b]) swap(a,b);
-        from[a].push_back(b);
-        deg[b]++;
-    }
+    vector<dsu> uf(K, dsu(N));
+    vl ans(M);
+    for(auto [c,a,b,mi]: edge) {
 
-    ll now = 0; 
-    set<Pr> deled;
-    auto del=[&](ll a, ll b) {
-        if(a>b) swap(a,b);
-        deled.insert({a,b});
-    };
-    auto isdeled=[&](ll a, ll b) {
-        if(a>b) swap(a,b);
-        return deled.count({a,b});
-    };
-    auto bfs=[&](ll sv) {
-        queue<ll> que;
-        auto push=[&](ll v) {
-            // if(deg[v]==0) return;
-            deg[v]--;
-            if(deg[v]==0) { que.push(v); }
+        auto f=[&](ll i) -> bool {
+            if(uf[i].same(a,b)) return false;
+            return true;
         };
-        push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            ++now;
-            for(auto nv: from[v]) {
-                if(isdeled(v,nv)) continue;
-                del(v,nv);
-                push(nv);
-            }
-        }
-    };
 
-    rep(i, Q) {
-        auto [a,b] = edge[query[i]];
-        if(dist[a]==dist[b] || isdeled(a,b)) {
-            Out(now);
-            continue;
-        }
-        if(dist[a]>dist[b]) swap(a, b);
-        del(a,b);
-        bfs(b);
-        Out(now);
+        ll k = binary_search(K, -1, f);
+        if(k==K) ans[mi] = 0;
+        else ans[mi] = k+1;
+        if(k!=K) uf[k].merge(a,b);
     }
+    for(auto x: ans) Out(x);
+
 
 
     

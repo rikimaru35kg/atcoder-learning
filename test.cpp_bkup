@@ -214,120 +214,86 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-//! Rotate field by +/-90deg
-vector<string> rot90(vector<string> &field, bool clockwise=true) {
-    long long h = field.size();
-    long long w = field[0].size();
-    vector<string> ret(w, string(h, ' '));
-    for (long long i=0; i<h; ++i) {
-        for (long long j=0; j<w; ++j) {
-            if (clockwise) ret[j][h-1-i] = field[i][j];
-            else ret[w-1-j][i] = field[i][j];
-        }
-    }
-    return ret;
-}
-//! Rotate field by +/-90deg
-template <typename T>
-vector<vector<T>> rot90(vector<vector<T>> &field, bool clockwise=true) {
-    long long h = field.size();
-    long long w = field[0].size();
-    vector<vector<T>> ret(w, vector<T>(h));
-    for (long long i=0; i<h; ++i) {
-        for (long long j=0; j<w; ++j) {
-            if (clockwise) ret[j][h-1-i] = field[i][j];
-            else ret[w-1-j][i] = field[i][j];
-        }
-    }
-    return ret;
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    VVL(A, H, W);
-    ll mn = INF, mx = -INF;
-    rep(i, H) rep(j, W) {
-        chmin(mn, A[i][j]);
-        chmax(mx, A[i][j]);
+    LONG(N, M, Q);
+    vvl from0(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a, b);
+        from0[a].emplace_back(b);
+        from0[b].emplace_back(a);
+        edge.emplace_back(a, b);
     }
-    if(mn==mx) Pm0
-    de2(mn,mx)
-    vvvl B(4);
-    rep(ri, 4) {
-        B[ri] = A;
-        A = rot90(A);
+    vl dist(N, INF);
+    queue<ll> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto nv: from0[v]) {
+            push(nv, dist[v]+1);
+        }
     }
-    auto check10=[&](vl &v) -> bool {
-        ll n = SIZE(v);
-        bool find1 = false;
-        rep(i, n) {
-            if(v[i]==1) {
-                find1 = true;
-                continue;
+    VLM(query, Q);
+
+    vvl from(N);
+    vl deg(N);
+    for(auto [a,b]: edge) {
+        if(dist[a]==dist[b]) continue;
+        if(dist[a]>dist[b]) swap(a,b);
+        from[a].push_back(b);
+        deg[b]++;
+    }
+
+    ll now = 0; 
+    set<Pr> deled;
+    auto del=[&](ll a, ll b) {
+        if(a>b) swap(a,b);
+        deled.insert({a,b});
+    };
+    auto isdeled=[&](ll a, ll b) {
+        if(a>b) swap(a,b);
+        return deled.count({a,b});
+    };
+    auto bfs=[&](ll sv) {
+        queue<ll> que;
+        auto push=[&](ll v) {
+            // if(deg[v]==0) return;
+            deg[v]--;
+            if(deg[v]==0) { que.push(v); }
+        };
+        push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ++now;
+            for(auto nv: from[v]) {
+                if(isdeled(v,nv)) continue;
+                del(v,nv);
+                push(nv);
             }
-            if(find1 && v[i]==0) return true;
         }
-        return false;
-    };
-    auto check1=[&](vl &v, ll k) -> bool {
-        rep(i, k) if(v[i]==1) return true;
-        return false;
-    };
-    auto check=[&](vvl v, ll x) -> bool {
-        ll h = SIZE(v), w = SIZE(v[0]);
-        // bool deb = false;
-        // if(B[0]==v) deb = true;
-        rep(i, h) rep(j, w) {
-            ll &p = v[i][j];
-            if(p>mn+x && p<mx-x) return false;
-            if(p<mx-x) p = 0;
-            else if(p>mn+x) p = 1;
-            else p = 2;
-        }
-        // if(deb)de(v)
-        ll cut = 0;
-        rep(i, h) {
-            if(check10(v[i])) return false;
-            if(check1(v[i], cut)) return false;
-            ll sj = cut;
-            repk(j, sj, w) { 
-                if(v[i][j]==0) chmax(cut, j+1);
-            }
-        }
-        return true;
-    };
-    auto f = [&](ll x) -> bool {
-        rep(ri, 4) if(check(B[ri], x)) return true;
-        return false;
     };
 
-    // de(f(18))
+    rep(i, Q) {
+        auto [a,b] = edge[query[i]];
+        if(dist[a]==dist[b] || isdeled(a,b)) {
+            Out(now);
+            continue;
+        }
+        if(dist[a]>dist[b]) swap(a, b);
+        del(a,b);
+        bfs(b);
+        Out(now);
+    }
 
-    ll ans = binary_search((ll)1e9+10, -1, f);
-    Out(ans);
+
     
 }
 

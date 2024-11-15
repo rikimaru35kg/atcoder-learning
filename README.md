@@ -434,6 +434,7 @@
 - 基本 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 - !復習価値低 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
 - !復習価値低 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
+- !要復習 [K - 遺産相続](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_k)
 
 ## 全域木
 - 無向グラフから全域木を構成すると見通しが良くなる事がある
