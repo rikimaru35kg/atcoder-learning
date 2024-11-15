@@ -1578,6 +1578,17 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - !復習価値低 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 
+## K番目の何かを答える
+- 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
+- K番目を考える時、二分探索するのも典型
+### 例題
+- !復習価値低（snipett練習） [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
+- !復習価値低 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
+- 基本 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+- !復習価値高 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
+- !復習価値中 [F - L番目のK番目の数 (LthKthNumber)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_f)
+- !復習価値高 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
+
 ## 偶奇に注目
 - 隣り合う要素を反転できる場合、実は任意の2要素を反転できる事と等しい
 - 更に、反転しても要素数（例えば黒の数）の偶奇は変わらない。
@@ -1783,16 +1794,6 @@
 ### 例題
 - !復習価値中 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
-## K番目の何かを答える（典型かどうか微妙なのでNote非掲載）
-- 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
-- K番目を考える時、二分探索するのも典型
-### 例題
-- !復習価値低（snipett練習） [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
-- !復習価値低 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
-- 基本 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
-- !復習価値高 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
-- !復習価値高 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
-
 ## お堀問題（ニッチすぎてNote非掲載）
 - 外側を番兵でぐるっと囲むと見通しよくなる
 - Union Findが使える場合多し
@@ -1824,6 +1825,7 @@
 - !復習価値低 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - 基本 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
 - !要復習 実際は考察も必要なのでNote非掲載 [F - Hands on Ring (Hard)](https://atcoder.jp/contests/abc376/tasks/abc376_f)
+- !要復習 実際は考察も必要なのでNote非掲載 [C - JOIOI 王国 (Kingdom of JOIOI)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_c)
 
 # 実装テクニック
 

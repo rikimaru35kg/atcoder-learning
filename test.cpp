@@ -214,7 +214,6 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
@@ -236,45 +235,99 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
+//! Rotate field by +/-90deg
+vector<string> rot90(vector<string> &field, bool clockwise=true) {
+    long long h = field.size();
+    long long w = field[0].size();
+    vector<string> ret(w, string(h, ' '));
+    for (long long i=0; i<h; ++i) {
+        for (long long j=0; j<w; ++j) {
+            if (clockwise) ret[j][h-1-i] = field[i][j];
+            else ret[w-1-j][i] = field[i][j];
+        }
+    }
+    return ret;
+}
+//! Rotate field by +/-90deg
+template <typename T>
+vector<vector<T>> rot90(vector<vector<T>> &field, bool clockwise=true) {
+    long long h = field.size();
+    long long w = field[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for (long long i=0; i<h; ++i) {
+        for (long long j=0; j<w; ++j) {
+            if (clockwise) ret[j][h-1-i] = field[i][j];
+            else ret[w-1-j][i] = field[i][j];
+        }
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, Q);
-    VL(D, N);
-    vl C(N);
-    ll pc = 1;
-    rep(i, N) {
-        ll now = Divceil(D[i], pc) * pc;
-        C[i] = now;
-        pc = C[i];
+    LONG(H, W);
+    VVL(A, H, W);
+    ll mn = INF, mx = -INF;
+    rep(i, H) rep(j, W) {
+        chmin(mn, A[i][j]);
+        chmax(mx, A[i][j]);
     }
-    auto calc=[&](ll t) {
-        vl ret(N);
-        rep(i, N) {
-            ret[i] = -(i+1) + Div(t, C[i]) * C[i];
+    if(mn==mx) Pm0
+    de2(mn,mx)
+    vvvl B(4);
+    rep(ri, 4) {
+        B[ri] = A;
+        A = rot90(A);
+    }
+    auto check10=[&](vl &v) -> bool {
+        ll n = SIZE(v);
+        bool find1 = false;
+        rep(i, n) {
+            if(v[i]==1) {
+                find1 = true;
+                continue;
+            }
+            if(find1 && v[i]==0) return true;
         }
-        de(ret)
+        return false;
     };
-    // rep1(t, 7) calc(t);
-    rep(i, Q) {
-        LONG(t, l, r);
-        // de3(t, l, r)
-        // calc(t);
-        auto f =[&](ll i) -> bool {
-            ll now = -(i+1) + Div(t, C[i]) * C[i];
-            return now<=r;
-        };
-        auto g =[&](ll i) -> bool {
-            ll now = -(i+1) + Div(t, C[i]) * C[i];
-            return now<=l-1;
-        };
+    auto check1=[&](vl &v, ll k) -> bool {
+        rep(i, k) if(v[i]==1) return true;
+        return false;
+    };
+    auto check=[&](vvl v, ll x) -> bool {
+        ll h = SIZE(v), w = SIZE(v[0]);
+        // bool deb = false;
+        // if(B[0]==v) deb = true;
+        rep(i, h) rep(j, w) {
+            ll &p = v[i][j];
+            if(p>mn+x && p<mx-x) return false;
+            if(p<mx-x) p = 0;
+            else if(p>mn+x) p = 1;
+            else p = 2;
+        }
+        // if(deb)de(v)
+        ll cut = 0;
+        rep(i, h) {
+            if(check10(v[i])) return false;
+            if(check1(v[i], cut)) return false;
+            ll sj = cut;
+            repk(j, sj, w) { 
+                if(v[i][j]==0) chmax(cut, j+1);
+            }
+        }
+        return true;
+    };
+    auto f = [&](ll x) -> bool {
+        rep(ri, 4) if(check(B[ri], x)) return true;
+        return false;
+    };
 
-        ll ri = binary_search(N, -1, f);
-        ll li = binary_search(N, -1, g);
-        ll ans = li - ri;
-        if(t>=l && t<=r) ++ans;
-        Out(ans);
-    }
+    // de(f(18))
+
+    ll ans = binary_search((ll)1e9+10, -1, f);
+    Out(ans);
     
 }
 
