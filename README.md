@@ -2019,3 +2019,4 @@
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
 - [B - 雪玉 (Snowball)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_b)
 - [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
+- [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
