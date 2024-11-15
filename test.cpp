@@ -215,58 +215,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+    return ret;
 }
 
-#include <atcoder/dsu>
-using namespace atcoder;
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N,M,K);
-    vt4 edge;
-    rep(i, M) {
-        LONGM(a,b); LONG(c);
-        edge.emplace_back(c,a,b,i);
+    LONG(N);
+    VL(A, N-1);
+
+    ll mx = 0;
+    ll jump = 0;
+    ll save = -1;
+    rep(i, N-1) {
+        if(A[i]>mx+2) Pm0
+        if(A[i]==mx+2) jump++, save = mx;
+        chmax(mx, A[i]);
     }
-    sort(allr(edge));
-
-    vector<dsu> uf(K, dsu(N));
-    vl ans(M);
-    for(auto [c,a,b,mi]: edge) {
-
-        auto f=[&](ll i) -> bool {
-            if(uf[i].same(a,b)) return false;
-            return true;
-        };
-
-        ll k = binary_search(K, -1, f);
-        if(k==K) ans[mi] = 0;
-        else ans[mi] = k+1;
-        if(k!=K) uf[k].merge(a,b);
+    if(jump>=2) Pm0
+    if(jump==1) {
+        ll ans = 0;
+        mx = 0;
+        rep(i, N-1) {
+            if(mx==save) ++ans;
+            chmax(mx, A[i]);
+        }
+        Outend(ans);
     }
-    for(auto x: ans) Out(x);
 
+    mx = 0;
+    ll ans = 0;
+    rep(i, N) {
+        ans += mx+1;
+        if(i==N-1) break;
+        chmax(mx, A[i]);
+    }
+    de(ans)
 
+    auto v = run_length_encoding(A);
+    for(auto [x,n]: v) {
+        ans -= n;
+    }
+    Out(ans);
 
     
 }
