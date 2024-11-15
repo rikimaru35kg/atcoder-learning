@@ -294,6 +294,7 @@
 - 基本 Kの倍数の時だけ発車可能 [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
 - !復習価値低 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 - !要復習 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
+- !復習価値中 [D - フクロモモンガ (Sugar Glider)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho4)
 - !要復習 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
 
 ## 拡張ダイクストラ法（or 拡張BFS）

@@ -218,31 +218,40 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K, M);
-    STRING(S);
-    vt3 query;
-    LONG(N);
-    rep(i, N) {
-        LONG(a,b,c);
-        query.emplace_back(a,b,c);
+    LONG(N, M, X);
+    VL(H, N);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        if(H[a]-c>=0) from[a].emplace_back(b, c);
+        if(H[b]-c>=0) from[b].emplace_back(a, c);
     }
-    reverse(all(query));
-
-    auto calc=[&](ll i, ll qi) -> ll {
-        auto [a,b,c] = query[qi];
-        if(c>i) return i;
-        if(c+b-a<=i) return i-(b-a);
-        return a+(i-c);
+    vl dist(N, INF);
+    pq que;
+    auto push=[&](ll v, ll t) {
+        if(dist[v]<=t) return;
+        dist[v] = t;
+        que.emplace(t, v);
     };
-
-    string ans(K, '.');
-    rep(i, K) {
-        ll x = i;
-        rep(j, N) {
-            x = calc(x, j);
+    push(0, 0);
+    while(que.size()) {
+        auto [t, v] = que.top(); que.pop();
+        if(dist[v]!=t) continue;
+        ll h = X-t;
+        chmax(h, 0LL);
+        for(auto [nv, c]: from[v]) {
+            if(h-c<0) {
+                push(nv, t+c+c-h);
+            } else if(h-c>H[nv]) {
+                push(nv, t+(h-c-H[nv]+c));
+            } else push(nv, t+c);
         }
-        ans[i] = S[x];
     }
+    ll t = dist.back();
+    if(t==INF) Pm1
+    ll h = X-t;
+    chmax(h, 0LL);
+    ll ans = t + H.back() - h;
     Out(ans);
     
 }

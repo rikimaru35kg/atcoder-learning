@@ -215,67 +215,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
-
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(K, M);
+    STRING(S);
+    vt3 query;
     LONG(N);
-    VL(A, N-1);
-
-    ll mx = 0;
-    ll jump = 0;
-    ll save = -1;
-    rep(i, N-1) {
-        if(A[i]>mx+2) Pm0
-        if(A[i]==mx+2) jump++, save = mx;
-        chmax(mx, A[i]);
-    }
-    if(jump>=2) Pm0
-    if(jump==1) {
-        ll ans = 0;
-        mx = 0;
-        rep(i, N-1) {
-            if(mx==save) ++ans;
-            chmax(mx, A[i]);
-        }
-        Outend(ans);
-    }
-
-    mx = 0;
-    ll ans = 0;
     rep(i, N) {
-        ans += mx+1;
-        if(i==N-1) break;
-        chmax(mx, A[i]);
+        LONG(a,b,c);
+        query.emplace_back(a,b,c);
     }
-    de(ans)
+    reverse(all(query));
 
-    auto v = run_length_encoding(A);
-    for(auto [x,n]: v) {
-        ans -= n;
+    auto calc=[&](ll i, ll qi) -> ll {
+        auto [a,b,c] = query[qi];
+        if(c>i) return i;
+        if(c+b-a<=i) return i-(b-a);
+        return a+(i-c);
+    };
+
+    string ans(K, '.');
+    rep(i, K) {
+        ll x = i;
+        rep(j, N) {
+            x = calc(x, j);
+        }
+        ans[i] = S[x];
     }
     Out(ans);
-
     
 }
 
