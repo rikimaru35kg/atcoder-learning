@@ -412,8 +412,10 @@
 - 全ての葉が同じ深さを持ち、葉以外の全ての頂点が子を二つ持つ二分木を完全二分木と呼ぶ
 - 再帰的な構造を持っている為、高さhの関数f[h]はf[h-1]を用いて計算できる事が多い
 - このとき、f[h]とf[h-1]は根を同じくする関係（上が一緒）か、あるいは葉を同じくする関係（下が一緒）と両方考えられる
+- 長さが二倍二倍と増えていく場合、操作後の先頭からの番号を二進数で表すと見通しが良くなる
 ### 例題
 - 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
+- !復習価値中 [D - Strange Mirroring](https://atcoder.jp/contests/abc380/tasks/abc380_d)
 - !復習価値高 [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - !復習価値中 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
 - !復習価値高 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
@@ -862,6 +864,7 @@
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
 - dp[自分or相手][状態] = 自分の得点とすると、自分の最適戦略はmax、相手の最適戦略はmin
 - 再帰の方が分かりやすい場合は迷わず再帰で書く！再帰で書けば逆順をあまり意識しなくて良くなるので
+- 相手と自分を区別しない実装にできれば、状態数を半分にできるし実装も楽になるので、区別しない実装にできるかどうかよく考える事！！（最適戦略が自分と相手で区別がない場合）
 ### 例題
 - 基本 [K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
 - 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
@@ -869,6 +872,7 @@
 - 基本 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - !復習価値低 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 - !復習価値中 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
+- !要復習 [F - Exchange Game](https://atcoder.jp/contests/abc380/tasks/abc380_f)
 
 ## 円環DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
@@ -1383,6 +1387,7 @@
 - !復習価値低 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - !復習価値高 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - !要復習 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
+- !要復習 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
 
 ## 対称性を利用する
 ### 例題

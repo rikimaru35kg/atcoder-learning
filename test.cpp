@@ -215,44 +215,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+#include <atcoder/fenwicktree>
+
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > (ninf+ret-1)/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M, X);
-    VL(H, N);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        if(H[a]-c>=0) from[a].emplace_back(b, c);
-        if(H[b]-c>=0) from[b].emplace_back(a, c);
+    LONG(N, K);
+    VLM(P, N);
+
+    mint base = 0;
+    fenwick_tree<ll> tree0(N);
+    rep(i, N) {
+        base += tree0.sum(P[i]+1, N);
+        tree0.add(P[i], 1);
     }
-    vl dist(N, INF);
-    pq que;
-    auto push=[&](ll v, ll t) {
-        if(dist[v]<=t) return;
-        dist[v] = t;
-        que.emplace(t, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [t, v] = que.top(); que.pop();
-        if(dist[v]!=t) continue;
-        ll h = X-t;
-        chmax(h, 0LL);
-        for(auto [nv, c]: from[v]) {
-            if(h-c<0) {
-                push(nv, t+c+c-h);
-            } else if(h-c>H[nv]) {
-                push(nv, t+(h-c-H[nv]+c));
-            } else push(nv, t+c);
-        }
+
+    mint span = 0;
+    mint sum = 0;
+    fenwick_tree<ll> tree(N);
+    rep(i, K) {
+        span += tree.sum(P[i]+1, N);
+        tree.add(P[i], 1);
     }
-    ll t = dist.back();
-    if(t==INF) Pm1
-    ll h = X-t;
-    chmax(h, 0LL);
-    ll ans = t + H.back() - h;
+    rep(i, N-K+1) {
+        sum += span;
+        de2(i, span.val())
+        ll ni = i+K;
+        if(ni>=N) break;
+        span -= tree.sum(0,P[i]);
+        tree.add(P[i], -1);
+        span += tree.sum(P[ni]+1,N);
+        tree.add(P[ni], 1);
+    }
+
+    de(base)de(sum)de((mint)nCr(K, 2)/2)
+    mint ans = base - sum/(N-K+1) + (mint)nCr(K, 2)/2;
     Out(ans);
+
     
 }
 
