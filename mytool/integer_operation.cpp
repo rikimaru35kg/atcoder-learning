@@ -120,11 +120,13 @@ public:
         return nCr(n, r);
     }
     long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
         return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
     long long nPr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0 || n > mx) return 0;
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
         return facts[n] * ifacts[n-r] % mod;
     }
     long long nHr(long long n, long long r, bool one=false) {
@@ -132,11 +134,11 @@ public:
         else return nCr(r-1, n-1);
     }
     long long get_fact(long long n) {
-        if (n > mx) return 0;
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
         return facts[n];
     }
     long long get_factinv(long long n) {
-        if (n > mx) return 0;
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
         return ifacts[n];
     }
     long long modpow(long long a, long long b) {

@@ -215,65 +215,113 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl f1(N), f2(N);
-    ll p1=-1,p2=-1;
+    LONG(H, W);
+    LONG(N);
+    Combination comb(1e7, M107);
+    ll rmn=INF, rmx=-INF, cmn=INF, cmx=-INF;
+    vvb mascot(H, vb(W));
     rep(i, N) {
-        LONGM(p, q);
-        if(p!=-1) f1[p].push_back(i);
-        if(q!=-1) f2[q].push_back(i);
-        if(p==-1) p1 = i;
-        if(q==-1) p2 = i;
-    }
-    de(f1)de(f2)
-    vvl pro1(N), pro2(N);
-    rep(i, M) {
-        LONGM(r, s);
-        pro1[r].push_back(i);
-        pro2[s].push_back(i);
+        LONGM(r, c);
+        mascot[r][c] = true;
+        chmin(rmn, r); chmax(rmx, r);
+        chmin(cmn, c); chmax(cmx, c);
     }
 
-    using BS = bitset<500010>;
-    using vBS = vector<BS>;
-    vBS bs1(N), bs2(N);
-    BS now;
-    auto dfs=[&](auto f, ll v) -> void  {
-        for(auto p: pro1[v]) { now[p] = 1; }
-        bs1[v] = now;
-        for(auto nv: f1[v]) {
-            f(f, nv);
-        }
-        for(auto p: pro1[v]) { now[p] = 0; }
-    };
-    auto flip=[&]() {
-        swap(bs1, bs2);
-        swap(f1, f2);
-        swap(pro1, pro2);
-    };
-    auto dprint=[&](vBS &bs){
-    #ifdef __DEBUG
-        de("-- dprint --")
-        rep(i, N) {
-            rep(j, 5) fprintf(stderr, "%d", (int)bs[i][j]);
-            cerr<<endl;
-        }
-    #endif
-    };
-    dfs(dfs, p1);
-    flip();
-    dfs(dfs, p2);
-    flip();
-    // dprint(bs1);
-    // dprint(bs2);
-
-    rep(i, N) {
-        BS now = bs1[i] & bs2[i];
-        ll ans = now.count();
-        Out(ans);
+    ll inner=0;
+    for(ll r=rmn; r<=rmx; ++r) for(ll c=cmn; c<=cmx; ++c) {
+        if(mascot[r][c]) continue;
+        ++inner;
     }
+
+    vvm dp(H+1, vm(W+1));
+    dp[rmx-rmn+1][cmx-cmn+1] = 1;
+    rep(i, H+1) rep(j, W+1) {
+        mint now = dp[i][j];
+        if(now==0) continue;
+        if(j<W) { dp[i][j+1] += now * comb.get_fact(i); }
+        if(i<H) { dp[i+1][j] += now * comb.get_fact(j); }
+    }
+
+    de(inner)
+    mint ans = comb.get_fact(inner);
+    de(ans)
+    ans *= dp[H][W];
+    de(ans)
+    // de(dp)
+    {
+        ll l = rmn, r = H-1-rmx;
+        ans *= comb(l+r, l);
+    }
+    {
+        ll l = cmn, r = W-1-cmx;
+        ans *= comb(l+r, l);
+    }
+    Out(ans);
+
 
     
 }

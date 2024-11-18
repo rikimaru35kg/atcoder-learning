@@ -215,130 +215,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/scc>
-using namespace atcoder;
-
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vl A(N),B(N),C(N),D(N);
-    map<Pr,ll> edge;
-    rep(i, N) cin>>A[i]>>B[i]>>C[i]>>D[i];
-    rep(i, N) A[i]--;
+    LONG(N, M);
+    vvl f1(N), f2(N);
+    ll p1=-1,p2=-1;
+    rep(i, N) {
+        LONGM(p, q);
+        if(p!=-1) f1[p].push_back(i);
+        if(q!=-1) f2[q].push_back(i);
+        if(p==-1) p1 = i;
+        if(q==-1) p2 = i;
+    }
+    de(f1)de(f2)
+    vvl pro1(N), pro2(N);
+    rep(i, M) {
+        LONGM(r, s);
+        pro1[r].push_back(i);
+        pro2[s].push_back(i);
+    }
 
-    rep(i, N) { edge[{i,A[i]}] = B[i]; }
-
-    // scc_graph scc(N);
-    SCC scc(N);
-    rep(i, N) { scc.add_edge(i, A[i]); }
-
-    vb loop(N);
-    auto grs = scc.scc();
-
-    auto make=[&](vi &gr) -> vi {
-        int sv = gr[0];
-        int v = gr[0];
-        vi ret;
-        ret.push_back(v);
-        while(A[v]!=sv) {
-            int nv = A[v];
-            ret.push_back(nv);
-            v = nv;
+    using BS = bitset<500010>;
+    using vBS = vector<BS>;
+    vBS bs1(N), bs2(N);
+    BS now;
+    auto dfs=[&](auto f, ll v) -> void  {
+        for(auto p: pro1[v]) { now[p] = 1; }
+        bs1[v] = now;
+        for(auto nv: f1[v]) {
+            f(f, nv);
         }
-        return ret;
+        for(auto p: pro1[v]) { now[p] = 0; }
     };
-
-    ll ans = 0;
-    for(auto gr: grs) {
-        if(SIZE(gr)==1) continue;
-        for(auto v: gr) { loop[v] = true; }
-        ll n = SIZE(gr);
-        de(gr)
-        // vi ngr = make(gr);
-        // de(gr)
-        // swap(ngr, gr);
-        ll base = 0;
-        vl gain;
-        rep(i, n) {
-            ll v = gr[i], nv = gr[(i+1)%n];
-            ll b = B[v];//edge[{v,nv}];
-            ll c = C[nv], d = D[nv];
-            base += b*c;
-            gain.push_back(b*(d-c));
+    auto flip=[&]() {
+        swap(bs1, bs2);
+        swap(f1, f2);
+        swap(pro1, pro2);
+    };
+    auto dprint=[&](vBS &bs){
+    #ifdef __DEBUG
+        de("-- dprint --")
+        rep(i, N) {
+            rep(j, 5) fprintf(stderr, "%d", (int)bs[i][j]);
+            cerr<<endl;
         }
-        sort(allr(gain));
-        // de(base)de(gain)
-        ll plus = 0;
-        ll mx = base;
-        rep(i, n) {
-            plus += gain[i];
-            if(i%2) {
-                chmax(mx, base + plus);
-            }
-        }
-        // de(mx)
-        ans += mx;
+    #endif
+    };
+    dfs(dfs, p1);
+    flip();
+    dfs(dfs, p2);
+    flip();
+    // dprint(bs1);
+    // dprint(bs2);
+
+    rep(i, N) {
+        BS now = bs1[i] & bs2[i];
+        ll ans = now.count();
+        Out(ans);
     }
-    // de(ans)
-    // de(loop)
-
-    rep(v, N) {
-        if(loop[v]) continue;
-        ll nv = A[v];
-        ll c = C[nv], d = D[nv];
-        ll b = B[v];
-        ans += b*max(c,d);
-    }
-    Out(ans);
-
-
 
     
 }
