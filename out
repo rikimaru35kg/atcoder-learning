@@ -1,462 +1,571 @@
 test.cpp: In lambda function:
-test.cpp:241:19: error: no match for ‘operator<=’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} and ‘D’)
-  241 |         if(dist[v]<=d) return;
+test.cpp:239:12: warning: unused variable ‘n’ [-Wunused-variable]
+  239 |         ll n = SIZE(gr);
+      |            ^
+test.cpp: In function ‘int main()’:
+test.cpp:258:22: error: no match for call to ‘(main()::<lambda(vl&)>) (std::__debug::vector<int>&)’
+  258 |         vl ngr = make(gr);
+      |                  ~~~~^~~~
+test.cpp:238:15: note: candidate: ‘main()::<lambda(vl&)>’
+  238 |     auto make=[&](vl &gr) -> vl {
+      |               ^
+test.cpp:238:15: note:   no known conversion for argument 1 from ‘std::__debug::vector<int>’ to ‘vl&’ {aka ‘std::__debug::vector<long long int>&’}
+test.cpp:259:13: error: no matching function for call to ‘swap(vl&, std::__debug::vector<int>&)’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:126:
+/usr/include/c++/12/any:429:15: note: candidate: ‘void std::swap(any&, any&)’ (near match)
+  429 |   inline void swap(any& __x, any& __y) noexcept { __x.swap(__y); }
+      |               ^~~~
+/usr/include/c++/12/any:429:15: note:   conversion of argument 2 would be ill-formed:
+test.cpp:259:19: error: cannot bind non-const lvalue reference of type ‘std::any&’ to an rvalue of type ‘std::any’
+  259 |         swap(ngr, gr);
+      |                   ^~
+/usr/include/c++/12/any:190:7: note:   after user-defined conversion: ‘std::any::any(_Tp&&) [with _Tp = std::__debug::vector<int>&; _VTp = std::__debug::vector<int>; _Mgr = _Manager_external<std::__debug::vector<int> >; typename std::enable_if<(is_copy_constructible_v<_VTp> && (! __is_in_place_type_v<_VTp>)), bool>::type <anonymous> = true]’
+  190 |       any(_Tp&& __value)
+      |       ^~~
+In file included from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/sstream:1185:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_stringbuf<_CharT, _Traits, _Alloc>&, basic_stringbuf<_CharT, _Traits, _Alloc>&)’
+ 1185 |     swap(basic_stringbuf<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1185:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::basic_stringbuf<_CharT, _Traits, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/sstream:1193:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_istringstream<_CharT, _Traits, _Allocator>&, basic_istringstream<_CharT, _Traits, _Allocator>&)’
+ 1193 |     swap(basic_istringstream<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1193:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::basic_istringstream<_CharT, _Traits, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/sstream:1200:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_ostringstream<_CharT, _Traits, _Allocator>&, basic_ostringstream<_CharT, _Traits, _Allocator>&)’
+ 1200 |     swap(basic_ostringstream<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1200:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::basic_ostringstream<_CharT, _Traits, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/sstream:1207:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_stringstream<_CharT, _Traits, _Allocator>&, basic_stringstream<_CharT, _Traits, _Allocator>&)’
+ 1207 |     swap(basic_stringstream<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1207:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::basic_stringstream<_CharT, _Traits, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
 In file included from /usr/include/c++/12/regex:66,
                  from stdc++.h:110:
-/usr/include/c++/12/bits/regex.h:1262:5: note: candidate: ‘template<class _Bi_iter, class _Ch_traits, class _Alloc> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, __sub_match_string<_Bi_iter, _Ch_traits, _Ch_alloc>&)’ (reversed)
- 1262 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1262:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/regex.h:1430:5: note: candidate: ‘template<class _Bi_iter> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type*)’ (reversed)
- 1430 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1430:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/regex.h:1603:5: note: candidate: ‘template<class _Bi_iter> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type&)’ (reversed)
- 1603 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1603:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
+/usr/include/c++/12/bits/regex.h:880:5: note: candidate: ‘template<class _Ch_type, class _Rx_traits> void std::__cxx11::swap(basic_regex<_Ch_type, _Rx_traits>&, basic_regex<_Ch_type, _Rx_traits>&)’
+  880 |     swap(basic_regex<_Ch_type, _Rx_traits>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/bits/regex.h:880:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::basic_regex<_Ch_type, _Rx_traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/regex.h:2185:5: note: candidate: ‘template<class _Bi_iter, class _Alloc> void std::__cxx11::swap(match_results<_BiIter, _Alloc>&, match_results<_BiIter, _Alloc>&)’
+ 2185 |     swap(match_results<_Bi_iter, _Alloc>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/bits/regex.h:2185:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::match_results<_BiIter, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/deque:70,
+                 from stdc++.h:68:
+/usr/include/c++/12/debug/deque:715:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(deque<_Tp, _Allocator>&, deque<_Tp, _Allocator>&)’
+  715 |     swap(deque<_Tp, _Alloc>& __lhs, deque<_Tp, _Alloc>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/debug/deque:715:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::deque<_Tp, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/unordered_map:52,
+                 from /usr/include/c++/12/functional:61,
+                 from stdc++.h:71:
+/usr/include/c++/12/debug/unordered_map:847:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&, unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
+  847 |     swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_map:847:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/debug/unordered_map:1564:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&, unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
+ 1564 |     swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_map:1564:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62:
+/usr/include/c++/12/debug/vector:793:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(vector<_Tp, _Alloc>&, vector<_Tp, _Alloc>&)’
+  793 |     swap(vector<_Tp, _Alloc>& __lhs, vector<_Tp, _Alloc>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/debug/vector:793:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   deduced conflicting types for parameter ‘_Tp’ (‘long long int’ and ‘int’)
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/list:67,
+                 from stdc++.h:79:
+/usr/include/c++/12/debug/list:968:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(list<_Tp, _Allocator>&, list<_Tp, _Allocator>&)’
+  968 |     swap(list<_Tp, _Alloc>& __lhs, list<_Tp, _Alloc>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/debug/list:968:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::list<_Tp, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/debug/map:43,
+                 from /usr/include/c++/12/map:67,
+                 from stdc++.h:81:
+/usr/include/c++/12/debug/map.h:798:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> void std::__debug::swap(map<_Key, _Tp, _Compare, _Allocator>&, map<_Key, _Tp, _Compare, _Allocator>&)’
+  798 |     swap(map<_Key, _Tp, _Compare, _Allocator>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/debug/map.h:798:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::map<_Key, _Tp, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/debug/map:44:
+/usr/include/c++/12/debug/multimap.h:680:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> void std::__debug::swap(multimap<_Key, _Tp, _Compare, _Allocator>&, multimap<_Key, _Tp, _Compare, _Allocator>&)’
+  680 |     swap(multimap<_Key, _Tp, _Compare, _Allocator>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/debug/multimap.h:680:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/debug/set:41,
+                 from /usr/include/c++/12/set:67,
+                 from stdc++.h:87:
+/usr/include/c++/12/debug/set.h:655:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> void std::__debug::swap(set<_Key, _Compare, _Allocator>&, set<_Key, _Compare, _Allocator>&)’
+  655 |     swap(set<_Key, _Compare, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/set.h:655:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::set<_Key, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/debug/set:42:
+/usr/include/c++/12/debug/multiset.h:645:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> void std::__debug::swap(multiset<_Key, _Compare, _Allocator>&, multiset<_Key, _Compare, _Allocator>&)’
+  645 |     swap(multiset<_Key, _Compare, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/multiset.h:645:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::multiset<_Key, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/forward_list:43,
+                 from stdc++.h:104:
+/usr/include/c++/12/debug/forward_list:913:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(forward_list<_Tp, _Allocator>&, forward_list<_Tp, _Allocator>&)’
+  913 |     swap(forward_list<_Tp, _Alloc>& __lx, forward_list<_Tp, _Alloc>& __ly)
+      |     ^~~~
+/usr/include/c++/12/debug/forward_list:913:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::forward_list<_Tp, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/unordered_set:52,
+                 from stdc++.h:118:
+/usr/include/c++/12/debug/unordered_set:716:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_set<_Tp, _Hash, _Pred, _Allocator>&, unordered_set<_Tp, _Hash, _Pred, _Allocator>&)’
+  716 |     swap(unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_set:716:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::unordered_set<_Tp, _Hash, _Pred, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/debug/unordered_set:1393:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&, unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&)’
+ 1393 |     swap(unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_set:1393:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__debug::unordered_multiset<_Tp, _Hash, _Pred, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_pair.h:61,
+                 from /usr/include/c++/12/bits/stl_algobase.h:64,
                  from /usr/include/c++/12/bits/specfun.h:45,
                  from /usr/include/c++/12/cmath:1935,
                  from stdc++.h:41:
-/usr/include/c++/12/bits/stl_iterator.h:579:5: note: candidate: ‘template<class _IteratorL, class _IteratorR>  requires  three_way_comparable_with<_IteratorR, _IteratorL, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&)’ (reversed)
-  579 |     operator<=>(const reverse_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:579:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/stl_iterator.h:1686:5: note: candidate: ‘template<class _IteratorL, class _IteratorR>  requires  three_way_comparable_with<_IteratorR, _IteratorL, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&)’ (reversed)
- 1686 |     operator<=>(const move_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1686:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::move_iterator<_IteratorL>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/bits/basic_string.h:47,
-                 from /usr/include/c++/12/string:53,
+/usr/include/c++/12/bits/move.h:196:5: note: candidate: ‘template<class _Tp> constexpr std::_Require<std::__not_<std::__is_tuple_like<_Tp> >, std::is_move_constructible<_Tp>, std::is_move_assignable<_Tp> > std::swap(_Tp&, _Tp&)’
+  196 |     swap(_Tp& __a, _Tp& __b)
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:196:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   deduced conflicting types for parameter ‘_Tp’ (‘std::__debug::vector<long long int>’ and ‘std::__debug::vector<int>’)
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/move.h:220:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr std::__enable_if_t<std::__is_swappable<_Tp>::value> std::swap(_Tp (&)[_Nm], _Tp (&)[_Nm])’
+  220 |     swap(_Tp (&__a)[_Nm], _Tp (&__b)[_Nm])
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:220:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   mismatched types ‘_Tp [_Nm]’ and ‘vl’ {aka ‘std::__debug::vector<long long int>’}
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:707:5: note: candidate: ‘template<class _T1, class _T2> constexpr typename std::enable_if<std::__and_<std::__is_swappable<_T1>, std::__is_swappable<_T2> >::value>::type std::swap(pair<_T1, _T2>&, pair<_T1, _T2>&)’
+  707 |     swap(pair<_T1, _T2>& __x, pair<_T1, _T2>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_pair.h:707:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::pair<_T1, _T2>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:715:5: note: candidate: ‘template<class _T1, class _T2> typename std::enable_if<(! std::__and_<std::__is_swappable<_T1>, std::__is_swappable<_T2> >::value)>::type std::swap(pair<_T1, _T2>&, pair<_T1, _T2>&)’ (deleted)
+  715 |     swap(pair<_T1, _T2>&, pair<_T1, _T2>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/bits/stl_pair.h:715:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::pair<_T1, _T2>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/string:53,
                  from /usr/include/c++/12/bits/locale_classes.h:40,
                  from /usr/include/c++/12/bits/ios_base.h:41,
                  from /usr/include/c++/12/ios:42,
                  from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/string_view:561:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(basic_string_view<_CharT, _Traits>, __type_identity_t<basic_string_view<_CharT, _Traits> >)’ (reversed)
-  561 |     operator<=>(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:561:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/basic_string.h:3635:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’ (reversed)
- 3635 |     operator<=>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3635:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/functional:54,
-                 from stdc++.h:71:
-/usr/include/c++/12/tuple:1529:5: note: candidate: ‘template<class ... _Tps, class ... _Ups> constexpr std::common_comparison_category_t<decltype (std::__detail::__synth3way(declval<_Tps&>(), declval<_Ups&>()))...> std::operator<=>(const tuple<_UTypes ...>&, const tuple<_UTypes ...>&)’ (reversed)
- 1529 |     operator<=>(const tuple<_Tps...>& __t, const tuple<_Ups...>& __u)
-      |     ^~~~~~~~
-/usr/include/c++/12/tuple:1529:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::tuple<_UTypes ...>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
+                 from /usr/include/c++/12/sstream:38:
+/usr/include/c++/12/bits/basic_string.h:3853:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr void std::swap(__cxx11::basic_string<_CharT, _Traits, _Allocator>&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 3853 |     swap(basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/bits/basic_string.h:3853:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:70:
+/usr/include/c++/12/fstream:1269:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_filebuf<_CharT, _Traits>&, basic_filebuf<_CharT, _Traits>&)’
+ 1269 |     swap(basic_filebuf<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1269:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_filebuf<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/fstream:1276:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ifstream<_CharT, _Traits>&, basic_ifstream<_CharT, _Traits>&)’
+ 1276 |     swap(basic_ifstream<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1276:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_ifstream<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/fstream:1283:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ofstream<_CharT, _Traits>&, basic_ofstream<_CharT, _Traits>&)’
+ 1283 |     swap(basic_ofstream<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1283:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_ofstream<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/fstream:1290:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_fstream<_CharT, _Traits>&, basic_fstream<_CharT, _Traits>&)’
+ 1290 |     swap(basic_fstream<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1290:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_fstream<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/functional:54:
+/usr/include/c++/12/tuple:1758:5: note: candidate: ‘template<class ... _Elements> constexpr typename std::enable_if<std::__and_<std::__is_swappable<_Elements>...>::value>::type std::swap(tuple<_UTypes ...>&, tuple<_UTypes ...>&)’
+ 1758 |     swap(tuple<_Elements...>& __x, tuple<_Elements...>& __y)
+      |     ^~~~
+/usr/include/c++/12/tuple:1758:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::tuple<_UTypes ...>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/tuple:1766:5: note: candidate: ‘template<class ... _Elements> constexpr typename std::enable_if<(! std::__and_<std::__is_swappable<_Elements>...>::value)>::type std::swap(tuple<_UTypes ...>&, tuple<_UTypes ...>&)’ (deleted)
+ 1766 |     swap(tuple<_Elements...>&, tuple<_Elements...>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/tuple:1766:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::tuple<_UTypes ...>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/functional:59:
+/usr/include/c++/12/bits/std_function.h:757:5: note: candidate: ‘template<class _Res, class ... _Args> void std::swap(function<_Res(_ArgTypes ...)>&, function<_Res(_ArgTypes ...)>&)’
+  757 |     swap(function<_Res(_Args...)>& __x, function<_Res(_Args...)>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/std_function.h:757:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::function<_Res(_ArgTypes ...)>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/functional:63:
+/usr/include/c++/12/array:380:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr typename std::enable_if<typename std::__array_traits<_Tp, _Nm>::_Is_swappable::value>::type std::swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&)’
+  380 |     swap(array<_Tp, _Nm>& __one, array<_Tp, _Nm>& __two)
+      |     ^~~~
+/usr/include/c++/12/array:380:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::array<_Tp, _Nm>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/array:388:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> typename std::enable_if<(! typename std::__array_traits<_Tp, _Nm>::_Is_swappable::value)>::type std::swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&)’ (deleted)
+  388 |     swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/array:388:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::array<_Tp, _Nm>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/map:60:
+/usr/include/c++/12/bits/stl_tree.h:1680:5: note: candidate: ‘template<class _Key, class _Val, class _KeyOfValue, class _Compare, class _Alloc> void std::swap(_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&, _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&)’
+ 1680 |     swap(_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_tree.h:1680:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
 In file included from /usr/include/c++/12/memory:75,
                  from stdc++.h:82:
-/usr/include/c++/12/bits/unique_ptr.h:983:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep>  requires  three_way_comparable_with<typename std::unique_ptr<_Tp, _Dp>::pointer, typename std::unique_ptr<_Up, _Ep>::pointer, std::partial_ordering> constexpr std::compare_three_way_result_t<typename std::unique_ptr<_Tp, _Dp>::pointer, typename std::unique_ptr<_Up, _Ep>::pointer> std::operator<=>(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’ (reversed)
-  983 |     operator<=>(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:983:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/unique_ptr.h:992:5: note: candidate: ‘template<class _Tp, class _Dp>  requires  three_way_comparable<typename std::unique_ptr<_Tp, _Dp>::pointer, std::partial_ordering> constexpr std::compare_three_way_result_t<typename std::unique_ptr<_Tp, _Dp>::pointer> std::operator<=>(const unique_ptr<_Tp, _Dp>&, nullptr_t)’ (reversed)
-  992 |     operator<=>(const unique_ptr<_Tp, _Dp>& __x, nullptr_t)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:992:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
+/usr/include/c++/12/bits/unique_ptr.h:808:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(unique_ptr<_Tp, _Dp>&, unique_ptr<_Tp, _Dp>&)’
+  808 |     swap(unique_ptr<_Tp, _Dp>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/unique_ptr.h:808:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::unique_ptr<_Tp, _Dp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/unique_ptr.h:815:5: note: candidate: ‘template<class _Tp, class _Dp> typename std::enable_if<(! std::__is_swappable<_T2>::value)>::type std::swap(unique_ptr<_Tp, _Dp>&, unique_ptr<_Tp, _Dp>&)’ (deleted)
+  815 |     swap(unique_ptr<_Tp, _Dp>&,
+      |     ^~~~
+/usr/include/c++/12/bits/unique_ptr.h:815:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::unique_ptr<_Tp, _Dp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
 In file included from /usr/include/c++/12/bits/shared_ptr.h:53,
                  from /usr/include/c++/12/memory:76:
-/usr/include/c++/12/bits/shared_ptr_base.h:1805:5: note: candidate: ‘template<class _Tp, class _Up, __gnu_cxx::_Lock_policy _Lp> std::strong_ordering std::operator<=>(const __shared_ptr<_Tp1, _Lp>&, const __shared_ptr<_Tp2, _Lp>&)’ (reversed)
- 1805 |     operator<=>(const __shared_ptr<_Tp, _Lp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1805:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::__shared_ptr<_Tp1, _Lp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/shared_ptr_base.h:1811:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> std::strong_ordering std::operator<=>(const __shared_ptr<_Tp, _Lp>&, nullptr_t)’ (reversed)
- 1811 |     operator<=>(const __shared_ptr<_Tp, _Lp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1811:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/shared_ptr.h:567:5: note: candidate: ‘template<class _Tp, class _Up> std::strong_ordering std::operator<=>(const shared_ptr<_Tp>&, const shared_ptr<_Tp>&)’ (reversed)
-  567 |     operator<=>(const shared_ptr<_Tp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:567:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::shared_ptr<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/shared_ptr.h:573:5: note: candidate: ‘template<class _Tp> std::strong_ordering std::operator<=>(const shared_ptr<_Tp>&, nullptr_t)’ (reversed)
-  573 |     operator<=>(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:573:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::shared_ptr<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from stdc++.h:130:
-/usr/include/c++/12/optional:1273:5: note: candidate: ‘template<class _Tp, class _Up>  requires  three_way_comparable_with<_Up, _Tp, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const optional<_Tp>&, const optional<_Up>&)’ (reversed)
- 1273 |     operator<=>(const optional<_Tp>& __x, const optional<_Up>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1273:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::optional<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/optional:1288:5: note: candidate: ‘template<class _Tp> constexpr std::strong_ordering std::operator<=>(const optional<_Tp>&, nullopt_t)’ (reversed)
- 1288 |     operator<=>(const optional<_Tp>& __x, nullopt_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1288:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::optional<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/optional:1425:5: note: candidate: ‘template<class _Tp, class _Up>  requires !(__is_optional_v<_Up>) && (three_way_comparable_with<_Tp, _Up, std::partial_ordering>) constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const optional<_Tp>&, const _Up&)’ (reversed)
- 1425 |     operator<=>(const optional<_Tp>& __x, const _Up& __v)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1425:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::optional<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/regex.h:1090:5: note: candidate: ‘template<class _BiIter> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, const sub_match<_BiIter>&)’ (rewritten)
- 1090 |     operator<=>(const sub_match<_BiIter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1090:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/deque:70,
-                 from stdc++.h:68:
-/usr/include/c++/12/debug/deque:679:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const deque<_Tp, _Allocator>&, const deque<_Tp, _Allocator>&)’ (rewritten)
-  679 |     operator<=>(const deque<_Tp, _Alloc>& __x, const deque<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/deque:679:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::deque<_Tp, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/vector:74,
-                 from /usr/include/c++/12/functional:62:
-/usr/include/c++/12/debug/vector:757:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const vector<_Tp, _Alloc>&, const vector<_Tp, _Alloc>&)’ (rewritten)
-  757 |     operator<=>(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/vector:757:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::vector<_Tp, _Alloc>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/list:67,
-                 from stdc++.h:79:
-/usr/include/c++/12/debug/list:932:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const list<_Tp, _Allocator>&, const list<_Tp, _Allocator>&)’ (rewritten)
-  932 |     operator<=>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/list:932:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::list<_Tp, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/debug/map:43,
-                 from /usr/include/c++/12/map:67,
-                 from stdc++.h:81:
-/usr/include/c++/12/debug/map.h:755:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> std::__detail::__synth3way_t<std::pair<const _Key, _Val> > std::__debug::operator<=>(const map<_Key, _Tp, _Compare, _Allocator>&, const map<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
-  755 |     operator<=>(const map<_Key, _Tp, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/map.h:755:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::map<_Key, _Tp, _Compare, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/debug/map:44:
-/usr/include/c++/12/debug/multimap.h:637:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> std::__detail::__synth3way_t<std::pair<const _Key, _Val> > std::__debug::operator<=>(const multimap<_Key, _Tp, _Compare, _Allocator>&, const multimap<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
-  637 |     operator<=>(const multimap<_Key, _Tp, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multimap.h:637:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/debug/set:41,
-                 from /usr/include/c++/12/set:67,
-                 from stdc++.h:87:
-/usr/include/c++/12/debug/set.h:618:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const set<_Key, _Compare, _Allocator>&, const set<_Key, _Compare, _Allocator>&)’ (rewritten)
-  618 |     operator<=>(const set<_Key, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/set.h:618:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::set<_Key, _Compare, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/debug/set:42:
-/usr/include/c++/12/debug/multiset.h:608:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const multiset<_Key, _Compare, _Allocator>&, const multiset<_Key, _Compare, _Allocator>&)’ (rewritten)
-  608 |     operator<=>(const multiset<_Key, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multiset.h:608:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::multiset<_Key, _Compare, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/forward_list:43,
-                 from stdc++.h:104:
-/usr/include/c++/12/debug/forward_list:872:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const forward_list<_Tp, _Allocator>&, const forward_list<_Tp, _Allocator>&)’ (rewritten)
-  872 |     operator<=>(const forward_list<_Tp, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/forward_list:872:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__debug::forward_list<_Tp, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/bits/stl_algobase.h:64:
-/usr/include/c++/12/bits/stl_pair.h:647:5: note: candidate: ‘template<class _T1, class _T2> constexpr std::common_comparison_category_t<decltype (std::__detail::__synth3way(declval<_T1&>(), declval<_T1&>())), decltype (std::__detail::__synth3way(declval<_T2&>(), declval<_T2&>()))> std::operator<=>(const pair<_T1, _T2>&, const pair<_T1, _T2>&)’ (rewritten)
-  647 |     operator<=>(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_pair.h:647:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::pair<_T1, _T2>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/stl_iterator.h:597:5: note: candidate: ‘template<class _Iterator>  requires  three_way_comparable<_Iterator, std::partial_ordering> constexpr std::compare_three_way_result_t<_Iterator, _Iterator> std::operator<=>(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorL>&)’ (rewritten)
-  597 |     operator<=>(const reverse_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:597:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/stl_iterator.h:1752:5: note: candidate: ‘template<class _Iterator>  requires  three_way_comparable<_Iterator, std::partial_ordering> constexpr std::compare_three_way_result_t<_Iterator, _Iterator> std::operator<=>(const move_iterator<_IteratorL>&, const move_iterator<_IteratorL>&)’ (rewritten)
- 1752 |     operator<=>(const move_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1752:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::move_iterator<_IteratorL>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/string_view:554:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(basic_string_view<_CharT, _Traits>, basic_string_view<_CharT, _Traits>)’ (rewritten)
-  554 |     operator<=>(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:554:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/basic_string.h:3621:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’ (rewritten)
- 3621 |     operator<=>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3621:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/functional:63:
-/usr/include/c++/12/array:311:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr std::__detail::__synth3way_t<_T1> std::operator<=>(const array<_Tp, _Nm>&, const array<_Tp, _Nm>&)’ (rewritten)
-  311 |     operator<=>(const array<_Tp, _Nm>& __a, const array<_Tp, _Nm>& __b)
-      |     ^~~~~~~~
-/usr/include/c++/12/array:311:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::array<_Tp, _Nm>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
+/usr/include/c++/12/bits/shared_ptr_base.h:1917:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> void std::swap(__shared_ptr<_Tp, _Lp>&, __shared_ptr<_Tp, _Lp>&)’
+ 1917 |     swap(__shared_ptr<_Tp, _Lp>& __a, __shared_ptr<_Tp, _Lp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:1917:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__shared_ptr<_Tp, _Lp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:2126:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> void std::swap(__weak_ptr<_Tp, _Lp>&, __weak_ptr<_Tp, _Lp>&)’
+ 2126 |     swap(__weak_ptr<_Tp, _Lp>& __a, __weak_ptr<_Tp, _Lp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:2126:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__weak_ptr<_Tp, _Lp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr.h:692:5: note: candidate: ‘template<class _Tp> void std::swap(shared_ptr<_Tp>&, shared_ptr<_Tp>&)’
+  692 |     swap(shared_ptr<_Tp>& __a, shared_ptr<_Tp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr.h:692:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::shared_ptr<_Tp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr.h:888:5: note: candidate: ‘template<class _Tp> void std::swap(weak_ptr<_Tp>&, weak_ptr<_Tp>&)’
+  888 |     swap(weak_ptr<_Tp>& __a, weak_ptr<_Tp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr.h:888:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::weak_ptr<_Tp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
 In file included from /usr/include/c++/12/queue:64,
                  from stdc++.h:86:
-/usr/include/c++/12/bits/stl_queue.h:434:5: note: candidate: ‘template<class _Tp, class _Seq>  requires  three_way_comparable<_Seq, std::partial_ordering> std::compare_three_way_result_t<_Seq> std::operator<=>(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’ (rewritten)
-  434 |     operator<=>(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:434:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::queue<_Tp, _Seq>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
+/usr/include/c++/12/bits/stl_queue.h:447:5: note: candidate: ‘template<class _Tp, class _Seq> typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(queue<_Tp, _Seq>&, queue<_Tp, _Seq>&)’
+  447 |     swap(queue<_Tp, _Seq>& __x, queue<_Tp, _Seq>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_queue.h:447:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::queue<_Tp, _Seq>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/stl_queue.h:836:5: note: candidate: ‘template<class _Tp, class _Sequence, class _Compare> typename std::enable_if<std::__and_<std::__is_swappable<_T2>, std::__is_swappable<_Compare> >::value>::type std::swap(priority_queue<_Tp, _Sequence, _Compare>&, priority_queue<_Tp, _Sequence, _Compare>&)’
+  836 |     swap(priority_queue<_Tp, _Sequence, _Compare>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_queue.h:836:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::priority_queue<_Tp, _Sequence, _Compare>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
 In file included from /usr/include/c++/12/stack:61,
                  from stdc++.h:89:
-/usr/include/c++/12/bits/stl_stack.h:410:5: note: candidate: ‘template<class _Tp, class _Seq>  requires  three_way_comparable<_Seq, std::partial_ordering> std::compare_three_way_result_t<_Seq> std::operator<=>(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’ (rewritten)
-  410 |     operator<=>(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_stack.h:410:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::stack<_Tp, _Seq>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
+/usr/include/c++/12/bits/stl_stack.h:423:5: note: candidate: ‘template<class _Tp, class _Seq> typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(stack<_Tp, _Seq>&, stack<_Tp, _Seq>&)’
+  423 |     swap(stack<_Tp, _Seq>& __x, stack<_Tp, _Seq>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_stack.h:423:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::stack<_Tp, _Seq>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/condition_variable:40,
+                 from stdc++.h:103:
+/usr/include/c++/12/bits/unique_lock.h:236:5: note: candidate: ‘template<class _Mutex> void std::swap(unique_lock<_Mutex>&, unique_lock<_Mutex>&)’
+  236 |     swap(unique_lock<_Mutex>& __x, unique_lock<_Mutex>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/unique_lock.h:236:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::unique_lock<_Mutex>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:105:
+/usr/include/c++/12/future:1195:5: note: candidate: ‘template<class _Res> void std::swap(promise<_Res>&, promise<_Res>&)’
+ 1195 |     swap(promise<_Res>& __x, promise<_Res>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/future:1195:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::promise<_Res>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/future:1660:5: note: candidate: ‘template<class _Res, class ... _ArgTypes> void std::swap(packaged_task<_Res(_ArgTypes ...)>&, packaged_task<_Res(_ArgTypes ...)>&)’
+ 1660 |     swap(packaged_task<_Res(_ArgTypes...)>& __x,
+      |     ^~~~
+/usr/include/c++/12/future:1660:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::packaged_task<_Res(_ArgTypes ...)>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:122:
+/usr/include/c++/12/shared_mutex:851:5: note: candidate: ‘template<class _Mutex> void std::swap(shared_lock<_Mutex>&, shared_lock<_Mutex>&)’
+  851 |     swap(shared_lock<_Mutex>& __x, shared_lock<_Mutex>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/shared_mutex:851:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::shared_lock<_Mutex>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:130:
+/usr/include/c++/12/optional:1436:5: note: candidate: ‘template<class _Tp> constexpr std::enable_if_t<(is_move_constructible_v<_Tp> && is_swappable_v<_Tp>)> std::swap(optional<_Tp>&, optional<_Tp>&)’
+ 1436 |     swap(optional<_Tp>& __lhs, optional<_Tp>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/optional:1436:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::optional<_Tp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/optional:1442:5: note: candidate: ‘template<class _Tp> std::enable_if_t<(!(is_move_constructible_v<_Tp> && is_swappable_v<_Tp>))> std::swap(optional<_Tp>&, optional<_Tp>&)’ (deleted)
+ 1442 |     swap(optional<_Tp>&, optional<_Tp>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/optional:1442:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::optional<_Tp>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
 In file included from stdc++.h:133:
-/usr/include/c++/12/variant:1255:5: note: candidate: ‘template<class ... _Types>  requires (three_way_comparable<_Types, std::partial_ordering> && ...) constexpr std::common_comparison_category_t<typename std::__detail::__cmp3way_res_impl<_Types, _Types>::type ...> std::operator<=>(const variant<_Types ...>&, const variant<_Types ...>&)’ (rewritten)
- 1255 |     operator<=>(const variant<_Types...>& __v, const variant<_Types...>& __w)
-      |     ^~~~~~~~
-/usr/include/c++/12/variant:1255:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::variant<_Types ...>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from stdc++.h:142:
-/usr/include/c++/12/coroutine:153:3: note: candidate: ‘constexpr std::strong_ordering std::__n4861::operator<=>(coroutine_handle<void>, coroutine_handle<void>)’ (rewritten)
-  153 |   operator<=>(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/coroutine:153:34: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} to ‘std::__n4861::coroutine_handle<void>’
-  153 |   operator<=>(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |               ~~~~~~~~~~~~~~~~~~~^~~
-In file included from /usr/include/c++/12/bits/ios_base.h:46:
-/usr/include/c++/12/system_error:312:3: note: candidate: ‘std::strong_ordering std::operator<=>(const error_code&, const error_code&)’ (rewritten)
-  312 |   operator<=>(const error_code& __lhs, const error_code& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:312:33: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} to ‘const std::error_code&’
-  312 |   operator<=>(const error_code& __lhs, const error_code& __rhs) noexcept
-      |               ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/system_error:493:3: note: candidate: ‘std::strong_ordering std::operator<=>(const error_condition&, const error_condition&)’ (rewritten)
-  493 |   operator<=>(const error_condition& __lhs,
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:493:38: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} to ‘const std::error_condition&’
-  493 |   operator<=>(const error_condition& __lhs,
-      |               ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
-In file included from stdc++.h:113:
-/usr/include/c++/12/thread:65:3: note: candidate: ‘std::strong_ordering std::operator<=>(thread::id, thread::id)’ (rewritten)
-   65 |   operator<=>(thread::id __x, thread::id __y) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/thread:65:26: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} to ‘std::thread::id’
-   65 |   operator<=>(thread::id __x, thread::id __y) noexcept
-      |               ~~~~~~~~~~~^~~
-/usr/include/c++/12/variant:1278:3: note: candidate: ‘constexpr std::strong_ordering std::operator<=>(monostate, monostate)’ (rewritten)
- 1278 |   operator<=>(monostate, monostate) noexcept { return strong_ordering::equal; }
-      |   ^~~~~~~~
-/usr/include/c++/12/variant:1278:15: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} to ‘std::monostate’
- 1278 |   operator<=>(monostate, monostate) noexcept { return strong_ordering::equal; }
-      |               ^~~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:562:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator<=(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&) requires requires{{std::operator<=::__x->base() >= std::operator<=::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
-  562 |     operator<=(const reverse_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:562:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/stl_iterator.h:1711:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator<=(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&) requires requires{{std::operator<=::__y->base() < std::operator<=::__x->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
- 1711 |     operator<=(const move_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1711:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::move_iterator<_IteratorL>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/unique_ptr.h:906:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep> constexpr bool std::operator<=(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’
-  906 |     operator<=(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:906:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/unique_ptr.h:914:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator<=(const unique_ptr<_Tp, _Dp>&, nullptr_t)’
-  914 |     operator<=(const unique_ptr<_Tp, _Dp>& __x, nullptr_t)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:914:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/unique_ptr.h:921:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator<=(nullptr_t, const unique_ptr<_Tp, _Dp>&)’
-  921 |     operator<=(nullptr_t, const unique_ptr<_Tp, _Dp>& __x)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:921:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/stl_queue.h:420:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator<=(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’
-  420 |     operator<=(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:420:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::queue<_Tp, _Seq>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/stl_stack.h:396:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator<=(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’
-  396 |     operator<=(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_stack.h:396:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::stack<_Tp, _Seq>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-In file included from /usr/include/c++/12/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/valarray:1202:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__less_equal, _Tp>::result_type> std::operator<=(const valarray<_Tp>&, const valarray<_Tp>&)’
- 1202 | _DEFINE_BINARY_OPERATOR(<=, __less_equal)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1202:1: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::valarray<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/valarray:1202:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__less_equal, _Tp>::result_type> std::operator<=(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
- 1202 | _DEFINE_BINARY_OPERATOR(<=, __less_equal)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1202:1: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::valarray<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/valarray:1202:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__less_equal, _Tp>::result_type> std::operator<=(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
- 1202 | _DEFINE_BINARY_OPERATOR(<=, __less_equal)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1202:1: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::valarray<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/optional:1256:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_le_t<_Tp, _Up> std::operator<=(const optional<_Tp>&, const optional<_Up>&)’
- 1256 |     operator<=(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1256:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::optional<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/optional:1398:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_le_t<_Tp, _Up> std::operator<=(const optional<_Tp>&, const _Up&)’
- 1398 |     operator<=(const optional<_Tp>& __lhs, const _Up& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1398:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::optional<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/optional:1404:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_le_t<_Up, _Tp> std::operator<=(const _Up&, const optional<_Tp>&)’
- 1404 |     operator<=(const _Up& __lhs, const optional<_Tp>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1404:5: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘D’ is not derived from ‘const std::optional<_Tp>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
-/usr/include/c++/12/variant:1240:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator<=(const variant<_Types ...>&, const variant<_Types ...>&)’
- 1240 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(<=, less_equal)
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/variant:1240:3: note:   template argument deduction/substitution failed:
-test.cpp:241:21: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<D>, D>::value_type’ {aka ‘D’} is not derived from ‘const std::variant<_Types ...>’
-  241 |         if(dist[v]<=d) return;
-      |                     ^
+/usr/include/c++/12/variant:1295:5: note: candidate: ‘template<class ... _Types> constexpr std::enable_if_t<((is_move_constructible_v<_Types> && ...) && (is_swappable_v<_Types> && ...))> std::swap(variant<_Types ...>&, variant<_Types ...>&)’
+ 1295 |     swap(variant<_Types...>& __lhs, variant<_Types...>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/variant:1295:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::variant<_Types ...>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/variant:1302:5: note: candidate: ‘template<class ... _Types> std::enable_if_t<(!((is_move_constructible_v<_Types> && ...) && (is_swappable_v<_Types> && ...)))> std::swap(variant<_Types ...>&, variant<_Types ...>&)’ (deleted)
+ 1302 |     swap(variant<_Types...>&, variant<_Types...>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/variant:1302:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::variant<_Types ...>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:151:
+/usr/include/c++/12/syncstream:304:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::swap(basic_syncbuf<_CharT, _Traits, _Alloc>&, basic_syncbuf<_CharT, _Traits, _Alloc>&)’
+  304 |     swap(basic_syncbuf<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/syncstream:304:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_syncbuf<_CharT, _Traits, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from stdc++.h:157:
+/usr/include/c++/12/spanstream:214:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_spanbuf<_CharT, _Traits>&, basic_spanbuf<_CharT, _Traits>&)’
+  214 |   swap(basic_spanbuf<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:214:3: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_spanbuf<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/spanstream:306:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ispanstream<_CharT, _Traits>&, basic_ispanstream<_CharT, _Traits>&)’
+  306 |   swap(basic_ispanstream<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:306:3: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_ispanstream<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/spanstream:374:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ospanstream<_CharT, _Traits>&, basic_ospanstream<_CharT, _Traits>&)’
+  374 |   swap(basic_ospanstream<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:374:3: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_ospanstream<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/spanstream:442:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_spanstream<_CharT, _Traits>&, basic_spanstream<_CharT, _Traits>&)’
+  442 |   swap(basic_spanstream<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:442:3: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::basic_spanstream<_CharT, _Traits>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/deque:64:
+/usr/include/c++/12/bits/stl_deque.h:2366:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__cxx1998::swap(deque<_Tp, _Alloc>&, deque<_Tp, _Alloc>&)’
+ 2366 |     swap(deque<_Tp,_Alloc>& __x, deque<_Tp,_Alloc>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_deque.h:2366:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::deque<_Tp, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/unordered_map:47:
+/usr/include/c++/12/bits/unordered_map.h:2120:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__cxx1998::swap(unordered_map<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&, unordered_map<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&)’
+ 2120 |     swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/unordered_map.h:2120:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::unordered_map<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/unordered_map.h:2127:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__cxx1998::swap(unordered_multimap<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&, unordered_multimap<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&)’
+ 2127 |     swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/unordered_map.h:2127:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::unordered_multimap<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/vector:64:
+/usr/include/c++/12/bits/stl_vector.h:2107:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr void std::__cxx1998::swap(vector<_Tp, _Alloc>&, vector<_Tp, _Alloc>&)’
+ 2107 |     swap(vector<_Tp, _Alloc>& __x, vector<_Tp, _Alloc>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_vector.h:2107:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   deduced conflicting types for parameter ‘_Tp’ (‘long long int’ and ‘int’)
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/list:63:
+/usr/include/c++/12/bits/stl_list.h:2217:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__cxx1998::swap(__cxx11::list<_Tp, _Alloc>&, __cxx11::list<_Tp, _Alloc>&)’
+ 2217 |     swap(list<_Tp, _Alloc>& __x, list<_Tp, _Alloc>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_list.h:2217:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::__cxx11::list<_Tp, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/map:61:
+/usr/include/c++/12/bits/stl_map.h:1585:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> void std::__cxx1998::swap(map<_Key, _Tp, _Compare, _Allocator>&, map<_Key, _Tp, _Compare, _Allocator>&)’
+ 1585 |     swap(map<_Key, _Tp, _Compare, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_map.h:1585:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::map<_Key, _Tp, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/map:62:
+/usr/include/c++/12/bits/stl_multimap.h:1206:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> void std::__cxx1998::swap(multimap<_Key, _Tp, _Compare, _Allocator>&, multimap<_Key, _Tp, _Compare, _Allocator>&)’
+ 1206 |     swap(multimap<_Key, _Tp, _Compare, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_multimap.h:1206:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::multimap<_Key, _Tp, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/set:61:
+/usr/include/c++/12/bits/stl_set.h:1059:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> void std::__cxx1998::swap(set<_Key, _Compare, _Allocator>&, set<_Key, _Compare, _Allocator>&)’
+ 1059 |     swap(set<_Key, _Compare, _Alloc>& __x, set<_Key, _Compare, _Alloc>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_set.h:1059:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::set<_Key, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/set:62:
+/usr/include/c++/12/bits/stl_multiset.h:1046:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> void std::__cxx1998::swap(multiset<_Key, _Compare, _Allocator>&, multiset<_Key, _Compare, _Allocator>&)’
+ 1046 |     swap(multiset<_Key, _Compare, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_multiset.h:1046:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::multiset<_Key, _Compare, _Allocator>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/forward_list:38:
+/usr/include/c++/12/bits/forward_list.h:1535:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__cxx1998::swap(forward_list<_Tp, _Alloc>&, forward_list<_Tp, _Alloc>&)’
+ 1535 |     swap(forward_list<_Tp, _Alloc>& __lx,
+      |     ^~~~
+/usr/include/c++/12/bits/forward_list.h:1535:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::forward_list<_Tp, _Alloc>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/unordered_set:47:
+/usr/include/c++/12/bits/unordered_set.h:1790:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__cxx1998::swap(unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>&, unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>&)’
+ 1790 |     swap(unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/unordered_set.h:1790:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+/usr/include/c++/12/bits/unordered_set.h:1797:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__cxx1998::swap(unordered_multiset<_Value1, _Hash1, _Pred1, _Alloc1>&, unordered_multiset<_Value1, _Hash1, _Pred1, _Alloc1>&)’
+ 1797 |     swap(unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/unordered_set.h:1797:5: note:   template argument deduction/substitution failed:
+test.cpp:259:13: note:   ‘vl’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘std::__cxx1998::unordered_multiset<_Value1, _Hash1, _Pred1, _Alloc1>’
+  259 |         swap(ngr, gr);
+      |         ~~~~^~~~~~~~~
+In file included from /usr/include/c++/12/stop_token:35,
+                 from /usr/include/c++/12/condition_variable:46:
+/usr/include/c++/12/bits/std_thread.h:306:3: note: candidate: ‘void std::swap(thread&, thread&)’
+  306 |   swap(thread& __x, thread& __y) noexcept
+      |   ^~~~
+/usr/include/c++/12/bits/std_thread.h:306:16: note:   no known conversion for argument 1 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘std::thread&’
+  306 |   swap(thread& __x, thread& __y) noexcept
+      |        ~~~~~~~~^~~
