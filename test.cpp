@@ -215,9 +215,125 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(L, N);
+    vp odd, even;
+    rep(i, N) {
+        LONG(x,y);
+        if((x+y)%2==0) even.emplace_back(x,y);
+        else odd.emplace_back(x,y);
+    }
+
+    auto calc=[&](vp v) -> ll {
+        vl ms, ks;
+        for(auto [x,y]: v) {
+            ms.push_back(y-x);
+            ks.push_back(x+y);
+        }
+        unique(ms); unique(ks);
+        ll ret = 0;
+        for(auto k: ks) {
+            ll l = max(k-L+1, 0LL);
+            ll r = min(k, L-1);
+            ret += max(r-l+1, 0LL);
+        }
+        for(auto m: ms) {
+            {
+                ll l = max(-m, 0LL);
+                ll r = min(L, L-m)-1;
+                ret += max(r-l+1, 0LL);
+            }
+            {
+                ll l = max(-m, m);
+                ll r = min(2*L-m, 2*L+m)-1;
+                auto [n1, x1] = lowbou(ks, l);
+                auto [n2, x2] = uppbou(ks, r);
+                ret -= n2-n1;
+            }
+        }
+        return ret;
+    };
+
+    ll ans = calc(even) + calc(odd);
+    Out(ans);
     
 }
 

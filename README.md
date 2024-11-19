@@ -2024,6 +2024,7 @@
 - [E - 品質検査](https://atcoder.jp/contests/joi2007yo/tasks/joi2007yo_e)
 - [F - チョコレートを増やせ (Increase Chocolates)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_f)
 - [3 - 現代的な屋敷 (Modern Mansion)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho3)
+- [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
