@@ -215,113 +215,151 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
+struct D {
+    ll x, y, k, d;
+    D(ll x, ll y, ll k, ll d):x(x),y(y),k(k),d(d) {}
+    bool operator>(const D &o) const {
+        return d>o.d;
     }
 };
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W);
-    LONG(N);
-    Combination comb(1e7, M107);
-    ll rmn=INF, rmx=-INF, cmn=INF, cmx=-INF;
-    vvb mascot(H, vb(W));
-    rep(i, N) {
-        LONGM(r, c);
-        mascot[r][c] = true;
-        chmin(rmn, r); chmax(rmx, r);
-        chmin(cmn, c); chmax(cmx, c);
+    LONG(M, N, K);
+    umap<ll,vp> xtoy, ytox;
+    bool ssw = false;
+    vl X(K), Y(K);
+    rep(i, K) {
+        LONG(x,y);
+        X[i] = x, Y[i] = y;
+        xtoy[x].emplace_back(y, i);
+        ytox[y].emplace_back(x, i);
+        if(x==1 && y==1) ssw = true;
+    }
+    xtoy[M].emplace_back(N, K);
+    ytox[N].emplace_back(M, K);
+    xtoy[1].emplace_back(1, K+1);
+    ytox[1].emplace_back(1, K+1);
+    for(auto &[x,v]: xtoy) { sort(all(v)); }
+    for(auto &[y,v]: ytox) { sort(all(v)); }
+    auto makefrom=[&](umap<ll,vp> &xtoy) -> vvp {
+        vvp from(K+2);
+        for(auto &[x,v]: xtoy) {
+            ll n = SIZE(v);
+            rep(i, n-1) {
+                auto [x1, i1] = v[i];
+                auto [x2, i2] = v[i+1];
+                from[i1].emplace_back(i2, x2-x1);
+                from[i2].emplace_back(i1, x2-x1);
+            }
+        }
+        return from;
+    };
+    vvp from1 = makefrom(xtoy);
+    vvp from0 = makefrom(ytox);
+
+    vvl dist(K+2, vl(2, INF));
+    priority_queue<t3,vt3,greater<t3>> que;
+    auto push=[&](ll v, ll k, ll d) {
+        if(dist[v][k]<=d) return;
+        dist[v][k] = d;
+        que.emplace(d, v, k);
+    };
+    push(K+1,1,0);
+
+    while(que.size()) {
+        auto [d,v,k] = que.top(); que.pop();
+        if(dist[v][k]!=d) continue;
+        if(k==0) {
+            for(auto [nv, c]: from0[v]) {
+                push(nv,k,d+c);
+            }
+        } else {
+            for(auto [nv, c]: from1[v]) {
+                push(nv,k,d+c);
+            }
+        }
+        if(!ssw && v==K+1) continue;
+        push(v,k^1,d+1);
     }
 
-    ll inner=0;
-    for(ll r=rmn; r<=rmx; ++r) for(ll c=cmn; c<=cmx; ++c) {
-        if(mascot[r][c]) continue;
-        ++inner;
-    }
-
-    vvm dp(H+1, vm(W+1));
-    dp[rmx-rmn+1][cmx-cmn+1] = 1;
-    rep(i, H+1) rep(j, W+1) {
-        mint now = dp[i][j];
-        if(now==0) continue;
-        if(j<W) { dp[i][j+1] += now * comb.get_fact(i); }
-        if(i<H) { dp[i+1][j] += now * comb.get_fact(j); }
-    }
-
-    de(inner)
-    mint ans = comb.get_fact(inner);
-    de(ans)
-    ans *= dp[H][W];
-    de(ans)
-    // de(dp)
-    {
-        ll l = rmn, r = H-1-rmx;
-        ans *= comb(l+r, l);
-    }
-    {
-        ll l = cmn, r = W-1-cmx;
-        ans *= comb(l+r, l);
-    }
+    ll ans = INF;
+    chmin(ans, dist[K][0]);
+    chmin(ans, dist[K][1]);
+    ch1(ans);
     Out(ans);
-
 
     
 }

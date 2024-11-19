@@ -2019,6 +2019,7 @@
 - [B - 最長の階段](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_b)
 - [E - 品質検査](https://atcoder.jp/contests/joi2007yo/tasks/joi2007yo_e)
 - [F - チョコレートを増やせ (Increase Chocolates)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_f)
+- [3 - 現代的な屋敷 (Modern Mansion)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho3)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
