@@ -219,47 +219,44 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(N);
-    STRING(S);
-    ll K = SIZE(S);
-    vvp from(K+1);
-    uset<string> st;
-    rep(i, N) {
-        STRING(s);
-        st.insert(s);
-    }
-
-    rep(i, K) {
-        string tmp;
-        rep(j, 22) {
-            if(i+j>=K) break;
-            tmp += S[i+j];
-            if(st.count(tmp)) {
-                from[i].emplace_back(i+j, 1);
-            }
+    vvl vtot(N);
+    ll idx = 0;
+    vt3 telep;
+    rep(i, N-1) {
+        LONG(A);
+        rep(j, A) {
+            LONGM(a, b);
+            vtot[a].push_back(idx);
+            vtot[b].push_back(idx);
+            telep.emplace_back(i, a, b);
+            ++idx;
         }
     }
-    rep(i, K) {
-        from[i+1].emplace_back(i, 0);
-    }
-
-    vl dist(K+1, INF);
-    deque<ll> deq;
-    auto push=[&](ll v, ll d, bool fr) {
-        if(dist[v]<=d) return;
+    vl cnt(idx);
+    vl dist(N, INF);
+    queue<ll> que;
+    auto fix=[&](ll v, ll d) {
+        if(dist[v]!=INF) return;
         dist[v] = d;
-        if(fr) deq.push_front(v);
-        else deq.push_back(v);
-    };
-    push(0, 0, true);
-    while(deq.size()) {
-        auto v = deq.front(); deq.pop_front();
-        for(auto [nv,c]: from[v]) {
-            if(c==0) push(nv, dist[v]+c, true);
-            else push(nv, dist[v]+c, false);
+        for(auto t: vtot[v]) {
+            cnt[t]++;
+            if(cnt[t]==2) { que.emplace(t); }
         }
+    };
+    fix(N-1, 0);
+    while(que.size()) {
+        // queue<ll> pque; swap(pque, que);
+        // while(pque.size()) {
+            auto t = que.front(); que.pop();
+            auto [v,a,b] = telep[t];
+            ll now = max(dist[a], dist[b]) + 1;
+            fix(v, now);
+        // }
     }
-    ll ans = dist[K-1];
+    ll ans = dist[0];
+    ch1(ans);
     Out(ans);
+
     
 }
 

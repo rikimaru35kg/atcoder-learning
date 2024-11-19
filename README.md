@@ -1536,6 +1536,7 @@
 - !復習価値低 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
 - !復習価値低 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
+- !要復習 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
 
 ## 三つ組は真ん中を固定
 ### 例題
