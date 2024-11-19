@@ -215,78 +215,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(T, N);
-    VVL(C, N, N);
-    vt3 edge;
-    rep(i, N) for(ll j=i+1; j<N; ++j) {
-        edge.emplace_back(C[i][j], i, j);
+    LONG(N); VP(A, N);
+    LONG(M); VP(B, M);
+    auto size=[&](vp x) -> ll {
+        ll ret = 0;
+        for(auto [a,n]: x) ret += n;
+        return ret;
+    };
+    ll ta = size(A), tb = size(B);
+    if(ta>tb) swap(A,B), swap(ta,tb);
+    if(ta!=tb) A.insert(A.begin(), Pr(0,tb-ta));
+    de(A)de(B)
+
+    vp nA, nB;
+    while(A.size() || B.size()) {
+        if(A.empty()) {
+            auto [b,nb] = B.back();
+            nA.emplace_back(0,nb);
+            nB.emplace_back(b,nb);
+            B.pop_back();
+        }
+        else if(B.empty()) {
+            auto [a,na] = A.back();
+            nA.emplace_back(a,na);
+            nB.emplace_back(0,na);
+            A.pop_back();
+        } else {
+            auto [a,na] = A.back();
+            auto [b,nb] = B.back();
+            ll k = min(na,nb);
+            nA.emplace_back(a,k);
+            nB.emplace_back(b,k);
+            if(na==k) A.pop_back();
+            else A.back().second -= k;
+            if(nb==k) B.pop_back();
+            else B.back().second -= k;
+        }
     }
 
-    vl cnt(N);
-    rep(i, N) cnt[T[i]]++;
-    if(cnt[0]>0) {
-        ll ans = 0;
-        ll e = 0;
-        rep(i, N) {
-            for(ll j=i+1; j<N; ++j) {
-                if(T[i]!=0 && T[j]!=0) continue;
-                ans += C[i][j], ++e;
+    swap(A, nA); swap(B, nB);
+    reverse(all(A)); reverse(all(B));
+    de(A)de(B)
+
+    vp ans;
+    ll c = 0;
+    while(A.size()) {
+        auto [a,na] = pop(A);
+        auto [b,nb] = pop(B);
+        if(c==0) {
+            if(a+b<10) {
+                ans.emplace_back(a+b, na);
+                c = 0;
+            } else {
+                ans.emplace_back(a+b-10, 1);
+                ans.emplace_back(a+b-10+1, na-1);
+                c = 1;
+            }
+        } else {
+            if(a+b<9) {
+                ans.emplace_back(a+b+1, 1);
+                ans.emplace_back(a+b, na-1);
+                c = 0;
+            } else if(a+b==9) {
+                ans.emplace_back(0, na);
+                c = 1;
+            } else {
+                ans.emplace_back(a+b-10+1, na);
+                c = 1;
             }
         }
-        printf("%lld %lld\n", e, ans);
-        return 0;
     }
-    auto calc=[&](ll c) -> ll {
-        ll ret = 0;
-        rep(i, N) { ret += C[c][i]; }
-        return ret;
-    };
-    auto cal2=[&](ll p, ll q) -> ll {
-        ll ret = C[p][q];
-        rep(i, N) {
-            if(i==p || i==q) continue;
-            ret += min(C[i][p], C[i][q]);
-        }
-        return ret;
-    };
-    if(cnt[1]>0) {
-        ll ans = INF;
-        rep(i, N) {
-            ll now = calc(i);
-            chmin(ans, now);
-        }
-        if(cnt[1]>2) {
-            printf("%lld %lld\n", N-1, ans);
-            return 0;
-        }
-        ll p=-1, q=-1;
-        rep(i, N) {
-            if(T[i]==1) { p=i; swap(p,q); }
-        }
-        ll now = cal2(p,q);
-        chmin(ans, now);
-        printf("%lld %lld\n", N-1, ans);
-        return 0;
+    if(c==1) ans.emplace_back(1,1);
+    reverse(all(ans));
+    vp ans2;
+    for(auto [a,n]: ans) {
+        if(n==0) continue;
+        if(ans2.size() && ans2.back().first==a) ans2.back().second += n;
+        else ans2.emplace_back(a, n);
+    }
+    de(ans)
+    de(ans2)
+    Out(SIZE(ans2));
+    for(auto [a,n]: ans2) {
+        printf("%lld %lld\n", a, n);
     }
 
-    sort(all(edge));
-    dsu uf(N);
-    ll ans = 0;
-    for(auto [c,a,b]: edge) {
-        if(uf.same(a,b)) continue;
-        uf.merge(a,b);
-        ans += c;
-    }
-    printf("%lld %lld\n", N-1, ans);
 
-    
+
 }
 
 // ### test.cpp ###
