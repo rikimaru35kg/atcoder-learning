@@ -215,152 +215,19 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-struct D {
-    ll x, y, k, d;
-    D(ll x, ll y, ll k, ll d):x(x),y(y),k(k),d(d) {}
-    bool operator>(const D &o) const {
-        return d>o.d;
-    }
-};
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, N, K);
-    umap<ll,vp> xtoy, ytox;
-    bool ssw = false;
-    vl X(K), Y(K);
-    rep(i, K) {
-        LONG(x,y);
-        X[i] = x, Y[i] = y;
-        xtoy[x].emplace_back(y, i);
-        ytox[y].emplace_back(x, i);
-        if(x==1 && y==1) ssw = true;
-    }
-    xtoy[M].emplace_back(N, K);
-    ytox[N].emplace_back(M, K);
-    xtoy[1].emplace_back(1, K+1);
-    ytox[1].emplace_back(1, K+1);
-    for(auto &[x,v]: xtoy) { sort(all(v)); }
-    for(auto &[y,v]: ytox) { sort(all(v)); }
-    auto makefrom=[&](umap<ll,vp> &xtoy) -> vvp {
-        vvp from(K+2);
-        for(auto &[x,v]: xtoy) {
-            ll n = SIZE(v);
-            rep(i, n-1) {
-                auto [x1, i1] = v[i];
-                auto [x2, i2] = v[i+1];
-                from[i1].emplace_back(i2, x2-x1);
-                from[i2].emplace_back(i1, x2-x1);
-            }
+    vl v = {2,1,9,9,8,4,6,7,5,8};
+    ll n = SIZE(v);
+    rep(s, 1<<n) {
+        if(pcnt(s)!=4)continue;
+        ll now = 0;
+        rep(i, n) if(s>>i&1) {
+            now += v[i];
         }
-        return from;
-    };
-    vvp from1 = makefrom(xtoy);
-    vvp from0 = makefrom(ytox);
-
-    vvl dist(K+2, vl(2, INF));
-    priority_queue<t3,vt3,greater<t3>> que;
-    auto push=[&](ll v, ll k, ll d) {
-        if(dist[v][k]<=d) return;
-        dist[v][k] = d;
-        que.emplace(d, v, k);
-    };
-    push(K+1,1,0);
-
-    while(que.size()) {
-        auto [d,v,k] = que.top(); que.pop();
-        if(dist[v][k]!=d) continue;
-        if(k==0) {
-            for(auto [nv, c]: from0[v]) {
-                push(nv,k,d+c);
-            }
-        } else {
-            for(auto [nv, c]: from1[v]) {
-                push(nv,k,d+c);
-            }
-        }
-        if(!ssw && v==K+1) continue;
-        push(v,k^1,d+1);
+        if(now==20) deb(s)
     }
-
-    ll ans = INF;
-    chmin(ans, dist[K][0]);
-    chmin(ans, dist[K][1]);
-    ch1(ans);
-    Out(ans);
-
     
 }
 

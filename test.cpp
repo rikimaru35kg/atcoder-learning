@@ -215,64 +215,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(K, N);
-    map<Pr,ll> mp;
-    vl X(N),Y(N),C(N);
-    rep(i, N) {
-        LONGM(x,y); CHAR(c);
-        X[i] = x, Y[i] = y;
-        if(c=='J') C[i] = 0;
-        if(c=='O') C[i] = 1;
-        if(c=='I') C[i] = 2;
+    LONG(N);
+    VLM(T, N);
+    VVL(C, N, N);
+    vt3 edge;
+    rep(i, N) for(ll j=i+1; j<N; ++j) {
+        edge.emplace_back(C[i][j], i, j);
     }
 
-    ll Z = (1LL<<30)+10;
-    auto hash=[&](ll x, ll y, ll k, ll t) -> ll {
-        ll ret = x;
-        ret = ret*Z + y;
-        ret = ret*35+k;
-        ret = ret*5+t;
-        return ret;
-    };
-    // umap<ll,ll> mem;
-    auto dfs=[&](auto f, ll sx, ll sy, ll k, ll t) -> ll {
-        ll h = hash(sx,sy,k,t);
-        // if(mem.count(h)) return mem[h];
-
-        ll ret = INF;//mem[h];
-        ll w = 1LL<<k;
-        vl cnt(3);
+    vl cnt(N);
+    rep(i, N) cnt[T[i]]++;
+    if(cnt[0]>0) {
+        ll ans = 0;
+        ll e = 0;
         rep(i, N) {
-            if(X[i]<sx || X[i]>=sx+w || Y[i]<sy || Y[i]>=sy+w) continue;
-            cnt[C[i]]++;
+            for(ll j=i+1; j<N; ++j) {
+                if(T[i]!=0 && T[j]!=0) continue;
+                ans += C[i][j], ++e;
+            }
         }
-        ll tot = cnt[0]+cnt[1]+cnt[2];
-        if(tot==0) return ret = 0;
-
-        if(t!=3) { return ret = tot-cnt[t]; }
-        if(t==3 && k==0) return ret = 0;
-
-        vl p(4);
-        iota(all(p), 0);
-        ret = INF;
-        ll w2 = w>>1;
-        do {
-            ll now = 0;
-            now += f(f,sx,sy,k-1,p[0]);
-            now += f(f,sx,sy+w2,k-1,p[1]);
-            now += f(f,sx+w2,sy,k-1,p[2]);
-            now += f(f,sx+w2,sy+w2,k-1,p[3]);
-            chmin(ret, now);
-        } while(next_permutation(all(p)));
-        // de5(sx,sy,k,t,ret)
+        printf("%lld %lld\n", e, ans);
+        return 0;
+    }
+    auto calc=[&](ll c) -> ll {
+        ll ret = 0;
+        rep(i, N) { ret += C[c][i]; }
         return ret;
     };
+    auto cal2=[&](ll p, ll q) -> ll {
+        ll ret = C[p][q];
+        rep(i, N) {
+            if(i==p || i==q) continue;
+            ret += min(C[i][p], C[i][q]);
+        }
+        return ret;
+    };
+    if(cnt[1]>0) {
+        ll ans = INF;
+        rep(i, N) {
+            ll now = calc(i);
+            chmin(ans, now);
+        }
+        if(cnt[1]>2) {
+            printf("%lld %lld\n", N-1, ans);
+            return 0;
+        }
+        ll p=-1, q=-1;
+        rep(i, N) {
+            if(T[i]==1) { p=i; swap(p,q); }
+        }
+        ll now = cal2(p,q);
+        chmin(ans, now);
+        printf("%lld %lld\n", N-1, ans);
+        return 0;
+    }
 
-    ll ans = dfs(dfs, 0,0,K,3);
-    Out(ans);
+    sort(all(edge));
+    dsu uf(N);
+    ll ans = 0;
+    for(auto [c,a,b]: edge) {
+        if(uf.same(a,b)) continue;
+        uf.merge(a,b);
+        ans += c;
+    }
+    printf("%lld %lld\n", N-1, ans);
+
     
 }
 

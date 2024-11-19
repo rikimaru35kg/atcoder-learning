@@ -465,8 +465,10 @@
 ## スターグラフ（うにグラフ）
 - 距離2の頂点組み合わせが最も多くなる（N-1C2）。nC2から最低必要辺数のN-1を引くと一致する事からこれより多くはできないことがわかる
 - 針の先同士をつなげば距離2の組み合わせを1つずつ減らせるので、距離2の頂点組み合わせは0以上N-1C2であればすべて実現可能
+- 任意の2頂点間の距離が2以下である
 ### 例題
 - 基本 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
+- !要復習 [joitter - ジョイッター (Joitter)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_joitter)
 
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
 - DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
