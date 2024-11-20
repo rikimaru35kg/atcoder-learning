@@ -218,61 +218,24 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    vl C(N);
-    vl P(N, -1);
-    rep(i, N) {
-        LONG(p, c);
-        if(p!=0) {
-            from[p-1].push_back(i);
-            P[i] = p-1;
-        }
-        C[i] = c;
-    }
-
-    vl nvs(N, -1);
-    auto find_max=[&](auto f, ll v) -> ll {
-        ll ret = 0;
-        for(auto nv: from[v]) {
-            ll now = f(f, nv);
-            if(now>ret) {
-                ret = now;
-                nvs[v] = nv;
-            }
-        }
-        ret += C[v];
-        return ret;
+    LONG(W, H, N);
+    vvl field(H, vl(W));
+    priority_queue<t3> que;
+    auto push=[&](ll r, ll c, ll h) {
+        if(field[r][c]>=h) return;
+        field[r][c] = h;
+        que.emplace(h, r, c);
     };
-
-    vb finished(N);
-    ll ans = 0;
-    rep(mi, M) {
-        vl svs;
-        rep(i, N) {
-            if(finished[i]) continue;
-            if(i==0) svs.push_back(i);
-            else if(finished[P[i]]) svs.push_back(i);
-        }
-        if(SIZE(svs)==0) break;
-
-        Pr mx(0, -1);
-        nvs = vl(N, -1);
-        for(auto sv: svs) {
-            ll now = find_max(find_max, sv);
-            chmax(mx, Pr(now, sv));
-        }
-
-        ll v = mx.second;
-        finished[v] = true;
-        while(nvs[v]!=-1) {
-            v = nvs[v];
-            finished[v] = true;
-        }
-
-        ans += mx.first;
+    rep(i, N) {
+        LONGM(c, r); LONG(h);
+        push(r,c,h);
     }
-    Out(ans);
+
+    while(que.size()) {
+        auto [h,r,c] = que.top(); que.pop();
+        if(field[r][c]!=h) continue;
+        field[r][c] = h;
+    }
     
 }
 
