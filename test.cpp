@@ -215,124 +215,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(L, N);
-    vp odd, even;
+    LONG(N, M);
+    vvl from(N);
+    vl C(N);
+    vl P(N, -1);
     rep(i, N) {
-        LONG(x,y);
-        if((x+y)%2==0) even.emplace_back(x,y);
-        else odd.emplace_back(x,y);
+        LONG(p, c);
+        if(p!=0) {
+            from[p-1].push_back(i);
+            P[i] = p-1;
+        }
+        C[i] = c;
     }
 
-    auto calc=[&](vp v) -> ll {
-        vl ms, ks;
-        for(auto [x,y]: v) {
-            ms.push_back(y-x);
-            ks.push_back(x+y);
-        }
-        unique(ms); unique(ks);
+    vl nvs(N, -1);
+    auto find_max=[&](auto f, ll v) -> ll {
         ll ret = 0;
-        for(auto k: ks) {
-            ll l = max(k-L+1, 0LL);
-            ll r = min(k, L-1);
-            ret += max(r-l+1, 0LL);
-        }
-        for(auto m: ms) {
-            {
-                ll l = max(-m, 0LL);
-                ll r = min(L, L-m)-1;
-                ret += max(r-l+1, 0LL);
-            }
-            {
-                ll l = max(-m, m);
-                ll r = min(2*L-m, 2*L+m)-1;
-                auto [n1, x1] = lowbou(ks, l);
-                auto [n2, x2] = uppbou(ks, r);
-                ret -= n2-n1;
+        for(auto nv: from[v]) {
+            ll now = f(f, nv);
+            if(now>ret) {
+                ret = now;
+                nvs[v] = nv;
             }
         }
+        ret += C[v];
         return ret;
     };
 
-    ll ans = calc(even) + calc(odd);
+    vb finished(N);
+    ll ans = 0;
+    rep(mi, M) {
+        vl svs;
+        rep(i, N) {
+            if(finished[i]) continue;
+            if(i==0) svs.push_back(i);
+            else if(finished[P[i]]) svs.push_back(i);
+        }
+        if(SIZE(svs)==0) break;
+
+        Pr mx(0, -1);
+        nvs = vl(N, -1);
+        for(auto sv: svs) {
+            ll now = find_max(find_max, sv);
+            chmax(mx, Pr(now, sv));
+        }
+
+        ll v = mx.second;
+        finished[v] = true;
+        while(nvs[v]!=-1) {
+            v = nvs[v];
+            finished[v] = true;
+        }
+
+        ans += mx.first;
+    }
     Out(ans);
     
 }
