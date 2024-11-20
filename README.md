@@ -1839,6 +1839,7 @@
 - !復習価値低 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - 基本 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
 - !復習価値中 [aplusb - 足し算 (a + b problem)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_aplusb)
+- !要復習 [E - シャッフル](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_e)
 - !要復習 実際は考察も必要なのでNote非掲載 [F - Hands on Ring (Hard)](https://atcoder.jp/contests/abc376/tasks/abc376_f)
 - !要復習 実際は考察も必要なのでNote非掲載 [C - JOIOI 王国 (Kingdom of JOIOI)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_c)
 

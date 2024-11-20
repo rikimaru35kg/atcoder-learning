@@ -218,36 +218,50 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(H, W, N);
-    VVI(A, H, W);
-    vvi dp(H, vi(W));
-    dp[0][0] = N-1;
-    rep(i, H) rep(j, W) {
-        if(i) {
-            ll pdp = dp[i-1][j];
-            if(pdp%2==0) dp[i][j] += pdp/2;
-            else {
-                if(A[i-1][j]==0) dp[i][j] += (pdp+1)/2;
-                else dp[i][j] += (pdp-1)/2;
+    LONG(N, M);
+    LONG(P,Q,R);
+    vp cards;
+    cards.emplace_back(1,N+1);
+    auto devide=[&](ll x, ll y) -> vp {
+        vp ret;
+        ll sum = 0;
+        for(auto [l,r]: cards) {
+            ll len = r-l;
+            if(sum+len<=x || sum>=y) {
+                sum += len; continue;
             }
+            ll left=-1,right=-1;
+            if(x>=sum) left = l+x-sum;
+            else left = l;
+            if(y<=sum+len) right = l+y-sum;
+            else right = r;
+            ret.emplace_back(left,right);
+            sum += len;
         }
-        if(j) {
-            ll pdp = dp[i][j-1];
-            if(pdp%2==0) dp[i][j] += pdp/2;
-            else {
-                if(A[i][j-1]==1) dp[i][j] += (pdp+1)/2;
-                else dp[i][j] += (pdp-1)/2;
-            }
+        return ret;
+    };
+
+    rep(i, M) {
+        LONG(x, y);
+        auto c1 = devide(0,x);
+        auto c2 = devide(x,y);
+        auto c3 = devide(y,N);
+        vp now;
+        for(auto p: c3) now.emplace_back(p);
+        for(auto p: c2) now.emplace_back(p);
+        for(auto p: c1) now.emplace_back(p);
+        swap(cards, now);
+    }
+    ll ans = 0;
+    vp extract = devide(P-1, Q);
+    for(auto [l,r]: extract) {
+        if(l>R) continue;
+        if(r-1<=R) {
+            ans += r-l; continue;
         }
+        ans += R-l+1;
     }
-    ll i = 0, j = 0;
-    while(i<H && j<W) {
-        ll now = dp[i][j]%2;
-        now ^= A[i][j];
-        if(now==0) i++;
-        else j++;
-    }
-    printf("%lld %lld\n", i+1, j+1);
+    Out(ans);
     
 }
 
