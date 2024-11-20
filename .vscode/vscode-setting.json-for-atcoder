@@ -11,6 +11,7 @@
         {"before": ["k"], "after": ["g","k"]},
         {"before": ["<C-d>"], "after": ["g","b"]},
         {"before": ["m"], "after": ["5","<c-e>"]},
+        {"before": ["t"], "after": ["5","<c-y>"]},
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {"before": ["<C-d>"], "after": ["g","b"]},
