@@ -42,7 +42,7 @@ using ll = long long;
 using ull = unsigned long long;
 using sll = __int128_t;
 using db = double;
-using Pr = pair<ll, ll>;
+using Pr = pair<int, int>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -215,28 +215,153 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(W, H, N);
-    vvl field(H, vl(W));
-    priority_queue<t3> que;
-    auto push=[&](ll r, ll c, ll h) {
-        if(field[r][c]>=h) return;
-        field[r][c] = h;
-        que.emplace(h, r, c);
-    };
-    rep(i, N) {
-        LONGM(c, r); LONG(h);
-        push(r,c,h);
-    }
+    LONG(R);
+    LONG(W1, H1);
+    LONGM(C1, R1);
+    VVI(A1, H1, W1);
+    LONG(W2, H2);
+    LONGM(C2, R2);
+    VVI(A2, H2, W2);
 
-    while(que.size()) {
-        auto [h,r,c] = que.top(); que.pop();
-        if(field[r][c]!=h) continue;
-        field[r][c] = h;
+    using MP = map<ll,vp>;
+    auto make_height=[&](vvi &A) -> MP {
+        ll H = SIZE(A), W = SIZE(A[0]);
+        MP ret;
+        rep(i, H) rep(j, W) {
+            ret[A[i][j]].emplace_back(i,j);
+        }
+        return ret;
+    };
+    auto posbyh1 = make_height(A1);
+    auto posbyh2 = make_height(A2);
+    de(posbyh1)
+
+    auto make_list=[&](vvi &A, MP &posbyh, ll sr, ll sc) -> vp {
+        ll H = SIZE(A), W = SIZE(A[0]);
+        vp ret(1, Pr(0,0));
+        vvb done(H, vb(W));
+        ll cnt = 0;
+        for(auto [h,pos]: posbyh) {
+            queue<Pr> que;
+            for(auto [r,c]: pos) {
+                for(auto [di,dj]: dij) {
+                    ll ni = r + di, nj = c + dj;
+                    if(!isin(ni,nj,H,W)) continue;
+                    if(done[ni][nj]) {
+                        que.emplace(r,c); break;
+                    }
+                }
+            }
+            if(h==1) {
+                que.emplace(sr,sc);
+            }
+            while(que.size()) {
+                auto [r,c] = que.front(); que.pop();
+                if(done[r][c]) continue;
+                done[r][c] = true;
+                ++cnt;
+                for(auto [di,dj]: dij) {
+                    ll ni = r + di, nj = c + dj;
+                    if(!isin(ni,nj,H,W)) continue;
+                    if(A[ni][nj]>h) continue;
+                    que.emplace(ni,nj);
+                }
+            }
+            ret.emplace_back(cnt,h);
+        }
+        return ret;
+    };
+
+    auto list1 = make_list(A1, posbyh1, R1, C1);
+    auto list2 = make_list(A2, posbyh2, R2, C2);
+    de(list1)
+    de(list2)
+
+    int ans = IINF;
+    int Z = SIZE(list2);
+    for(auto [n,h]: list1) {
+        auto [i,p] = lowbou(list2, Pr(R-n, -1));
+        if(i==Z) continue;
+        auto [n2,h2] = p;
+        de(n+n2)
+        chmin(ans, h+h2);
     }
-    
+    Out(ans);
+
 }
 
 // ### test.cpp ###

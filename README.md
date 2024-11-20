@@ -2026,6 +2026,7 @@
 - [3 - 現代的な屋敷 (Modern Mansion)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho3)
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
+- [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

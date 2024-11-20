@@ -42,7 +42,7 @@ using ll = long long;
 using ull = unsigned long long;
 using sll = __int128_t;
 using db = double;
-using Pr = pair<ll, ll>;
+using Pr = pair<int, int>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -63,7 +63,7 @@ using vvvi = vector<vector<vector<int>>>;
 using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
-using t3 = tuple<ll,ll,ll>;
+using t3 = tuple<int,int,int>;
 using t3d = tuple<db,db,db>;
 using t4 = tuple<ll,ll,ll,ll>;
 using vt3 = vector<t3>;
@@ -218,6 +218,42 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    LONG(W, H, N);
+    vvi field(H, vi(W));
+    deque<Pr> que;
+    auto push=[&](int r, int c, int h, bool fr=false) {
+        if(field[r][c]>=h) return;
+        field[r][c] = h;
+        if(!fr) que.emplace_back(r, c);
+        else que.emplace_front(r, c);
+    };
+    vvp ps(3010);
+    t3 mxh(0, -1,-1);
+    rep(i, N) {
+        LONG(c, r); LONG(h);
+        ps[h].emplace_back(r,c);
+        chmax(mxh, t3(h,r,c));
+    }
+    auto [mh,mr,mc] = mxh;
+    push(mr,mc,mh);
+
+    while(que.size()) {
+        auto [r,c] = que.front(); que.pop_front();
+        int h = field[r][c];
+        for(auto [di,dj]: dij8) {
+            int ni = r + di, nj = c + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            push(ni,nj,h-1);
+        }
+        for(auto [r,c]: ps[h]) {
+            push(r,c,h, true);
+        }
+    }
+    ll ans = 0;
+    rep(i, H) rep(j, W) {
+        ans += field[i][j];
+    }
+    Out(ans);
     
 }
 
