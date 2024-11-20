@@ -2028,6 +2028,7 @@
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
+- [typhoon - 台風 (Typhoon)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_typhoon)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

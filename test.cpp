@@ -215,53 +215,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    LONG(P,Q,R);
-    vp cards;
-    cards.emplace_back(1,N+1);
-    auto devide=[&](ll x, ll y) -> vp {
-        vp ret;
-        ll sum = 0;
-        for(auto [l,r]: cards) {
-            ll len = r-l;
-            if(sum+len<=x || sum>=y) {
-                sum += len; continue;
-            }
-            ll left=-1,right=-1;
-            if(x>=sum) left = l+x-sum;
-            else left = l;
-            if(y<=sum+len) right = l+y-sum;
-            else right = r;
-            ret.emplace_back(left,right);
-            sum += len;
-        }
-        return ret;
-    };
+    LONG(N,M,K);
+    vt3 typhoon;
+    rep(i, N) {
+        LONG(l, r);
+        typhoon.emplace_back(l, i, 1);
+        typhoon.emplace_back(r+1, i, -1);
+    }
+    sort(allr(typhoon));
 
+    vt4 query;
     rep(i, M) {
-        LONG(x, y);
-        auto c1 = devide(0,x);
-        auto c2 = devide(x,y);
-        auto c3 = devide(y,N);
-        vp now;
-        for(auto p: c3) now.emplace_back(p);
-        for(auto p: c2) now.emplace_back(p);
-        for(auto p: c1) now.emplace_back(p);
-        swap(cards, now);
+        LONG(x,a,b); --a;
+        query.emplace_back(x,a,b,i);
     }
-    ll ans = 0;
-    vp extract = devide(P-1, Q);
-    for(auto [l,r]: extract) {
-        if(l>R) continue;
-        if(r-1<=R) {
-            ans += r-l; continue;
+    sort(all(query));
+
+    fenwick_tree<ll> tree(N);
+
+    vl ans(M);
+    for(auto [x,a,b,qi]: query) {
+        auto judge=[&]() -> bool {
+            auto [l,ni,t] = typhoon.back();
+            return l<=x;
+        };
+        while(typhoon.size() && judge()) {
+            auto [l,ni,t] = pop(typhoon);
+            tree.add(ni,t);
         }
-        ans += R-l+1;
+        // rep(z, N) {
+        //     if(tree.sum(z,z+1)==0) continue;
+        //     if(tree.sum(z,z+1)==1) continue;
+        //     de("NG")
+        // }
+        ans[qi] = tree.sum(a,b);
     }
-    Out(ans);
+    de(SIZE(ans))
+    for(auto x: ans) Out(x);
+
     
 }
 
