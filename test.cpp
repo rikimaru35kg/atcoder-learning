@@ -151,6 +151,10 @@ inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+inline sll TmpPercent(sll a, sll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+inline sll Percent(sll a, sll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+inline sll Div(sll a, sll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+inline sll Divceil(sll a, sll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
@@ -215,118 +219,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +-*/ leads to overflowing
-//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
-//! BE CAREFUL ABOUT CALCULATION COST!
-//! O(logM) just for initializing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b == 0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
+}
+
+
+void solve() {
+    LONG(D, a, b);
+    if(a>b) swap(a,b);
+    if(a==0) {
+        ll ans = b*D;
+        Out(ans); return;
     }
-    Frac operator+(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return *this + Frac(x);
+    auto [g,x0,y0] = extgcd(a,b);
+    ll rh = a*a + b*b;
+    if(rh%g!=0) {
+        Out(0); return;
     }
-    Frac operator+(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
+    sll k = rh/g;
+    ll ad = a/g, bd = b/g;
+    ll mn = -INF*(ll)INF, mx = INF*(ll)INF;
+    {
+        ll l = Divceil(-k*x0,bd);
+        ll r = Div(D-k*x0,bd);
+        chmax(mn, l);
+        chmin(mx, r);
     }
-    Frac operator-(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return *this - Frac(x);
+    {
+        ll l = Divceil(k*y0-D,ad);
+        ll r = Div(k*y0,ad);
+        chmax(mn, l);
+        chmin(mx, r);
     }
-    Frac operator-(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
+    // de2(ad,bd)
+    // de2(mn,mx)
+    if(mn>mx) {
+        Out(0); return;
     }
-    Frac operator*(const ll x) {
-        if (q == 0) return Frac(1, 0);
-        return Frac(p*x, q);
+    for(ll t=mn; t<=mx; ++t) {
+        de2(ll(k*x0+bd*t), ll(k*y0-ad*t))
     }
-    Frac operator*(const Frac &rhs) {
-        if (q == 0 || rhs.q == 0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    Frac operator/(const ll x) {
-        if (q == 0 || x == 0) return Frac(1, 0);
-        return Frac(p, q*x);
-    }
-    Frac operator/(const Frac &rhs) {
-        if (q == 0 || rhs.p == 0) return Frac(1, 0);
-        return Frac(p*rhs.q, q*rhs.p);
-    }
-    bool operator<(const ll x) const {
-        return *this < Frac(x);
-    }
-    bool operator<(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p < 0;
-    }
-    bool operator<=(const ll x) const {
-        return *this <= Frac(x);
-    }
-    bool operator<=(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p <= 0;
-    }
-    bool operator>(const ll x) const {
-        return *this > Frac(x);
-    }
-    bool operator>(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p > 0;
-    }
-    bool operator>=(const ll x) const {
-        return *this >= Frac(x);
-    }
-    bool operator>=(const Frac &rhs) const {
-        return p*rhs.q - q*rhs.p >= 0;
-    }
-    bool operator==(const ll x) const {
-        return (q==1 && p==x);
-    }
-    bool operator==(const Frac &rhs) {
-        return (p==rhs.p && q==rhs.q);
-    }
-};
+    ll ans = 0;
+    auto calc=[&](ll t) {
+        ll ret = b*k*x0 - a*k*y0 + (b*bd+a*ad)*t;
+        return abs(ret);
+    };
+    chmax(ans, calc(mn));
+    chmax(ans, calc(mx));
+    Out(ans);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(M, K);
-
-    priority_queue<Frac,vector<Frac>,greater<Frac>> que;
-    set<Frac> st;
-    auto push=[&](ll p, ll q) {
-        Frac tmp(p,q);
-        if(st.count(tmp)) return;
-        st.insert(tmp);
-        que.emplace(tmp);
-    };
-    repk(q, 2, M+1) push(1,q);
-    ll cnt=0;
-    Frac ans;
-    while(que.size()) {
-        auto fr = que.top(); que.pop();
-        ++cnt;
-        ans = fr;
-        if(cnt==K) break;
-
-        ll p = fr.p+1, q = fr.q;
-        while(p<q && gcd(p,q)!=1) {
-            p++;
-        }
-        if(p==q) continue;
-        push(p,q);
-    }
-
-    if(cnt!=K) Pm1
-    printf("%lld %lld\n", ans.p, ans.q);
+    LONG(T);
+    rep(i, T) solve();
     
 }
 
