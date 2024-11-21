@@ -219,58 +219,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
 }
-
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 void solve() {
     LONG(D, a, b);
-    if(a>b) swap(a,b);
-    if(a==0) {
-        ll ans = b*D;
-        Out(ans); return;
-    }
-    auto [g,x0,y0] = extgcd(a,b);
-    ll rh = a*a + b*b;
-    if(rh%g!=0) {
-        Out(0); return;
-    }
-    sll k = rh/g;
-    ll ad = a/g, bd = b/g;
-    ll mn = -INF*(ll)INF, mx = INF*(ll)INF;
-    {
-        ll l = Divceil(-k*x0,bd);
-        ll r = Div(D-k*x0,bd);
-        chmax(mn, l);
-        chmin(mx, r);
-    }
-    {
-        ll l = Divceil(k*y0-D,ad);
-        ll r = Div(k*y0,ad);
-        chmax(mn, l);
-        chmin(mx, r);
-    }
-    // de2(ad,bd)
-    // de2(mn,mx)
-    if(mn>mx) {
-        Out(0); return;
-    }
-    for(ll t=mn; t<=mx; ++t) {
-        de2(ll(k*x0+bd*t), ll(k*y0-ad*t))
-    }
-    ll ans = 0;
-    auto calc=[&](ll t) {
-        ll ret = b*k*x0 - a*k*y0 + (b*bd+a*ad)*t;
-        return abs(ret);
+    // if(a>b) swap(a,b);
+    // if(a==0) {
+    //     ll ans = b*D;
+    //     Out(ans); return;
+    // }
+    ll gg = gcd(a,b);
+    ll da=a/gg, db=b/gg;
+    auto f=[&](ll k) -> bool {
+        ll x = a-k*db;
+        ll y = b+k*da;
+        if(x>D || x<0 || y<0 || y>D) return false;
+        return true;
     };
-    chmax(ans, calc(mn));
-    chmax(ans, calc(mx));
+    auto g=[&](ll k) -> bool {
+        ll x = a+k*db;
+        ll y = b-k*da;
+        if(x>D || x<0 || y<0 || y>D) return false;
+        return true;
+    };
+
+    ll k1 = binary_search(0, (ll)1e9+10, f);
+    ll k2 = binary_search(0, (ll)1e9+10, g);
+
+    auto calc=[&](ll k) -> ll {
+        ll x = a+k*db;
+        ll y = b-k*da;
+        ll ret = abs(a*y - b*x);
+        return ret;
+    };
+    ll ans = max(calc(k1), calc(-k2));
     Out(ans);
+
 }
 
 int main () {
