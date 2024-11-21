@@ -1819,6 +1819,10 @@
 ### 例題
 - !復習価値低（snippet練習） [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
 
+## ファレイ数列（名前を覚えたいだけなのでNote非掲載）
+### 例題
+- !復習価値中 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
+
 ## 構築系問題
 - 構築させる問題
 ### 例題
