@@ -151,10 +151,6 @@ inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
 inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
 inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
 inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
-inline sll TmpPercent(sll a, sll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
-inline sll Percent(sll a, sll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
-inline sll Div(sll a, sll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
-inline sll Divceil(sll a, sll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
@@ -219,68 +215,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
 }
 
-void solve() {
-    LONG(D, a, b);
-    // if(a>b) swap(a,b);
-    // if(a==0) {
-    //     ll ans = b*D;
-    //     Out(ans); return;
-    // }
-    ll gg = gcd(a,b);
-    ll da=a/gg, db=b/gg;
-    auto f=[&](ll k) -> bool {
-        ll x = a-k*db;
-        ll y = b+k*da;
-        if(x>D || x<0 || y<0 || y>D) return false;
-        return true;
-    };
-    auto g=[&](ll k) -> bool {
-        ll x = a+k*db;
-        ll y = b-k*da;
-        if(x>D || x<0 || y<0 || y>D) return false;
-        return true;
-    };
-
-    ll k1 = binary_search(0, (ll)1e9+10, f);
-    ll k2 = binary_search(0, (ll)1e9+10, g);
-
-    auto calc=[&](ll k) -> ll {
-        ll x = a+k*db;
-        ll y = b-k*da;
-        ll ret = abs(a*y - b*x);
-        return ret;
-    };
-    ll ans = max(calc(k1), calc(-k2));
-    Out(ans);
-
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    LONG(N);
+    STRING(S, T);
+    ll a = SIZE(S), b = SIZE(T);
+    ll g = gcd(a,b);
+    ll ad = a/g, bd = b/g;
+    rep(i, N) {
+        LONG(s);
+        auto [g,x0,y0] = extgcd(a,b);
+        ll k = s/g;
+        ll y = Percent(k*y0, ad);
+        ll x = Div(s-b*y, a);
+        rep(j, x) cout<<S<<' ';
+        rep(j, y) cout<<T<<' ';
+        cout<<endl;
+    }
+
     
 }
 
