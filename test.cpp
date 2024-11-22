@@ -215,76 +215,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
     long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
     return ret;
 }
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
+#include <atcoder/scc>
+using namespace atcoder;
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, X, Y);
-    if(X==Y) Outend(0);
-    if(Y%2==0) Pm1
+    LONG(N, K);
+    VL(H, N);
+    VP(P, N);
 
-    auto v = separate_digit(Y, 2);
-    v.erase(v.begin());
-    de(v)
-    vl A;
-    A.push_back(N);
-    ll zero = 0;
-    for(auto x: v) {
-        if(x==0) zero++;
-        else {
-            A.push_back(zero+1);
-            zero = 0;
-        }
+    auto lessK=[&](Pr p1, Pr p2) -> bool {
+        ll d = euclid_dist2(p1,p2);
+        return d<=K*K;
+    };
+
+    vvl from(N);
+    scc_graph scc(N);
+    rep(i, N) rep(j, i) {
+        if(!lessK(P[i],P[j])) continue;
+        if(H[i]<H[j]) scc.add_edge(i, j), from[i].push_back(j);
+        if(H[i]>H[j]) scc.add_edge(j, i), from[j].push_back(i);
+
     }
-    Out(SIZE(A));
-    Out(A);
 
-
-
-
-
+    auto grs = scc.scc();
+    ll ans = 0;
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) {
+            if(SIZE(from[gr[0]])==0) ++ans;
+            continue;
+        }
+        ++ans;
+    }
+    Out(ans);
     
 }
 
