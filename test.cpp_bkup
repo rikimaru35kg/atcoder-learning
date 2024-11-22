@@ -218,55 +218,27 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    LONG(N);
+    ll S = 3, K = 3;
+    VVL(A, S, N);
 
-    queue<ll> que;
-    vl dist(N, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        de(v)
-        for(auto nv: from[v]) {
-            push(nv, dist[v]+1);
+    vvl dp(S, vl(K, -INF));
+    vvl edp = dp;
+    dp[0][0] = 0;
+    rep(i, N) {
+        vvl pdp = edp; swap(pdp, dp);
+        rep(s, 3) rep(k, 3) rep(ns, 3) {
+            if(pdp[s][k]==-INF) continue;
+            ll plus = max(ns-s, 0LL);
+            ll nk = k + plus;
+            if(nk>=K) continue;
+            chmax(dp[ns][nk], pdp[s][k]+A[ns][i]);
         }
     }
 
-    vl cnt(N+10);
-    rep(i, N) {
-        if(dist[i]==INF) continue;
-        cnt[dist[i]]++;
-    }
-
-    if(cnt[1]==0) {
-        rep(i, N) { Out(0); }
-        return 0;
-    }
-
-    vl So(N+11), Se(N+11);
-    rep(i, N+10) {
-        if(i%2) So[i] += cnt[i];
-        else Se[i] += cnt[i];
-    }
-    rep(i, N+9) So[i+1] += So[i];
-    rep(i, N+9) Se[i+1] += Se[i];
-
-    rep1(i, N) {
-        ll ans = 0;
-        if(i%2) ans = So[i];
-        else ans = Se[i];
-        Out(ans);
-    }
+    ll ans = -INF;
+    rep(s, 3) rep(k, 3) chmax(ans, dp[s][k]);
+    Out(ans);
     
 }
 

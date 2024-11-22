@@ -215,29 +215,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    ll S = 3, K = 3;
-    VVL(A, S, N);
+    LONG(N, M);
 
-    vvl dp(S, vl(K, -INF));
-    vvl edp = dp;
-    dp[0][0] = 0;
-    rep(i, N) {
-        vvl pdp = edp; swap(pdp, dp);
-        rep(s, 3) rep(k, 3) rep(ns, 3) {
-            if(pdp[s][k]==-INF) continue;
-            ll plus = max(ns-s, 0LL);
-            ll nk = k + plus;
-            if(nk>=K) continue;
-            chmax(dp[ns][nk], pdp[s][k]+A[ns][i]);
+    ll ans = 0;
+    ll left = 0;
+    rep1(x, N) {
+        ll right = max(x*(M-x), 0LL);
+        left += min(x-1,M);
+        // de(left)
+        auto ds = listup_divisor(x);
+        for(auto d: ds) {
+            if(d>M) continue;
+            if(d>=x) continue;
+            left -= d;
         }
+        ll now = left + right;
+        // de3(x,left,right)
+        chmax(ans, now);
     }
-
-    ll ans = -INF;
-    rep(s, 3) rep(k, 3) chmax(ans, dp[s][k]);
     Out(ans);
     
 }
