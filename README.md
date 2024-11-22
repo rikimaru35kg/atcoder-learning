@@ -1148,6 +1148,7 @@
 - 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+- !復習価値中 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
 
 ## 整数とMOD
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える

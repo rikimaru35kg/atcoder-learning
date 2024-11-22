@@ -215,64 +215,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q, Y);
-    VS(S, Q);
+    LONG(N, M);
+    VL(A, N);
+    vl cnt(M+1);
+    set<ll> st;
+    rep(i, M+1) st.insert(i);
 
-    auto calc=[&](sll x) -> sll {
-        vector<sll> stck;
-        for(auto s: S) {
-            if(s=="X") {
-                stck.push_back(x);
-            } else if(s=="+") {
-                sll tmp = pop(stck);
-                tmp += pop(stck);
-                stck.push_back(tmp);
-            } else if(s=="min") {
-                sll tmp = pop(stck);
-                chmin(tmp, pop(stck));
-                stck.push_back(tmp);
-            } else if(s=="max") {
-                sll tmp = pop(stck);
-                chmax(tmp, pop(stck));
-                stck.push_back(tmp);
-            } else {
-                sll a = stoll(s);
-                stck.push_back(a);
-            }
+    auto add=[&](ll x) {
+        if(x>=M) return;
+        if(cnt[x]==0) st.erase(x);
+        cnt[x]++;
+    };
+    auto del=[&](ll x) {
+        if(x>=M) return;
+        cnt[x]--;
+        if(cnt[x]==0) st.insert(x);
+    };
+
+    vl imos(N+10);
+
+    ll r = 0;
+    rep(l, N) {
+        auto mex=[&]() { return *st.begin(); };
+        while(r<N && mex()<M) {
+            add(A[r++]);
         }
-        return stck[0];
-    };
+        de2(l, r)
+        if(mex()>=M) {
+            imos[r-l]++;
+            imos[N-l+1]--;
+        }
+        if(l==r) ++r;
+        else del(A[l]);
+    }
+    rep(i, N+9) imos[i+1] += imos[i];
+    de(imos)
+    rep1(i, N) Out(imos[i]);
 
-    auto f=[&](ll x) -> bool {
-        return calc(x)>=Y;
-    };
-    ll x = binary_search(INF, -1, f);
-    if(calc(x)!=Y) Pm1
-    Out(x);
     
 }
 
