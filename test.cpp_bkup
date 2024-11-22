@@ -215,19 +215,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
+
+#include <atcoder/scc>
+using namespace atcoder;
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N,S,B);
+    LONG(N, K);
     VL(H, N);
-    if(N==1) PYes
-    ll h = H[0];
-    rep(i, N-1) {
-        chmax(h, H[i]+S*B);
-        de2(i,h)
-        if(h<H[i+1]) PNo
+    VP(P, N);
+
+    auto lessK=[&](Pr p1, Pr p2) -> bool {
+        ll d = euclid_dist2(p1,p2);
+        return d<=K*K;
+    };
+
+    vvl from(N);
+    scc_graph scc(N);
+    rep(i, N) rep(j, i) {
+        if(!lessK(P[i],P[j])) continue;
+        if(H[i]<H[j]) scc.add_edge(i, j), from[i].push_back(j);
+        if(H[i]>H[j]) scc.add_edge(j, i), from[j].push_back(i);
+
     }
-    PYes
+
+    auto grs = scc.scc();
+    ll ans = 0;
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) {
+            if(SIZE(from[gr[0]])==0) ++ans;
+            continue;
+        }
+        ++ans;
+    }
+    Out(ans);
     
 }
 

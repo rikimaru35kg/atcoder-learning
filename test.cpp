@@ -215,48 +215,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-#include <atcoder/scc>
-using namespace atcoder;
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(H, N);
-    VP(P, N);
-
-    auto lessK=[&](Pr p1, Pr p2) -> bool {
-        ll d = euclid_dist2(p1,p2);
-        return d<=K*K;
-    };
-
-    vvl from(N);
-    scc_graph scc(N);
-    rep(i, N) rep(j, i) {
-        if(!lessK(P[i],P[j])) continue;
-        if(H[i]<H[j]) scc.add_edge(i, j), from[i].push_back(j);
-        if(H[i]>H[j]) scc.add_edge(j, i), from[j].push_back(i);
-
-    }
-
-    auto grs = scc.scc();
-    ll ans = 0;
-    for(auto gr: grs) {
-        if(SIZE(gr)==1) {
-            if(SIZE(from[gr[0]])==0) ++ans;
-            continue;
+    STRING(S);
+    using D = pair<char,ll>;
+    vector<D> stck;
+    for(auto c: S) {
+        auto push=[&]() { stck.emplace_back(c, 1); };
+        ll n = SIZE(stck);
+        if(c=='<') push();
+        if(c=='=') {
+            if(n && stck.back().first=='=') stck.back().second++;
+            else push();
         }
-        ++ans;
+        if(c=='>') {
+            if(n<2) push();
+            else {
+                if(stck[n-2].first=='<' && stck[n-1].first=='=') {
+                    rep(i, 2) stck.pop_back();
+                } else push();
+            }
+        }
+    }
+    ll ans = 0;
+    for(auto [c,n]: stck) {
+        ans += n;
     }
     Out(ans);
     
