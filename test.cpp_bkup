@@ -215,49 +215,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-#include <atcoder/scc>
+#include <atcoder/modint>
 using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    VL(H, N);
-    VP(P, N);
+    LONG(N); STRING(S);
 
-    auto lessK=[&](Pr p1, Pr p2) -> bool {
-        ll d = euclid_dist2(p1,p2);
-        return d<=K*K;
-    };
-
-    vvl from(N);
-    scc_graph scc(N);
-    rep(i, N) rep(j, i) {
-        if(!lessK(P[i],P[j])) continue;
-        if(H[i]<H[j]) scc.add_edge(i, j), from[i].push_back(j);
-        if(H[i]>H[j]) scc.add_edge(j, i), from[j].push_back(i);
-
-    }
-
-    auto grs = scc.scc();
-    ll ans = 0;
-    for(auto gr: grs) {
-        if(SIZE(gr)==1) {
-            if(SIZE(from[gr[0]])==0) ++ans;
-            continue;
+    vm dp(2);
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp(2); swap(pdp, dp);
+        if(S[i]=='L') {
+            dp[0] += pdp[0];
+        } else if(S[i]=='R') {
+            dp[1] += pdp[0] + pdp[1];
+        } else if(S[i]=='U') {
+            dp[0] += pdp[0] + pdp[1];
+        } else {
+            dp[0] += pdp[0];
+            dp[1] += pdp[0] + pdp[1];
+            dp[0] += pdp[0] + pdp[1];
         }
-        ++ans;
     }
+    mint ans = dp[0]+dp[1];
     Out(ans);
     
 }

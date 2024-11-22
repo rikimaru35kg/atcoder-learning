@@ -215,34 +215,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    using D = pair<char,ll>;
-    vector<D> stck;
-    for(auto c: S) {
-        auto push=[&]() { stck.emplace_back(c, 1); };
-        ll n = SIZE(stck);
-        if(c=='<') push();
-        if(c=='=') {
-            if(n && stck.back().first=='=') stck.back().second++;
-            else push();
-        }
-        if(c=='>') {
-            if(n<2) push();
-            else {
-                if(stck[n-2].first=='<' && stck[n-1].first=='=') {
-                    rep(i, 2) stck.pop_back();
-                } else push();
+    LONG(Q, Y);
+    VS(S, Q);
+
+    auto calc=[&](sll x) -> sll {
+        vector<sll> stck;
+        for(auto s: S) {
+            if(s=="X") {
+                stck.push_back(x);
+            } else if(s=="+") {
+                sll tmp = pop(stck);
+                tmp += pop(stck);
+                stck.push_back(tmp);
+            } else if(s=="min") {
+                sll tmp = pop(stck);
+                chmin(tmp, pop(stck));
+                stck.push_back(tmp);
+            } else if(s=="max") {
+                sll tmp = pop(stck);
+                chmax(tmp, pop(stck));
+                stck.push_back(tmp);
+            } else {
+                sll a = stoll(s);
+                stck.push_back(a);
             }
         }
-    }
-    ll ans = 0;
-    for(auto [c,n]: stck) {
-        ans += n;
-    }
-    Out(ans);
+        return stck[0];
+    };
+
+    auto f=[&](ll x) -> bool {
+        return calc(x)>=Y;
+    };
+    ll x = binary_search(INF, -1, f);
+    if(calc(x)!=Y) Pm1
+    Out(x);
     
 }
 
