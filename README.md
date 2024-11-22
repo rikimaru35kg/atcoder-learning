@@ -2053,3 +2053,4 @@
 - [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
 - [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
 - [No.2953 Maximum Right Triangle](https://yukicoder.me/problems/no/2953)
+- [No.2881 Mod 2^N](https://yukicoder.me/problems/no/2881)

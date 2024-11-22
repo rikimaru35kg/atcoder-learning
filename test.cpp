@@ -215,40 +215,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
     vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    if (issort) sort(ret.begin(), ret.end());
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
+    }
+    return ret;
+}
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
     return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
+    LONG(N, X, Y);
+    if(X==Y) Outend(0);
+    if(Y%2==0) Pm1
 
-    ll ans = 0;
-    ll left = 0;
-    rep1(x, N) {
-        ll right = max(x*(M-x), 0LL);
-        left += min(x-1,M);
-        // de(left)
-        auto ds = listup_divisor(x);
-        for(auto d: ds) {
-            if(d>M) continue;
-            if(d>=x) continue;
-            left -= d;
+    auto v = separate_digit(Y, 2);
+    v.erase(v.begin());
+    de(v)
+    vl A;
+    A.push_back(N);
+    ll zero = 0;
+    for(auto x: v) {
+        if(x==0) zero++;
+        else {
+            A.push_back(zero+1);
+            zero = 0;
         }
-        ll now = left + right;
-        // de3(x,left,right)
-        chmax(ans, now);
     }
-    Out(ans);
+    Out(SIZE(A));
+    Out(A);
+
+
+
+
+
     
 }
 
