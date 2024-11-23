@@ -826,7 +826,7 @@
 
 ## 文字列の部分列
 - SがTのある要素を抜き取って並べたものであるとき、SはTの部分列という。連続していなくてもよい。連続している場合は部分文字列という。
-- 部分列であるかどうかの判定は、Tのidxを用意し、Sの各文字に対して文字が一致するまでidxを進める（前から貪欲に判定）
+- 部分列であるかどうかの判定は、Tのidxを用意し、Sの各文字に対して文字が一致するまでidxを進める（**前から貪欲**に判定）
 - idxが最後まで進んだら一致しなかったという事でアウト。
 - なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
@@ -2058,3 +2058,5 @@
 - [No.2953 Maximum Right Triangle](https://yukicoder.me/problems/no/2953)
 - [No.2881 Mod 2^N](https://yukicoder.me/problems/no/2881)
 - [No.2927 Reverse Polish Equation](https://yukicoder.me/problems/no/2927)
+- [E - 11/22 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_e)
+- [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
