@@ -1,8 +1,4 @@
-import os
-import sys
-import glob
-
-filehead = r"""
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -219,7 +215,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
 void solve() {
+    LONG(N);
+    uset<ll> cand;
+    rep(i, 10000) cand.insert(i);
+
+    auto countdif=[&](ll x, ll s) -> ll {
+        vl vx = separate_digit(x, 10, 4);
+        vl vs = separate_digit(s, 10, 4);
+        ll cnt = 0;
+        rep(i, 4) {
+            if(vx[i]!= vs[i]) ++cnt;
+        }
+        return cnt;
+    };
+
+    rep(i, N) {
+        LONG(s, t);
+        if(t==1) {
+            vl es;
+            for(auto x: cand) {
+                if(countdif(x,s)!=0) es.push_back(x);
+            }
+            for(auto e: es ) cand.erase(e);
+        } else if (t==2) {
+            vl es;
+            for(auto x: cand) {
+                if(countdif(x,s)!=1) es.push_back(x);
+            }
+            for(auto e: es ) cand.erase(e);
+        } else {
+            vl es;
+            for(auto x: cand) {
+                if(countdif(x, s)<=1) es.push_back(x);
+            }
+            for(auto e: es) cand.erase(e);
+        }
+    }
+    de(cand)
+    if(SIZE(cand)!=1) Outend("Can't Solve");
+    auto x = *cand.begin();
+    string ans = to_string(x);
+    while(SIZE(ans)<4) ans = '0' + ans;
+    Out(ans);
 
 }
 
@@ -229,20 +290,4 @@ int main () {
     solve();
 }
 
-"""
-
-files = set()
-for f in glob.glob("*.cpp"):
-    files.add(f)
-
-for filebase in sys.argv[1:]:
-    filename = f'{filebase}.cpp'
-    if (filename in files):
-        os.rename(filename, filename+"_bkup")
-    str_header_footer = f'// ### {filename} ###'
-
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(str_header_footer)
-        f.writelines(filehead)
-        f.write(str_header_footer)
-        f.write('\n')
+// ### test.cpp ###

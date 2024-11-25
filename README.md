@@ -2042,6 +2042,7 @@
 - [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
 - [No.2880 Max Sigma Mod](https://yukicoder.me/problems/no/2880)
 - [No.2923 Mayor's Job](https://yukicoder.me/problems/no/2923)
+- [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
