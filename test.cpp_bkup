@@ -216,23 +216,43 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-
-    vl dp(2, -INF);
-    dp[0] = 0;
+    LONG(N, K);
+    vt3 span1, span2;
     rep(i, N) {
-        vl pdp(2, -INF); swap(pdp, dp);
-        LONG(a);
-        rep(j, 2) rep(k, 2) {
-            if(pdp[j]==-INF) continue;
-            if(j==1 && k==1) continue;
-            chmax(dp[k], pdp[j]+(k==1?a:0));
+        LONG(l, r); r += K;
+        span1.emplace_back(r, 0, l);
+        span1.emplace_back(l, 1, i);
+        span2.emplace_back(-l, 0, -r);
+        span2.emplace_back(-r, 1, i);
+    }
+    sort(all(span1));
+    sort(all(span2));
+
+    auto calc=[&](vt3 span) -> vl {
+        vl ret(N);
+        ll rmx = -INF;
+        ll now = 0;
+        for(auto [r,t,l]: span) {
+            if(t==0) {
+                if(l<rmx) continue;
+                ++now;
+                rmx = r;
+            } else {
+                ll i = l;
+                l = r;
+                ret[i] = now;
+            }
         }
-        de(dp)
+        return ret;
+    };
+    vl mx1 = calc(span1);
+    vl mx2 = calc(span2);
+    de(mx1)de(mx2)
+    rep(i, N) {
+        ll ans = mx1[i] + mx2[i] + 1;
+        Out(ans);
     }
 
-    ll ans = max(dp[0], dp[1]);
-    Out(ans);
 }
 
 int main () {

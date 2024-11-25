@@ -1528,6 +1528,7 @@
 ### 例題
 - 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
 - !復習価値高 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
+- !復習価値中 [C16 - Flights](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fn)
 - !要復習 電車発車の最小遅れ問題（考察も実装も勉強になる） [E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
 
 ## 後ろから考える

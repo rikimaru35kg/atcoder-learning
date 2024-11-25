@@ -215,46 +215,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+struct D {
+    ll a, b, t;
+    D(ll a, ll b, ll t): a(a),b(b),t(t) {}
+};
 
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-
-    auto f=[&](db x) -> bool {
-        ll cnt = 0;
-        rep(i, N) {
-            cnt += floor(A[i]/x);
-        }
-        return cnt >= K;
-    };
-
-    db border = binary_search(0.0, 1e9+10, f);
-    de(border)
-    rep(i, N) {
-        ll ans = floor(A[i]/border);
-        Out(ans);
+    LONG(N,M,K);
+    vector<set<Pr>> land(N);
+    vl num(N);
+    map<ll,vector<D>> mp;
+    rep(i, M) {
+        LONG(a,s,b,t); --a, --b;
+        mp[s].emplace_back(a,b,t);
     }
 
+    auto update=[&](ll i, ll s) {
+        auto judge=[&]() -> bool {
+            auto it = land[i].begin();;
+            auto [t,n] = *it;
+            return t<=s;
+        };
+        while(land[i].size() && judge()) {
+            auto it = land[i].begin();
+            auto [t,n] = *it;
+            chmax(num[i], n);
+            land[i].erase(it);
+        }
+    };
+
+    for(auto [s,vs]: mp) {
+        for(auto v: vs) {
+            auto [a,b,t] = v;
+            update(a, s);
+            ll cnum = num[a];
+            land[b].emplace(t+K, cnum+1);
+        }
+    }
+
+    rep(i, N) update(i, INF);
+    ll ans = *max_element(all(num));
+    de(num)
+    Out(ans);
 }
 
 int main () {
