@@ -216,20 +216,45 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
+    LONG(N, S);
     VL(A, N);
-    vl cnt(1010);
-    rep(i, N) cnt[A[i]]++;
-    rep(i, N) rep(j, i) {
-        cnt[A[i]]--;
-        cnt[A[j]]--;
-        ll x = 1000-A[i]-A[j];
-        if(x>=0 && cnt[x]>0) PYes
-        cnt[A[i]]++;
-        cnt[A[j]]++;
-    }
 
-    PNo
+    vb dp(S+1);
+    dp[0] = true;
+    vvl pre(N+1, vl(S+1, -1));
+    rep(i, N) {
+        ll a = A[i];
+        vb pdp(S+1); swap(pdp, dp);
+        rep(j, S+1) {
+            if(!pdp[j]) continue;
+            dp[j] = true;
+            pre[i+1][j] = j;
+            if(a+j>S) continue;
+            dp[a+j] = true;
+            pre[i+1][a+j] = j;
+        }
+    }
+    if(!dp[S]) Pm1
+
+    ll s = S;
+    ll i=N;
+    vl ans;
+    while(i>0) {
+        // if(pre[i][s]>=0) {
+        if(pre[i][s]!=s) ans.push_back(i);
+        s = pre[i][s];
+        // }
+        --i;
+    }
+    reverse(all(ans));
+    Out(SIZE(ans));
+    Out(ans);
+    // ll check=0;
+    // rep(i, ans.size()) {
+    //     check += A[ans[i]-1];
+    // }
+    // de(check)
+
 }
 
 int main () {

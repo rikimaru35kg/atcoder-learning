@@ -215,36 +215,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-
 void solve() {
-    LONG(N, L, K);
-    priority_queue<t3,vt3,greater<t3>> que;
-    VL2(A, C, N);
-
-    ll M = L+10;
-    segtree<S,op,e> seg(M);
-    auto upd=[&](ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
+    LONG(N); VL(H, N);
+    vl dp(N, INF);
+    vl pre(N, -1);
+    dp[0] = 0;
+    auto jump=[&](ll i, ll j) {
+        if(j>=N) return;
+        if(dp[j]>dp[i]+abs(H[i]-H[j])) {
+            pre[j] = i;
+            chmin(dp[j], dp[i]+abs(H[i]-H[j]));
+        }
     };
     rep(i, N) {
-        upd(A[i], C[i]);
+        jump(i, i+1);
+        jump(i, i+2);
     }
+    ll x = N-1;
+    vl ans;
+    ans.push_back(x+1);
+    while(x!=0) {
 
-    ll need = max(L-K, 0LL);
-    ll ans = 0;
-    rep1(i, need) {
-        ll mn = seg.prod(i, min(K+i,M));
-        if(mn==INF) Pm1
-        ans += mn;
     }
+    reverse(all(ans));
+    Out(SIZE(ans));
     Out(ans);
-
 
 }
 
