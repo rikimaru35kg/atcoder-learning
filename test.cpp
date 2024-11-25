@@ -215,72 +215,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
+    return ok;
 }
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    return ret;
+    return ok;
 }
 
 void solve() {
-    LONG(N);
-    uset<ll> cand;
-    rep(i, 10000) cand.insert(i);
+    LONG(N, K);
+    VL(A, N);
 
-    auto countdif=[&](ll x, ll s) -> ll {
-        vl vx = separate_digit(x, 10, 4);
-        vl vs = separate_digit(s, 10, 4);
+    auto f=[&](db x) -> bool {
         ll cnt = 0;
-        rep(i, 4) {
-            if(vx[i]!= vs[i]) ++cnt;
+        rep(i, N) {
+            cnt += floor(A[i]/x);
         }
-        return cnt;
+        return cnt >= K;
     };
 
+    db border = binary_search(0.0, 1e9+10, f);
+    de(border)
     rep(i, N) {
-        LONG(s, t);
-        if(t==1) {
-            vl es;
-            for(auto x: cand) {
-                if(countdif(x,s)!=0) es.push_back(x);
-            }
-            for(auto e: es ) cand.erase(e);
-        } else if (t==2) {
-            vl es;
-            for(auto x: cand) {
-                if(countdif(x,s)!=1) es.push_back(x);
-            }
-            for(auto e: es ) cand.erase(e);
-        } else {
-            vl es;
-            for(auto x: cand) {
-                if(countdif(x, s)<=1) es.push_back(x);
-            }
-            for(auto e: es) cand.erase(e);
-        }
+        ll ans = floor(A[i]/border);
+        Out(ans);
     }
-    de(cand)
-    if(SIZE(cand)!=1) Outend("Can't Solve");
-    auto x = *cand.begin();
-    string ans = to_string(x);
-    while(SIZE(ans)<4) ans = '0' + ans;
-    Out(ans);
 
 }
 
