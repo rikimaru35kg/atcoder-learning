@@ -23,6 +23,17 @@ long long count(string s, string t) {
     return ret;
 }
 
+//! Count the # of chars of s in t
+//! If ret==tn, t is subsequence of s.
+long long subsequence(string &s, string &t) {
+    long long sn = s.size(), tn = t.size();
+    long long ti = 0;
+    for(long long si=0; si<sn && ti<tn; ++si) {
+        if(s[si]==t[ti]) ++ti;
+    }
+    return ti;
+}
+
 vector<long long> z_algo(string s) {
     long long n = s.size();
     vector<long long> a(n);

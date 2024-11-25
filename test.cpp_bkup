@@ -216,29 +216,22 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(H, N);
-    vl dp(N, INF);
-    vl pre(N, -1);
+    LONG(N, W);
+    ll M = 1e5+10;
+    vl dp(M, INF);
     dp[0] = 0;
-    auto jump=[&](ll i, ll j) {
-        if(j>=N) return;
-        if(dp[j]>dp[i]+abs(H[i]-H[j])) {
-            pre[j] = i;
-            chmin(dp[j], dp[i]+abs(H[i]-H[j]));
-        }
-    };
     rep(i, N) {
-        jump(i, i+1);
-        jump(i, i+2);
+        LONG(w, v);
+        repr(j, M) {
+            if(dp[j]==INF) continue;
+            if(j+v<M) chmin(dp[j+v], dp[j]+w);
+        }
     }
-    ll x = N-1;
-    vl ans;
-    ans.push_back(x+1);
-    while(x!=0) {
 
+    ll ans = 0;
+    rep(j, M) {
+        if(dp[j]<=W) chmax(ans, j);
     }
-    reverse(all(ans));
-    Out(SIZE(ans));
     Out(ans);
 
 }
