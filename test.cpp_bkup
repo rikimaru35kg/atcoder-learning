@@ -215,43 +215,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    vt3 span1, span2;
-    rep(i, N) {
-        LONG(l, r); r += K;
-        span1.emplace_back(r, 0, l);
-        span1.emplace_back(l, 1, i);
-        span2.emplace_back(-l, 0, -r);
-        span2.emplace_back(-r, 1, i);
-    }
-    sort(all(span1));
-    sort(all(span2));
+#include <atcoder/segtree>
+using namespace atcoder;
 
-    auto calc=[&](vt3 span) -> vl {
-        vl ret(N);
-        ll rmx = -INF;
-        ll now = 0;
-        for(auto [r,t,l]: span) {
-            if(t==0) {
-                if(l<rmx) continue;
-                ++now;
-                rmx = r;
-            } else {
-                ll i = l;
-                l = r;
-                ret[i] = now;
-            }
-        }
-        return ret;
+using S = ll;
+S op(S a, S b) {return min(a,b);}
+S e() {return INF;}
+
+void solve() {
+    LONG(N, L, K);
+    priority_queue<t3,vt3,greater<t3>> que;
+    VL2(A, C, N);
+
+    ll M = L+10;
+    segtree<S,op,e> seg(M);
+    auto upd=[&](ll i, ll x) {
+        seg.set(i, op(seg.get(i), x));
     };
-    vl mx1 = calc(span1);
-    vl mx2 = calc(span2);
-    de(mx1)de(mx2)
     rep(i, N) {
-        ll ans = mx1[i] + mx2[i] + 1;
-        Out(ans);
+        upd(A[i], C[i]);
     }
+
+    ll need = max(L-K, 0LL);
+    ll ans = 0;
+    rep1(i, need) {
+        ll mn = seg.prod(i, min(K+i,M));
+        if(mn==INF) Pm1
+        ans += mn;
+    }
+    Out(ans);
+
 
 }
 

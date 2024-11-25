@@ -215,48 +215,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    ll a, b, t;
-    D(ll a, ll b, ll t): a(a),b(b),t(t) {}
-};
-
 void solve() {
-    LONG(N,M,K);
-    vector<set<Pr>> land(N);
-    vl num(N);
-    map<ll,vector<D>> mp;
-    rep(i, M) {
-        LONG(a,s,b,t); --a, --b;
-        mp[s].emplace_back(a,b,t);
+    LONG(N);
+    VL(A, N);
+    vl cnt(1010);
+    rep(i, N) cnt[A[i]]++;
+    rep(i, N) rep(j, i) {
+        cnt[A[i]]--;
+        cnt[A[j]]--;
+        ll x = 1000-A[i]-A[j];
+        if(x>=0 && cnt[x]>0) PYes
+        cnt[A[i]]++;
+        cnt[A[j]]++;
     }
 
-    auto update=[&](ll i, ll s) {
-        auto judge=[&]() -> bool {
-            auto it = land[i].begin();;
-            auto [t,n] = *it;
-            return t<=s;
-        };
-        while(land[i].size() && judge()) {
-            auto it = land[i].begin();
-            auto [t,n] = *it;
-            chmax(num[i], n);
-            land[i].erase(it);
-        }
-    };
-
-    for(auto [s,vs]: mp) {
-        for(auto v: vs) {
-            auto [a,b,t] = v;
-            update(a, s);
-            ll cnum = num[a];
-            land[b].emplace(t+K, cnum+1);
-        }
-    }
-
-    rep(i, N) update(i, INF);
-    ll ans = *max_element(all(num));
-    de(num)
-    Out(ans);
+    PNo
 }
 
 int main () {
