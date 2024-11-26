@@ -216,20 +216,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); STRING(S);
-    vl dp1(N), dp2(N);
-    dp1[0] = 1;
-    rep(i, N-1) {
-        if(S[i]=='A') dp1[i+1] = dp1[i] + 1;
-        else dp1[i+1] = 1;
-    }
-    dp2[N-1] = 1;
-    repr(i, N-1) {
-        if(S[i]=='B') dp2[i] = dp2[i+1] + 1;
-        else dp2[i] = 1;
-    }
+    LONG(N);
+    VL2(A, B, N);
+
     ll ans = 0;
-    rep(i, N) ans += max(dp1[i], dp2[i]);
+    for(ll a=-1; a<=1; a+=2) for(ll b=-1; b<=1; b+=2) {
+        vl v;
+        rep(i, N) {
+            v.push_back(a*A[i]+b*B[i]);
+        }
+        sort(allr(v));
+        ll now = 0;
+        for(auto x:v) {
+            if(x<=0) break;
+            now += x;
+        }
+        chmax(ans, now);
+    }
     Out(ans);
 
 }
