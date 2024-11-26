@@ -223,13 +223,15 @@ public:
         }
     }
     bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
+        if(k>n) assert(0&&"[Error @ class Sieve is_prime] k>n");
+        if (k <= 1) return false;
         if (sieve[k] == k) return true;
         return false;
     }
     vector<pair<long long,long long>> factorize(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve factorize] k>n");
         vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
+        if (k <= 1) return ret;
         ret.emplace_back(sieve[k], 0);
         while (k != 1) {
             if (ret.back().first == sieve[k]) ++ret.back().second;

@@ -782,6 +782,7 @@
 - 各頂点を1度だけ訪れる場合はそのまま、何度でも訪れて良い場合は事前にワーシャルフロイドしておけば良い
 - 再帰関数で実装できるが、forループで回す手法も可能
 - forループで回す場合、集合sの小さい順にループさせると良い（次のbitを立てるとき、必ずsの昇順となるから）
+- TSPの初期化はdp[0][0]=0などとして、dp[s][v]==INFからは遷移させないとすればs>>v&1の判定は不要になりコードがすっきりする
 ### 例題
 - 基本 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
 - !復習価値低 宝石列 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)

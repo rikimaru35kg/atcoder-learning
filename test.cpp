@@ -215,26 +215,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); STRING(S);
-    vvl dp(N+1, vl(N+1, -INF));
-    dp[0][N] = 0;
-    rep(l, N+1) {
-        for(ll r=N; r>l; --r) {
-            if(dp[l][r]==-INF) continue;
-            chmax(dp[l+1][r], dp[l][r]);
-            chmax(dp[l][r-1], dp[l][r]);
-            if(r-l>=2 && S[l]==S[r-1]) chmax(dp[l+1][r-1], dp[l][r]+2);
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
         }
     }
-    ll ans = 0;
-    rep(l, N+1) rep(r, N+1) chmax(ans, dp[l][r]);
-    rep(l, N) {
-        if(dp[l][l+1]==-INF) continue;
-        chmax(ans, dp[l][l+1]+1);
+    bool is_prime(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve is_prime] k>n");
+        if (k <= 1) return false;
+        if (sieve[k] == k) return true;
+        return false;
     }
-    Out(ans);
-    de(dp)
+    vector<pair<long long,long long>> factorize(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve factorize] k>n");
+        vector<pair<long long,long long>> ret;
+        if (k <= 1) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
+
+void solve() {
+    LONG(N);
+    Sieve sieve(N);
+    rep1(x, N+1) {
+        if(sieve.is_prime(x))  Out(x);
+    }
 
 }
 
