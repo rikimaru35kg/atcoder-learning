@@ -215,53 +215,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N);
-    auto v = separate_digit(N);
-    ll M = SIZE(v);
-    ll ten = 1;
-    rep(i, M-1) ten *= 10;
-
-    ll ans = 0, upper = 0, lower = N;
-    rep(i, M) {
-        lower -= ten * v[i];
-
-        rep1(x, 9) {  // x==0 does not affect the result.
-            if(x>v[i]) ans += x * upper * ten;
-            else if(x==v[i]) {
-                ans += x * upper * ten;
-                ans += x * (lower+1);
-            } else {
-                ans += x * (upper+1) * ten;
-            }
-        }
-
-        upper = upper*10 + v[i];
-        ten /= 10;
+    LONG(N); STRING(S);
+    vl dp1(N), dp2(N);
+    dp1[0] = 1;
+    rep(i, N-1) {
+        if(S[i]=='A') dp1[i+1] = dp1[i] + 1;
+        else dp1[i+1] = 1;
     }
+    dp2[N-1] = 1;
+    repr(i, N-1) {
+        if(S[i]=='B') dp2[i] = dp2[i+1] + 1;
+        else dp2[i] = 1;
+    }
+    ll ans = 0;
+    rep(i, N) ans += max(dp1[i], dp2[i]);
     Out(ans);
 
 }
