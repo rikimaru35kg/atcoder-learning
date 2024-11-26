@@ -215,20 +215,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Count the # of chars of s in t
-//! If ret==tn, t is subsequence of s.
-long long subsequence(string &s, string &t) {
-    long long sn = s.size(), tn = t.size();
-    long long ti = 0;
-    for(long long si=0; si<sn && ti<tn; ++si) {
-        if(s[si]==t[ti]) ++ti;
-    }
-    return ti;
-}
-
 void solve() {
-    STRING(S, T);
-    
+    LONG(N); STRING(S);
+    vvl dp(N+1, vl(N+1, -INF));
+    dp[0][N] = 0;
+    rep(l, N+1) {
+        for(ll r=N; r>l; --r) {
+            if(dp[l][r]==-INF) continue;
+            chmax(dp[l+1][r], dp[l][r]);
+            chmax(dp[l][r-1], dp[l][r]);
+            if(r-l>=2 && S[l]==S[r-1]) chmax(dp[l+1][r-1], dp[l][r]+2);
+        }
+    }
+    ll ans = 0;
+    rep(l, N+1) rep(r, N+1) chmax(ans, dp[l][r]);
+    rep(l, N) {
+        if(dp[l][l+1]==-INF) continue;
+        chmax(ans, dp[l][l+1]+1);
+    }
+    Out(ans);
+    de(dp)
 
 }
 
