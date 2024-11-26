@@ -215,87 +215,12 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/segtree>
-using namespace atcoder;
-using S = ll;
-S op(S a, S b) {return max(a, b);}
-S e() {return 0;};
-
 void solve() {
-    LONG(N);
-    map<ll,vl> mp;
-    CoordinateCompression<ll> cc;
-    rep(i, N) {
-        LONG(x,y);
-        mp[x].push_back(y);
-        cc.add(y);
-    }
-    for(auto &[k,v]: mp) {
-        for(auto &y: v) {
-            y = cc(y);
-        }
-    }
-    ll M = cc.size();
-
-
-    segtree<S,op,e> seg(M);
-    auto update=[&](ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
-    };
-    ll ans = 0;
-    for(auto [x,ys]: mp) {
-        vp stck;
-        for(auto y: ys) {
-            ll mx = seg.prod(0, y);
-            chmax(ans, mx+1);
-            stck.emplace_back(y, mx+1);
-        }
-        for(auto [y,n]: stck) {
-            update(y, n);
-        }
-    }
-    Out(ans);
+    LONG(N, K);
+    STRING(S);
+    ll cnt = 0;
+    for(auto c: S) if(c=='1') ++cnt;
+    if(cnt%2 == K%2) PYes PNo
 
 }
 

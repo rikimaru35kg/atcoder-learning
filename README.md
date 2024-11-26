@@ -1829,6 +1829,11 @@
 ### 例題
 - !復習価値中 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
+## N以下の数字の桁和の総和（自分用なのでNote非掲載）
+- 混乱しがちなのでコード貼り付け [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
+### 例題
+- !復習価値中 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
+
 ## 構築系問題
 - 構築させる問題
 ### 例題

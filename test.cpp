@@ -215,45 +215,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-public:
-    Sieve (long long n): n(n), sieve(n+1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-            }
-        }
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    bool is_prime(long long k) {
-        if(k>n) assert(0&&"[Error @ class Sieve is_prime] k>n");
-        if (k <= 1) return false;
-        if (sieve[k] == k) return true;
-        return false;
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
     }
-    vector<pair<long long,long long>> factorize(long long k) {
-        if(k>n) assert(0&&"[Error @ class Sieve factorize] k>n");
-        vector<pair<long long,long long>> ret;
-        if (k <= 1) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
-};
+    return ret;
+}
 
 void solve() {
     LONG(N);
-    Sieve sieve(N);
-    rep1(x, N+1) {
-        if(sieve.is_prime(x))  Out(x);
+    auto v = separate_digit(N);
+    ll M = SIZE(v);
+    ll ten = 1;
+    rep(i, M-1) ten *= 10;
+
+    ll ans = 0, upper = 0, lower = N;
+    rep(i, M) {
+        lower -= ten * v[i];
+
+        rep1(x, 9) {  // x==0 does not affect the result.
+            if(x>v[i]) ans += x * upper * ten;
+            else if(x==v[i]) {
+                ans += x * upper * ten;
+                ans += x * (lower+1);
+            } else {
+                ans += x * (upper+1) * ten;
+            }
+        }
+
+        upper = upper*10 + v[i];
+        ten /= 10;
     }
+    Out(ans);
 
 }
 
