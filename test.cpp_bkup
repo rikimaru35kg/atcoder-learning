@@ -1,4 +1,4 @@
-// ### D.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -215,40 +215,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
+void solve() {
+    LONG(N, M);
+    VL(P, N);
+    dsu uf(N);
+    rep(i, M) {
+        LONGM(a,b);
+        uf.merge(a,b);
+    }
+    vl profit(N);
+    rep(i, N) {
+        ll x = uf.leader(i);
+        profit[x] += P[i];
+    }
+    ll ans = 0;
+    rep(i, N) {
+        if(profit[i]>0) ans += profit[i];
+    }
+    Out(ans);
+    de(profit)
+
+}
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-
-    ll ans = 0;
-    vl cnt(N);
-    ll l = 0, r = 0;
-    while(l<N) {
-        auto judge=[&]() -> bool {
-            if(A[r]!=A[r+1]) return false;
-            if(cnt[A[r]]!=0) return false;
-            return true;
-        };
-        while(r<N-1 && judge()) {
-            cnt[A[r]]++; cnt[A[r+1]]++;
-            r += 2;
-        }
-        de2(l,r)
-        chmax(ans, r-l);
-
-        if(r-l>=4) {
-            cnt[A[l]]--; cnt[A[l+1]]--;
-            l+=2;
-        } else {
-            repk(i, l, r) cnt[A[i]]--;
-            l++; r=l;
-        }
-    }
-    Out(ans);
-    
+    solve();
 }
 
-// ### D.cpp ###
-
-
+// ### test.cpp ###

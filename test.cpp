@@ -215,25 +215,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL2(A, B, N);
+#include <atcoder/maxflow>
+using namespace atcoder;
 
-    ll ans = 0;
-    for(ll a=-1; a<=1; a+=2) for(ll b=-1; b<=1; b+=2) {
-        vl v;
-        rep(i, N) {
-            v.push_back(a*A[i]+b*B[i]);
+void solve() {
+    LONG(N, M);
+    mf_graph<ll> flow(N+2);
+    ll tot = 0;
+    rep(i, N) {
+        LONG(p);
+        if(p>=0) {
+            flow.add_edge(N, i, p);
+            tot += p;
+        } else {
+            flow.add_edge(i, N+1, -p);
         }
-        sort(allr(v));
-        ll now = 0;
-        for(auto x:v) {
-            if(x<=0) break;
-            now += x;
-        }
-        chmax(ans, now);
     }
-    Out(ans);
+    rep(i, M) {
+        LONGM(a,b);
+        flow.add_edge(a, b, INF);
+    }
+
+    ll mx = flow.flow(N, N+1);
+    Out(tot-mx);
+    
 
 }
 

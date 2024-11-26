@@ -1796,6 +1796,7 @@
 ### 例題
 - !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 - !要復習 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
+- !要復習 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）
