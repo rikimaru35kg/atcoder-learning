@@ -1830,7 +1830,11 @@
 - !復習価値中 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
 ## N以下の数字の桁和の総和（自分用なのでNote非掲載）
-- 混乱しがちなのでコード貼り付け [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
+- 314159の上から3桁目を考える（4のところ）
+- 0-3の場合、上側が0-31の32通り、下側が1000通り
+- 4の場合、上側が0-30の31通り、下側が1000通り。更に、上側が31の時、下側が159+1通り
+- 5-9の場合、上側が0-30の31通り、下側が1000通り
+- 混乱しがちなのでコードも貼付 [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
 ### 例題
 - !復習価値中 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
 
