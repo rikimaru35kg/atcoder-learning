@@ -217,23 +217,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/maxflow>
-using namespace atcoder;
-
 void solve() {
     LONG(N);
-    mf_graph<ll> flow(2*N+2);
-    rep(i, N) {
-        STRING(S);
-        flow.add_edge(2*N, i, 1);
-        flow.add_edge(N+i, 2*N+1, 1);
-        rep(j, N) {
-            if(S[j]=='.') continue;
-            flow.add_edge(i, N+j, 1);
-        }
+    VVLM(P, N, N);
+    vl row(N), col(N);
+    rep(i, N) rep(j, N) {
+        if(P[i][j]==-1) continue;
+        row[i] = P[i][j];
+        col[j] = P[i][j];
     }
-    ll ans = flow.flow(2*N, 2*N+1);
+    de(row)de(col)
+    ll ans = 0;
+    rep(i, N) repk(j, i+1, N) {
+        if(row[i]>row[j]) ++ans;
+        if(col[i]>col[j]) ++ans;
+    }
     Out(ans);
+
 
 }
 

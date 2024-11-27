@@ -218,30 +218,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VL(A, N);
-    ll ss = 0;
+    LONG(N);
+    vp test;
     rep(i, N) {
-        if(A[i]==0) continue;
-        ss |= 1LL<<i;
+        LONG(t, d);
+        test.emplace_back(d, t);
     }
+    sort(all(test));
 
-    vl dp(1<<N, INF);
-    dp[ss] = 0;
-    rep(i, M) {
-        LONGM(x,y,z);
-        vl pdp(1<<N, INF); swap(pdp, dp);
-        rep(s, 1<<N) {
-            if(pdp[s]==INF) continue;
-            chmin(dp[s], pdp[s]);
-            ll ns = s;
-            ns ^= 1LL<<x; ns ^= 1LL<<y; ns ^= 1LL<<z;
-            chmin(dp[ns], pdp[s]+1);
+    ll D = 1500;
+    // ll D = 10;
+    // INF = 1;
+    vl dp(D+1, -INF);
+    dp[0] = 0;
+    for(auto [d,t]: test) {
+        vl pdp(D+1, -INF); swap(pdp, dp);
+        swap(pdp, dp);
+        rep(j, D+1) {
+            if(pdp[j]==-INF) continue;
+            chmax(dp[j], pdp[j]);
+            if(j+t<=d) chmax(dp[j+t], pdp[j]+1);
+
         }
+        // de(dp)
     }
-    ll ans = dp.back();
-    ch1(ans);
+    ll ans = 0;
+    rep(j, D+1) chmax(ans, dp[j]);
     Out(ans);
+
 
 }
 

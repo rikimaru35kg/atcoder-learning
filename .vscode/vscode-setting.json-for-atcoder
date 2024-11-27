@@ -66,6 +66,12 @@
                 "fontWeight": "bold"
             },
         ],
+        "(pdp)": [
+            {
+                "color":"#1eddff",
+                "fontWeight": "bold"
+            },
+        ],
     },
     "terminal.integrated.defaultProfile.windows": "Git Bash",
 }
