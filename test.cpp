@@ -85,6 +85,8 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define PFi {puts("First"); exit(0);}
+#define PSe {puts("Second"); exit(0);}
 #define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
@@ -215,31 +217,14 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-long long lis_length(vector<T> &a) {
-    int n = a.size(), ret = 0;
-    vector<T> v(n, (ll)3e18);
-    for(int i=0; i<n; ++i) {
-        int idx = lower_bound(v.begin(), v.end(), a[i]) - v.begin();
-        v[idx] = a[i];
-        ret = max(ret, idx+1);
-    }
-    return ret;
-}
-template <typename T>
-long long dis_length(vector<T> &a) {
-    vector<T> b = a;
-    for(auto &x: b) x = -x;
-    long long ret = lis_length(b);
-    return ret;
-}
-
-
 void solve() {
-    LONG(N); VL(A, N);
-    reverse(all(A));
-    ll ans = dis_length(A);
-    Out(ans);
+    LONG(N);
+    ll XOR = 0;
+    rep(i, N) {
+        LONG(a);
+        XOR ^= a;
+    }
+    if(XOR) PFi PSe
 
 }
 
