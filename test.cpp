@@ -216,37 +216,30 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 template <typename T>
-vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+long long lis_length(vector<T> &a) {
+    int n = a.size(), ret = 0;
+    vector<T> v(n, (ll)3e18);
+    for(int i=0; i<n; ++i) {
+        int idx = lower_bound(v.begin(), v.end(), a[i]) - v.begin();
+        v[idx] = a[i];
+        ret = max(ret, idx+1);
+    }
     return ret;
 }
 template <typename T>
-vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+long long dis_length(vector<T> &a) {
+    vector<T> b = a;
+    for(auto &x: b) x = -x;
+    long long ret = lis_length(b);
     return ret;
 }
 
-void solve() {
-    LONG(H, W);
-    VVL(X, H, W);
-    auto Sc = cumsum(X);
-    LONG(Q);
-    rep(i, Q) {
-        LONG(a,b,c,d); --a, --b;
-        ll ans = 0;
-        ans += Sc[c][d];
-        ans += Sc[a][b];
-        ans -= Sc[a][d];
-        ans -= Sc[c][b];
-        Out(ans);
-    }
 
+void solve() {
+    LONG(N); VL(A, N);
+    reverse(all(A));
+    ll ans = dis_length(A);
+    Out(ans);
 
 }
 

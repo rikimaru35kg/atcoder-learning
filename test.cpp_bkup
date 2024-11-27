@@ -216,17 +216,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    VL(P, N);
-    VL(Q, N);
-    vb exst(101);
-    rep(i, N) exst[Q[i]] = true;
-    rep(i, N) {
-        ll des = K - P[i];
-        if(des<=0 || des>100) continue;
-        if(exst[des]) PYes
+    LONG(N, M);
+    vl coupon(M);
+    rep(i, M) {
+        rep(j, N) {
+            LONG(a);
+            if(a==0) continue;
+            coupon[i] |= 1LL<<j;
+        }
+        deb(coupon[i])
     }
-    PNo
+
+    vl dp(1<<N, INF);
+    dp[0] = 0;
+    rep(s, 1<<N) {
+        if(dp[s]==INF) continue;
+        rep(i, M) {
+            ll ns = s | coupon[i]; 
+            chmin(dp[ns], dp[s]+1);
+        }
+    }
+    ll ans = dp.back();
+    ch1(ans);
+    Out(ans);
 
 
 }
