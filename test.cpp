@@ -215,30 +215,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/maxflow>
-using namespace atcoder;
+template <typename T>
+vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T>
+vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
 void solve() {
-    LONG(N, M);
-    mf_graph<ll> flow(N+2);
-    ll tot = 0;
-    rep(i, N) {
-        LONG(p);
-        if(p>=0) {
-            flow.add_edge(N, i, p);
-            tot += p;
-        } else {
-            flow.add_edge(i, N+1, -p);
-        }
-    }
-    rep(i, M) {
-        LONGM(a,b);
-        flow.add_edge(a, b, INF);
+    LONG(H, W);
+    VVL(X, H, W);
+    auto Sc = cumsum(X);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(a,b,c,d); --a, --b;
+        ll ans = 0;
+        ans += Sc[c][d];
+        ans += Sc[a][b];
+        ans -= Sc[a][d];
+        ans -= Sc[c][b];
+        Out(ans);
     }
 
-    ll mx = flow.flow(N, N+1);
-    Out(tot-mx);
-    
 
 }
 
