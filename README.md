@@ -2061,6 +2061,7 @@
 - [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
 - [B38 - Heights of Grass](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dk)
 - [A42 - Soccer](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ap)
+- [A70 - Lanterns](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_br)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

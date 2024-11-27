@@ -217,21 +217,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! count the # of t in s
-long long count(string s, string t) {
-    long long ret = 0;
-    while(s.rfind(t)!=string::npos) {
-        ++ret;
-        s.erase(s.begin()+s.rfind(t), s.end());
-    }
-    return ret;
-}
+#include <atcoder/maxflow>
+using namespace atcoder;
 
 void solve() {
-    LONG(N); STRING(S);
-    if(count(S, "RRR")>0) PYes
-    if(count(S, "BBB")>0) PYes
-    PNo
+    LONG(N);
+    mf_graph<ll> flow(2*N+2);
+    rep(i, N) {
+        STRING(S);
+        flow.add_edge(2*N, i, 1);
+        flow.add_edge(N+i, 2*N+1, 1);
+        rep(j, N) {
+            if(S[j]=='.') continue;
+            flow.add_edge(i, N+j, 1);
+        }
+    }
+    ll ans = flow.flow(2*N, 2*N+1);
+    Out(ans);
 
 }
 

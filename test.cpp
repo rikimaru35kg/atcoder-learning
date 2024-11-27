@@ -218,22 +218,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K); ++K;
-    VL2(A, B, N);
-    ll M = 210;
-    // ll M = 20;
-    vvl imos(M, vl(M));
+    LONG(N, M);
+    VL(A, N);
+    ll ss = 0;
     rep(i, N) {
-        ll a = A[i], b = B[i];
-        imos[a][b]++;
-        imos[a+K][b+K]++;
-        imos[a][b+K]--;
-        imos[a+K][b]--;
+        if(A[i]==0) continue;
+        ss |= 1LL<<i;
     }
-    rep(i, M-1) rep(j, M) imos[i+1][j] += imos[i][j];
-    rep(i, M) rep(j, M-1) imos[i][j+1] += imos[i][j];
-    ll ans = 0;
-    rep(i, M) rep(j, M) chmax(ans, imos[i][j]);
+
+    vl dp(1<<N, INF);
+    dp[ss] = 0;
+    rep(i, M) {
+        LONGM(x,y,z);
+        vl pdp(1<<N, INF); swap(pdp, dp);
+        rep(s, 1<<N) {
+            if(pdp[s]==INF) continue;
+            chmin(dp[s], pdp[s]);
+            ll ns = s;
+            ns ^= 1LL<<x; ns ^= 1LL<<y; ns ^= 1LL<<z;
+            chmin(dp[ns], pdp[s]+1);
+        }
+    }
+    ll ans = dp.back();
+    ch1(ans);
     Out(ans);
 
 }
