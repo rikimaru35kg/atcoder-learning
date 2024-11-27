@@ -218,13 +218,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    ll XOR = 0;
+    LONG(N, K); ++K;
+    VL2(A, B, N);
+    ll M = 210;
+    // ll M = 20;
+    vvl imos(M, vl(M));
     rep(i, N) {
-        LONG(a);
-        XOR ^= a;
+        ll a = A[i], b = B[i];
+        imos[a][b]++;
+        imos[a+K][b+K]++;
+        imos[a][b+K]--;
+        imos[a+K][b]--;
     }
-    if(XOR) PFi PSe
+    rep(i, M-1) rep(j, M) imos[i+1][j] += imos[i][j];
+    rep(i, M) rep(j, M-1) imos[i][j+1] += imos[i][j];
+    ll ans = 0;
+    rep(i, M) rep(j, M) chmax(ans, imos[i][j]);
+    Out(ans);
 
 }
 
