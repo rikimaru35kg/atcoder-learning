@@ -2085,3 +2085,4 @@
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
 - [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
 - [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
+- [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
