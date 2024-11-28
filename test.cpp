@@ -218,24 +218,13 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    ll ans = 0;
-    rep(i, 10) {
-        ll M = 1LL<<(i+1);
-        vl v;
-        rep(j, 1LL<<i) {
-            v.push_back((1LL<<i) + j);
-        }
-        printf("%lld %lld\n", M, SIZE(v));
-        Out(v);
-        cout<<flush;
-        LONG(x);
-        ll now = (1LL<<i)*x;
-        ans +=now; 
-    }
-    printf("0 1\n");
-    Out(ans);
+    INT(X, Y);
+    Out(4);
+    printf("%d %d %d %d\n", X,Y,Y,Y);
     cout<<flush;
+    INT(t);
+    Out(t);
+
 
 }
 
