@@ -219,33 +219,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    vp test;
-    rep(i, N) {
-        LONG(t, d);
-        test.emplace_back(d, t);
-    }
-    sort(all(test));
-
-    ll D = 1500;
-    // ll D = 10;
-    // INF = 1;
-    vl dp(D+1, -INF);
-    dp[0] = 0;
-    for(auto [d,t]: test) {
-        vl pdp(D+1, -INF); swap(pdp, dp);
-        swap(pdp, dp);
-        rep(j, D+1) {
-            if(pdp[j]==-INF) continue;
-            chmax(dp[j], pdp[j]);
-            if(j+t<=d) chmax(dp[j+t], pdp[j]+1);
-
-        }
-        // de(dp)
-    }
     ll ans = 0;
-    rep(j, D+1) chmax(ans, dp[j]);
+    rep(i, 10) {
+        ll M = 1LL<<(i+1);
+        vl v;
+        rep(j, 1LL<<i) {
+            v.push_back((1LL<<i) + j);
+        }
+        printf("%lld %lld\n", M, SIZE(v));
+        Out(v);
+        cout<<flush;
+        LONG(x);
+        ll now = (1LL<<i)*x;
+        ans +=now; 
+    }
+    printf("0 1\n");
     Out(ans);
-
+    cout<<flush;
 
 }
 

@@ -2081,3 +2081,4 @@
 - [E - 11/22 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_e)
 - [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
+- [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
