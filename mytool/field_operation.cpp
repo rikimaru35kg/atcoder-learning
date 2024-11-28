@@ -71,6 +71,15 @@ vector<string> transpose(vector<string> &s) {
     }
     return ret;
 }
+template <typename T>
+vector<vector<T>> transpose(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
+        ret[j][i] = a[i][j];
+    }
+    return ret;
+}
 
 int main () {
     int n; cin >> n;

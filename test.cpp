@@ -217,24 +217,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    if(M==0) {
-        vp ans;
-        rep(i, N) {
-            ans.emplace_back(2*i+1, 2*i+2);
-        }
-        Out(ans);
-        return;
-    }
-    if(M<0 || M>=N-1) Pm1
-    vp ans;
-    rep(i, N-1) {
-        ans.emplace_back(3*i+2, 3*i+4);
-    }
-    ans.emplace_back(1, 3*M+3);
-    Out(ans);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
+    }
+    return ret;
+}
+template <typename T>
+vector<vector<T>> transpose(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
+        ret[j][i] = a[i][j];
+    }
+    return ret;
+}
+
+void solve() {
+    LONG(N, K);
+    VVL(A, N, N);
+    vm fact(N+1, 1);
+    rep1(i, N) fact[i] = fact[i-1]*i;
+    auto calc = [&](vvl &a) -> mint {
+        dsu uf(N);
+        auto check=[&](ll i, ll j) -> bool {
+            rep(k, N) {
+                if(a[i][k]+a[j][k]>K) return false;
+            }
+            return true;
+        };
+        rep(i, N) rep(j, i) {
+            if(check(i,j)) uf.merge(i,j);
+        }
+        mint ret = 1;
+        rep(i, N) if(uf.leader(i)==i) {
+            ret *= fact[uf.size(i)];
+        }
+        return ret;
+    };
+
+    mint ans = 1;
+    ans *= calc(A);
+    A = transpose(A);
+    ans *= calc(A);
+    Out(ans);
 }
 
 int main () {
