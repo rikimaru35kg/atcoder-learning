@@ -218,13 +218,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    INT(X, Y);
-    Out(4);
-    printf("%d %d %d %d\n", X,Y,Y,Y);
-    cout<<flush;
-    INT(t);
-    Out(t);
-
 
 }
 

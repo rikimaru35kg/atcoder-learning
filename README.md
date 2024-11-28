@@ -2062,6 +2062,7 @@
 - [B38 - Heights of Grass](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dk)
 - [A42 - Soccer](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ap)
 - [A70 - Lanterns](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_br)
+- [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
