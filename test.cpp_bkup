@@ -218,22 +218,17 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    ll M = 26;
-    umap<string,ll> mp;
-    rep(i, N) {
-        STRING(s);
-        rep(m, M) {
-            string t = s + char('a'+m);
-            sort(all(t));
-            mp[t]++;
+    VL(A, 4);
+    rep(s, 1<<4) {
+        if(s==0) continue;
+        ll eat=0, left=0;
+        rep(i, 4) {
+            if(s>>i&1) eat+=A[i];
+            else left+=A[i];
         }
+        if(eat==left) PYes
     }
-    for(auto [s,v]: mp) {
-        if(v==1) Outend(s);
-    }
-    Pm1
-
+    PNo
 
 }
 

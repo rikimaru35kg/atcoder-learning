@@ -218,7 +218,13 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-
+    LONG(N);
+    ll ans = 0;
+    rep(i, N) {
+        LONG(a);
+        ans = gcd(ans, a);
+    }
+    Out(ans);
 }
 
 int main () {
