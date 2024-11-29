@@ -217,40 +217,83 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
-        }
-        a = a * a % mod;
-        b = (b >> 1);
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    return ans;
-}
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
 
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
-        }
-        a = a * a;
-        b = (b >> 1);
-    }
-    return ans;
-}
+#include <atcoder/dsu>
+using namespace atcoder;
 
 void solve() {
-    LONG(N, M);
-    ll f = modpow(10, N, M*M);
-    ll ans = f/M;
+    LONG(N);
+    VL2(A, B, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) cc.add(B[i]);
+    ll M = cc.size();
+    dsu uf(M);
+    vp edge;
+    rep(i, N) {
+        ll a = cc(A[i]), b = cc(B[i]);
+        uf.merge(a,b);
+        edge.emplace_back(a,b);
+    }
+    vl vnum(M), ednum(M);
+    rep(i, M) {
+        ll l = uf.leader(i);
+        vnum[l]++;
+    }
+    for(auto [a,b]: edge) {
+        ll l = uf.leader(a);
+        ednum[l]++;
+    }
+    ll ans = 0;
+    rep(i, M) if(uf.leader(i)==i) {
+        if(ednum[i]==vnum[i]-1) ans += vnum[i]-1;
+        else ans += vnum[i];
+    }
     Out(ans);
+
+
+
+
 
 }
 

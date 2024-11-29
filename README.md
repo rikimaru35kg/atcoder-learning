@@ -2069,6 +2069,7 @@
 - [C - Shuffle Permutation](https://atcoder.jp/contests/arc107/tasks/arc107_c)
 - [C - Large RPS Tournament](https://atcoder.jp/contests/arc109/tasks/arc109_c)
 - [B - Many 110](https://atcoder.jp/contests/arc110/tasks/arc110_b)
+- [A - B = C](https://atcoder.jp/contests/arc112/tasks/arc112_a)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
