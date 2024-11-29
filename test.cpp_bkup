@@ -217,25 +217,19 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 void solve() {
-    LONG(S, P);
-    auto ds=listup_divisor(P);
-    for(auto d: ds) {
-        if(d + P/d == S) PYes
+    LONG(N); STRING(S);
+    string tmp;
+    for(auto c: S) {
+        if(tmp.size()>=2) {
+            ll n = tmp.size();
+            string last2 = tmp.substr(n-2);
+            if(last2=="fo" && c=='x') {
+                rep(i, 2) tmp.pop_back();
+            } else tmp += c;
+        } else tmp += c;
     }
-    PNo
+    Out(tmp.size());
 
 }
 

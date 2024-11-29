@@ -218,18 +218,28 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); STRING(S);
-    string tmp;
-    for(auto c: S) {
-        if(tmp.size()>=2) {
-            ll n = tmp.size();
-            string last2 = tmp.substr(n-2);
-            if(last2=="fo" && c=='x') {
-                rep(i, 2) tmp.pop_back();
-            } else tmp += c;
-        } else tmp += c;
+    LONG(N, M);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONGM(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    Out(tmp.size());
+
+    vl label(N, -1);
+    auto dfs=[&](auto f, ll v, ll c=-1, ll p=-1) -> void {
+        if(label[v]!=-1) return;
+        if(p==-1) label[v] = 0;
+        else {
+            if(label[p]==c) label[v] = (c+1)%N;
+            else label[v] = c;
+        }
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            f(f, nv, c, v);
+        }
+    };
+    dfs(dfs, 0);
+    for(auto x: label) Out(x+1);
 
 }
 
