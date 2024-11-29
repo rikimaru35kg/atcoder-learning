@@ -218,28 +218,41 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
+    LONG(a,b,x,y); --a, --b;
+    ll N = 100;
     vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONGM(c);
+    auto dpush=[&](ll a, ll b, ll c) {
         from[a].emplace_back(b, c);
         from[b].emplace_back(a, c);
-    }
-
-    vl label(N, -1);
-    auto dfs=[&](auto f, ll v, ll c=-1, ll p=-1) -> void {
-        if(label[v]!=-1) return;
-        if(p==-1) label[v] = 0;
-        else {
-            if(label[p]==c) label[v] = (c+1)%N;
-            else label[v] = c;
-        }
-        for(auto [nv, c]: from[v]) if(nv!=p) {
-            f(f, nv, c, v);
-        }
     };
-    dfs(dfs, 0);
-    for(auto x: label) Out(x+1);
+    rep(i, $1) {
+        dpush(i, i+1, y);
+        dpush(N+i, N+i+1, y);
+        dpush(i+1, N+i, x);
+    }
+    rep(i, N) {
+        dpush(i, N+i, x);
+    }
+    de(from)
+    pq que;
+    vl dist(2*N, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(a, 0);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv,c]: from[v]) {
+            push(nv, d+c);
+        }
+    }
+    Out(dist[b+N]);
+    rep(i, N) {
+        de3(i, dist[i], dist[i+N]);
+    }
 
 }
 

@@ -2180,4 +2180,13 @@
       "}",
     ],
   },
+  "Snippet(dpush)": {
+    "prefix": "dpush",
+    "body": [
+      "auto dpush=[&](ll a, ll b, ll c) {",
+      "    from[a].emplace_back(b, c);",
+      "    from[b].emplace_back(a, c);",
+      "};",
+    ],
+  },
 }
