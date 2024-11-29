@@ -2070,6 +2070,8 @@
 - [C - Large RPS Tournament](https://atcoder.jp/contests/arc109/tasks/arc109_c)
 - [B - Many 110](https://atcoder.jp/contests/arc110/tasks/arc110_b)
 - [A - B = C](https://atcoder.jp/contests/arc112/tasks/arc112_a)
+- [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
+- [B - Special Subsets](https://atcoder.jp/contests/arc114/tasks/arc114_b)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

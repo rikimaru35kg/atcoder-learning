@@ -217,82 +217,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
 public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
+    bool is_prime(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve is_prime] k>n");
+        if (k <= 1) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve factorize] k>n");
+        vector<pair<long long,long long>> ret;
+        if (k <= 1) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
         return ret;
     }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
 };
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 void solve() {
-    LONG(N);
-    VL2(A, B, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]);
-    rep(i, N) cc.add(B[i]);
-    ll M = cc.size();
-    dsu uf(M);
-    vp edge;
-    rep(i, N) {
-        ll a = cc(A[i]), b = cc(B[i]);
-        uf.merge(a,b);
-        edge.emplace_back(a,b);
-    }
-    vl vnum(M), ednum(M);
-    rep(i, M) {
-        ll l = uf.leader(i);
-        vnum[l]++;
-    }
-    for(auto [a,b]: edge) {
-        ll l = uf.leader(a);
-        ednum[l]++;
-    }
-    ll ans = 0;
-    rep(i, M) if(uf.leader(i)==i) {
-        if(ednum[i]==vnum[i]-1) ans += vnum[i]-1;
-        else ans += vnum[i];
+    LONG(N); VL(X, N);
+    Sieve sieve(50);
+    vl ps;
+    repk(p, 2, 51) if(sieve.is_prime(p)) ps.push_back(p);
+    ll M = ps.size();
+
+    auto check=[&](ll y) -> bool {
+        rep(i, N) {
+            if(gcd(y, X[i])==1) return false;
+        }
+        return true;
+    };
+
+    ll ans = INF;
+    rep(s, 1<<M) {
+        if(s==0) continue;
+        ll now = 1;
+        rep(i, M) if(s>>i&1) now *= ps[i];
+
+        if(check(now)) chmin(ans, now);
     }
     Out(ans);
-
-
-
 
 
 }
