@@ -490,8 +490,9 @@
 - !要復習 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
 
 ## サイクル検出
-- 検出するだけならunion findが使えるかどうか検討の余地あり（ただし入次数2以上が存在する一般の有向グラフでは不可能）
-- 一般にはDFSを用いるが、seenとfinishedの両方の情報が必要（けんちょんのページが分かりやすい）
+- 無向グラフ：検出するだけならunion findを使うべし（DFSは難しい。けんちょんページのやり方も単純でないグラフでは適用不可。やりたいなら使った辺も管理が必要）
+- **連結成分ごとに頂点数と辺の数を数えれば**、サイクルの有無が分かる
+- 有向グラフ：一般にはDFSを用いるが、seenとfinishedの両方の情報が必要（けんちょんのページが分かりやすい）
 - seenだけだと、有向グラフの途中から探索してseenになっている頂点があったとして、その手前から探索した場合にseenに辿り付いてサイクル検出してしまう
 - 例えば、1->2->3で、2から探索すると2と3がseenとなる。次に1から探索すると2のseenに辿り付きサイクル検出してしまう
 - 従って現在探索中がseen、完全終了がfinishedにしておく
@@ -2090,3 +2091,4 @@
 - [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
 - [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
 - [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
+- [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)

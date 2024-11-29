@@ -217,42 +217,110 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
 void solve() {
     LONG(N);
-    STRING(T);
-    ll M = 1e10;
-    // ll M = 3;
-    if(N==1) {
-        if(T[0]=='0') Outend(M);
-        else Outend(M*2);
+    VL2(A, B, N);
+    // VL(A, N); VL(B, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) cc.add(B[i]);
+    ll M = cc.size();
+    vvp from(M);
+    rep(i, N) {
+        // de4(A[i],B[i],cc(A[i]),cc(B[i]))
+        ll a = cc(A[i]), b = cc(B[i]);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
     }
-    if(N==2) {
-        if(T=="00") Outend(0);
-        if(T=="11" || T=="10") Outend(M);
-        if(T=="01") Outend(M-1);
-    }
-    auto judge=[&]() -> bool {
-        rep(r, 3) {
-            char t = T[r];
-            for(ll i=r; i<N; i+=3) {
-                if(T[i]!=t) return false;
+    // de(M)
+    // rep(i, N) {
+    //     printf("%lld %lld\n", cc(A[i]),cc(B[i]));
+    // }
+
+    // auto checkcycle=[&](ll sv) -> bool {
+        vb seen(M), finished(M);
+        vb eused(N);
+        auto checkcycle=[&](auto f, ll v) -> bool {
+            seen[v] = true;
+            for(auto [nv,ei]: from[v]) {
+                if(eused[ei]) continue;
+                eused[ei] = true;
+                if(finished[nv]) continue;
+                if(seen[nv]) return true;
+                bool b = f(f, nv);
+                if(b) return true;
             }
+            finished[v] = true;
+            return false;
+        };
+        // return dfs(dfs, sv);
+    // };
+
+    vb used(M);
+    ll cnt = 0;
+    auto dfs=[&](auto f, ll v) -> void {
+        if(used[v]) return;
+        used[v] = true;
+        ++cnt;
+        for(auto [nv,ei]: from[v]) {
+            f(f, nv);
         }
-        return true;
     };
-    if(!judge()) Pm0
 
-    ll r = -1;
-    if(T.substr(0,3)=="110") r = 0;
-    else if(T.substr(0,3)=="101") r = 1;
-    else if(T.substr(0,3)=="011") r = 2;
-    else Pm0
-    de(r)
+    ll ans = 0;
+    rep(i, M) {
+        if(used[i]) continue;
+        cnt = 0;
+        dfs(dfs, i);
+        de2(i, cnt)
+        // ll pans = ans;
+        if(checkcycle(checkcycle,i)) ans += cnt;
+        else ans += cnt-1;
+        // if(ans>pans) de2(i, ans-pans)
+    }
+    Out(ans);
 
-    M *= 3;
-    ll x = Div(M-r-N, 3) + 1;
-    if(x<0) Pm0
-    Out(x);
 
 
 }
