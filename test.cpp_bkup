@@ -217,29 +217,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONGM(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
-    vl label(N, -1);
-    auto dfs=[&](auto f, ll v, ll c=-1, ll p=-1) -> void {
-        if(label[v]!=-1) return;
-        if(p==-1) label[v] = 0;
-        else {
-            if(label[p]==c) label[v] = (c+1)%N;
-            else label[v] = c;
-        }
-        for(auto [nv, c]: from[v]) if(nv!=p) {
-            f(f, nv, c, v);
-        }
+void solve() {
+    LONG(N);
+
+    auto f=[&](sll k) -> bool {
+        sll kc2= k*(k+1)/2;
+        return kc2<=N+1;
     };
-    dfs(dfs, 0);
-    for(auto x: label) Out(x+1);
+
+    ll k = binary_search(0, (ll)1e10, f);
+    ll ans = 1 + (N-k);
+    Out(ans);
 
 }
 

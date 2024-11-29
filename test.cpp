@@ -217,42 +217,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(a,b,x,y); --a, --b;
-    ll N = 100;
-    vvp from(N);
-    auto dpush=[&](ll a, ll b, ll c) {
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    };
-    rep(i, $1) {
-        dpush(i, i+1, y);
-        dpush(N+i, N+i+1, y);
-        dpush(i+1, N+i, x);
-    }
-    rep(i, N) {
-        dpush(i, N+i, x);
-    }
-    de(from)
-    pq que;
-    vl dist(2*N, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(a, 0);
-    while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv,c]: from[v]) {
-            push(nv, d+c);
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+    long long ans = 1;
+    a %= mod;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a % mod;
         }
+        a = a * a % mod;
+        b = (b >> 1);
     }
-    Out(dist[b+N]);
-    rep(i, N) {
-        de3(i, dist[i], dist[i+N]);
+    return ans;
+}
+
+//! Calculate a^b
+//! a >= 0, b >= 0
+long long spow(long long a, long long b) {
+    long long ans = 1;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a;
+        }
+        a = a * a;
+        b = (b >> 1);
     }
+    return ans;
+}
+
+void solve() {
+    LONG(N, K);
+    STRING(S);
+
+    map<string,char> jk;
+    jk["RR"] = 'R';
+    jk["RP"] = 'P';
+    jk["RS"] = 'R';
+    jk["SR"] = 'R';
+    jk["SP"] = 'S';
+    jk["SS"] = 'S';
+    jk["PR"] = 'P';
+    jk["PP"] = 'P';
+    jk["PS"] = 'S';
+
+    vvc mem(K+1, vc(N));
+    vvb used(K+1, vb(N));
+    auto f=[&](auto f, ll k, ll si) -> char {
+        if(k==0) return S[si];
+        if(used[k][si]) return mem[k][si];
+        char &ret = mem[k][si];
+
+        string now;
+        now += f(f, k-1, si);
+        ll nsi = si + modpow(2, k-1, N);
+        nsi %= N;
+        now += f(f, k-1, nsi);
+        
+        ret = jk[now];
+        used[k][si] = true;
+        return ret;
+    };
+
+    char ans = f(f, K, 0);
+    Out(ans);
 
 }
 

@@ -2066,6 +2066,7 @@
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 - [B - MAX-=min](https://atcoder.jp/contests/arc105/tasks/arc105_b)
 - [C - Shuffle Permutation](https://atcoder.jp/contests/arc107/tasks/arc107_c)
+- [C - Large RPS Tournament](https://atcoder.jp/contests/arc109/tasks/arc109_c)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
