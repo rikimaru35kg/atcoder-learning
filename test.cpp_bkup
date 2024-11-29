@@ -217,22 +217,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    auto wa=[&](ll n) -> ll {
-        ll l = max(n-N, 1LL);
-        ll r = min(n-1, N);
-        return max(r-l+1, 0LL);
-    };
-    ll ans = 0;
-    repk(x, 2, 2*N+1) {
-        ll y = x - K;
-        if(y<=1 || y>2*N) continue;
-        ll now = wa(x) * wa(y);
-        de4(x,y,wa(x),wa(y))
-        ans += now;
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
     }
-    Out(ans);
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
+void solve() {
+    LONG(S, P);
+    auto ds=listup_divisor(P);
+    for(auto d: ds) {
+        if(d + P/d == S) PYes
+    }
+    PNo
 
 }
 
