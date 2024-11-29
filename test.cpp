@@ -217,70 +217,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
-        }
-        a = a * a % mod;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
-        }
-        a = a * a;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
 void solve() {
-    LONG(N, K);
-    STRING(S);
-
-    map<string,char> jk;
-    jk["RR"] = 'R';
-    jk["RP"] = 'P';
-    jk["RS"] = 'R';
-    jk["SR"] = 'R';
-    jk["SP"] = 'S';
-    jk["SS"] = 'S';
-    jk["PR"] = 'P';
-    jk["PP"] = 'P';
-    jk["PS"] = 'S';
-
-    vvc mem(K+1, vc(N));
-    vvb used(K+1, vb(N));
-    auto f=[&](auto f, ll k, ll si) -> char {
-        if(k==0) return S[si];
-        if(used[k][si]) return mem[k][si];
-        char &ret = mem[k][si];
-
-        string now;
-        now += f(f, k-1, si);
-        ll nsi = si + modpow(2, k-1, N);
-        nsi %= N;
-        now += f(f, k-1, nsi);
-        
-        ret = jk[now];
-        used[k][si] = true;
-        return ret;
+    LONG(N);
+    STRING(T);
+    ll M = 1e10;
+    // ll M = 3;
+    if(N==1) {
+        if(T[0]=='0') Outend(M);
+        else Outend(M*2);
+    }
+    if(N==2) {
+        if(T=="00") Outend(0);
+        if(T=="11" || T=="10") Outend(M);
+        if(T=="01") Outend(M-1);
+    }
+    auto judge=[&]() -> bool {
+        rep(r, 3) {
+            char t = T[r];
+            for(ll i=r; i<N; i+=3) {
+                if(T[i]!=t) return false;
+            }
+        }
+        return true;
     };
+    if(!judge()) Pm0
 
-    char ans = f(f, K, 0);
-    Out(ans);
+    ll r = -1;
+    if(T.substr(0,3)=="110") r = 0;
+    else if(T.substr(0,3)=="101") r = 1;
+    else if(T.substr(0,3)=="011") r = 2;
+    else Pm0
+    de(r)
+
+    M *= 3;
+    ll x = Div(M-r-N, 3) + 1;
+    if(x<0) Pm0
+    Out(x);
+
 
 }
 
