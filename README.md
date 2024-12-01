@@ -13,7 +13,7 @@
 - 途中からループに意味がなくなる場合breakする事で探索量を減らせる。特にi*j<=Kでのみループを回す必要があるのであれば、計算量はO(KlogK)となり、i*j*k<=Kの3重ループならO(Klog^2K)?となる
 - 現在の探索値より真に良いものが何個あるか考えるとすっきりする
 ### 例題
-- !復習価値低 ループ探索計算量を考察する良問（chokudai氏解説動画が神） [D - Cake 123](https://atcoder.jp/contests/abc123/tasks/abc123_d)
+- 基本 ループ探索計算量を考察する良問（chokudai氏解説動画が神） [D - Cake 123](https://atcoder.jp/contests/abc123/tasks/abc123_d)
 
 ## 順列全探索
 - 制約数が少なければ全探索を考える
