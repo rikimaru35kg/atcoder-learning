@@ -238,26 +238,34 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
-void solve() {
-    LONG(N, K);
-    VL(A, N); VL(B, N);
+#include <atcoder/fenwicktree>
+using namespace atcoder;
 
-    auto f=[&](sll x) -> bool {
-        sll rem = 0;
-        sll cnt = 0;
-        repr(i, N) {
-            sll b = B[i];
-            sll extra = min(b, rem);
-            b -= extra;
-            rem -= extra;
-            sll k = Divceil(b, x-A[i]);
-            cnt += k;
-            rem += k*(x-A[i]) - b;
+void solve() {
+    LONG(N);
+    VL(A, N);
+
+    auto f=[&](ll x) -> bool {
+        vl B(N);
+        rep(i, N) {
+            if(A[i]>=x) B[i] = 1;
+            else B[i] = -1;
         }
-        return cnt<=K;
+        fenwick_tree<ll> tree(2*N+1);
+        ll sum = 0;
+        ll cnt = 0;
+        tree.add(N, 1);
+        rep(i, N) {
+            sum += B[i];
+            ll now = tree.sum(0, sum+N+1);
+            cnt += now;
+            tree.add(sum+N, 1);
+        }
+        return cnt >= Divceil(N*(N+1)/2, 2LL);
     };
 
-    ll ans = binary_search(INF, A[N-1], f);
+    // de(f(30))
+    ll ans = binary_search(0, (ll)1e9+10, f);
     Out(ans);
 
 }

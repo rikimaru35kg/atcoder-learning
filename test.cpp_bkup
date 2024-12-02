@@ -239,33 +239,34 @@ double binary_search (double ok, double ng, auto f) {
 }
 
 void solve() {
-    LONG(N,M,K);
-    STRING(S);
-    vl Sc(N+1);
-    rep(i, N) if(S[i]=='x') Sc[i+1]++;
-    rep(i, N) Sc[i+1] += Sc[i];
-
-    auto sum=[&](ll l, ll r) -> ll {
-        if(l<=r) return Sc[r] - Sc[l];
-        ll ret = Sc[N] - Sc[l];
-        ret += Sc[r] - Sc[0];
-        return ret;
-    };
+    LONG(N, K);
+    VVL(A, N, N);
 
     auto f=[&](ll x) -> bool {
-        ll cycle = Div(x, N);
-        ll rem = x%N;
-        rep(i, N) {
-            if(i+x>N*M) break;
-            ll cnt = 0;
-            cnt += cycle * Sc[N];
-            cnt += sum(i, (i+rem)%N);
-            if(cnt<=K) return true;
+        vvl Sc(N+1, vl(N+1));
+        auto sum=[&](ll i, ll j) -> ll {
+            ll ret = 0;
+            ret += Sc[i+K][j+K];
+            ret -= Sc[i+K][j];
+            ret -= Sc[i][j+K];
+            ret += Sc[i][j];
+            return ret;
+        };
+        rep(i, N) rep(j, N) {
+            if(A[i][j]>=x) Sc[i+1][j+1] = 1;
+            else Sc[i+1][j+1] = -1;
         }
-        return false;
+        rep(i, N) rep(j, N+1) Sc[i+1][j] += Sc[i][j];
+        rep(i, N+1) rep(j, N) Sc[i][j+1] += Sc[i][j];
+
+        rep(i, N+1-K) rep(j, N+1-K) {
+            if(sum(i,j)<=0) return false;
+        }
+        return true;
     };
 
-    ll ans = binary_search(1, INF, f);
+    rep(i, 10) de(f(i))
+    ll ans = binary_search(0, INF, f);
     Out(ans);
 
 }
