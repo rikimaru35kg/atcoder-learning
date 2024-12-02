@@ -217,56 +217,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-#include <atcoder/fenwicktree>
-using namespace atcoder;
 
 void solve() {
     LONG(N);
-    VL(A, N);
+    VPD(P, N);
 
-    auto f=[&](ll x) -> bool {
-        vl B(N);
+    auto g=[&](db x, db y) -> db {
+        db ret = 0;
         rep(i, N) {
-            if(A[i]>=x) B[i] = 1;
-            else B[i] = -1;
+            db d = euclid_distd(Pd(x,y),P[i]);
+            // db d = euclid_distd(Pd(x,y),Pd(x,y));
+            chmax(ret, d);
         }
-        fenwick_tree<ll> tree(2*N+1);
-        ll sum = 0;
-        ll cnt = 0;
-        tree.add(N, 1);
-        rep(i, N) {
-            sum += B[i];
-            ll now = tree.sum(0, sum+N+1);
-            cnt += now;
-            tree.add(sum+N, 1);
-        }
-        return cnt >= Divceil(N*(N+1)/2, 2LL);
+        return ret;
     };
 
-    // de(f(30))
-    ll ans = binary_search(0, (ll)1e9+10, f);
+    auto f=[&](db x) -> db {
+        db l=0, r=1000;
+        rep(i, 200) {
+            db m1 = (2*l+r)/3;
+            db m2 = (l+2*r)/3;
+            if(g(x,m1)<g(x,m2)) r = m2;
+            else l = m1;
+        }
+        return g(x,l);
+    };
+
+    db l=0, r=1000;
+    rep(i, 200) {
+        db m1 = (2*l+r)/3;
+        db m2 = (l+2*r)/3;
+        if(f(m1)<f(m2)) r = m2;
+        else l = m1;
+    }
+    db ans = f(l);
     Out(ans);
+
+
+
 
 }
 
