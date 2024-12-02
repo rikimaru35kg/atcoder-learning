@@ -239,28 +239,26 @@ double binary_search (double ok, double ng, auto f) {
 }
 
 void solve() {
-    LONG(N, M);
+    LONG(N, K);
     VL(A, N); VL(B, N);
 
     auto f=[&](sll x) -> bool {
-        sll extra = 0;
-        sll used = 0;
-        rep(i, N) {
-            sll m = max(A[i], B[i]);
-            sll k = Divceil(x, m);
-            chmin(k, (sll)M);
-            used += k;
-            if (k*m<x) {
-                sll rem = x-k*m;
-                extra += Divceil(rem, (sll)B[i]);
-            }
+        sll rem = 0;
+        sll cnt = 0;
+        repr(i, N) {
+            sll b = B[i];
+            sll extra = min(b, rem);
+            b -= extra;
+            rem -= extra;
+            sll k = Divceil(b, x-A[i]);
+            cnt += k;
+            rem += k*(x-A[i]) - b;
         }
-        return used + extra <= M*N;
+        return cnt<=K;
     };
 
-    ll ans = binary_search(0, INF, f);
+    ll ans = binary_search(INF, A[N-1], f);
     Out(ans);
-
 
 }
 
