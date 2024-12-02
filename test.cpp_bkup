@@ -217,57 +217,65 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
     LONG(N, M);
+    VL(A, N);
     vvl from(N);
+    vl cost(N);
     rep(i, M) {
         LONGM(a, b);
         from[a].emplace_back(b);
         from[b].emplace_back(a);
+        cost[a] += A[b];
+        cost[b] += A[a];
     }
+    de(cost)
 
-    vl vs;
-    vb visited(N);
-    auto dfs=[&](auto f, ll v) -> void {
-        if(visited[v]) return;
-        vs.push_back(v);
-        visited[v] = true;
-        for(auto nv: from[v]) { f(f, nv); }
-    };
+    auto f=[&](ll x) ->bool {
+        vl c = cost;
+        queue<ll> que;
+        vb used(N);
+        auto push=[&](ll v) {
+            if(used[v]) return;
+            used[v] = true;
+            que.push(v);
+        };
+        rep(i, N) if(c[i]<=x) push(i);
 
-    vl color(N, -1);
-    ll now = 0;
-    ll sz = -1;
-    auto dfs2=[&](auto f, ll i) -> void {
-        if(i == sz) {
-            ++now;
-            return;
-        }
-        ll v = vs[i];
-        rep(c, 3) {
-            bool ok = true;
+        ll cnt = 0;
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ++cnt;
             for(auto nv: from[v]) {
-                if(color[nv]==c) ok =false;
-            }
-            if(ok) {
-                color[v] = c;
-                f(f, i+1);
-                color[v] = -1;
+                c[nv] -= A[v];
+                if(c[nv]<=x) push(nv);
             }
         }
+        return cnt==N;
     };
 
-    ll ans = 1;
-    rep(i, N) {
-        if(visited[i]) continue;
-        vs = vl();
-        dfs(dfs, i);
-        sz = vs.size();
-        now = 0;
-        color[vs[0]] = 0;
-        dfs2(dfs2, 1);
-        ans *= now*3;
-    }
+    ll ans = binary_search((ll)1e15, -1, f);
     Out(ans);
 
 }

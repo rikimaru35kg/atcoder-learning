@@ -149,10 +149,10 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
-inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
-inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
-inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+template<typename T> inline T TmpPercent(T a, T b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+template<typename T> inline T Percent(T a, T b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
@@ -217,45 +217,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N,K);
-    VS(S, N);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
-    set<vs> st;
-    ll ans = 0;
-    auto dfs=[&](auto f, vs &field) -> void {
-        ll cnt = 0;
-        rep(i, N) rep(j, N) {
-            if(field[i][j]=='@') ++cnt;
-        }
-        if(cnt==K) {
-            ++ans;
-            st.insert(field);
-            return;
-        }
-        rep(i, N) rep(j, N) {
-            if(field[i][j]!='.') continue;
-            bool ok = false;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,N,N)) continue;
-                if(field[ni][nj]=='@') ok = true;
+void solve() {
+    LONG(N, M);
+    VL(A, N); VL(B, N);
+
+    auto f=[&](sll x) -> bool {
+        sll extra = 0;
+        sll used = 0;
+        rep(i, N) {
+            sll m = max(A[i], B[i]);
+            sll k = Divceil(x, m);
+            chmin(k, (sll)M);
+            used += k;
+            if (k*m<x) {
+                sll rem = x-k*m;
+                extra += Divceil(rem, (sll)B[i]);
             }
-            if(!ok) continue;
-            field[i][j] = '@';
-            f(f, field);
-            field[i][j] = '.';
         }
+        return used + extra <= M*N;
     };
 
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='#') continue;
-        // vs field = S;
-        S[i][j] = '@';
-        dfs(dfs, S);
-        S[i][j] = '#';
-    }
+    ll ans = binary_search(0, INF, f);
     Out(ans);
+
 
 }
 
