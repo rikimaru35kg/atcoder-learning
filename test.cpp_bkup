@@ -217,55 +217,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-#include <atcoder/fenwicktree>
-using namespace atcoder;
-
 void solve() {
-    LONG(N);
+    LONG(N, X, Y);
     VL(A, N);
+    A.push_back(INF);
+    ++N;
 
-    auto f=[&](ll x) -> bool {
-        vl B(N);
-        rep(i, N) {
-            if(A[i]>=x) B[i] = 1;
-            else B[i] = -1;
+    vl now;
+    vvl as;
+    rep(i, N) {
+        if(A[i]<=X && A[i]>=Y) now.push_back(A[i]);
+        else {
+            if(now.size()) as.push_back(now);
+            now = vl();
         }
-        fenwick_tree<ll> tree(2*N+1);
-        ll sum = 0;
-        ll cnt = 0;
-        tree.add(N, 1);
-        rep(i, N) {
-            sum += B[i];
-            ll now = tree.sum(0, sum+N+1);
-            cnt += now;
-            tree.add(sum+N, 1);
+    }
+
+    auto calc=[&](vl &a) -> ll {
+        ll n = a.size();
+        ll r = 0;
+        vl cnt(2);
+        ll ret = 0;
+        rep(l, n) {
+            while(r<n && (cnt[0]==0 || cnt[1]==0)) {
+                if(a[r]==X) cnt[0]++;
+                if(a[r]==Y) cnt[1]++;
+                ++r;
+            }
+            if(cnt[0]>0 && cnt[1]>0) { ret += n-r+1; }
+
+            if(a[l]==X) cnt[0]--;
+            if(a[l]==Y) cnt[1]--;
         }
-        return cnt >= Divceil(N*(N+1)/2, 2LL);
+        return ret;
     };
 
-    // de(f(30))
-    ll ans = binary_search(0, (ll)1e9+10, f);
+    ll ans = 0;
+    for(auto a: as) {
+        ans += calc(a);
+    }
     Out(ans);
 
 }

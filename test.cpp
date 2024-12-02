@@ -217,54 +217,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 void solve() {
-    LONG(N);
-    VPD(P, N);
-
-    auto g=[&](db x, db y) -> db {
-        db ret = 0;
-        rep(i, N) {
-            db d = euclid_distd(Pd(x,y),P[i]);
-            // db d = euclid_distd(Pd(x,y),Pd(x,y));
-            chmax(ret, d);
-        }
-        return ret;
-    };
-
-    auto f=[&](db x) -> db {
-        db l=0, r=1000;
-        rep(i, 200) {
-            db m1 = (2*l+r)/3;
-            db m2 = (l+2*r)/3;
-            if(g(x,m1)<g(x,m2)) r = m2;
-            else l = m1;
-        }
-        return g(x,l);
-    };
-
-    db l=0, r=1000;
-    rep(i, 200) {
-        db m1 = (2*l+r)/3;
-        db m2 = (l+2*r)/3;
-        if(f(m1)<f(m2)) r = m2;
-        else l = m1;
+    LONG(N, M);
+    VL2M(A, B, N);
+    vvl is(M);
+    rep(i, N) {
+        is[A[i]].push_back(i);
+        is[B[i]].push_back(i);
     }
-    db ans = f(l);
-    Out(ans);
 
+    vl cnt(N);
+    ll num = 0;
+    auto add=[&](ll i) {
+        if(cnt[i]==0) ++num;
+        cnt[i]++;
+    };
+    auto del=[&](ll i) {
+        cnt[i]--;
+        if(cnt[i]==0) --num;
+    };
 
-
+    vl imos(M+10);
+    ll r = 0;
+    rep(l, M) {
+        while(r<M && num<N) {
+            for(auto i: is[r]) add(i);
+            ++r;
+        }
+        if(num==N) {
+            imos[r-l]++;
+            imos[M-l+1]--;
+        }
+        for(auto i: is[l]) del(i);
+    }
+    rep(i, M+9) imos[i+1] += imos[i];
+    rep1(i, M) printf("%lld ", imos[i]);
+    cout<<endl;
 
 }
 
