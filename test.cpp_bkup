@@ -218,42 +218,55 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,K);
-    VS(S, N);
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
 
-    set<vs> st;
-    ll ans = 0;
-    auto dfs=[&](auto f, vs &field) -> void {
-        ll cnt = 0;
-        rep(i, N) rep(j, N) {
-            if(field[i][j]=='@') ++cnt;
-        }
-        if(cnt==K) {
-            ++ans;
-            st.insert(field);
+    vl vs;
+    vb visited(N);
+    auto dfs=[&](auto f, ll v) -> void {
+        if(visited[v]) return;
+        vs.push_back(v);
+        visited[v] = true;
+        for(auto nv: from[v]) { f(f, nv); }
+    };
+
+    vl color(N, -1);
+    ll now = 0;
+    ll sz = -1;
+    auto dfs2=[&](auto f, ll i) -> void {
+        if(i == sz) {
+            ++now;
             return;
         }
-        rep(i, N) rep(j, N) {
-            if(field[i][j]!='.') continue;
-            bool ok = false;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,N,N)) continue;
-                if(field[ni][nj]=='@') ok = true;
+        ll v = vs[i];
+        rep(c, 3) {
+            bool ok = true;
+            for(auto nv: from[v]) {
+                if(color[nv]==c) ok =false;
             }
-            if(!ok) continue;
-            field[i][j] = '@';
-            f(f, field);
-            field[i][j] = '.';
+            if(ok) {
+                color[v] = c;
+                f(f, i+1);
+                color[v] = -1;
+            }
         }
     };
 
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='#') continue;
-        // vs field = S;
-        S[i][j] = '@';
-        dfs(dfs, S);
-        S[i][j] = '#';
+    ll ans = 1;
+    rep(i, N) {
+        if(visited[i]) continue;
+        vs = vl();
+        dfs(dfs, i);
+        sz = vs.size();
+        now = 0;
+        color[vs[0]] = 0;
+        dfs2(dfs2, 1);
+        ans *= now*3;
     }
     Out(ans);
 
