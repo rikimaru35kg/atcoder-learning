@@ -218,41 +218,77 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VL2M(A, B, N);
-    vvl is(M);
+    LONG(N, X, Y);
+    VL(A, N);
+    while(A.size()%4!=0) A.push_back(0);
+    ll N2 = A.size();
+
+    vl xs, ys;
+    rep(i, N2) {
+        if(i%2) xs.push_back(A[i]);
+        else ys.push_back(A[i]);
+    }
+
+    using MP = umap<ll,ll>;
+    auto make=[&](vl &x) -> MP {
+        ll n = x.size();
+        MP ret;
+        rep(s, 1<<n) {
+            ll now = 0;
+            rep(i, n) {
+                if(s>>i&1) now += x[i];
+                else now -= x[i];
+            }
+            ret[now] = s;
+        }
+        return ret;
+    };
+
+    auto calc=[&](vl &xs, ll X) -> ll {
+        ll n = xs.size();
+        vl x1, x2;
+        rep(i, n/2) x1.push_back(xs[i]);
+        repk(i, n/2, n) x2.push_back(xs[i]);
+
+        auto x2op1 = make(x1);
+        auto x2op2 = make(x2);
+        ll n2 = x1.size();
+
+        for(auto [x1,s1]: x2op1) {
+            if(!x2op2.count(X-x1)) continue;
+            ll ret = s1 | (x2op2[X-x1]<<n2);
+            return ret;
+        }
+        return -1;
+    };
+
+    ll s1=calc(xs, X);
+    ll s2=calc(ys, Y);
+    if(s1==-1 || s2==-1) PNo
+    puts("Yes");
+
+    vl pm(N);
     rep(i, N) {
-        is[A[i]].push_back(i);
-        is[B[i]].push_back(i);
+        if(i%2==0) {
+            pm[i] = s2>>(i/2)&1;
+        } else {
+            pm[i] = s1>>(i/2)&1;
+        }
     }
 
-    vl cnt(N);
-    ll num = 0;
-    auto add=[&](ll i) {
-        if(cnt[i]==0) ++num;
-        cnt[i]++;
-    };
-    auto del=[&](ll i) {
-        cnt[i]--;
-        if(cnt[i]==0) --num;
-    };
-
-    vl imos(M+10);
-    ll r = 0;
-    rep(l, M) {
-        while(r<M && num<N) {
-            for(auto i: is[r]) add(i);
-            ++r;
+    ll dir = 1;
+    string ans;
+    rep(i, N) {
+        if(i%2==0) {
+            if(dir==pm[i]) ans += 'L';
+            else ans += 'R';
+        } else {
+            if(dir!=pm[i]) ans += 'L';
+            else ans += 'R';
         }
-        if(num==N) {
-            imos[r-l]++;
-            imos[M-l+1]--;
-        }
-        for(auto i: is[l]) del(i);
+        dir = pm[i];
     }
-    rep(i, M+9) imos[i+1] += imos[i];
-    rep1(i, M) printf("%lld ", imos[i]);
-    cout<<endl;
+    Out(ans);
 
 }
 

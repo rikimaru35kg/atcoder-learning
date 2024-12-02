@@ -126,8 +126,8 @@
 ### 例題
 - 基本 [C - ダーツ](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c)
 - 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
-- !復習価値高 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
-- !復習価値高 ロボット移動 [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
+- 基本 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
+- !復習価値低 ロボット移動 [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
 # ソート
 

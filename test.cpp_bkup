@@ -218,45 +218,50 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, X, Y);
-    VL(A, N);
-    A.push_back(INF);
-    ++N;
+    LONG(N);
+    VVL(A, N, N);
+    using MP = umap<ll,ll>;
+    using vMP = vector<MP>;
 
-    vl now;
-    vvl as;
-    rep(i, N) {
-        if(A[i]<=X && A[i]>=Y) now.push_back(A[i]);
-        else {
-            if(now.size()) as.push_back(now);
-            now = vl();
-        }
-    }
-
-    auto calc=[&](vl &a) -> ll {
-        ll n = a.size();
-        ll r = 0;
-        vl cnt(2);
-        ll ret = 0;
-        rep(l, n) {
-            while(r<n && (cnt[0]==0 || cnt[1]==0)) {
-                if(a[r]==X) cnt[0]++;
-                if(a[r]==Y) cnt[1]++;
-                ++r;
+    auto calc=[&](vvl &A) -> vMP {
+        vMP ret(N);
+        auto dfs=[&](auto f, ll i, ll j, ll x) -> void {
+            x ^= A[i][j];
+            if(i+j==N-1) {
+                ret[j][x]++;
+                return;
             }
-            if(cnt[0]>0 && cnt[1]>0) { ret += n-r+1; }
-
-            if(a[l]==X) cnt[0]--;
-            if(a[l]==Y) cnt[1]--;
-        }
+            f(f, i+1, j, x);
+            f(f, i, j+1, x);
+        };
+        dfs(dfs, 0, 0, 0);
         return ret;
     };
 
+    auto flip=[&]() {
+        reverse(all(A));
+        rep(i, N) reverse(all(A[i]));
+    };
+
+    auto mp1 = calc(A);
+    flip();
+    auto mp2 = calc(A);
+    flip();
+    reverse(all(mp2));
+    rep(j, N) { de(mp1[j]) }
+    rep(j, N) { de(mp2[j]) }
+
     ll ans = 0;
-    for(auto a: as) {
-        ans += calc(a);
+    rep(j, N) {
+        ll i = N-1-j;
+        for(auto [k,v]: mp1[j]) {
+            ll x = k^A[i][j];
+            ans += mp2[j][x]*v;
+        }
     }
     Out(ans);
+
+
 
 }
 
