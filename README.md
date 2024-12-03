@@ -140,11 +140,11 @@
 - バブルソートするのに必要な回数であるが、より本質的にはai>ajとなるペアの組合せの数と等しい（ソートにはこれ以上の回数が必要な事は自明だし、ソートが終わっていない時このような隣り合うペアが存在するので）
 - 全探索するとO(N^2)だが、BIT木を使えばO(NlogN)で可能。
 ### 例題
-- !復習価値低 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
-- !要復習 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
+- 基本+α [F - Sorting Color Balls](https://atcoder.jp/contests/abc261/tasks/abc261_f)
+- 基本 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
 - 基本 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
-- !復習価値高 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
-- !要復習 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
+- 基本 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
+- !復習価値低 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
 
 ## ペア積（要素積）のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い

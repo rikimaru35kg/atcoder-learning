@@ -217,47 +217,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 void solve() {
-    LONG(N);
-    VVL(A, N, N);
-    using MP = umap<ll,ll>;
-    using vMP = vector<MP>;
+    LONG(N); VL(A, N);
+    VL(B, N);
+    rep(i, N) A[i] += i;
+    rep(i, N) B[i] += i;
 
-    auto calc=[&](vvl &A) -> vMP {
-        vMP ret(N);
-        auto dfs=[&](auto f, ll i, ll j, ll x) -> void {
-            x ^= A[i][j];
-            if(i+j==N-1) {
-                ret[j][x]++;
-                return;
-            }
-            f(f, i+1, j, x);
-            f(f, i, j+1, x);
-        };
-        dfs(dfs, 0, 0, 0);
-        return ret;
+    auto judge=[&](vl a, vl b) -> bool {
+        sort(all(a));
+        sort(all(b));
+        return a==b;
     };
+    if(!judge(A,B)) Pm1
 
-    auto flip=[&]() {
-        reverse(all(A));
-        rep(i, N) reverse(all(A[i]));
-    };
+    umap<ll,queue<ll>> mp;
+    rep(i, N) {
+        mp[B[i]].push(i);
+    }
 
-    auto mp1 = calc(A);
-    flip();
-    auto mp2 = calc(A);
-    flip();
-    reverse(all(mp2));
-    rep(j, N) { de(mp1[j]) }
-    rep(j, N) { de(mp2[j]) }
+    vl C(N);
+    rep(i, N) {
+        ll idx = mp[A[i]].front();
+        mp[A[i]].pop();
+        C[i] = idx;
+    }
 
+    fenwick_tree<ll> tree(N);
     ll ans = 0;
-    rep(j, N) {
-        ll i = N-1-j;
-        for(auto [k,v]: mp1[j]) {
-            ll x = k^A[i][j];
-            ans += mp2[j][x]*v;
-        }
+    rep(i, N) {
+        ans += tree.sum(C[i]+1, N);
+        tree.add(C[i], 1);
     }
     Out(ans);
 

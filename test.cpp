@@ -218,77 +218,48 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, X, Y);
-    VL(A, N);
-    while(A.size()%4!=0) A.push_back(0);
-    ll N2 = A.size();
+    LONG(N, Q);
+    vl A(N);
+    iota(all(A), 1);
+    A.insert(A.begin(), -1);
+    A.push_back(N+10);
+    N += 2;
 
-    vl xs, ys;
-    rep(i, N2) {
-        if(i%2) xs.push_back(A[i]);
-        else ys.push_back(A[i]);
-    }
+    set<ll> st;
 
-    using MP = umap<ll,ll>;
-    auto make=[&](vl &x) -> MP {
-        ll n = x.size();
-        MP ret;
-        rep(s, 1<<n) {
-            ll now = 0;
-            rep(i, n) {
-                if(s>>i&1) now += x[i];
-                else now -= x[i];
+    auto update=[&](ll x) {
+        if(A[x]<A[x+1]) st.erase(x);
+        if(A[x]>A[x+1]) st.insert(x);
+    };
+    ll cnt1 = 0, cnt2=0;
+    rep(i, Q) {
+        LONG(t); LONG(x,y);
+        if(t==1) {
+            ++cnt1;
+            swap(A[x], A[x+1]);
+            update(x-1);
+            update(x);
+            update(x+1);
+        } else {
+            auto judge=[&]() -> bool {
+                auto it = st.lower_bound(x);
+                if(it==st.end()) return false;
+                return *it<y;
+            };
+            while(st.size() && judge()) {
+                ++cnt2;
+                auto it = st.lower_bound(x);
+                ll i = *it;
+                swap(A[i], A[i+1]);
+                update(i-1);
+                update(i);
+                update(i+1);
             }
-            ret[now] = s;
-        }
-        return ret;
-    };
-
-    auto calc=[&](vl &xs, ll X) -> ll {
-        ll n = xs.size();
-        vl x1, x2;
-        rep(i, n/2) x1.push_back(xs[i]);
-        repk(i, n/2, n) x2.push_back(xs[i]);
-
-        auto x2op1 = make(x1);
-        auto x2op2 = make(x2);
-        ll n2 = x1.size();
-
-        for(auto [x1,s1]: x2op1) {
-            if(!x2op2.count(X-x1)) continue;
-            ll ret = s1 | (x2op2[X-x1]<<n2);
-            return ret;
-        }
-        return -1;
-    };
-
-    ll s1=calc(xs, X);
-    ll s2=calc(ys, Y);
-    if(s1==-1 || s2==-1) PNo
-    puts("Yes");
-
-    vl pm(N);
-    rep(i, N) {
-        if(i%2==0) {
-            pm[i] = s2>>(i/2)&1;
-        } else {
-            pm[i] = s1>>(i/2)&1;
         }
     }
-
-    ll dir = 1;
-    string ans;
-    rep(i, N) {
-        if(i%2==0) {
-            if(dir==pm[i]) ans += 'L';
-            else ans += 'R';
-        } else {
-            if(dir!=pm[i]) ans += 'L';
-            else ans += 'R';
-        }
-        dir = pm[i];
-    }
-    Out(ans);
+    de2(cnt1, cnt2)
+    rep1(i, N-2) printf("%lld ", A[i]);
+    cout<<endl;
 
 }
 
