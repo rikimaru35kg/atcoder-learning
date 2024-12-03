@@ -217,31 +217,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(P, N);
-    multiset<ll> st;
-    st.insert(N); st.insert(N);
-    st.insert(-1); st.insert(-1);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return P[i]>P[j];
-    });
-
-    ll ans = 0;
-    for(auto i: p) {
-        auto it = st.insert(i);
-        vl r(2), l(2);
-        rep(j, 2) { r[j] = *(++it); }
-        it = st.find(i);
-        rep(j, 2) l[j] = *(--it);
-        ll x = P[i];
-        ll now = (r[0]-i)*(l[0]-l[1]);
-        now += (r[1]-r[0])*(i-l[0]);
-        now *= x;
-        ans += now;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    Out(ans);
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+void solve() {
+    LONG(N, Q);
+    ll three = 1;
+    rep(i, N) three *= 3;
+
+    vl dist(three, INF);
+    queue<ll> que;
+    auto push=[&](ll s, ll d) {
+        if(dist[s]<=d) return;
+        dist[s] = d;
+        que.push(s);
+    };
+
+    auto check=[&](vl &v) -> bool {
+        ll pre =-1; 
+        rep(i, N) {
+            if(pre>v[i]) return false;
+            pre = v[i];
+        }
+        return true;
+    };
+
+    rep(s, three) {
+        auto v = separate_digit(s, 3, N);
+        if(!check(v)) continue;
+        push(s, 0);
+    }
+    while(que.size()) {
+        auto s = que.front(); que.pop();
+        auto v = separate_digit(s, 3, N);
+        repk(w, 2, N+1) {
+            vl nv = v;
+            reverse(nv.begin(), nv.begin()+w);
+            ll ns = consolidate_digit(nv, 3);
+            push(ns, dist[s]+1);
+        }
+    }
+
+    rep(i, Q) {
+        STRING(s);
+        vl v(N);
+        rep(i, N) { v[i] = s[i]-'A'; }
+        ll id = consolidate_digit(v, 3);
+        Out(dist[id]);
+    }
 
 }
 

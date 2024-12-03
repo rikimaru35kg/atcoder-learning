@@ -217,25 +217,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 void solve() {
-    LONG(N);
-    vt3 edge;
-    rep(i, N-1) {
-        LONGM(a,b); LONG(w);
-        edge.emplace_back(w,a,b);
+    LONG(N, M, Q);
+    vvl from0(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a, b);
+        from0[a].emplace_back(b);
+        from0[b].emplace_back(a);
+        edge.emplace_back(a,b);
     }
-    sort(all(edge));
+
+    vl dist(N, INF);
+    queue<ll> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto nv: from0[v]) {
+            push(nv, dist[v]+1);
+        }
+    }
+
+    vl deg(N);
+    vvp from(N);
+    rep(i, M) {
+        auto [a,b] = edge[i];
+        if(dist[a]==dist[b]) continue;
+        if(dist[a]==dist[b]+1) {
+            from[b].emplace_back(a, i);
+            deg[a]++;
+        } else {
+            from[a].emplace_back(b, i);
+            deg[b]++;
+        }
+    }
+
     ll ans = 0;
-    dsu uf(N);
-    for(auto [w,a,b]: edge) {
-        ll now = w*uf.size(a)*uf.size(b);
-        ans += now;
-        uf.merge(a,b);
+    vb deled(M);
+
+    auto bfs=[&](ll sv) {
+        queue<ll> que;
+        que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ans++;
+            for(auto [nv,mi]: from[v]) {
+                if(deled[mi]) continue;
+                deled[mi] = true;
+                deg[nv]--;
+                if(deg[nv]==0) que.push(nv);
+            }
+        }
+    };
+
+    rep(i, Q) {
+        LONGM(mi);
+        auto [a,b] = edge[mi];
+        if(deled[mi]) {
+            Out(ans); continue;
+        }
+        deled[mi] = true;
+        if(dist[a]==dist[b]+1) {
+            deg[a]--;
+            if(deg[a]==0) { bfs(a); }
+        } else if(dist[a]+1==dist[b]){
+            deg[b]--;
+            if(deg[b]==0) { bfs(b); }
+        }
+        Out(ans);
+        de(deg)
     }
-    Out(ans);
+
 
 }
 

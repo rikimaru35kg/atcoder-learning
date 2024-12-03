@@ -1,30 +1,223 @@
-test.cpp:240:13: error: redefinition of ‘void Out(mint)’
-  240 | inline void Out(mint e) {cout << e.val() << '\n';}
-      |             ^~~
-test.cpp:226:13: note: ‘void Out(mint)’ previously defined here
-  226 | inline void Out(mint e) {cout << e.val() << '\n';}
-      |             ^~~
-test.cpp:241:13: error: redefinition of ‘void Out(vm)’
-  241 | inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-      |             ^~~
-test.cpp:227:13: note: ‘void Out(vm)’ previously defined here
-  227 | inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-      |             ^~~
-test.cpp:243:13: error: redefinition of ‘void debug_view(mint)’
-  243 | inline void debug_view(mint e){cerr << e.val() << endl;}
-      |             ^~~~~~~~~~
-test.cpp:229:13: note: ‘void debug_view(mint)’ previously defined here
-  229 | inline void debug_view(mint e){cerr << e.val() << endl;}
-      |             ^~~~~~~~~~
-test.cpp:244:13: error: redefinition of ‘void debug_view(vm&)’
-  244 | inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-      |             ^~~~~~~~~~
-test.cpp:230:13: note: ‘void debug_view(vm&)’ previously defined here
-  230 | inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-      |             ^~~~~~~~~~
-test.cpp:245:13: error: redefinition of ‘void debug_view(vvm&)’
-  245 | inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-      |             ^~~~~~~~~~
-test.cpp:231:13: note: ‘void debug_view(vvm&)’ previously defined here
-  231 | inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-      |             ^~~~~~~~~~
+test.cpp: In function ‘void solve()’:
+test.cpp:266:42: error: no match for ‘operator+’ (operand types are ‘void’ and ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’})
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                         ~~~~~~~~~~~~~~~~ ^ ~~
+      |                                |           |
+      |                                void        std::string {aka std::__cxx11::basic_string<char>}
+In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/stl_iterator.h:630:5: note: candidate: ‘template<class _Iterator> constexpr std::reverse_iterator<_IteratorL> std::operator+(typename reverse_iterator<_IteratorL>::difference_type, const reverse_iterator<_IteratorL>&)’
+  630 |     operator+(typename reverse_iterator<_Iterator>::difference_type __n,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:630:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/stl_iterator.h:1804:5: note: candidate: ‘template<class _Iterator> constexpr std::move_iterator<_IteratorL> std::operator+(typename move_iterator<_IteratorL>::difference_type, const move_iterator<_IteratorL>&)’
+ 1804 |     operator+(typename move_iterator<_Iterator>::difference_type __n,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:1804:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::move_iterator<_IteratorL>’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+In file included from /usr/include/c++/12/string:53,
+                 from /usr/include/c++/12/bits/locale_classes.h:40,
+                 from /usr/include/c++/12/bits/ios_base.h:41,
+                 from /usr/include/c++/12/ios:42,
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/sstream:38,
+                 from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/bits/basic_string.h:3440:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 3440 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3440:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+In file included from /usr/include/c++/12/string:54:
+/usr/include/c++/12/bits/basic_string.tcc:606:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const _CharT*, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+  606 |     operator+(const _CharT* __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.tcc:606:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const _CharT*’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.tcc:627:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(_CharT, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+  627 |     operator+(_CharT __lhs, const basic_string<_CharT, _Traits, _Alloc>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.tcc:627:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   deduced conflicting types for parameter ‘_CharT’ (‘void’ and ‘char’)
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3480:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’
+ 3480 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3480:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3497:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, _CharT)’
+ 3497 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs, _CharT __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3497:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3510:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 3510 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3510:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3517:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
+ 3517 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3517:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3524:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
+ 3524 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3524:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3547:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const _CharT*, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
+ 3547 |     operator+(const _CharT* __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3547:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const _CharT*’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3554:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(_CharT, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
+ 3554 |     operator+(_CharT __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3554:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   deduced conflicting types for parameter ‘_CharT’ (‘void’ and ‘char’)
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3561:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, const _CharT*)’
+ 3561 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3561:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/basic_string.h:3568:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, _CharT)’
+ 3568 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3568:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/complex:332:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const complex<_Tp>&, const complex<_Tp>&)’
+  332 |     operator+(const complex<_Tp>& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:332:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::complex<_Tp>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/complex:341:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const complex<_Tp>&, const _Tp&)’
+  341 |     operator+(const complex<_Tp>& __x, const _Tp& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:341:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::complex<_Tp>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/complex:350:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const _Tp&, const complex<_Tp>&)’
+  350 |     operator+(const _Tp& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:350:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::complex<_Tp>’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/complex:451:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const complex<_Tp>&)’
+  451 |     operator+(const complex<_Tp>& __x)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:451:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::complex<_Tp>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+In file included from /usr/include/c++/12/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/valarray:1186:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__plus, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__plus, _Tp>::result_type> std::operator+(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1186 | _DEFINE_BINARY_OPERATOR(+, __plus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1186:1: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/valarray:1186:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__plus, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__plus, _Tp>::result_type> std::operator+(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1186 | _DEFINE_BINARY_OPERATOR(+, __plus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1186:1: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘void’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+/usr/include/c++/12/valarray:1186:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__plus, _Tp>::result_type> std::operator+(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1186 | _DEFINE_BINARY_OPERATOR(+, __plus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1186:1: note:   template argument deduction/substitution failed:
+test.cpp:266:44: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::valarray<_Tp>’
+  266 |             string ns = reverse(all(fr)) + rr;
+      |                                            ^~
+test.cpp:215:4: note: candidate: ‘Pr operator+(Pr, Pr)’
+  215 | Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
+      |    ^~~~~~~~
+test.cpp:215:18: note:   no known conversion for argument 1 from ‘void’ to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
+  215 | Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
+      |               ~~~^
+test.cpp:268:17: error: no match for call to ‘(solve()::<lambda(std::string&, ll)>) (const char [3], std::__cxx1998::unordered_map<std::__cxx11::basic_string<char>, long long int, std::hash<std::__cxx11::basic_string<char> >, std::equal_to<std::__cxx11::basic_string<char> >, std::allocator<std::pair<const std::__cxx11::basic_string<char>, long long int> > >::mapped_type&)’
+  268 |             push("AA", dist[s]);
+      |             ~~~~^~~~~~~~~~~~~~~
+test.cpp:247:15: note: candidate: ‘solve()::<lambda(std::string&, ll)>’ (near match)
+  247 |     auto push=[&](string &s, ll d) {
+      |               ^
+test.cpp:247:15: note:   conversion of argument 1 would be ill-formed:
+test.cpp:268:18: error: cannot bind non-const lvalue reference of type ‘std::string&’ {aka ‘std::__cxx11::basic_string<char>&’} to an rvalue of type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’}
+  268 |             push("AA", dist[s]);
+      |                  ^~~~
+/usr/include/c++/12/bits/basic_string.h:642:7: note:   after user-defined conversion: ‘constexpr std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const _CharT*, const _Alloc&) [with <template-parameter-2-1> = std::allocator<char>; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+  642 |       basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
+      |       ^~~~~~~~~~~~
