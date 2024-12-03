@@ -75,18 +75,15 @@ using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-#define rep(i, N) for (ll i=0; i<(ll)(N); ++i)
-#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; --i)
-#define repk(i, k, N) for (ll i = k; i < (ll)(N); ++i)
-#define rep1(i, N) for (ll i=1; i<(ll)(N+1); ++i)
-#define rep1r(i, N) for (ll i=(ll)(N); i>0; i--)
+#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
+#define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
-#define PFi {puts("First"); exit(0);}
-#define PSe {puts("Second"); exit(0);}
 #define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
@@ -149,23 +146,19 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-template<typename T> inline T TmpPercent(T a, T b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
-template<typename T> inline T Percent(T a, T b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
-template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
-template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
-template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
-template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
+inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
 #define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
-#define de5(var1,var2,var3,var4,var5) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<' '<<#var5<<": "; debug_view(var1,var2,var3,var4,var5);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
-template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -194,79 +187,103 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de2(var1,var2) {}
 #define de3(var1,var2,var3) {}
 #define de4(var1,var2,var3,var4) {}
-#define de5(var1,var2,var3,var4,var5) {}
 #define deb(var) {}
 #endif
-int IINF = 1001001001;
 ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
+const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
-const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
-const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
-const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, Q);
-    vl A(N);
-    iota(all(A), 1);
-    A.insert(A.begin(), -1);
-    A.push_back(N+10);
-    N += 2;
-
-    set<ll> st;
-
-    auto update=[&](ll x) {
-        if(A[x]<A[x+1]) st.erase(x);
-        if(A[x]>A[x+1]) st.insert(x);
-    };
-    ll cnt1 = 0, cnt2=0;
-    rep(i, Q) {
-        LONG(t); LONG(x,y);
-        if(t==1) {
-            ++cnt1;
-            swap(A[x], A[x+1]);
-            update(x-1);
-            update(x);
-            update(x+1);
-        } else {
-            auto judge=[&]() -> bool {
-                auto it = st.lower_bound(x);
-                if(it==st.end()) return false;
-                return *it<y;
-            };
-            while(st.size() && judge()) {
-                ++cnt2;
-                auto it = st.lower_bound(x);
-                ll i = *it;
-                swap(A[i], A[i+1]);
-                update(i-1);
-                update(i);
-                update(i+1);
-            }
-        }
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    de2(cnt1, cnt2)
-    rep1(i, N-2) printf("%lld ", A[i]);
-    cout<<endl;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
+// [方針]
+// ab以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
+// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
+// （なお、x<min(A,B)とならない事は自明）
+// 最大ペア積がab未満となる最大のxを二分探索すれば良いのだが、良い理由が
+// 分かりづらいので以下に記す
+// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
+// xの偶奇で場合分け可能。
+// xが偶数ならば最大となるペア積は2つあり高橋に占有されないので
+// 最大ペア積maxを自明に計算可能
+// 以下奇数を論じる
+// a) A==Bの時は最大ペア積を高橋が占領する可能性があるが、この時は
+// 答えが自明なので最初にはじいておく
+// b) AB共に真ん中以前の場合はそれぞれABより大きいペアが生まれてしまうので
+// そもそも無理（よって真ん中同士を最大ペア積として問題ない）
+// c) AB共に真ん中以降の場合はそもそもABが真ん中同士のペア積より大きいので
+// 絶対可能（よって真ん中同士を最大ペア積として問題ない）
+// a)...c)よりあとはAが真ん中以前かつBが真ん中以降のケースを考えれば良い
+// AB共にx位以下であれば、a)...c)を除くとAもBも真ん中の順位にはなりえないので
+// 真ん中同士を最大ペア積として問題ない
+// 残るは以下のケース（Aが真ん中より前でBがx位より大）だが最大ペア積は中心同士の
+// 積として良い。実際にペアを線でつないでみれば分かる
+// 1: ooxoooooo (A=3)
+// 2: ooooooooo (B>=10)
+// 参考) これはb)の例
+// 1: ooooxoooo (A=5)
+// 2: ooooooooo (B>=10)
+// この場合（Aが真ん中以降）、作れる組数は最大8組で最大ペア積の計算は面倒そうだが
+// 実はこの場合も5位×5位を最大ペア積として問題ない
+// なぜなら明らかにこれはA*Bより小さいから
+void solve() {
+    LONG(A, B);
+    if(A>B) swap(A,B);
+    if(A==B) { 
+        Out(2*(A-1)); return;
+    }
+    auto p2=[&](sll x){return x*x;};
+    auto f=[&](ll x) -> bool {
+        sll mx = -1;
+        if(x%2==1) {
+            mx = p2(Divceil(x,2));
+        } else {
+            mx = (sll)x/2 * ((sll)x/2+1);
+        }
+        return mx < A*B;
+    };
+
+    ll x = binary_search(0, (ll)2e9+10, f);
+    Out(x-1);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(Q);
+    rep(i, Q) solve();
+    
 }
 
 // ### test.cpp ###
+

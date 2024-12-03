@@ -161,7 +161,7 @@
 - 最適なつなぎ方の通り数を求めたい場合は、つなぐ時につなぎ方の場合の数を掛け合わせていけば良い
 ### 例題
 - 基本 [014 - We Used to Sing a Song Together（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_n)
-- !復習価値低 PC電源つなぎ方総数 [A - 1D Matching](https://atcoder.jp/contests/cf16-exhibition-final-open/tasks/cf16_exhibition_final_a)
+- 基本 PC電源つなぎ方総数 [A - 1D Matching](https://atcoder.jp/contests/cf16-exhibition-final-open/tasks/cf16_exhibition_final_a)
 
 # 座標圧縮
 - 簡単に実装するなら、圧縮前の座標をmap[x]=0 (for all x)で用意しておき、int i=0; for (auto [k, _]: map) {map[k] = i++;}でOK
