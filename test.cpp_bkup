@@ -218,44 +218,30 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VLM(A, N);
-    vl cnt(N);
-    ll npair = 0;
-    auto add=[&](ll x) {
-        cnt[x]++;
-        if(cnt[x]%2==0) ++npair;
-    };
-    auto del=[&](ll x) {
-        cnt[x]--;
-        if(cnt[x]%2!=0) --npair;
-    };
-    LONG(Q);
-    vl L(Q), R(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        L[i] = l, R[i] = r;
-    }
-    vl p(Q);
-    ll hw = max(N/sqrt(Q), 1.0);
+    LONG(N); VL(P, N);
+    multiset<ll> st;
+    st.insert(N); st.insert(N);
+    st.insert(-1); st.insert(-1);
+    vl p(N);
     iota(all(p), 0);
     sort(all(p), [&](ll i, ll j){
-        ll hi = R[i]/hw, hj = R[j]/hw;
-        if(hi==hj) return L[i]<L[j];
-        return hi<hj;
+        return P[i]>P[j];
     });
 
-    ll l = 0, r = 0;
-    vl ans(Q);
+    ll ans = 0;
     for(auto i: p) {
-        ll lt = L[i], rt = R[i];
-        while(l<lt) del(A[l]), ++l;
-        while(r>rt) --r, del(A[r]);
-        while(l>lt) --l, add(A[l]);
-        while(r<rt) add(A[r]), ++r;
-        ans[i] = npair;
+        auto it = st.insert(i);
+        vl r(2), l(2);
+        rep(j, 2) { r[j] = *(++it); }
+        it = st.find(i);
+        rep(j, 2) l[j] = *(--it);
+        ll x = P[i];
+        ll now = (r[0]-i)*(l[0]-l[1]);
+        now += (r[1]-r[0])*(i-l[0]);
+        now *= x;
+        ans += now;
     }
-    for(auto x: ans) Out(x);
-
+    Out(ans);
 
 }
 

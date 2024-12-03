@@ -217,76 +217,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 void solve() {
-    LONG(N); VL(A, N);
-    LONG(Q);
-    vl L(Q), R(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        L[i] = l, R[i] = r;
+    LONG(N);
+    vt3 edge;
+    rep(i, N-1) {
+        LONGM(a,b); LONG(w);
+        edge.emplace_back(w,a,b);
     }
-
-    vl p(Q);
-    ll hw = max(N/sqrt(Q), 1.0);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        ll hi = R[i]/hw, hj = R[j]/hw;
-        if(hi==hj) return L[i]<L[j];
-        return hi<hj;
-    });
-
-    auto p2=[&](ll x) -> ll {return x*x;};
-
-    multiset<ll> st;
-    ll val = 0;
-    auto add=[&](ll x) {
-        auto it = st.insert(x);
-        if(SIZE(st)==1) return;
-        if(it==st.begin()) {
-            auto it2=next(it);
-            val += p2(*it2-*it);
-        } else if (it==prev(st.end())) {
-            auto it2=prev(it);
-            val += p2(*it2-*it);
-        } else {
-            auto itl = prev(it);
-            auto itr = next(it);
-            val -= p2(*itr-*itl);
-            val += p2(*itr-*it);
-            val += p2(*itl-*it);
-        }
-    };
-    auto del=[&](ll x) {
-        auto it = st.find(x);
-        if(SIZE(st)>=2) {
-            if(it==st.begin()) {
-                auto it2=next(it);;
-                val -= p2(*it2-*it);
-            } else if (it==prev(st.end())) {
-                auto it2=prev(it);
-                val -= p2(*it2-*it);
-            } else {
-                auto itl = prev(it);
-                auto itr = next(it);
-                val += p2(*itr-*itl);
-                val -= p2(*itr-*it);
-                val -= p2(*itl-*it);
-            }
-        }
-        st.erase(it);
-    };
-
-    ll l = 0, r = 0;
-    vl ans(Q);
-    for(auto i: p) {
-        ll lt = L[i], rt = R[i];
-        while(l>lt) --l, add(A[l]);
-        while(r<rt) add(A[r]), ++r;
-        while(l<lt) del(A[l]), ++l;
-        while(r>rt) --r, del(A[r]);
-        ans[i] = val;
+    sort(all(edge));
+    ll ans = 0;
+    dsu uf(N);
+    for(auto [w,a,b]: edge) {
+        ll now = w*uf.size(a)*uf.size(b);
+        ans += now;
+        uf.merge(a,b);
     }
-    for(auto x: ans) Out(x);
+    Out(ans);
 
 }
 
