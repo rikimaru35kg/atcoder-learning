@@ -217,92 +217,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 void solve() {
-    LONG(N, K);
-    CoordinateCompression<ll> ccx, ccy, ccz;
-    vt3 st, ed;
-    rep(i, N) {
-        LONG(x1,y1,z1);
-        LONG(x2,y2,z2);
-        ccx.add(x1); ccy.add(y1); ccz.add(z1);
-        ccx.add(x2); ccy.add(y2); ccz.add(z2);
-        st.emplace_back(x1,y1,z1);
-        ed.emplace_back(x2,y2,z2);
-    }
-    ll X = ccx.size(), Y = ccy.size(), Z = ccz.size();
-    vl dx(X-1), dy(Y-1), dz(Z-1);
-    rep(i, X-1) dx[i] = ccx[i+1] - ccx[i];
-    rep(i, Y-1) dy[i] = ccy[i+1] - ccy[i];
-    rep(i, Z-1) dz[i] = ccz[i+1] - ccz[i];
-
-    vvvl imos(X, vvl(Y, vl(Z)));
-    auto upd=[&](vl x, vl y, vl z) {
-        rep(i, 2) rep(j, 2) rep(k, 2) {
-            ll coef = 1;
-            if((i+j+k)%2==1) coef = -1;
-            imos[x[i]][y[j]][z[k]] += coef;
-        }
+    LONG(N); VLM(A, N);
+    vl cnt(N);
+    ll npair = 0;
+    auto add=[&](ll x) {
+        cnt[x]++;
+        if(cnt[x]%2==0) ++npair;
     };
-    rep(i, N) {
-        auto [x1,y1,z1] = st[i];
-        auto [x2,y2,z2] = ed[i];
-        x1 = ccx(x1), x2 = ccx(x2);
-        y1 = ccy(y1), y2 = ccy(y2);
-        z1 = ccz(z1), z2 = ccz(z2);
-        upd({x1,x2},{y1,y2},{z1,z2});
+    auto del=[&](ll x) {
+        cnt[x]--;
+        if(cnt[x]%2!=0) --npair;
+    };
+    LONG(Q);
+    vl L(Q), R(Q);
+    rep(i, Q) {
+        LONG(l, r); --l;
+        L[i] = l, R[i] = r;
     }
-    rep(i, X-1) rep(j, Y) rep(k, Z) imos[i+1][j][k] += imos[i][j][k];
-    rep(i, X) rep(j, Y-1) rep(k, Z) imos[i][j+1][k] += imos[i][j][k];
-    rep(i, X) rep(j, Y) rep(k, Z-1) imos[i][j][k+1] += imos[i][j][k];
-    de(imos)
+    vl p(Q);
+    ll hw = max(N/sqrt(Q), 1.0);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = R[i]/hw, hj = R[j]/hw;
+        if(hi==hj) return L[i]<L[j];
+        return hi<hj;
+    });
 
-    ll ans = 0;
-    rep(i, X) rep(j, Y) rep(k, Z) {
-        if(imos[i][j][k]<K) continue;
-        ans += dx[i]*dy[j]*dz[k];
+    ll l = 0, r = 0;
+    vl ans(Q);
+    for(auto i: p) {
+        ll lt = L[i], rt = R[i];
+        while(l<lt) del(A[l]), ++l;
+        while(r>rt) --r, del(A[r]);
+        while(l>lt) --l, add(A[l]);
+        while(r<rt) add(A[r]), ++r;
+        ans[i] = npair;
     }
-    Out(ans);
+    for(auto x: ans) Out(x);
+
 
 }
 
