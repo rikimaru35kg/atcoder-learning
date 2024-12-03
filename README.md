@@ -184,8 +184,8 @@
 - 基本 （累積和ではないのでNote非掲載 ）[C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
-- !復習価値高 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
-- !要復習 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
+- !復習価値中 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
+- !復習価値高 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる

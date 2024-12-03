@@ -217,52 +217,147 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(N); VL(A, N); VL(B, N);
-    vp obj;
+    LONG(N, M, K);
+    vp P;
+    ll rem = K;
     rep(i, N) {
-        obj.emplace_back(A[i], 0);
-        obj.emplace_back(B[i], 1);
+        LONG(a);
+        P.emplace_back(a, i);
+        rem -= a;
     }
-    sort(all(obj));
+    sort(allr(P));
 
-    mint ans = 1;
-    ll a = 0, b = 0;
-    for(auto [x, t]: obj) {
-        if(a==0 && b==0) {
-            if(t==0) ++a;
-            else ++b;
-        }
-        else if(t==0) {
-            if(a==0) {
-                ans *= b; --b;
-            } else {
-                ++a;
-            }
-        } else {
-            if(b==0) {
-                ans *= a; --a;
-            } else {
-                ++b;
-            }
-        }
-        de3(a,b,ans.val())
+    vl ord(N);
+    rep(i, N) {
+        ord[P[i].second] = i;
+    }
+
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
+
+    vl ans(N);
+    rep(i, N) {
+        auto [a,ni] = P[i];
+        ll m = M;
+        if(ord[ni]<m) ++m;
+
+        auto f=[&](sll x) -> bool {
+            sll y = a+x+1;
+            sll r = rem-x;
+            auto [n,z] = lowbou(P, Pr(y,INF), false);
+            // if(n>=m) return false;
+            sll sum = 0;
+            if(m>n) sum = Sc[m] - Sc[n];
+            // if(ord[ni]<M) sum -= a;
+            sum = y*(m-n) - sum;
+            if(ord[ni]<m) sum -= y-a;
+            de2((ll)sum, (ll)r)
+            return sum > r;
+        };
+        de(f(2))
+
+
+        ll x = binary_search(rem+1, -1, f);
+        de2(a, x)
+
+        if(x==rem+1) x = -1;
+        ans[ni] = x;
     }
     Out(ans);
+
 
 }
 
