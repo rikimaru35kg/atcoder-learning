@@ -217,147 +217,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+template <typename T>
+vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+template <typename T>
+vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
 }
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
 
 void solve() {
-    LONG(N, M, K);
-    vp P;
-    ll rem = K;
-    rep(i, N) {
-        LONG(a);
-        P.emplace_back(a, i);
-        rem -= a;
+    LONG(N);
+    VVL(D, N, N);
+
+    vvl Sc = cumsum(D);
+
+    auto sum = [&](ll a, ll b, ll c, ll d) -> ll {
+        ll ret = 0;
+        ret += Sc[b][d];
+        ret -= Sc[a][d];
+        ret -= Sc[b][c];
+        ret += Sc[a][c];
+        return ret;
+    };
+
+    vl taste(N*N+1);
+    rep(i2, N+1) rep(i1, i2) rep(j2, N+1) rep(j1, j2) {
+        ll area = (i2-i1) * (j2-j1);
+        ll t = sum(i1,i2,j1,j2);
+        chmax(taste[area], t);
     }
-    sort(allr(P));
+    de(taste)
+    rep(i, N*N) chmax(taste[i+1], taste[i]);
 
-    vl ord(N);
-    rep(i, N) {
-        ord[P[i].second] = i;
+    LONG(Q);
+    rep(i, Q) {
+        LONG(p);
+        Out(taste[p]);
     }
-
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
-
-    vl ans(N);
-    rep(i, N) {
-        auto [a,ni] = P[i];
-        ll m = M;
-        if(ord[ni]<m) ++m;
-
-        auto f=[&](sll x) -> bool {
-            sll y = a+x+1;
-            sll r = rem-x;
-            auto [n,z] = lowbou(P, Pr(y,INF), false);
-            // if(n>=m) return false;
-            sll sum = 0;
-            if(m>n) sum = Sc[m] - Sc[n];
-            // if(ord[ni]<M) sum -= a;
-            sum = y*(m-n) - sum;
-            if(ord[ni]<m) sum -= y-a;
-            de2((ll)sum, (ll)r)
-            return sum > r;
-        };
-        de(f(2))
-
-
-        ll x = binary_search(rem+1, -1, f);
-        de2(a, x)
-
-        if(x==rem+1) x = -1;
-        ans[ni] = x;
-    }
-    Out(ans);
-
 
 }
 
