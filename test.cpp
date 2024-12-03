@@ -206,7 +206,7 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
-const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
+const vp dij = {{1,1},{1,-1},{-1,1},{-1,-1}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -218,81 +218,42 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, Q);
-    vvl from0(N);
-    vp edge;
-    rep(i, M) {
-        LONGM(a, b);
-        from0[a].emplace_back(b);
-        from0[b].emplace_back(a);
-        edge.emplace_back(a,b);
-    }
+    LONG(N); LONGM(si,sj,gi,gj);
+    VS(S, N);
 
-    vl dist(N, INF);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);
+    deque<t3> que;
+    vvvl dist(N, vvl(N, vl(4, INF)));
+    auto push=[&](ll i, ll j, ll k, ll d, bool fr) {
+        ll &pd = dist[i][j][k];
+        if(pd<=d) return;
+        pd = d;
+        if(fr) que.emplace_front(i,j,k);
+        else que.emplace_back(i,j,k);
     };
-    push(0, 0);
+    rep(k, 4) push(si,sj,k,0,false);
     while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv: from0[v]) {
-            push(nv, dist[v]+1);
-        }
+        auto [i,j,k] = que.front(); que.pop_front();
+        ll d = dist[i][j][k];
+        rep(nk, 4) push(i,j,nk,d+1,false);
+        auto [di,dj] = dij[k];
+        ll ni = i + di, nj = j + dj;
+        if(!isin(ni,nj,N,N)) continue;
+        if(S[ni][nj]=='#') continue;
+        push(ni,nj,k,d,true);
     }
 
-    vl deg(N);
-    vvp from(N);
-    rep(i, M) {
-        auto [a,b] = edge[i];
-        if(dist[a]==dist[b]) continue;
-        if(dist[a]==dist[b]+1) {
-            from[b].emplace_back(a, i);
-            deg[a]++;
-        } else {
-            from[a].emplace_back(b, i);
-            deg[b]++;
-        }
+    rep(i, N) rep(j, N) {
+        ll now = INF;
+        rep(k, 4) chmin(now, dist[i][j][k]);
+        ch1(now);
+        printf("%lld ", now);
+        if(j==N-1) cout<<'\n';
+
     }
-
-    ll ans = 0;
-    vb deled(M);
-
-    auto bfs=[&](ll sv) {
-        queue<ll> que;
-        que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            ans++;
-            for(auto [nv,mi]: from[v]) {
-                if(deled[mi]) continue;
-                deled[mi] = true;
-                deg[nv]--;
-                if(deg[nv]==0) que.push(nv);
-            }
-        }
-    };
-
-    rep(i, Q) {
-        LONGM(mi);
-        auto [a,b] = edge[mi];
-        if(deled[mi]) {
-            Out(ans); continue;
-        }
-        deled[mi] = true;
-        if(dist[a]==dist[b]+1) {
-            deg[a]--;
-            if(deg[a]==0) { bfs(a); }
-        } else if(dist[a]+1==dist[b]){
-            deg[b]--;
-            if(deg[b]==0) { bfs(b); }
-        }
-        Out(ans);
-        de(deg)
-    }
-
+    ll ans = INF;
+    rep(k, 4) chmin(ans, dist[gi][gj][k]);
+    ch1(ans);
+    Out(ans);
 
 }
 

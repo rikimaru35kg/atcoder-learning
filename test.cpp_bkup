@@ -217,74 +217,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N, Q);
-    ll three = 1;
-    rep(i, N) three *= 3;
+    LONG(N, M, Q);
+    vvl from0(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a, b);
+        from0[a].emplace_back(b);
+        from0[b].emplace_back(a);
+        edge.emplace_back(a,b);
+    }
 
-    vl dist(three, INF);
+    vl dist(N, INF);
     queue<ll> que;
-    auto push=[&](ll s, ll d) {
-        if(dist[s]<=d) return;
-        dist[s] = d;
-        que.push(s);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.push(v);
     };
-
-    auto check=[&](vl &v) -> bool {
-        ll pre =-1; 
-        rep(i, N) {
-            if(pre>v[i]) return false;
-            pre = v[i];
-        }
-        return true;
-    };
-
-    rep(s, three) {
-        auto v = separate_digit(s, 3, N);
-        if(!check(v)) continue;
-        push(s, 0);
-    }
+    push(0, 0);
     while(que.size()) {
-        auto s = que.front(); que.pop();
-        auto v = separate_digit(s, 3, N);
-        repk(w, 2, N+1) {
-            vl nv = v;
-            reverse(nv.begin(), nv.begin()+w);
-            ll ns = consolidate_digit(nv, 3);
-            push(ns, dist[s]+1);
+        auto v = que.front(); que.pop();
+        for(auto nv: from0[v]) {
+            push(nv, dist[v]+1);
         }
     }
+
+    vl deg(N);
+    vvp from(N);
+    rep(i, M) {
+        auto [a,b] = edge[i];
+        if(dist[a]==dist[b]) continue;
+        if(dist[a]==dist[b]+1) {
+            from[b].emplace_back(a, i);
+            deg[a]++;
+        } else {
+            from[a].emplace_back(b, i);
+            deg[b]++;
+        }
+    }
+
+    ll ans = 0;
+    vb deled(M);
+
+    auto bfs=[&](ll sv) {
+        queue<ll> que;
+        que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ans++;
+            for(auto [nv,mi]: from[v]) {
+                if(deled[mi]) continue;
+                deled[mi] = true;
+                deg[nv]--;
+                if(deg[nv]==0) que.push(nv);
+            }
+        }
+    };
 
     rep(i, Q) {
-        STRING(s);
-        vl v(N);
-        rep(i, N) { v[i] = s[i]-'A'; }
-        ll id = consolidate_digit(v, 3);
-        Out(dist[id]);
+        LONGM(mi);
+        auto [a,b] = edge[mi];
+        if(deled[mi]) {
+            Out(ans); continue;
+        }
+        deled[mi] = true;
+        if(dist[a]==dist[b]+1) {
+            deg[a]--;
+            if(deg[a]==0) { bfs(a); }
+        } else if(dist[a]+1==dist[b]){
+            deg[b]--;
+            if(deg[b]==0) { bfs(b); }
+        }
+        Out(ans);
+        de(deg)
     }
+
 
 }
 
