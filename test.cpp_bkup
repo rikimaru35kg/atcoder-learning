@@ -217,43 +217,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
-
 void solve() {
-    LONG(N); VL(A, N);
-    VL(B, N);
-    rep(i, N) A[i] += i;
-    rep(i, N) B[i] += i;
+    LONG(N, Q);
+    vl A(N);
+    iota(all(A), 1);
+    A.insert(A.begin(), -1);
+    A.push_back(N+10);
+    N += 2;
 
-    auto judge=[&](vl a, vl b) -> bool {
-        sort(all(a));
-        sort(all(b));
-        return a==b;
+    set<ll> st;
+
+    auto update=[&](ll x) {
+        if(A[x]<A[x+1]) st.erase(x);
+        if(A[x]>A[x+1]) st.insert(x);
     };
-    if(!judge(A,B)) Pm1
-
-    umap<ll,queue<ll>> mp;
-    rep(i, N) {
-        mp[B[i]].push(i);
+    ll cnt1 = 0, cnt2=0;
+    rep(i, Q) {
+        LONG(t); LONG(x,y);
+        if(t==1) {
+            ++cnt1;
+            swap(A[x], A[x+1]);
+            update(x-1);
+            update(x);
+            update(x+1);
+        } else {
+            auto judge=[&]() -> bool {
+                auto it = st.lower_bound(x);
+                if(it==st.end()) return false;
+                return *it<y;
+            };
+            while(st.size() && judge()) {
+                ++cnt2;
+                auto it = st.lower_bound(x);
+                ll i = *it;
+                swap(A[i], A[i+1]);
+                update(i-1);
+                update(i);
+                update(i+1);
+            }
+        }
     }
-
-    vl C(N);
-    rep(i, N) {
-        ll idx = mp[A[i]].front();
-        mp[A[i]].pop();
-        C[i] = idx;
-    }
-
-    fenwick_tree<ll> tree(N);
-    ll ans = 0;
-    rep(i, N) {
-        ans += tree.sum(C[i]+1, N);
-        tree.add(C[i], 1);
-    }
-    Out(ans);
-
-
+    de2(cnt1, cnt2)
+    rep1(i, N-2) printf("%lld ", A[i]);
+    cout<<endl;
 
 }
 
