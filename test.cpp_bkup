@@ -217,147 +217,92 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
     }
-    return ok;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
     }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+#else
+    void print() {}
+#endif
+};
 
 void solve() {
-    LONG(N, M, K);
-    vp P;
-    ll rem = K;
+    LONG(N, K);
+    CoordinateCompression<ll> ccx, ccy, ccz;
+    vt3 st, ed;
     rep(i, N) {
-        LONG(a);
-        P.emplace_back(a, i);
-        rem -= a;
+        LONG(x1,y1,z1);
+        LONG(x2,y2,z2);
+        ccx.add(x1); ccy.add(y1); ccz.add(z1);
+        ccx.add(x2); ccy.add(y2); ccz.add(z2);
+        st.emplace_back(x1,y1,z1);
+        ed.emplace_back(x2,y2,z2);
     }
-    sort(allr(P));
+    ll X = ccx.size(), Y = ccy.size(), Z = ccz.size();
+    vl dx(X-1), dy(Y-1), dz(Z-1);
+    rep(i, X-1) dx[i] = ccx[i+1] - ccx[i];
+    rep(i, Y-1) dy[i] = ccy[i+1] - ccy[i];
+    rep(i, Z-1) dz[i] = ccz[i+1] - ccz[i];
 
-    vl ord(N);
+    vvvl imos(X, vvl(Y, vl(Z)));
+    auto upd=[&](vl x, vl y, vl z) {
+        rep(i, 2) rep(j, 2) rep(k, 2) {
+            ll coef = 1;
+            if((i+j+k)%2==1) coef = -1;
+            imos[x[i]][y[j]][z[k]] += coef;
+        }
+    };
     rep(i, N) {
-        ord[P[i].second] = i;
+        auto [x1,y1,z1] = st[i];
+        auto [x2,y2,z2] = ed[i];
+        x1 = ccx(x1), x2 = ccx(x2);
+        y1 = ccy(y1), y2 = ccy(y2);
+        z1 = ccz(z1), z2 = ccz(z2);
+        upd({x1,x2},{y1,y2},{z1,z2});
     }
+    rep(i, X-1) rep(j, Y) rep(k, Z) imos[i+1][j][k] += imos[i][j][k];
+    rep(i, X) rep(j, Y-1) rep(k, Z) imos[i][j+1][k] += imos[i][j][k];
+    rep(i, X) rep(j, Y) rep(k, Z-1) imos[i][j][k+1] += imos[i][j][k];
+    de(imos)
 
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
-
-    vl ans(N);
-    rep(i, N) {
-        auto [a,ni] = P[i];
-        ll m = M;
-        if(ord[ni]<m) ++m;
-
-        auto f=[&](sll x) -> bool {
-            sll y = a+x+1;
-            sll r = rem-x;
-            auto [n,z] = lowbou(P, Pr(y,INF), false);
-            // if(n>=m) return false;
-            sll sum = 0;
-            if(m>n) sum = Sc[m] - Sc[n];
-            // if(ord[ni]<M) sum -= a;
-            sum = y*(m-n) - sum;
-            if(ord[ni]<m) sum -= y-a;
-            de2((ll)sum, (ll)r)
-            return sum > r;
-        };
-        de(f(2))
-
-
-        ll x = binary_search(rem+1, -1, f);
-        de2(a, x)
-
-        if(x==rem+1) x = -1;
-        ans[ni] = x;
+    ll ans = 0;
+    rep(i, X) rep(j, Y) rep(k, Z) {
+        if(imos[i][j][k]<K) continue;
+        ans += dx[i]*dy[j]*dz[k];
     }
     Out(ans);
-
 
 }
 

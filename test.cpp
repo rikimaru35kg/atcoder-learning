@@ -218,52 +218,98 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 template <typename T>
-vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T>
-vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
 
+#include <atcoder/dsu>
+using namespace atcoder;
 
 void solve() {
-    LONG(N);
-    VVL(D, N, N);
-
-    vvl Sc = cumsum(D);
-
-    auto sum = [&](ll a, ll b, ll c, ll d) -> ll {
-        ll ret = 0;
-        ret += Sc[b][d];
-        ret -= Sc[a][d];
-        ret -= Sc[b][c];
-        ret += Sc[a][c];
-        return ret;
-    };
-
-    vl taste(N*N+1);
-    rep(i2, N+1) rep(i1, i2) rep(j2, N+1) rep(j1, j2) {
-        ll area = (i2-i1) * (j2-j1);
-        ll t = sum(i1,i2,j1,j2);
-        chmax(taste[area], t);
+    LONG(W, H, N);
+    CoordinateCompression<ll> ccx, ccy;
+    vt4 P;
+    rep(i, N) {
+        LONG(x1,y1,x2,y2);
+        ccx.add(x1), ccx.add(x2);
+        ccy.add(y1), ccy.add(y2);
+        P.emplace_back(x1,y1,x2,y2);
     }
-    de(taste)
-    rep(i, N*N) chmax(taste[i+1], taste[i]);
+    ccx.add(0), ccx.add(W);
+    ccy.add(0), ccx.add(H);
+    ll X = ccx.size(), Y = ccy.size();
 
-    LONG(Q);
-    rep(i, Q) {
-        LONG(p);
-        Out(taste[p]);
+    vvl imos(X, vl(Y));
+    for(auto [x1,y1,x2,y2]: P) {
+        x1 = ccx(x1), y1 = ccy(y1);
+        x2 = ccx(x2), y2 = ccy(y2);
+        imos[x1][y1]++;
+        imos[x2][y1]--;
+        imos[x1][y2]--;
+        imos[x2][y2]++;
     }
+    rep(i, X-1) rep(j, Y) imos[i+1][j] += imos[i][j];
+    rep(i, X) rep(j, Y-1) imos[i][j+1] += imos[i][j];
+    de(imos)
+
+    ll nx = X-1, ny = Y-1;
+    dsu uf(nx*ny);
+    auto gid=[&](ll i, ll j) {return i*ny+j;};
+    // auto rid=[&](ll id) -> Pr {return {id/ny, id%ny};};
+    rep(i, nx) rep(j, ny) {
+        if(imos[i][j]!=0) continue;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,nx,ny)) continue;
+            if(imos[ni][nj]!=0) continue;
+            uf.merge(gid(i,j), gid(ni,nj));
+        }
+    }
+
+    ll ans = 0;
+    rep(i, nx) rep(j, ny) {
+        if(imos[i][j]!=0) continue;
+        if(uf.leader(gid(i,j))!=gid(i,j)) continue;
+        ++ans;
+    }
+    Out(ans);
+
 
 }
 
