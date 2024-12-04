@@ -359,10 +359,10 @@
 - 最短経路となるパスの場合の数を同時に求める事も可能（pair型にしておいて、{経路長,数}を更新していけば良い）
 - 同方向は最大Kまでしか進めないという応用問題の場合、方向の状態に加え、同方向は1/K、方向転換は切り上げというダイクストラをすれば解ける（実装上はK倍した値で管理すると良い）
 ### 例題
-- !復習価値低 最短閉路問題 [C - Blue Bird](https://atcoder.jp/contests/abc022/tasks/abc022_c)
-- !復習価値低 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
-- !復習価値中 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
-- !復習価値低 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
+- 基本 最短閉路問題 [C - Blue Bird](https://atcoder.jp/contests/abc022/tasks/abc022_c)
+- 基本 最短路かつ最大価値 [E - Souvenir](https://atcoder.jp/contests/abc286/tasks/abc286_e)
+- 基本 最短経路＋その場合の数（巡回セールスマン） [G - Revenge of Traveling Salesman Problem](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_g)
+- 基本 [F - Pond Skater](https://atcoder.jp/contests/abc170/tasks/abc170_f)
 
 # グラフ
 

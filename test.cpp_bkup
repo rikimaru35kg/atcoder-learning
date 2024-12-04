@@ -217,37 +217,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct D {
+    ll d, n;
+    D(ll d=INF, ll n=0): d(d),n(n) {}
+    void update(const D &o) {
+        if(d<o.d) return;
+        if(d==o.d) { n += o.n; return; }
+        d = o.d, n = o.n;
+    }
+    D operator+(ll c) {
+        return D(d+c, n);
+    }
+};
+
+using vD = vector<D>;
+using vvD = vector<vD>;
+
 void solve() {
-    LONG(N, M, L);
-    vvl dist0(N, vl(N, INF));
+    LONG(N, M);
+    vvt3 from(N);
     rep(i, M) {
-        LONGM(a,b); LONG(c);
-        dist0[a][b] = c;
-        dist0[b][a] = c;
-    }
-    rep(i, N) dist0[i][i] = 0;
-
-    rep(k, N) rep(i, N) rep(j, N) {
-        chmin(dist0[i][j], dist0[i][k]+dist0[k][j]);
+        LONGM(a,b); LONG(c,lim);
+        from[a].emplace_back(b,c,lim);
+        from[b].emplace_back(a,c,lim);
     }
 
-    vvl dist(N, vl(N, INF));
-    rep(i, N) rep(j, N) {
-        if(dist0[i][j]<=L) dist[i][j] = 1;
+    vvD dp(1<<N, vD(N));
+    dp[0][0] = D(0,1);
+    rep(s, 1<<N) {
+        rep(v, N) {
+            auto [d,n] = dp[s][v];
+            if(d==INF) continue;
+            for(auto [nv,c,lim]: from[v]) {
+                if(s>>nv&1) continue;
+                if(d+c>lim) continue;
+                ll ns = s|1<<nv;
+                dp[ns][nv].update(dp[s][v]+c);
+            }
+        }
     }
-    rep(i, N) dist[i][i] = 0;
-
-    rep(k, N) rep(i, N) rep(j, N) {
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
-    }
-
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(s,t);
-        ll ans = dist[s][t];
-        if(ans==INF) Out(-1);
-        else Out(ans-1);
-    }
+    auto [d,n] = dp[(1<<N)-1][0];
+    if(d==INF) Outend("IMPOSSIBLE");
+    printf("%lld %lld\n", d, n);
 
 }
 
