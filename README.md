@@ -350,8 +350,8 @@
 ## 一度に複数辺を進める場合の最短経路
 - 所持燃料に限界がある場合、補給なしで到達可能な頂点間を長さ1の辺で結ぶ事により、最小補給回数を求めることができる（正しくは最小補給回数+1が求まる）
 ### 例題
-- !復習価値低 燃料補給回数 [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)  （参考：[距離1/Kで燃料補給は切り上げ方式の別解](https://atcoder.jp/contests/abc143/submissions/50298596)だが、計算量改善、ダイクストラO(N^2)方式の優先順位、最終的な答えの求め方（切上？切捨？）が難しすぎるので非推奨。こんな解き方もできるよ程度）
-- !復習価値低 定額タクシー [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
+- 基本 燃料補給回数 [E - Travel by Car](https://atcoder.jp/contests/abc143/tasks/abc143_e)  （参考：[距離1/Kで燃料補給は切り上げ方式の別解](https://atcoder.jp/contests/abc143/submissions/50298596)だが、計算量改善、ダイクストラO(N^2)方式の優先順位、最終的な答えの求め方（切上？切捨？）が難しすぎるので非推奨。こんな解き方もできるよ程度）
+- 基本 定額タクシー [E - タクシー (Taxis)](https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_e)
 
 ## 最短経路問題+α
 - 最短経路の中で最大価値を求める（距離を{経路,-価値}のpair型にしてダイクストラやワーシャル・フロイド）

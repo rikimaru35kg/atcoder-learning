@@ -218,61 +218,54 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,M,P);
-    vvp from(N);
-    vvp ifrom(N);
-    vt3 edge;
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c-P);
-        ifrom[b].emplace_back(a, c-P);
-        edge.emplace_back(a,b,c-P);
+    LONG(N, K);
+    VL2(C, R, N);
+    vvl from(N);
+    rep(i, K) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
 
-    auto calreach=[&](ll sv, vvp &from) -> vb {
+    auto bfs=[&](ll sv) -> vl {
         queue<ll> que;
-        vb visited(N);
-        auto push=[&](ll v) {
-            if(visited[v]) return;
-            visited[v] = true;;
-            que.push(v);
-        };
-        push(sv);
+        vl dist(N, INF);
+        dist[sv] = 0;
+        que.push(sv);
         while(que.size()) {
             auto v = que.front(); que.pop();
-            for(auto [nv,c]: from[v]) {
-                push(nv);
+            for(auto nv: from[v]) {
+                if(dist[nv]!=INF) continue;
+                dist[nv] = dist[v] + 1;
+                que.push(nv);
             }
         }
-        return visited;
+        return dist;
     };
-    vb reach1 = calreach(0, from);
-    vb reachN = calreach(N-1, ifrom);
-
-    auto valid=[&](ll v) {
-        return reach1[v] && reachN[v];
-    };
-
-    vl dist(N, -INF);
-    dist[0] = 0;
-    bool upd = true;
-    ll cnt = 0;
-    while(upd && cnt<=N+5) {
-        ++cnt;
-        upd = false;
-        for(auto [a,b,c]: edge) {
-            if(!valid(a) || !valid(b)) continue;
-            if(dist[a]==-INF) continue;
-            if(dist[a]+c>dist[b]) {
-                upd = true;
-                dist[b] = dist[a]+c;
-            }
+    vvp from2(N);
+    rep(i, N) {
+        vl dist = bfs(i);
+        rep(j, N) if(dist[j]<=R[i]) {
+            from2[i].emplace_back(j, C[i]);
         }
     }
-    if(cnt>N) Pm1
 
-    ll ans = max(dist[N-1], 0LL);
-    Out(ans);
+    pq que;
+    vl dist(N, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv,c]: from2[v]) {
+            push(nv, d+c);
+        }
+    }
+    Out(dist[N-1]);
 
 }
 

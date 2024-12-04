@@ -218,27 +218,35 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vvl dist(N, vl(N, INF));
+    LONG(N, M, L);
+    vvl dist0(N, vl(N, INF));
     rep(i, M) {
-        LONG(a,b); LONG(c);
-        dist[a][b] = c;
+        LONGM(a,b); LONG(c);
+        dist0[a][b] = c;
+        dist0[b][a] = c;
+    }
+    rep(i, N) dist0[i][i] = 0;
+
+    rep(k, N) rep(i, N) rep(j, N) {
+        chmin(dist0[i][j], dist0[i][k]+dist0[k][j]);
+    }
+
+    vvl dist(N, vl(N, INF));
+    rep(i, N) rep(j, N) {
+        if(dist0[i][j]<=L) dist[i][j] = 1;
     }
     rep(i, N) dist[i][i] = 0;
 
     rep(k, N) rep(i, N) rep(j, N) {
-        if(dist[i][k]==INF || dist[k][j]==INF) continue;
         chmin(dist[i][j], dist[i][k]+dist[k][j]);
-        if(i==j && dist[i][i]<0) Outend("NEGATIVE CYCLE");
     }
 
-    rep(i, N) {
-        rep(j, N) {
-            if(dist[i][j]==INF) cout<<"INF";
-            else cout<<dist[i][j];
-            if(j==N-1) cout<<'\n';
-            else cout<<' ';
-        }
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(s,t);
+        ll ans = dist[s][t];
+        if(ans==INF) Out(-1);
+        else Out(ans-1);
     }
 
 }
