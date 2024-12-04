@@ -58,6 +58,12 @@ struct WeightedUnionFind {
     }
     bool same (long long x, long long y) { return leader(x) == leader(y); }
     long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
 };
 
 int main () {
