@@ -317,8 +317,8 @@
 - 問題設定上明らかな場合以外は、ベルマンフォードなどでポテンシャルを求める必要あり。この場合の計算量はO(NM)なので、全頂点にダイクストラを用いてもO(NMlogM)となり、後述のワーシャルフロイドより改善する（辺の数が少なければ）
 - なお、ポテンシャルの割り当てが存在する事の必要十分条件は、負閉路がないこと
 ### 例題
-- !復習価値中 ポテンシャルを理解する良問 [F - Pay or Receive](https://atcoder.jp/contests/abc280/tasks/abc280_f)
-- !復習価値低 [E - Skiing](https://atcoder.jp/contests/abc237/tasks/abc237_e)
+- 基本 ポテンシャルを理解する良問 [F - Pay or Receive](https://atcoder.jp/contests/abc280/tasks/abc280_f)
+- 基本 [E - Skiing](https://atcoder.jp/contests/abc237/tasks/abc237_e)
 
 ## ワーシャルフロイド法（Warshall-Floyd）
 - 全頂点から全頂点への最短経路を求める方法。計算量はO(N^3)
