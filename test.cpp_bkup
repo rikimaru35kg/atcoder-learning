@@ -218,46 +218,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, X);
-    VL(H, N);
-    vvp from(N);
+    LONG(N, M);
+    vvl from(N);
     rep(i, M) {
-        LONGM(a, b); LONG(c);
-        if(H[a]>=c) from[a].emplace_back(b, c);
-        if(H[b]>=c) from[b].emplace_back(a, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    de(from)
-
-    vl dist(N, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
+    vvl dist(1<<N, vl(N, INF));
+    queue<Pr> que;
+    auto push=[&](ll s, ll v, ll d) {
+        if(dist[s][v]<=d) return;
+        dist[s][v] = d;
+        que.emplace(s,v);
     };
-    push(0, 0);
+    rep(i, N) push(1<<i, i, 1);
     while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        ll h = 0;
-        if(d<=X) h = X-d;
-        de2(v, h)
-        for(auto [nv,c]: from[v]) {
-            if(h-c>H[nv]) push(nv, d+h-H[nv]);
-            else if(h-c>=0) push(nv, d+c);
-            else push(nv, d+2*c-h);
+        auto [s,v] = que.front(); que.pop();
+        if(s==7&&v==2&&dist[s][v]==3) {
+            cout<<"";
+        }
+        for(auto nv: from[v]) {
+            ll ns = s ^ 1LL<<nv;
+            push(ns, nv, dist[s][v]+1);
         }
     }
-
-    ll tn = dist[N-1];
-    de(dist)
-    if(tn==INF) Pm1
-
-    ll h = 0;
-    if(tn<=X) h = X-tn;
-
-    ll ans = tn + H[N-1]-h;
+    ll ans = 0;
+    rep(s, 1<<N) {
+        if(s==0) continue;
+        ll now = INF;
+        rep(i, N) {
+            chmin(now, dist[s][i]);
+        }
+        deb(s)de(now)
+        ans += now;
+    }
     Out(ans);
+
+
 }
 
 int main () {

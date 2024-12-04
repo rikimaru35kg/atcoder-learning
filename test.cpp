@@ -218,39 +218,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    ll N1 = N+1;
-    vvp from(N1);
-    ll ans = 0;
-    rep(i, N) {
-        LONG(a);
-        from[i].emplace_back(i+1, a);
-        from[i+1].emplace_back(i, 0);
-        ans += a;
-    }
+    LONG(N, M, Q, L);
+    vvp from(N);
     rep(i, M) {
-        LONG(l, r); --l; LONG(c);
-        from[l].emplace_back(r, c);
+        LONGM(a, b); LONGM(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    pq que;
-    vl dist(N1, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
+
+    ll B = 30;
+    vvl dist(N, vl(B+1, INF));
+    priority_queue<t3,vt3,greater<t3>> que;
+    auto push=[&](ll v, ll b, ll d) {
+        if(dist[v][b]<=d) return;
+        dist[v][b] = d;
+        que.emplace(d,v,b);
     };
-    push(0, 0);
+    push(0,0,1);
     while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
+        auto [d,v,b] = que.top(); que.pop();
+        if(dist[v][b]!=d) continue;
         for(auto [nv,c]: from[v]) {
-            push(nv, d+c);
+            if(b+c>B) continue;
+            push(nv, b+c, d+(1LL<<b));
         }
     }
-    de(dist)
-    de(ans)
-    ans -= dist[N];
-    Out(ans);
+    rep(i, Q) {
+        LONGM(t);
+        ll ans = INF;
+        rep(b, B+1) chmin(ans, dist[t][b]);
+        if(ans>L) puts("Large");
+        else Out(ans);
+    }
 
 }
 

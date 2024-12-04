@@ -304,11 +304,11 @@
 - 基本 [E - Swap Places](https://atcoder.jp/contests/abc289/tasks/abc289_e)
 - 基本 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 - 基本 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
-- !復習価値低 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
-- !復習価値高 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
+- 基本 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
+- !復習価値低 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
 - 基本 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 基本 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
-- !復習価値高 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
+- !復習価値低 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
 - !要復習 [F - タクシー 2 (Taxis 2)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_f)
 
 ## ポテンシャル法
