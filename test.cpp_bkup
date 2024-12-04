@@ -218,82 +218,46 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, Q);
-    vvl from0(N);
-    vp edge;
+    LONG(N, M, X);
+    VL(H, N);
+    vvp from(N);
     rep(i, M) {
-        LONGM(a, b);
-        from0[a].emplace_back(b);
-        from0[b].emplace_back(a);
-        edge.emplace_back(a,b);
+        LONGM(a, b); LONG(c);
+        if(H[a]>=c) from[a].emplace_back(b, c);
+        if(H[b]>=c) from[b].emplace_back(a, c);
     }
+    de(from)
 
     vl dist(N, INF);
-    queue<ll> que;
+    pq que;
     auto push=[&](ll v, ll d) {
         if(dist[v]<=d) return;
         dist[v] = d;
-        que.push(v);
+        que.emplace(d, v);
     };
     push(0, 0);
     while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv: from0[v]) {
-            push(nv, dist[v]+1);
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        ll h = 0;
+        if(d<=X) h = X-d;
+        de2(v, h)
+        for(auto [nv,c]: from[v]) {
+            if(h-c>H[nv]) push(nv, d+h-H[nv]);
+            else if(h-c>=0) push(nv, d+c);
+            else push(nv, d+2*c-h);
         }
     }
 
-    vl deg(N);
-    vvp from(N);
-    rep(i, M) {
-        auto [a,b] = edge[i];
-        if(dist[a]==dist[b]) continue;
-        if(dist[a]==dist[b]+1) {
-            from[b].emplace_back(a, i);
-            deg[a]++;
-        } else {
-            from[a].emplace_back(b, i);
-            deg[b]++;
-        }
-    }
+    ll tn = dist[N-1];
+    de(dist)
+    if(tn==INF) Pm1
 
-    ll ans = 0;
-    vb deled(M);
+    ll h = 0;
+    if(tn<=X) h = X-tn;
 
-    auto bfs=[&](ll sv) {
-        queue<ll> que;
-        que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            ans++;
-            for(auto [nv,mi]: from[v]) {
-                if(deled[mi]) continue;
-                deled[mi] = true;
-                deg[nv]--;
-                if(deg[nv]==0) que.push(nv);
-            }
-        }
-    };
-
-    rep(i, Q) {
-        LONGM(mi);
-        auto [a,b] = edge[mi];
-        if(deled[mi]) {
-            Out(ans); continue;
-        }
-        deled[mi] = true;
-        if(dist[a]==dist[b]+1) {
-            deg[a]--;
-            if(deg[a]==0) { bfs(a); }
-        } else if(dist[a]+1==dist[b]){
-            deg[b]--;
-            if(deg[b]==0) { bfs(b); }
-        }
-        Out(ans);
-        de(deg)
-    }
-
-
+    ll ans = tn + H[N-1]-h;
+    Out(ans);
 }
 
 int main () {

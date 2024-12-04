@@ -206,7 +206,7 @@ const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
-const vp dij = {{1,1},{1,-1},{-1,1},{-1,-1}};
+const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -218,41 +218,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); LONGM(si,sj,gi,gj);
-    VS(S, N);
-
-    deque<t3> que;
-    vvvl dist(N, vvl(N, vl(4, INF)));
-    auto push=[&](ll i, ll j, ll k, ll d, bool fr) {
-        ll &pd = dist[i][j][k];
-        if(pd<=d) return;
-        pd = d;
-        if(fr) que.emplace_front(i,j,k);
-        else que.emplace_back(i,j,k);
+    LONG(N, M);
+    ll N1 = N+1;
+    vvp from(N1);
+    ll ans = 0;
+    rep(i, N) {
+        LONG(a);
+        from[i].emplace_back(i+1, a);
+        from[i+1].emplace_back(i, 0);
+        ans += a;
+    }
+    rep(i, M) {
+        LONG(l, r); --l; LONG(c);
+        from[l].emplace_back(r, c);
+    }
+    pq que;
+    vl dist(N1, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
     };
-    rep(k, 4) push(si,sj,k,0,false);
+    push(0, 0);
     while(que.size()) {
-        auto [i,j,k] = que.front(); que.pop_front();
-        ll d = dist[i][j][k];
-        rep(nk, 4) push(i,j,nk,d+1,false);
-        auto [di,dj] = dij[k];
-        ll ni = i + di, nj = j + dj;
-        if(!isin(ni,nj,N,N)) continue;
-        if(S[ni][nj]=='#') continue;
-        push(ni,nj,k,d,true);
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv,c]: from[v]) {
+            push(nv, d+c);
+        }
     }
-
-    rep(i, N) rep(j, N) {
-        ll now = INF;
-        rep(k, 4) chmin(now, dist[i][j][k]);
-        ch1(now);
-        printf("%lld ", now);
-        if(j==N-1) cout<<'\n';
-
-    }
-    ll ans = INF;
-    rep(k, 4) chmin(ans, dist[gi][gj][k]);
-    ch1(ans);
+    de(dist)
+    de(ans)
+    ans -= dist[N];
     Out(ans);
 
 }
