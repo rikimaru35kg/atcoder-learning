@@ -416,9 +416,9 @@
 ### 例題
 - 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
 - !復習価値中 [D - Strange Mirroring](https://atcoder.jp/contests/abc380/tasks/abc380_d)
-- !復習価値高 [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
-- !復習価値中 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
-- !復習価値高 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
+- 基本 [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
+- 基本 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
+- !復習価値低 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
 ## 木の次数列
 - 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる

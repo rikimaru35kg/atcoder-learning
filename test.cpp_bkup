@@ -217,45 +217,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, D);
+    mint ans = 0;
+
+    vm two(N+1, 1);
+    rep(i, N) two[i+1] = two[i] * 2;
+    rep(lft, D+1) {
+        ll rgt = D-lft;
+        ll height = max(lft, rgt);
+        if(height>=N) continue;
+        mint cntl = two[max(lft-1,0LL)];
+        mint cntr = two[max(rgt-1,0LL)];
+        mint now = cntl * cntr * (two[N-height]-1);
+        ans += now;
     }
-    VL(C, N);
-    ll tot = accumulate(all(C), 0LL);
-
-    ll cog = -1;
-    auto dfs0=[&](auto f, ll v, ll p=-1) -> ll {
-        ll ret = 0;
-        bool ok = true;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll w = f(f, nv, v);
-            if(2*w>tot) ok = false;
-            ret += w;
-        }
-        ll pw = tot-(C[v]+ret);
-        if(2*pw>tot) ok = false;
-        if(ok) { cog = v; }
-        ret += C[v];
-        return ret;
-    };
-    dfs0(dfs0, 0);
-    de(cog)
-
-    ll ans = 0;
-    auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
-        ans += d*C[v];
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, d+1, v);
-        }
-    };
-    dfs(dfs, cog);
+    ans *= 2;
     Out(ans);
-
 
 }
 

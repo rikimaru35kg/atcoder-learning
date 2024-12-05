@@ -217,84 +217,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Diameter {
-    int n, a, b; bool done=false;
-    long long d;
-    using PRII = pair<int,int>;
-    using PRLI = pair<long long,int>;
-    vector<vector<PRLI>> from;
-    Diameter(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c=1) {
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-    PRLI dfs(int v, long long d=0, int p=-1) {
-        PRLI ret(d, v);
-        for(auto [nv,c]: from[v]) if(nv!=p) {
-            chmax(ret, dfs(nv, d+c, v));
-        }
-        return ret;
-    }
-    PRII get_end_points() {
-        if(done) return {a,b};
-        done = true;
-        a = dfs(0).second;
-        auto [dtmp, btmp] = dfs(a);
-        b = btmp, d = dtmp;
-        return {a,b};
-    }
-    int get_diameter() {
-        get_end_points();
-        return d;
-    }
-    // dist is input, but return value practically
-    void caldist(int sv, vector<long long> &dist) {
-        auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
-            dist[v] = d;
-            for(auto [nv,c]: from[v]) if(nv!=p) {
-                f(f, nv, d+c, v);
-            }
-        };
-        dfs(dfs, sv);
-    }
-};
-
 void solve() {
-    LONG(N);
-    Diameter diam(2*N);
-    rep(i, N-1) {
-        LONGM(a,b); LONG(c);
-        diam.add_edge(a,b,c);
-    }
-    VL(D, N);
-    rep(i, N) {
-        diam.add_edge(i,i+N,D[i]);
-        diam.add_edge(i+N,i,D[i]);
-    }
-    auto [a,b] = diam.get_end_points();
-    ll d = diam.get_diameter();
-    de3(a,b,d)
+    LONG(N, X, K);
+    auto calc=[&](ll v, ll k) -> ll {
+        ll l = v, r = v;
+        rep(i, k) {
+            l = 2*l, r = 2*r + 1;
+            if(l>N) return 0;
+        }
+        chmin(r, N);
+        return r-l+1;
+    };
+    ll ans = 0;
+    ans += calc(X, K);
 
-    vl dista(2*N), distb(2*N);
-    diam.caldist(a, dista);
-    diam.caldist(b, distb);
-
-    rep(i, N) {
-        ll ans = 0;
-        if(a!=i+N) chmax(ans, dista[i]);
-        if(b!=i+N) chmax(ans, distb[i]);
-        Out(ans);
+    while(X>1 && K>=2) {
+        ll y = X^1;
+        ans += calc(y, K-2);
+        X /= 2;
+        K--;
     }
-
+    if(X>1 && K>0) ++ans;
+    Out(ans);
 
 
 }
 
-
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
+
 }
 
 // ### test.cpp ###
