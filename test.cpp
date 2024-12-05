@@ -217,38 +217,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 void solve() {
-    LONG(N, X, K);
-    auto calc=[&](ll v, ll k) -> ll {
-        ll l = v, r = v;
-        rep(i, k) {
-            l = 2*l, r = 2*r + 1;
-            if(l>N) return 0;
-        }
-        chmin(r, N);
-        return r-l+1;
-    };
-    ll ans = 0;
-    ans += calc(X, K);
-
-    while(X>1 && K>=2) {
-        ll y = X^1;
-        ans += calc(y, K-2);
-        X /= 2;
-        K--;
+    LONG(N, M);
+    VL(D, N);
+    ll tot = accumulate(all(D), 0LL);
+    if(tot!=2*N-2) Pm1
+    dsu uf(N);
+    rep(i, M) {
+        LONGM(a,b);
+        if(uf.same(a,b)) Pm1
+        uf.merge(a,b);
+        D[a]--, D[b]--;
     }
-    if(X>1 && K>0) ++ans;
-    Out(ans);
+    rep(i, N) if(D[i]<0) Pm1
 
+    vvl vs(N);
+    rep(i, N) {
+        ll l = uf.leader(i);
+        rep(j, D[i]) vs[l].push_back(i);
+    }
+
+    ll cnt = 0;
+    rep(i, N) if(uf.leader(i)==i) ++cnt;
+    ll tot2 = accumulate(all(D), 0LL);
+    de2(cnt,tot2)
+    if(tot2!=2*cnt-2) Pm1
+
+    set<Pr> st;
+    rep(i, N) if(uf.leader(i)==i) {
+        if(SIZE(vs[i])==0) Pm1
+        // de(i)de(vs[i])
+        st.emplace(SIZE(vs[i]), i);
+    }
+    // de(st)
+
+    vp ans;
+    while(SIZE(st)>=2) {
+        auto it1 = st.begin(), it2 = prev(st.end());
+        auto [sz1, i1] = *it1;
+        auto [sz2, i2] = *it2;
+        st.erase(it1), st.erase(it2);
+        ll v1 = pop(vs[i1]);
+        ll v2 = pop(vs[i2]);
+        ans.emplace_back(v1+1, v2+1);
+        st.emplace(SIZE(vs[i2]), i2);
+    }
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
-
+    solve();
 }
 
 // ### test.cpp ###

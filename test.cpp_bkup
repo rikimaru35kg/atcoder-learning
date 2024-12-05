@@ -217,36 +217,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, D);
-    mint ans = 0;
-
-    vm two(N+1, 1);
-    rep(i, N) two[i+1] = two[i] * 2;
-    rep(lft, D+1) {
-        ll rgt = D-lft;
-        ll height = max(lft, rgt);
-        if(height>=N) continue;
-        mint cntl = two[max(lft-1,0LL)];
-        mint cntr = two[max(rgt-1,0LL)];
-        mint now = cntl * cntr * (two[N-height]-1);
-        ans += now;
+    LONG(N); VL(A, N);
+    vl d(N, 1);
+    pq que;
+    auto p2=[&](ll x){return x*x;};
+    auto push=[&](ll i) {
+        ll dif = (p2(d[i]+1) - p2(d[i])) * A[i];
+        que.emplace(dif, i);
+    };
+    rep(i, N) push(i);
+    rep(_, N-2) {
+        auto [dif, i] = que.top(); que.pop();
+        d[i]++;
+        push(i);
     }
-    ans *= 2;
+    ll ans = 0;
+    rep(i, N) ans += p2(d[i]) * A[i];
     Out(ans);
 
 }
