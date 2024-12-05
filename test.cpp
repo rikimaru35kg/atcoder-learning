@@ -217,53 +217,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Diameter {
+    int n, a, b, d; bool done=false;
+    vector<vector<int>> from;
+    Diameter(int n): n(n), from(n) {}
+    void add_edge(int a, int b) {
+        from[a].push_back(b); from[b].push_back(a);
+    }
+    pair<int,int> dfs(int v, int d=0, int p=-1) {
+        pair<int,int> ret(d, v);
+        for(auto nv: from[v]) if(nv!=p) {
+            chmax(ret, dfs(nv, d+1, v));
+        }
+        return ret;
+    }
+    pair<int,int> get_end_points() {
+        if(done) return {a,b};
+        done = true;
+        a = dfs(0).second;
+        auto [dtmp, btmp] = dfs(a);
+        b = btmp, d = dtmp;
+        return {a,b};
+    }
+    int get_diameter() {
+        get_end_points();
+        return d;
+    }
+};
+
 void solve() {
-    LONG(N, Q);
-    vl P(N, -1);
-    vl ccnt(N);
-    repk(i, 1, N) {
-        LONGM(p);
-        P[i] = p;
-        ccnt[p]++;
+    LONG(N);
+    vvl from(N);
+    Diameter diam(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        diam.add_edge(a,b);
     }
+    // ll d = diam.get_diameter();
+    auto [a,b] = diam.get_end_points();
 
+    auto caldist=[&](ll sv) -> vl {
+        vl dist(N);
+        auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
+            dist[v] = d;
+            for(auto nv: from[v]) if(nv!=p) {
+                f(f, nv, d+1, v);
+            }
+        };
+        dfs(dfs, sv);
+        return dist;
+    };
+    vl dista = caldist(a), distb = caldist(b);
+
+    LONG(Q);
+    vvp query(N);
     rep(i, Q) {
-        ll ans = 0;
-        LONG(M); VLM(V, M);
-        uset<ll> st;
-        rep(i, M) {
-            ans += ccnt[V[i]];
-            st.insert(V[i]);
-        }
-        ans += M;
-        rep(i, M) {
-            if(st.count(P[V[i]])) ans -= 2;
-        }
-        Out(ans);
-
+        LONG(u, k); --u;
+        query[u].emplace_back(k, i);
     }
-    // vl bcnt(N);
-    // rep(i, Q) {
-    //     ll ans = 0;
-    //     LONG(M);
-    //     uset<ll> st;
-    //     VLM(V, M);
-    //     rep(j, M) {
-    //         ll v = V[j];
-    //         st.insert(v);
-    //         if(v!=0) bcnt[P[v]]++;
-    //     }
-    //     rep(j, M) {
-    //         ll v = V[j];
-    //         if(v==0 || !st.count(P[v])) ++ans;
-    //         ans += ccnt[v] - bcnt[v];
-    //     }
-    //     rep(j, M) {
-    //         ll v = V[j];
-    //         if(v!=0) bcnt[P[v]]--;
-    //     }
-    //     Out(ans);
-    // }
+
+    vl ans(Q, -1);
+    deque<ll> route;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        route.push_front(v);
+        ll sz = route.size();
+        for(auto [k,qi]: query[v]) {
+            if(k>=sz) continue;
+            ans[qi] = route[k]+1;
+        }
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+        }
+        route.pop_front();
+    };
+    dfs(dfs, a);
+    dfs(dfs, b);
+    Out(ans);
+
 
 }
 
