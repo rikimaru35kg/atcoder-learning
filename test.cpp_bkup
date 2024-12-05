@@ -218,52 +218,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    vl P(N, -1);
-    vl ccnt(N);
-    repk(i, 1, N) {
-        LONGM(p);
-        P[i] = p;
-        ccnt[p]++;
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+    VL(C, N);
+    ll tot = accumulate(all(C), 0LL);
 
-    rep(i, Q) {
-        ll ans = 0;
-        LONG(M); VLM(V, M);
-        uset<ll> st;
-        rep(i, M) {
-            ans += ccnt[V[i]];
-            st.insert(V[i]);
+    ll cog = -1;
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = 0;
+        bool ok = true;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll w = f(f, nv, v);
+            if(2*w>tot) ok = false;
+            ret += w;
         }
-        ans += M;
-        rep(i, M) {
-            if(st.count(P[V[i]])) ans -= 2;
-        }
-        Out(ans);
+        ll pw = tot-(C[v]+ret);
+        if(2*pw>tot) ok = false;
+        if(ok) { cog = v; }
+        ret += C[v];
+        return ret;
+    };
+    dfs0(dfs0, 0);
+    de(cog)
 
-    }
-    // vl bcnt(N);
-    // rep(i, Q) {
-    //     ll ans = 0;
-    //     LONG(M);
-    //     uset<ll> st;
-    //     VLM(V, M);
-    //     rep(j, M) {
-    //         ll v = V[j];
-    //         st.insert(v);
-    //         if(v!=0) bcnt[P[v]]++;
-    //     }
-    //     rep(j, M) {
-    //         ll v = V[j];
-    //         if(v==0 || !st.count(P[v])) ++ans;
-    //         ans += ccnt[v] - bcnt[v];
-    //     }
-    //     rep(j, M) {
-    //         ll v = V[j];
-    //         if(v!=0) bcnt[P[v]]--;
-    //     }
-    //     Out(ans);
-    // }
+    ll ans = 0;
+    auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
+        ans += d*C[v];
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, d+1, v);
+        }
+    };
+    dfs(dfs, cog);
+    Out(ans);
+
 
 }
 

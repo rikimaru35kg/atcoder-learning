@@ -388,8 +388,8 @@
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - 基本 [E - Tree and Hamilton Path 2](https://atcoder.jp/contests/abc361/tasks/abc361_e)
-- !復習価値高 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
-- !復習価値高 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
+- !復習価値低 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
+- !復習価値低 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
 - !復習価値中 任意の頂点からのコストmax点（全方位でも解いてね） [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木

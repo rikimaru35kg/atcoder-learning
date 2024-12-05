@@ -218,20 +218,24 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 struct Diameter {
-    int n, a, b, d; bool done=false;
-    vector<vector<int>> from;
+    int n, a, b; bool done=false;
+    long long d;
+    using PRII = pair<int,int>;
+    using PRLI = pair<long long,int>;
+    vector<vector<PRLI>> from;
     Diameter(int n): n(n), from(n) {}
-    void add_edge(int a, int b) {
-        from[a].push_back(b); from[b].push_back(a);
+    void add_edge(int a, int b, long long c=1) {
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    pair<int,int> dfs(int v, int d=0, int p=-1) {
-        pair<int,int> ret(d, v);
-        for(auto nv: from[v]) if(nv!=p) {
-            chmax(ret, dfs(nv, d+1, v));
+    PRLI dfs(int v, long long d=0, int p=-1) {
+        PRLI ret(d, v);
+        for(auto [nv,c]: from[v]) if(nv!=p) {
+            chmax(ret, dfs(nv, d+c, v));
         }
         return ret;
     }
-    pair<int,int> get_end_points() {
+    PRII get_end_points() {
         if(done) return {a,b};
         done = true;
         a = dfs(0).second;
@@ -243,61 +247,49 @@ struct Diameter {
         get_end_points();
         return d;
     }
+    // dist is input, but return value practically
+    void caldist(int sv, vector<long long> &dist) {
+        auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
+            dist[v] = d;
+            for(auto [nv,c]: from[v]) if(nv!=p) {
+                f(f, nv, d+c, v);
+            }
+        };
+        dfs(dfs, sv);
+    }
 };
 
 void solve() {
     LONG(N);
-    vvl from(N);
-    Diameter diam(N);
+    Diameter diam(2*N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-        diam.add_edge(a,b);
+        LONGM(a,b); LONG(c);
+        diam.add_edge(a,b,c);
     }
-    // ll d = diam.get_diameter();
+    VL(D, N);
+    rep(i, N) {
+        diam.add_edge(i,i+N,D[i]);
+        diam.add_edge(i+N,i,D[i]);
+    }
     auto [a,b] = diam.get_end_points();
+    ll d = diam.get_diameter();
+    de3(a,b,d)
 
-    auto caldist=[&](ll sv) -> vl {
-        vl dist(N);
-        auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
-            dist[v] = d;
-            for(auto nv: from[v]) if(nv!=p) {
-                f(f, nv, d+1, v);
-            }
-        };
-        dfs(dfs, sv);
-        return dist;
-    };
-    vl dista = caldist(a), distb = caldist(b);
+    vl dista(2*N), distb(2*N);
+    diam.caldist(a, dista);
+    diam.caldist(b, distb);
 
-    LONG(Q);
-    vvp query(N);
-    rep(i, Q) {
-        LONG(u, k); --u;
-        query[u].emplace_back(k, i);
+    rep(i, N) {
+        ll ans = 0;
+        if(a!=i+N) chmax(ans, dista[i]);
+        if(b!=i+N) chmax(ans, distb[i]);
+        Out(ans);
     }
 
-    vl ans(Q, -1);
-    deque<ll> route;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        route.push_front(v);
-        ll sz = route.size();
-        for(auto [k,qi]: query[v]) {
-            if(k>=sz) continue;
-            ans[qi] = route[k]+1;
-        }
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-        }
-        route.pop_front();
-    };
-    dfs(dfs, a);
-    dfs(dfs, b);
-    Out(ans);
 
 
 }
+
 
 int main () {
     // ios::sync_with_stdio(false);
