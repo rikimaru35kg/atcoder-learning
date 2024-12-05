@@ -217,55 +217,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 #include <atcoder/dsu>
 using namespace atcoder;
 
 void solve() {
-    LONG(N, M);
-    VL(D, N);
-    ll tot = accumulate(all(D), 0LL);
-    if(tot!=2*N-2) Pm1
-    dsu uf(N);
+    LONG(N, M, K);
+    vector<dsu> ufs(K, dsu(N));
+    vt4 line;
     rep(i, M) {
-        LONGM(a,b);
-        if(uf.same(a,b)) Pm1
-        uf.merge(a,b);
-        D[a]--, D[b]--;
+        LONGM(a,b); LONG(c);
+        line.emplace_back(c,a,b,i);
     }
-    rep(i, N) if(D[i]<0) Pm1
+    sort(allr(line));
 
-    vvl vs(N);
-    rep(i, N) {
-        ll l = uf.leader(i);
-        rep(j, D[i]) vs[l].push_back(i);
+    vl ans(M);
+    for(auto [c,a,b,mi]: line) {
+        auto f=[&](ll i) -> bool {
+            if(!ufs[i].same(a,b)) return true;
+            return false;
+        };
+        ll ki = binary_search(K, -1, f);
+        if(ki==K) continue;
+        ans[mi] = ki+1;
+        ufs[ki].merge(a,b);
     }
+    for(auto x: ans) Out(x);
 
-    ll cnt = 0;
-    rep(i, N) if(uf.leader(i)==i) ++cnt;
-    ll tot2 = accumulate(all(D), 0LL);
-    de2(cnt,tot2)
-    if(tot2!=2*cnt-2) Pm1
-
-    set<Pr> st;
-    rep(i, N) if(uf.leader(i)==i) {
-        if(SIZE(vs[i])==0) Pm1
-        // de(i)de(vs[i])
-        st.emplace(SIZE(vs[i]), i);
-    }
-    // de(st)
-
-    vp ans;
-    while(SIZE(st)>=2) {
-        auto it1 = st.begin(), it2 = prev(st.end());
-        auto [sz1, i1] = *it1;
-        auto [sz2, i2] = *it2;
-        st.erase(it1), st.erase(it2);
-        ll v1 = pop(vs[i1]);
-        ll v2 = pop(vs[i2]);
-        ans.emplace_back(v1+1, v2+1);
-        st.emplace(SIZE(vs[i2]), i2);
-    }
-    Out(ans);
 
 }
 

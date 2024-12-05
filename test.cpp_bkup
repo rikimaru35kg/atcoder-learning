@@ -218,22 +218,26 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(A, N);
-    vl d(N, 1);
-    pq que;
-    auto p2=[&](ll x){return x*x;};
-    auto push=[&](ll i) {
-        ll dif = (p2(d[i]+1) - p2(d[i])) * A[i];
-        que.emplace(dif, i);
-    };
-    rep(i, N) push(i);
-    rep(_, N-2) {
-        auto [dif, i] = que.top(); que.pop();
-        d[i]++;
-        push(i);
+    LONG(N, Q);
+    vt3 edge;
+    rep(i, Q) {
+        LONGM(l,r); LONG(c);
+        edge.emplace_back(c,l,r);
     }
+    sort(all(edge));
+    set<ll> st;
+    rep(i, N-1) st.insert(i);
+
     ll ans = 0;
-    rep(i, N) ans += p2(d[i]) * A[i];
+    for(auto [c,l,r]: edge) {
+        ans += c;
+        auto it = st.lower_bound(l);
+        while(it!=st.end() && *it<r) {
+            st.erase(it++);
+            ans += c;
+        }
+    }
+    if(st.size()) Pm1
     Out(ans);
 
 }
