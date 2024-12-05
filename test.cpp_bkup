@@ -217,48 +217,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    ll d, n;
-    D(ll d=INF, ll n=0): d(d),n(n) {}
-    void update(const D &o) {
-        if(d<o.d) return;
-        if(d==o.d) { n += o.n; return; }
-        d = o.d, n = o.n;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    D operator+(ll c) {
-        return D(d+c, n);
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
     }
 };
 
-using vD = vector<D>;
-using vvD = vector<vD>;
-
 void solve() {
-    LONG(N, M);
-    vvt3 from(N);
-    rep(i, M) {
-        LONGM(a,b); LONG(c,lim);
-        from[a].emplace_back(b,c,lim);
-        from[b].emplace_back(a,c,lim);
+    LONG(N, K);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
 
-    vvD dp(1<<N, vD(N));
-    dp[0][0] = D(0,1);
-    rep(s, 1<<N) {
-        rep(v, N) {
-            auto [d,n] = dp[s][v];
-            if(d==INF) continue;
-            for(auto [nv,c,lim]: from[v]) {
-                if(s>>nv&1) continue;
-                if(d+c>lim) continue;
-                ll ns = s|1<<nv;
-                dp[ns][nv].update(dp[s][v]+c);
-            }
+    Combination comb(1e5, M107);
+
+    mint ans = K;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ll sz = from[v].size();
+        if(p==-1) ans *= comb.nPr(K-1,sz);
+        else ans *= comb.nPr(K-2, sz-1);
+        de2(v, ans.val())
+
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
         }
-    }
-    auto [d,n] = dp[(1<<N)-1][0];
-    if(d==INF) Outend("IMPOSSIBLE");
-    printf("%lld %lld\n", d, n);
+    };
+    dfs(dfs, 0);
+    Out(ans);
 
 }
 

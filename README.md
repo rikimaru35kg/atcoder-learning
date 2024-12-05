@@ -374,9 +374,9 @@
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
 - 距離が2以下の場合〇〇系の問題は、ある頂点を中心に考えると親と子しかいない。子に対する処理（数え上げなど）をする事で解ける問題あり
 ### 例題
-- !復習価値中 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
-- !復習価値中 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
-- !要復習 部分木フリップ [C - Lights Out on Tree](https://atcoder.jp/contests/arc148/tasks/arc148_c)
+- !復習価値低 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
+- !復習価値低 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
+- !復習価値中 部分木フリップ [C - Lights Out on Tree](https://atcoder.jp/contests/arc148/tasks/arc148_c)
 
 ## 木の直径、重心
 - xの最遠点yの最遠点zとすると、yとzの距離が直径となる

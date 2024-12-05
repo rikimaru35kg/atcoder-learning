@@ -218,36 +218,52 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W, K);
-    LONGM(si, sj, gi, gj);
-    VS(C, H);
-    vvvl dist(H, vvl(W, vl(4, INF)));
-    priority_queue<t4,vt4,greater<t4>> que;
-    auto push=[&](ll i, ll j, ll k, ll d) {
-        ll &pd = dist[i][j][k];
-        if(pd<=d) return;
-        pd = d;
-        que.emplace(d,i,j,k);
-    };
-    rep(k, 4) push(si,sj,k,0);
-    while(que.size()) {
-        auto [d,i,j,k] = que.top(); que.pop();
-        if(dist[i][j][k]!=d) continue;
-        if(i==2&&j==0) {
-            cout<<"";
-        }
-        rep(z, 4) push(i,j,z,Divceil(d,K)*K);
-        auto [di,dj] = dij[k];
-        ll ni = i + di, nj = j + dj;
-        if(!isin(ni,nj,H,W)) continue;
-        if(C[ni][nj]=='@') continue;
-        push(ni,nj,k,d+1);
+    LONG(N, Q);
+    vl P(N, -1);
+    vl ccnt(N);
+    repk(i, 1, N) {
+        LONGM(p);
+        P[i] = p;
+        ccnt[p]++;
     }
-    ll ans = INF;
-    rep(k, 4) chmin(ans, dist[gi][gj][k]);
-    if(ans==INF) Pm1
-    ans = Divceil(ans, K);
-    Out(ans);
+
+    rep(i, Q) {
+        ll ans = 0;
+        LONG(M); VLM(V, M);
+        uset<ll> st;
+        rep(i, M) {
+            ans += ccnt[V[i]];
+            st.insert(V[i]);
+        }
+        ans += M;
+        rep(i, M) {
+            if(st.count(P[V[i]])) ans -= 2;
+        }
+        Out(ans);
+
+    }
+    // vl bcnt(N);
+    // rep(i, Q) {
+    //     ll ans = 0;
+    //     LONG(M);
+    //     uset<ll> st;
+    //     VLM(V, M);
+    //     rep(j, M) {
+    //         ll v = V[j];
+    //         st.insert(v);
+    //         if(v!=0) bcnt[P[v]]++;
+    //     }
+    //     rep(j, M) {
+    //         ll v = V[j];
+    //         if(v==0 || !st.count(P[v])) ++ans;
+    //         ans += ccnt[v] - bcnt[v];
+    //     }
+    //     rep(j, M) {
+    //         ll v = V[j];
+    //         if(v!=0) bcnt[P[v]]--;
+    //     }
+    //     Out(ans);
+    // }
 
 }
 
