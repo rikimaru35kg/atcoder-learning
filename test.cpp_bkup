@@ -217,52 +217,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 #include <atcoder/dsu>
 using namespace atcoder;
 
 void solve() {
-    LONG(N, M, K);
-    vector<dsu> ufs(K, dsu(N));
-    vt4 line;
+    LONG(N, M);
+    vp edge;
+    dsu uf(N);
     rep(i, M) {
-        LONGM(a,b); LONG(c);
-        line.emplace_back(c,a,b,i);
+        LONGM(a, b);
+        edge.emplace_back(a,b);
+        uf.merge(a,b);
     }
-    sort(allr(line));
 
-    vl ans(M);
-    for(auto [c,a,b,mi]: line) {
-        auto f=[&](ll i) -> bool {
-            if(!ufs[i].same(a,b)) return true;
-            return false;
-        };
-        ll ki = binary_search(K, -1, f);
-        if(ki==K) continue;
-        ans[mi] = ki+1;
-        ufs[ki].merge(a,b);
+    vl vcnt(N), ecnt(N);
+    rep(i, N) {
+        ll l = uf.leader(i);
+        vcnt[l]++;
     }
-    for(auto x: ans) Out(x);
+    for(auto [a,b]: edge) {
+        ll l = uf.leader(a);
+        ecnt[l]++;
+    }
+
+    mint ans = 1;
+    rep(i, N) if(uf.leader(i)==i) {
+        if(vcnt[i]!=ecnt[i]) Pm0
+        ans *= 2;
+    }
+    Out(ans);
+
+
 
 
 }

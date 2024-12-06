@@ -217,35 +217,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 void solve() {
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+    LONG(N);
+    VL(T, N);
+    VVL(cost, N, N);
+    ll mn = *min_element(all(T));
+    de(T)
+    de(cost)
+    if(mn==1) {
+        ll num = 0, sum = 0;
+        rep(i, N) rep(j, i) {
+            if(T[i]==1 || T[j]==1) {
+                ++num;
+                sum += cost[i][j];
+            }
+        }
+        printf("%lld %lld\n", num, sum);
+        return;
     }
+    if(mn==3) {
+        vt3 edge;
+        rep(i, N) rep(j, i) {
+            edge.emplace_back(cost[i][j], j, i);
+        }
+        dsu uf(N);
+        sort(all(edge));
+        ll num = 0, sum = 0;
+        for(auto [c,a,b]: edge) {
+            if(uf.same(a,b)) continue;
+            uf.merge(a,b);
+            sum += c;
+            ++num;
+        }
+        printf("%lld %lld\n", num, sum);
+        return;
+    }
+    ll cnt2=0;
+    rep(i, N) if(T[i]==2) ++cnt2;
 
-    auto getc=[&](ll c) -> ll {
-        if(c!=1) return 1;
-        else return 2;
+    auto star=[&](ll v) -> ll {
+        ll ret = 0;
+        rep(i, N) { ret += cost[v][i]; }
+        return ret;
     };
 
-    vl color(N, -1);
-    auto dfs=[&](auto f, ll v, ll ec=-1, ll p=-1) -> void {
-        if(color[v]!=-1) return;
-        if(p==-1) color[v] = 1;
-        else {
-            if(color[p]==ec) color[v] = getc(ec);
-            else color[v] = ec;
-        }
-        // de4(v,color[v],ec,p)
-        for(auto [nv,c]: from[v]) {
-            f(f, nv, c, v);
-        }
-    };
-    dfs(dfs, 0);
-    for(auto x: color) Out(x);
+    ll sum = INF;
+    rep(i, N) chmin(sum, star(i));
+    if(cnt2>=3) {
+        printf("%lld %lld\n", N-1, sum);
+        return;
+    }
+    ll a=-1,b=-1;
+    rep(i, N) if(T[i]==2) {
+        a = i;
+        swap(a,b);
+    }
+    ll now = cost[a][b];
+    rep(i, N) {
+        if(i==a || i==b) continue;
+        now += min(cost[i][a], cost[i][b]);
+    }
+    chmin(sum, now);
+    printf("%lld %lld\n", N-1, sum);
 
 }
 

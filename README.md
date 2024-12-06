@@ -448,7 +448,7 @@
 - 基本 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
 - 基本 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
 - !要復習 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
-- !復習価値中 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
+- !復習価値低 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
@@ -458,7 +458,7 @@
 - functional graphは必ずなもりグラフの形となる（というよりどこから辿ってもサイクルに流入するグラフ）
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
-- 復習価値中 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
+- 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
