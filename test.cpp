@@ -217,62 +217,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/scc>
-using namespace atcoder;
-
 void solve() {
-    LONG(N);
-    vl A(N),B(N),C(N),D(N);
-    rep(i, N) cin>>A[i]>>B[i]>>C[i]>>D[i];
-    rep(i, N) A[i]--;
+    LONG(N, M);
+    vl edge(N);
+    rep(i, M) {
+        LONGM(a,b);
+        edge[a] |= 1<<b;
+        edge[b] |= 1<<a;
+    }
 
-    scc_graph scc(N);
-    rep(i, N) {
-        scc.add_edge(i, A[i]);
+    vl dp(1<<N, INF);
+    dp[0] = 0;
+    rep(i, N) dp[1<<i] = 1;
+    rep(s, 1<<N) {
+        if(pcnt(s)<=1) continue;
+        ll sv=-1;
+        rep(i, N) {
+            if(s>>i&1) { sv = i; break; }
+        }
+        ll rs = s^(1<<sv);
+        if(dp[rs]!=1) continue;
+        if((edge[sv]&rs)==rs) dp[s] = 1;
     }
-    auto grs = scc.scc();
-    ll ans = 0;
-    for(auto gr: grs) {
-        ll n = SIZE(gr);
-        if(n==1) {
-            ll v = gr[0];
-            ll nv = A[v];
-            ll mx = max(C[nv],D[nv]);
-            ans += B[v] * mx;
-            continue;
+    rep(s, 1<<N) {
+        for(ll t=s; t>=0; t=(t-1)&s) {
+            ll u = s^t;
+            chmin(dp[s], dp[t]+dp[u]);
+            if(t==0) break;
         }
-        ll x = gr[0];
-        vl vs;
-        rep(i, n) {
-            vs.push_back(x);
-            x = A[x];
-        }
-        vl num(n);
-        rep(i, n) {
-            ll v = vs[i];
-            num[(i+1)%n] += B[v];
-        }
-        vl gains;
-        ll base = 0;
-        rep(i, n) {
-            ll v = vs[i];
-            ll gain = (D[v]-C[v]) * num[i];
-            base += C[v] * num[i];
-            gains.push_back(gain);
-        }
-        sort(allr(gains));
-        ll mx = 0, sum = 0;
-        rep(k, n/2+1) {
-            chmax(mx, sum);
-            if(2*k+1>=n) break;
-            sum += gains[2*k];
-            sum += gains[2*k+1];
-        }
-        de(vs)
-        de2(base,mx)
-        ans += base + mx;
     }
-    Out(ans);
+    Out(dp.back());
+
 
 }
 

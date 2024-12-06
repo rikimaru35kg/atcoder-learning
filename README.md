@@ -551,7 +551,7 @@
 - 実装方法としては、部分集合tの全列挙は1引いてsとのandを取るを繰り返せば良い
 - 計算量はO(N 2^N + 3^N) 3^18≒4e8（N=18）が限界
 ### 例題
-- !復習価値低 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
+- 基本 [F - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 
 ## 2部グラフ（二部グラフ）
 - 頂点を2色に塗るとき、同じ色が隣り合わないように塗れるグラフ

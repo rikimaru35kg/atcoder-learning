@@ -217,92 +217,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
-struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
-    }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
-        }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
-    }
-private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
-    }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
-    }
-};
+#include <atcoder/scc>
+using namespace atcoder;
 
 void solve() {
-    LONG(N, M);
-    vvl from(N), ifrom(N);
-    SCC scc(N);
-    rep(i, M) {
-        LONG(a, b);
-        from[a].emplace_back(b);
-        ifrom[b].emplace_back(a);
-        scc.add_edge(a,b);
+    LONG(N);
+    vl A(N),B(N),C(N),D(N);
+    rep(i, N) cin>>A[i]>>B[i]>>C[i]>>D[i];
+    rep(i, N) A[i]--;
+
+    scc_graph scc(N);
+    rep(i, N) {
+        scc.add_edge(i, A[i]);
     }
-
     auto grs = scc.scc();
-    if(SIZE(grs)==1) Pm0
-
-    ll ind=0, outd=0;
+    ll ans = 0;
     for(auto gr: grs) {
-        if(SIZE(gr)==1) {
-            if(SIZE(from[gr[0]])==0) ++outd;
-            if(SIZE(ifrom[gr[0]])==0) ++ind;
+        ll n = SIZE(gr);
+        if(n==1) {
+            ll v = gr[0];
+            ll nv = A[v];
+            ll mx = max(C[nv],D[nv]);
+            ans += B[v] * mx;
             continue;
         }
-        uset<ll> st;
-        for(auto v: gr) st.insert(v);
-        bool inward=false, outward=false;
-        for(auto v: gr) {
-            for(auto nv: from[v]) {
-                if(st.count(nv)) continue;
-                outward = true;
-            }
-            for(auto nv: ifrom[v]) {
-                if(st.count(nv)) continue;
-                inward = true;
-            }
+        ll x = gr[0];
+        vl vs;
+        rep(i, n) {
+            vs.push_back(x);
+            x = A[x];
         }
-        if(!inward) ++ind;
-        if(!outward) ++outd;
+        vl num(n);
+        rep(i, n) {
+            ll v = vs[i];
+            num[(i+1)%n] += B[v];
+        }
+        vl gains;
+        ll base = 0;
+        rep(i, n) {
+            ll v = vs[i];
+            ll gain = (D[v]-C[v]) * num[i];
+            base += C[v] * num[i];
+            gains.push_back(gain);
+        }
+        sort(allr(gains));
+        ll mx = 0, sum = 0;
+        rep(k, n/2+1) {
+            chmax(mx, sum);
+            if(2*k+1>=n) break;
+            sum += gains[2*k];
+            sum += gains[2*k+1];
+        }
+        de(vs)
+        de2(base,mx)
+        ans += base + mx;
     }
-    Out(max(ind,outd));
-
+    Out(ans);
 
 }
 
