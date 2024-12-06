@@ -217,38 +217,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/scc>
+using namespace atcoder;
+
 void solve() {
-    LONG(H, W);
-    VVLM(A, H, W);
-    vp idx(H*W);
-    rep(i, H) rep(j, W) {
-        idx[A[i][j]] = {i,j};
-    }
+    LONG(N);
+    vl A(N),B(N),C(N),D(N);
+    rep(i, N) cin>>A[i]>>B[i]>>C[i]>>D[i];
+    rep(i, N) A[i]--;
 
-    vvb one(H, vb(W));
-    using vS = vector<set<Pr>>;
-    using vvS = vector<vS>;
-    vvS ends(H, vS(W));
-
-    rep(h, H*W) {
-        auto [i,j] = idx[h];
-        bool move = false;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            if(A[ni][nj]<A[i][j]) {
-                move = true;
-                if(one[ni][nj]) { one[i][j] = true; break; }
-                for(auto [a,b]: ends[ni][nj]) {
-                    ends[i][j].emplace(a,b);
-                }
-            }
-        }
-        if(!move) ends[i][j].emplace(i,j);
-        if(SIZE(ends[i][j])>=2) one[i][j] = true;
+    scc_graph scc(N);
+    rep(i, N) {
+        scc.add_edge(i, A[i]);
     }
+    auto grs = scc.scc();
     ll ans = 0;
-    rep(i, H) rep(j, W) if(one[i][j]) ++ans;
+    for(auto gr: grs) {
+        ll n = SIZE(gr);
+        if(n==1) {
+            ll v = gr[0];
+            ll nv = A[v];
+            ll mx = max(C[nv],D[nv]);
+            ans += B[v] * mx;
+            continue;
+        }
+        ll x = gr[0];
+        vl vs;
+        rep(i, n) {
+            vs.push_back(x);
+            x = A[x];
+        }
+        vl num(n);
+        rep(i, n) {
+            ll v = vs[i];
+            num[(i+1)%n] += B[v];
+        }
+        vl gains;
+        ll base = 0;
+        rep(i, n) {
+            ll v = vs[i];
+            ll gain = (D[v]-C[v]) * num[i];
+            base += C[v] * num[i];
+            gains.push_back(gain);
+        }
+        sort(allr(gains));
+        ll mx = 0, sum = 0;
+        rep(k, n/2+1) {
+            chmax(mx, sum);
+            if(2*k+1>=n) break;
+            sum += gains[2*k];
+            sum += gains[2*k+1];
+        }
+        de(vs)
+        de2(base,mx)
+        ans += base + mx;
+    }
     Out(ans);
 
 }

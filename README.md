@@ -518,7 +518,7 @@
 - あとはnを2進数で表し、1となっている桁に対応する辺を使って進めばよい
 ### 例題
 - 基本 [D - Teleporter](https://atcoder.jp/contests/abc167/tasks/abc167_d)
-- !復習価値高 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
+- 基本 じゃがいも詰め [E - Packing Potatoes](https://atcoder.jp/contests/abc258/tasks/abc258_e)
 
 ## 強連結成分分解（SCC[Strongly Connected Components]分解）
 - 1度目のDFSで帰りがけ順を記録し、帰りがけ順の逆順に2度目のDFSを実施する
@@ -528,8 +528,8 @@
 - ただし**gr内はトポロジカル順になっていない**事に注意！
 ### 例題
 - 基本 互いに行き来できる頂点組の個数 [021 - Come Back in One Piece（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_u)
-- !復習価値中 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
-- !復習価値低 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)  
+- 基本 最小始点数 [advertisement - 宣伝 (Advertisement)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_advertisement)
+- 基本 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)  
   雑証明: SCCを縮約したあと、非連結なもの同士を先につないでいく。これで入次数と出次数を両方とも1ずつ減らせる。この操作でSCCが新たにできる事はない。次に、トポソして最後の頂点から最初の頂点に結ぶ。この操作でSCCが新たに発生しなければ次数が両方とも1減る。SCCが発生する場合、どちらかの次数が1つ減る。両方減らない場合、それはすなわち全体がSCCになったという事なので、操作終了。
 - 基本 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
 - !要復習 [2 - プレゼント (Presents)](https://atcoder.jp/contests/joisc2013-day4/tasks/joisc2013_presents)

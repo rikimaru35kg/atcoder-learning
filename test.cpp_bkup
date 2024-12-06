@@ -217,94 +217,92 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+
+struct SCC {
+    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
+    void add_edge (long long a, long long b) {
+        from[a].push_back(b);
+        ifrom[b].push_back(a);
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
+    vector<vector<long long>> scc () {
+        vector<vector<long long>> group;
+        back_num.clear();
+        selected.assign(n, false);
+        for (long long i=0; i < n; ++i) {
+            if (!selected[i]) dfs1(i);
+        }
+        selected.assign(n, false);
+        for (long long i=n-1; i >= 0; --i) {
+            long long x = back_num[i];
+            if (selected[x]) continue;
+            vector<long long> emp;
+            dfs2(x, emp);
+            group.push_back(emp);
+        }
+        return group;
     }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
+private:
+    long long n;
+    vector<vector<long long>> from, ifrom;
+    vector<long long> back_num;
+    vector<bool> selected;
+    void dfs1 (long long x) {
+        selected[x] = true;
+        for (auto y: from[x]) {
+            if (selected[y]) continue;
+            dfs1(y);
+        }
+        back_num.push_back(x);
     }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
+    void dfs2 (long long x, vector<long long> &vec) {
+        selected[x] = true;
+        vec.push_back(x);
+        for (auto y: ifrom[x]) {
+            if (selected[y]) continue;
+            dfs2(y, vec);
+        }
     }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
 };
 
 void solve() {
-    LONG(N);
-    VVLM(A, N, N-1);
-
-    auto mpr=[&](ll i, ll j) {
-        if(i>j) swap(i,j);
-        return Pr(i,j);
-    };
-
-    CoordinateCompression<Pr> cc;
-    rep(i, N) {
-        rep(j, N-2) {
-            auto p1 = mpr(i, A[i][j]);
-            auto p2 = mpr(i, A[i][j+1]);
-            cc.add(p1), cc.add(p2);
-        }
+    LONG(N, M);
+    vvl from(N), ifrom(N);
+    SCC scc(N);
+    rep(i, M) {
+        LONG(a, b);
+        from[a].emplace_back(b);
+        ifrom[b].emplace_back(a);
+        scc.add_edge(a,b);
     }
-    ll M = cc.size();
-    vvl from(M);
-    rep(i, N) {
-        rep(j, N-2) {
-            auto p1 = mpr(i, A[i][j]);
-            auto p2 = mpr(i, A[i][j+1]);
-            from[cc(p1)].push_back(cc(p2));
-        }
-    }
-    de(from)
 
-    vl dist(M, -1);
-    vb finished(M);
-    auto dfs=[&](auto f, ll v) -> ll {
-        ll &ret = dist[v];
-        ret = 1;
-        for(auto nv: from[v]) {
-            if(finished[nv]) {
-                chmax(ret, dist[nv]+1);
-                continue;
+    auto grs = scc.scc();
+    if(SIZE(grs)==1) Pm0
+
+    ll ind=0, outd=0;
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) {
+            if(SIZE(from[gr[0]])==0) ++outd;
+            if(SIZE(ifrom[gr[0]])==0) ++ind;
+            continue;
+        }
+        uset<ll> st;
+        for(auto v: gr) st.insert(v);
+        bool inward=false, outward=false;
+        for(auto v: gr) {
+            for(auto nv: from[v]) {
+                if(st.count(nv)) continue;
+                outward = true;
             }
-            if(dist[nv]!=-1) Pm1
-            chmax(ret, f(f, nv)+1);
+            for(auto nv: ifrom[v]) {
+                if(st.count(nv)) continue;
+                inward = true;
+            }
         }
-        finished[v] = true;
-        return ret;
-    };
-    ll ans = 0;
-    rep(i, M) chmax(ans, dfs(dfs, i));
-    Out(ans);
+        if(!inward) ++ind;
+        if(!outward) ++outd;
+    }
+    Out(max(ind,outd));
+
 
 }
 
