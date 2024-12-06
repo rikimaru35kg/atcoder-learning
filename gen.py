@@ -26,7 +26,7 @@ import random as rnd
 
 
 def gen_rnd(mn, mx):
-    return rnd.randint(mn, mx+1)
+    return rnd.randint(mn, mx)
 
 
 def N_An(N):
@@ -49,7 +49,7 @@ def N_An_Bn(N, vertical=False):
 
 
 def H_W_Matrix(H, W):
-    MIN = 1; MAX = 10
+    MIN = 1; MAX = 4 
     mat = [ [gen_rnd(MIN,MAX) for _ in range(W)]
             for _ in range(H) ]
     print(H, W)
@@ -130,16 +130,16 @@ def field(N):
 
 if __name__ == '__main__':
     # PLEASE SPECIFY MIN MAX VALUE IN EACH FUNCTION!!
-    print("---N An------------")
-    N_An(10)
-    print("---N An Bn---------")
-    N_An_Bn(5, vertical=False)
+    # print("---N An------------")
+    # N_An(10)
+    # print("---N An Bn---------")
+    # N_An_Bn(5, vertical=False)
     print("---H W A[i,j]------")
     H_W_Matrix(4, 3)
-    print("---N M graph-------")
-    N_M_graph(5, 7, directed=False, weighted=False)
-    print("---N tree graph----")
-    tree_graph(10)
-    print("---N*N field-------")
-    field(20)
+    # print("---N M graph-------")
+    # N_M_graph(5, 7, directed=False, weighted=False)
+    # print("---N tree graph----")
+    # tree_graph(10)
+    # print("---N*N field-------")
+    # field(20)
 

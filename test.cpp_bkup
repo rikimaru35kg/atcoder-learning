@@ -217,52 +217,94 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
 #ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
 #endif
-
-#include <atcoder/dsu>
-using namespace atcoder;
+};
 
 void solve() {
-    LONG(N, M);
-    vp edge;
-    dsu uf(N);
-    rep(i, M) {
-        LONGM(a, b);
-        edge.emplace_back(a,b);
-        uf.merge(a,b);
-    }
+    LONG(N);
+    VVLM(A, N, N-1);
 
-    vl vcnt(N), ecnt(N);
+    auto mpr=[&](ll i, ll j) {
+        if(i>j) swap(i,j);
+        return Pr(i,j);
+    };
+
+    CoordinateCompression<Pr> cc;
     rep(i, N) {
-        ll l = uf.leader(i);
-        vcnt[l]++;
+        rep(j, N-2) {
+            auto p1 = mpr(i, A[i][j]);
+            auto p2 = mpr(i, A[i][j+1]);
+            cc.add(p1), cc.add(p2);
+        }
     }
-    for(auto [a,b]: edge) {
-        ll l = uf.leader(a);
-        ecnt[l]++;
+    ll M = cc.size();
+    vvl from(M);
+    rep(i, N) {
+        rep(j, N-2) {
+            auto p1 = mpr(i, A[i][j]);
+            auto p2 = mpr(i, A[i][j+1]);
+            from[cc(p1)].push_back(cc(p2));
+        }
     }
+    de(from)
 
-    mint ans = 1;
-    rep(i, N) if(uf.leader(i)==i) {
-        if(vcnt[i]!=ecnt[i]) Pm0
-        ans *= 2;
-    }
+    vl dist(M, -1);
+    vb finished(M);
+    auto dfs=[&](auto f, ll v) -> ll {
+        ll &ret = dist[v];
+        ret = 1;
+        for(auto nv: from[v]) {
+            if(finished[nv]) {
+                chmax(ret, dist[nv]+1);
+                continue;
+            }
+            if(dist[nv]!=-1) Pm1
+            chmax(ret, f(f, nv)+1);
+        }
+        finished[v] = true;
+        return ret;
+    };
+    ll ans = 0;
+    rep(i, M) chmax(ans, dfs(dfs, i));
     Out(ans);
-
-
-
 
 }
 

@@ -217,71 +217,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 void solve() {
-    LONG(N);
-    VL(T, N);
-    VVL(cost, N, N);
-    ll mn = *min_element(all(T));
-    de(T)
-    de(cost)
-    if(mn==1) {
-        ll num = 0, sum = 0;
-        rep(i, N) rep(j, i) {
-            if(T[i]==1 || T[j]==1) {
-                ++num;
-                sum += cost[i][j];
+    LONG(H, W);
+    VVLM(A, H, W);
+    vp idx(H*W);
+    rep(i, H) rep(j, W) {
+        idx[A[i][j]] = {i,j};
+    }
+
+    vvb one(H, vb(W));
+    using vS = vector<set<Pr>>;
+    using vvS = vector<vS>;
+    vvS ends(H, vS(W));
+
+    rep(h, H*W) {
+        auto [i,j] = idx[h];
+        bool move = false;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(A[ni][nj]<A[i][j]) {
+                move = true;
+                if(one[ni][nj]) { one[i][j] = true; break; }
+                for(auto [a,b]: ends[ni][nj]) {
+                    ends[i][j].emplace(a,b);
+                }
             }
         }
-        printf("%lld %lld\n", num, sum);
-        return;
+        if(!move) ends[i][j].emplace(i,j);
+        if(SIZE(ends[i][j])>=2) one[i][j] = true;
     }
-    if(mn==3) {
-        vt3 edge;
-        rep(i, N) rep(j, i) {
-            edge.emplace_back(cost[i][j], j, i);
-        }
-        dsu uf(N);
-        sort(all(edge));
-        ll num = 0, sum = 0;
-        for(auto [c,a,b]: edge) {
-            if(uf.same(a,b)) continue;
-            uf.merge(a,b);
-            sum += c;
-            ++num;
-        }
-        printf("%lld %lld\n", num, sum);
-        return;
-    }
-    ll cnt2=0;
-    rep(i, N) if(T[i]==2) ++cnt2;
-
-    auto star=[&](ll v) -> ll {
-        ll ret = 0;
-        rep(i, N) { ret += cost[v][i]; }
-        return ret;
-    };
-
-    ll sum = INF;
-    rep(i, N) chmin(sum, star(i));
-    if(cnt2>=3) {
-        printf("%lld %lld\n", N-1, sum);
-        return;
-    }
-    ll a=-1,b=-1;
-    rep(i, N) if(T[i]==2) {
-        a = i;
-        swap(a,b);
-    }
-    ll now = cost[a][b];
-    rep(i, N) {
-        if(i==a || i==b) continue;
-        now += min(cost[i][a], cost[i][b]);
-    }
-    chmin(sum, now);
-    printf("%lld %lld\n", N-1, sum);
+    ll ans = 0;
+    rep(i, H) rep(j, W) if(one[i][j]) ++ans;
+    Out(ans);
 
 }
 
