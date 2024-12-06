@@ -2241,4 +2241,15 @@
       "};",
     ],
   },
+  "Snippet(frompsni)": {
+    "prefix": "frompsni",
+    "body": [
+      "vvp from(N);",
+      "rep(i, \\$1) {",
+      "    LONGM(a, b); LONG(c);",
+      "    from[a].emplace_back(b, c);",
+      "    from[b].emplace_back(a, c);",
+      "}",
+    ],
+  },
 }
