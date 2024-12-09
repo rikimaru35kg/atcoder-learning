@@ -437,6 +437,7 @@
 - 基本 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 - 基本 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
 - 基本 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
+- !復習価値中 [E - Sum of Max Matching](https://atcoder.jp/contests/abc383/tasks/abc383_e)
 - !要復習 [K - 遺産相続](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_k)
 
 ## 全域木の構成
@@ -974,6 +975,7 @@
 - 基本 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - !復習価値低 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
 - !復習価値中 [D - 水ようかん (Mizuyokan)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_d)
+- !復習価値中 [F - Diversity](https://atcoder.jp/contests/abc383/tasks/abc383_f)
 - !復習価値高 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - !要復習 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値高 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
