@@ -223,9 +223,13 @@ struct Bridge {
     vector<vector<PII>> from;
     vector<int> ord, low, bridge, artcl;
     Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
-    void add_edge(int a, int b) {
-        from[a].emplace_back(b, m); from[b].emplace_back(a, m);
-        ++m;
+    void add_edge(int a, int b, int ei=-1) {
+        if(ei==-1) {
+            from[a].emplace_back(b, m); from[b].emplace_back(a, m);
+            ++m;
+        } else {
+            from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
+        }
     }
     void start_calc() { rep(i, n) if(ord[i]==-1) dfs(i); }
     void dfs(int v, int p=-1) {
@@ -251,26 +255,56 @@ struct Bridge {
 
 void solve() {
     LONG(N, M);
+    Bridge bridge(N);
+    vt3 edge;
     vvp from(N);
-    Bridge graph(N);
-    vp edge;
     rep(i, M) {
-        LONG(a, b);
-        from[a].emplace_back(b, i);
-        from[b].emplace_back(a, i);
-        graph.add_edge(a,b);
-        if(a>b) swap(a,b);
-        edge.emplace_back(a,b);
+        LONGM(a,b); LONG(c);
+        edge.emplace_back(a,b,c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    graph.start_calc();
-    auto eis = graph.get_bridge();
-    vp ans;
-    for(auto ei: eis) ans.emplace_back(edge[ei]);
 
-    sort(all(ans));
-    for(auto x: ans) Out(x);
-    
+    auto dijk=[&](ll sv) -> vl {
+        vl dist(N, INF);
+        pq que;
+        auto push=[&](ll v, ll d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d,v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv,c]: from[v]) {
+                push(nv, d+c);
+            }
+        }
+        return dist;
+    };
+    vl dist1 = dijk(0), distN = dijk(N-1);
 
+    ll shrt = dist1[N-1];
+    rep(i, M) {
+        auto [a,b,c] = edge[i];
+        bool ok = false;
+        if(dist1[a]+distN[b]+c==shrt) ok = true;
+        if(dist1[b]+distN[a]+c==shrt) ok = true;
+        if(ok) {
+            de2(a,b)
+            bridge.add_edge(a,b,i);
+        }
+    }
+    bridge.start_calc();
+    auto bs = bridge.get_bridge();
+    de(bs)
+    uset<ll> bis;
+    for(auto bi: bs) bis.insert(bi);
+    rep(i, M) {
+        if(bis.count(i)) puts("Yes");
+        else puts("No");
+    }
 
 
 }

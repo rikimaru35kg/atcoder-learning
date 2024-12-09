@@ -217,96 +217,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+struct Bridge {
+    using PII = pair<int,int>;
+    int n, m, idx;
+    vector<vector<PII>> from;
+    vector<int> ord, low, bridge, artcl;
+    Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
+    void add_edge(int a, int b) {
+        from[a].emplace_back(b, m); from[b].emplace_back(a, m);
+        ++m;
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
+    void start_calc() { rep(i, n) if(ord[i]==-1) dfs(i); }
+    void dfs(int v, int p=-1) {
+        ord[v] = idx++; low[v] = ord[v];
+        int c = 0;
+        bool art = false;
+        for(auto [nv,ei]: from[v]) if(nv!=p) {
+            if(ord[nv]!=-1) {
+                low[v] = min(low[v], ord[nv]); continue;
+            }
+            ++c;
+            dfs(nv, v);
+            low[v] = min(low[v], low[nv]);
+            if(low[nv]>ord[v]) bridge.push_back(ei);
+            if(low[nv]>=ord[v]) art = true;
+        }
+        if(p!=-1 && art) artcl.push_back(v);
+        if(p==-1 && c>1) artcl.push_back(v);
     }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
+    vector<int> get_bridge() { return bridge;}
+    vector<int> get_articulation() { return artcl;}
 };
-
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
 
 void solve() {
     LONG(N, M);
-    CoordinateCompression<Pr> cc;
-    rep(i, N) cc.add(Pr(i, 0));
-    vt3 line;
+    vvp from(N);
+    Bridge graph(N);
+    vp edge;
     rep(i, M) {
-        LONGM(p,q); LONG(c);
-        line.emplace_back(p,q,c);
-        cc.add(Pr(p,c));
-        cc.add(Pr(q,c));
+        LONG(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
+        graph.add_edge(a,b);
+        if(a>b) swap(a,b);
+        edge.emplace_back(a,b);
     }
-    ll K = cc.size();
-    vvp from(K);
-    for(auto [p,q,c]: line) {
-        ll a = cc({p,c}), b = cc({q,c});
-        from[a].emplace_back(b, 0);
-        from[b].emplace_back(a, 0);
-        ll po = cc({p,0}), qo = cc({q,0});
-        from[a].emplace_back(po, 0);
-        from[po].emplace_back(a, 1);
-        from[b].emplace_back(qo, 0);
-        from[qo].emplace_back(b, 1);
-    }
-    rep(i, K) unique(from[i]);
-    vl dist(K, INF);
-    deque<ll> que;
-    auto push=[&](ll v, ll d, bool bc) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        if(!bc) que.push_front(v);
-        else que.push_back(v);
-    };
-    ll sv = cc({0,0});
-    push(sv, 0, false);
-    while(que.size()) {
-        auto v = que.front(); que.pop_front();
-        for(auto [nv,c]: from[v]) {
-            push(nv, dist[v]+c, c);
-        }
-    }
-    ll gv = cc({N-1,0});
-    ll ans = dist[gv];
-    ch1(ans);
-    Out(ans);
+    graph.start_calc();
+    auto eis = graph.get_bridge();
+    vp ans;
+    for(auto ei: eis) ans.emplace_back(edge[ei]);
+
+    sort(all(ans));
+    for(auto x: ans) Out(x);
+    
+
+
 
 }
 
