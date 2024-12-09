@@ -217,42 +217,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/dsu>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 void solve() {
-    LONG(N, M, K);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N);
+    vt3 points;
+    rep(i, N) {
+        LONG(x,y);
+        points.emplace_back(x,y,i);
     }
-
-    vm dp(N);
-    dp[0] = 1;
-    rep(i, K) {
-        mint sum = 0;
-        rep(j, N) sum += dp[j];
-        vm pdp(N); swap(pdp, dp);
-        rep(j, N) {
-            dp[j] = sum - pdp[j];
-            for(auto nv: from[j]) dp[j] -= pdp[nv];
+    sort(all(points));
+    dsu uf(N);
+    set<Pr> st;
+    for(auto [x,y,i]: points) {
+        ll mny = y;
+        auto judge=[&]() {
+            auto [cy,ci] = *st.begin();
+            return cy <= y;
+        };
+        while(st.size() && judge()) {
+            auto it = st.begin();
+            auto [cy,ci] = *it;
+            st.erase(it);
+            chmin(mny, cy);
+            uf.merge(i, ci);
         }
+        st.emplace(mny, i);
     }
-    mint ans = dp[0];
-    Out(ans);
+    rep(i, N) {
+        Out(uf.size(i));
+    }
 
 }
 

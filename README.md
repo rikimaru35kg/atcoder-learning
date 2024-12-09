@@ -617,13 +617,13 @@
 - Union Findは経路存在問題にも応用可能（始点と終点が繋がっていれば経路が存在する）
 - 発展的な重み付きUnion Findもある
 ### 例題
-- !復習価値中 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
+- 基本 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - 基本 [C - 塗りつぶし (Painting)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_c)
-- !要復習 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
-- !復習価値低 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
-- !復習価値低 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
+- !復習価値中 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
+- 基本 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
+- 基本 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
 - !要復習 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
-- !要復習 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
+- !復習価値中 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
