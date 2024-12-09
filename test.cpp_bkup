@@ -217,46 +217,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
 void solve() {
     LONG(N, M);
-    vvl X(3, vl(3, INF));
-    VL(Z, 3);
-    X[0][1] = X[1][0] = Z[0];
-    X[0][2] = X[2][0] = Z[1];
-    X[1][2] = X[2][1] = Z[2];
-    STRING(S);
-    vvp from(N+6);
+    CoordinateCompression<Pr> cc;
+    rep(i, N) cc.add(Pr(i, 0));
+    vt3 line;
     rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONGM(p,q); LONG(c);
+        line.emplace_back(p,q,c);
+        cc.add(Pr(p,c));
+        cc.add(Pr(q,c));
     }
-    rep(i, N) {
-        ll x = S[i]-'A';
-        from[i].emplace_back(N+x, 0);
-        from[N+x+3].emplace_back(i, 0);
+    ll K = cc.size();
+    vvp from(K);
+    for(auto [p,q,c]: line) {
+        ll a = cc({p,c}), b = cc({q,c});
+        from[a].emplace_back(b, 0);
+        from[b].emplace_back(a, 0);
+        ll po = cc({p,0}), qo = cc({q,0});
+        from[a].emplace_back(po, 0);
+        from[po].emplace_back(a, 1);
+        from[b].emplace_back(qo, 0);
+        from[qo].emplace_back(b, 1);
     }
-    rep(i, 3) rep(j, 3) {
-        if(i==j) continue;
-        from[N+i].emplace_back(N+j+3, X[i][j]);
-    }
-
-    pq que;
-    vl dist(N+6, INF);
-    auto push=[&](ll v, ll d) {
+    rep(i, K) unique(from[i]);
+    vl dist(K, INF);
+    deque<ll> que;
+    auto push=[&](ll v, ll d, bool bc) {
         if(dist[v]<=d) return;
         dist[v] = d;
-        que.emplace(d, v);
+        if(!bc) que.push_front(v);
+        else que.push_back(v);
     };
-    push(0, 0);
+    ll sv = cc({0,0});
+    push(sv, 0, false);
     while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
+        auto v = que.front(); que.pop_front();
         for(auto [nv,c]: from[v]) {
-            push(nv, d+c);
+            push(nv, dist[v]+c, c);
         }
     }
-    ll ans = dist[N-1];
+    ll gv = cc({N-1,0});
+    ll ans = dist[gv];
+    ch1(ans);
     Out(ans);
 
 }

@@ -583,12 +583,13 @@
 ## 橋・関節点
 - 取り除くと連結成分が増える辺を橋と呼ぶ
 - low link法を用いるとDFSの計算量O(V+E)で全橋を列挙できる
+- DFS木を作りながら判定する
 - ord[v]にDFS行きがけ順、low[v]にエスケープできる頂点の最小行きがけ順を保存
 - 文による説明は分かりにくい為、[こちらのyoutube参照](https://www.youtube.com/watch?v=iYJqgMKYsdI)
 - 橋である事は以下のいずれかで判定できる
 - low[v]==ord[v] (not low[v] < ord[v])　の場合のvとその親をつなぐ辺
 - low[nv]>ord[v]となる辺
-- 関節点は、親の場合は子の数が2以上、それ以外はlow[nv]>=ord[v]となる子が存在する事が条件
+- 関節点は、親の場合はDFS木における子の数が2以上、それ以外はlow[nv]>=ord[v]となる子が存在する事が条件
 - **実装上の注意！** 再帰を潜る際、used[nv]の時はchmin(low[v], ord[nv])、そうでない時は帰りがけにchmin(low[v], low[nv])となり、実装が似て非なるので要注意！
 ### 例題
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
