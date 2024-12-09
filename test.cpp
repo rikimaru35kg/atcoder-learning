@@ -217,95 +217,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Bridge {
-    using PII = pair<int,int>;
-    int n, m, idx;
-    vector<vector<PII>> from;
-    vector<int> ord, low, bridge, artcl;
-    Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
-    void add_edge(int a, int b, int ei=-1) {
-        if(ei==-1) {
-            from[a].emplace_back(b, m); from[b].emplace_back(a, m);
-            ++m;
-        } else {
-            from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
-        }
-    }
-    void start_calc() { rep(i, n) if(ord[i]==-1) dfs(i); }
-    void dfs(int v, int p=-1) {
-        ord[v] = idx++; low[v] = ord[v];
-        int c = 0;
-        bool art = false;
-        for(auto [nv,ei]: from[v]) if(nv!=p) {
-            if(ord[nv]!=-1) {
-                low[v] = min(low[v], ord[nv]); continue;
-            }
-            ++c;
-            dfs(nv, v);
-            low[v] = min(low[v], low[nv]);
-            if(low[nv]>ord[v]) bridge.push_back(ei);
-            if(low[nv]>=ord[v]) art = true;
-        }
-        if(p!=-1 && art) artcl.push_back(v);
-        if(p==-1 && c>1) artcl.push_back(v);
-    }
-    vector<int> get_bridge() { return bridge;}
-    vector<int> get_articulation() { return artcl;}
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N, M);
-    Bridge bridge(N);
-    vt3 edge;
-    vvp from(N);
+    LONG(N, M, K);
+    vvl from(N);
     rep(i, M) {
-        LONGM(a,b); LONG(c);
-        edge.emplace_back(a,b,c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
 
-    auto dijk=[&](ll sv) -> vl {
-        vl dist(N, INF);
-        pq que;
-        auto push=[&](ll v, ll d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.emplace(d, v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto [d,v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv,c]: from[v]) {
-                push(nv, d+c);
-            }
-        }
-        return dist;
-    };
-    vl dist1 = dijk(0), distN = dijk(N-1);
-
-    ll shrt = dist1[N-1];
-    rep(i, M) {
-        auto [a,b,c] = edge[i];
-        bool ok = false;
-        if(dist1[a]+distN[b]+c==shrt) ok = true;
-        if(dist1[b]+distN[a]+c==shrt) ok = true;
-        if(ok) {
-            de2(a,b)
-            bridge.add_edge(a,b,i);
+    vm dp(N);
+    dp[0] = 1;
+    rep(i, K) {
+        mint sum = 0;
+        rep(j, N) sum += dp[j];
+        vm pdp(N); swap(pdp, dp);
+        rep(j, N) {
+            dp[j] = sum - pdp[j];
+            for(auto nv: from[j]) dp[j] -= pdp[nv];
         }
     }
-    bridge.start_calc();
-    auto bs = bridge.get_bridge();
-    de(bs)
-    uset<ll> bis;
-    for(auto bi: bs) bis.insert(bi);
-    rep(i, M) {
-        if(bis.count(i)) puts("Yes");
-        else puts("No");
-    }
-
+    mint ans = dp[0];
+    Out(ans);
 
 }
 
