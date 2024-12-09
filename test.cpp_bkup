@@ -217,67 +217,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-
 void solve() {
     LONG(N, M);
-    bool bi = true;
-    vvl from(N);
+    vvl X(3, vl(3, INF));
+    VL(Z, 3);
+    X[0][1] = X[1][0] = Z[0];
+    X[0][2] = X[2][0] = Z[1];
+    X[1][2] = X[2][1] = Z[2];
+    STRING(S);
+    vvp from(N+6);
     rep(i, M) {
-        LONGM(a,b);
-        from[a].push_back(b);
-        from[b].push_back(a);
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+    rep(i, N) {
+        ll x = S[i]-'A';
+        from[i].emplace_back(N+x, 0);
+        from[N+x+3].emplace_back(i, 0);
+    }
+    rep(i, 3) rep(j, 3) {
+        if(i==j) continue;
+        from[N+i].emplace_back(N+j+3, X[i][j]);
     }
 
-    vl color(N, -1);
-    auto dfs0 = [&](auto f, ll v, ll c) -> void {
-        color[v] = c;
-        for(auto nv: from[v]) {
-            if(color[nv]!=-1) {
-                if(color[nv]==c) bi = false;
-                continue;
-            }
-            f(f, nv, c^1);
-        }
+    pq que;
+    vl dist(N+6, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
     };
-    dfs0(dfs0, 0, 0);
-
-    if(bi) {
-        vl cnt(2);
-        vb visited(N);
-        auto dfs=[&](auto f, ll v, ll x) -> void {
-            if(visited[v]) return;
-            visited[v] = true;
-            cnt[x]++;
-            for(auto nv: from[v]) f(f, nv, x^1);
-        };
-        dfs(dfs, 0, 0);
-        ll ans = cnt[0]*cnt[1];
-        ans -= M;
-        Outend(ans);
+    push(0, 0);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv,c]: from[v]) {
+            push(nv, d+c);
+        }
     }
-
-    ll ans = nCr(N, 2);
-    ans -= M;
+    ll ans = dist[N-1];
     Out(ans);
-
 
 }
 

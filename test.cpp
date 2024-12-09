@@ -217,78 +217,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, M);
+    CoordinateCompression<Pr> cc;
+    rep(i, N) cc.add(Pr(i, 0));
+    vt3 line;
+    rep(i, M) {
+        LONGM(p,q); LONG(c);
+        line.emplace_back(p,q,c);
+        cc.add(Pr(p,c));
+        cc.add(Pr(q,c));
     }
-
-    vl color(N, -1);
-    vl cnt(2);
-    auto dfs=[&](auto f, ll v, ll c, ll p=-1) -> void {
-        color[v] = c;
-        cnt[c]++;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, c^1, v);
-        }
+    ll K = cc.size();
+    vvp from(K);
+    for(auto [p,q,c]: line) {
+        ll a = cc({p,c}), b = cc({q,c});
+        from[a].emplace_back(b, 0);
+        from[b].emplace_back(a, 0);
+        ll po = cc({p,0}), qo = cc({q,0});
+        from[a].emplace_back(po, 0);
+        from[po].emplace_back(a, 1);
+        from[b].emplace_back(qo, 0);
+        from[qo].emplace_back(b, 1);
+    }
+    rep(i, K) unique(from[i]);
+    vl dist(K, INF);
+    deque<ll> que;
+    auto push=[&](ll v, ll d, bool bc) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        if(!bc) que.push_front(v);
+        else que.push_back(v);
     };
-    dfs(dfs, 0, 0);
-
-    ll a = cnt[0], b = cnt[1];
-    if(a>b) {
-        rep(i, N) color[i] ^= 1;
-        swap(a,b);
+    ll sv = cc({0,0});
+    push(sv, 0, false);
+    while(que.size()) {
+        auto v = que.front(); que.pop_front();
+        for(auto [nv,c]: from[v]) {
+            push(nv, dist[v]+c, c);
+        }
     }
-
-    vl ans(N, -1);
-    if(a<=N/3) {
-        ll idx = 0;
-        ll lx = -1;
-        for(ll x=3; x<=N; x+=3) {
-            while(idx<N && color[idx]!=0) ++idx;
-            if(idx>=N) break;
-            ans[idx++] = x;
-            lx = x;
-        }
-        idx = 0;
-        for(ll x=lx+3; x<=N; x+=3) {
-            while(ans[idx]!=-1) ++idx;
-            ans[idx] = x;
-        }
-        for(ll x=1; x<=N; x+=3) {
-            while(ans[idx]!=-1) ++idx;
-            ans[idx] = x;
-        }
-        for(ll x=2; x<=N; x+=3) {
-            while(ans[idx]!=-1) ++idx;
-            ans[idx] = x;
-        }
-        Out(ans);
-    } else {
-        ll idx = 0;
-        for(ll x=1; x<=N; x+=3) {
-            while(color[idx]!=0) ++idx;
-            ans[idx++] = x;
-        }
-        de(1)
-        idx = 0;
-        for(ll x=2; x<=N; x+=3) {
-            while(color[idx]!=1) ++idx;
-            ans[idx++] = x;
-        }
-        de(2)
-        de(ans)
-        idx = 0;
-        for(ll x=3; x<=N; x+=3) {
-            while(ans[idx]!=-1) ++idx;
-            ans[idx] = x;
-        }
-        Out(ans);
-    }
-
+    ll gv = cc({N-1,0});
+    ll ans = dist[gv];
+    ch1(ans);
+    Out(ans);
 
 }
 
