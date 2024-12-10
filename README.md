@@ -660,8 +660,8 @@
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
 - 基本 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
-- !復習価値中 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
-- !復習価値中 寿司おいしさ+種類数ボーナス最大化（想定解ではHeadK不要なのでnote未掲載というかheadkは非本質） [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
+- !復習価値低 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
+- !復習価値低 寿司おいしさ+種類数ボーナス最大化（想定解ではHeadK不要なのでnote未掲載というかheadkは非本質） [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 
 ## 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数

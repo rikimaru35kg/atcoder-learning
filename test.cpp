@@ -217,27 +217,99 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, Q);
-    vl top(N);
-    iota(all(top), 0);
-    vl under(N, -1);
-    rep(i, Q) {
-        LONGM(f,t,x);
-        ll ftop = top[f], ttop = top[t];
-        top[f] = under[x];
-        under[x] = ttop;
-        top[t] = ftop;
-    }
-    vl ans(N);
-    rep(i, N) {
-        ll x = top[i];
-        while(x!=-1) {
-            ans[x] = i+1;
-            x = under[x];
+template <typename T>
+vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T>
+vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
+struct HeadK {
+    long long K, sum = 0;
+    bool ascending;
+    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        if(!ascending) x = -x;
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if(!ascending) x = -x;
+        if (stM.contains(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.contains(x)) return;
+            stK.erase(stK.find(x));
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
         }
     }
-    for(auto x: ans) Out(x);
+    void decK(long long nk) { // decrease K size
+        K = nk;
+        KtoM();
+    }
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    }
+    long long get_sum() {
+        if(ascending) return sum;
+        else return -sum;
+    }
+};
+
+void solve() {
+    LONG(N, K);
+    vvl sushi(N);
+    rep(i, N) {
+        LONG(t, d); --t;
+        sushi[t].push_back(d);
+    }
+    rep(i, N) sort(allr(sushi[i]));
+
+    vl tops, others;
+    rep(i, N) if(sushi[i].size()) {
+        tops.push_back(sushi[i][0]);
+        ll sz = sushi[i].size();
+        repk(j, 1, sz) others.push_back(sushi[i][j]);
+    }
+    sort(allr(tops));
+    sort(allr(others));
+    de(tops)de(others)
+    auto Sc = cumsum(others);
+    ll A = tops.size(), B = others.size();
+    ll tsum = 0, ans = 0;
+    rep1(t, min(A,K)) {
+        ll now = t*t;
+        tsum += tops[t-1];
+        now += Sc[min(K-t,B)] + tsum;
+        chmax(ans, now);
+    }
+    Out(ans);
+
 
 }
 
