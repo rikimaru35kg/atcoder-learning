@@ -217,37 +217,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <class T>
+using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
+
 
 void solve() {
-    LONG(N);
-    vt3 points;
+    LONG(N, Q);
+    VS(S, N);
+    using D = pair<string,ll>;
+    pset<D> st;
     rep(i, N) {
-        LONG(x,y);
-        points.emplace_back(x,y,i);
+        st.insert(D(S[i],i));
     }
-    sort(all(points));
-    dsu uf(N);
-    set<Pr> st;
-    for(auto [x,y,i]: points) {
-        ll mny = y;
-        auto judge=[&]() {
-            auto [cy,ci] = *st.begin();
-            return cy <= y;
-        };
-        while(st.size() && judge()) {
-            auto it = st.begin();
-            auto [cy,ci] = *it;
-            st.erase(it);
-            chmin(mny, cy);
-            uf.merge(i, ci);
-        }
-        st.emplace(mny, i);
+    rep(i, Q) {
+        LONGM(x); STRING(t);
+        auto it = st.find_by_order(x);
+        auto [s,ni] = *it;
+        st.erase(it);
+        st.insert(D(t,ni));
     }
-    rep(i, N) {
-        Out(uf.size(i));
+    vs ans(N);
+    for(auto[s,ni]: st) {
+        ans[ni] = s;
     }
+    for(auto s: ans) cout<<s<<' ';
+    cout<<endl;
 
 }
 
