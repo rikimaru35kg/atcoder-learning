@@ -217,80 +217,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.contains(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.contains(x)) return;
-            stK.erase(stK.find(x));
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
-        }
-    }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
-    }
-};
-
 void solve() {
-    LONG(N, K);
-    HeadK headk(K);
-    VP(query, N);
-    reverse(all(query));
-    // query.emplace_back(1, 0);
-
-    ll sum = 0;
-    ll ans = -INF;
-    for(auto [t,y]: query) {
-        if(t==1) {
-            ll ignr = headk.get_sum();
-            ll now = y + sum - ignr;
-            chmax(ans, now);
-            --K;
-            if(K<0) break;
-            headk.decK(K);
-        } else {
-            sum += y;
-            if(y<0) headk.add(y);
+    STRING(S);
+    using D = pair<char,ll>;
+    vector<D> stck;
+    for(auto c: S) {
+        if(c=='<') stck.emplace_back('<', 1);
+        if(c=='=') {
+            if(stck.size() && stck.back().first=='=') stck.back().second++;
+            else stck.emplace_back('=', 1);
+        }
+        if(c=='>') {
+            auto judge=[&]() {
+                ll n = stck.size();
+                if(stck[n-1].first!='=') return false;
+                if(stck[n-2].first!='<') return false;
+                return true;
+            };
+            if(SIZE(stck)>=2 && judge()) stck.pop_back(), stck.pop_back();
+            else stck.emplace_back('>', 1);
         }
     }
-    if(K>=0) {
-        ll ignr = headk.get_sum();
-        ll now = sum - ignr;
-        chmax(ans, now);
-    }
+    ll ans = 0;
+    for(auto [c,n]: stck) ans += n;
     Out(ans);
 
 }
