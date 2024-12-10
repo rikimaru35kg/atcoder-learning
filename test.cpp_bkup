@@ -75,15 +75,18 @@ using vvt4 = vector<vector<t4>>;
 using pq = priority_queue<Pr,vector<Pr>,greater<Pr>>;
 using cl = complex<ll>;
 using cd = complex<double>;
-#define rep(i, N) for (ll i=0; i<(ll)(N); i++)
-#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; i--)
-#define repk(i, k, N) for (ll i = k; i < (ll)(N); i++)
-#define rep1(i, N) for (ll i=1; i<(ll)(N+1); i++)
+#define rep(i, N) for (ll i=0; i<(ll)(N); ++i)
+#define repr(i, N) for (ll i = (ll)(N) - 1; i >= 0; --i)
+#define repk(i, k, N) for (ll i = k; i < (ll)(N); ++i)
+#define rep1(i, N) for (ll i=1; i<(ll)(N+1); ++i)
+#define rep1r(i, N) for (ll i=(ll)(N); i>0; i--)
 #define all(v) (v).begin(), (v).end()
 #define allr(v) (v).rbegin(), (v).rend()
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define PFi {puts("First"); exit(0);}
+#define PSe {puts("Second"); exit(0);}
 #define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
@@ -146,20 +149,23 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
-inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
-inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
-inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+template<typename T> inline T TmpPercent(T a, T b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+template<typename T> inline T Percent(T a, T b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
+template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
 #define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
+#define de5(var1,var2,var3,var4,var5) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<' '<<#var5<<": "; debug_view(var1,var2,var3,var4,var5);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
+template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -188,132 +194,62 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de2(var1,var2) {}
 #define de3(var1,var2,var3) {}
 #define de4(var1,var2,var3,var4) {}
+#define de5(var1,var2,var3,var4,var5) {}
 #define deb(var) {}
 #endif
+int IINF = 1001001001;
 ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
+const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
+const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
+const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
 
-#include <atcoder/fenwicktree>
+#include <atcoder/segtree>
 using namespace atcoder;
+
+struct S {
+    ll l, r;
+    S(ll l, ll r): l(l),r(r) {}
+};
+S op(S a, S b) {return S(max(a.l,b.l), min(a.r,b.r));}
+S e() {return S(-INF,INF);}
+
+void solve() {
+    LONG(N,Q);
+    segtree<S,op,e> seg(N-1);
+    rep(i, N-1) {
+        LONG(l,r);
+        seg.set(i, S(l,r));
+    }
+    rep(i, Q) {
+        LONG(a,b); --b;
+        auto f=[&](S x) -> bool {
+            return x.l<=a && a<=x.r;
+        };
+        ll r = seg.max_right(b, f);
+        ll l = seg.min_left(b, f);
+        Out(r-l+1);
+    }
+
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VL(A, N);
-    vl B = A;
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]);
-
-    LONG(Q);
-    vt3 query;
-    rep(i, Q) {
-        LONG(t, a); ll b = -1;
-        if(t==1) cin>>b;
-        query.emplace_back(t,a,b);
-    }
-    rep(i, Q) {
-        auto [t,a,b] = query[i];
-        if(t==1) {
-            B[a-1] += b;
-            cc.add(B[a-1]);
-        } else {
-            cc.add(a);
-        }
-    }
-
-    ll M = cc.size();
-    fenwick_tree<ll> cnt(M), sum(M);
-
-
-    auto del=[&](ll i) {
-        ll a = cc(A[i]);
-        cnt.add(a, -1);
-        sum.add(a, -A[i]);
-    };
-    auto add=[&](ll i) {
-        ll a = cc(A[i]);
-        cnt.add(a, 1);
-        sum.add(a, A[i]);
-    };
-
-    rep(i, N) {
-        add(i);
-    }
-
-    for(auto [t,a,b]: query) {
-        if(t==1) {
-            --a;
-            del(a);
-            A[a] += b;
-            add(a);
-        } else {
-            ll ans = 0;
-            ll x = a;
-            {
-                ll num = cnt.sum(cc(x), M);
-                ll csum = sum.sum(cc(x), M);
-                ans += csum - num * x;
-            }
-            {
-                ll num = cnt.sum(0, cc(x));
-                ll csum = sum.sum(0, cc(x));
-                ans += num * x - csum;
-            }
-            Out(ans);
-        }
-    }
-
+    solve();
 }
+
+// ### test.cpp ###

@@ -217,29 +217,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
+#include <atcoder/segtree>
 using namespace atcoder;
 
-void solve() {
-    LONG(H, W, M);
-    vl row(H, W), col(W, H);
-    rep(i, M) {
-        LONGM(x,y);
-        chmin(row[x], y);
-        chmin(col[y], x);
-    }
-    vvl js(H+1);
-    rep(j, W) js[col[j]].push_back(j);
-    ll H0 = col[0], W0 = row[0];
-    ll ans = 0;
-    rep(i, H0) ans += row[i];
-    rep(j, W0) ans += col[j];
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
-    fenwick_tree<ll> tree(W0);
-    rep(j, W0) tree.add(j, 1);
-    rep(i, H0) {
-        for(auto j: js[i]) if(j<W0) tree.add(j, -1);
-        ans -= tree.sum(0, min(row[i],W0));
+void solve() {
+    LONG(N, M); VL(A, N); VL(B, M);
+    segtree<S,op,e> seg(B);
+
+    rep(i, N) {
+        auto f=[&](S x) -> bool {
+            return x<A[i];
+        };
+        auto r = seg.max_right(0, f);
+        if(r==M) {
+            puts("No");
+            Out(i+1);
+            return;
+        }
+        ll now = seg.get(r);
+        now -= A[i];
+        seg.set(r, now);
+    }
+    puts("Yes");
+    vl ans;
+    rep(i, M) {
+        ll now = seg.get(i);
+        ans.push_back(B[i]-now);
     }
     Out(ans);
 
