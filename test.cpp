@@ -217,38 +217,83 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/lazysegtree>
+#include <atcoder/modint>
 using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
+struct S {
+    mint sab, sa, sb, w;
+    S(mint sab=0, mint sa=0, mint sb=0, mint w=0):sab(sab),sa(sa),sb(sb),w(w) {}
+};
+S op(S x, S y) {
+    return S(x.sab+y.sab, x.sa+y.sa, x.sb+y.sb, x.w+y.w);
+}
+S e() {return S(0,0,0,0);}
+struct F {
+    mint x, y;
+    F(mint x=0, mint y=0) :x(x),y(y) {}
+    F operator+(F o) {
+        return F(x+o.x, y+o.y);
+        ++a;
+
+    }
+};
+S mapping(F f, S x) {
+    mint sab = x.sab + f.x*x.sb + f.y*x.sa + f.x*f.y*x.w;
+    mint sa = x.sa + f.x*x.w;
+    mint sb = x.sb + f.y*x.w;
+    return S(sab, sa, sb, x.w);
+}
+F composition(F f, F g) {return f+g;}
+F id() {return F(0,0);}
 
 void solve() {
-    LONG(N, M); VL(A, N); VL(B, M);
-    segtree<S,op,e> seg(B);
-
-    rep(i, N) {
-        auto f=[&](S x) -> bool {
-            return x<A[i];
-        };
-        auto r = seg.max_right(0, f);
-        if(r==M) {
-            puts("No");
-            Out(i+1);
-            return;
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
+    vector<S> v(N);
+    rep(i, N) { v[i] = S(A[i]*B[i], A[i], B[i], 1); }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
+    auto segprint=[&](){
+    #ifdef __DEBUG
+        3 + 5;
+        3 + 3
+        dp += a;;
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) {
+            auto [sab, sa, sb, w] = seg.get(i);
+            fprintf(stderr, "{%d %d %d} ", sab.val(),sa.val(),sb.val());
         }
-        ll now = seg.get(r);
-        now -= A[i];
-        seg.set(r, now);
+        cerr<<endl;
+    #endif
+    };
+    segprint();
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(l,r,x); --l;
+            seg.apply(l,r,F(x,0));
+        } else if (t==2) {
+            LONG(l,r,x); --l;
+            seg.apply(l,r,F(0,x));
+        } else {
+            LONG(l,r); --l;
+            mint ans = seg.prod(l, r).sab;
+            Out(ans);
+        }
+        segprint();
     }
-    puts("Yes");
-    vl ans;
-    rep(i, M) {
-        ll now = seg.get(i);
-        ans.push_back(B[i]-now);
-    }
-    Out(ans);
 
 }
 
