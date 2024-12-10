@@ -652,8 +652,8 @@
 - ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)
 - 指定要素の削除もO(1)
 ### 例題
-- !復習価値低 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
-- !要復習 [K - コンテナの移動](https://atcoder.jp/contests/past202005-open/tasks/past202005_k)
+- 基本 [E - Insert or Erase](https://atcoder.jp/contests/abc344/tasks/abc344_e)
+- 基本 [K - コンテナの移動](https://atcoder.jp/contests/past202005-open/tasks/past202005_k)
 
 ## 小さい方からK個の和/max
 - 最大ヒープと最小ヒープを用意し、最大ヒープサイズをKに保ち続ければ、Kが固定である限りは和やmaxが求まる

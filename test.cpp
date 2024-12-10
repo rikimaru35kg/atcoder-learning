@@ -217,35 +217,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template <class T>
-using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-
-
 void solve() {
     LONG(N, Q);
-    VS(S, N);
-    using D = pair<string,ll>;
-    pset<D> st;
-    rep(i, N) {
-        st.insert(D(S[i],i));
-    }
+    vl top(N);
+    iota(all(top), 0);
+    vl under(N, -1);
     rep(i, Q) {
-        LONGM(x); STRING(t);
-        auto it = st.find_by_order(x);
-        auto [s,ni] = *it;
-        st.erase(it);
-        st.insert(D(t,ni));
+        LONGM(f,t,x);
+        ll ftop = top[f], ttop = top[t];
+        top[f] = under[x];
+        under[x] = ttop;
+        top[t] = ftop;
     }
-    vs ans(N);
-    for(auto[s,ni]: st) {
-        ans[ni] = s;
+    vl ans(N);
+    rep(i, N) {
+        ll x = top[i];
+        while(x!=-1) {
+            ans[x] = i+1;
+            x = under[x];
+        }
     }
-    for(auto s: ans) cout<<s<<' ';
-    cout<<endl;
+    for(auto x: ans) Out(x);
 
 }
 
