@@ -217,33 +217,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 void solve() {
-    LONG(N);
-    vp p1, p2;
-    ll lt = 0;
-    rep(i, N) {
-        LONG(a,b);
-        lt += a-b;
-        if(a<b) p1.emplace_back(a,b);
-        else p2.emplace_back(b,a);
+    LONG(H, W, M);
+    vl row(H, W), col(W, H);
+    rep(i, M) {
+        LONGM(x,y);
+        chmin(row[x], y);
+        chmin(col[y], x);
     }
-    sort(all(p1)); sort(all(p2));
-    de(p1)de(p2)
-    auto calmx=[&](vp &p) -> ll {
-        ll now = 0;
-        ll ret = 0;
-        for(auto [a,b]: p) {
-            now += a;
-            chmax(ret, now);
-            now -= b;
-        }
-        return ret;
-    };
-    de(lt)
-    ll ans = calmx(p1);
-    de(ans)
-    chmax(ans, lt+calmx(p2));
-    de(calmx(p2))
+    vvl js(H+1);
+    rep(j, W) js[col[j]].push_back(j);
+    ll H0 = col[0], W0 = row[0];
+    ll ans = 0;
+    rep(i, H0) ans += row[i];
+    rep(j, W0) ans += col[j];
+
+    fenwick_tree<ll> tree(W0);
+    rep(j, W0) tree.add(j, 1);
+    rep(i, H0) {
+        for(auto j: js[i]) if(j<W0) tree.add(j, -1);
+        ans -= tree.sum(0, min(row[i],W0));
+    }
     Out(ans);
 
 }
