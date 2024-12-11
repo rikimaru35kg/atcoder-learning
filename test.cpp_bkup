@@ -218,32 +218,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, X);
-    VL(A, N);
-    ll x = X;
-    vl v;
-    repr(i, N) {
-        v.push_back(x/A[i]);
-        x %= A[i];
-    }
-    reverse(all(v));
+    LONG(N); VL(A, N);
 
-    vl dp(2, INF);
-    dp[0] = 0;
-    rep(i, N) {
-        vl pdp(2, INF); swap(pdp, dp);
-        rep(j, 2) {
-            ll x = v[i];
-            if(j) ++x;
-            chmin(dp[0], pdp[j]+x);
-            if(i==N-1 || x==-1) continue;
-            ll mul = A[i+1]/A[i];
-            chmin(dp[1], pdp[j]+mul-x);
+    ll ans = INF;
+    rep(ri, 2) {
+        vl dp(2, INF);
+        dp[ri] = 0;
+        rep(i, N) {
+            vl pdp(2, INF); swap(pdp, dp);
+            rep(j, 2) rep(k, 2) {
+                if(pdp[j]==INF) continue;
+                if(j==0 && k==0) continue;
+                chmin(dp[k], pdp[j]+(k==0?0:A[i]));
+            }
         }
+        chmin(ans, dp[ri]);
     }
-    ll ans = dp[0];
     Out(ans);
-
 
 }
 
