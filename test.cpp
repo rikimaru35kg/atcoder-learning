@@ -217,54 +217,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
 #ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
 #endif
+};
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
 void solve() {
-    STRING(S);
-    S = '$'+S;
-    ll N = SIZE(S);
-    
-    ll Z = 26;
-    vvl next(Z, vl(N, INF));
-    repk(i, 1, N) next[S[i]-'a'][i] = i;
-    rep(z, Z) repr(i, N-1) chmin(next[z][i], next[z][i+1]);
+    LONG(N); VL(A, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(A[i]), cc.add(A[i]+1);
+    cc.add(0);
+    ll M = cc.size();
 
-    auto get_next=[&](ll i, ll z) -> ll {
-        if(i>=N) return INF;
-        ll ret = next[z][i];
-        if(ret==INF) return INF;
-        ++ret;
-        return ret;
+    using SEG = segtree<S,op,e>;
+    SEG seg0(M), seg1(M);
+    auto update=[&](SEG &seg, ll i, ll x) {
+        seg.set(i, op(seg.get(i), x));
+    };
+    auto segprint=[&](SEG &seg){
+    #ifdef __DEBUG
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
+        cerr<<endl;
+    #endif
     };
 
-    vm dp(N+1);
-    dp[0] = 1;
+    Pr book(0, 1);
     rep(i, N) {
-        rep(z, Z) {
-            ll ni = get_next(i, z);
-            if(ni==i+1) { ni = get_next(ni, z); }
-            if(ni==INF) continue;
-            dp[ni] += dp[i];
-        }
+        ll a = cc(A[i]);
+        ll mx0 = seg0.prod(0, a);
+        ll mx1 = seg1.prod(0, a);
+        update(seg0, a, mx0+1);
+        update(seg1, a, mx1+1);
+
+        auto [b, x] = book;
+        update(seg1, b, x);
+        book = {a+1, mx0+2};
+        de("--------")
+        de(i)
+        segprint(seg0);
+        segprint(seg1);
     }
-    de(dp)
-    mint ans = 0;
-    repk(i, 1, N+1) {
-        de(dp[i])
-        ans += dp[i];
-    }
+    ll ans = seg0.all_prod();
+    chmax(ans, seg1.all_prod());
     Out(ans);
 
 }

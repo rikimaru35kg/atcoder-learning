@@ -217,68 +217,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/segtree>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+
+struct S {
+    ll mx, i, j;
+    S(ll mx=-INF, ll i=-1, ll j=-1): mx(mx),i(i),j(j) {}
+    bool operator<(const S &o) const {
+        return mx<o.mx;
+    }
+};
+S op(S a, S b) {return max(a,b);}
+S e() {return S();}
 
 void solve() {
-    STRING(S, T);
-    ll N = S.size(), M = T.size();
+    LONG(H, W, N);
+    vvl cs(H);
+    rep(i, N) {
+        LONGM(r,c);
+        cs[r].push_back(c);
+    }
+    cs[H-1].push_back(W-1);
+    rep(i, H) sort(all(cs[i]));
 
-    ll Z = 26;
-    auto make_next=[&](string &s) -> vvl {
-        ll n = SIZE(s);
-        vvl next(Z, vl(n, INF));
-        rep(i, n) next[s[i]-'a'][i] = i;
-        rep(z, Z) repr(i, n-1) chmin(next[z][i], next[z][i+1]);
-        return next;
+    segtree<S,op,e> seg(W);
+    seg.set(0, S(-1,0,0));
+    auto update=[&](ll mx, ll i, ll j) {
+        seg.set(j, op(seg.get(j), S(mx,i,j)));
+        // S pre=seg.get(j);
+        // if(pre.mx>=mx) return;
+        // seg.set(j, S(mx,i,j));
     };
-    vvl nexts = make_next(S), nextt = make_next(T);
 
-    auto calpar=[&](string &s, vvl &next) -> mint {
-        ll n = s.size();
-        vm dp(n+1);
-        dp[0] = 1;
-        rep(i, n) {
-            rep(z, Z) {
-                ll ni = next[z][i];
-                if(ni==INF) continue;
-                ni++;
-                dp[ni] += dp[i];
-            }
-        }
-        mint ret = 0;
-        rep1(i, n) ret += dp[i];
-        return ret;
-    };
-    
-    vvm dp(N+1, vm(M+1));
-    dp[0][0] = 1;
-    rep(i, N) rep(j, M) {
-        rep(z, Z) {
-            ll ni = nexts[z][i], nj = nextt[z][j];
-            if(ni==INF || nj==INF) continue;
-            ni++, nj++;
-            dp[ni][nj] += dp[i][j];
+    map<Pr,Pr> mp;
+    rep(i, H) {
+        for(auto j: cs[i]) {
+            S tmp = seg.prod(0, j+1);
+            auto [mx,pi,pj] = tmp;
+            mp[{i,j}] = {pi,pj};
+            update(mx+1, i, j);
         }
     }
-    mint ans = 0;
-    ans += calpar(S, nexts);
-    ans += calpar(T, nextt);
-    rep(i, N+1) rep(j, M+1) {
-        if(i==0 && j==0) continue;
-        ans -= dp[i][j];
+    S ed = seg.get(W-1);
+    auto [mx,i,j] = ed;
+    Out(mx);
+    string ans;
+    while(mp.count({i,j})) {
+        auto [pi,pj] = mp[{i,j}];
+        ans += string(i-pi, 'D');
+        ans += string(j-pj, 'R');
+        // de4(pi,pj,i,j)
+        // de(ans)
+        i = pi, j = pj;
     }
+    reverse(all(ans));
     Out(ans);
 
 }
