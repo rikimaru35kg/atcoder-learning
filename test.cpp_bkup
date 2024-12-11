@@ -218,37 +218,19 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, D);
-    VD(W, N);
-    db ave = accumulate(all(W), 0.0);
-    ave /= D;
+    LONG(N, M);
+    VL(A, N); VL(B, M);
 
-    auto get=[&](ll s) -> db {
-        db ret = 0;
-        rep(i, N) if(s>>i&1) ret += W[i];
-        return ret;
-    };
-    vd w(1<<N);
-    rep(s, 1<<N) { w[s] = get(s); }
-
-    auto p2=[&](db x) {return x*x;};
-
-    vd dp(1<<N, INF);
-    dp[(1<<N)-1] = 0;
-    rep(i, D) {
-        vd pdp(1<<N, INF); swap(pdp, dp);
-        rep(s, 1<<N) {
-            for(ll t=s; t>=0; t=(t-1)&s) {
-                db x = w[t];
-                db plus = p2(x-ave)/D;
-                ll ns = s^t;
-                chmin(dp[ns], pdp[s]+plus);
-                if(t==0) break;
-            }
-        }
+    vvl dp(N+1, vl(M+1, INF));
+    dp[0][0] = 0;
+    rep(i, N+1) rep(j, M+1) {
+        if(i<N) chmin(dp[i+1][j], dp[i][j]+1);
+        if(j<M) chmin(dp[i][j+1], dp[i][j]+1);
+        if(i>=N || j>=M) continue;
+        if(A[i]==B[j]) chmin(dp[i+1][j+1], dp[i][j]);
+        else chmin(dp[i+1][j+1], dp[i][j]+1);
     }
-    db ans = dp[0];
-    Out(ans);
+    Out(dp[N][M]);
 
 }
 

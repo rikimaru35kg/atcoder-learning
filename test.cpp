@@ -218,23 +218,27 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VVL(A, 3, N);
+    LONG(N, M);
+    STRING(S, T);
+    vl A, B;
+    for(auto c: S) A.push_back(c=='O'?0:1);
+    for(auto c: T) B.push_back(c=='O'?0:1);
+    de(A)de(B)
 
-    ll M = 2, S = 3;
-    vvl dp(M+1, vl(S, -INF));
-    vvl edp = dp;
-    dp[0][0] = 0;
-    rep(i, N) {
-        vvl pdp = edp; swap(pdp, dp);
-        rep(j, M+1) rep(k, S) rep(nk, S) {
-            if(pdp[j][k]==-INF) continue;
-            ll n = max(nk-k, 0LL);
-            if(j+n<=M) chmax(dp[j+n][nk], pdp[j][k]+A[nk][i]);
+    vvvl dp(2, vvl(N+1, vl(M+1)));
+    rep(i, N+1) rep(j, M+1) rep(k, 2) {
+        if(dp[k][i][j]==0) {
+            if(i<N && A[i]==1) chmax(dp[1][i+1][j], 1LL);
+            if(j<M && B[j]==1) chmax(dp[1][i][j+1], 1LL);
+        }
+
+        if(dp[k][i][j]>0) {
+            if(i<N && A[i]!=k) chmax(dp[k^1][i+1][j], dp[k][i][j]+1);
+            if(j<M && B[j]!=k) chmax(dp[k^1][i][j+1], dp[k][i][j]+1);
         }
     }
-    ll ans = -INF;
-    rep(j, M+1) rep(k, S) chmax(ans, dp[j][k]);
+    ll ans = 0;
+    rep(i, N+1) rep(j, M+1) chmax(ans, dp[1][i][j]);
     Out(ans);
 
 }
