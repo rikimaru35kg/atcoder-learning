@@ -217,20 +217,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    VL(A, N); VL(B, M);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    vvl dp(N+1, vl(M+1, INF));
-    dp[0][0] = 0;
-    rep(i, N+1) rep(j, M+1) {
-        if(i<N) chmin(dp[i+1][j], dp[i][j]+1);
-        if(j<M) chmin(dp[i][j+1], dp[i][j]+1);
-        if(i>=N || j>=M) continue;
-        if(A[i]==B[j]) chmin(dp[i+1][j+1], dp[i][j]);
-        else chmin(dp[i+1][j+1], dp[i][j]+1);
+void solve() {
+    STRING(S, T);
+    ll N = S.size(), M = T.size();
+
+    ll Z = 26;
+    auto make_next=[&](string &s) -> vvl {
+        ll n = SIZE(s);
+        vvl next(Z, vl(n, INF));
+        rep(i, n) next[s[i]-'a'][i] = i;
+        rep(z, Z) repr(i, n-1) chmin(next[z][i], next[z][i+1]);
+        return next;
+    };
+    vvl nexts = make_next(S), nextt = make_next(T);
+
+    auto calpar=[&](string &s, vvl &next) -> mint {
+        ll n = s.size();
+        vm dp(n+1);
+        dp[0] = 1;
+        rep(i, n) {
+            rep(z, Z) {
+                ll ni = next[z][i];
+                if(ni==INF) continue;
+                ni++;
+                dp[ni] += dp[i];
+            }
+        }
+        mint ret = 0;
+        rep1(i, n) ret += dp[i];
+        return ret;
+    };
+    
+    vvm dp(N+1, vm(M+1));
+    dp[0][0] = 1;
+    rep(i, N) rep(j, M) {
+        rep(z, Z) {
+            ll ni = nexts[z][i], nj = nextt[z][j];
+            if(ni==INF || nj==INF) continue;
+            ni++, nj++;
+            dp[ni][nj] += dp[i][j];
+        }
     }
-    Out(dp[N][M]);
+    mint ans = 0;
+    ans += calpar(S, nexts);
+    ans += calpar(T, nextt);
+    rep(i, N+1) rep(j, M+1) {
+        if(i==0 && j==0) continue;
+        ans -= dp[i][j];
+    }
+    Out(ans);
 
 }
 

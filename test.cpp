@@ -217,28 +217,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, M);
-    STRING(S, T);
-    vl A, B;
-    for(auto c: S) A.push_back(c=='O'?0:1);
-    for(auto c: T) B.push_back(c=='O'?0:1);
-    de(A)de(B)
+    STRING(S);
+    S = '$'+S;
+    ll N = SIZE(S);
+    
+    ll Z = 26;
+    vvl next(Z, vl(N, INF));
+    repk(i, 1, N) next[S[i]-'a'][i] = i;
+    rep(z, Z) repr(i, N-1) chmin(next[z][i], next[z][i+1]);
 
-    vvvl dp(2, vvl(N+1, vl(M+1)));
-    rep(i, N+1) rep(j, M+1) rep(k, 2) {
-        if(dp[k][i][j]==0) {
-            if(i<N && A[i]==1) chmax(dp[1][i+1][j], 1LL);
-            if(j<M && B[j]==1) chmax(dp[1][i][j+1], 1LL);
-        }
+    auto get_next=[&](ll i, ll z) -> ll {
+        if(i>=N) return INF;
+        ll ret = next[z][i];
+        if(ret==INF) return INF;
+        ++ret;
+        return ret;
+    };
 
-        if(dp[k][i][j]>0) {
-            if(i<N && A[i]!=k) chmax(dp[k^1][i+1][j], dp[k][i][j]+1);
-            if(j<M && B[j]!=k) chmax(dp[k^1][i][j+1], dp[k][i][j]+1);
+    vm dp(N+1);
+    dp[0] = 1;
+    rep(i, N) {
+        rep(z, Z) {
+            ll ni = get_next(i, z);
+            if(ni==i+1) { ni = get_next(ni, z); }
+            if(ni==INF) continue;
+            dp[ni] += dp[i];
         }
     }
-    ll ans = 0;
-    rep(i, N+1) rep(j, M+1) chmax(ans, dp[1][i][j]);
+    de(dp)
+    mint ans = 0;
+    repk(i, 1, N+1) {
+        de(dp[i])
+        ans += dp[i];
+    }
     Out(ans);
 
 }
