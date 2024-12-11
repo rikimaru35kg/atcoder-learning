@@ -217,93 +217,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/segtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N); VL(A, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]), cc.add(A[i]+1);
-    cc.add(0);
-    ll M = cc.size();
+    LONG(N); STRING(S);
+    ll n2 = Divceil(N, 2LL);
+    vl A;
+    for(auto c: S) A.push_back(c-'A');
 
-    using SEG = segtree<S,op,e>;
-    SEG seg0(M), seg1(M);
-    auto update=[&](SEG &seg, ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
-    };
-    auto segprint=[&](SEG &seg){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
-        cerr<<endl;
-    #endif
-    };
-
-    Pr book(0, 1);
-    rep(i, N) {
-        ll a = cc(A[i]);
-        ll mx0 = seg0.prod(0, a);
-        ll mx1 = seg1.prod(0, a);
-        update(seg0, a, mx0+1);
-        update(seg1, a, mx1+1);
-
-        auto [b, x] = book;
-        update(seg1, b, x);
-        book = {a+1, mx0+2};
-        de("--------")
-        de(i)
-        segprint(seg0);
-        segprint(seg1);
+    vm dp(2);
+    dp[0] = 1;
+    rep(i, n2) {
+        vm pdp(2); swap(pdp, dp);
+        rep(j, 2) rep(x, 26) {
+            if(pdp[j]==0) continue;
+            if(j==0 && x>A[i]) continue;
+            ll nj = j;
+            if(x<A[i]) nj = 1;
+            dp[nj] += pdp[j];
+        }
     }
-    ll ans = seg0.all_prod();
-    chmax(ans, seg1.all_prod());
+    mint ans = dp[1];
+    string fr = S.substr(0, n2);
+    string rr = fr;
+    if(N%2) rr.pop_back();
+    reverse(all(rr));
+    string tmp = fr+rr;
+    if(tmp<=S) ++ans;
     Out(ans);
 
 }
@@ -311,7 +263,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

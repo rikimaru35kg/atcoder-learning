@@ -217,61 +217,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S {
-    ll mx, i, j;
-    S(ll mx=-INF, ll i=-1, ll j=-1): mx(mx),i(i),j(j) {}
-    bool operator<(const S &o) const {
-        return mx<o.mx;
-    }
-};
-S op(S a, S b) {return max(a,b);}
-S e() {return S();}
-
 void solve() {
-    LONG(H, W, N);
-    vvl cs(H);
-    rep(i, N) {
-        LONGM(r,c);
-        cs[r].push_back(c);
+    LONG(N, X);
+    VL(A, N);
+    ll x = X;
+    vl v;
+    repr(i, N) {
+        v.push_back(x/A[i]);
+        x %= A[i];
     }
-    cs[H-1].push_back(W-1);
-    rep(i, H) sort(all(cs[i]));
+    reverse(all(v));
 
-    segtree<S,op,e> seg(W);
-    seg.set(0, S(-1,0,0));
-    auto update=[&](ll mx, ll i, ll j) {
-        seg.set(j, op(seg.get(j), S(mx,i,j)));
-        // S pre=seg.get(j);
-        // if(pre.mx>=mx) return;
-        // seg.set(j, S(mx,i,j));
-    };
-
-    map<Pr,Pr> mp;
-    rep(i, H) {
-        for(auto j: cs[i]) {
-            S tmp = seg.prod(0, j+1);
-            auto [mx,pi,pj] = tmp;
-            mp[{i,j}] = {pi,pj};
-            update(mx+1, i, j);
+    vl dp(2, INF);
+    dp[0] = 0;
+    rep(i, N) {
+        vl pdp(2, INF); swap(pdp, dp);
+        rep(j, 2) {
+            ll x = v[i];
+            if(j) ++x;
+            chmin(dp[0], pdp[j]+x);
+            if(i==N-1 || x==-1) continue;
+            ll mul = A[i+1]/A[i];
+            chmin(dp[1], pdp[j]+mul-x);
         }
     }
-    S ed = seg.get(W-1);
-    auto [mx,i,j] = ed;
-    Out(mx);
-    string ans;
-    while(mp.count({i,j})) {
-        auto [pi,pj] = mp[{i,j}];
-        ans += string(i-pi, 'D');
-        ans += string(j-pj, 'R');
-        // de4(pi,pj,i,j)
-        // de(ans)
-        i = pi, j = pj;
-    }
-    reverse(all(ans));
+    ll ans = dp[0];
     Out(ans);
+
 
 }
 

@@ -866,10 +866,10 @@
 - 基本 [S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
 - 基本 [E - Almost Everywhere Zero](https://atcoder.jp/contests/abc154/tasks/abc154_e)
 - 基本 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
-- !復習価値低 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
-- おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
+- 基本 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
+- 基本 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 - !復習価値低 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
-- !復習価値低 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
+- 基本 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
