@@ -217,24 +217,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(A, N);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    ll M = 4;
-    vvl dp(M, vl(2, -INF));
-    vvl edp = dp;
-    dp[2][0] = 0;
-    rep(i, N) {
-        vvl pdp = edp; swap(pdp, dp);
-        rep(j, M) rep(k, 2) {
-            if(pdp[j][k]==-INF) continue;
-            if(j) chmax(dp[j-1][0], pdp[j][k]);
-            if(k==1) continue;
-            chmax(dp[j+1][1], pdp[j][k]+A[i]);
+void solve() {
+    LONG(H, W);
+    VS(S, H);
+
+    vvm dp(H, vm(W));
+    vvm sky0(H, vm(W));
+    vvm sky1(H, vm(W));
+    vvm sky2(H, vm(W));
+    dp[0][0] = 1;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='#') continue;
+        dp[i][j] += sky0[i][j] + sky1[i][j] + sky2[i][j];
+        if(j<W-1) {
+            sky0[i][j+1] += dp[i][j];
+            sky0[i][j+1] += sky0[i][j];
+        }
+        if(i<H-1) {
+            sky1[i+1][j] += dp[i][j];
+            sky1[i+1][j] += sky1[i][j];
+        }
+        if(j<W-1 && i<H-1) {
+            sky2[i+1][j+1] += dp[i][j];
+            sky2[i+1][j+1] += sky2[i][j];
         }
     }
-    ll ans = max(dp[2][0], dp[2][1]);
-    if(N%2) ans = max(dp[1][0], dp[1][1]);
+    de(dp)
+    mint ans = dp[H-1][W-1];
     Out(ans);
 
 }
