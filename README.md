@@ -803,7 +803,7 @@
 - N=15の時、4^N=1e9、3^N=1e7なので、N=15ぐらいのときはこのテクニックが効いてくる
 ### 例題
 - 基本 グループ分け [U - Grouping](https://atcoder.jp/contests/dp/tasks/dp_u)
-- !復習価値中 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
+- !復習価値低 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
 ## 耳DP
 - 一つずつ進む状態をキーに持つDP

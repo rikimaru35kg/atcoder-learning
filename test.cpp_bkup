@@ -219,57 +219,34 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N, M);
-    vvl from(N);
+    vvp cond(N+1);
     rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        LONG(x,y,z);
+        cond[x].emplace_back(y, z);
     }
-    LONG(K); VLM(C, K);
 
-    auto bfs=[&](ll sv) -> vl {
-        vl dist(N, INF);
-        queue<ll> que;
-        auto push=[&](ll v, ll d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto nv: from[v]) {
-                push(nv, dist[v]+1);
-            }
-        }
-        return dist;
+    vl mask(N+1);
+    rep(i, N) mask[i+1] = (mask[i]<<1) | 1;
+
+    auto check=[&](ll s, ll y, ll z) -> bool {
+        s &= mask[y];
+        return pcnt(s)<=z;
     };
-    vvl dist(K, vl(K, INF));
-    rep(i, K) {
-        vl dist0 = bfs(C[i]);
-        rep(j, K) {
-            dist[i][j] = dist0[C[j]];
+
+    vl dp(1<<N);
+    dp[0] = 1;
+    rep(s, 1<<N) {
+        ll x = pcnt(s);
+        for(auto [y,z]: cond[x]) {
+            if(!check(s,y,z)) dp[s] = 0;
+        }
+        rep(i, N) if(~s>>i&1) {
+            ll ns = s|1<<i;
+            dp[ns] += dp[s];
         }
     }
-    de(dist)
-
-    vvl dp(1<<K, vl(K, INF));
-    rep(i, K) dp[1<<i][i] = 1;
-
-    rep(s, 1<<K) {
-        rep(i, K) if(dp[s][i]!=INF) {
-            rep(j, K) if(~s>>j&1) {
-                ll ns = s|1<<j;
-                chmin(dp[ns][j], dp[s][i]+dist[i][j]);
-            }
-        }
-    }
-    ll ans = INF;
-    rep(i, K) chmin(ans, dp[(1<<K)-1][i]);
-    ch1(ans);
+    ll ans = dp.back();
     Out(ans);
-
-
 
 }
 
