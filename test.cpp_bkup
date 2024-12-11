@@ -217,82 +217,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
+#include <atcoder/modint>
 using namespace atcoder;
-ll D=-1;
-const ll Mx = 9;
-
-ll rot(ll a, ll d) {
-    string s = to_string(a);
-    d %= SIZE(s);
-    rotate(s.begin(), s.begin()+d, s.end());
-    ll ret = stoll(s);
-    return ret;
-}
-
-struct S {
-    ll x[Mx];
-    S(ll a=-1) {
-        if(a==-1) {
-            rep(i, D) x[i] = 0;
-        } else {
-            rep(i, D) {
-                x[i] = a;
-                a = rot(a, 1);
-            }
-        }
-    }
-};
-S op(S a, S b) {
-    S ret;
-    rep(i, D) ret.x[i] = a.x[i]^b.x[i];
-    return ret;
-}
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    rotate(x.x, x.x+f, x.x+D);
-    return x;
-}
-F composition(F f, F g) {return (f+g)%D;}
-F id() {return 0;}
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N); cin>>D;
+    LONG(N, S);
     VL(A, N);
-    vector<S> init(N);
-    rep(i, N) init[i] = S(A[i]);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
 
-    ll si = 0;
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            si = (si+x) % N;
-        } else if (t==2) {
-            LONG(l,r,y); --l, --r;
-            l = (si+l)%N, r = (si+r)%N;
-            if(l<=r) {
-                seg.apply(l, r+1, y);
-            } else {
-                seg.apply(l, N, y);
-                seg.apply(0, r+1, y);
-            }
-        } else {
-            LONG(l,r); --l, --r;
-            l = (si+l)%N, r = (si+r)%N;
-            ll ans = -1;
-            if(l<=r) {
-                ans = seg.prod(l, r+1).x[0];
-            } else {
-                ans = seg.prod(l, N).x[0];
-                ans ^= seg.prod(0, r+1).x[0];
-            }
-            Out(ans);
+    vm dp(S+1);
+    dp[0] = 1;
+    rep(i, N) {
+        vm pdp(S+1); swap(pdp, dp);
+        rep(j, S+1) {
+            if(pdp[j]==0) continue;
+            dp[j] += pdp[j]*2;
+            if(j+A[i]<=S) dp[j+A[i]] += pdp[j];
         }
     }
+    Out(dp[S]);
 
 }
 

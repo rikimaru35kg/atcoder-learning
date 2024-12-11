@@ -217,90 +217,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-using S = pair<ll,ll>;
-S op(S a, S b) {
-    return S(a.first+b.first, a.second+b.second);
-}
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==0) return x;
-    return S(x.second, x.first);
-}
-F composition(F f, F g) {return f^g;}
-F id() {return 0;}
-
 void solve() {
-    LONG(Q);
-    CoordinateCompression<ll> cc;
-    map<ll,vp> square;
-    rep(i, Q) {
-        LONG(a,b,c,d);
-        square[a].emplace_back(b,d);
-        square[c].emplace_back(b,d);
-        cc.add(b), cc.add(d);
-    }
-    ll M = cc.size();
-    vector<S> v(M-1);
-    rep(i, M-1) {
-        v[i] = S(0, cc[i+1] - cc[i]);
-    }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    ll px = -INF;
-    ll ans = 0;
-    for(auto [x,v]: square) {
-        ll dx = x - px;
-        ans += dx * seg.all_prod().first;
-        for(auto [b,d]: v) {
-            b = cc(b), d = cc(d);
-            seg.apply(b,d,1);
+    LONG(N); VL(A, N);
+
+    ll M = 4;
+    vvl dp(M, vl(2, -INF));
+    vvl edp = dp;
+    dp[2][0] = 0;
+    rep(i, N) {
+        vvl pdp = edp; swap(pdp, dp);
+        rep(j, M) rep(k, 2) {
+            if(pdp[j][k]==-INF) continue;
+            if(j) chmax(dp[j-1][0], pdp[j][k]);
+            if(k==1) continue;
+            chmax(dp[j+1][1], pdp[j][k]+A[i]);
         }
-        px = x;
     }
+    ll ans = max(dp[2][0], dp[2][1]);
+    if(N%2) ans = max(dp[1][0], dp[1][1]);
     Out(ans);
 
 }
