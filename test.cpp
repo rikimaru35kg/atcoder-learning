@@ -218,36 +218,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, D);
-    VD(W, N);
-    db ave = accumulate(all(W), 0.0);
-    ave /= D;
+    LONG(N);
+    VVL(A, 3, N);
 
-    auto get=[&](ll s) -> db {
-        db ret = 0;
-        rep(i, N) if(s>>i&1) ret += W[i];
-        return ret;
-    };
-    vd w(1<<N);
-    rep(s, 1<<N) { w[s] = get(s); }
-
-    auto p2=[&](db x) {return x*x;};
-
-    vd dp(1<<N, INF);
-    dp[(1<<N)-1] = 0;
-    rep(i, D) {
-        vd pdp(1<<N, INF); swap(pdp, dp);
-        rep(s, 1<<N) {
-            for(ll t=s; t>=0; t=(t-1)&s) {
-                db x = w[t];
-                db plus = p2(x-ave)/D;
-                ll ns = s^t;
-                chmin(dp[ns], pdp[s]+plus);
-                if(t==0) break;
-            }
+    ll M = 2, S = 3;
+    vvl dp(M+1, vl(S, -INF));
+    vvl edp = dp;
+    dp[0][0] = 0;
+    rep(i, N) {
+        vvl pdp = edp; swap(pdp, dp);
+        rep(j, M+1) rep(k, S) rep(nk, S) {
+            if(pdp[j][k]==-INF) continue;
+            ll n = max(nk-k, 0LL);
+            if(j+n<=M) chmax(dp[j+n][nk], pdp[j][k]+A[nk][i]);
         }
     }
-    db ans = dp[0];
+    ll ans = -INF;
+    rep(j, M+1) rep(k, S) chmax(ans, dp[j][k]);
     Out(ans);
 
 }

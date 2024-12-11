@@ -218,34 +218,36 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vvp cond(N+1);
-    rep(i, M) {
-        LONG(x,y,z);
-        cond[x].emplace_back(y, z);
-    }
+    LONG(N, D);
+    VD(W, N);
+    db ave = accumulate(all(W), 0.0);
+    ave /= D;
 
-    vl mask(N+1);
-    rep(i, N) mask[i+1] = (mask[i]<<1) | 1;
-
-    auto check=[&](ll s, ll y, ll z) -> bool {
-        s &= mask[y];
-        return pcnt(s)<=z;
+    auto get=[&](ll s) -> db {
+        db ret = 0;
+        rep(i, N) if(s>>i&1) ret += W[i];
+        return ret;
     };
+    vd w(1<<N);
+    rep(s, 1<<N) { w[s] = get(s); }
 
-    vl dp(1<<N);
-    dp[0] = 1;
-    rep(s, 1<<N) {
-        ll x = pcnt(s);
-        for(auto [y,z]: cond[x]) {
-            if(!check(s,y,z)) dp[s] = 0;
-        }
-        rep(i, N) if(~s>>i&1) {
-            ll ns = s|1<<i;
-            dp[ns] += dp[s];
+    auto p2=[&](db x) {return x*x;};
+
+    vd dp(1<<N, INF);
+    dp[(1<<N)-1] = 0;
+    rep(i, D) {
+        vd pdp(1<<N, INF); swap(pdp, dp);
+        rep(s, 1<<N) {
+            for(ll t=s; t>=0; t=(t-1)&s) {
+                db x = w[t];
+                db plus = p2(x-ave)/D;
+                ll ns = s^t;
+                chmin(dp[ns], pdp[s]+plus);
+                if(t==0) break;
+            }
         }
     }
-    ll ans = dp.back();
+    db ans = dp[0];
     Out(ans);
 
 }
