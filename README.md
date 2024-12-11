@@ -789,11 +789,11 @@
 - TSPの初期化はdp[0][0]=0などとして、dp[s][v]==INFからは遷移させないとすればs>>v&1の判定は不要になりコードがすっきりする
 ### 例題
 - 基本 巡回セールスマン問題 [E - Booster](https://atcoder.jp/contests/abc274/tasks/abc274_e)
-- !復習価値低 宝石列 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
+- 基本 宝石列 [E - Magical Ornament](https://atcoder.jp/contests/abc190/tasks/abc190_e)
 - 基本 ペアマッチングの総数 [O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
 - 基本 [E - Chain Contestant](https://atcoder.jp/contests/abc215/tasks/abc215_e)
 - 基本 [D - ぬいぐるみの整理 (Plush Toys)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d)
-- !復習価値低 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
+- 基本 [E - Permutation](https://atcoder.jp/contests/abc199/tasks/abc199_e)
 - 基本 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 - 基本 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 - 基本 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)

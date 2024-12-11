@@ -217,47 +217,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(H, W);
-    VS(S, H);
+    LONG(N, M);
+    vvp cond(N+1);
+    rep(i, M) {
+        LONG(x,y,z);
+        cond[x].emplace_back(y, z);
+    }
 
-    vvm dp(H, vm(W));
-    vvm sky0(H, vm(W));
-    vvm sky1(H, vm(W));
-    vvm sky2(H, vm(W));
-    dp[0][0] = 1;
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='#') continue;
-        dp[i][j] += sky0[i][j] + sky1[i][j] + sky2[i][j];
-        if(j<W-1) {
-            sky0[i][j+1] += dp[i][j];
-            sky0[i][j+1] += sky0[i][j];
+    vl mask(N+1);
+    rep(i, N) mask[i+1] = (mask[i]<<1) | 1;
+
+    auto check=[&](ll s, ll y, ll z) -> bool {
+        s &= mask[y];
+        return pcnt(s)<=z;
+    };
+
+    vl dp(1<<N);
+    dp[0] = 1;
+    rep(s, 1<<N) {
+        ll x = pcnt(s);
+        for(auto [y,z]: cond[x]) {
+            if(!check(s,y,z)) dp[s] = 0;
         }
-        if(i<H-1) {
-            sky1[i+1][j] += dp[i][j];
-            sky1[i+1][j] += sky1[i][j];
-        }
-        if(j<W-1 && i<H-1) {
-            sky2[i+1][j+1] += dp[i][j];
-            sky2[i+1][j+1] += sky2[i][j];
+        rep(i, N) if(~s>>i&1) {
+            ll ns = s|1<<i;
+            dp[ns] += dp[s];
         }
     }
-    de(dp)
-    mint ans = dp[H-1][W-1];
+    ll ans = dp.back();
     Out(ans);
 
 }
