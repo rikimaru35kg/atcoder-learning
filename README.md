@@ -917,7 +917,7 @@
 - 左右からの累積和（累積max）を事前計算しておけば、移動先頂点における上側部分木が求まる。移動先頂点における上側部分木は、自分中心の部分木なので計算しやすいはず
 - かつっぱ氏の動画（V subtree）が分かりやすい
 ### 例題
-- !復習価値高 [V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
+- !復習価値中 [V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
 <!-- - !下に同じ問題あり。要復習 距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f) -->
 
 ## 区間DP
