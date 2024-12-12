@@ -218,22 +218,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(A, N);
-
-    ll ans = INF;
-    rep(ri, 2) {
-        vl dp(2, INF);
-        dp[ri] = 0;
-        rep(i, N) {
-            vl pdp(2, INF); swap(pdp, dp);
-            rep(j, 2) rep(k, 2) {
-                if(pdp[j]==INF) continue;
-                if(j==0 && k==0) continue;
-                chmin(dp[k], pdp[j]+(k==0?0:A[i]));
-            }
-        }
-        chmin(ans, dp[ri]);
+    LONG(N);
+    vb child(N);
+    vvl from(N);
+    vp ratio(N);
+    rep(i, N) {
+        LONG(p,q,r,b); --r, --b;
+        if(r!=-1) child[r] = true;
+        if(b!=-1) child[b] = true;
+        from[i].push_back(r);
+        from[i].push_back(b);
+        ratio[i] = {p,q};
     }
+    ll p=-1;
+    rep(i, N) {
+        if(!child[i]) p = i;
+    }
+
+    auto dfs=[&](auto f, ll v) -> ll {
+        if(v==-1) return 1;
+        ll w1 = f(f, from[v][0]);
+        ll w2 = f(f, from[v][1]);
+        auto [p,q] = ratio[v];
+        ll x = p*w1, y = q*w2;
+        ll g = gcd(x, y);
+        x /= g, y /= g;
+        return y*w1 + x*w2;
+    };
+    ll ans = dfs(dfs, p);
     Out(ans);
 
 }

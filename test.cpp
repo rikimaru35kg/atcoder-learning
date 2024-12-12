@@ -217,26 +217,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(A, N); VL(B, N);
-    rotate(B.begin(), B.begin()+N-1, B.end());
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    ll ans = INF;
-    rep(ri, 2) {
-        vl dp(2, INF);
-        dp[ri] = 0;
-        rep(i, N) {
-            vl pdp(2, INF); swap(pdp, dp);
-            rep(j, 2) rep(k, 2) {
-                if(pdp[j]==INF) continue;
-                ll cost = 0;
-                if(k==1) cost += A[i];
-                if(j==k) cost += B[i];
-                chmin(dp[k], pdp[j]+cost);
-            }
-        }
-        chmin(ans, dp[ri]);
+void solve() {
+    LONG(N);
+    vl C(N);
+    rep(i, N) {
+        CHAR(c);
+        if(c=='a') C[i] = 1;
+        else C[i] = 2;
     }
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+
+    vvm dp(4, vm(N));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ll c = C[v];
+        dp[c][v] = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            mint one = dp[c][v]*(dp[c][nv] + dp[3][nv]);
+            mint both = dp[3][v]*(dp[1][nv]+dp[2][nv]+2*dp[3][nv])
+                      + dp[c][v]*(dp[3][nv]+dp[3-c][nv]);
+            dp[c][v] = one;
+            dp[3][v] = both;
+        }
+        // dp[3][v] -= dp[c][v];
+    };
+    dfs(dfs, 0);
+    mint ans = dp[3][0];
     Out(ans);
 
 }
