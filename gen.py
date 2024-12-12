@@ -36,6 +36,14 @@ def N_An(N):
     print(*A)
 
 
+def NM_An(N):
+    MIN = 1; MAX = 50
+    A = [gen_rnd(MIN,MAX) for _ in range(N)]
+    M = gen_rnd(2, N)
+    print(N, M)
+    print(*A)
+
+
 def N_An_Bn(N, vertical=False):
     MIN = 1; MAX = 10
     A = [gen_rnd(MIN,MAX) for _ in range(N)]
@@ -132,10 +140,12 @@ if __name__ == '__main__':
     # PLEASE SPECIFY MIN MAX VALUE IN EACH FUNCTION!!
     # print("---N An------------")
     # N_An(10)
+    print("---N-M An----------")
+    NM_An(10)
     # print("---N An Bn---------")
     # N_An_Bn(5, vertical=False)
-    print("---H W A[i,j]------")
-    H_W_Matrix(4, 3)
+    # print("---H W A[i,j]------")
+    # H_W_Matrix(4, 3)
     # print("---N M graph-------")
     # N_M_graph(5, 7, directed=False, weighted=False)
     # print("---N tree graph----")

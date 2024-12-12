@@ -218,44 +218,28 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); STRING(S);
+    LONG(N, K);
+    VL(A, N);
 
-    ll M = 10;
-    vb dp(M);
-    dp[0] = true;
-    vvp pre(N, vp(M, Pr(-1,-1)));
+    vvl dp(N, vl(N, -INF));
+    rep(i, N) rep(j, i) dp[i][j] = A[i]+A[j];
+    vvl mp = dp;
+    // rep(i, N) rep(j, i) {
+    //     if(j) chmax(mp[i][j], mp[i][j-1]);
+    // }
 
-    auto update=[&](ll i, ll j, ll x) {
-        ll nj = (j + (i+1)*x) % M;
-        dp[nj] = true;
-        pre[i][nj] = {j, x};
-    };
     rep(i, N) {
-        vb pdp(M); swap(pdp, dp);
-        rep(j, M) if(pdp[j]) {
-            if(S[i]=='?') {
-                rep(x, M) { update(i, j, x); }
-            } else {
-                int x = S[i]-'0';
-                update(i, j, x);
-            }
+        rep(j, i) {
+            ll k = min(j-1,i-K);
+            if(k>=0 && mp[j][k]!=-INF) chmax(dp[i][j], mp[j][k]+A[i]);
+
+            chmax(mp[i][j], dp[i][j]);
+            if(j) chmax(mp[i][j], mp[i][j-1]);
         }
     }
-    if(dp[0]) puts("Yes");
-    else PNo
-
-    ll i = N-1, j = 0;
-    string ans;
-    while(i>=0) {
-        auto [pj, x] = pre[i][j];
-        ans += x+'0';
-
-        j = pj;
-        --i;
-    }
-    reverse(all(ans));
+    ll ans = 0;
+    rep(i, N) rep(j, i) chmax(ans, dp[i][j]);
     Out(ans);
-
 
 }
 
