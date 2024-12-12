@@ -219,7 +219,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -231,14 +231,31 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
+
 void solve() {
-    LONG(N);
-    vl C(N);
-    rep(i, N) {
-        CHAR(c);
-        if(c=='a') C[i] = 1;
-        else C[i] = 2;
-    }
+    LONG(N, M);
+    mint::set_mod(M);
     vvl from(N);
     rep(i, N-1) {
         LONGM(a, b);
@@ -246,23 +263,46 @@ void solve() {
         from[b].emplace_back(a);
     }
 
-    vvm dp(4, vm(N));
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ll c = C[v];
-        dp[c][v] = 1;
+    vm dp(N, 1);
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
         for(auto nv: from[v]) if(nv!=p) {
             f(f, nv, v);
-            mint one = dp[c][v]*(dp[c][nv] + dp[3][nv]);
-            mint both = dp[3][v]*(dp[1][nv]+dp[2][nv]+2*dp[3][nv])
-                      + dp[c][v]*(dp[3][nv]+dp[3-c][nv]);
-            dp[c][v] = one;
-            dp[3][v] = both;
+            dp[v] *= dp[nv]+1;
         }
-        // dp[3][v] -= dp[c][v];
+    };
+    dfs0(dfs0, 0);
+
+    auto upd=[&](mint x) {return x+1;};
+
+    vm ans(N);
+    auto dfs=[&](auto f, ll v, mint x=0, ll p=-1) -> void {
+        vl nvs;
+        vm dps;
+        mint all=upd(x);
+        for(auto nv: from[v]) if(nv!=p) {
+            nvs.push_back(nv);
+            dps.push_back(upd(dp[nv]));
+            all *= upd(dp[nv]);
+        }
+        ans[v] = all;
+
+        ll n = nvs.size();
+        vm Mf = cummul(dps);
+        reverse(all(dps));
+        vm Mr = cummul(dps);
+        reverse(all(dps));
+        reverse(all(Mr));
+        // rep(i, n) Mf[i+1] = Mf[i] * dps[i];
+        // repr(i, n) Mr[i] = Mr[i+1] * dps[i];
+
+        rep(i, n) {
+            ll nv = nvs[i];
+            mint nx = Mf[i] * Mr[i+1] * upd(x);
+            f(f, nv, nx, v);
+        }
     };
     dfs(dfs, 0);
-    mint ans = dp[3][0];
-    Out(ans);
+    for(auto x: ans ) Out(x);
 
 }
 
