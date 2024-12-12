@@ -217,28 +217,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, K);
-    VL(A, N);
+    LONG(N); VL(A, N);
 
-    vvl dp(N, vl(N, -INF));
-    rep(i, N) rep(j, i) dp[i][j] = A[i]+A[j];
-    vvl mp = dp;
-    // rep(i, N) rep(j, i) {
-    //     if(j) chmax(mp[i][j], mp[i][j-1]);
-    // }
+    vvvm dp(N, vvm(N, vm(N+1)));
+    rep(i, N) rep(j, i) { dp[i][j][2] = 1; }
 
-    rep(i, N) {
-        rep(j, i) {
-            ll k = min(j-1,i-K);
-            if(k>=0 && mp[j][k]!=-INF) chmax(dp[i][j], mp[j][k]+A[i]);
-
-            chmax(mp[i][j], dp[i][j]);
-            if(j) chmax(mp[i][j], mp[i][j-1]);
+    rep(i, N) rep(j, i) repk(l, 3, N+1) {
+        rep(k, j) {
+            if(A[i]-A[j]!=A[j]-A[k]) continue;
+            dp[i][j][l] += dp[j][k][l-1];
         }
     }
-    ll ans = 0;
-    rep(i, N) rep(j, i) chmax(ans, dp[i][j]);
+    vm ans(N);
+    ans[0] = N;
+    repk(l, 2, N+1) {
+        mint now = 0;
+        rep(i, N) rep(j, i) now += dp[i][j][l];
+        ans[l-1] = now;
+    }
     Out(ans);
 
 }
