@@ -929,7 +929,7 @@
 - 基本 [Matrix Chain Multiplication](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_B&lang=ja)
 - 基本 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
-- !復習価値低 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
+- 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - !復習価値中 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 
 ## DP経路復元

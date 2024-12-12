@@ -217,51 +217,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+bool allrem(ll l, ll r, vvl &dp) {
+    return dp[l][r]*3==r-l;
+};
 
 void solve() {
-    LONG(N);
-    vl C(N);
-    rep(i, N) {
-        CHAR(c);
-        if(c=='a') C[i] = 1;
-        else C[i] = 2;
-    }
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    STRING(S);
+    ll N = SIZE(S);
+    vvl dp(N+1, vl(N+1));
 
-    vvm dp(4, vm(N));
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ll c = C[v];
-        dp[c][v] = 1;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            mint one = dp[c][v]*(dp[c][nv] + dp[3][nv]);
-            mint both = dp[3][v]*(dp[1][nv]+dp[2][nv]+2*dp[3][nv])
-                      + dp[c][v]*(dp[3][nv]+dp[3-c][nv]);
-            dp[c][v] = one;
-            dp[3][v] = both;
+    repk(w, 3, N+1) {
+        rep(l, N+1-w) {
+            ll r = l+w;
+            for(ll m=l+1; m<r; ++m) {
+                chmax(dp[l][r], dp[l][m]+dp[m][r]);
+            }
+            if((r-l)%3!=0) continue;
+            if(S[l]!='i' || S[r-1]!='i') continue;
+            for(ll m=l+1; m<r-1; ++m) {
+                if(S[m]!='w') continue;
+                if(!allrem(l+1, m)) continue;
+                if(!allrem(m+1, r-1)) continue;
+                dp[l][r] = (r-l)/3;
+            }
         }
-        // dp[3][v] -= dp[c][v];
-    };
-    dfs(dfs, 0);
-    mint ans = dp[3][0];
+    }
+    ll ans = dp[0][N];
     Out(ans);
 
 }
