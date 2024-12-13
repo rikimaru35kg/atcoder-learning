@@ -218,6 +218,30 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(N);
+    VL2(H, P, N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return H[i]+P[i]<H[j]+P[j];
+    });
+
+    vl dp(N+1, INF);
+    dp[0] = 0;
+    for(auto i: p) {
+        ll h = H[i], p = P[i];
+        repr(j, N+1) {
+            if(dp[j]==INF) continue;
+            ll ch = dp[j];
+            if(ch<=h) chmin(dp[j+1], dp[j]+p);
+        }
+    }
+
+    ll ans = 0;
+    rep(j, N+1) if(dp[j]!=INF) {
+        chmax(ans, j);
+    }
+    Out(ans);
 
 }
 

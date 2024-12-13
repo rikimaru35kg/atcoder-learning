@@ -998,7 +998,7 @@
 
 ## インラインDP
 ### 例題
-- !要復習 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
+- !復習価値低 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
 
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
