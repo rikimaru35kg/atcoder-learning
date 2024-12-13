@@ -217,38 +217,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+using vvvvl = vector<vvvl>;
 
 void solve() {
-    LONG(N); VL(A, N);
+    LONG(N, L);
+    VL(X, N);
+    VL(T, N);
+    X.insert(X.begin(), 0LL);
+    X.push_back(L);
+    T.insert(T.begin(), -1);
+    T.push_back(-1);
+    N += 2;
 
-    vvvm dp(N, vvm(N, vm(N+1)));
-    rep(i, N) rep(j, i) { dp[i][j][2] = 1; }
+    vvvvl dp(2, vvvl(N, vvl(N, vl(N, INF))));
+    dp[0][0][N-1][0] = 0;
+    dp[1][0][N-1][0] = 0;
 
-    rep(i, N) rep(j, i) repk(l, 3, N+1) {
-        rep(k, j) {
-            if(A[i]-A[j]!=A[j]-A[k]) continue;
-            dp[i][j][l] += dp[j][k][l-1];
+    auto caldist=[&](ll i, ll j, ll c) -> ll {
+        ll ret = abs(X[j] - X[i]);
+        if(c) ret = L - ret;
+        return ret;
+    };
+
+    rep(l, N-1) for(ll r=N-1; r>l+1; --r) rep(n, N) rep(d, 2) {
+        ll t = dp[d][l][r][n];
+        if(t==INF) continue;
+        if(d==0) {
+            {
+                ll dt = caldist(l, l+1, 0);
+                ll gain = 0;
+                if(t+dt<=T[l+1]) gain = 1;
+                chmin(dp[0][l+1][r][n+gain], t+dt);
+            }
+            {
+                ll dt = caldist(l, r-1, 1);
+                ll gain = 0;
+                if(t+dt<=T[r-1]) gain = 1;
+                chmin(dp[1][l][r-1][n+gain], t+dt);
+            }
+        } else {
+            {
+                ll dt = caldist(r, r-1, 0);
+                ll gain = 0;
+                if(t+dt<=T[r-1]) gain = 1;
+                chmin(dp[1][l][r-1][n+gain], t+dt);
+            }
+            {
+                ll dt = caldist(r, l+1, 1);
+                ll gain = 0;
+                if(t+dt<=T[l+1]) gain = 1;
+                chmin(dp[0][l+1][r][n+gain], t+dt);
+            }
         }
     }
-    vm ans(N);
-    ans[0] = N;
-    repk(l, 2, N+1) {
-        mint now = 0;
-        rep(i, N) rep(j, i) now += dp[i][j][l];
-        ans[l-1] = now;
+    ll ans = 0;
+    rep(d, 2) rep(l, N) rep(r, N) rep(n, N) if(dp[d][l][r][n]!=INF) {
+        chmax(ans, n);
     }
     Out(ans);
 
