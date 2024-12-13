@@ -989,11 +989,11 @@
 - 要素i,jを置くパターンを両方（i->j,j->i）考え、i->jはOK、j->iはNGとなるのはどういう事か数式で表すと並べ替える順序を得られる
 ### 例題
 - 基本 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
-- !復習価値低 おやつ [C - おやつ ](https://atcoder.jp/contests/arc042/tasks/arc042_c)
+- 基本 おやつ [C - おやつ ](https://atcoder.jp/contests/arc042/tasks/arc042_c)
 - 基本　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
 - !復習価値低 [N - 活動](https://atcoder.jp/contests/past202104-open/tasks/past202104_n)
 - 基本 重さ制限付きタワー [X - Tower](https://atcoder.jp/contests/dp/tasks/dp_x)
-- !復習価値中 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
+- !復習価値低 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
 - 基本 アフィン変換最大化 [F - Maximum Composition](https://atcoder.jp/contests/abc366/tasks/abc366_f)
 
 ## インラインDP
