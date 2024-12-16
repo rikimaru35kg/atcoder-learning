@@ -217,44 +217,7 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, M, K);
-    vp edge;
-    rep(i, M) {
-        LONGM(a,b);
-        edge.emplace_back(a,b);
-    }
-
-    deque<mint> dp(N);
-    dp[0] = 1;
-
-    rep(i, K) {
-        vector<pair<ll,mint>> add;
-        for(auto [a,b]: edge) {
-            b = (b+N-1)%N;
-            add.emplace_back(b, dp[a]);
-        }
-        for(auto [v,x]: add) { dp[v] += x; }
-        mint last = dp.back(); dp.pop_back();
-        dp.push_front(last);
-    }
-    mint ans = 0;
-    rep(i, N) ans += dp[i];
-    Out(ans);
 
 }
 

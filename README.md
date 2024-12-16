@@ -237,7 +237,7 @@
 ### 例題
 - 基本 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 - !復習価値低 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
-
+- !復習価値中 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
 
 ## ある順列P{1,2,...,N}の区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
@@ -1275,6 +1275,7 @@
 - !復習価値低（ただしメビウス関数で解くなら） 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値中 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低（ただしメビウス関数で解くなら） バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+- !要復習 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
 - t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
