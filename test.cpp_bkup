@@ -219,7 +219,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint1000000007;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -231,33 +231,51 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve() {
-    LONG(N); VL(A, N);
-    ll M = 10, K = 11;
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
-    vm dp(1<<K);
-    dp[1] = 1;
-    ll mask = (1<<K)-1;
-    mint tot = 1;
-    rep(i, N) {
-        tot *= A[i];
-        vm pdp(1<<K); swap(pdp, dp);
-        rep(s, 1<<K) {
-            if(pdp[s]==0) continue;
-            for(ll x=1; x<=min(A[i],M); ++x) {
-                ll ns = s|s<<x;
-                ns &= mask;
-                dp[ns] += pdp[s];
+void solve() {
+    LONG(N);
+    STRING(S);
+
+    vm dp(N);
+    dp[0] = 1;
+    rep(i, N-1) {
+        vm pdp(N); swap(pdp, dp);
+        auto Sc = cumsum(pdp);
+        ll mx = i+1;
+        if(S[i]=='>') {
+            rep(j, mx+1) {
+                mint sum = Sc[N]-Sc[j];
+                dp[j] += sum;
             }
-            ll num = max(A[i]-M,0LL);
-            dp[s] += pdp[s] * num;
+        } else {
+            rep(j, mx+1) {
+                mint sum = Sc[j];
+                dp[j] += sum;
+            }
         }
     }
     mint ans = 0;
-    rep(s, 1<<K) {
-        if(s>>M&1) ans += dp[s];
-    }
-    ans /= tot;
+    rep(j, N) ans += dp[j];
     Out(ans);
 
 }
