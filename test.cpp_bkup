@@ -218,34 +218,30 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M); VL(A, N);
-    vvt3 bonus(N+1);
-    rep(i, M) {
-        LONG(p,q,l,r); --q;
-        bonus[q].emplace_back(p,l,r);
+    LONG(N);
+    vvl pos(N+1, vl(2));
+    rep(i, N) pos[i][0] = INF, pos[i][1] = -INF;
+    rep(i, N) {
+        LONG(x,c); --c;
+        chmin(pos[c][0], x);
+        chmax(pos[c][1], x);
     }
 
-    auto calc=[&](ll num) -> ll {
-        vl dp(3, -1);
-        dp[0] = 0;
-        rep(i, N+1) {
-            for(auto [p,l,r]: bonus[i]) {
-                if(dp[l]==-1) continue;
-                if(Percent(num-l,3LL)!=r) continue;
-                dp[l] += p;
-            }
-            if(i==N) break;
-            vl pdp(3, -1); swap(pdp, dp);
-            rep(j, 3) {
-                if(pdp[j]==-1) continue;
-                chmax(dp[j], pdp[j]);
-                chmax(dp[(j+1)%3], pdp[j]+A[i]);
-            }
-        }
-        return dp[num];
-    };
-    ll ans = 0;
-    rep(i, 3) chmax(ans, calc(i));
+    ll pl=0, pr=0;
+    vl dp(2);
+    rep(c, N+1) {
+        if(pos[c][0]==INF) continue;
+        vl pdp(2, INF); swap(pdp, dp);
+        ll l = pos[c][0], r = pos[c][1];
+        ll d = r-l;
+        chmin(dp[0], pdp[0]+abs(pl-r)+d);
+        chmin(dp[1], pdp[0]+abs(pl-l)+d);
+        chmin(dp[0], pdp[1]+abs(pr-r)+d);
+        chmin(dp[1], pdp[1]+abs(pr-l)+d);
+        de(c)de(pos[c])de(dp)
+        pl=pos[c][0], pr=pos[c][1];
+    }
+    ll ans = dp[0];
     Out(ans);
 
 }

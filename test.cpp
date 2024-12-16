@@ -217,50 +217,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    ll c, v;
-    D(ll c=-2, ll v=-INF):c(c),v(v) {}
-};
-struct Data {
-    D d1, d2;
-    Data(D d1, D d2):d1(d1),d2(d2) {}
-
-    void update(D d3) {
-        if(d3.v>d2.v) swap(d3, d2);
-        if(d2.v>d1.v) swap(d1, d2);
-        if(d1.c==d2.c) swap(d2, d3);
-    };
-    D get(ll c) {
-        if(d1.c!=c) return d1;
-        else return d2;
-    }
-};
-using vD = vector<Data>;
 
 void solve() {
-    LONG(N, K);
+    LONG(N);
+    VL(A, N-1);
 
-    vD dp(K+1, Data(D(-1,-INF+1),D()));
-    vD edp = dp;
-    dp[0].d1 = D(-1,0);
-    rep(i, N) {
-        LONG(c,v);
-        vD pdp = edp; swap(pdp, dp);
-        rep(j, K+1) {
-            if(pdp[j].d1.v<0) continue;
-            if(j<K) { // no selection
-                dp[j+1].update(pdp[j].d1);
-                dp[j+1].update(pdp[j].d2);
-            }
-            // selection
-            auto [pc,pv] = pdp[j].get(c);
-            // if(pv<0) continue;
-            dp[j].update(D(c, pv+v));
+const int mx = 5050;
+    auto init=[&](ll *dp) { rep(j, N/2+1) rep(k, 2) dp[j*2+k] = INF; };
+    ll dp[mx][2];
+
+    init(*dp);
+    dp[1][0] = 0;
+    rep(i, N-1) {
+        ll pdp[mx][2];
+        init(*pdp); swap(pdp, dp);
+        rep(j, N/2+1) rep(k, 2) rep(nk, 2) {
+            if(pdp[j][k]==INF) continue;
+            ll time = 0;
+            if(k!=nk) time = A[i];
+            ll nj = j;
+            if(nk==0) nj = j+1;
+            if(nj<=N/2) chmin(dp[nj][nk], pdp[j][k]+time);
         }
     }
-    auto [c,v] = dp[K].d1;
-    if(v<0) Pm1
-    Out(v);
+    ll ans = min(dp[N/2][0], dp[N/2][1]);
+    Out(ans);
+
 
 }
 

@@ -1045,8 +1045,8 @@
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
 - 経路問題、進んだステップ数もキーにする場合あり
 ### 例題
-- !復習価値低 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
-- !要復習 [B - お菓子の分割](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_b)
+- 基本 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
+- !復習価値低 [B - お菓子の分割](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_b)
 
 # 文字列
 
