@@ -217,36 +217,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M); VL(A, N);
-    vvt3 bonus(N+1);
-    rep(i, M) {
-        LONG(p,q,l,r); --q;
-        bonus[q].emplace_back(p,l,r);
-    }
+struct D {
+    ll c, v;
+    D(ll c=-2, ll v=-INF):c(c),v(v) {}
+};
+struct Data {
+    D d1, d2;
+    Data(D d1, D d2):d1(d1),d2(d2) {}
 
-    auto calc=[&](ll num) -> ll {
-        vl dp(3, -1);
-        dp[0] = 0;
-        rep(i, N+1) {
-            for(auto [p,l,r]: bonus[i]) {
-                if(dp[l]==-1) continue;
-                if(Percent(num-l,3LL)!=r) continue;
-                dp[l] += p;
-            }
-            if(i==N) break;
-            vl pdp(3, -1); swap(pdp, dp);
-            rep(j, 3) {
-                if(pdp[j]==-1) continue;
-                chmax(dp[j], pdp[j]);
-                chmax(dp[(j+1)%3], pdp[j]+A[i]);
-            }
-        }
-        return dp[num];
+    void update(D d3) {
+        if(d3.v>d2.v) swap(d3, d2);
+        if(d2.v>d1.v) swap(d1, d2);
+        if(d1.c==d2.c) swap(d2, d3);
     };
-    ll ans = 0;
-    rep(i, 3) chmax(ans, calc(i));
-    Out(ans);
+    D get(ll c) {
+        if(d1.c!=c) return d1;
+        else return d2;
+    }
+};
+using vD = vector<Data>;
+
+void solve() {
+    LONG(N, K);
+
+    vD dp(K+1, Data(D(-1,-INF+1),D()));
+    vD edp = dp;
+    dp[0].d1 = D(-1,0);
+    rep(i, N) {
+        LONG(c,v);
+        vD pdp = edp; swap(pdp, dp);
+        rep(j, K+1) {
+            if(pdp[j].d1.v<0) continue;
+            if(j<K) { // no selection
+                dp[j+1].update(pdp[j].d1);
+                dp[j+1].update(pdp[j].d2);
+            }
+            // selection
+            auto [pc,pv] = pdp[j].get(c);
+            // if(pv<0) continue;
+            dp[j].update(D(c, pv+v));
+        }
+    }
+    auto [c,v] = dp[K].d1;
+    if(v<0) Pm1
+    Out(v);
 
 }
 
