@@ -223,7 +223,8 @@ struct Trie {
         MP to;
         int num;  // # of words that go through this node
         int words; // # of words that end at this node
-        Node(MP to=MP(), int num=0, int words=0): to(to),num(num),words(words) {}
+        ll rem;
+        Node(MP to=MP(), int num=0, int words=0, ll rem=INF): to(to),num(num),words(words),rem(rem) {}
     };
     int n;  // # of nodes
     vector<Node> node;
@@ -231,7 +232,9 @@ struct Trie {
     void add(string &s) {
         int v = 0;
         node[0].num++;
-        for(auto c: s) {
+        ll m = s.size();
+        rep(i, m) {
+            char c = s[i];
             if(!node[v].to.count(c)) {
                 node.push_back(Node());
                 node[v].to[c] = n;
@@ -239,8 +242,20 @@ struct Trie {
             }
             v = node[v].to[c];
             node[v].num++;
+            chmin(node[v].rem, m-1-i);
         }
         node[v].words++;
+    }
+    ll calc(string &s) {
+        ll ret = s.size();
+        ll m = s.size();
+        ll v = 0;
+        rep(i, m) {
+            if(!node[v].to.count(s[i])) break;
+            v = node[v].to[s[i]];
+            chmin(ret, node[v].rem+m-1-i);
+        }
+        return ret;
     }
     int search_num(string &s) { // # of s added to the trie
         int v = 0;
@@ -277,18 +292,11 @@ struct Trie {
 void solve() {
     LONG(N);
     Trie trie;
-    VS(S, N);
     rep(i, N) {
-        trie.add(S[i]);
-    }
-    rep(i, N) {
-        ll ans = trie.get_lcp(S[i]);
-        Out(ans);
-    }
-    rep(i, 100) {
         STRING(s);
-        ll num = trie.search_prefix_num(s);
-        de(num);
+        ll ans = trie.calc(s);
+        Out(ans);
+        trie.add(s);
     }
 
 }

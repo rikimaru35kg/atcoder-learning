@@ -299,37 +299,31 @@ struct hash<mints> {
 }
 
 void solve() {
-    LONG(N); STRING(S);
-    mints ha=0, hb=0;
-    repk(i, N, 2*N) ha = ha*base + S[i];
-    repr(i, N) hb = hb*base + S[i];
-
-    mints binv = mints(base).inv();
-    auto output=[&](ll x) {
-        string ans;
-        repk(i, x, x+N) ans += S[i];
-        reverse(all(ans));
-        Out(ans);
-        Out(x);
-    };
-
-    vector<mints> bpow(N, 1);
-    rep(i, N-1) bpow[i+1] = bpow[i] * base;
-
+    LONG(N);
+    umap<mints,ll> mp;
     rep(i, N) {
-        if(ha==hb) {
-            output(i);
-            return;
+        STRING(s);
+        ll m = s.size();
+        ll ans = m;
+        mints h = 0;
+        rep(i, m) {
+            h = h*base + s[i];
+            if(!mp.count(h)) break;
+            ll now = m-1-i+mp[h];
+            chmin(ans, now);
         }
-        ha -= bpow[N-1-i]*S[i+N];
-        ha += bpow[N-1-i]*S[i];
-
-        hb -= S[i];
-        hb *= binv;
-        hb += bpow[N-1]*S[i+N];
+        // add
+        h = 0;
+        rep(i, m) {
+            h = h*base + s[i];
+            if(!mp.count(h)) {
+                mp[h] = m-1-i;
+            } else {
+                chmin(mp[h], m-1-i);
+            }
+        }
+        Out(ans);
     }
-
-    Pm1
 
 }
 
