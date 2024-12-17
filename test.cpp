@@ -217,28 +217,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(A, N);
-    ll M = N-1;
-    vl d(M);
-    rep(i, M) { d[i] = A[i+1]-A[i]; }
-    ll l = 0, r = M-1;
-    ll ans = 0;
-    while(true) {
-        while(l<M && d[l]>0) ++l;
-        while(r>=0 && d[r]<0) --r;
-        if(l>r || l==M || r==-1) break;
-        if(l==r) {
-            ++ans; break;
-        }
-        ll mn = INF;
-        chmin(mn, 1-d[l]);
-        chmin(mn, d[r]+1);
-        ans += mn;
-        d[l] += mn, d[r] -= mn;
-        if(d[l]>0) ++l; if(d[r]<0) --r;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    Out(ans);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+#include <atcoder/string>
+using namespace atcoder;
+
+void solve() {
+    STRING(S);
+    ll N = S.size();
+    auto v = suffix_array(S);
+    LONG(Q);
+    rep(i, Q) {
+        STRING(t);
+        ll n = t.size();
+        auto f=[&](ll x) -> bool {
+            string s = S.substr(v[x], n);
+            return s>=t;
+        };
+        auto g=[&](ll x) -> bool {
+            string s = S.substr(v[x], n);
+            return s>t;
+        };
+        ll l = binary_search(N, -1, f);
+        ll r = binary_search(N, -1, g);
+        Out(r-l);
+    }
+
 
 }
 

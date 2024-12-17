@@ -217,64 +217,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-// !Lazy Segtree for affine transformation
-// Edit here --> 
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e() {return 0;}
-// <-- Edit here
-struct F {
-    ll a, b;
-    F(ll a, ll b):a(a), b(b) {}
-};
-S mapping(F f, S x) {
-    return f.a*x + f.b;
-}
-F composition(F f, F g) {
-    return F(f.a*g.a, f.a*g.b+f.b);
-}
-F id() {return F(1,0);}
-
 void solve() {
-    STRING(Str);
-    ll N = SIZE(Str);
-    vl p(N);
-    iota(all(p), 0);
-    vl stck;
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(p);
-
-    rep(i, N) {
-        if(Str[i]=='(') {
-            stck.push_back(i);
-        } else if(Str[i]==')') {
-            ll l = pop(stck);
-            ll r = i;
-            seg.apply(l, r+1, F(-1,l+r));
-        } else {
+    LONG(N); VL(A, N);
+    ll M = N-1;
+    vl d(M);
+    rep(i, M) { d[i] = A[i+1]-A[i]; }
+    ll l = 0, r = M-1;
+    ll ans = 0;
+    while(true) {
+        while(l<M && d[l]>0) ++l;
+        while(r>=0 && d[r]<0) --r;
+        if(l>r || l==M || r==-1) break;
+        if(l==r) {
+            ++ans; break;
         }
+        ll mn = INF;
+        chmin(mn, 1-d[l]);
+        chmin(mn, d[r]+1);
+        ans += mn;
+        d[l] += mn, d[r] -= mn;
+        if(d[l]>0) ++l; if(d[r]<0) --r;
     }
-    ll flip = 0;
-    vl f(N);
-    rep(i, N) {
-        if(Str[i]=='(' || Str[i]==')') flip ^= 1;
-        f[i] = flip;
-    }
-    string ans(N, '.');
-    rep(i, N) {
-        ll ni = seg.get(i);
-        char c = Str[i];
-        if(c=='(' || c==')') continue;
-        if(f[i]) c ^= 32;
-        ans[ni] = c;
-    }
-    for(auto c: ans) {
-        if(c=='.') continue;
-        cout<<c;
-    }
-    cout<<endl;
+    Out(ans);
 
 }
 

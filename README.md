@@ -1100,7 +1100,7 @@
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
 - O(N)で求まるらしい（ACLにある）
 ### 例題
-- !復習価値高 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
+- !復習価値低 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
 
 # 数
 
