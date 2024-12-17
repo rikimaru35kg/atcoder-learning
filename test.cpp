@@ -217,32 +217,119 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+const long long base = 12345;
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+}
 
 void solve() {
-    LONG(N);
-    VL(A, N-1);
+    LONG(N); STRING(S);
+    mints ha=0, hb=0;
+    repk(i, N, 2*N) ha = ha*base + S[i];
+    repr(i, N) hb = hb*base + S[i];
 
-const int mx = 5050;
-    auto init=[&](ll *dp) { rep(j, N/2+1) rep(k, 2) dp[j*2+k] = INF; };
-    ll dp[mx][2];
+    mints binv = mints(base).inv();
+    auto output=[&](ll x) {
+        string ans;
+        repk(i, x, x+N) ans += S[i];
+        reverse(all(ans));
+        Out(ans);
+        Out(x);
+    };
 
-    init(*dp);
-    dp[1][0] = 0;
-    rep(i, N-1) {
-        ll pdp[mx][2];
-        init(*pdp); swap(pdp, dp);
-        rep(j, N/2+1) rep(k, 2) rep(nk, 2) {
-            if(pdp[j][k]==INF) continue;
-            ll time = 0;
-            if(k!=nk) time = A[i];
-            ll nj = j;
-            if(nk==0) nj = j+1;
-            if(nj<=N/2) chmin(dp[nj][nk], pdp[j][k]+time);
+    vector<mints> bpow(N, 1);
+    rep(i, N-1) bpow[i+1] = bpow[i] * base;
+
+    rep(i, N) {
+        if(ha==hb) {
+            output(i);
+            return;
         }
-    }
-    ll ans = min(dp[N/2][0], dp[N/2][1]);
-    Out(ans);
+        ha -= bpow[N-1-i]*S[i+N];
+        ha += bpow[N-1-i]*S[i];
 
+        hb -= S[i];
+        hb *= binv;
+        hb += bpow[N-1]*S[i+N];
+    }
+
+    Pm1
 
 }
 
