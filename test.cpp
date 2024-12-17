@@ -217,31 +217,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    VL2(A,B,N);
-
-    ll ans = 0;
-    auto calall=[&]() -> ll {
-        ll ret = 0;
-        rep(i, N) {
-            if((A[i]&K)==A[i]) ret += B[i];
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+    long long ans = 1;
+    a %= mod;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a % mod;
         }
-        return ret;
-    };
-    chmax(ans, calall());
-
-    rep(d, 30) {
-        if(~K>>d&1) continue;
-        ll now = 0;
-        ll kx = K>>(d+1);
-        rep(i, N) {
-            if(A[i]>>d&1) continue;
-            ll x = A[i]>>(d+1);
-            if((x&kx)==x) now += B[i];
-        }
-        chmax(ans, now);
+        a = a * a % mod;
+        b = (b >> 1);
     }
+    return ans;
+}
+
+//! Calculate a^b
+//! a >= 0, b >= 0
+long long spow(long long a, long long b) {
+    long long ans = 1;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a;
+        }
+        a = a * a;
+        b = (b >> 1);
+    }
+    return ans;
+}
+
+void solve() {
+    LONG(A,B,C);
+    ll r = modpow(B,C,4);
+    if(r==0) r=4;
+    ll ans = modpow(A,r,10);
     Out(ans);
 
 }

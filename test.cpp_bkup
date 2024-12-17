@@ -217,32 +217,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(A, N);
-    ll M = 30;
-    vl d(M);
-    rep(k, M) {
-        rep(i, N) if(A[i]>>k&1) d[k]++;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    ll ans = accumulate(all(A), 0LL);
-    rep(i, N) {
-        ll now = 0;
-        rep(k, M) {
-            ll cnt = 0;
-            if(A[i]>>k&1) cnt = N-d[k];
-            else cnt = d[k];
-            now += cnt * (1LL<<k);
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+ll solve(ll N) {
+    auto v = separate_digit(N);
+    ll ans = 0;
+    ll M = v.size();
+
+    ll ten = 1;
+    rep(i, M-1) ten *= 10;
+    ll upper = 0;
+    rep(i, M) {
+        if(v[i]==0) {
+            ans += upper * ten;
+        } else if(v[i]==1) {
+            ans += upper * ten;
+            ans += N%ten+1;
+        } else {
+            ans += (upper+1) * ten;
         }
-        chmax(ans, now);
+        ten /= 10;
+        upper = upper * 10 + v[i];
     }
-    Out(ans);
+
+    return ans;
+}
+ll solve2(ll N) {
+    ll ans2=0;
+    rep1(x, N) {
+        auto v = separate_digit(x);
+        for(auto y:v) if(y==1) ++ans2;
+    }
+    return ans2;
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    // rep1(i, N) {
+    //     if(solve(i)!=solve2(i)) de(i);
+    // }
+    Out(solve(N));
+    // de(solve2(N));
 }
 
 // ### test.cpp ###
