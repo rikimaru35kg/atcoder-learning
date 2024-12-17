@@ -217,21 +217,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/string>
-using namespace atcoder;
-
 void solve() {
-    LONG(N);
-    STRING(S);
+    LONG(N); VL(A, N);
+    ll M = N-1;
+    vl d(M);
+    rep(i, M) { d[i] = A[i+1]-A[i]; }
+    ll l = 0, r = M-1;
     ll ans = 0;
-    rep(i, N) {
-        auto v = z_algorithm(S);
-        ll m = v.size();
-        repk(j, 1, m) {
-            ll now = min((ll)v[j], j);
-            chmax(ans, now);
+    while(true) {
+        while(l<M && d[l]>0) ++l;
+        while(r>=0 && d[r]<0) --r;
+        if(l>r || l==M || r==-1) break;
+        if(l==r) {
+            ++ans; break;
         }
-        S = S.substr(1);
+        ll mn = INF;
+        chmin(mn, 1-d[l]);
+        chmin(mn, d[r]+1);
+        ans += mn;
+        d[l] += mn, d[r] -= mn;
+        if(d[l]>0) ++l; if(d[r]<0) --r;
     }
     Out(ans);
 
