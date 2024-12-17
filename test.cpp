@@ -218,20 +218,27 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(A, N);
-    ll M = 30;
-    vl d(M);
-    rep(k, M) {
-        rep(i, N) if(A[i]>>k&1) d[k]++;
-    }
-    ll ans = accumulate(all(A), 0LL);
-    rep(i, N) {
+    LONG(N, K);
+    VL2(A,B,N);
+
+    ll ans = 0;
+    auto calall=[&]() -> ll {
+        ll ret = 0;
+        rep(i, N) {
+            if((A[i]&K)==A[i]) ret += B[i];
+        }
+        return ret;
+    };
+    chmax(ans, calall());
+
+    rep(d, 30) {
+        if(~K>>d&1) continue;
         ll now = 0;
-        rep(k, M) {
-            ll cnt = 0;
-            if(A[i]>>k&1) cnt = N-d[k];
-            else cnt = d[k];
-            now += cnt * (1LL<<k);
+        ll kx = K>>(d+1);
+        rep(i, N) {
+            if(A[i]>>d&1) continue;
+            ll x = A[i]>>(d+1);
+            if((x&kx)==x) now += B[i];
         }
         chmax(ans, now);
     }
