@@ -298,41 +298,38 @@ struct hash<mints> {
 };
 }
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S {
-    mints h, w;
-    S(mints h, mints w): h(h),w(w) {}
-};
-S op(S a, S b) {
-    return S(a.h*b.w+b.h, a.w*b.w);
-}
-S e() {return S(0,1);}
-
 void solve() {
-    LONG(N, Q);
-    STRING(Str);
-    segtree<S,op,e> seg1(N), seg2(N);
-    auto mon=[&](char c) -> S { return S(c, base); };
+    LONG(N); STRING(S);
+    mints ha=0, hb=0;
+    repk(i, N, 2*N) ha = ha*base + S[i];
+    repr(i, N) hb = hb*base + S[i];
+
+    mints binv = mints(base).inv();
+    auto output=[&](ll x) {
+        string ans;
+        repk(i, x, x+N) ans += S[i];
+        reverse(all(ans));
+        Out(ans);
+        Out(x);
+    };
+
+    vector<mints> bpow(N, 1);
+    rep(i, N-1) bpow[i+1] = bpow[i] * base;
+
     rep(i, N) {
-        seg1.set(i, mon(Str[i]));
-        seg2.set(N-1-i, mon(Str[i]));
-    }
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(x); CHAR(c);
-            seg1.set(x, mon(c));
-            seg2.set(N-1-x, mon(c));
-        } else {
-            LONG(l, r); --l;
-            S s1 = seg1.prod(l, r);
-            S s2 = seg2.prod(N-r, N-l);
-            if(s1.h==s2.h) puts("Yes");
-            else puts("No");
+        if(ha==hb) {
+            output(i);
+            return;
         }
+        ha -= bpow[N-1-i]*S[i+N];
+        ha += bpow[N-1-i]*S[i];
+
+        hb -= S[i];
+        hb *= binv;
+        hb += bpow[N-1]*S[i+N];
     }
+
+    Pm1
 
 }
 
