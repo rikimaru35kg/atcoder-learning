@@ -217,87 +217,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
-    struct Node {
-        using MP = map<char,int>;
-        MP to;
-        int num;  // # of words that go through this node
-        int words; // # of words that end at this node
-        ll rem;
-        Node(MP to=MP(), int num=0, int words=0, ll rem=INF): to(to),num(num),words(words),rem(rem) {}
-    };
-    int n;  // # of nodes
-    vector<Node> node;
-    Trie(): n(1),node(1) {}  // only root node
-    void add(string &s) {
-        int v = 0;
-        node[0].num++;
-        ll m = s.size();
-        rep(i, m) {
-            char c = s[i];
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
-            }
-            v = node[v].to[c];
-            node[v].num++;
-            chmin(node[v].rem, m-1-i);
-        }
-        node[v].words++;
-    }
-    ll calc(string &s) {
-        ll ret = s.size();
-        ll m = s.size();
-        ll v = 0;
-        rep(i, m) {
-            if(!node[v].to.count(s[i])) break;
-            v = node[v].to[s[i]];
-            chmin(ret, node[v].rem+m-1-i);
-        }
-        return ret;
-    }
-    int search_num(string &s) { // # of s added to the trie
-        int v = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            v = node[v].to[c];
-        }
-        return node[v].words;
-    }
-    int search_prefix_num(string &s) { // # of words that have s as prefix
-        int v = 0;
-        int ret = node[v].num;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            v = node[v].to[c];
-            ret = node[v].num;
-        }
-        return ret;
-    }
-    int get_lcp(string &s) { // Use this function after s is added.
-        int v = 0;
-        int ret = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            int nv = node[v].to[c];
-            if(node[nv].num<=1) break;
-            ++ret;
-            v = nv;
-        }
-        return ret;
-    }
-};
+#include <atcoder/string>
+using namespace atcoder;
 
 void solve() {
     LONG(N);
-    Trie trie;
+    STRING(S);
+    ll ans = 0;
     rep(i, N) {
-        STRING(s);
-        ll ans = trie.calc(s);
-        Out(ans);
-        trie.add(s);
+        auto v = z_algorithm(S);
+        ll m = v.size();
+        repk(j, 1, m) {
+            ll now = min((ll)v[j], j);
+            chmax(ans, now);
+        }
+        S = S.substr(1);
     }
+    Out(ans);
 
 }
 

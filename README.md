@@ -1074,8 +1074,8 @@
 - 文字列を辞書順に並べた場合、S[i]とS[j]のLCPは区間minで求まる
 - LCPは全接頭辞の個数を事前に調べておけば解決できる問題も多く、ロリハが有用な事が多い
 ### 例題
-- 基本 LCP(Longest Common Prefix) [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
-- 基本 LCPの総和 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+- 基本 [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
+- 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 
 ## Z-algorithm（Zアルゴリズム）
@@ -1085,7 +1085,7 @@
 - どこまで探索を省略できるかで頭が混乱しがちなので、かつっぱ氏のyoutubeを見ると理解できる
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
-- !復習価値低 Zアルゴリズムを工夫すれば解ける問題 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+- 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
 
 ## 区間操作
 - 区間に操作させても内部に影響がない場合、区間の端だけ考えて考察すると良い
