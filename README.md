@@ -1130,9 +1130,9 @@
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
-- !復習価値低 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
-- !復習価値高 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
-- !要復習 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
+- !復習価値中 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
+- !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
+- !復習価値中 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
 
 ## OR
 - ORは各ビットの和集合
