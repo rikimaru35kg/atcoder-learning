@@ -217,71 +217,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+vector<long long> listup_divisor(long long x, bool issort=false) {
     vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
-ll solve(ll N) {
-    auto v = separate_digit(N);
-    ll ans = 0;
-    ll M = v.size();
-
-    ll ten = 1;
-    rep(i, M-1) ten *= 10;
-    ll upper = 0;
-    rep(i, M) {
-        if(v[i]==0) {
-            ans += upper * ten;
-        } else if(v[i]==1) {
-            ans += upper * ten;
-            ans += N%ten+1;
-        } else {
-            ans += (upper+1) * ten;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
         }
-        ten /= 10;
-        upper = upper * 10 + v[i];
     }
-
-    return ans;
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
 }
-ll solve2(ll N) {
-    ll ans2=0;
-    rep1(x, N) {
-        auto v = separate_digit(x);
-        for(auto y:v) if(y==1) ++ans2;
+
+void solve() {
+    LONG(N);
+    VL2(A,B,N);
+    auto das = listup_divisor(A[0]);
+    auto dbs = listup_divisor(B[0]);
+    ll ans = 1;
+    for(auto da: das) for(auto db: dbs) {
+        bool ok = true;
+        rep(i, N) {
+            bool now = false;
+            if(A[i]%da==0 && B[i]%db==0) now = true;
+            if(B[i]%da==0 && A[i]%db==0) now = true;
+            if(!now) ok = false;
+        }
+        if(ok) chmax(ans, lcm(da,db));
     }
-    return ans2;
+    Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    // rep1(i, N) {
-    //     if(solve(i)!=solve2(i)) de(i);
-    // }
-    Out(solve(N));
-    // de(solve2(N));
+    solve();
 }
 
 // ### test.cpp ###
