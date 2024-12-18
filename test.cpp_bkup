@@ -217,87 +217,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
     return ret;
 }
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-};
-
-
 void solve() {
-    LONG(N); STRING(S);
-    auto ds=listup_divisor(N, true);
-    Sieve sv(N);
+    DOUBLE(_X,_Y,_R);
+    ll step = 10000;
+    ll X = round(_X*step); ll Y = round(_Y*step); ll R = round(_R*step);
+    X %= step, Y %= step;
 
-    mint sum = 0;
-    for(auto d: ds) {
-        if(d==N) break;
-        vb work(d);
-        rep(i, N) {
-            if(S[i]=='.') work[i%d] = true;
+    auto incircle=[&](ll x, ll y) -> bool {
+        return euclid_dist2({x,y},{X,Y}) <= R*R;
+    };
+    de3(X,Y,R)
+
+    ll ans = 0;
+    {
+        ll yini = 1e9+2*step;
+        ll lx = 0, rx = step;
+        for(ll y=yini; y>=Y; y-=step) {
+            while(incircle(lx,y)) lx -= step;
+            while(incircle(rx,y)) rx += step;
+            ll now = (rx-lx)/step-1;
+            // if(now>0) de4(y,lx,rx,now)
+            ans += (rx-lx)/step-1;
         }
-
-        mint now = 1;
-        rep(i, d) if(!work[i]) now *= 2;
-        sum -= now * sv.mu(N/d);
     }
-    Out(sum);
+    {
+        ll yini = -1e9-2*step;
+        ll lx = 0, rx = step;
+        for(ll y=yini; y<Y; y+=step) {
+            while(incircle(lx,y)) lx -= step;
+            while(incircle(rx,y)) rx += step;
+            ll now = (rx-lx)/step-1;
+            // if(now>0) de4(y,lx,rx,now)
+            ans += (rx-lx)/step-1;
+        }
+    }
+    Out(ans);
 
 }
 

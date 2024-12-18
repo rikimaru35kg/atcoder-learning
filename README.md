@@ -1322,7 +1322,7 @@
 - この時、+1した回数に1を加えると、桁和になる
 - 最小桁和を求めたい場合、グラフを作って01-BFSすれば最小桁和を求める事ができる
 ### 例題
-- !復習価値低 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
+- 基本 Kの倍数の最小桁和 [D - Small Multiple](https://atcoder.jp/contests/abc077/tasks/arc084_b)
 
 ## 方程式
 - 係数を保存しておくことで文字式を表すことができる。例えばax+bを保存したい場合、aとbを保存しておく
