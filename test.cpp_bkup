@@ -217,43 +217,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
 }
 
 void solve() {
-    LONG(N);
-    VL2(A,B,N);
-    auto das = listup_divisor(A[0]);
-    auto dbs = listup_divisor(B[0]);
-    ll ans = 1;
-    for(auto da: das) for(auto db: dbs) {
-        bool ok = true;
-        rep(i, N) {
-            bool now = false;
-            if(A[i]%da==0 && B[i]%db==0) now = true;
-            if(B[i]%da==0 && A[i]%db==0) now = true;
-            if(!now) ok = false;
-        }
-        if(ok) chmax(ans, lcm(da,db));
+    LONG(N, S, K);
+    auto [g,x0,y0] = extgcd(K, N);
+    if(S%g!=0) {
+        Out(-1); return;
     }
-    Out(ans);
-
+    ll k = -S/g;
+    ll x = Percent(x0*k, N/g);
+    Out(x);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

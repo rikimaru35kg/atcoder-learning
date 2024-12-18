@@ -1213,9 +1213,9 @@
 ![](./pictures/ext_gcd.png)
 - rep(i,N) g=gcd(g,a[i])は1回の操作ごとに、gが変わらない（O(1)）か、gが半分以下になるかのどちらかである。すなわちセグ木に乗せた場合、毎回のop演算でlogMかかる訳ではなく、全体でlogMかかるだけなので、セグ木一回当たりのprod計算量はlogN+logMとなる
 ### 例題
-- !復習価値中 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
+- 基本 snuke氏の拡張ユークリッド解説動画が神（＆本問題の解説は上記自分の説明の方が分かりやすいかも） [E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e)
 - 基本 [F - S = 1](https://atcoder.jp/contests/abc340/tasks/abc340_f)
-- !復習価値低 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
+- 基本 グリッド上のGCD [F - Rectangle GCD](https://atcoder.jp/contests/abc254/tasks/abc254_f)
 
 ## LCM最小公倍数
 - 最小公倍数は各素因数の最大指数を選んだものとなる
