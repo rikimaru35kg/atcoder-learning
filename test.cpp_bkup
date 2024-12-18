@@ -217,51 +217,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
 void solve() {
-    DOUBLE(_X,_Y,_R);
-    ll step = 10000;
-    ll X = round(_X*step); ll Y = round(_Y*step); ll R = round(_R*step);
-    X %= step, Y %= step;
-
-    auto incircle=[&](ll x, ll y) -> bool {
-        return euclid_dist2({x,y},{X,Y}) <= R*R;
+    LONG(K);
+    vl dist(K, INF);
+    vector<queue<ll>> ques(2);
+    ll t = 0;
+    auto push=[&](ll v, ll d, int p) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        ques[(t+p)%2].push(v);
     };
-    de3(X,Y,R)
-
-    ll ans = 0;
-    {
-        ll yini = 1e9+2*step;
-        ll lx = 0, rx = step;
-        for(ll y=yini; y>=Y; y-=step) {
-            while(incircle(lx,y)) lx -= step;
-            while(incircle(rx,y)) rx += step;
-            ll now = (rx-lx)/step-1;
-            // if(now>0) de4(y,lx,rx,now)
-            ans += (rx-lx)/step-1;
+    push(1, 1, 1);
+    while(ques[0].size() || ques[1].size()) {
+        if(ques[t].empty()) t ^= 1;
+        ll v = ques[t].front(); ques[t].pop();
+        { // +1
+            ll nv = (v+1)%K;
+            push(nv, dist[v]+1, 1);
+        }
+        {
+            ll nv = v*10%K;
+            push(nv, dist[v], 0);
         }
     }
-    {
-        ll yini = -1e9-2*step;
-        ll lx = 0, rx = step;
-        for(ll y=yini; y<Y; y+=step) {
-            while(incircle(lx,y)) lx -= step;
-            while(incircle(rx,y)) rx += step;
-            ll now = (rx-lx)/step-1;
-            // if(now>0) de4(y,lx,rx,now)
-            ans += (rx-lx)/step-1;
-        }
-    }
-    Out(ans);
+    Out(dist[0]);
+    
 
 }
 

@@ -1330,7 +1330,7 @@
 - 2点(x1,y1), (x2,y2)を通る直線の方程式の一般形は以下の通り
 - (y2-y1)x - (x2-x1)y - x1y2 + x2y1 = 0
 ### 例題
-- !要復習 どういう典型か分類しかねるのでNote非掲載 [M - バランス](https://atcoder.jp/contests/past202109-open/tasks/past202109_m)
+- !復習価値低 どういう典型か分類しかねるのでNote非掲載 [M - バランス](https://atcoder.jp/contests/past202109-open/tasks/past202109_m)
 
 
 # 場合の数と確率・期待値

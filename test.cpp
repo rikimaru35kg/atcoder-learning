@@ -218,30 +218,68 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(K);
-    vl dist(K, INF);
-    vector<queue<ll>> ques(2);
-    ll t = 0;
-    auto push=[&](ll v, ll d, int p) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        ques[(t+p)%2].push(v);
-    };
-    push(1, 1, 1);
-    while(ques[0].size() || ques[1].size()) {
-        if(ques[t].empty()) t ^= 1;
-        ll v = ques[t].front(); ques[t].pop();
-        { // +1
-            ll nv = (v+1)%K;
-            push(nv, dist[v]+1, 1);
+    LONG(N, M);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b,c);
+        from[b].emplace_back(a,c);
+    }
+
+    vvl P(N, vl(2, INF));
+    auto dfs=[&](auto f, ll v, ll b, ll t=0) -> void {
+        if(P[v][t]==INF) {
+            P[v][t] = b;
+        } else {
+            if(P[v][t]!=b) Pm1
+            return;
         }
-        {
-            ll nv = v*10%K;
-            push(nv, dist[v], 0);
+        for(auto [nv,c]: from[v]) {
+            f(f, nv, c-b, t^1);
+        }
+    };
+    dfs(dfs, 0, 0);
+
+    uset<ll> fixed_x;
+    ll mn = -INF, mx = INF;
+    rep(i, N) {
+        ll p = P[i][0], q = P[i][1];
+        if(p!=INF && q!=INF) {
+            if(q-p<0) Pm1
+            if((q-p)%2!=0) Pm1
+            fixed_x.insert((q-p)/2);
+        } else if(p!=INF) {
+            chmax(mn, -p);
+        } else {
+            chmin(mx, q);
         }
     }
-    Out(dist[0]);
-    
+    if(SIZE(fixed_x)>=2) Pm1
+    vl ans(N);
+
+    auto output=[&](ll x) {
+        rep(i, N) {
+            ll p = P[i][0], q = P[i][1];
+            if(p!=INF) {
+                ll val = x+p;
+                ans[i] = val;
+            } else {
+                ll val = -x+q;
+                ans[i] = val;
+            }
+            if(ans[i]<0) Pm1
+        }
+        for(auto x: ans) Out(x);
+    };
+
+    if(SIZE(fixed_x)==1) {
+        ll x = *fixed_x.begin();
+        output(x);
+        return;
+    }
+    de2(mn,mx)
+    if(mn>mx) Pm1
+    output(mn);
 
 }
 
