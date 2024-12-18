@@ -217,17 +217,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long legendre_formula(long long n, long long x) {
-    if(x<=0) assert(0&&"[Error] ledendre_formula x<=0");
-    if(x==1) return (long long)3e18;
-    long long ret = 0;
-    while(n) {
-        ret += n/x;
-        n /= x;
-    }
-    return ret;
-}
-
 class Sieve {
     long long n;
     vector<long long> sieve;
@@ -261,27 +250,94 @@ public:
     }
 };
 
-void solve() {
-    LONG(N);
-    vl ps;
-    Sieve sieve(100);
-    for(ll p=2; p<100; ++p) {
-        if(sieve.is_prime(p)) ps.push_back(p);
-    }
-    ll K = 75;
-    vl dp(K+1);
-    dp[1] = 1;
-    for(auto p: ps) {
-        vl pdp(K+1); swap(pdp, dp);
-        ll num = legendre_formula(N, p);
-        rep(j, K+1) {
-            if(pdp[j]==0) continue;
-            rep(i, num+1) {
-                if(j*(i+1)<=K) dp[j*(i+1)] += pdp[j];
-            }
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    Out(dp[K]);
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    LONG(N);
+    Sieve sieve(1e6);
+    vl ps;
+    rep(p, ((ll)1e6)) if (sieve.is_prime(p)) ps.push_back(p);
+
+    vl cnt(1e6+10);
+    for(auto p: ps) { cnt[p]++; }
+    rep(i, 1e6+9) cnt[i+1] += cnt[i];
+
+    ll ans = 0;
+    for(auto q: ps) {
+        ll lim = N/q/q/q;
+        ll now = cnt[min(lim,q-1)];
+        ans += now;
+    }
+    Out(ans);
 
 }
 
