@@ -217,72 +217,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n,k >= 0
-//! O(log kM) M=3e18
-long long kth_root(long long n, long long k) {
-    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
-    auto f=[&](long long x) -> bool {
-        long long x_to_kpow = 1;
-        for(long long i=0; i<k; ++i) {
-            if(x>n/x_to_kpow) return false;
-            x_to_kpow *= x;
-        }
-        return x_to_kpow <= n;
-    };
-    long long l = 0, r = 3e18;
-    while(r-l>1) {
-        long long m = (l+r)/2;
-        if(f(m)) l = m;
-        else r = m;
-    }
-    return l;
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
 }
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-};
-
 void solve() {
-    LONG(N);
-    Sieve sieve(60);
-    ll sum = 1;
-    for(ll b=60; b>=2; --b) {
-        ll amx = kth_root(N, b);
-        sum += -(amx-1)*sieve.mu(b);
+    DOUBLE(_X,_Y,_R);
+    ll step = 10000;
+    ll X = round(_X*step); ll Y = round(_Y*step); ll R = round(_R*step);
+    X %= step, Y %= step;
+
+    auto incircle=[&](ll x, ll y) -> bool {
+        return euclid_dist2({x,y},{X,Y}) <= R*R;
+    };
+    de3(X,Y,R)
+
+    ll ans = 0;
+    {
+        ll yini = 1e9+2*step;
+        ll lx = 0, rx = step;
+        for(ll y=yini; y>=Y; y-=step) {
+            while(incircle(lx,y)) lx -= step;
+            while(incircle(rx,y)) rx += step;
+            ll now = (rx-lx)/step-1;
+            // if(now>0) de4(y,lx,rx,now)
+            ans += (rx-lx)/step-1;
+        }
     }
-    Out(sum);
+    {
+        ll yini = -1e9-2*step;
+        ll lx = 0, rx = step;
+        for(ll y=yini; y<Y; y+=step) {
+            while(incircle(lx,y)) lx -= step;
+            while(incircle(rx,y)) rx += step;
+            ll now = (rx-lx)/step-1;
+            // if(now>0) de4(y,lx,rx,now)
+            ans += (rx-lx)/step-1;
+        }
+    }
+    Out(ans);
 
 }
 
