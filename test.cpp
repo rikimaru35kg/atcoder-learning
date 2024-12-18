@@ -217,69 +217,97 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
 void solve() {
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b,c);
-        from[b].emplace_back(a,c);
-    }
-
-    vvl P(N, vl(2, INF));
-    auto dfs=[&](auto f, ll v, ll b, ll t=0) -> void {
-        if(P[v][t]==INF) {
-            P[v][t] = b;
-        } else {
-            if(P[v][t]!=b) Pm1
-            return;
-        }
-        for(auto [nv,c]: from[v]) {
-            f(f, nv, c-b, t^1);
-        }
-    };
-    dfs(dfs, 0, 0);
-
-    uset<ll> fixed_x;
-    ll mn = -INF, mx = INF;
+    LONG(H, W, N);
+    Combination comb(1e7, M107);
+    ll rmn=INF, rmx=-INF, cmn=INF, cmx=-INF;
     rep(i, N) {
-        ll p = P[i][0], q = P[i][1];
-        if(p!=INF && q!=INF) {
-            if(q-p<0) Pm1
-            if((q-p)%2!=0) Pm1
-            fixed_x.insert((q-p)/2);
-        } else if(p!=INF) {
-            chmax(mn, -p);
-        } else {
-            chmin(mx, q);
-        }
+        LONGM(r,c);
+        chmin(rmn, r); chmax(rmx, r);
+        chmin(cmn, c); chmax(cmx, c);
     }
-    if(SIZE(fixed_x)>=2) Pm1
-    vl ans(N);
-
-    auto output=[&](ll x) {
-        rep(i, N) {
-            ll p = P[i][0], q = P[i][1];
-            if(p!=INF) {
-                ll val = x+p;
-                ans[i] = val;
-            } else {
-                ll val = -x+q;
-                ans[i] = val;
-            }
-            if(ans[i]<0) Pm1
-        }
-        for(auto x: ans) Out(x);
-    };
-
-    if(SIZE(fixed_x)==1) {
-        ll x = *fixed_x.begin();
-        output(x);
-        return;
+    ll rw = rmx-rmn+1, cw = cmx-cmn+1;
+    vvm dp(H+1, vm(W+1));
+    dp[rw][cw] = 1;
+    rep(i, H+1) rep(j, W+1) {
+        mint now = dp[i][j];
+        if(now==0) continue;
+        if(i<H) dp[i+1][j] += now * comb.get_fact(j);
+        if(j<W) dp[i][j+1] += now * comb.get_fact(i);
     }
-    de2(mn,mx)
-    if(mn>mx) Pm1
-    output(mn);
+    mint ans = dp[H][W];
+    {
+        ll l = rmn, r = H-1-rmx;
+        ans *= comb(l+r,l);
+    }
+    {
+        ll l = cmn, r = W-1-cmx;
+        ans *= comb(l+r,l);
+    }
+    ans *= comb.get_fact(rw*cw-N);
+    Out(ans);
+
 
 }
 
