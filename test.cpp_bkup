@@ -217,31 +217,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
+#include <atcoder/segtree>
+using namespace atcoder;
+
+ll gcd(ll a, ll b) {
+    a = abs(a), b = abs(b);
+    if(b==0) return a;
+    return gcd(b, a%b);
 }
 
+using S = ll;
+S op(S a, S b) {return gcd(a,b);}
+S e() {return 0;}
+
 void solve() {
-    LONG(N, S, K);
-    auto [g,x0,y0] = extgcd(K, N);
-    if(S%g!=0) {
-        Out(-1); return;
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
+
+    segtree<S,op,e> sega(N-1), segb(N-1);
+    rep(i, N-1) {
+        sega.set(i, A[i+1]-A[i]);
+        segb.set(i, B[i+1]-B[i]);
     }
-    ll k = -S/g;
-    ll x = Percent(x0*k, N/g);
-    Out(x);
+    rep(i, Q) {
+        LONGM(a1,a2,b1,b2);
+        ll ans = A[a1] + B[b1];
+        ans = gcd(ans, sega.prod(a1,a2));
+        ans = gcd(ans, segb.prod(b1,b2));
+        Out(ans);
+    }
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

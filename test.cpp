@@ -217,36 +217,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-ll gcd(ll a, ll b) {
-    a = abs(a), b = abs(b);
-    if(b==0) return a;
-    return gcd(b, a%b);
+long long legendre_formula(long long n, long long x) {
+    if(x<=0) assert(0&&"[Error] ledendre_formula x<=0");
+    if(x==1) return (long long)3e18;
+    long long ret = 0;
+    while(n) {
+        ret += n/x;
+        n /= x;
+    }
+    return ret;
 }
 
-using S = ll;
-S op(S a, S b) {return gcd(a,b);}
-S e() {return 0;}
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+public:
+    Sieve (long long n): n(n), sieve(n+1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            for (long long k=i*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve is_prime] k>n");
+        if (k <= 1) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        if(k>n) assert(0&&"[Error @ class Sieve factorize] k>n");
+        vector<pair<long long,long long>> ret;
+        if (k <= 1) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+};
 
 void solve() {
-    LONG(N, Q);
-    VL(A, N); VL(B, N);
-
-    segtree<S,op,e> sega(N-1), segb(N-1);
-    rep(i, N-1) {
-        sega.set(i, A[i+1]-A[i]);
-        segb.set(i, B[i+1]-B[i]);
+    LONG(N);
+    vl ps;
+    Sieve sieve(100);
+    for(ll p=2; p<100; ++p) {
+        if(sieve.is_prime(p)) ps.push_back(p);
     }
-    rep(i, Q) {
-        LONGM(a1,a2,b1,b2);
-        ll ans = A[a1] + B[b1];
-        ans = gcd(ans, sega.prod(a1,a2));
-        ans = gcd(ans, segb.prod(b1,b2));
-        Out(ans);
+    ll K = 75;
+    vl dp(K+1);
+    dp[1] = 1;
+    for(auto p: ps) {
+        vl pdp(K+1); swap(pdp, dp);
+        ll num = legendre_formula(N, p);
+        rep(j, K+1) {
+            if(pdp[j]==0) continue;
+            rep(i, num+1) {
+                if(j*(i+1)<=K) dp[j*(i+1)] += pdp[j];
+            }
+        }
     }
-
+    Out(dp[K]);
 
 }
 

@@ -1238,7 +1238,7 @@
 ### 例題
 - 基本（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
-- !復習価値中 約数の個数が75の数 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
+- !復習価値低 約数の個数が75の数 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 
 ## エラトステネスの篩と高速素因数分解
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
