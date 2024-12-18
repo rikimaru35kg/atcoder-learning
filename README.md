@@ -1272,9 +1272,9 @@
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
 - 基本 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
-- !復習価値低（ただしメビウス関数で解くなら） 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
-- !復習価値中 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
-- !復習価値低（ただしメビウス関数で解くなら） バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+- !復習価値中 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
+- !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
+- !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 - !要復習 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）

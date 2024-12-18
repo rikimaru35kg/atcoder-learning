@@ -217,29 +217,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! n,k >= 0
+//! O(log kM) M=3e18
+long long kth_root(long long n, long long k) {
+    if(k<=0 || n<0) assert(0&&"[Error]k<=0 or n<0 in the function of kth_root.");
+    auto f=[&](long long x) -> bool {
+        long long x_to_kpow = 1;
+        for(long long i=0; i<k; ++i) {
+            if(x>n/x_to_kpow) return false;
+            x_to_kpow *= x;
+        }
+        return x_to_kpow <= n;
+    };
+    long long l = 0, r = 3e18;
+    while(r-l>1) {
+        long long m = (l+r)/2;
+        if(f(m)) l = m;
+        else r = m;
+    }
+    return l;
+}
+
 class Sieve {
     long long n;
     vector<long long> sieve;
+    vector<int> mobius;
 public:
-    Sieve (long long n): n(n), sieve(n+1) {
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
         for (long long i=2; i<=n; ++i) {
             if (sieve[i] != 0) continue;
             sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
                 if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
             }
         }
     }
     bool is_prime(long long k) {
-        if(k>n) assert(0&&"[Error @ class Sieve is_prime] k>n");
-        if (k <= 1) return false;
+        if (k <= 1 || k > n) return false;
         if (sieve[k] == k) return true;
         return false;
     }
     vector<pair<long long,long long>> factorize(long long k) {
-        if(k>n) assert(0&&"[Error @ class Sieve factorize] k>n");
         vector<pair<long long,long long>> ret;
-        if (k <= 1) return ret;
+        if (k <= 1 || k > n) return ret;
         ret.emplace_back(sieve[k], 0);
         while (k != 1) {
             if (ret.back().first == sieve[k]) ++ret.back().second;
@@ -248,96 +271,18 @@ public:
         }
         return ret;
     }
+    int mu(long long k) { return mobius[k]; }
 };
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
 
 void solve() {
     LONG(N);
-    Sieve sieve(1e6);
-    vl ps;
-    rep(p, ((ll)1e6)) if (sieve.is_prime(p)) ps.push_back(p);
-
-    vl cnt(1e6+10);
-    for(auto p: ps) { cnt[p]++; }
-    rep(i, 1e6+9) cnt[i+1] += cnt[i];
-
-    ll ans = 0;
-    for(auto q: ps) {
-        ll lim = N/q/q/q;
-        ll now = cnt[min(lim,q-1)];
-        ans += now;
+    Sieve sieve(60);
+    ll sum = 1;
+    for(ll b=60; b>=2; --b) {
+        ll amx = kth_root(N, b);
+        sum += -(amx-1)*sieve.mu(b);
     }
-    Out(ans);
+    Out(sum);
 
 }
 

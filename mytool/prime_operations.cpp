@@ -23,13 +23,17 @@ vector<pair<long long, long long>> prime_factorization (long long n) {
 class Sieve {
     long long n;
     vector<long long> sieve;
+    vector<int> mobius;
 public:
-    Sieve (long long n): n(n), sieve(n+1) {
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
         for (long long i=2; i<=n; ++i) {
             if (sieve[i] != 0) continue;
             sieve[i] = i;
-            for (long long k=i*i; k<=n; k+=i) {
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
                 if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
             }
         }
     }
@@ -49,6 +53,7 @@ public:
         }
         return ret;
     }
+    int mu(long long k) { return mobius[k]; }
 };
 
 int main () {
