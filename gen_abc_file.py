@@ -116,10 +116,16 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) (ll)__builtin_popcountll(x)
-#define parity(x) (ll)__builtin_parityll(x)
 #define uset unordered_set
 #define umap unordered_map
+inline int pcnt(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_popcountll(s);
+    return n-__builtin_popcountll(s);
+}
+inline int parity(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_parityll(s);
+    return (n-__builtin_popcountll(s))%2;
+}
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}

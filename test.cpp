@@ -112,10 +112,16 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) (ll)__builtin_popcountll(x)
-#define parity(x) (ll)__builtin_parityll(x)
 #define uset unordered_set
 #define umap unordered_map
+inline int pcnt(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_popcountll(s);
+    return n-__builtin_popcountll(s);
+}
+inline int parity(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_parityll(s);
+    return (n-__builtin_popcountll(s))%2;
+}
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
@@ -248,63 +254,6 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve2 (ll N, ll M, vl B) {
-    vl A;
-    rep(i, N) {
-        ll a =B[i];
-        if(M%a!=0) continue;
-        A.push_back(a);
-    }
-    N = SIZE(A);
-
-    auto pvec = prime_factorization(M);
-    ll K = SIZE(pvec);
-    vl cnt(1LL<<K);
-    rep(i, N) {
-        ll a = A[i];
-        ll idx = 0, now=0;
-        for(auto [p,n]: pvec) {
-            bool ok = true;
-            rep(j, n) {
-                if(a%p!=0) {
-                    ok = false;
-                    break;
-                }
-                a /= p;
-            }
-            if(ok) now |= 1LL<<idx;
-            ++idx;
-        }
-        cnt[now]++;
-    }
-
-    vm two(N+1, 1);
-    rep(i, N) two[i+1] = two[i]*2;
-
-    rep(i, K) rep(s, 1<<K) if(~s>>i&1) {
-        ll ns = s | 1LL<<i;
-        cnt[ns] += cnt[s];
-    }
-    de("solve2")
-    de(cnt)
-
-    mint ans;
-    rep(s, 1<<K) {
-        ll sum = 0;
-        // rep(t, 1<<K) {
-        //     if((t|s)!=s) continue;
-        //     sum += cnt[t];
-        // }
-        sum = cnt[s];
-        mint x = two[sum]-1;
-        deb(s)de2(K-pcnt(s), (K-pcnt(s))%2)
-        if((K-pcnt(s))%2) ans -= x;
-        else ans += x;
-    }
-    Out(ans);
-    
-}
-
 void solve(ll N, ll M, vl A) {
     if(M==1) {
         ll one = 0;
@@ -320,7 +269,6 @@ void solve(ll N, ll M, vl A) {
         rep(i, n) x *= p;
         ps2.push_back(x);
     }
-    de(ps2)
     
     vl cnt(1<<K);
     auto judge=[&](ll x, ll p) {
@@ -334,24 +282,17 @@ void solve(ll N, ll M, vl A) {
         }
         cnt[now]++;
     }
-    // rep(s, 1LL<<K) {
-    //     deb(s);
-    //     de(cnt[s]);
-    // }
 
     rep(i, K) rep(s, 1<<K) {
         if(~s>>i&1) cnt[s|1<<i] += cnt[s];
     }
-    de("solve")
-    de(cnt)
 
     mint ans = 0;
     vm two(N+1, 1);
     rep(i, N) two[i+1] = two[i] * 2;
     rep(s, 1<<K) {
         mint now = two[cnt[s]] - 1;
-        ll cnt0 = K-pcnt(s); // 0(NG)の個数
-        if(cnt0%2) ans -= now;
+        if(parity(s,K)) ans -= now;
         else ans += now;
     }
     Out(ans);
