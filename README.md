@@ -1368,7 +1368,7 @@
 - !要復習 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4) （[解説は自分の提出参照](https://atcoder.jp/contests/abc003/submissions/58846679)）
 - !復習価値低 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
-- !復習価値高 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
+- !要復習 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
 
 ## 分布に対するDP
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある

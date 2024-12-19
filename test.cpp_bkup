@@ -217,19 +217,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 //! Only when <= 1e6
 //! If not, use Combination2 class below.
 class Combination {
@@ -277,19 +264,65 @@ public:
     }
 };
 
-void solve() {
-    LONG(N, M);
-    Combination comb(M, M107);
-
-    mint ans;
-    rep(k, N+1) {
-        mint now = comb(N, k);
-        now *= comb.nPr(M-k, N-k);
-        if (k%2) ans -= now;
-        else ans += now;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
     }
-    ans *= comb.nPr(M, N);
-    Out(ans);
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
+
+void solve() {
+    LONG(N, K);
+
+    auto calc=[&](ll s) -> ll {
+        s -= 3;
+        ll ret = nHr(3, s);
+        ret -= nHr(3, s-N) * 3;
+        ret += nHr(3, s-2*N) * 3;
+        ret -= nHr(3, s-3*N);
+        return ret;
+    };
+    auto calc2=[&](ll s) -> ll {
+        ll mx = min(N, s-1);
+        ll mn = max(1LL, s-N);
+        return max(mx-mn+1, 0LL);
+    };
+
+    repk(s, 3, 3*N+1) {
+        ll cnt = calc(s);
+        if(cnt<K) {
+            K -= cnt; continue;
+        }
+        rep1(x, N) {
+            ll cnt2 = calc2(s-x);
+            if(cnt2<K) {
+                K -= cnt2; continue;
+            }
+            rep1(y, N) {
+                ll z = s-x-y;
+                if(z>N) continue;
+                if(K>1) {
+                    --K; continue;
+                }
+                printf("%lld %lld %lld\n", x, y, z);
+                return;
+            }
+        }
+    }
+
 
 }
 

@@ -217,119 +217,154 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        ret *= n-k+1;
-        ret /= k;
     }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
 }
 
-void solve() {
-    LONG(N, K);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    auto calc=[&](ll s) -> ll {
-        s -= 3;
-        ll ret = nHr(3, s);
-        ret -= nHr(3, s-N) * 3;
-        ret += nHr(3, s-2*N) * 3;
-        ret -= nHr(3, s-3*N);
-        return ret;
-    };
-    auto calc2=[&](ll s) -> ll {
-        ll mx = min(N, s-1);
-        ll mn = max(1LL, s-N);
-        return max(mx-mn+1, 0LL);
-    };
+void solve2 (ll N, ll M, vl B) {
+    vl A;
+    rep(i, N) {
+        ll a =B[i];
+        if(M%a!=0) continue;
+        A.push_back(a);
+    }
+    N = SIZE(A);
 
-    repk(s, 3, 3*N+1) {
-        ll cnt = calc(s);
-        if(cnt<K) {
-            K -= cnt; continue;
-        }
-        rep1(x, N) {
-            ll cnt2 = calc2(s-x);
-            if(cnt2<K) {
-                K -= cnt2; continue;
-            }
-            rep1(y, N) {
-                ll z = s-x-y;
-                if(z>N) continue;
-                if(K>1) {
-                    --K; continue;
+    auto pvec = prime_factorization(M);
+    ll K = SIZE(pvec);
+    vl cnt(1LL<<K);
+    rep(i, N) {
+        ll a = A[i];
+        ll idx = 0, now=0;
+        for(auto [p,n]: pvec) {
+            bool ok = true;
+            rep(j, n) {
+                if(a%p!=0) {
+                    ok = false;
+                    break;
                 }
-                printf("%lld %lld %lld\n", x, y, z);
-                return;
+                a /= p;
             }
+            if(ok) now |= 1LL<<idx;
+            ++idx;
         }
+        cnt[now]++;
     }
 
+    vm two(N+1, 1);
+    rep(i, N) two[i+1] = two[i]*2;
+
+    rep(i, K) rep(s, 1<<K) if(~s>>i&1) {
+        ll ns = s | 1LL<<i;
+        cnt[ns] += cnt[s];
+    }
+    de("solve2")
+    de(cnt)
+
+    mint ans;
+    rep(s, 1<<K) {
+        ll sum = 0;
+        // rep(t, 1<<K) {
+        //     if((t|s)!=s) continue;
+        //     sum += cnt[t];
+        // }
+        sum = cnt[s];
+        mint x = two[sum]-1;
+        deb(s)de2(K-pcnt(s), (K-pcnt(s))%2)
+        if((K-pcnt(s))%2) ans -= x;
+        else ans += x;
+    }
+    Out(ans);
+    
+}
+
+void solve(ll N, ll M, vl A) {
+    if(M==1) {
+        ll one = 0;
+        rep(i, N) if(A[i]==1) ++one;
+        mint ans = mint(2).pow(one) - 1;
+        Out(ans); return;
+    }
+    auto ps = prime_factorization(M);
+    ll K = ps.size();
+    vl ps2;
+    for(auto [p,n]: ps) {
+        ll x = 1;
+        rep(i, n) x *= p;
+        ps2.push_back(x);
+    }
+    de(ps2)
+    
+    vl cnt(1<<K);
+    auto judge=[&](ll x, ll p) {
+        return x%p==0;
+    };
+    rep(i, N) {
+        if(M%A[i]!=0) continue;
+        ll now = 0;
+        rep(j, K) {
+            if(judge(A[i], ps2[j])) now |= 1LL<<j;
+        }
+        cnt[now]++;
+    }
+    // rep(s, 1LL<<K) {
+    //     deb(s);
+    //     de(cnt[s]);
+    // }
+
+    rep(i, K) rep(s, 1<<K) {
+        if(~s>>i&1) cnt[s|1<<i] += cnt[s];
+    }
+    de("solve")
+    de(cnt)
+
+    mint ans = 0;
+    vm two(N+1, 1);
+    rep(i, N) two[i+1] = two[i] * 2;
+    rep(s, 1<<K) {
+        mint now = two[cnt[s]] - 1;
+        ll cnt0 = K-pcnt(s); // 0(NG)の個数
+        if(cnt0%2) ans -= now;
+        else ans += now;
+    }
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N, M);
+    VL(A, N);
+    solve(N, M, A);
+    // solve2(N, M, A);
 }
 
 // ### test.cpp ###
