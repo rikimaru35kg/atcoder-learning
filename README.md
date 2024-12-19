@@ -1373,7 +1373,7 @@
 ## 分布に対するDP
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
 ### 例題
-- !復習価値高 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
+- !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
 - !復習価値低 （note非掲載下の問題と類似） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 - 基本 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
 

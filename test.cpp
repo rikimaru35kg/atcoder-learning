@@ -223,23 +223,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
-
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -254,58 +237,82 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve(ll N, ll M, vl A) {
-    if(M==1) {
-        ll one = 0;
-        rep(i, N) if(A[i]==1) ++one;
-        mint ans = mint(2).pow(one) - 1;
-        Out(ans); return;
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    auto ps = prime_factorization(M);
-    ll K = ps.size();
-    vl ps2;
-    for(auto [p,n]: ps) {
-        ll x = 1;
-        rep(i, n) x *= p;
-        ps2.push_back(x);
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
     }
-    
-    vl cnt(1<<K);
-    auto judge=[&](ll x, ll p) {
-        return x%p==0;
-    };
-    rep(i, N) {
-        if(M%A[i]!=0) continue;
-        ll now = 0;
-        rep(j, K) {
-            if(judge(A[i], ps2[j])) now |= 1LL<<j;
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
+void solve() {
+    STRING(S);
+    ll N = SIZE(S);
+    ll M = 26;
+    vl cnt(M);
+    for(auto c: S) cnt[c-'a']++;
+    Combination comb(N+10, M998);
+
+    vm dp(N+1);
+    dp[0] = 1;
+    rep(i, M) {
+        repr(j, N+1) {
+            if(dp[j]==0) continue;
+            rep1(k, cnt[i]) {
+                dp[j+k] += dp[j] * comb(j+k, k);
+            }
         }
-        cnt[now]++;
     }
-
-    rep(i, K) rep(s, 1<<K) {
-        if(~s>>i&1) cnt[s|1<<i] += cnt[s];
-    }
-
     mint ans = 0;
-    vm two(N+1, 1);
-    rep(i, N) two[i+1] = two[i] * 2;
-    rep(s, 1<<K) {
-        mint now = two[cnt[s]] - 1;
-        if(parity(s,K)) ans -= now;
-        else ans += now;
-    }
+    rep1(j, N) ans += dp[j];
     Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, M);
-    VL(A, N);
-    solve(N, M, A);
-    // solve2(N, M, A);
+    solve();
 }
 
 // ### test.cpp ###

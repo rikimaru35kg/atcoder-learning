@@ -112,10 +112,16 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) (ll)__builtin_popcountll(x)
-#define parity(x) (ll)__builtin_parityll(x)
 #define uset unordered_set
 #define umap unordered_map
+inline int pcnt(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_popcountll(s);
+    return n-__builtin_popcountll(s);
+}
+inline int parity(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_parityll(s);
+    return (n-__builtin_popcountll(s))%2;
+}
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
@@ -217,112 +223,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
-
 void solve() {
-    LONG(N, K);
-
-    auto calc=[&](ll s) -> ll {
-        s -= 3;
-        ll ret = nHr(3, s);
-        ret -= nHr(3, s-N) * 3;
-        ret += nHr(3, s-2*N) * 3;
-        ret -= nHr(3, s-3*N);
-        return ret;
-    };
-    auto calc2=[&](ll s) -> ll {
-        ll mx = min(N, s-1);
-        ll mn = max(1LL, s-N);
-        return max(mx-mn+1, 0LL);
-    };
-
-    repk(s, 3, 3*N+1) {
-        ll cnt = calc(s);
-        if(cnt<K) {
-            K -= cnt; continue;
-        }
-        rep1(x, N) {
-            ll cnt2 = calc2(s-x);
-            if(cnt2<K) {
-                K -= cnt2; continue;
-            }
-            rep1(y, N) {
-                ll z = s-x-y;
-                if(z>N) continue;
-                if(K>1) {
-                    --K; continue;
-                }
-                printf("%lld %lld %lld\n", x, y, z);
-                return;
-            }
-        }
+    LONG(N); VLM(A, N);
+    ll Mx = 2e5;
+    vl cnt(Mx);
+    rep(i, N) {
+        cnt[A[i]]++;
     }
 
+    ll K = 3;
+    vl dp(K+1);
+    dp[0] = 1;
+    rep(i, Mx) {
+        if(cnt[i]==0) continue;
+        repr(j, K) {
+            if(dp[j]==0) continue;
+            dp[j+1] += dp[j] * cnt[i];
+        }
+    }
+    Out(dp[K]);
 
 }
 
