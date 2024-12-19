@@ -1391,9 +1391,9 @@
 - 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
 ### 例題
 - !復習価値低 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
-- !復習価値低 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
+- 基本 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - 基本 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
-- !復習価値中 [D - Keep Distance](https://atcoder.jp/contests/abc382/tasks/abc382_d)
+- !復習価値中 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
 - !復習価値高 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !要復習 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 

@@ -224,24 +224,25 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VLM(A, N);
-    ll Mx = 2e5;
-    vl cnt(Mx);
-    rep(i, N) {
-        cnt[A[i]]++;
-    }
+    LONG(N); VL(C, N);
 
-    ll K = 3;
-    vl dp(K+1);
-    dp[0] = 1;
-    rep(i, Mx) {
-        if(cnt[i]==0) continue;
-        repr(j, K) {
-            if(dp[j]==0) continue;
-            dp[j+1] += dp[j] * cnt[i];
+    vl cnt(N);
+    rep(i, N) {
+        rep(j, N) {
+            if(i==j) continue;
+            if(C[i]%C[j]==0) cnt[i]++;
         }
     }
-    Out(dp[K]);
+    db ans = 0;
+    rep(i, N) {
+        ll s = cnt[i];
+        db now = 0.5;
+        if(s%2==0) {
+            now = (db)Divceil(s+1,2LL) / (s+1);
+        }
+        ans += now;
+    }
+    Out(ans);
 
 }
 
