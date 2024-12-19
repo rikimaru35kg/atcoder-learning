@@ -230,7 +230,6 @@ inline void debug_view(mint e){cerr << e.val() << endl;}
 inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
-
 //! Only when <= 1e6
 //! If not, use Combination2 class below.
 class Combination {
@@ -279,17 +278,18 @@ public:
 };
 
 void solve() {
-    LONG(N);
-    Combination comb(N, M107);
-    rep1(k, N) {
-        mint ans = 0;
-        for(ll r=1; r<=N-(k-1)*(r-1); ++r) {
-            de2(k,r)
-            ll n = N-(k-1)*(r-1);
-            ans += comb(n, r);
-        }
-        Out(ans);
+    LONG(N, M);
+    Combination comb(M, M107);
+
+    mint ans;
+    rep(k, N+1) {
+        mint now = comb(N, k);
+        now *= comb.nPr(M-k, N-k);
+        if (k%2) ans -= now;
+        else ans += now;
     }
+    ans *= comb.nPr(M, N);
+    Out(ans);
 
 }
 

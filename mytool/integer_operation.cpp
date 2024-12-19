@@ -89,18 +89,22 @@ public:
 
 // Combination for very small r
 long long nCr (long long n, long long r) {
-    long long ninf = 3e18;
+    long long ninf = 9e18;
     if(n<0 || r>n || r<0) return 0;
     r = min(r, n-r);
     long long ret = 1;
     for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > (ninf+ret-1)/ret) {
+        if(n-k+1 > ninf/ret) {
             assert(0&&"[Error:nCr] Too large return value.");
         }
         ret *= n-k+1;
         ret /= k;
     }
     return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
 }
 
 //! Only when <= 1e6

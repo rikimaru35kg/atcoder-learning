@@ -217,20 +217,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 //! Only when <= 1e6
 //! If not, use Combination2 class below.
 class Combination {
@@ -278,35 +264,64 @@ public:
     }
 };
 
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
+
 void solve() {
-    LONG(H, W, N);
-    Combination comb(1e7, M107);
-    ll rmn=INF, rmx=-INF, cmn=INF, cmx=-INF;
-    rep(i, N) {
-        LONGM(r,c);
-        chmin(rmn, r); chmax(rmx, r);
-        chmin(cmn, c); chmax(cmx, c);
+    LONG(N, K);
+
+    auto calc=[&](ll s) -> ll {
+        s -= 3;
+        ll ret = nHr(3, s);
+        ret -= nHr(3, s-N) * 3;
+        ret += nHr(3, s-2*N) * 3;
+        ret -= nHr(3, s-3*N);
+        return ret;
+    };
+    auto calc2=[&](ll s) -> ll {
+        ll mx = min(N, s-1);
+        ll mn = max(1LL, s-N);
+        return max(mx-mn+1, 0LL);
+    };
+
+    repk(s, 3, 3*N+1) {
+        ll cnt = calc(s);
+        if(cnt<K) {
+            K -= cnt; continue;
+        }
+        rep1(x, N) {
+            ll cnt2 = calc2(s-x);
+            if(cnt2<K) {
+                K -= cnt2; continue;
+            }
+            rep1(y, N) {
+                ll z = s-x-y;
+                if(z>N) continue;
+                if(K>1) {
+                    --K; continue;
+                }
+                printf("%lld %lld %lld\n", x, y, z);
+                return;
+            }
+        }
     }
-    ll rw = rmx-rmn+1, cw = cmx-cmn+1;
-    vvm dp(H+1, vm(W+1));
-    dp[rw][cw] = 1;
-    rep(i, H+1) rep(j, W+1) {
-        mint now = dp[i][j];
-        if(now==0) continue;
-        if(i<H) dp[i+1][j] += now * comb.get_fact(j);
-        if(j<W) dp[i][j+1] += now * comb.get_fact(i);
-    }
-    mint ans = dp[H][W];
-    {
-        ll l = rmn, r = H-1-rmx;
-        ans *= comb(l+r,l);
-    }
-    {
-        ll l = cmn, r = W-1-cmx;
-        ans *= comb(l+r,l);
-    }
-    ans *= comb.get_fact(rw*cw-N);
-    Out(ans);
 
 
 }
