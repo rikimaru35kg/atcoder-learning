@@ -223,57 +223,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 void solve() {
-    LONG(H, W, K);
-    LONGM(x1,y1,x2,y2);
-    vvm dp(2, vm(2));
-    dp[x1==x2][y1==y2] = 1;
-    de(dp)
+    LONG(N);
+    VP(P, N);
+    sort(all(P));
 
-    rep(k, K) {
-        vvm pdp(2, vm(2)); swap(pdp, dp);
-        rep(i, 2) {
-            dp[i][0] += pdp[i][0] * (W-2);
-            dp[i][1] += pdp[i][0];
-            dp[i][0] += pdp[i][1] * (W-1);
+    auto f=[&](sll d) -> bool {
+        queue<Pr> que;
+        ll ymin = INF, ymax = -INF;
+        for(auto [x,y]: P) {
+            while(que.size() && que.front().first<=x-d) {
+                auto [xi, yi] = que.front(); que.pop();
+                chmin(ymin, yi);
+                chmax(ymax, yi);
+            }
+            if(ymax>=y+d) return true;
+            if(ymin<=y-d) return true;
+            que.emplace(x,y);
         }
-        rep(j, 2) {
-            dp[0][j] += pdp[0][j] * (H-2);
-            dp[1][j] += pdp[0][j];
-            dp[0][j] += pdp[1][j] * (H-1);
-        }
-        // dp[1][0] += pdp[1][1] * (W-1);
-        // dp[0][1] += pdp[1][1] * (H-1);
+        return false;
+    };
 
-        // dp[0][0] += pdp[0][0] * (W-2);
-        // dp[0][0] += pdp[0][0] * (H-2);
-        // dp[0][1] += pdp[0][0];
-        // dp[1][0] += pdp[0][0];
-
-        // dp[0][0] += pdp[0][1] * (W-1);
-        // dp[0][1] += pdp[0][1] * (H-2);
-        // dp[1][1] += pdp[0][1];
-
-        // dp[0][0] += pdp[1][0] * (H-1);
-        // dp[1][0] += pdp[1][0] * (W-2);
-        // dp[1][1] += pdp[1][0];
-
-    }
-    Out(dp[1][1]);
+    ll ans = binary_search(0, (ll)1e9+1, f);
+    Out(ans);
 
 }
 

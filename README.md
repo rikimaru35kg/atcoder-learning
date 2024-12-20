@@ -1424,10 +1424,10 @@
 ### 例題
 - 基本 [C - 2D Plane 2N Points](https://atcoder.jp/contests/abc091/tasks/arc092_a)
 - 基本 [E - Wrapping Chocolate](https://atcoder.jp/contests/abc245/tasks/abc245_e)
-- !復習価値低 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
+- 基本 Box in Box [F - Box in Box](https://atcoder.jp/contests/abc309/tasks/abc309_f)
 - 基本 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - 基本 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
-- !復習価値低 xy min距離の最大値（120msぐらいで解きたい） [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
+- 基本 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
 
 ## XY独立に考える
 ### 例題
