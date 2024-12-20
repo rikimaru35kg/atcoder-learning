@@ -223,85 +223,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/segtree>
 using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -INF;}
 
 void solve() {
-    mint::set_mod((ll)1e7);
-    LONG(W, H);
-    LONG(N);
-    STRING(S);
-    ll dir = 0;
-    if(S[0]=='L') dir = 0;
-    else dir = 1;
-    vl vdir;
-    vdir.push_back(dir);
-    rep(i, N) {
-        if(S[i]=='L') dir = (dir+1)%4;
-        else dir = (dir+3)%4;
-        vdir.push_back(dir);
-    }
-    de(vdir)
-
-    vl xpm, ypm;
-    for(auto dir: vdir) {
-        if(dir==0) xpm.push_back(1);
-        if(dir==1) ypm.push_back(1);
-        if(dir==2) xpm.push_back(-1);
-        if(dir==3) ypm.push_back(-1);
-    }
-
-    auto calc=[&](vl &pm, ll W) -> mint {
-        ll n = pm.size();
-        vm dp(W+1);
-        dp[0] = 1;
-        rep(i, n) {
-            vm pdp(W+1); swap(pdp, dp);
-            auto Sc = cumsum(pdp);
-            rep(j, W+1) {
-                if(pm[i]==1) { dp[j] = Sc[j]; }
-                else dp[j] = Sc[W+1] - Sc[j+1];
-            }
-        }
-        return dp[W];
+    LONG(N, C);
+    LONG(M);
+    using SEG = segtree<S,op,e>;
+    SEG segp(N), segm(N);
+    vl dp(N, -INF);
+    dp[0] = 0;
+    auto update=[&](SEG &seg, ll i, ll x) {
+        seg.set(i, op(seg.get(i), x));
     };
+    update(segp, 0, dp[0]);
+    update(segm, 0, dp[0]);
 
-    mint ans = calc(xpm, W);
-    ans *= calc(ypm, H);
+    ll ans = 0;
+    rep(i, M) {
+        LONG(t, p); --t;
+        // dp[t]を更新
+        // 左移動
+        ll mx = -INF;
+        {
+            ll cmx = segm.prod(t, N);
+            if(cmx!=-INF) chmax(mx, cmx+C*t);
+        }
+        {
+            ll cmx = segp.prod(0, t);
+            if(cmx!=-INF) chmax(mx, cmx-C*t);
+        }
+        chmax(dp[t], mx+p);
+        update(segp, t, dp[t]+C*t);
+        update(segm, t, dp[t]-C*t);
+        de(dp[t])
+        chmax(ans, dp[t]);
+    }
     Out(ans);
-
 
 }
 
