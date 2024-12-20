@@ -223,45 +223,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return -INF;}
-
 void solve() {
-    LONG(N, C);
-    LONG(M);
-    using SEG = segtree<S,op,e>;
-    SEG segp(N), segm(N);
-    vl dp(N, -INF);
-    dp[0] = 0;
-    auto update=[&](SEG &seg, ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
-    };
-    update(segp, 0, dp[0]);
-    update(segm, 0, dp[0]);
+    LONG(H, W, K);
+    LONG(N);
+    vl row(H), col(W);
+    umap<ll,ll> mp;
+    vvl cs(H);
+    rep(i, N) {
+        LONGM(r,c);
+        row[r]++, col[c]++;
+        cs[r].push_back(c);
+    }
+    rep(c, W) mp[col[c]]++;
 
     ll ans = 0;
-    rep(i, M) {
-        LONG(t, p); --t;
-        // dp[t]を更新
-        // 左移動
-        ll mx = -INF;
-        {
-            ll cmx = segm.prod(t, N);
-            if(cmx!=-INF) chmax(mx, cmx+C*t);
-        }
-        {
-            ll cmx = segp.prod(0, t);
-            if(cmx!=-INF) chmax(mx, cmx-C*t);
-        }
-        chmax(dp[t], mx+p);
-        update(segp, t, dp[t]+C*t);
-        update(segm, t, dp[t]-C*t);
-        de(dp[t])
-        chmax(ans, dp[t]);
+    rep(r, H) {
+        ll nrow = row[r];
+        for(auto c: cs[r]) { if(nrow+col[c]-1==K) ++ans; }
+        de2(r,ans)
+        if(nrow == W) continue;
+
+        for(auto c: cs[r]) { mp[col[c]]--; }
+        de(mp)
+
+        ll ncol = mp[K-nrow];
+        ans += ncol;
+        de(ans)
+
+        for(auto c: cs[r]) { mp[col[c]]++; }
     }
     Out(ans);
 
