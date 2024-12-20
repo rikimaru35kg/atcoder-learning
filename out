@@ -1,466 +1,59 @@
-test.cpp: In lambda function:
-test.cpp:256:44: error: no match for ‘operator<=’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} and ‘sll’ {aka ‘__int128’})
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                 ~~~~~~~~~~~^~~~~
-      |                                          |    |
-      |                                          |    sll {aka __int128}
-      |                                          __gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type {aka std::pair<long long int, long long int>}
-In file included from /usr/include/c++/12/regex:66,
-                 from stdc++.h:110:
-/usr/include/c++/12/bits/regex.h:1262:5: note: candidate: ‘template<class _Bi_iter, class _Ch_traits, class _Alloc> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, __sub_match_string<_Bi_iter, _Ch_traits, _Ch_alloc>&)’ (reversed)
- 1262 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1262:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/regex.h:1430:5: note: candidate: ‘template<class _Bi_iter> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type*)’ (reversed)
- 1430 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1430:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/regex.h:1603:5: note: candidate: ‘template<class _Bi_iter> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type&)’ (reversed)
- 1603 |     operator<=>(const sub_match<_Bi_iter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1603:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
+test.cpp: In function ‘void solve()’:
+test.cpp:250:32: error: no matching function for call to ‘std::pair<long long int, long long int>::pair(std::tuple_element<1, std::tuple<long long int, long long int, long long int> >::type&, std::tuple_element<0, std::tuple<long long int, long long int, long long int> >::type&, std::tuple_element<2, std::tuple<long long int, long long int, long long int> >::type&)’
+  250 |             erase(st, Pr(v,s,ni));
+      |                                ^
+In file included from /usr/include/c++/12/bits/stl_algobase.h:64,
                  from /usr/include/c++/12/bits/specfun.h:45,
                  from /usr/include/c++/12/cmath:1935,
                  from stdc++.h:41:
-/usr/include/c++/12/bits/stl_iterator.h:579:5: note: candidate: ‘template<class _IteratorL, class _IteratorR>  requires  three_way_comparable_with<_IteratorR, _IteratorL, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&)’ (reversed)
-  579 |     operator<=>(const reverse_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:579:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::reverse_iterator<_IteratorL>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/stl_iterator.h:1686:5: note: candidate: ‘template<class _IteratorL, class _IteratorR>  requires  three_way_comparable_with<_IteratorR, _IteratorL, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&)’ (reversed)
- 1686 |     operator<=>(const move_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1686:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::move_iterator<_IteratorL>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/bits/basic_string.h:47,
-                 from /usr/include/c++/12/string:53,
-                 from /usr/include/c++/12/bits/locale_classes.h:40,
-                 from /usr/include/c++/12/bits/ios_base.h:41,
-                 from /usr/include/c++/12/ios:42,
-                 from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/string_view:561:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(basic_string_view<_CharT, _Traits>, __type_identity_t<basic_string_view<_CharT, _Traits> >)’ (reversed)
-  561 |     operator<=>(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:561:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘std::basic_string_view<_CharT, _Traits>’ and ‘__int128’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/basic_string.h:3635:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’ (reversed)
- 3635 |     operator<=>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3635:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/functional:54,
-                 from stdc++.h:71:
-/usr/include/c++/12/tuple:1529:5: note: candidate: ‘template<class ... _Tps, class ... _Ups> constexpr std::common_comparison_category_t<decltype (std::__detail::__synth3way(declval<_Tps&>(), declval<_Ups&>()))...> std::operator<=>(const tuple<_UTypes ...>&, const tuple<_UTypes ...>&)’ (reversed)
- 1529 |     operator<=>(const tuple<_Tps...>& __t, const tuple<_Ups...>& __u)
-      |     ^~~~~~~~
-/usr/include/c++/12/tuple:1529:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::tuple<_UTypes ...>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/memory:75,
-                 from stdc++.h:82:
-/usr/include/c++/12/bits/unique_ptr.h:983:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep>  requires  three_way_comparable_with<typename std::unique_ptr<_Tp, _Dp>::pointer, typename std::unique_ptr<_Up, _Ep>::pointer, std::partial_ordering> constexpr std::compare_three_way_result_t<typename std::unique_ptr<_Tp, _Dp>::pointer, typename std::unique_ptr<_Up, _Ep>::pointer> std::operator<=>(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’ (reversed)
-  983 |     operator<=>(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:983:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/unique_ptr.h:992:5: note: candidate: ‘template<class _Tp, class _Dp>  requires  three_way_comparable<typename std::unique_ptr<_Tp, _Dp>::pointer, std::partial_ordering> constexpr std::compare_three_way_result_t<typename std::unique_ptr<_Tp, _Dp>::pointer> std::operator<=>(const unique_ptr<_Tp, _Dp>&, nullptr_t)’ (reversed)
-  992 |     operator<=>(const unique_ptr<_Tp, _Dp>& __x, nullptr_t)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:992:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/bits/shared_ptr.h:53,
-                 from /usr/include/c++/12/memory:76:
-/usr/include/c++/12/bits/shared_ptr_base.h:1805:5: note: candidate: ‘template<class _Tp, class _Up, __gnu_cxx::_Lock_policy _Lp> std::strong_ordering std::operator<=>(const __shared_ptr<_Tp1, _Lp>&, const __shared_ptr<_Tp2, _Lp>&)’ (reversed)
- 1805 |     operator<=>(const __shared_ptr<_Tp, _Lp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1805:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::__shared_ptr<_Tp1, _Lp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/shared_ptr_base.h:1811:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> std::strong_ordering std::operator<=>(const __shared_ptr<_Tp, _Lp>&, nullptr_t)’ (reversed)
- 1811 |     operator<=>(const __shared_ptr<_Tp, _Lp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1811:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::__shared_ptr<_Tp, _Lp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/shared_ptr.h:567:5: note: candidate: ‘template<class _Tp, class _Up> std::strong_ordering std::operator<=>(const shared_ptr<_Tp>&, const shared_ptr<_Tp>&)’ (reversed)
-  567 |     operator<=>(const shared_ptr<_Tp>& __a,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:567:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::shared_ptr<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/shared_ptr.h:573:5: note: candidate: ‘template<class _Tp> std::strong_ordering std::operator<=>(const shared_ptr<_Tp>&, nullptr_t)’ (reversed)
-  573 |     operator<=>(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:573:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::shared_ptr<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from stdc++.h:130:
-/usr/include/c++/12/optional:1273:5: note: candidate: ‘template<class _Tp, class _Up>  requires  three_way_comparable_with<_Up, _Tp, std::partial_ordering> constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const optional<_Tp>&, const optional<_Up>&)’ (reversed)
- 1273 |     operator<=>(const optional<_Tp>& __x, const optional<_Up>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1273:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::optional<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/optional:1288:5: note: candidate: ‘template<class _Tp> constexpr std::strong_ordering std::operator<=>(const optional<_Tp>&, nullopt_t)’ (reversed)
- 1288 |     operator<=>(const optional<_Tp>& __x, nullopt_t) noexcept
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1288:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::optional<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/optional:1425:5: note: candidate: ‘template<class _Tp, class _Up>  requires !(__is_optional_v<_Up>) && (three_way_comparable_with<_Tp, _Up, std::partial_ordering>) constexpr std::compare_three_way_result_t<_IteratorL, _IteratorR> std::operator<=>(const optional<_Tp>&, const _Up&)’ (reversed)
- 1425 |     operator<=>(const optional<_Tp>& __x, const _Up& __v)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1425:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::optional<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/regex.h:1090:5: note: candidate: ‘template<class _BiIter> auto std::__cxx11::operator<=>(const sub_match<_BiIter>&, const sub_match<_BiIter>&)’ (rewritten)
- 1090 |     operator<=>(const sub_match<_BiIter>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/regex.h:1090:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/deque:70,
-                 from stdc++.h:68:
-/usr/include/c++/12/debug/deque:679:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const deque<_Tp, _Allocator>&, const deque<_Tp, _Allocator>&)’ (rewritten)
-  679 |     operator<=>(const deque<_Tp, _Alloc>& __x, const deque<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/deque:679:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::deque<_Tp, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/vector:74,
-                 from /usr/include/c++/12/functional:62:
-/usr/include/c++/12/debug/vector:757:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const vector<_Tp, _Alloc>&, const vector<_Tp, _Alloc>&)’ (rewritten)
-  757 |     operator<=>(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/vector:757:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::vector<_Tp, _Alloc>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/list:67,
-                 from stdc++.h:79:
-/usr/include/c++/12/debug/list:932:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const list<_Tp, _Allocator>&, const list<_Tp, _Allocator>&)’ (rewritten)
-  932 |     operator<=>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/list:932:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::list<_Tp, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/debug/map:43,
-                 from /usr/include/c++/12/map:67,
-                 from stdc++.h:81:
-/usr/include/c++/12/debug/map.h:755:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> std::__detail::__synth3way_t<std::pair<const _Key, _Val> > std::__debug::operator<=>(const map<_Key, _Tp, _Compare, _Allocator>&, const map<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
-  755 |     operator<=>(const map<_Key, _Tp, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/map.h:755:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::map<_Key, _Tp, _Compare, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/debug/map:44:
-/usr/include/c++/12/debug/multimap.h:637:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> std::__detail::__synth3way_t<std::pair<const _Key, _Val> > std::__debug::operator<=>(const multimap<_Key, _Tp, _Compare, _Allocator>&, const multimap<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
-  637 |     operator<=>(const multimap<_Key, _Tp, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multimap.h:637:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/debug/set:41,
-                 from /usr/include/c++/12/set:67,
-                 from stdc++.h:87:
-/usr/include/c++/12/debug/set.h:618:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const set<_Key, _Compare, _Allocator>&, const set<_Key, _Compare, _Allocator>&)’ (rewritten)
-  618 |     operator<=>(const set<_Key, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/set.h:618:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::set<_Key, _Compare, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/debug/set:42:
-/usr/include/c++/12/debug/multiset.h:608:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const multiset<_Key, _Compare, _Allocator>&, const multiset<_Key, _Compare, _Allocator>&)’ (rewritten)
-  608 |     operator<=>(const multiset<_Key, _Compare, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/multiset.h:608:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::multiset<_Key, _Compare, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/forward_list:43,
-                 from stdc++.h:104:
-/usr/include/c++/12/debug/forward_list:872:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr std::__detail::__synth3way_t<_T1> std::__debug::operator<=>(const forward_list<_Tp, _Allocator>&, const forward_list<_Tp, _Allocator>&)’ (rewritten)
-  872 |     operator<=>(const forward_list<_Tp, _Alloc>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/debug/forward_list:872:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__debug::forward_list<_Tp, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/bits/stl_algobase.h:64:
-/usr/include/c++/12/bits/stl_pair.h:647:5: note: candidate: ‘template<class _T1, class _T2> constexpr std::common_comparison_category_t<decltype (std::__detail::__synth3way(declval<_T1&>(), declval<_T1&>())), decltype (std::__detail::__synth3way(declval<_T2&>(), declval<_T2&>()))> std::operator<=>(const pair<_T1, _T2>&, const pair<_T1, _T2>&)’ (rewritten)
-  647 |     operator<=>(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_pair.h:647:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::pair<_T1, _T2>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/stl_iterator.h:597:5: note: candidate: ‘template<class _Iterator>  requires  three_way_comparable<_Iterator, std::partial_ordering> constexpr std::compare_three_way_result_t<_Iterator, _Iterator> std::operator<=>(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorL>&)’ (rewritten)
-  597 |     operator<=>(const reverse_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:597:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/stl_iterator.h:1752:5: note: candidate: ‘template<class _Iterator>  requires  three_way_comparable<_Iterator, std::partial_ordering> constexpr std::compare_three_way_result_t<_Iterator, _Iterator> std::operator<=>(const move_iterator<_IteratorL>&, const move_iterator<_IteratorL>&)’ (rewritten)
- 1752 |     operator<=>(const move_iterator<_Iterator>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1752:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::move_iterator<_IteratorL>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/string_view:554:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(basic_string_view<_CharT, _Traits>, basic_string_view<_CharT, _Traits>)’ (rewritten)
-  554 |     operator<=>(basic_string_view<_CharT, _Traits> __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/string_view:554:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘std::pair<long long int, long long int>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/basic_string.h:3621:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr decltype (__char_traits_cmp_cat<_Traits>(0)) std::operator<=>(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’ (rewritten)
- 3621 |     operator<=>(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/basic_string.h:3621:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/functional:63:
-/usr/include/c++/12/array:311:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr std::__detail::__synth3way_t<_T1> std::operator<=>(const array<_Tp, _Nm>&, const array<_Tp, _Nm>&)’ (rewritten)
-  311 |     operator<=>(const array<_Tp, _Nm>& __a, const array<_Tp, _Nm>& __b)
-      |     ^~~~~~~~
-/usr/include/c++/12/array:311:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::array<_Tp, _Nm>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/queue:64,
-                 from stdc++.h:86:
-/usr/include/c++/12/bits/stl_queue.h:434:5: note: candidate: ‘template<class _Tp, class _Seq>  requires  three_way_comparable<_Seq, std::partial_ordering> std::compare_three_way_result_t<_Seq> std::operator<=>(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’ (rewritten)
-  434 |     operator<=>(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:434:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::queue<_Tp, _Seq>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/stack:61,
-                 from stdc++.h:89:
-/usr/include/c++/12/bits/stl_stack.h:410:5: note: candidate: ‘template<class _Tp, class _Seq>  requires  three_way_comparable<_Seq, std::partial_ordering> std::compare_three_way_result_t<_Seq> std::operator<=>(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’ (rewritten)
-  410 |     operator<=>(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_stack.h:410:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::stack<_Tp, _Seq>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from stdc++.h:133:
-/usr/include/c++/12/variant:1255:5: note: candidate: ‘template<class ... _Types>  requires (three_way_comparable<_Types, std::partial_ordering> && ...) constexpr std::common_comparison_category_t<typename std::__detail::__cmp3way_res_impl<_Types, _Types>::type ...> std::operator<=>(const variant<_Types ...>&, const variant<_Types ...>&)’ (rewritten)
- 1255 |     operator<=>(const variant<_Types...>& __v, const variant<_Types...>& __w)
-      |     ^~~~~~~~
-/usr/include/c++/12/variant:1255:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::variant<_Types ...>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from stdc++.h:142:
-/usr/include/c++/12/coroutine:153:3: note: candidate: ‘constexpr std::strong_ordering std::__n4861::operator<=>(coroutine_handle<void>, coroutine_handle<void>)’ (rewritten)
-  153 |   operator<=>(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/coroutine:153:34: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} to ‘std::__n4861::coroutine_handle<void>’
-  153 |   operator<=>(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
-      |               ~~~~~~~~~~~~~~~~~~~^~~
-In file included from /usr/include/c++/12/bits/ios_base.h:46:
-/usr/include/c++/12/system_error:312:3: note: candidate: ‘std::strong_ordering std::operator<=>(const error_code&, const error_code&)’ (rewritten)
-  312 |   operator<=>(const error_code& __lhs, const error_code& __rhs) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:312:33: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} to ‘const std::error_code&’
-  312 |   operator<=>(const error_code& __lhs, const error_code& __rhs) noexcept
-      |               ~~~~~~~~~~~~~~~~~~^~~~~
-/usr/include/c++/12/system_error:493:3: note: candidate: ‘std::strong_ordering std::operator<=>(const error_condition&, const error_condition&)’ (rewritten)
-  493 |   operator<=>(const error_condition& __lhs,
-      |   ^~~~~~~~
-/usr/include/c++/12/system_error:493:38: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} to ‘const std::error_condition&’
-  493 |   operator<=>(const error_condition& __lhs,
-      |               ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
-In file included from stdc++.h:113:
-/usr/include/c++/12/thread:65:3: note: candidate: ‘std::strong_ordering std::operator<=>(thread::id, thread::id)’ (rewritten)
-   65 |   operator<=>(thread::id __x, thread::id __y) noexcept
-      |   ^~~~~~~~
-/usr/include/c++/12/thread:65:26: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} to ‘std::thread::id’
-   65 |   operator<=>(thread::id __x, thread::id __y) noexcept
-      |               ~~~~~~~~~~~^~~
-/usr/include/c++/12/variant:1278:3: note: candidate: ‘constexpr std::strong_ordering std::operator<=>(monostate, monostate)’ (rewritten)
- 1278 |   operator<=>(monostate, monostate) noexcept { return strong_ordering::equal; }
-      |   ^~~~~~~~
-/usr/include/c++/12/variant:1278:15: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} to ‘std::monostate’
- 1278 |   operator<=>(monostate, monostate) noexcept { return strong_ordering::equal; }
-      |               ^~~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:562:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator<=(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&) requires requires{{std::operator<=::__x->base() >= std::operator<=::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
-  562 |     operator<=(const reverse_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:562:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/stl_iterator.h:1711:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator<=(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&) requires requires{{std::operator<=::__y->base() < std::operator<=::__x->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
- 1711 |     operator<=(const move_iterator<_IteratorL>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_iterator.h:1711:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::move_iterator<_IteratorL>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/unique_ptr.h:906:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep> constexpr bool std::operator<=(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’
-  906 |     operator<=(const unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:906:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/unique_ptr.h:914:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator<=(const unique_ptr<_Tp, _Dp>&, nullptr_t)’
-  914 |     operator<=(const unique_ptr<_Tp, _Dp>& __x, nullptr_t)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:914:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/unique_ptr.h:921:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator<=(nullptr_t, const unique_ptr<_Tp, _Dp>&)’
-  921 |     operator<=(nullptr_t, const unique_ptr<_Tp, _Dp>& __x)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:921:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::unique_ptr<_Tp, _Dp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/stl_queue.h:420:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator<=(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’
-  420 |     operator<=(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:420:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::queue<_Tp, _Seq>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/stl_stack.h:396:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator<=(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’
-  396 |     operator<=(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
-      |     ^~~~~~~~
-/usr/include/c++/12/bits/stl_stack.h:396:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::stack<_Tp, _Seq>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-In file included from /usr/include/c++/12/valarray:603,
-                 from stdc++.h:95:
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/bits/valarray_after.h:421:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__less_equal, typename _Dom1::value_type>::result_type> std::operator<=(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
-  421 |     _DEFINE_EXPR_BINARY_OPERATOR(<=, struct std::__less_equal)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/valarray_after.h:421:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/valarray:1202:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__less_equal, _Tp>::result_type> std::operator<=(const valarray<_Tp>&, const valarray<_Tp>&)’
- 1202 | _DEFINE_BINARY_OPERATOR(<=, __less_equal)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1202:1: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::valarray<_Tp>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/valarray:1202:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__less_equal, _Tp>::result_type> std::operator<=(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
- 1202 | _DEFINE_BINARY_OPERATOR(<=, __less_equal)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1202:1: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::valarray<_Tp>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/valarray:1202:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__less_equal, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__less_equal, _Tp>::result_type> std::operator<=(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
- 1202 | _DEFINE_BINARY_OPERATOR(<=, __less_equal)
-      | ^~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/valarray:1202:1: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/optional:1256:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_le_t<_Tp, _Up> std::operator<=(const optional<_Tp>&, const optional<_Up>&)’
- 1256 |     operator<=(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1256:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::optional<_Tp>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/optional:1398:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_le_t<_Tp, _Up> std::operator<=(const optional<_Tp>&, const _Up&)’
- 1398 |     operator<=(const optional<_Tp>& __lhs, const _Up& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1398:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::optional<_Tp>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/optional:1404:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_le_t<_Up, _Tp> std::operator<=(const _Up&, const optional<_Tp>&)’
- 1404 |     operator<=(const _Up& __lhs, const optional<_Tp>& __rhs)
-      |     ^~~~~~~~
-/usr/include/c++/12/optional:1404:5: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   mismatched types ‘const std::optional<_Tp>’ and ‘sll’ {aka ‘__int128’}
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
-/usr/include/c++/12/variant:1240:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator<=(const variant<_Types ...>&, const variant<_Types ...>&)’
- 1240 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(<=, less_equal)
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/variant:1240:3: note:   template argument deduction/substitution failed:
-test.cpp:256:48: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::pair<long long int, long long int> >, std::pair<long long int, long long int> >::value_type’ {aka ‘std::pair<long long int, long long int>’} is not derived from ‘const std::variant<_Types ...>’
-  256 |             while(que.size() && que.front()<=x-d) {
-      |                                                ^
+/usr/include/c++/12/bits/stl_pair.h:297:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<_U1, _U2>() constexpr std::pair<_T1, _T2>::pair(std::pair<_U1, _U2>&&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  297 |         pair(pair<_U1, _U2>&& __p)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:297:9: note:   template argument deduction/substitution failed:
+test.cpp:250:32: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘std::tuple_element<1, std::tuple<long long int, long long int, long long int> >::type’ {aka ‘long long int’}
+  250 |             erase(st, Pr(v,s,ni));
+      |                                ^
+/usr/include/c++/12/bits/stl_pair.h:288:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<const _U1&, const _U2&>() constexpr std::pair<_T1, _T2>::pair(const std::pair<_U1, _U2>&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  288 |         pair(const pair<_U1, _U2>& __p)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:288:9: note:   template argument deduction/substitution failed:
+test.cpp:250:32: note:   mismatched types ‘const std::pair<_T1, _T2>’ and ‘std::tuple_element<1, std::tuple<long long int, long long int, long long int> >::type’ {aka ‘long long int’}
+  250 |             erase(st, Pr(v,s,ni));
+      |                                ^
+/usr/include/c++/12/bits/stl_pair.h:279:9: note: candidate: ‘template<class _U1, class _U2>  requires  _S_constructible<_U1, _U2>() constexpr std::pair<_T1, _T2>::pair(_U1&&, _U2&&) [with _U2 = _U1; _T1 = long long int; _T2 = long long int]’
+  279 |         pair(_U1&& __x, _U2&& __y)
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:279:9: note:   template argument deduction/substitution failed:
+test.cpp:250:32: note:   candidate expects 2 arguments, 3 provided
+  250 |             erase(st, Pr(v,s,ni));
+      |                                ^
+/usr/include/c++/12/bits/stl_pair.h:217:9: note: candidate: ‘template<class ... _Args1, long unsigned int ..._Indexes1, class ... _Args2, long unsigned int ..._Indexes2> constexpr std::pair<_T1, _T2>::pair(std::tuple<_Args1 ...>&, std::tuple<_Args2 ...>&, std::_Index_tuple<_Indexes1 ...>, std::_Index_tuple<_Indexes2 ...>) [with _Args1 = {_Args1 ...}; long unsigned int ..._Indexes1 = {_Indexes1 ...}; _Args2 = {_Args2 ...}; long unsigned int ..._Indexes2 = {_Indexes2 ...}; _T1 = long long int; _T2 = long long int]’
+  217 |         pair(tuple<_Args1...>&, tuple<_Args2...>&,
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:217:9: note:   template argument deduction/substitution failed:
+test.cpp:250:32: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘std::tuple_element<1, std::tuple<long long int, long long int, long long int> >::type’ {aka ‘long long int’}
+  250 |             erase(st, Pr(v,s,ni));
+      |                                ^
+/usr/include/c++/12/bits/stl_pair.h:200:9: note: candidate: ‘template<class ... _Args1, class ... _Args2> constexpr std::pair<_T1, _T2>::pair(std::piecewise_construct_t, std::tuple<_Args1 ...>, std::tuple<_Args2 ...>) [with _Args1 = {_Args1 ...}; _Args2 = {_Args2 ...}; _T1 = long long int; _T2 = long long int]’
+  200 |         pair(piecewise_construct_t, tuple<_Args1...>, tuple<_Args2...>);
+      |         ^~~~
+/usr/include/c++/12/bits/stl_pair.h:200:9: note:   template argument deduction/substitution failed:
+test.cpp:250:32: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘long long int’
+  250 |             erase(st, Pr(v,s,ni));
+      |                                ^
+/usr/include/c++/12/bits/stl_pair.h:269:7: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(const _T1&, const _T2&) requires  _S_constructible<const _T1&, const _T2&>() [with _T1 = long long int; _T2 = long long int]’
+  269 |       pair(const _T1& __x, const _T2& __y)
+      |       ^~~~
+/usr/include/c++/12/bits/stl_pair.h:269:7: note:   candidate expects 2 arguments, 3 provided
+/usr/include/c++/12/bits/stl_pair.h:228:7: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair() requires (is_default_constructible_v<_T1>) && (is_default_constructible_v<_T2>) [with _T1 = long long int; _T2 = long long int]’
+  228 |       pair()
+      |       ^~~~
+/usr/include/c++/12/bits/stl_pair.h:228:7: note:   candidate expects 0 arguments, 3 provided
+/usr/include/c++/12/bits/stl_pair.h:196:17: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(std::pair<_T1, _T2>&&) [with _T1 = long long int; _T2 = long long int]’
+  196 |       constexpr pair(pair&&) = default;         ///< Move constructor
+      |                 ^~~~
+/usr/include/c++/12/bits/stl_pair.h:196:17: note:   candidate expects 1 argument, 3 provided
+/usr/include/c++/12/bits/stl_pair.h:195:17: note: candidate: ‘constexpr std::pair<_T1, _T2>::pair(const std::pair<_T1, _T2>&) [with _T1 = long long int; _T2 = long long int]’
+  195 |       constexpr pair(const pair&) = default;    ///< Copy constructor
+      |                 ^~~~
+/usr/include/c++/12/bits/stl_pair.h:195:17: note:   candidate expects 1 argument, 3 provided
