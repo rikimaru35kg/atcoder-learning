@@ -223,9 +223,10 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/fenwicktree>
 using namespace atcoder;
-using mint = modint1000000007;
+#include <atcoder/modint>
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -238,15 +239,43 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N); VL(X, N);
-    vm C(N);
-    rep1(n, N-1) C[n] = C[n-1] + mint(1)/n;
-    mint ans = 0;
-    rep(i, N-1) {
-        ans += C[i+1] * (X[i+1]-X[i]);
+    LONG(N, K);
+    VLM(P, N);
+
+    auto calinv=[&]() -> ll {
+        fenwick_tree<ll> tree(N);
+        ll ret = 0;
+        rep(i, N) {
+            ret += tree.sum(P[i]+1, N);
+            tree.add(P[i],1);
+        }
+        return ret;
+    };
+
+    fenwick_tree<ll> tree(N);
+    mint now = 0;
+    auto add=[&](ll x) {
+        now += tree.sum(x+1, N);
+        tree.add(x, 1);
+    };
+    auto del=[&](ll x) {
+        tree.add(x, -1);
+        now -= tree.sum(0, x);
+    };
+    rep(i, K) add(P[i]);
+
+    mint M = N+1-K;
+    mint ans = calinv();
+    mint shuffle = (mint)K*(K-1)/2/2;
+    ans += shuffle;
+    rep(i, N+1-K) {
+        ans -= now/M;
+        if(i==N-K) break;
+        del(P[i]);
+        add(P[i+K]);
     }
-    rep1(i, N-1) ans *= i;
     Out(ans);
+
 
 }
 
