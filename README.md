@@ -1432,7 +1432,7 @@
 ## XY独立に考える
 ### 例題
 - 基本 [070 - Plant Planning（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_br)
-- !復習価値中 犯人の逃走経路数（MODの値注意！） [abduction - 誘拐 (Abduction)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_abduction)
+- 基本 犯人の逃走経路数（MODの値注意！） [abduction - 誘拐 (Abduction)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_abduction)
 - 基本 格子点を正方形に収める最小回数 [F - Minimize Bounding Square](https://atcoder.jp/contests/abc330/tasks/abc330_f)
 
 ## 変数分離

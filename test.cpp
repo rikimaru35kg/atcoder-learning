@@ -223,50 +223,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
 }
 
 void solve() {
+    mint::set_mod((ll)1e7);
+    LONG(W, H);
     LONG(N);
-    VP(P, N);
-    sort(all(P));
+    STRING(S);
+    ll dir = 0;
+    if(S[0]=='L') dir = 0;
+    else dir = 1;
+    vl vdir;
+    vdir.push_back(dir);
+    rep(i, N) {
+        if(S[i]=='L') dir = (dir+1)%4;
+        else dir = (dir+3)%4;
+        vdir.push_back(dir);
+    }
+    de(vdir)
 
-    auto f=[&](sll d) -> bool {
-        queue<Pr> que;
-        ll ymin = INF, ymax = -INF;
-        for(auto [x,y]: P) {
-            while(que.size() && que.front().first<=x-d) {
-                auto [xi, yi] = que.front(); que.pop();
-                chmin(ymin, yi);
-                chmax(ymax, yi);
+    vl xpm, ypm;
+    for(auto dir: vdir) {
+        if(dir==0) xpm.push_back(1);
+        if(dir==1) ypm.push_back(1);
+        if(dir==2) xpm.push_back(-1);
+        if(dir==3) ypm.push_back(-1);
+    }
+
+    auto calc=[&](vl &pm, ll W) -> mint {
+        ll n = pm.size();
+        vm dp(W+1);
+        dp[0] = 1;
+        rep(i, n) {
+            vm pdp(W+1); swap(pdp, dp);
+            auto Sc = cumsum(pdp);
+            rep(j, W+1) {
+                if(pm[i]==1) { dp[j] = Sc[j]; }
+                else dp[j] = Sc[W+1] - Sc[j+1];
             }
-            if(ymax>=y+d) return true;
-            if(ymin<=y-d) return true;
-            que.emplace(x,y);
         }
-        return false;
+        return dp[W];
     };
 
-    ll ans = binary_search(0, (ll)1e9+1, f);
+    mint ans = calc(xpm, W);
+    ans *= calc(ypm, H);
     Out(ans);
+
 
 }
 

@@ -223,81 +223,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
+    return ok;
+}
 
 void solve() {
     LONG(N);
-    CoordinateCompression<ll> cc;
-    map<ll,vp> box;
-    rep(i, N) {
-        VL(x,3);
-        sort(all(x));
-        box[x[0]].emplace_back(x[1],x[2]);
-        cc.add(x[1]);
-    }
+    VP(P, N);
+    sort(all(P));
 
-    segtree<S,op,e> seg(N);
-    auto update=[&](ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
+    auto f=[&](sll d) -> bool {
+        queue<Pr> que;
+        ll ymin = INF, ymax = -INF;
+        for(auto [x,y]: P) {
+            while(que.size() && que.front().first<=x-d) {
+                auto [xi, yi] = que.front(); que.pop();
+                chmin(ymin, yi);
+                chmax(ymax, yi);
+            }
+            if(ymax>=y+d) return true;
+            if(ymin<=y-d) return true;
+            que.emplace(x,y);
+        }
+        return false;
     };
 
-    for(auto [h,v]: box) {
-        for(auto [w,d]: v) {
-            w = cc(w);
-            ll mn = seg.prod(0, w);
-            if(mn<d) PYes
-        }
-        for(auto [w,d]: v) {
-            update(cc(w), d);
-        }
-    }
-    PNo
+    ll ans = binary_search(0, (ll)1e9+1, f);
+    Out(ans);
 
 }
 
