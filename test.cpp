@@ -224,23 +224,37 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vp picture;
-    rep(i, N) {
-        LONG(s,v);
-        picture.emplace_back(v,s);
-    }
-    sort(all(picture));
-
-    VL(C, M);
-    sort(allr(C));
+    LONG(N, M, K);
+    LONG(A,B,C,T);
+    VLM(S,M);
+    
+    vl cand;
     ll ans = 0;
-    for(auto c: C) {
-        while(picture.size() && picture.back().second>c) picture.pop_back();
-        if(picture.empty()) break;
-        ++ans;
-        picture.pop_back();
+    rep(i, M-1) {
+        ll a = S[i], b = S[i+1];
+        ll t = B*a;
+        if(t>T) break;
+        ll si = a;
+        ll k = Div(T-t, A);
+        si += k + 1;
+        ans += min(k+1,b-a);
+        t += C*(k+1);
+        ll cnt = 0;
+        while(si<b && t<=T && cnt<K) {
+            ll k = Div(T-t, A);
+            cand.push_back(min(k+1, b-si));
+            ++cnt;
+            si += k+1;
+            t += C*(k+1);
+        }
     }
+    --ans;
+    if((N-1)*B<=T) ++ans;
+    de(ans)
+    de(cand)
+    sort(allr(cand));
+    ll n = min(K-M, SIZE(cand));
+    rep(i, n) ans += cand[i];
     Out(ans);
 
 }

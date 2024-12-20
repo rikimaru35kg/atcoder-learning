@@ -224,35 +224,47 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W, K);
     LONG(N);
-    vl row(H), col(W);
-    umap<ll,ll> mp;
-    vvl cs(H);
+    VL2(A,C,N);
+    rep(i, N) C[i]--;
+
+    vl cmax(N, -INF);
+    vvl as(N);
     rep(i, N) {
-        LONGM(r,c);
-        row[r]++, col[c]++;
-        cs[r].push_back(c);
+        chmax(cmax[C[i]], A[i]);
+        as[C[i]].push_back(A[i]);
     }
-    rep(c, W) mp[col[c]]++;
+    rep(i, N) sort(allr(as[i]));
+
+    vp mxs;
+    rep(i, N) {
+        if(cmax[i]!=-INF) mxs.emplace_back(cmax[i], i);
+    }
+    if(mxs.size()==1) Pm0
+    sort(allr(mxs));
+    ll c1 = mxs[0].second, c2 = mxs[1].second;
 
     ll ans = 0;
-    rep(r, H) {
-        ll nrow = row[r];
-        for(auto c: cs[r]) { if(nrow+col[c]-1==K) ++ans; }
-        de2(r,ans)
-        if(nrow == W) continue;
-
-        for(auto c: cs[r]) { mp[col[c]]--; }
-        de(mp)
-
-        ll ncol = mp[K-nrow];
-        ans += ncol;
-        de(ans)
-
-        for(auto c: cs[r]) { mp[col[c]]++; }
+    rep(i, N) {
+        if(i==c1) {
+            while(as[i].size()>1) {
+                ll now = as[c2][0] + pop(as[i]);
+                if(now>0) ans += now;
+            }
+        } else {
+            while(as[i].size()>1) {
+                ll now = as[c1][0] + pop(as[i]);
+                if(now>0) ans += now;
+            }
+        }
+    }
+    ll M = mxs.size();
+    repk(i, 1, M) {
+        ll now = mxs[i].first + mxs[0].first;
+        if(now>0) ans += now;
     }
     Out(ans);
+
 
 }
 
