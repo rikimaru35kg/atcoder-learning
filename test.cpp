@@ -223,9 +223,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
 #include <atcoder/modint>
+using namespace atcoder;
 using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
@@ -239,43 +238,42 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N, K);
-    VLM(P, N);
+    LONG(H, W, K);
+    LONGM(x1,y1,x2,y2);
+    vvm dp(2, vm(2));
+    dp[x1==x2][y1==y2] = 1;
+    de(dp)
 
-    auto calinv=[&]() -> ll {
-        fenwick_tree<ll> tree(N);
-        ll ret = 0;
-        rep(i, N) {
-            ret += tree.sum(P[i]+1, N);
-            tree.add(P[i],1);
+    rep(k, K) {
+        vvm pdp(2, vm(2)); swap(pdp, dp);
+        rep(i, 2) {
+            dp[i][0] += pdp[i][0] * (W-2);
+            dp[i][1] += pdp[i][0];
+            dp[i][0] += pdp[i][1] * (W-1);
         }
-        return ret;
-    };
+        rep(j, 2) {
+            dp[0][j] += pdp[0][j] * (H-2);
+            dp[1][j] += pdp[0][j];
+            dp[0][j] += pdp[1][j] * (H-1);
+        }
+        // dp[1][0] += pdp[1][1] * (W-1);
+        // dp[0][1] += pdp[1][1] * (H-1);
 
-    fenwick_tree<ll> tree(N);
-    mint now = 0;
-    auto add=[&](ll x) {
-        now += tree.sum(x+1, N);
-        tree.add(x, 1);
-    };
-    auto del=[&](ll x) {
-        tree.add(x, -1);
-        now -= tree.sum(0, x);
-    };
-    rep(i, K) add(P[i]);
+        // dp[0][0] += pdp[0][0] * (W-2);
+        // dp[0][0] += pdp[0][0] * (H-2);
+        // dp[0][1] += pdp[0][0];
+        // dp[1][0] += pdp[0][0];
 
-    mint M = N+1-K;
-    mint ans = calinv();
-    mint shuffle = (mint)K*(K-1)/2/2;
-    ans += shuffle;
-    rep(i, N+1-K) {
-        ans -= now/M;
-        if(i==N-K) break;
-        del(P[i]);
-        add(P[i+K]);
+        // dp[0][0] += pdp[0][1] * (W-1);
+        // dp[0][1] += pdp[0][1] * (H-2);
+        // dp[1][1] += pdp[0][1];
+
+        // dp[0][0] += pdp[1][0] * (H-1);
+        // dp[1][0] += pdp[1][0] * (W-2);
+        // dp[1][1] += pdp[1][0];
+
     }
-    Out(ans);
-
+    Out(dp[1][1]);
 
 }
 
