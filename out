@@ -1,0 +1,48 @@
+test.cpp: In function ‘void solve()’:
+test.cpp:307:14: error: no match for ‘operator^=’ (operand types are ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} and ‘std::tuple_element<1, std::pair<bool, std::__debug::bitset<300> > >::type’ {aka ‘std::__debug::bitset<300>’})
+  307 |         s[i] ^= bs;
+In file included from stdc++.h:45:
+/usr/include/c++/12/cstddef:177:3: note: candidate: ‘constexpr std::byte& std::operator^=(byte&, byte)’
+  177 |   operator^=(byte& __l, byte __r) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/12/cstddef:177:20: note:   no known conversion for argument 1 from ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} to ‘std::byte&’
+  177 |   operator^=(byte& __l, byte __r) noexcept
+      |              ~~~~~~^~~
+In file included from /usr/include/c++/12/ios:42,
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/sstream:38,
+                 from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/bits/ios_base.h:107:3: note: candidate: ‘const std::_Ios_Fmtflags& std::operator^=(_Ios_Fmtflags&, _Ios_Fmtflags)’
+  107 |   operator^=(_Ios_Fmtflags& __a, _Ios_Fmtflags __b)
+      |   ^~~~~~~~
+/usr/include/c++/12/bits/ios_base.h:107:29: note:   no known conversion for argument 1 from ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} to ‘std::_Ios_Fmtflags&’
+  107 |   operator^=(_Ios_Fmtflags& __a, _Ios_Fmtflags __b)
+      |              ~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/bits/ios_base.h:150:3: note: candidate: ‘const std::_Ios_Openmode& std::operator^=(_Ios_Openmode&, _Ios_Openmode)’
+  150 |   operator^=(_Ios_Openmode& __a, _Ios_Openmode __b)
+      |   ^~~~~~~~
+/usr/include/c++/12/bits/ios_base.h:150:29: note:   no known conversion for argument 1 from ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} to ‘std::_Ios_Openmode&’
+  150 |   operator^=(_Ios_Openmode& __a, _Ios_Openmode __b)
+      |              ~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/bits/ios_base.h:190:3: note: candidate: ‘const std::_Ios_Iostate& std::operator^=(_Ios_Iostate&, _Ios_Iostate)’
+  190 |   operator^=(_Ios_Iostate& __a, _Ios_Iostate __b)
+      |   ^~~~~~~~
+/usr/include/c++/12/bits/ios_base.h:190:28: note:   no known conversion for argument 1 from ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} to ‘std::_Ios_Iostate&’
+  190 |   operator^=(_Ios_Iostate& __a, _Ios_Iostate __b)
+      |              ~~~~~~~~~~~~~~^~~
+In file included from stdc++.h:105:
+/usr/include/c++/12/future:180:18: note: candidate: ‘std::launch& std::operator^=(launch&, launch)’
+  180 |   inline launch& operator^=(launch& __x, launch __y) noexcept
+      |                  ^~~~~~~~
+/usr/include/c++/12/future:180:37: note:   no known conversion for argument 1 from ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} to ‘std::launch&’
+  180 |   inline launch& operator^=(launch& __x, launch __y) noexcept
+      |                             ~~~~~~~~^~~
+In file included from stdc++.h:127:
+/usr/include/c++/12/charconv:648:3: note: candidate: ‘constexpr std::chars_format& std::operator^=(chars_format&, chars_format)’
+  648 |   operator^=(chars_format& __lhs, chars_format __rhs) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/12/charconv:648:28: note:   no known conversion for argument 1 from ‘std::__debug::bitset<300>::reference’ {aka ‘std::__cxx1998::bitset<300>::reference’} to ‘std::chars_format&’
+  648 |   operator^=(chars_format& __lhs, chars_format __rhs) noexcept
+      |              ~~~~~~~~~~~~~~^~~~~

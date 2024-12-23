@@ -260,33 +260,63 @@ struct XorBase {
     }
     vBS get_base() { return base;}
     int get_rank() { return rank;}
+    BS get_row(int i) { return base[i]; }
+    vector<int> find_pivots() { // ret[idx_col] = idx_row
+        vector<int> ret(COL, -1);
+        int j = 0;
+        for(int i=0; i<rank; ++i) {
+            while(j<COL && !base[i][j]) ++j;
+            if(j<COL) ret[j] = i;
+        }
+        return ret;
+    }
     //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };
 
-void solve() {
-    LONG(N);
-    vp spice;
-    rep1(i, (1LL<<N)-1) {
-        LONG(c);
-        spice.emplace_back(c, i);
-    }
-    sort(all(spice));
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
+void solve() {
+    LONG(N, M);
     XorBase base(N);
-    ll ans = 0;
-    ll rank = 0;
-    for(auto [c,x]: spice) {
-        base.set_new_row(BS(x));
-        ll nrank = base.get_rank();
-        if(nrank!=rank) ans += c;
-        rank = nrank;
-        // de("-------------")
-        // de(c)
-        // de(BS(x))
-        rep(i, N) de(base.base[i]);
+    rep(i, N) {
+        LONG(t);
+        rep(j, t) {
+            LONGM(a);
+            base.base[i][a] = 1;
+        }
     }
+    base.sweep();
+
+    VL(S, M);
+    BS s;
+    rep(i, M) { if(S[i]==1) s[i] = 1; }
+
+    vi pivots = base.find_pivots();
+
+    rep(i, M) {
+        if(s[i]==0) continue;
+        if(pivots[i]==-1) Pm0
+        s ^= base.get_row(pivots[i]);
+    }
+
+    ll f = N - base.get_rank();
+    mint ans = 1;
+    rep(i, f) ans *= 2;
     Out(ans);
+
 
 }
 

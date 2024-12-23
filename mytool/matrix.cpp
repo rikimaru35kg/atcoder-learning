@@ -180,7 +180,6 @@ public:
 #endif
 };
 
-
 //! O(ROW * COL^2 / 64?)
 const int COL = 300;
 using BS = bitset<COL>; // size=COL
@@ -218,6 +217,16 @@ struct XorBase {
     }
     vBS get_base() { return base;}
     int get_rank() { return rank;}
+    BS get_row(int i) { return base[i]; }
+    vector<int> find_pivots() { // ret[idx_col] = idx_row
+        vector<int> ret(COL, -1);
+        int j = 0;
+        for(int i=0; i<rank; ++i) {
+            while(j<COL && !base[i][j]) ++j;
+            if(j<COL) ret[j] = i;
+        }
+        return ret;
+    }
     //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };

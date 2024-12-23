@@ -224,15 +224,22 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! O(ROW * COL^2 / 64?)
-const int COL = 16;
+const int COL = 300;
 using BS = bitset<COL>; // size=COL
 using vBS = vector<BS>;
 struct XorBase {
     int ROW;
     int rank = 0;
     vBS base;
-    XorBase(vBS base): base(base) {
-        ROW = SIZE(base);
+    XorBase(int n): ROW(n), base(n) {}
+    void initialize(vBS _base) { base = _base;} 
+    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
+        if(rank==ROW) return;
+        base[rank] = bs;
+        sweep();  // O(ROW * COL^2 / 64?)
+    }
+    void sweep() {
+        rank = 0;
         for(int j=0; j<COL; ++j) {  // find pivot for column j
             int pi = -1;  // pivot i
             for(int i=rank; i<ROW; ++i) {
@@ -266,19 +273,18 @@ void solve() {
     }
     sort(all(spice));
 
-    vBS b0(N);
-    XorBase base(b0);
+    XorBase base(N);
     ll ans = 0;
+    ll rank = 0;
     for(auto [c,x]: spice) {
-        ll r = base.get_rank();
-        if(r==N) break;
-        vBS tmp = base.base;
-        tmp[r] = BS(x);
-        XorBase nbase(tmp);
-        if(nbase.get_rank()>r) {
-            ans += c;
-            base = nbase;
-        }
+        base.set_new_row(BS(x));
+        ll nrank = base.get_rank();
+        if(nrank!=rank) ans += c;
+        rank = nrank;
+        // de("-------------")
+        // de(c)
+        // de(BS(x))
+        rep(i, N) de(base.base[i]);
     }
     Out(ans);
 

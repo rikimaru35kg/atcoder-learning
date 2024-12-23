@@ -1510,7 +1510,7 @@
 - 行列を用意してからやる方法はけんちょん氏のページが分かりやすい
 ### 例題
 - !復習価値中 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
-- !復習価値高 [D - 数列 XOR](https://atcoder.jp/contests/bitflyer2018-final/tasks/bitflyer2018_final_d)
+- !復習価値中 [D - 数列 XOR](https://atcoder.jp/contests/bitflyer2018-final/tasks/bitflyer2018_final_d)
 - !復習価値高 [057 - Flip Flap（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_be)
 
 # その他典型
