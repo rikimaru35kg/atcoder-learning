@@ -223,150 +223,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+//! O(ROW * COL^2 / 64?)
+const int COL = 300;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
+struct XorBase {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(int n): ROW(n), base(n) {}
+    void initialize(vBS _base) { base = _base;} 
+    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
+        if(rank==ROW) return;
+        base[rank] = bs;
+        sweep();  // O(ROW * COL^2 / 64?)
+    }
+    void sweep() {
+        rank = 0;
+        for(int j=0; j<COL; ++j) {  // find pivot for column j
+            int pi = -1;  // pivot i
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
+                pi = i; break;
+            }
+            if(pi==-1) continue;  // no pivot at column j
 
-//! n*n matrix
-const int MX = 2;  // DEFINE PROPERLY!!
-template <typename T>
-class Mat {
-public:
-    int n; T a[MX][MX];
-    // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
+            swap(base[rank], base[pi]);
+            // delete all other 1 at column j
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
             }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
+            ++rank;
         }
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(long long i=0; i<n; ++i) for(long long j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    Mat pow(long long k) {
-        return pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    T ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
+    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
+    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };
 
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
-        }
-        a = a * a % mod;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
-        }
-        a = a * a;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
 void solve() {
-    LONG(K,M);
-    mint::set_mod(M);
-    mint now = 0;
-    mint a0[2][2] = {{10,1},{0,1}};
-    Mat<mint> a(2, *a0);
-    rep(i, K) {
-        LONG(c,d);
-        now *= mint(10).pow(d);
-
-        Mat<mint> b = a.pow(d);
-        mint tmp = b.a[0][1]*c;
-        now += tmp;
+    LONG(N);
+    vp spice;
+    rep1(i, (1LL<<N)-1) {
+        LONG(c);
+        spice.emplace_back(c, i);
     }
-    Out(now);
+    sort(all(spice));
+
+    XorBase base(N);
+    ll ans = 0;
+    ll rank = 0;
+    for(auto [c,x]: spice) {
+        base.set_new_row(BS(x));
+        ll nrank = base.get_rank();
+        if(nrank!=rank) ans += c;
+        rank = nrank;
+        // de("-------------")
+        // de(c)
+        // de(BS(x))
+        rep(i, N) de(base.base[i]);
+    }
+    Out(ans);
 
 }
 

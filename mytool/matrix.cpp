@@ -189,17 +189,25 @@ struct XorBase {
     int ROW;
     int rank = 0;
     vBS base;
-    XorBase(vBS mat): base(mat) {
-        ROW = SIZE(base);
-        for(int j=0; j<COL; ++j) {
+    XorBase(int n): ROW(n), base(n) {}
+    void initialize(vBS _base) { base = _base;} 
+    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
+        if(rank==ROW) return;
+        base[rank] = bs;
+        sweep();  // O(ROW * COL^2 / 64?)
+    }
+    void sweep() {
+        rank = 0;
+        for(int j=0; j<COL; ++j) {  // find pivot for column j
             int pi = -1;  // pivot i
             for(int i=rank; i<ROW; ++i) {
                 if(!base[i][j]) continue;
                 pi = i; break;
             }
-            if(pi==-1) continue;
+            if(pi==-1) continue;  // no pivot at column j
 
             swap(base[rank], base[pi]);
+            // delete all other 1 at column j
             for(int i=0; i<ROW; ++i) {
                 if(i==rank) continue;
                 if(!base[i][j]) continue;
@@ -210,6 +218,8 @@ struct XorBase {
     }
     vBS get_base() { return base;}
     int get_rank() { return rank;}
+    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
+    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };
 
 //! n*n matrix

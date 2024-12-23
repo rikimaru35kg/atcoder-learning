@@ -223,56 +223,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
-        }
-        a = a * a % mod;
-        b = (b >> 1);
-    }
-    return ans;
-}
+//! O(ROW * COL^2 / 64?)
+const int COL = 16;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
+struct XorBase {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(vBS base): base(base) {
+        ROW = SIZE(base);
+        for(int j=0; j<COL; ++j) {  // find pivot for column j
+            int pi = -1;  // pivot i
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
+                pi = i; break;
+            }
+            if(pi==-1) continue;  // no pivot at column j
 
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
+            swap(base[rank], base[pi]);
+            // delete all other 1 at column j
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
+            }
+            ++rank;
         }
-        a = a * a;
-        b = (b >> 1);
     }
-    return ans;
-}
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
+    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
+    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
+};
 
 void solve() {
-    LONG(K, M);
-    ll now = 0;
-
-    auto f = [&](auto f, ll n) -> ll {
-        if(n==0) return 0;
-        ll tmp = f(f, n/2);
-        ll ret = tmp + modpow(10,n/2,M)*tmp;
-        ret %= M;
-        if(n%2) ret = (ret*10 + 1)%M;
-        return ret;
-    };
-
-    rep(i, K) {
-        LONG(c, d);
-        ll b = modpow(10,d,M);
-        now *= b;
-        ll tmp = c*f(f, d)%M;
-        now = (now+tmp)%M;
+    LONG(N);
+    vp spice;
+    rep1(i, (1LL<<N)-1) {
+        LONG(c);
+        spice.emplace_back(c, i);
     }
-    Out(now);
+    sort(all(spice));
+
+    vBS b0(N);
+    XorBase base(b0);
+    ll ans = 0;
+    for(auto [c,x]: spice) {
+        ll r = base.get_rank();
+        if(r==N) break;
+        vBS tmp = base.base;
+        tmp[r] = BS(x);
+        XorBase nbase(tmp);
+        if(nbase.get_rank()>r) {
+            ans += c;
+            base = nbase;
+        }
+    }
+    Out(ans);
 
 }
 
