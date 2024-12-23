@@ -223,36 +223,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    STRING(S);
-    ll N = SIZE(S);
-    vm two(N+1, 1), five(N+1, 1);
-    rep(i, N) two[i+1] = two[i]*2;
-    rep(i, N) five[i+1] = five[i]*5;
+    LONG(N, M);
+    VL(S, N-1);
+    VL(X, M);
 
-    mint ans = 0;
+    ll a = 1, b = 0;
+    map<ll,ll> mp;
     rep(i, N) {
-        ll l = i, r = N-1-i;
-        mint now = 0;
-        if(l+r-1>=0) now = two[l+r-1] * (five[r]-1) / 4;
-        now += two[l] * two[r]*five[r];
-        now *= S[i]-'0';
-        ans += now;
+        de2(a,b)
+        rep(j, M) {
+            mp[(X[j]-b)*a]++;
+        }
+        if(i==N-1) break;
+        a *= -1;
+        b = S[i]-b;
     }
+    de(mp)
+    ll ans = 0;
+    for(auto [k,v]: mp) chmax(ans, v);
     Out(ans);
 
 }

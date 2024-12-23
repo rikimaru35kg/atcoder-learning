@@ -223,51 +223,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vl cnt(N);
-    ll now = 0;
-    auto add=[&](ll x, ll c=1) {
-        now -= nCr(cnt[x], 2);
-        cnt[x] += c;
-        now += nCr(cnt[x], 2);
-    };
-    rep(i, N) add(A[i]);
-
-    ll l = 0, r = N;
-    ll ans = 0;
-    while(r-l>1) {
-        ll plus = nCr(r-l, 2);
-        ans += plus - now;
-        de4(l,r,plus,now);
-
-        add(A[l], -1);
-        add(A[r-1], -1);
-        ++l, --r;
+    LONG(N, W, C);
+    vp event;
+    CoordinateCompression<ll> cc;
+    vt3 stone;
+    rep(i, N) {
+        LONG(l,r,p);
+        stone.emplace_back(l,r,p);
+        cc.add(l+1); cc.add(r+C);
+    }
+    cc.add(C);
+    cc.add(W);
+    ll M = cc.size();
+    vl imos(M);
+    for(auto [l,r,p]:stone) {
+        ll cl = cc(l+1), cr = cc(r+C);
+        imos[cl]+=p, imos[cr]-=p;
+    }
+    rep(i, M-1) imos[i+1] += imos[i];
+    ll si = cc(C), ei = cc(W);
+    ll ans = INF;
+    for(ll i=si; i<=ei; ++i) {
+        chmin(ans, imos[i]);
     }
     Out(ans);
-
 }
 
 int main () {
