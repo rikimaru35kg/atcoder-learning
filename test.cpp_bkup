@@ -223,68 +223,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 300;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(int n): ROW(n), base(n) {}
-    void initialize(vBS _base) { base = _base;} 
-    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
-        if(rank==ROW) return;
-        base[rank] = bs;
-        sweep();  // O(ROW * COL^2 / 64?)
-    }
-    void sweep() {
-        rank = 0;
-        for(int j=0; j<COL; ++j) {  // find pivot for column j
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;  // no pivot at column j
-
-            swap(base[rank], base[pi]);
-            // delete all other 1 at column j
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
-        }
-    }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
-    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N);
-    vp spice;
-    rep1(i, (1LL<<N)-1) {
-        LONG(c);
-        spice.emplace_back(c, i);
-    }
-    sort(all(spice));
+    STRING(S);
+    ll N = SIZE(S);
+    vm two(N+1, 1), five(N+1, 1);
+    rep(i, N) two[i+1] = two[i]*2;
+    rep(i, N) five[i+1] = five[i]*5;
 
-    XorBase base(N);
-    ll ans = 0;
-    ll rank = 0;
-    for(auto [c,x]: spice) {
-        base.set_new_row(BS(x));
-        ll nrank = base.get_rank();
-        if(nrank!=rank) ans += c;
-        rank = nrank;
-        // de("-------------")
-        // de(c)
-        // de(BS(x))
-        rep(i, N) de(base.base[i]);
+    mint ans = 0;
+    rep(i, N) {
+        ll l = i, r = N-1-i;
+        mint now = 0;
+        if(l+r-1>=0) now = two[l+r-1] * (five[r]-1) / 4;
+        now += two[l] * two[r]*five[r];
+        now *= S[i]-'0';
+        ans += now;
     }
     Out(ans);
 
