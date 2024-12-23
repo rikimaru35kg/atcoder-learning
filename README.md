@@ -1491,10 +1491,12 @@
 - 隣接行列（辺のコストは全て1）をK乗すると、要素(i,j)はiからjへ長さKで辿り着けるパスの個数となる
 - こうなる理由はEDPC R - Walkの解説参照
 - Nが50以下（本当？100ぐらいでも大丈夫な気がするが…）、Kがかなり大きい（10^9～10^18）の場合、行列累乗が使える可能性あり
+- フィボナッチ数列を求めたい時、a={{0,1},{1,1}}とすると、a^(n-1)に{a1,a2}を掛ければ{an,an+1}が求まる
+- 等比級数を求めたい時、a={{r,1},{0,1}}とすると、a^nのa[0][1]が項数nの等比級数となっている
 ### 例題
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
-- !要復習 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
-- !復習価値低 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
+- !復習価値低 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
+- !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
 
 ## アフィン変換（同次行列）
 - x, yが1次を保ったまま変換される場合は、アフィン変換可能
