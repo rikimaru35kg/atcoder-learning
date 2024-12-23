@@ -638,7 +638,8 @@
 - まずit == set.end()となったら範囲外。後ろに進めるのはit!=st.end()の時、前に進めるのはit!=set.begin()の時、最終的にit!=set.end()である事にも注意したい
 ### 例題
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
-- 基本 snuke氏の実装が参考になる [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+- 基本 [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+- !復習価値高 [D - Santa Claus 2](https://atcoder.jp/contests/abc385/tasks/abc385_d)
 - !復習価値中 [L - マンションの改築](https://atcoder.jp/contests/past202010-open/tasks/past202010_l)
 - 基本 [E - Smart Infants](https://atcoder.jp/contests/abc170/tasks/abc170_e)
 - 基本 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
@@ -1752,7 +1753,7 @@
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
-- 要復習 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
+- !要復習 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
@@ -1804,6 +1805,11 @@
 - !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 - !要復習 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - !要復習 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
+
+## 凸包
+- 凸な多角形を作る事で上手くいく問題
+### 
+- !要復習 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）
@@ -2077,6 +2083,7 @@
 - [A - B = C](https://atcoder.jp/contests/arc112/tasks/arc112_a)
 - [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
 - [B - Special Subsets](https://atcoder.jp/contests/arc114/tasks/arc114_b)
+- [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
 
 ## ACできなかった問題
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)

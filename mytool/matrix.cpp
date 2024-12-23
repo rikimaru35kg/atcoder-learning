@@ -8,6 +8,7 @@ struct Vecll {
     Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
     Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
     Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    // cross>0 means *this->v is counterclockwise.
     long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
     long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
     long long norm2() const { return x*x + y*y; }
