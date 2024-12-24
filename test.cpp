@@ -223,72 +223,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
+using t5 = tuple<ll,ll,ll,ll,ll>;
+using vt5 = vector<t5>;
 
 void solve() {
-    LONG(N, W, C);
-    vp event;
-    CoordinateCompression<ll> cc;
-    vt3 stone;
-    rep(i, N) {
-        LONG(l,r,p);
-        stone.emplace_back(l,r,p);
-        cc.add(l+1); cc.add(r+C);
+    LONG(N, M, X);
+    vt5 train;
+    rep(i, M) {
+        LONG(a,b,s,t); --a, --b;
+        train.emplace_back(s,t,a,b,i);
     }
-    cc.add(C);
-    cc.add(W);
-    ll M = cc.size();
-    vl imos(M);
-    for(auto [l,r,p]:stone) {
-        ll cl = cc(l+1), cr = cc(r+C);
-        imos[cl]+=p, imos[cr]-=p;
+    sort(all(train));
+
+    vl last(N);
+    vector<pq> que(N);
+    vl ans(M);
+    for(auto [s,t,a,b,mi]: train) {
+        while(que[a].size()) {
+            auto [pt,nt] = que[a].top();
+            if(pt>s) break;
+            que[a].pop();
+            chmax(last[a], nt);
+        }
+
+        ll delay = max(last[a]-s, 0LL);
+        if(mi==0) delay = X;
+        ans[mi] = delay;
+        de5(a,b,s,t,delay)
+        de(ans)
+        que[b].emplace(t, t+delay);
     }
-    rep(i, M-1) imos[i+1] += imos[i];
-    ll si = cc(C), ei = cc(W);
-    ll ans = INF;
-    for(ll i=si; i<=ei; ++i) {
-        chmin(ans, imos[i]);
-    }
-    Out(ans);
+    repk(i, 1, M) printf("%lld ", ans[i]);
+    cout<<endl;
 }
 
 int main () {
