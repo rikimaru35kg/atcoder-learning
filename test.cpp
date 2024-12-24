@@ -223,42 +223,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    vvp from(N);
-    ll ei = 0;
-    vvl dest;
-    rep(i, N-1) {
-        LONG(a);
-        rep(j, a) {
-            LONGM(p,q);
-            from[p].emplace_back(i, ei);
-            from[q].emplace_back(i, ei);
-            dest.push_back(vl({p,q}));
-            ++ei;
-        }
-    }
-    vl cnt(ei);
-    vl dist(N, -INF);
-    queue<ll> que;
-    que.push(N-1);
-    dist[N-1] = 0;
+//! Calculate Manhattan distance
+long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += abs(p1.first - p2.first);
+    ret += abs(p1.second - p2.second);
+    return ret;
+}
 
-    while(que.size()) {
-        ll v = que.front(); que.pop();
-        for(auto [nv,ei]: from[v]) {
-            cnt[ei]++;
-            if(cnt[ei]==2) {
-                if(dist[nv]!=-INF) continue;
-                que.push(nv);
-                ll mx = dist[dest[ei][0]];
-                chmax(mx,dist[dest[ei][1]]);
-                dist[nv] = mx+1;
-            }
-        }
+void solve() {
+    LONG(W,H,N);
+    VP(P, N);
+    vl X, Y;
+    rep(i, N) {
+        auto [x,y] = P[i];
+        X.push_back(x), Y.push_back(y);
     }
-    if(dist[0]==-INF) Pm1
-    Out(dist[0]);
+    sort(all(X));
+    sort(all(Y));
+    de(P)de(X)de(Y)
+    vl is;
+    if(N%2) {
+        is.push_back(N/2);
+        is.push_back(N/2);
+    } else {
+        is.push_back(N/2-1);
+        is.push_back(N/2);
+    }
+    de(is)
+
+    t3 ans(INF,-1,-1);
+    rep(a, 2) rep(b, 2) {
+        ll i = is[a], j = is[b];
+        ll x = X[i], y = Y[j];
+        ll now = 0;
+        ll mxd = 0;
+        rep(i, N) {
+            ll d = manhattan_dist({x,y},P[i]);
+            now += 2*d;
+            chmax(mxd, d);
+        }
+        now -= mxd;
+        de3(x,y,now)
+        chmin(ans, t3(now,x,y));
+    }
+    auto [d,x,y] = ans;
+    Out(d);
+    printf("%lld %lld\n", x, y);
 
 
 }

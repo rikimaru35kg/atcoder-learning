@@ -224,34 +224,10 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,C,D);
-    vp g; g.emplace_back(1,0);
-    rep(i, N) {
-        LONG(d,a);
-        if(d==1) continue;
-        g.emplace_back(d,a);
-    }
-    reverse(all(g));
+    LONG(W,H,N);
+    VL2M(X,Y,N);
 
-    ll x = C;
-    ll pd = D;
-    priority_queue<ll> que;
-    ll ans = 0;
-    for(auto [d,a]: g) {
-        ll dt = pd - d;
-        x -= dt;
-        while(x<0 && que.size()) {
-            auto pa = que.top(); que.pop();
-            x += pa;
-            ++ans;
-        }
-        de3(d,a,x)
-        if(x<0) Pm1
-        pd = d;
-        que.push(a);
-    }
-    de(x)
-    Out(ans);
+    auto calc
 
 }
 

@@ -248,7 +248,7 @@
 - 文章ではわかりにくいので、[snuke氏の解説参照](https://www.youtube.com/live/VSeggcnxwrc?feature=shared&t=5618)
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
-- !復習価値小 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
+- !復習価値低 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
 - 基本 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
 
@@ -1570,7 +1570,7 @@
 ### 例題
 - 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
-- !復習価値低 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
+- 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 - !要復習 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
 
