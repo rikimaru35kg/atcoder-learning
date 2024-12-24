@@ -223,38 +223,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
-    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
-    auto [x1,y1] = p1; auto [x2,y2] = p2;
-    long long a = 0, b = 0, c = 0;
-    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
-    long long g = gcd(gcd(a,b),c);
-    a /= g, b /= g, c /= g;
-    if(a==0 && b<0) b=-b, c=-c;
-    if(a<0) a=-a, b=-b, c=-c;
-    return {a,b,c};
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N, K);
-    VP(P, N);
-    if(K==1) Outend("Infinity");
-    map<t3,ll> mp;
-    rep(i, N) rep(j, i) {
-        auto [a,b,c] = get_line(P[i],P[j]);
-        mp[t3(a,b,c)] = 0;
-    }
+    LONG(N);
+    ll zero = 0;
+    map<Pr,Pr> mp;
     rep(i, N) {
-        auto [x,y] = P[i];
-        for(auto &[l,n]: mp) {
-            auto [a,b,c] = l;
-            if(a*x+b*y+c==0) n++;
+        LONG(a,b);
+        if(a==0 && b==0) {
+            ++zero; continue;
         }
+        ll g = gcd(a,b);
+        a /= g, b /= g;
+        if(b<0) a *= -1, b *= -1;
+        if(b==0 && a<0) a *= -1;
+        bool rot = false;
+        if(a<=0) {
+            rot = true;
+            a *= -1;
+            swap(a,b);
+        }
+        if(!rot) mp[{a,b}].first++;
+        else mp[{a,b}].second++;
     }
-    ll ans = 0;
-    for(auto [l,n]: mp) {
-        if(n>=K) ++ans;
+
+    mint ans = 1;
+    vm two(N+1, 1);
+    rep(i, N) two[i+1] = two[i] * 2;
+
+    for(auto [k,v]: mp) {
+        auto [x,y] = v;
+        mint now = two[x]-1 + two[y]-1 + 1;
+        ans *= now;
     }
+    --ans;
+    ans += zero;
     Out(ans);
 
 }
@@ -266,4 +282,3 @@ int main () {
 }
 
 // ### test.cpp ###
-

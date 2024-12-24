@@ -1606,7 +1606,7 @@
 ### 例題
 - 基本 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
-- !復習価値低 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
+- 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 
 ## K番目の何かを答える
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる

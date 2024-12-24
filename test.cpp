@@ -223,54 +223,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
     LONG(N);
-    ll zero = 0;
-    map<Pr,Pr> mp;
+    VL(A, N);
+    A.insert(A.begin(), 0LL);
+    A.push_back(0);
+    N += 2;
+    ll now = 0;
+    repk(i, 1, N) {
+        if(A[i]>0 && A[i-1]==0) ++now;
+    }
+    vb sunk(N);
+    map<ll,vl> mp;
     rep(i, N) {
-        LONG(a,b);
-        if(a==0 && b==0) {
-            ++zero; continue;
-        }
-        ll g = gcd(a,b);
-        a /= g, b /= g;
-        if(b<0) a *= -1, b *= -1;
-        if(b==0 && a<0) a *= -1;
-        bool rot = false;
-        if(a<=0) {
-            rot = true;
-            a *= -1;
-            swap(a,b);
-        }
-        if(!rot) mp[{a,b}].first++;
-        else mp[{a,b}].second++;
+        if(A[i]==0) sunk[i] = true;
+        else mp[A[i]].push_back(i);
     }
-
-    mint ans = 1;
-    vm two(N+1, 1);
-    rep(i, N) two[i+1] = two[i] * 2;
-
-    for(auto [k,v]: mp) {
-        auto [x,y] = v;
-        mint now = two[x]-1 + two[y]-1 + 1;
-        ans *= now;
+    de(mp)
+    ll ans = now;
+    for(auto [h,v]: mp) {
+        for(auto i: v) {
+            if(sunk[i-1] && sunk[i+1]) --now;
+            else if(!sunk[i-1] && !sunk[i+1]) now += 1;
+            sunk[i] = true;
+        }
+        de2(h,now)
+        de(sunk)
+        chmax(ans, now);
     }
-    --ans;
-    ans += zero;
     Out(ans);
 
 }
