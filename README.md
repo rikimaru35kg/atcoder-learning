@@ -1579,10 +1579,10 @@
 - 各数の2倍、3倍、4倍、、、を考慮しなければいけない場合、こうなる事が多い
 ### 例題
 - 基本 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
-- !復習価値中 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
+- 基本 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
-- !復習価値中 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
-- !要復習 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
+- 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
+- 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
 
 ## データ構造をマージする一般的なテク
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）

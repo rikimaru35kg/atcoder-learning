@@ -223,11 +223,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(W,H,N);
-    VL2M(X,Y,N);
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
+    }
+    return ret;
+}
+template <typename T>
+vector<vector<T>> transpose(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
+        ret[j][i] = a[i][j];
+    }
+    return ret;
+}
 
-    auto calc
+void solve() {
+    LONG(H, W, Q);
+    VS(S, H);
+    bool sw = false;
+    if(H>W) swap(H,W), S = transpose(S), sw = true;
+    vector<deque<char>> A(H);
+    rep(i, H) rep(j, W) {
+        A[i].push_back(S[i][j]);
+    }
+    string ans;
+    rep(i, Q) {
+        LONG(t,p); --p; CHAR(c);
+        if(sw) t = 3-t;
+        if(t==1) {
+            ans += A[p].back(); A[p].pop_back();
+            A[p].push_front(c);
+        } else {
+            ans += A[H-1][p];
+            repr(i, H-1) A[i+1][p] = A[i][p];
+            A[0][p] = c;
+        }
+        de3(t,p,c)
+        rep(ii, H) de(A[ii])
+    }
+    Out(ans);
 
 }
 

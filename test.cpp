@@ -223,53 +223,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Manhattan distance
-long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += abs(p1.first - p2.first);
-    ret += abs(p1.second - p2.second);
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
     return ret;
 }
 
 void solve() {
-    LONG(W,H,N);
-    VP(P, N);
-    vl X, Y;
-    rep(i, N) {
-        auto [x,y] = P[i];
-        X.push_back(x), Y.push_back(y);
+    LONG(N);
+    VS(S, N);
+    vvi A(N, vi(N));
+    ll si=-1, sj=-1;
+    rep(i, N) rep(j, N) {
+        if(S[i][j]=='X') A[i][j] = 1;
+        if(S[i][j]=='S') si=i, sj=j;
     }
-    sort(all(X));
-    sort(all(Y));
-    de(P)de(X)de(Y)
-    vl is;
-    if(N%2) {
-        is.push_back(N/2);
-        is.push_back(N/2);
-    } else {
-        is.push_back(N/2-1);
-        is.push_back(N/2);
-    }
-    de(is)
+    vvi Sc = cumsum(A);
 
-    t3 ans(INF,-1,-1);
-    rep(a, 2) rep(b, 2) {
-        ll i = is[a], j = is[b];
-        ll x = X[i], y = Y[j];
-        ll now = 0;
-        ll mxd = 0;
-        rep(i, N) {
-            ll d = manhattan_dist({x,y},P[i]);
-            now += 2*d;
-            chmax(mxd, d);
+    auto sum=[&](ll i1, ll j1, ll i2, ll j2) -> ll {
+        ll ret = 0;
+        ret += Sc[i2][j2];
+        ret -= Sc[i1][j2];
+        ret -= Sc[i2][j1];
+        ret += Sc[i1][j1];
+        return ret;
+    };
+
+    vvl dist(N, vl(N, INF));
+    rep1(k, N-1) {
+        queue<Pr> que;
+        auto push=[&](ll i, ll j, ll d) {
+            if(dist[i][j]<=d) return;
+            dist[i][j] = d;
+            que.emplace(i,j);
+        };
+        ll ki = si%k, kj = sj%k;
+        for(ll i=ki; i<N; i+=k) for(ll j=kj; j<N; j+=k) {
+            dist[i][j] = INF;
         }
-        now -= mxd;
-        de3(x,y,now)
-        chmin(ans, t3(now,x,y));
+        push(si,sj,0);
+        while(que.size()) {
+            auto [i,j] = que.front(); que.pop();
+            for(auto [di,dj]: dij) {
+                ll ni = i + di*k, nj = j + dj*k;
+                if(i==1&&j==1&&ni==1&&nj==2) {
+                    cout<<"";
+                }
+                if(!isin(ni,nj,N,N)) continue;
+                if(S[ni][nj]=='X') continue;
+                if(i==ni) {
+                    ll l = j, r = nj;
+                    if(l>r) swap(l,r);
+                    if(sum(i,l,i+1,r)>0) continue;
+                }
+                if(j==nj) {
+                    ll l = i, r = ni;
+                    if(l>r) swap(l,r);
+                    if(sum(l,j,r,j+1)) continue;
+                }
+                push(ni,nj,dist[i][j]+1);
+            }
+        }
+        de(dist)
+        ll ans = INF;
+        for(ll i=ki; i<N; i+=k) for(ll j=kj; j<N; j+=k) {
+            if(S[i][j]!='G') continue;
+            chmin(ans, dist[i][j]);
+        }
+        ch1(ans);
+        Out(ans);
     }
-    auto [d,x,y] = ans;
-    Out(d);
-    printf("%lld %lld\n", x, y);
 
 
 }
