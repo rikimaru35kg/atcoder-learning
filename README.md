@@ -1568,8 +1568,8 @@
 - 最大最小はチェビシェフ距離が得意（最大はそのまま、最小は2分探索＋平面走査）
 - ランダムウォークもチェビシェフ距離が得意[ここら辺の解説](https://www.youtube.com/live/T9Dxs5YLjRc?feature=shared&t=7472)
 ### 例題
-- 基本 マンハッタン距離 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
-- 基本 マンハッタン距離（上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
+- 基本 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
+- 基本 （上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 - !要復習 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
@@ -1588,7 +1588,7 @@
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
 - 二分木を下（葉）から足していく際、総和=Σ頂点のコスト*高さとなるので、葉が決まっている際に最小和を求めるためには、小さい順にマージしていけばよい
 ### 例題
-- 基本 一般的なマージテク基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+- 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - !復習価値低 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
 
 ## 標準形を考える
@@ -1597,8 +1597,8 @@
 - ちなみに傾き∞の場合は(p,q,bq)=(1,0,-x)となり、同一標準形で扱える
 - もちろんax+by+c=0と考えても良いので考えやすい方で
 ### 例題
-- !復習価値低 条件を満たす直線は何本？ [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
-- !復習価値高 内積ペアを選ばない総数（難しいが良問） [E - ∙ (Bullet)](https://atcoder.jp/contests/abc168/tasks/abc168_e)
+- 基本 [E - K-colinear Line](https://atcoder.jp/contests/abc248/tasks/abc248_e)
+- 基本 内積ペアを選ばない総数（難しいが良問） [E - ∙ (Bullet)](https://atcoder.jp/contests/abc168/tasks/abc168_e)
 
 ## 差分を考える
 - O(NK)では解けないが、O(K)では解ける場合、kを固定してO(1)で求められれば全体でO(K)となる

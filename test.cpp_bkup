@@ -223,47 +223,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> transpose(vector<string> &s) {
-    long long h = s.size(), w = s[0].size();
-    vector<string> ret(w, string(h, '.'));
-    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
-        ret[j][i] = s[i][j];
-    }
-    return ret;
-}
-template <typename T>
-vector<vector<T>> transpose(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(w, vector<T>(h));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
-        ret[j][i] = a[i][j];
-    }
-    return ret;
+tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
+    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
+    auto [x1,y1] = p1; auto [x2,y2] = p2;
+    long long a = 0, b = 0, c = 0;
+    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
+    long long g = gcd(gcd(a,b),c);
+    a /= g, b /= g, c /= g;
+    if(a==0 && b<0) b=-b, c=-c;
+    if(a<0) a=-a, b=-b, c=-c;
+    return {a,b,c};
 }
 
 void solve() {
-    LONG(H, W, Q);
-    VS(S, H);
-    bool sw = false;
-    if(H>W) swap(H,W), S = transpose(S), sw = true;
-    vector<deque<char>> A(H);
-    rep(i, H) rep(j, W) {
-        A[i].push_back(S[i][j]);
+    LONG(N, K);
+    VP(P, N);
+    if(K==1) Outend("Infinity");
+    map<t3,ll> mp;
+    rep(i, N) rep(j, i) {
+        auto [a,b,c] = get_line(P[i],P[j]);
+        mp[t3(a,b,c)] = 0;
     }
-    string ans;
-    rep(i, Q) {
-        LONG(t,p); --p; CHAR(c);
-        if(sw) t = 3-t;
-        if(t==1) {
-            ans += A[p].back(); A[p].pop_back();
-            A[p].push_front(c);
-        } else {
-            ans += A[H-1][p];
-            repr(i, H-1) A[i+1][p] = A[i][p];
-            A[0][p] = c;
+    rep(i, N) {
+        auto [x,y] = P[i];
+        for(auto &[l,n]: mp) {
+            auto [a,b,c] = l;
+            if(a*x+b*y+c==0) n++;
         }
-        de3(t,p,c)
-        rep(ii, H) de(A[ii])
+    }
+    ll ans = 0;
+    for(auto [l,n]: mp) {
+        if(n>=K) ++ans;
     }
     Out(ans);
 
@@ -276,3 +266,4 @@ int main () {
 }
 
 // ### test.cpp ###
+
