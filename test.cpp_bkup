@@ -224,28 +224,33 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, K);
-    vt4 flight;
-    rep(i, M) {
-        LONG(a,s,b,t); --a, --b;
-        flight.emplace_back(s,t+K,a,b);
+    LONG(N,C,D);
+    vp g; g.emplace_back(1,0);
+    rep(i, N) {
+        LONG(d,a);
+        if(d==1) continue;
+        g.emplace_back(d,a);
     }
-    sort(all(flight));
-    vl mx(N);
-    vector<pq> que(N);
+    reverse(all(g));
 
+    ll x = C;
+    ll pd = D;
+    priority_queue<ll> que;
     ll ans = 0;
-    for(auto [s,t,a,b]: flight) {
-        while(que[a].size()) {
-            auto [pt,n] = que[a].top();
-            if(pt>s) break;
-            que[a].pop();
-            chmax(mx[a], n);
+    for(auto [d,a]: g) {
+        ll dt = pd - d;
+        x -= dt;
+        while(x<0 && que.size()) {
+            auto pa = que.top(); que.pop();
+            x += pa;
+            ++ans;
         }
-        de5(a,b,s,t,mx[a])
-        que[b].emplace(t,mx[a]+1);
-        chmax(ans, mx[a]+1);
+        de3(d,a,x)
+        if(x<0) Pm1
+        pd = d;
+        que.push(a);
     }
+    de(x)
     Out(ans);
 
 }

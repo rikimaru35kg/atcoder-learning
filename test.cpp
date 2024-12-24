@@ -223,38 +223,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using t5 = tuple<ll,ll,ll,ll,ll>;
-using vt5 = vector<t5>;
-
 void solve() {
-    LONG(N, M, X);
-    vt5 train;
-    rep(i, M) {
-        LONG(a,b,s,t); --a, --b;
-        train.emplace_back(s,t,a,b,i);
-    }
-    sort(all(train));
-
-    vl last(N);
-    vector<pq> que(N);
-    vl ans(M);
-    for(auto [s,t,a,b,mi]: train) {
-        while(que[a].size()) {
-            auto [pt,nt] = que[a].top();
-            if(pt>s) break;
-            que[a].pop();
-            chmax(last[a], nt);
+    LONG(N);
+    vvp from(N);
+    ll ei = 0;
+    vvl dest;
+    rep(i, N-1) {
+        LONG(a);
+        rep(j, a) {
+            LONGM(p,q);
+            from[p].emplace_back(i, ei);
+            from[q].emplace_back(i, ei);
+            dest.push_back(vl({p,q}));
+            ++ei;
         }
-
-        ll delay = max(last[a]-s, 0LL);
-        if(mi==0) delay = X;
-        ans[mi] = delay;
-        de5(a,b,s,t,delay)
-        de(ans)
-        que[b].emplace(t, t+delay);
     }
-    repk(i, 1, M) printf("%lld ", ans[i]);
-    cout<<endl;
+    vl cnt(ei);
+    vl dist(N, -INF);
+    queue<ll> que;
+    que.push(N-1);
+    dist[N-1] = 0;
+
+    while(que.size()) {
+        ll v = que.front(); que.pop();
+        for(auto [nv,ei]: from[v]) {
+            cnt[ei]++;
+            if(cnt[ei]==2) {
+                if(dist[nv]!=-INF) continue;
+                que.push(nv);
+                ll mx = dist[dest[ei][0]];
+                chmax(mx,dist[dest[ei][1]]);
+                dist[nv] = mx+1;
+            }
+        }
+    }
+    if(dist[0]==-INF) Pm1
+    Out(dist[0]);
+
+
 }
 
 int main () {
