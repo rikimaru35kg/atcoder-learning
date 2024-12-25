@@ -1657,7 +1657,7 @@
 - その要素を必ず使うと見たときの左側と右側の関係を調べる、あるいはその要素を必ず使わないと見たときの左側と右側の関係を調べると良い
 ### 例題
 - 基本 必ず働く日列挙 [E - Yutori](https://atcoder.jp/contests/abc161/tasks/abc161_e)
-- !復習価値中 LISに含まれるか [F - Useless for LIS](https://atcoder.jp/contests/abc354/tasks/abc354_f)
+- 基本 LISに含まれるか [F - Useless for LIS](https://atcoder.jp/contests/abc354/tasks/abc354_f)
 
 ## クエリ先読み
 - クエリを先読みすると楽に処理できる事がある
