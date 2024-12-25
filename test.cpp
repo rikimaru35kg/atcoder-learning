@@ -223,118 +223,133 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
+const long long base = 12345;
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
 }
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
+
+long long mersenne(long long mn, long long mx) {
+    static mt19937_64 mt64(0);
+    uniform_int_distribution<long long> get(mn, mx);
+    return get(mt64);
 }
 
 void solve() {
-    LONG(N); VL(A, N);
-
-    ll tlis = 1;
-    
-    auto callis=[&](vl &A) -> vl {
-        vl lis(N, INF);
-        vl ret(N);
-        rep(i, N) {
-            auto [n,x] = lowbou(lis, A[i]);
-            ret[i] = n+1;
-            chmax(tlis, n+1);
-            lis[n] = A[i];
-        }
-        return ret;
-    };
-    auto flip=[&]() {
-        reverse(all(A));
-        rep(i, N) A[i] = -A[i];
-    };
-
-    auto left = callis(A);
-    flip();
-    auto right = callis(A);
-    flip();
-    reverse(all(right));
-
-    vl ans;
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
+    umap<ll,ll> mp;
+    uset<ll> st;
     rep(i, N) {
-        if(left[i]+right[i]-1==tlis) ans.push_back(i+1);
+        ll now = mersenne(1,INF);
+        while(st.count(now)) {
+            now = mersenne(1,INF);
+        }
+        st.insert(now);
+        mp[A[i]] = now;
     }
-    Out(SIZE(ans));
-    Out(ans);
+    rep(i, N) {
+        ll now = mersenne(1,INF);
+        while(st.count(now)) {
+            now = mersenne(1,INF);
+        }
+        st.insert(now);
+        mp[B[i]] = now;
+    }
+
+    vector<mints> Sa(N+1), Sb(N+1);
+    rep(i, N) Sa[i+1] = Sa[i] + mp[A[i]];
+    rep(i, N) Sb[i+1] = Sb[i] + mp[B[i]];
+
+    rep(i, Q) {
+        LONG(l,r,L,R); --l, --L;
+        if(Sa[r]-Sa[l] == Sb[R]-Sb[L]) puts("Yes");
+        else puts("No");
+    }
+
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

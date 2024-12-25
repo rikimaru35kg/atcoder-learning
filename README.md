@@ -1681,8 +1681,8 @@
 - Pを1e9～2e9から選ぶとすると、1e6個ぐらい素数があり、その中で200個の素数がアウトなので、衝突確率は200/1e6ぐらい
 ### 例題
 - 基本 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
-- !復習価値低 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
-- !復習価値中 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
+- 基本 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+- !復習価値低 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
 
 ## NIMとgrundy数
 - NIMは残り山の石の個数のxorが0なら負け、非0なら勝
