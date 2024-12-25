@@ -223,74 +223,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m).first) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    ll tot = accumulate(all(A), 0LL);
+    LONG(N); VL(A, N);
+    ll s0=0, s1=0;
+    umap<ll,ll> mp;
+    mp[0]++;
+    ll ans = 0;
+    rep(i, N) {
+        if(i%2) s1 += A[i];
+        else s0 += A[i];
 
-    auto f=[&](ll x) -> pair<bool,ll> {
-        ll r = 0, sum = 0;
-        ll Z = 20;
-        vvl to(Z, vl(N));
-        vvl c(Z, vl(N));
-        rep(l, N) {
-            while(sum<x) {
-                sum += A[r];
-                r = (r+1)%N;
-            }
-            de2(l,r)
-            if(r==l) return {false,0};
-            to[0][l] = r;
-            c[0][l] = (r-l+N)%N;
+        ans += mp[s0-s1];
 
-            sum -= A[l];
-        }
-        de(to[0])
-        de(c[0])
-        rep(z, Z-1) rep(i, N) to[z+1][i] = to[z][to[z][i]];
-        rep(z, Z-1) rep(i, N) c[z+1][i] = c[z][i] + c[z][to[z][i]];
-
-        bool ok = false;
-        ll ng = 0;
-        rep(i, N) {
-            ll v = i, cnt = 0;
-            rep(z, Z) if(K>>z&1) {
-                cnt += c[z][v];
-                v = to[z][v];
-            }
-            // de2(i,cnt)
-            if(cnt<=N) ok = true;
-            else ng++;
-        }
-        return {ok,ng};
-    };
-
-    // de(f(13).first)
-
-    auto ans = binary_search(0, tot, f);
-    ll ng = f(ans).second;
-    printf("%lld %lld\n", ans, ng);
+        mp[s0-s1]++;
+    }
+    Out(ans);
 
 }
 

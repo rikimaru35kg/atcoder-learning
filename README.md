@@ -1649,7 +1649,7 @@
 ### 例題
 - 基本 順次桁減らし [D - Digit Sum Replace](https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_d)
 - 基本 RAQ [D - Range Add Query](https://atcoder.jp/contests/abc288/tasks/abc288_d)
-- !復習価値低 ビル高さ0にする [C - ARC Wrecker 2](https://atcoder.jp/contests/arc119/tasks/arc119_c)
+- 基本 ビル高さ0にする [C - ARC Wrecker 2](https://atcoder.jp/contests/arc119/tasks/arc119_c)
 - 基本 [D - Big Bang](https://atcoder.jp/contests/abc022/tasks/abc022_d)
 
 ## 必ず含まれるかどうか（or 含まれる事があるかどうか）の判定
