@@ -223,34 +223,125 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
-    A.insert(A.begin(), 0LL);
-    A.push_back(0);
-    N += 2;
-    ll now = 0;
-    repk(i, 1, N) {
-        if(A[i]>0 && A[i-1]==0) ++now;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    vb sunk(N);
-    map<ll,vl> mp;
-    rep(i, N) {
-        if(A[i]==0) sunk[i] = true;
-        else mp[A[i]].push_back(i);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    de(mp)
-    ll ans = now;
-    for(auto [h,v]: mp) {
-        for(auto i: v) {
-            if(sunk[i-1] && sunk[i+1]) --now;
-            else if(!sunk[i-1] && !sunk[i+1]) now += 1;
-            sunk[i] = true;
+    return ok;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
-        de2(h,now)
-        de(sunk)
-        chmax(ans, now);
     }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    LONG(N); STRING(S, T);
+    ll M = S.size();
+    ll Z = 26;
+    vvl is(Z);
+    rep(i, M) is[S[i]-'a'].push_back(i);
+
+    for(auto c: T) if(!is[c-'a'].size()) Pm0
+
+    auto f=[&](sll k) -> bool {
+        sll idx = 0;
+        --k;
+        for(auto c: T) {
+            vl &cis = is[c-'a'];
+            ll sz = SIZE(cis);
+            sll ci = idx/M;
+            ll ri = idx%M;
+            auto [n,y] = lowbou(cis, ri);
+            n += k;
+
+            idx = (sll)ci*M + (sll)n/sz*M + cis[n%sz] + 1;
+        }
+        return idx <= N*M;
+    };
+
+    // de(f(2))
+    ll ans = binary_search(0, INF, f);
     Out(ans);
 
 }
