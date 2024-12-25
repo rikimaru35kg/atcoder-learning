@@ -223,44 +223,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long calmex(vector<long long> &x) {
-    long long N = SIZE(x);
-    vector<bool> used(N);
-    for(long long i=0; i<N; ++i) if(x[i]<N) used[x[i]] = true;
-    long long ret = 0;
-    while(ret<N && used[ret]) ++ret;
-    return ret;
-};
-
 void solve() {
-    LONG(N); VL(W, N); VL(B, N);
-
-    auto estimate=[&]() -> vl {
-        ll w=50, b=50;
-        vl ret;
-        while(w>=0) {
-            ret.emplace_back(b);
-            b += w;
-            w--;
+    LONG(N);
+    VL2(A,B,N);
+    vl c={-1,1};
+    ll ans = 0;
+    for(auto ca: c) for(auto cb: c) {
+        ll now = 0;
+        rep(i, N) {
+            ll x = ca*A[i] + cb*B[i];
+            if(x>0) now += x;
         }
-        return ret;
-    };
-    vl est = estimate();
-    reverse(all(est));
-    vvl grundy(51, vl(1326));
-    rep(w, 51) rep(b, est[w]+1) {
-        vl v;
-        if(w) v.push_back(grundy[w-1][b+w]);
-        ll mx = b/2;
-        for(ll k=1; k<=mx; ++k) v.push_back(grundy[w][b-k]);
-        grundy[w][b] = calmex(v);
+        chmax(ans, now);
     }
-    ll XOR = 0;
-    rep(i, N) {
-        XOR ^= grundy[W[i]][B[i]];
-    }
-    if(XOR) puts("First");
-    else puts("Second");
+    Out(ans);
 
 }
 

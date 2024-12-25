@@ -1707,7 +1707,7 @@
 ## max(max())の形に帰着させる
 - maxの中にmaxがある形にできれば、簡単に解ける
 - 基本 お菓子の選び方 [D - Patisserie ABC](https://atcoder.jp/contests/abc100/tasks/abc100_d)
-- !復習価値中 [B42 - Two Faced Cards](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_do)
+- !復習価値低 [B42 - Two Faced Cards](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_do)
 
 ## 置換
 - iをPiで置き換える操作は有向グラフを考えると見通しが良くなるので、123456の下に遷移先P（342651等）を書いて考察すると良い
