@@ -223,88 +223,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m).first) ok = m;
+        else ng = m;
     }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+    return ok;
+}
 
 void solve() {
-    LONG(N,M,K);
-    Combination comb(N, M998);
-    vl deg(N);
-    rep(i, M) {
-        LONGM(a,b);
-        deg[a]++, deg[b]++;
-    }
-    ll odd=0, even=0;
-    rep(i, N) {
-        if(deg[i]%2) ++odd;
-        else ++even;
-    }
-    de2(odd,even)
-    mint ans = 0;
-    for(ll k=0; k<=K; k+=2) {
-        mint now = comb(odd, k);
-        now *= comb(even, K-k);
-        ans += now;
-    }
-    Out(ans);
+    LONG(N, K);
+    VL(A, N);
+    ll tot = accumulate(all(A), 0LL);
+
+    auto f=[&](ll x) -> pair<bool,ll> {
+        ll r = 0, sum = 0;
+        ll Z = 20;
+        vvl to(Z, vl(N));
+        vvl c(Z, vl(N));
+        rep(l, N) {
+            while(sum<x) {
+                sum += A[r];
+                r = (r+1)%N;
+            }
+            de2(l,r)
+            if(r==l) return {false,0};
+            to[0][l] = r;
+            c[0][l] = (r-l+N)%N;
+
+            sum -= A[l];
+        }
+        de(to[0])
+        de(c[0])
+        rep(z, Z-1) rep(i, N) to[z+1][i] = to[z][to[z][i]];
+        rep(z, Z-1) rep(i, N) c[z+1][i] = c[z][i] + c[z][to[z][i]];
+
+        bool ok = false;
+        ll ng = 0;
+        rep(i, N) {
+            ll v = i, cnt = 0;
+            rep(z, Z) if(K>>z&1) {
+                cnt += c[z][v];
+                v = to[z][v];
+            }
+            // de2(i,cnt)
+            if(cnt<=N) ok = true;
+            else ng++;
+        }
+        return {ok,ng};
+    };
+
+    // de(f(13).first)
+
+    auto ans = binary_search(0, tot, f);
+    ll ng = f(ans).second;
+    printf("%lld %lld\n", ans, ng);
 
 }
 
