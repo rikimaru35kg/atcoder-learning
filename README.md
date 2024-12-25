@@ -1691,7 +1691,7 @@
 - NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
 ### 例題
 - 基本 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
-- !復習価値高 [031 - VS AtCoder（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ae)
+- !復習価値低 [031 - VS AtCoder（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ae)
 - 基本 [C - 笑いをとれるかな？](https://atcoder.jp/contests/arc013/tasks/arc013_3)
 
 ## 鳩の巣原理
