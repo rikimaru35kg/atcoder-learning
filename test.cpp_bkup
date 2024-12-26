@@ -225,8 +225,8 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N, M);
-    vl deg(N);
     vp edge;
+    vl deg(N);
     rep(i, M) {
         LONGM(a,b);
         edge.emplace_back(a,b);
@@ -237,34 +237,38 @@ void solve() {
     rep(i, N) if(deg[i]>=B) large[i] = true;
 
     vvl from(N);
-    for(auto [a,b]: edge) {
+    for(auto[a,b]: edge) {
         if(deg[a]>deg[b]) swap(a,b);
         from[a].push_back(b);
         if(!large[a] && large[b]) continue;
         from[b].push_back(a);
     }
-    vl rcv(N);
-    vl snd(N);
-    vl done(N);
-
+    de(from)
     LONG(Q);
-    rep(i, Q){
-        LONG(t, x); --x;
-        if(t==1) {
-            if(!large[x]) {
-                for(auto nx: from[x]) rcv[nx]++;
-            } else {
-                snd[x]++;
+    vl last_upd(N, -1);
+    vl color(N, 1);
+    vp snd(N, Pr(-1,-1));
+    de(large)
+    rep(i, Q) {
+        LONG(x,y); --x;
+        de(last_upd)
+        de(color)
+        Pr timing(last_upd[x],color[x]);
+        for(auto nx: from[x]) {
+            if(snd[nx].first==-1) continue;
+            chmax(timing, snd[nx]);
+        }
+        ll ans = timing.second;
+        Out(ans);
+        color[x] = y;
+        last_upd[x] = i;
+        if(!large[x]) {
+            for(auto nx: from[x]) {
+                color[nx] = y;
+                last_upd[nx] = i;
             }
         } else {
-            ll sum = rcv[x];
-            for(auto nx: from[x]) {
-                if(!large[nx]) continue;
-                sum += snd[nx];
-            }
-            sum -= done[x];
-            Out(sum);
-            done[x] += sum;
+            snd[x] = {i,y};
         }
     }
 
