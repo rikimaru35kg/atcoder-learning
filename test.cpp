@@ -223,80 +223,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    // cross>0 means *this->v is counterclockwise.
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    Vecll rot90(bool counterclockwise=true) { 
-        if(counterclockwise) return Vecll(-y, x);
-        else return Vecll(y, -x);
-    }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
-    }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
-    }
-};
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-bool overlapping(long long l1, long long r1, long long l2, long long r2) {
-    if(l1>r1) swap(l1, r1);
-    if(l2>r2) swap(l2, r2);
-    long long lmax = max(l1, l2);
-    long long rmin = min(r1, r2);
-    return lmax <= rmin;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
-    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
-    if(c12_13 * c12_14 > 0) return false;
-    if(c34_31 * c34_32 > 0) return false;
-    if(c12_13==0 && c12_14==0) {
-        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
-           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
-        else return false;
-    }
-    return true;
-}
-
 void solve() {
-    LONG(N);
-    vector<Vecll> P;
-    rep(i, N) {
-        LONG(x,y);
-        P.emplace_back(x,y);
+    LONG(N, M);
+    vp edge;
+    vl deg(N);
+    rep(i, M) {
+        LONGM(a,b);
+        edge.emplace_back(a,b);
+        deg[a]++, deg[b]++;
     }
-    sort(all(P));
+    ll B = sqrt(2*M);
+    vb large(N);
+    rep(i, N) if(deg[i]>=B) large[i] = true;
 
-    db ans = 0;
-    rep(i, N) {
-        Vecll p;
-        rep(j, N) {
-            p += P[(i+j)%N];
-            db now = p.norm();
-            chmax(ans, now);
+    vvl from(N);
+    for(auto[a,b]: edge) {
+        if(deg[a]>deg[b]) swap(a,b);
+        from[a].push_back(b);
+        if(!large[a] && large[b]) continue;
+        from[b].push_back(a);
+    }
+    de(from)
+    LONG(Q);
+    vl last_upd(N, -1);
+    vl color(N, 1);
+    vp snd(N, Pr(-1,-1));
+    de(large)
+    rep(i, Q) {
+        LONG(x,y); --x;
+        de(last_upd)
+        de(color)
+        Pr timing(last_upd[x],color[x]);
+        for(auto nx: from[x]) {
+            if(snd[nx].first==-1) continue;
+            chmax(timing, snd[nx]);
+        }
+        ll ans = timing.second;
+        Out(ans);
+        color[x] = y;
+        last_upd[x] = i;
+        if(!large[x]) {
+            for(auto nx: from[x]) {
+                color[nx] = y;
+                last_upd[nx] = i;
+            }
+        } else {
+            snd[x] = {i,y};
         }
     }
-    Out(ans);
 
 }
 

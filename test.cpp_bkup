@@ -209,7 +209,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-11;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
+const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -223,108 +223,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(N);
-    VPD(P, N);
-    db ans = 0;
-
-    auto calc=[&](ll k) -> db {
-        db ret = 0;
-        vd v;
-        auto [x0,y0] = P[k];
-        rep(i, N) {
-            if(i==k) continue;
-            auto [x,y] = P[i];
-            db theta = atan2(y-y0,x-x0)*180/PI;
-            if(theta<0) theta += 360;
-            v.push_back(theta);
-        }
-        rep(i, N-1) v.push_back(v[i]+360);
-        sort(all(v));
-        ll n = v.size();
-        rep(i, n) {
-            auto [m,z] = lowbou_r(v, v[i]+180+EPS);
-            chmax(ret, v[m]-v[i]);
-        }
-        return ret;
-    };
-
-    rep(i, N) {
-        db now = calc(i);
-        chmax(ans, now);
+    LONG(N, M);
+    vl deg(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a,b);
+        edge.emplace_back(a,b);
+        deg[a]++, deg[b]++;
     }
-    Out(ans);
+    ll B = sqrt(2*M);
+    vb large(N);
+    rep(i, N) if(deg[i]>=B) large[i] = true;
+
+    vvl from(N);
+    for(auto [a,b]: edge) {
+        if(deg[a]>deg[b]) swap(a,b);
+        from[a].push_back(b);
+        if(!large[a] && large[b]) continue;
+        from[b].push_back(a);
+    }
+    vl rcv(N);
+    vl snd(N);
+    vl done(N);
+
+    LONG(Q);
+    rep(i, Q){
+        LONG(t, x); --x;
+        if(t==1) {
+            if(!large[x]) {
+                for(auto nx: from[x]) rcv[nx]++;
+            } else {
+                snd[x]++;
+            }
+        } else {
+            ll sum = rcv[x];
+            for(auto nx: from[x]) {
+                if(!large[nx]) continue;
+                sum += snd[nx];
+            }
+            sum -= done[x];
+            Out(sum);
+            done[x] += sum;
+        }
+    }
 
 }
 
