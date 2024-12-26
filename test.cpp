@@ -223,24 +223,106 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(X, Y);
+#include <atcoder/segtree>
+using namespace atcoder;
 
-    umap<ll,ll> mem;
-    auto f=[&](auto f, ll y) -> ll {
-        if(y==0) return abs(X-y);
-        if(mem.count(y)) return mem[y];
-        ll &ret = mem[y];
-        ret = abs(X-y);
-        if(y%2) {
-            chmin(ret, f(f, y+1)+1);
-            chmin(ret, f(f, y-1)+1);
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -1;}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
         } else {
-            chmin(ret, f(f, y/2)+1);
+            if (a[m] <= x) r = m;
+            else l = m;
         }
-        return ret;
-    };
-    ll ans = f(f, Y);
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    LONG(N, Q);
+    VL(H, N);
+    vvp query(N);
+    rep(i, Q) {
+        LONGM(l,r);
+        query[r].emplace_back(l, i);
+    }
+
+    segtree<S,op,e> seg(H);
+
+    vl stck;
+    vl ans(Q);
+    repr(i, N) {
+        while(stck.size() && stck.back()<=H[i]) stck.pop_back();
+        for(auto [l,qi]: query[i]) {
+            ll mxh = seg.prod(l+1,i+1);
+            auto [n,x] = uppbou(stck, mxh, false);
+            ans[qi] = n;
+        }
+        stck.push_back(H[i]);
+    }
     Out(ans);
 
 }

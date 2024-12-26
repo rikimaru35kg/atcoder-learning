@@ -224,21 +224,16 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, H);
-    LONG(A,B,C,D,E);
-    if((B+E)*C>(D+E)*A) {
-        swap(A,C), swap(B,D);
-    }
-    de4(A,B,C,D)
-    ll ans = INF;
-    rep(x, min(D+E,N+1)) {
-        ll rhs = E*N-H-(B+E)*x+1;
-        ll y = Divceil(rhs, D+E);
-        chmax(y, 0LL);
-        if(x+y>N) continue;
-        ll cost = x*A + y*C;
-        de4(x,y,cost,rhs)
-        chmin(ans, cost);
+    LONG(N); VL(A, N);
+    umap<ll,ll> mp;
+    rep(i, N) mp[A[i]] = i;
+
+    ll i = 0;
+    vl ans(N);
+    while(i<N) {
+        ll ni = mp[A[i]];
+        repk(k, i, ni+1) ans[k] = A[i];
+        i = ni+1;
     }
     Out(ans);
 
@@ -251,4 +246,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
