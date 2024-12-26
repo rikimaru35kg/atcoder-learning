@@ -696,6 +696,8 @@
 - seg.max_rightはf(seg.prod(l,r))==trueである最大のrを求める関数
 - 左から見て初めて〇〇を満たさない（あるいは満たす）ところを求めたい訳なので、lower_boundと同じ似た感覚で使う事が可能
 - 具体的にはfはラムダ式f=[&](S x)->bool{};を作り、seg.max_right<decltype(f)>(l,f)と書けばOK（lは0である事が多いはず） <decltype(f)>は省略可能かも
+- 昇順列に対してlower_boundしたい時は、モノイドにmx値を持たせた上で、seg.max_right(0,[&](S x){return x.mx<threshold;})とすれば良い（upper_boundなら return x.mx<=thresholdと等号を入れる）
+- つまり、lower_boundやupper_boundのように左から探索したい場合はmax_right、右から探索したい場合はmin_leftを用いる。等号の有無でlowerかupperか変える事ができる
 ### 例題
 - 基本 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
 - 基本 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
@@ -1755,7 +1757,7 @@
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
-- !要復習 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
+- 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）

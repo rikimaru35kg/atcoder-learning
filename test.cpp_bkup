@@ -223,18 +223,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(A, N);
-    umap<ll,ll> mp;
-    rep(i, N) mp[A[i]] = i;
-
-    ll i = 0;
-    vl ans(N);
-    while(i<N) {
-        ll ni = mp[A[i]];
-        repk(k, i, ni+1) ans[k] = A[i];
-        i = ni+1;
+template <typename T>
+long long lis_length(vector<T> &a) {
+    int n = a.size(), ret = 0;
+    vector<T> v(n, (ll)3e18);
+    for(int i=0; i<n; ++i) {
+        int idx = upper_bound(v.begin(), v.end(), a[i]) - v.begin();
+        v[idx] = a[i];
+        ret = max(ret, idx+1);
     }
+    return ret;
+}
+template <typename T>
+long long dis_length(vector<T> &a) {
+    vector<T> b = a;
+    for(auto &x: b) x = -x;
+    long long ret = lis_length(b);
+    return ret;
+}
+
+void solve() {
+    LONG(N, P);
+    VL(A, N);
+    reverse(all(A));
+    vl v;
+    rep(i, N) {
+        if(A[i]<i) A[i] = -1;
+        else if(P-A[i]<N-1-i) A[i] = -1;
+        else {
+            v.push_back(A[i]-i);
+        }
+    }
+    de(v)
+    ll ans = N - lis_length(v);
     Out(ans);
 
 }
