@@ -1769,7 +1769,7 @@
 
 ## 読解が難しい問題（問題自体は簡単すぎるのでNote非掲載）
 ### 例題
-- !復習価値低 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
+- 基本 添え字が多い問題 [B - Longest Uncommon Prefix](https://atcoder.jp/contests/abc285/tasks/abc285_b)
 
 ## 偏角ソート
 - snuke libraryが良い！

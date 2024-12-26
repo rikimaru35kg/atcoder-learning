@@ -223,101 +223,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-struct S {
-    ll x, w, mx;
-    S(ll x, ll w, ll mx): x(x),w(w),mx(mx) {}
-};
-S op(S a, S b) { return S(a.x+b.x, a.w+b.w, max(a.mx,b.mx)); }
-S e() {return S(0,0,-INF);}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==INF) return x;
-    return S(x.w*f, x.w, f);
-}
-F composition(F f, F g) {
-    if(f==INF) return g;
-    return f;
-}
-F id() {return INF;}
-
 void solve() {
-    LONG(N); VL(X, N);
-    rep(i, N) {
-        X[i] -= i;
-    }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
-    rep(i, N) {
-        seg.set(i, S(X[i], 1, X[i]));
-    }
-    auto segprint=[&](){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
-        cerr<<endl;
-    #endif
-    };
+    LONG(N);
+    STRING(S);
 
-    ll ans = 0;
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t,g); --t;
-        g -= t;
-        ll x = seg.get(t).x;
-        de3(t,x,g)
-
-        // x->g
-        if(x==g) continue;
-        if(g>x) {
-            auto f=[&](S x) -> bool {
-                return x.mx < g;
-            };
-            ll r = seg.max_right(t,f);
-            ll num = r-t;
-            ll sum = seg.prod(t,r).x;
-            de3(r,num,sum)
-            ans += g*num - sum;
-            seg.apply(t,r,g);
-        } else {
-            auto f=[&](S x) -> bool {
-                return x.mx < g;
-            };
-            ll l = seg.max_right(0,f);
-            ll num = t-l+1;
-            ll sum = seg.prod(l,t+1).x;
-            de3(l,num,sum)
-            ans += sum - g*num;
-            seg.apply(l,t+1,g);
+    rep1(w, N-1) {
+        ll ans = 0;
+        rep(l, N-w) {
+            ll r = l+w;
+            if(S[l]==S[r]) break;
+            ++ans;
         }
-        segprint();
-        de(ans)
+        Out(ans);
     }
-    Out(ans);
+
 }
 
 int main () {
