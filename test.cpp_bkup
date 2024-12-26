@@ -223,55 +223,114 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vp edge;
-    vl deg(N);
-    rep(i, M) {
-        LONGM(a,b);
-        edge.emplace_back(a,b);
-        deg[a]++, deg[b]++;
-    }
-    ll B = sqrt(2*M);
-    vb large(N);
-    rep(i, N) if(deg[i]>=B) large[i] = true;
-
-    vvl from(N);
-    for(auto[a,b]: edge) {
-        if(deg[a]>deg[b]) swap(a,b);
-        from[a].push_back(b);
-        if(!large[a] && large[b]) continue;
-        from[b].push_back(a);
-    }
-    de(from)
-    LONG(Q);
-    vl last_upd(N, -1);
-    vl color(N, 1);
-    vp snd(N, Pr(-1,-1));
-    de(large)
-    rep(i, Q) {
-        LONG(x,y); --x;
-        de(last_upd)
-        de(color)
-        Pr timing(last_upd[x],color[x]);
-        for(auto nx: from[x]) {
-            if(snd[nx].first==-1) continue;
-            chmax(timing, snd[nx]);
-        }
-        ll ans = timing.second;
-        Out(ans);
-        color[x] = y;
-        last_upd[x] = i;
-        if(!large[x]) {
-            for(auto nx: from[x]) {
-                color[nx] = y;
-                last_upd[nx] = i;
-            }
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
         } else {
-            snd[x] = {i,y};
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
+void solve() {
+    LONG(N);
+    VL(A, N); VL(B, N); VL(C, N); VL(D, N);
+    sort(all(A)); sort(all(B)); sort(all(C)); sort(all(D));
+    vl v;
+    rep(i, N) v.push_back(A[i]);
+    rep(i, N) v.push_back(B[i]);
+    rep(i, N) v.push_back(C[i]);
+    rep(i, N) v.push_back(D[i]);
+    ll ans = INF;
+    rep(i, 4*N) {
+        ll mn = v[i];
+        ll mx = -INF;
+        bool ok = true;
+        {
+            auto [n,x] = lowbou(A,mn);
+            if(n==N) ok = false;
+            else chmax(mx, x);
+        }
+        {
+            auto [n,x] = lowbou(B,mn);
+            if(n==N) ok = false;
+            else chmax(mx, x);
+        }
+        {
+            auto [n,x] = lowbou(C,mn);
+            if(n==N) ok = false;
+            else chmax(mx, x);
+        }
+        {
+            auto [n,x] = lowbou(D,mn);
+            if(n==N) ok = false;
+            else chmax(mx, x);
+        }
+        if(ok) chmin(ans, mx-mn);
+    }
+    Out(ans);
 }
 
 int main () {

@@ -1789,10 +1789,10 @@
 - 基本 [B - ジョイ四人組 (JOI04)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_b)
 
 ## 挿入ソート
-- ネタばれになるので取り合えず解法は書かない
+- 任意のトランプを取り出して好きな位置に挿入できる場合、LISとの関連が深い
 ### 例題
 - 基本 [D - トランプ挿入ソート](https://atcoder.jp/contests/abc006/tasks/abc006_4)
-- [bookshelf - 本棚 (Bookshelf)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_bookshelf)
+- !復習価値低 [bookshelf - 本棚 (Bookshelf)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_bookshelf)
 
 ## 牛ゲー
 - 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題
