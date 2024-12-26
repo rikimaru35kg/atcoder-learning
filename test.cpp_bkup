@@ -223,114 +223,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
 void solve() {
     LONG(N);
-    VL(A, N); VL(B, N); VL(C, N); VL(D, N);
-    sort(all(A)); sort(all(B)); sort(all(C)); sort(all(D));
-    vl v;
-    rep(i, N) v.push_back(A[i]);
-    rep(i, N) v.push_back(B[i]);
-    rep(i, N) v.push_back(C[i]);
-    rep(i, N) v.push_back(D[i]);
-    ll ans = INF;
-    rep(i, 4*N) {
-        ll mn = v[i];
-        ll mx = -INF;
-        bool ok = true;
-        {
-            auto [n,x] = lowbou(A,mn);
-            if(n==N) ok = false;
-            else chmax(mx, x);
-        }
-        {
-            auto [n,x] = lowbou(B,mn);
-            if(n==N) ok = false;
-            else chmax(mx, x);
-        }
-        {
-            auto [n,x] = lowbou(C,mn);
-            if(n==N) ok = false;
-            else chmax(mx, x);
-        }
-        {
-            auto [n,x] = lowbou(D,mn);
-            if(n==N) ok = false;
-            else chmax(mx, x);
-        }
-        if(ok) chmin(ans, mx-mn);
+    VL(W, N);
+    VLM(P, N);
+    segtree<S,op,e> seg(N);
+    ll tot = accumulate(all(W), 0LL);
+
+    rep(i, N) {
+        ll mx = seg.prod(0,P[i]);
+        seg.set(P[i], mx+W[P[i]]);
     }
+    ll mx = seg.all_prod();
+    ll ans = 2*(tot-mx);
     Out(ans);
+
 }
 
 int main () {

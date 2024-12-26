@@ -223,26 +223,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
-
 void solve() {
-    LONG(N);
-    VL(W, N);
-    VLM(P, N);
-    segtree<S,op,e> seg(N);
-    ll tot = accumulate(all(W), 0LL);
-
-    rep(i, N) {
-        ll mx = seg.prod(0,P[i]);
-        seg.set(P[i], mx+W[P[i]]);
+    LONG(N, M);
+    vvp from(N+1);
+    rep(i, M) {
+        LONG(l,r); --l; LONG(x);
+        from[l].emplace_back(r, r-l-x);
     }
-    ll mx = seg.all_prod();
-    ll ans = 2*(tot-mx);
+    rep(i, N) from[i].emplace_back(i+1, 1);
+    rep(i, N) from[i+1].emplace_back(i, 0);
+
+    pq que;
+    vl dist(N+1, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v] <= d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto [nv,c]: from[v]) {
+            push(nv, d+c);
+        }
+    }
+    vl ans(N);
+    rep(i, N) {
+        if(dist[i+1]-dist[i]) ans[i] = 0;
+        else ans[i] = 1;
+    }
     Out(ans);
 
 }
