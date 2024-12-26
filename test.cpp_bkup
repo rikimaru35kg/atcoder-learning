@@ -224,44 +224,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,M,H,K);
-    VL(X,N);
-    vp line;
-    rep(i, M) {
-        LONGM(a,h);
-        line.emplace_back(h,a);
-    }
-    sort(all(line));
-    de(line)
-    vl p(N);
-    iota(all(p), 0);
-
-    for(auto [h,a]: line) {
-        swap(p[a], p[a+1]);
-    }
-    de(p)
-
-    ll base = 0;
-    rep(i, N) if(p[i]<K) base += X[i];
-    ll ans = base;
-
-    vl point(N);
-    rep(i, N) point[p[i]] = X[i];
-
-    auto calc=[&](ll a, ll b) -> ll {
-        if(a>b) swap(a,b);
-        if(b<K) return base;
-        if(a>=K) return base;
-        return base - point[a] + point[b];
+    LONG(N);
+    VLM(A, N);
+    VLM(B, N);
+    auto judge_distri=[](vl A, vl B) -> bool {
+        sort(all(A)); sort(all(B));
+        return A==B;
+    };
+    auto duple=[&](vl &A) -> bool {
+        uset<ll> st;
+        rep(i, N) st.insert(A[i]);
+        return SIZE(st)!=N;
     };
 
-    iota(all(p), 0);
-    for(auto [h,a]: line) {
-        ll now = calc(p[a], p[a+1]);
-        chmin(ans, now);
-        swap(p[a], p[a+1]);
-    }
-    Out(ans);
+    auto prty=[&](vl &p) -> bool {
+        ll cnt = 0;
+        vb used(N);
+        rep(i, N) {
+            if(used[i]) continue;
+            ++cnt;
+            ll v = i;
+            while(!used[v]) {
+                used[v] = true;
+                v = p[v];
+            }
+        }
+        return cnt%2;
+    };
+
+    if(!judge_distri(A,B)) PNo
+    if(duple(A)) PYes
+    if(prty(A)==prty(B)) PYes PNo
+
 
 }
 
