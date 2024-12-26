@@ -1731,8 +1731,8 @@
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
 ### 例題
-- !復習価値中 [C - 節制](https://atcoder.jp/contests/abc013/tasks/abc013_3)
-- !復習価値低 [F - +1-1x2](https://atcoder.jp/contests/abc188/tasks/abc188_f)
+- !復習価値低 [C - 節制](https://atcoder.jp/contests/abc013/tasks/abc013_3)
+- 基本 [F - +1-1x2](https://atcoder.jp/contests/abc188/tasks/abc188_f)
 
 ## 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり

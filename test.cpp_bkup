@@ -224,38 +224,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    VLM(B, N);
-    auto judge_distri=[](vl A, vl B) -> bool {
-        sort(all(A)); sort(all(B));
-        return A==B;
-    };
-    auto duple=[&](vl &A) -> bool {
-        uset<ll> st;
-        rep(i, N) st.insert(A[i]);
-        return SIZE(st)!=N;
-    };
-
-    auto prty=[&](vl &p) -> bool {
-        ll cnt = 0;
-        vb used(N);
-        rep(i, N) {
-            if(used[i]) continue;
-            ++cnt;
-            ll v = i;
-            while(!used[v]) {
-                used[v] = true;
-                v = p[v];
-            }
-        }
-        return cnt%2;
-    };
-
-    if(!judge_distri(A,B)) PNo
-    if(duple(A)) PYes
-    if(prty(A)==prty(B)) PYes PNo
-
+    LONG(N, H);
+    LONG(A,B,C,D,E);
+    if((B+E)*C>(D+E)*A) {
+        swap(A,C), swap(B,D);
+    }
+    de4(A,B,C,D)
+    ll ans = INF;
+    rep(x, min(D+E,N+1)) {
+        ll rhs = E*N-H-(B+E)*x+1;
+        ll y = Divceil(rhs, D+E);
+        chmax(y, 0LL);
+        if(x+y>N) continue;
+        ll cost = x*A + y*C;
+        de4(x,y,cost,rhs)
+        chmin(ans, cost);
+    }
+    Out(ans);
 
 }
 
@@ -266,3 +251,4 @@ int main () {
 }
 
 // ### test.cpp ###
+
