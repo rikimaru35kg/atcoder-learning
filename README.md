@@ -1717,10 +1717,10 @@
 - 重複要素のある数列は偶置換でも奇置換でもあると見なせる（同じ要素に異なる番号をふるが、適宜入れ替えできる為）
 - 例えばN=8で7が二つある場合、7に7,8を割り当てれば置換が定義できるが、7に8,7と割り当てても良い事を考えれば、偶置換と奇置換のどちらにもなりえる
 ### 例題
-- !復習価値低 [E - Permute K times](https://atcoder.jp/contests/abc367/tasks/abc367_e)
-- !要復習 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
-- !復習価値中 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
-- !復習価値高 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+- 基本 [E - Permute K times](https://atcoder.jp/contests/abc367/tasks/abc367_e)
+- !復習価値中 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
+- 基本 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
+- !復習価値中 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
 
 ## パスカルの三角形
 - 各行の総和は2^行番号となる

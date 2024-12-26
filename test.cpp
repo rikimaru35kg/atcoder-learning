@@ -225,18 +225,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VL2(A,B,N);
-    vl c={-1,1};
-    ll ans = 0;
-    for(auto ca: c) for(auto cb: c) {
-        ll now = 0;
+    VLM(A, N);
+    VLM(B, N);
+    auto judge_distri=[](vl A, vl B) -> bool {
+        sort(all(A)); sort(all(B));
+        return A==B;
+    };
+    auto duple=[&](vl &A) -> bool {
+        uset<ll> st;
+        rep(i, N) st.insert(A[i]);
+        return SIZE(st)!=N;
+    };
+
+    auto prty=[&](vl &p) -> bool {
+        ll cnt = 0;
+        vb used(N);
         rep(i, N) {
-            ll x = ca*A[i] + cb*B[i];
-            if(x>0) now += x;
+            if(used[i]) continue;
+            ++cnt;
+            ll v = i;
+            while(!used[v]) {
+                used[v] = true;
+                v = p[v];
+            }
         }
-        chmax(ans, now);
-    }
-    Out(ans);
+        return cnt%2;
+    };
+
+    if(!judge_distri(A,B)) PNo
+    if(duple(A)) PYes
+    if(prty(A)==prty(B)) PYes PNo
+
 
 }
 

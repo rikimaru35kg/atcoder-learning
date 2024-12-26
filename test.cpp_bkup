@@ -224,6 +224,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(N,M,H,K);
+    VL(X,N);
+    vp line;
+    rep(i, M) {
+        LONGM(a,h);
+        line.emplace_back(h,a);
+    }
+    sort(all(line));
+    de(line)
+    vl p(N);
+    iota(all(p), 0);
+
+    for(auto [h,a]: line) {
+        swap(p[a], p[a+1]);
+    }
+    de(p)
+
+    ll base = 0;
+    rep(i, N) if(p[i]<K) base += X[i];
+    ll ans = base;
+
+    vl point(N);
+    rep(i, N) point[p[i]] = X[i];
+
+    auto calc=[&](ll a, ll b) -> ll {
+        if(a>b) swap(a,b);
+        if(b<K) return base;
+        if(a>=K) return base;
+        return base - point[a] + point[b];
+    };
+
+    iota(all(p), 0);
+    for(auto [h,a]: line) {
+        ll now = calc(p[a], p[a+1]);
+        chmin(ans, now);
+        swap(p[a], p[a+1]);
+    }
+    Out(ans);
 
 }
 
