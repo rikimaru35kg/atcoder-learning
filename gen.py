@@ -30,7 +30,7 @@ def gen_rnd(mn, mx):
 
 
 def N_An(N):
-    MIN = 1; MAX = 10
+    MIN = 1; MAX = 1000000000
     A = [gen_rnd(MIN,MAX) for _ in range(N)]
     print(N)
     print(*A)
@@ -139,9 +139,9 @@ def field(N):
 if __name__ == '__main__':
     # PLEASE SPECIFY MIN MAX VALUE IN EACH FUNCTION!!
     # print("---N An------------")
-    # N_An(10)
-    print("---N-M An----------")
-    NM_An(10)
+    N_An(100000)
+    # print("---N-M An----------")
+    # NM_An(10)
     # print("---N An Bn---------")
     # N_An_Bn(5, vertical=False)
     # print("---H W A[i,j]------")

@@ -223,31 +223,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/maxflow>
-using namespace atcoder;
-
 void solve() {
-    LONG(N, M);
-    VL(P, N);
-    mf_graph<ll> graph(N+2);
-    ll base = 0;
-    rep(i,N) {
-        if(P[i]>=0) {
-            graph.add_edge(0,i+1,P[i]);
-            graph.add_edge(i+1,N+1,0);
-            base += P[i];
-        } else {
-            graph.add_edge(0,i+1,0);
-            graph.add_edge(i+1,N+1,-P[i]);
+    LONG(N); VL(X, N);
+    sort(all(X));
+
+    vl dp(2, INF);
+    dp[0] = 0;
+    repk(i, 1, N) {
+        vl pdp(2, INF); swap(pdp, dp);
+        ll dx = X[i] - X[i-1];
+        rep(j, 2) rep(k, 2) {
+            if(pdp[j]==INF) continue;
+            if(j==0 && k==0) continue;
+            ll cost = 0;
+            if(k==1) cost = dx;
+            chmin(dp[k], pdp[j]+cost);
         }
+        // if(i%10000==0) de(i)
     }
-    rep(i, M) {
-        LONG(a,b);
-        graph.add_edge(a,b,INF);
-    }
-    ll cut = graph.flow(0,N+1);
-    ll ans = base - cut;
-    Out(ans);
+    Out(dp[1]);
 
 }
 

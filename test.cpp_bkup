@@ -223,24 +223,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/maxflow>
-using namespace atcoder;
-
 void solve() {
-    LONG(N, M);
-    mf_graph<ll> graph(N+26);
-    rep1(i, N) graph.add_edge(0,i,10);
-    rep1(i, N) {
-        STRING(C);
-        rep(j, 24) {
-            if(C[j]=='0') continue;
-            graph.add_edge(i, N+1+j,1);
+    STRING(S);
+    ll N = S.size();
+    rep(i, N-1) {
+        if(S[i]==S[i+1]) {
+            printf("%lld %lld\n", i+1,i+2);
+            return;
         }
     }
-    rep(j, 24) graph.add_edge(N+1+j, N+25, M);
-    ll flow = graph.flow(0,N+25);
-    if(flow==M*24) puts("Yes");
-    else puts("No");
+    if(N==2) Outend("-1 -1");
+
+    rep(i, N-2) {
+        if(S[i]==S[i+2]) {
+            printf("%lld %lld\n", i+1,i+3);
+            return;
+        }
+    }
+    Outend("-1 -1");
 
 }
 
