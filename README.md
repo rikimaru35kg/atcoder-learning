@@ -1831,7 +1831,7 @@
 
 ## 周期に着目する
 ### 例題
-- !復習価値中 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
+- !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
 ## お堀問題（ニッチすぎてNote非掲載）
 - 外側を番兵でぐるっと囲むと見通しよくなる

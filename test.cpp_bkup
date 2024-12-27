@@ -224,23 +224,24 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    rep(i, N-1) {
-        if(S[i]==S[i+1]) {
-            printf("%lld %lld\n", i+1,i+2);
-            return;
-        }
-    }
-    if(N==2) Outend("-1 -1");
+    LONG(N); VL(X, N);
+    sort(all(X));
 
-    rep(i, N-2) {
-        if(S[i]==S[i+2]) {
-            printf("%lld %lld\n", i+1,i+3);
-            return;
+    vl dp(2, INF);
+    dp[0] = 0;
+    repk(i, 1, N) {
+        vl pdp(2, INF); swap(pdp, dp);
+        ll dx = X[i] - X[i-1];
+        rep(j, 2) rep(k, 2) {
+            if(pdp[j]==INF) continue;
+            if(j==0 && k==0) continue;
+            ll cost = 0;
+            if(k==1) cost = dx;
+            chmin(dp[k], pdp[j]+cost);
         }
+        // if(i%10000==0) de(i)
     }
-    Outend("-1 -1");
+    Out(dp[1]);
 
 }
 

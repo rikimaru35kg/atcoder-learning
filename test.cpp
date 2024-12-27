@@ -223,25 +223,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(X, N);
-    sort(all(X));
-
-    vl dp(2, INF);
-    dp[0] = 0;
-    repk(i, 1, N) {
-        vl pdp(2, INF); swap(pdp, dp);
-        ll dx = X[i] - X[i-1];
-        rep(j, 2) rep(k, 2) {
-            if(pdp[j]==INF) continue;
-            if(j==0 && k==0) continue;
-            ll cost = 0;
-            if(k==1) cost = dx;
-            chmin(dp[k], pdp[j]+cost);
-        }
-        // if(i%10000==0) de(i)
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    Out(dp[1]);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+void solve() {
+    LONG(N, Q);
+    VL(D, N);
+    vl c(N);
+    ll pc = 1;
+    rep(i, N) {
+        c[i] = Divceil(D[i],pc) * pc;
+        pc = c[i];
+    }
+
+    rep(i,Q) {
+        LONG(t,l,r);
+        auto f=[&](ll k) -> bool {
+            ll x = -(k+1) + Div(t,c[k]) * c[k];
+            return x >= l;
+        };
+        auto g=[&](ll k) -> bool {
+            ll x = -(k+1) + Div(t,c[k]) * c[k];
+            return x > r;
+        };
+        ll li = binary_search(-1,N,f);
+        ll ri = binary_search(-1,N,g);
+        ll ans = li - ri;
+        de5(t,l,r,li,ri)
+        if(l<=t && t<=r) ++ans;
+        Out(ans);
+    }
 
 }
 
