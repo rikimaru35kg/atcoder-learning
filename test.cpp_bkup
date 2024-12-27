@@ -223,27 +223,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/maxflow>
 using namespace atcoder;
 
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
-
 void solve() {
-    LONG(N);
-    VL(W, N);
-    VLM(P, N);
-    segtree<S,op,e> seg(N);
-    ll tot = accumulate(all(W), 0LL);
-
-    rep(i, N) {
-        ll mx = seg.prod(0,P[i]);
-        seg.set(P[i], mx+W[P[i]]);
+    LONG(N, M);
+    mf_graph<ll> graph(N+26);
+    rep1(i, N) graph.add_edge(0,i,10);
+    rep1(i, N) {
+        STRING(C);
+        rep(j, 24) {
+            if(C[j]=='0') continue;
+            graph.add_edge(i, N+1+j,1);
+        }
     }
-    ll mx = seg.all_prod();
-    ll ans = 2*(tot-mx);
-    Out(ans);
+    rep(j, 24) graph.add_edge(N+1+j, N+25, M);
+    ll flow = graph.flow(0,N+25);
+    if(flow==M*24) puts("Yes");
+    else puts("No");
 
 }
 

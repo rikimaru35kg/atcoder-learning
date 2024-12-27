@@ -1806,8 +1806,8 @@
 - mf_graph<ll> flow(N), flow.add_edge(a, b, capacity), auto ans = flow.flow(s, t)のような形で求める
 - 計算量はcapacityが全て1のときO(min(n^(2/3)*m, m^(3/2)))、それ以外O(n^2 * m)
 ### 例題
-- !要復習 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
-- !要復習 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
+- 基本 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
+- !復習価値低 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - !要復習 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 凸包

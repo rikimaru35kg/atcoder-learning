@@ -223,36 +223,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/maxflow>
+using namespace atcoder;
+
 void solve() {
     LONG(N, M);
-    vvp from(N+1);
-    rep(i, M) {
-        LONG(l,r); --l; LONG(x);
-        from[l].emplace_back(r, r-l-x);
-    }
-    rep(i, N) from[i].emplace_back(i+1, 1);
-    rep(i, N) from[i+1].emplace_back(i, 0);
-
-    pq que;
-    vl dist(N+1, INF);
-    auto push=[&](ll v, ll d) {
-        if(dist[v] <= d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv,c]: from[v]) {
-            push(nv, d+c);
+    VL(P, N);
+    mf_graph<ll> graph(N+2);
+    ll base = 0;
+    rep(i,N) {
+        if(P[i]>=0) {
+            graph.add_edge(0,i+1,P[i]);
+            graph.add_edge(i+1,N+1,0);
+            base += P[i];
+        } else {
+            graph.add_edge(0,i+1,0);
+            graph.add_edge(i+1,N+1,-P[i]);
         }
     }
-    vl ans(N);
-    rep(i, N) {
-        if(dist[i+1]-dist[i]) ans[i] = 0;
-        else ans[i] = 1;
+    rep(i, M) {
+        LONG(a,b);
+        graph.add_edge(a,b,INF);
     }
+    ll cut = graph.flow(0,N+1);
+    ll ans = base - cut;
     Out(ans);
 
 }
