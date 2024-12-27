@@ -224,24 +224,52 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(X, N);
-    sort(all(X));
-
-    vl dp(2, INF);
-    dp[0] = 0;
-    repk(i, 1, N) {
-        vl pdp(2, INF); swap(pdp, dp);
-        ll dx = X[i] - X[i-1];
-        rep(j, 2) rep(k, 2) {
-            if(pdp[j]==INF) continue;
-            if(j==0 && k==0) continue;
-            ll cost = 0;
-            if(k==1) cost = dx;
-            chmin(dp[k], pdp[j]+cost);
-        }
-        // if(i%10000==0) de(i)
+    LONG(H,W,Y);
+    vvl A(H+2, vl(W+2));
+    rep(i, H) rep(j, W) {
+        LONG(a);
+        A[i+1][j+1] = a;
     }
-    Out(dp[1]);
+    H += 2, W += 2;
+    vvp event(Y+1);
+    rep(i, H) rep(j, W) {
+        if(A[i][j]==0) continue;
+        if(A[i][j]>Y) continue;
+        event[A[i][j]].emplace_back(i,j);
+    }
+
+    ll now = (H-2)*(W-2);
+    vvb sunk(H, vb(W));
+    rep(j, W) sunk[0][j] = true;
+    rep(j, W) sunk[H-1][j] = true;
+    rep(i, H) sunk[i][0] = true;
+    rep(i, H) sunk[i][W-1] = true;
+
+    rep1(y, Y) {
+        queue<Pr> que;
+        auto push=[&](ll i, ll j) {
+            if(sunk[i][j]) return;
+            sunk[i][j] = true;
+            --now;
+            que.emplace(i,j);
+        };
+        for(auto [i,j]: event[y]) {
+            bool ok = false;
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(sunk[ni][nj]) ok = true;
+            }
+            if(ok) push(i,j);
+        }
+        while(que.size()) {
+            auto [i,j] = que.front(); que.pop();
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(A[ni][nj]<=y) push(ni,nj);
+            }
+        }
+        Out(now);
+    }
 
 }
 

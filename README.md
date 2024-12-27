@@ -1837,12 +1837,12 @@
 - 外側を番兵でぐるっと囲むと見通しよくなる
 - Union Findが使える場合多し
 ### 例題
-- !復習価値低 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+- 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
 
 ## 線分交差判定（ニッチすぎてNote非掲載）
 - 外積を4回使うと良い
 ### 例題
-- !復習価値低（snippet練習） [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
+- 基本（snippet練習） [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
 
 ## ファレイ数列（名前を覚えたいだけなのでNote非掲載）
 ### 例題

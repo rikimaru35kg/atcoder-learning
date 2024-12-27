@@ -223,54 +223,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    // cross>0 means *this->v is counterclockwise.
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
     }
-    return ok;
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+bool overlapping(long long l1, long long r1, long long l2, long long r2) {
+    if(l1>r1) swap(l1, r1);
+    if(l2>r2) swap(l2, r2);
+    long long lmax = max(l1, l2);
+    long long rmin = min(r1, r2);
+    return lmax <= rmin;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
+    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
+    if(c12_13 * c12_14 >= 0) return false;
+    if(c34_31 * c34_32 >= 0) return false;
+    if(c12_13==0 && c12_14==0) {
+        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
+           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
+        else return false;
     }
-    return ok;
+    return true;
 }
 
 void solve() {
-    LONG(N, Q);
-    VL(D, N);
-    vl c(N);
-    ll pc = 1;
+    LONG(ax,ay,bx,by);
+    Vecll v1(ax,ay), v2(bx,by);
+    LONG(N);
+    vector<Vecll> vs;
     rep(i, N) {
-        c[i] = Divceil(D[i],pc) * pc;
-        pc = c[i];
+        LONG(x,y);
+        vs.emplace_back(x,y);
     }
-
-    rep(i,Q) {
-        LONG(t,l,r);
-        auto f=[&](ll k) -> bool {
-            ll x = -(k+1) + Div(t,c[k]) * c[k];
-            return x >= l;
-        };
-        auto g=[&](ll k) -> bool {
-            ll x = -(k+1) + Div(t,c[k]) * c[k];
-            return x > r;
-        };
-        ll li = binary_search(-1,N,f);
-        ll ri = binary_search(-1,N,g);
-        ll ans = li - ri;
-        de5(t,l,r,li,ri)
-        if(l<=t && t<=r) ++ans;
-        Out(ans);
+    ll cnt = 0;
+    rep(i, N) {
+        Vecll v3 = vs[i], v4 = vs[(i+1)%N];
+        if(crossing(v1,v2,v3,v4)) ++cnt;
     }
+    cnt /= 2;
+    ll ans = 1+cnt;
+    Out(ans);
 
 }
 
