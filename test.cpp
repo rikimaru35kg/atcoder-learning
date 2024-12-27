@@ -85,8 +85,6 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
-#define PFi {puts("First"); exit(0);}
-#define PSe {puts("Second"); exit(0);}
 #define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
@@ -112,16 +110,10 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
+#define pcnt(x) (ll)__builtin_popcountll(x)
+#define parity(x) (ll)__builtin_parityll(x)
 #define uset unordered_set
 #define umap unordered_map
-inline int pcnt(ll s, ll n=-1) { // n!=-1 for # of 0
-    if(n==-1) return __builtin_popcountll(s);
-    return n-__builtin_popcountll(s);
-}
-inline int parity(ll s, ll n=-1) { // n!=-1 for # of 0
-    if(n==-1) return __builtin_parityll(s);
-    return (n-__builtin_popcountll(s))%2;
-}
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
@@ -155,10 +147,10 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-template<typename T> inline T TmpPercent(T a, T b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
-template<typename T> inline T Percent(T a, T b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
-template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
-template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
 #ifdef __DEBUG
@@ -223,85 +215,121 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    // cross>0 means *this->v is counterclockwise.
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    Vecll rot90(bool counterclockwise=true) { 
-        if(counterclockwise) return Vecll(-y, x);
-        else return Vecll(y, -x);
+//! BE CAREFUL ABOUT OVERFLOWING!
+//! repeated usage of +-*/ leads to overflowing
+//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
+//! BE CAREFUL ABOUT CALCULATION COST!
+//! O(logM) just for initializing
+struct Frac {
+    long long p, q;  // p/q: p over q (like y/x: y over x)
+    Frac(long long a=0, long long b=1) {
+        if (b == 0) {
+            p = 1; q = 0;  // inf (no definition of -inf)
+            return;
+        }
+        long long g = gcd(a, b);
+        p = a/g; q = b/g;
+        if (q<0) {p=-p; q=-q;}
     }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
+    Frac operator+(const ll x) {
+        if (q == 0) return Frac(1, 0);
+        return *this + Frac(x);
     }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
+    Frac operator+(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
+    }
+    Frac operator-(const ll x) {
+        if (q == 0) return Frac(1, 0);
+        return *this - Frac(x);
+    }
+    Frac operator-(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
+    }
+    Frac operator*(const ll x) {
+        if (q == 0) return Frac(1, 0);
+        return Frac(p*x, q);
+    }
+    Frac operator*(const Frac &rhs) {
+        if (q == 0 || rhs.q == 0) return Frac(1, 0);
+        return Frac(p*rhs.p, q*rhs.q);
+    }
+    Frac operator/(const ll x) {
+        if (q == 0 || x == 0) return Frac(1, 0);
+        return Frac(p, q*x);
+    }
+    Frac operator/(const Frac &rhs) {
+        if (q == 0 || rhs.p == 0) return Frac(1, 0);
+        return Frac(p*rhs.q, q*rhs.p);
+    }
+    bool operator<(const ll x) const {
+        return *this < Frac(x);
+    }
+    bool operator<(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p < 0;
+    }
+    bool operator<=(const ll x) const {
+        return *this <= Frac(x);
+    }
+    bool operator<=(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p <= 0;
+    }
+    bool operator>(const ll x) const {
+        return *this > Frac(x);
+    }
+    bool operator>(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p > 0;
+    }
+    bool operator>=(const ll x) const {
+        return *this >= Frac(x);
+    }
+    bool operator>=(const Frac &rhs) const {
+        return p*rhs.q - q*rhs.p >= 0;
+    }
+    bool operator==(const ll x) const {
+        return (q==1 && p==x);
+    }
+    bool operator==(const Frac &rhs) {
+        return (p==rhs.p && q==rhs.q);
     }
 };
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-bool overlapping(long long l1, long long r1, long long l2, long long r2) {
-    if(l1>r1) swap(l1, r1);
-    if(l2>r2) swap(l2, r2);
-    long long lmax = max(l1, l2);
-    long long rmin = min(r1, r2);
-    return lmax <= rmin;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
-    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
-    if(c12_13 * c12_14 >= 0) return false;
-    if(c34_31 * c34_32 >= 0) return false;
-    if(c12_13==0 && c12_14==0) {
-        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
-           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
-        else return false;
-    }
-    return true;
-}
-
-void solve() {
-    LONG(ax,ay,bx,by);
-    Vecll v1(ax,ay), v2(bx,by);
-    LONG(N);
-    vector<Vecll> vs;
-    rep(i, N) {
-        LONG(x,y);
-        vs.emplace_back(x,y);
-    }
-    ll cnt = 0;
-    rep(i, N) {
-        Vecll v3 = vs[i], v4 = vs[(i+1)%N];
-        if(crossing(v1,v2,v3,v4)) ++cnt;
-    }
-    cnt /= 2;
-    ll ans = 1+cnt;
-    Out(ans);
-
-}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(M, K);
+
+    priority_queue<Frac,vector<Frac>,greater<Frac>> que;
+    set<Frac> st;
+    auto push=[&](ll p, ll q) {
+        Frac tmp(p,q);
+        if(st.count(tmp)) return;
+        st.insert(tmp);
+        que.emplace(tmp);
+    };
+    repk(q, 2, M+1) push(1,q);
+    ll cnt=0;
+    Frac ans;
+    while(que.size()) {
+        auto fr = que.top(); que.pop();
+        ++cnt;
+        ans = fr;
+        if(cnt==K) break;
+
+        ll p = fr.p+1, q = fr.q;
+        while(p<q && gcd(p,q)!=1) {
+            p++;
+        }
+        if(p==q) continue;
+        push(p,q);
+    }
+
+    if(cnt!=K) Pm1
+    printf("%lld %lld\n", ans.p, ans.q);
+    
 }
 
 // ### test.cpp ###
+
+

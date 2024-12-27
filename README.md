@@ -1844,9 +1844,12 @@
 ### 例題
 - 基本（snippet練習） [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
 
-## ファレイ数列（名前を覚えたいだけなのでNote非掲載）
+## ファレイ数列
+- 0以上1以下であり分母がN以下の分数を昇順に並べた数列をファレイ数列と言う
+- ファレイ数列の重要な性質として、xi/yi->xi+1/yi+1と並んでいるとすると、yi*(xi+1)-xi*(yi+1)==1がある
+- これを用いれば順次次の項を求めていく事ができる
 ### 例題
-- !復習価値中 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
+- !復習価値高 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
 ## N以下の数字の桁和の総和（自分用なのでNote非掲載）
 - 314159の上から3桁目を考える（4のところ）
