@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### A.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -223,82 +223,19 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(H,W);
-    VVL(A, H, W);
-    ll mn = INF, mx = -INF;
-    rep(i, H) rep(j, W) {
-        chmin(mn, A[i][j]);
-        chmax(mx, A[i][j]);
+    VL(X,4);
+    umap<ll,ll> mp;
+    rep(i, 4) mp[X[i]]++;
+    if(SIZE(mp)!=2) PNo
+    vl vs;
+    for(auto [k,v]: mp) {
+        vs.push_back(v);
     }
-    if(mn==mx) Pm0
-
-    auto makemin=[&](vl &v) -> vl {
-        ll n = v.size();
-        vl ret(n+1,INF);
-        repr(i, n) ret[i] = min(ret[i+1], v[i]);
-        return ret;
-    };
-    auto makemax=[&](vl &v) -> vl {
-        ll n = v.size();
-        vl ret(n+1,-INF);
-        rep(i, n) ret[i+1] = max(ret[i], v[i]);
-        return ret;
-    };
-
-    auto f=[&](ll x) -> bool {
-        ll idx = 0;
-        ll lim = mn+x, ng = mx-x-1;
-        // de2(lim,ng)
-        rep(i, H) {
-            vl minr = makemin(A[i]);
-            vl maxl = makemax(A[i]);
-            while(idx<W && minr[idx]<=ng) {
-                ++idx;
-            }
-            if(maxl[idx]>lim) return false;
-            // de(idx)
-        }
-        return true;
-    };
-
-    // reverse(all(A));
-    // de(A)
-    // de(f(11))
-
-    ll ans = mx-mn;
-    rep(ri, 2) {
-        rep(mi, 2) {
-            ll now = binary_search(mx-mn, -1, f);
-            chmin(ans, now);
-            rep(i, H) rep(j, W) A[i][j] = -A[i][j];
-            swap(mn,mx);
-            mn = -mn, mx = -mx;
-        }
-        reverse(all(A));
-    }
-    Out(ans);
+    if(vs[0]>vs[1]) swap(vs[0],vs[1]);
+    if(vs[0]==2 && vs[1]==2) PYes
+    if(vs[0]==1 && vs[1]==3) PYes
+    PNo
 
 }
 
@@ -308,4 +245,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### A.cpp ###

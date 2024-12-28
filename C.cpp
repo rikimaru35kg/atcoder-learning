@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### C.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -224,49 +224,36 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    vl dp(N, INF);
-    dp[0] = 0;
-    ll ph = 1, pt = 1; // right
-    rep(i, Q) {
-        vl pdp(N, INF); swap(pdp, dp);
-        CHAR(H); LONGM(T);
-        ll h = 0;
-        if(H=='R') h = 1;
-        rep(j, N) {
-            if(pdp[j]==INF) continue;
-            // x -> t, y = obstacle
-            ll x = pt, y = j, t = T;
-            if(ph!=h) x = j, y = pt;
-            ll shft = x;
-            x = 0, y = Percent(y-shft,N), t = Percent(t-shft,N);
-            // clockwise
-            if(y<=t) {
-                ll cost = t + t-y+1;
-                ll nj = Percent(t+1+shft,N);
-                chmin(dp[nj], pdp[j]+cost);
-            } else {
-                ll cost = t;
-                ll nj = Percent(y+shft,N);
-                chmin(dp[nj], pdp[j]+cost);
-            }
-            // counterclockwise
-            if(y>=t) {
-                ll cost = N-t + y-t+1;
-                ll nj = Percent(t-1+shft,N);
-                chmin(dp[nj], pdp[j]+cost);
-            } else {
-                ll cost = N-t;
-                ll nj = Percent(y+shft,N);
-                chmin(dp[nj], pdp[j]+cost);
-            }
+    LONG(K);
+    STRING(S,T);
+    if(S==T) PYes
+    if(K==0) PNo
+    ll ns = S.size(), nt = T.size();
+    if(ns>nt) swap(ns,nt), swap(S,T);
+
+    if(nt>=ns+2) PNo
+
+    if(ns==nt) {
+        ll cnt = 0;
+        rep(i, ns) {
+            if(S[i]!=T[i]) ++cnt;
         }
-        de(dp)
-        ph = h, pt = T;
+        if(cnt==1) PYes
+        PNo
     }
-    ll ans = INF;
-    rep(i, N) chmin(ans, dp[i]);
-    Out(ans);
+    if(nt==ns+1) {
+        ll si = 0;
+        ll cnt = 0;
+        rep(ti, nt) {
+            if(S[si]==T[ti]) {
+                ++si; continue;
+            }
+            ++cnt;
+            if(cnt>=2) PNo
+        }
+        if(si==ns) PYes
+        PNo
+    }
 
 }
 
@@ -276,4 +263,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### C.cpp ###
