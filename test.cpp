@@ -224,41 +224,59 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(B, N-1);
-
-    ll mx = 0;
-    ll cnt = 0;
-    ll ti = -1;
-    rep(i, N-1) {
-        if(B[i]>mx+2) Outend(0);
-        if(B[i]==mx+2) {
-            ++cnt;
-            ti = i;
+    LONG(N, M);
+    vvi f1(N), f2(N);
+    int pa1=-1, pa2=-1;
+    rep(i, N) {
+        LONG(p,q);
+        if(p) {
+            --p;
+            f1[p].push_back(i);
+        } else {
+            pa1=i;
         }
-        chmax(mx, B[i]);
-    }
-    if(cnt>=2) Outend(0);
-    if(cnt==1) {
-        if(ti==0) Outend(1);
-        ll t = B[ti];
-        rep(i, N-1) {
-            if(B[i]==t-2) {
-                Outend(ti-i);
-            }
+        if(q) {
+            --q;
+            f2[q].push_back(i);
+        } else {
+            pa2=i;
         }
     }
 
-    ll ans = 0;
-    mx = 0;
-    rep(i, N-2) {
-        chmax(mx, B[i]);
-        de(mx);
-        ans += mx;
+    ll ord = 0;
+    auto euler=[&](auto f, ll v, vp &span, vvi &from) -> void {
+        span[v].first = ord++;
+        for(auto nv: from[v]) {
+            f(f, nv, span, from);
+        }
+        span[v].second = ord;
+    };
+    vp span1(N), span2(N);
+    euler(euler, pa1, span1, f1);
+    ord = 0;
+    euler(euler, pa2, span2, f2);
+    de(span1)
+    de(span2)
+
+    vvi imos(N+1, vi(N+1));
+
+    rep(i, M) {
+        LONGM(r,s);
+        auto [i1,i2] = span1[r];
+        auto [j1,j2] = span2[s];
+        imos[i1][j1]++;
+        imos[i2][j1]--;
+        imos[i1][j2]--;
+        imos[i2][j2]++;
     }
-    chmax(mx, B.back());
-    ans += mx+1;
-    Out(ans);
+    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
+    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
+    rep(i, N) {
+        ll v1 = span1[i].first;
+        ll v2 = span2[i].first;
+        ll ans = imos[v1][v2];
+        Out(ans);
+    }
 
 }
 
@@ -269,3 +287,4 @@ int main () {
 }
 
 // ### test.cpp ###
+

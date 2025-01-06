@@ -392,7 +392,7 @@
 - !復習価値低 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
 - !復習価値中 任意の頂点からのコストmax点（全方位でも解いてね） [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
-## オイラーツアーと部分木
+## オイラーツアーと部分木（Euler Tour）
 - 木に対してDFSの行きがけ順に探索する事をオイラーツアーと呼ぶ
 - 各頂点に対し、オイラーツアーの行きがけ順を開始時と終了時に記憶しておくと部分木の半開区間が求まる
 - 各頂点を探索している時に、その頂点に対する操作をするのか、あるいは繋がっている全頂点に対する操作（場合の数をかける等）をするのか、色々バリエーションあり
@@ -400,6 +400,7 @@
 ### 例題
 - 基本 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
 - 基本 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+- !要復習 [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
 
 ## LCA（Lowest Common Ancester）
 - 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した
@@ -2064,10 +2065,9 @@
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
+- [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
 
 ## ACできなかった問題
-- [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
-- [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
 - [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
 - [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
 - [No.2953 Maximum Right Triangle](https://yukicoder.me/problems/no/2953)

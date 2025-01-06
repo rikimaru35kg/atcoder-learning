@@ -224,41 +224,33 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    VL(X, N);
-    pq que;
-    rep(i, N-1) {
-        que.emplace(X[i+1]-X[i], i);
+    LONG(K, M);
+    STRING(S);
+    LONG(N);
+    vt3 op;
+    rep(i, N) {
+        LONG(a,b,c);
+        op.emplace_back(a,b,c);
     }
-    ll r=0, l=0;
-    ll dx = 0;
-    vl ans(N);
-    rep(i, Q) {
-        LONG(w);
-        dx += w;
-        chmax(r, dx);
-        chmax(l, -dx);
-        while(que.size()) {
-            auto [d,ci] = que.top();
-            if(d>r+l) break;
-            que.pop();
-            if(w>=0) {
-                ans[ci+1] += l;
-                ans[ci] += d-l;
+    reverse(all(op));
+
+    string ans;
+    rep(i, K) {
+        ll p = i;
+        for(auto [a,b,c]: op) {
+            ll l = c, r = c+(b-a);
+            if(p<l) {
+                continue;
+            } else if(p>=r) {
+                p -= (b-a);
             } else {
-                ans[ci] += r;
-                ans[ci+1] += d-r;
+                p = a + p-l;
             }
         }
+        ans += S[p];
     }
-    while(que.size()) {
-        auto [d, ci] = que.top(); que.pop();
-        ans[ci] += r;
-        ans[ci+1] += l;
-    }
-    ans[0] += l;
-    ans.back() += r;
-    for(auto x: ans) Out(x);
+    Out(ans);
+
 }
 
 int main () {
