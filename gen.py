@@ -139,7 +139,7 @@ def field(N):
 if __name__ == '__main__':
     # PLEASE SPECIFY MIN MAX VALUE IN EACH FUNCTION!!
     # print("---N An------------")
-    N_An(100000)
+    # N_An(100000)
     # print("---N-M An----------")
     # NM_An(10)
     # print("---N An Bn---------")

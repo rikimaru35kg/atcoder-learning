@@ -858,6 +858,7 @@
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !復習価値低 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
+- !復習価値中 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
 - !要復習 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 桁DP（Digit DP）
@@ -2060,15 +2061,11 @@
 - [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
 - [B - Special Subsets](https://atcoder.jp/contests/arc114/tasks/arc114_b)
 - [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
-
-## ACできなかった問題
-- [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
-- [D - コイン集め 2 (Coin Collecting 2)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_d)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
-- [B - 雪玉 (Snowball)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_b)
-- [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
+
+## ACできなかった問題
 - [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
 - [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
 - [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
@@ -2084,3 +2081,4 @@
 - [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
+- [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
