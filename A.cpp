@@ -224,18 +224,9 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    VL(X,4);
-    umap<ll,ll> mp;
-    rep(i, 4) mp[X[i]]++;
-    if(SIZE(mp)!=2) PNo
-    vl vs;
-    for(auto [k,v]: mp) {
-        vs.push_back(v);
-    }
-    if(vs[0]>vs[1]) swap(vs[0],vs[1]);
-    if(vs[0]==2 && vs[1]==2) PYes
-    if(vs[0]==1 && vs[1]==3) PYes
-    PNo
+    LONG(A,B);
+    ll ans = (A+B)*(A+B);
+    Out(ans);
 
 }
 

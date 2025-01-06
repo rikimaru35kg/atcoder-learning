@@ -223,36 +223,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/scc>
+using namespace atcoder;
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(K); STRING(S, T);
-    ll ns = S.size(), nt = T.size();
+    LONG(N, M);
+    VLM(A, N);
+    scc_graph scc(N);
+    rep(i, N) scc.add_edge(A[i], i);
+    auto grs = scc.scc();
 
-    if(abs(ns-nt)>K) PNo
+    vl roots;
+    vl mp(N);
 
-    vvl dp(ns+1, vl(2*K+1, INF));
-    dp[0][K] = 0;
+    for(auto gr: grs) {
+        ll v = gr[0];
+        for(auto cv: gr) mp[cv] = v;
 
-    rep(i, ns+1) rep(dj, 2*K+1) {
-        ll now = dp[i][dj];
-        if(now==INF) continue;
-        ll j = i+dj-K;
-        if(j<0 || j>nt) continue;
-        // delete
-        if(i<ns && dj>0) chmin(dp[i+1][dj-1], now+1);
-        // insert
-        if(dj<2*K) chmin(dp[i][dj+1], now+1);
-        if(i==ns || j==nt) continue;
-        if(S[i]==T[j]) {
-            chmin(dp[i+1][dj], now);
-        } else {
-            chmin(dp[i+1][dj], now+1);
-        }
+        if(SIZE(gr)==1 && A[v]!=v) continue;
+        roots.push_back(v);
     }
-    ll shft = nt-ns;
-    de(shft)
-    ll ans = dp[ns][K+shft];
-    de(ans)
-    if(ans<=K) PYes PNo
+
+    vvl from(N);
+    rep(i, N) {
+        ll v = mp[A[i]];
+        ll nv = mp[i];
+        if(v==nv) continue;
+        from[v].push_back(nv);
+    }
+
+    vvm dp(N, vm(M+1, 1));
+    vvm ds(N, vm(M+1));
+    auto calc=[&](ll rv) -> mint {
+        auto dfs=[&](auto f, ll v) -> void {
+            if(SIZE(from[v])==0) {
+                rep1(m, M) ds[v][m] = dp[v][m] + ds[v][m-1];
+                return;
+            }
+            for(auto nv: from[v]) {
+                f(f, nv);
+                rep1(m, M) {
+                    dp[v][m] *= ds[nv][m];
+                    ds[v][m] = dp[v][m] + ds[v][m-1];
+                }
+            }
+        };
+        dfs(dfs, rv);
+        return ds[rv][M];
+    };
+
+    mint ans = 1;
+    for(auto rv: roots) {
+        mint now = calc(rv);
+        ans *= now;
+    }
+    Out(ans);
+
 }
 
 int main () {

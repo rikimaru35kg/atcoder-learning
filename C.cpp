@@ -223,37 +223,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
 void solve() {
-    LONG(K);
-    STRING(S,T);
-    if(S==T) PYes
-    if(K==0) PNo
-    ll ns = S.size(), nt = T.size();
-    if(ns>nt) swap(ns,nt), swap(S,T);
+    LONG(L,R);
+    ll M = 20;
+    vvl pow(10, vl(M+1, 1));
+    rep1(z, 9) rep(i, M) pow[z][i+1] = pow[z][i] * z;
 
-    if(nt>=ns+2) PNo
+    auto calc=[&](ll x) -> ll {
+        ll ret = 0;
+        auto v = separate_digit(x);
+        ll n = v.size();
+        if(n==1) return 0;
 
-    if(ns==nt) {
-        ll cnt = 0;
-        rep(i, ns) {
-            if(S[i]!=T[i]) ++cnt;
-        }
-        if(cnt==1) PYes
-        PNo
-    }
-    if(nt==ns+1) {
-        ll si = 0;
-        ll cnt = 0;
-        rep(ti, nt) {
-            if(S[si]==T[ti]) {
-                ++si; continue;
+        auto snake=[&](ll y) -> bool {
+            auto w = separate_digit(y);
+            ll m = w.size();
+            repk(i, 1, m) if(w[i]>=w[0]) return false;
+            return true;
+        };
+        ll upp = v[0];
+        repk(i, 1, n) {
+            ll k = n-1-i;
+            rep(a, v[i]) {
+                ll y = upp*10+a;
+                if(!snake(y)) continue;
+                ret += pow[v[0]][k];
             }
-            ++cnt;
-            if(cnt>=2) PNo
+            upp = upp*10+v[i];
         }
-        if(si==ns) PYes
-        PNo
-    }
+        rep1(a, v[0]-1) {
+            ret += pow[a][n-1];
+        }
+        repk(d, 2, n) {
+            rep1(a, 9) ret += pow[a][d-1];
+        }
+        if(snake(x)) ++ret;
+        // rep(i, n-1) repk(j, i+1, n) {
+        //     rep1(a, v[i]) rep(b, v[j]) {
+        //         ll upp = a;
+        //         repk(k, i+1, j) upp = upp*10+v[k];
+        //         upp = upp*10 + b;
+        //         if(!snake(upp)) continue;
+        //         de5(i,a,j,b,upp)
+
+        //         ll k = n-1-j;
+        //         ret += pow[a][k];
+        //         de2(k,pow[a][k])
+        //     }
+        // }
+        // if(snake(x)) ++ret;
+        return ret;
+    };
+    // de(calc(R));
+    // de(calc(L));
+    ll ans = calc(R) - calc(L-1);
+    Out(ans);
 
 }
 

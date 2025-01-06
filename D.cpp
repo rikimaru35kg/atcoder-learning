@@ -224,48 +224,37 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    map<ll,vp> mp;
-    rep(i, M) {
-        LONGM(x,y); CHAR(c);
-        ll z = 0;
-        if(c=='W') z = 1;
-
-        mp[x].emplace_back(y,z);
+    LONG(H, W);
+    VS(S, H);
+    ll si=-1,sj=-1,gi=-1,gj=-1;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='S') si=i, sj=j;
+        if(S[i][j]=='G') gi=i, gj=j;
     }
 
-    auto check=[&](vp &v) -> bool {
-        bool white = false;
-        for(auto [y,c]: v) {
-            if(c==1) {
-                white = true;
-            } else {
-                if(white) return false;
-            }
-        }
-        return true;
+    vvvl dist(H, vvl(W, vl(2, INF)));
+    queue<t3> que;
+    auto push=[&](ll i, ll j, ll k, ll d) {
+        if(dist[i][j][k]<=d) return;
+        dist[i][j][k] = d;
+        que.emplace(i,j,k);
     };
-    auto calc=[&](vp &v) -> Pr {
-        ll l = 0, r = N;
-        for(auto [y,c]: v) {
-            if(c==0) chmax(l, y+1);
-            else chmin(r,y);
-        }
-        return {l,r};
-    };
-
-    ll idx = N;
-    for(auto [x,v]: mp) {
-        sort(all(v));
-        // if(!check(v)) PNo
-        auto [l,r] = calc(v);
-        if(l>r) PNo
-        if(l>idx) PNo
-        if(r<=idx) {
-            idx = r;
+    push(si,sj,0,0);
+    push(si,sj,1,0);
+    while(que.size()) {
+        auto [i,j,k] = que.front(); que.pop();
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(k==0 && ni==i) continue;
+            if(k==1 && nj==j) continue;
+            if(S[ni][nj]=='#') continue;
+            push(ni,nj,k^1,dist[i][j][k]+1);
         }
     }
-    PYes
+    ll ans = min(dist[gi][gj][0], dist[gi][gj][1]);
+    ch1(ans);
+    Out(ans);
 
 }
 

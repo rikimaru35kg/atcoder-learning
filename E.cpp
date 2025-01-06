@@ -224,29 +224,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,K);VL(A, N);
-    bool flip = false;
-    if(K>N-K) flip = true;
-    ll M = K;
-    if(flip) M = N-K;
-    ll tot = 0;
-    rep(i, N) tot ^= A[i];
-    de(tot)
-
-    ll now = 0;
-    auto f=[&](auto f, ll i, ll k, ll x=0) -> void {
-        if(k==M) {
-            if(!flip) chmax(now, x);
-            else chmax(now, x^tot);
-            return;
-        }
-        if(i==N) return;
-        f(f, i+1, k, x);
-        f(f, i+1, k+1, x^A[i]);
-    };
-    f(f, 0, 0);
-
-    Out(now);
 
 }
 

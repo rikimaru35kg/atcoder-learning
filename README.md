@@ -913,6 +913,7 @@
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/editorial)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
 - !復習価値低 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
+- !復習価値高 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
 
 ## 全方位木DP
 - まず木DPで下向き部分木の求めたい値を求める
@@ -1177,7 +1178,6 @@
 ### 例題
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
 - !復習価値低 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
-- !復習価値高 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - 基本 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
 - !復習価値低 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
 - 基本 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
@@ -1704,6 +1704,18 @@
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 
+## N以下の数字の何かを求める（自分用なのでNote非掲載）
+- 以下、桁和の総和を求め方
+- 314159の上から3桁目を考える（4のところ）
+- 0-3の場合、上側が0-31の32通り、下側が1000通り
+- 4の場合、上側が0-30の31通り、下側が1000通り。更に、上側が31の時、下側が159+1通り
+- 5-9の場合、上側が0-30の31通り、下側が1000通り
+- 混乱しがちなのでコードも貼付 [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
+### 例題
+- !復習価値高 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
+- !復習価値中 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
+- !復習価値高 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
+
 ## 最終形を考える
 ### 例題
 - !復習価値低 [D - An Ordinary Game](https://atcoder.jp/contests/abc048/tasks/arc064_b)
@@ -1852,15 +1864,6 @@
 - これを用いれば順次次の項を求めていく事ができる
 ### 例題
 - !復習価値高 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
-
-## N以下の数字の桁和の総和（自分用なのでNote非掲載）
-- 314159の上から3桁目を考える（4のところ）
-- 0-3の場合、上側が0-31の32通り、下側が1000通り
-- 4の場合、上側が0-30の31通り、下側が1000通り。更に、上側が31の時、下側が159+1通り
-- 5-9の場合、上側が0-30の31通り、下側が1000通り
-- 混乱しがちなのでコードも貼付 [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
-### 例題
-- !復習価値中 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
 
 ## 構築系問題
 - 構築させる問題
