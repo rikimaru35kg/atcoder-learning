@@ -22,7 +22,7 @@ class UnionFind:
 
 
 import random as rnd
-# rnd.seed(123)
+rnd.seed(123)
 
 
 def gen_rnd(mn, mx):
@@ -30,7 +30,7 @@ def gen_rnd(mn, mx):
 
 
 def N_An(N):
-    MIN = 1; MAX = 1000000000
+    MIN = 1; MAX = 20
     A = [gen_rnd(MIN,MAX) for _ in range(N)]
     print(N)
     print(*A)
@@ -139,7 +139,7 @@ def field(N):
 if __name__ == '__main__':
     # PLEASE SPECIFY MIN MAX VALUE IN EACH FUNCTION!!
     # print("---N An------------")
-    # N_An(100000)
+    N_An(200000)
     # print("---N-M An----------")
     # NM_An(10)
     # print("---N An Bn---------")

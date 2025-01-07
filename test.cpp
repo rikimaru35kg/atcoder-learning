@@ -223,60 +223,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 void solve() {
-    LONG(K, N);
-    vvp pos(3);
+    LONG(N);
+    ll M = 400000;
+    dsu uf(M);
+    vb loop(M);
     rep(i, N) {
-        LONGM(c,r); CHAR(ch);
-        if(ch=='J') pos[0].emplace_back(r,c);
-        if(ch=='O') pos[1].emplace_back(r,c);
-        if(ch=='I') pos[2].emplace_back(r,c);
+        LONGM(a,b);
+        a = uf.leader(a), b = uf.leader(b);
+        if(uf.same(a,b)) {
+            loop[a] = true;
+            continue;
+        }
+        uf.merge(a,b);
+        if(loop[a] || loop[b]) loop[a] = loop[b] = true;
     }
-
-    map<t4,ll> mem;
-    auto f=[&](auto f, ll r1, ll c1, ll level, ll type) -> ll {
-        if(mem.count({r1,c1,level,type})) return mem[{r1,c1,level,type}];
-        ll &ret = mem[{r1,c1,level,type}];
-        ret = INF;
-        ll r2 = r1+(1LL<<level);
-        ll c2 = c1+(1LL<<level);
-
-        ll tot = 0;
-        rep(t, 3) {
-            for(auto [r,c]: pos[t]) {
-                if(r>=r1 && r<r2 && c>=c1 && c<c2) ++tot;
-            }
-        }
-        if(tot==0) return ret = 0;
-
-        if(type!=3) {
-            ll cnt = 0;
-            rep(t, 3) {
-                if(t==type) continue;
-                for(auto [r,c]: pos[t]) {
-                    if(r>=r1 && r<r2 && c>=c1 && c<c2) ++cnt;
-                }
-            }
-            return ret = cnt;
-        }
-        if(level==0) return ret = 0;
-
-        vl p(4);
-        iota(all(p), 0);
-        ll nl = level-1;
-        ll rm = r1+(1LL<<nl);
-        ll cm = c1+(1LL<<nl);
-        do {
-            ll now = 0;
-            now += f(f, r1, c1, nl, p[0]);
-            now += f(f, r1, cm, nl, p[1]);
-            now += f(f, rm, c1, nl, p[2]);
-            now += f(f, rm, cm, nl, p[3]);
-            chmin(ret, now);
-        } while(next_permutation(all(p)));
-        return ret;
-    };
-    ll ans = f(f, 0,0,K,3);
+    ll ans = 0;
+    rep(i, M) if(uf.leader(i)==i) {
+        if(loop[i]) ans += uf.size(i);
+        else ans += uf.size(i)-1;
+    }
     Out(ans);
 
 }

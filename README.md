@@ -2067,18 +2067,16 @@
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
 - [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
-
-## ACできなかった問題
 - [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
-- [No.2953 Maximum Right Triangle](https://yukicoder.me/problems/no/2953)
-- [No.2881 Mod 2^N](https://yukicoder.me/problems/no/2881)
-- [No.2927 Reverse Polish Equation](https://yukicoder.me/problems/no/2927)
 - [E - 11/22 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_e)
 - [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
-- [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
-- [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
 - [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
+
+## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
+- [No.2927 Reverse Polish Equation](https://yukicoder.me/problems/no/2927)
+- [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
+- [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
