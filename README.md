@@ -51,7 +51,7 @@
 - !復習価値高 お堀の決め方の数（DFSとUF両方で解いてね） [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 - !復習価値低 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - 基本 ポリオミオ（Polyomio）の種類数が少ないから解ける [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
-- !要復習 [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
+- !要復習 [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
 
 # 工夫した探索
 
@@ -2069,6 +2069,7 @@
 - [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
 
 ## ACできなかった問題
+- [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
 - [No.2953 Maximum Right Triangle](https://yukicoder.me/problems/no/2953)
 - [No.2881 Mod 2^N](https://yukicoder.me/problems/no/2881)
 - [No.2927 Reverse Polish Equation](https://yukicoder.me/problems/no/2927)
