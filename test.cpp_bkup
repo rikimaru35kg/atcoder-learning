@@ -224,32 +224,59 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(K, M);
-    STRING(S);
-    LONG(N);
-    vt3 op;
+    LONG(N, M);
+    vvi f1(N), f2(N);
+    int pa1=-1, pa2=-1;
     rep(i, N) {
-        LONG(a,b,c);
-        op.emplace_back(a,b,c);
-    }
-    reverse(all(op));
-
-    string ans;
-    rep(i, K) {
-        ll p = i;
-        for(auto [a,b,c]: op) {
-            ll l = c, r = c+(b-a);
-            if(p<l) {
-                continue;
-            } else if(p>=r) {
-                p -= (b-a);
-            } else {
-                p = a + p-l;
-            }
+        LONG(p,q);
+        if(p) {
+            --p;
+            f1[p].push_back(i);
+        } else {
+            pa1=i;
         }
-        ans += S[p];
+        if(q) {
+            --q;
+            f2[q].push_back(i);
+        } else {
+            pa2=i;
+        }
     }
-    Out(ans);
+
+    ll ord = 0;
+    auto euler=[&](auto f, ll v, vp &span, vvi &from) -> void {
+        span[v].first = ord++;
+        for(auto nv: from[v]) {
+            f(f, nv, span, from);
+        }
+        span[v].second = ord;
+    };
+    vp span1(N), span2(N);
+    euler(euler, pa1, span1, f1);
+    ord = 0;
+    euler(euler, pa2, span2, f2);
+    de(span1)
+    de(span2)
+
+    vvi imos(N+1, vi(N+1));
+
+    rep(i, M) {
+        LONGM(r,s);
+        auto [i1,i2] = span1[r];
+        auto [j1,j2] = span2[s];
+        imos[i1][j1]++;
+        imos[i2][j1]--;
+        imos[i1][j2]--;
+        imos[i2][j2]++;
+    }
+    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
+    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
+    rep(i, N) {
+        ll v1 = span1[i].first;
+        ll v2 = span2[i].first;
+        ll ans = imos[v1][v2];
+        Out(ans);
+    }
 
 }
 
@@ -260,3 +287,4 @@ int main () {
 }
 
 // ### test.cpp ###
+

@@ -224,59 +224,60 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vvi f1(N), f2(N);
-    int pa1=-1, pa2=-1;
+    LONG(K, N);
+    vvp pos(3);
     rep(i, N) {
-        LONG(p,q);
-        if(p) {
-            --p;
-            f1[p].push_back(i);
-        } else {
-            pa1=i;
-        }
-        if(q) {
-            --q;
-            f2[q].push_back(i);
-        } else {
-            pa2=i;
-        }
+        LONGM(c,r); CHAR(ch);
+        if(ch=='J') pos[0].emplace_back(r,c);
+        if(ch=='O') pos[1].emplace_back(r,c);
+        if(ch=='I') pos[2].emplace_back(r,c);
     }
 
-    ll ord = 0;
-    auto euler=[&](auto f, ll v, vp &span, vvi &from) -> void {
-        span[v].first = ord++;
-        for(auto nv: from[v]) {
-            f(f, nv, span, from);
+    map<t4,ll> mem;
+    auto f=[&](auto f, ll r1, ll c1, ll level, ll type) -> ll {
+        if(mem.count({r1,c1,level,type})) return mem[{r1,c1,level,type}];
+        ll &ret = mem[{r1,c1,level,type}];
+        ret = INF;
+        ll r2 = r1+(1LL<<level);
+        ll c2 = c1+(1LL<<level);
+
+        ll tot = 0;
+        rep(t, 3) {
+            for(auto [r,c]: pos[t]) {
+                if(r>=r1 && r<r2 && c>=c1 && c<c2) ++tot;
+            }
         }
-        span[v].second = ord;
+        if(tot==0) return ret = 0;
+
+        if(type!=3) {
+            ll cnt = 0;
+            rep(t, 3) {
+                if(t==type) continue;
+                for(auto [r,c]: pos[t]) {
+                    if(r>=r1 && r<r2 && c>=c1 && c<c2) ++cnt;
+                }
+            }
+            return ret = cnt;
+        }
+        if(level==0) return ret = 0;
+
+        vl p(4);
+        iota(all(p), 0);
+        ll nl = level-1;
+        ll rm = r1+(1LL<<nl);
+        ll cm = c1+(1LL<<nl);
+        do {
+            ll now = 0;
+            now += f(f, r1, c1, nl, p[0]);
+            now += f(f, r1, cm, nl, p[1]);
+            now += f(f, rm, c1, nl, p[2]);
+            now += f(f, rm, cm, nl, p[3]);
+            chmin(ret, now);
+        } while(next_permutation(all(p)));
+        return ret;
     };
-    vp span1(N), span2(N);
-    euler(euler, pa1, span1, f1);
-    ord = 0;
-    euler(euler, pa2, span2, f2);
-    de(span1)
-    de(span2)
-
-    vvi imos(N+1, vi(N+1));
-
-    rep(i, M) {
-        LONGM(r,s);
-        auto [i1,i2] = span1[r];
-        auto [j1,j2] = span2[s];
-        imos[i1][j1]++;
-        imos[i2][j1]--;
-        imos[i1][j2]--;
-        imos[i2][j2]++;
-    }
-    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
-    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
-    rep(i, N) {
-        ll v1 = span1[i].first;
-        ll v2 = span2[i].first;
-        ll ans = imos[v1][v2];
-        Out(ans);
-    }
+    ll ans = f(f, 0,0,K,3);
+    Out(ans);
 
 }
 
@@ -287,4 +288,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
