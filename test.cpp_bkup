@@ -223,32 +223,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
+    }
+    return ret;
+}
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
 void solve() {
-    LONG(N, M);
-    if(N==1) {
-        if(M==0) printf("1 3\n");
-        else Out(-1);
-        return;
+    LONG(N); VLM(A, N);
+    string S;
+    rep(i, N) {
+        if(i==A[i]) S += 'o';
+        else S += 'x';
     }
-    if(M<0 || M>N-2) Pm1
-    if(M==0) {
-        vp ans;
-        rep(i, N) {
-            ll k = i+1;
-            ans.emplace_back(3*k, 3*k+1);
-        }
-        Out(ans);
-        return;
-    }
-    vp ans;
-    rep(i, N-1) {
-        ll k = i+1;
-        ans.emplace_back(3*k, 3*k+1);
-    }
+    auto v = run_length_encoding(S);
 
-    ll r = 3*(M+2) - 1;
-
-    ans.emplace_back(1, r);
+    ll ans = 0;
+    for(auto [c,n]: v) {
+        if(c=='x') continue;
+        ans += (n+1)/2;
+    }
     Out(ans);
 
 }

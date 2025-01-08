@@ -48,7 +48,8 @@ bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4
     long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
     if(c12_13 * c12_14 > 0) return false;
     if(c34_31 * c34_32 > 0) return false;
-    if(c12_13==0 && c12_14==0) {
+    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
+        // both x & y conditions necessary considering vertical cases
         if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
            overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
         else return false;

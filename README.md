@@ -1998,16 +1998,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [F - Erase Subarrays](https://atcoder.jp/contests/abc275/tasks/abc275_f)
-- [D - バレンタインデー](https://atcoder.jp/contests/abc018/tasks/abc018_4)
-- [ 052 - Dice Product（★3）](https://atcoder.jp/contests/typical90/tasks/typical90_az)
-- [E - Sequence Sum](https://atcoder.jp/contests/abc179/tasks/abc179_e)
-- [E - Manhattan Multifocal Ellipse](https://atcoder.jp/contests/abc366/tasks/abc366_e)
-- [C - Robot on Grid](https://atcoder.jp/contests/keyence2021/tasks/keyence2021_c)
-- [E - 潜入](https://atcoder.jp/contests/zone2021/tasks/zone2021_e)
-- [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
-- [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
-- [D - AtCoDeerくんと変なじゃんけん](https://atcoder.jp/contests/abc046/tasks/arc062_b)
 - [M - 線分の交差判定](https://atcoder.jp/contests/past16-open/tasks/past202309_m)
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
@@ -2073,6 +2063,8 @@
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
 - [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
+- [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
+- [D - AtCoDeerくんと変なじゃんけん](https://atcoder.jp/contests/abc046/tasks/arc062_b)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2080,3 +2072,4 @@
 - [No.2927 Reverse Polish Equation](https://yukicoder.me/problems/no/2927)
 - [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
 - [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
+- [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)

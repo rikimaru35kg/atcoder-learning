@@ -223,30 +223,66 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    // cross>0 means *this->v is counterclockwise.
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
+    }
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+bool overlapping(long long l1, long long r1, long long l2, long long r2) {
+    if(l1>r1) swap(l1, r1);
+    if(l2>r2) swap(l2, r2);
+    long long lmax = max(l1, l2);
+    long long rmin = min(r1, r2);
+    return lmax <= rmin;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
+    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
+    if(c12_13 * c12_14 > 0) return false;
+    if(c34_31 * c34_32 > 0) return false;
+    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
+        // both x & y conditions necessary considering vertical cases
+        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
+           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
+        else return false;
+    }
+    return true;
+}
 
 void solve() {
-    LONG(N);
-    ll M = 400000;
-    dsu uf(M);
-    vb loop(M);
-    rep(i, N) {
-        LONGM(a,b);
-        a = uf.leader(a), b = uf.leader(b);
-        if(uf.same(a,b)) {
-            loop[a] = true;
-            continue;
-        }
-        uf.merge(a,b);
-        if(loop[a] || loop[b]) loop[a] = loop[b] = true;
-    }
-    ll ans = 0;
-    rep(i, M) if(uf.leader(i)==i) {
-        if(loop[i]) ans += uf.size(i);
-        else ans += uf.size(i)-1;
-    }
-    Out(ans);
+    Vecll p1, p2, p3, p4;
+    cin>>p1>>p2>>p3>>p4;
+    if(crossing(p1,p2,p3,p4)) PYes PNo
 
 }
 
