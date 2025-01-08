@@ -223,39 +223,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N); VLM(A, N);
-    string S;
-    rep(i, N) {
-        if(i==A[i]) S += 'o';
-        else S += 'x';
+    LONG(K);
+    STRING(S);
+    ll N = S.size();
+    vl A;
+    for(auto c: S) {
+        if(c=='J') A.push_back(0);
+        if(c=='O') A.push_back(1);
+        if(c=='I') A.push_back(2);
     }
-    auto v = run_length_encoding(S);
+    rep(i, N) A.push_back(A[i]);
+    ll N2 = N+N;
+    vvl cnt(3, vl(N2+1));
+    rep(i, N2) cnt[A[i]][i+1]++;
+    rep(c, 3) rep(i, N2) cnt[c][i+1] += cnt[c][i];
 
-    ll ans = 0;
-    for(auto [c,n]: v) {
-        if(c=='x') continue;
-        ans += (n+1)/2;
+    auto f=[&](auto f, ll si, ll k) -> ll {
+        if(k==0) return 0;
+        ll w = 1LL<<(2*(k-1));
+        ll ret = 0;
+        rep(i, 3) {
+            ll same = cnt[i][si+(i+1)*w] - cnt[i][si+i*w];
+            ret += w-same;
+        }
+        ret += f(f, si+3*w, k-1);
+        return ret;
+    };
+
+    ll ans = N2;
+    rep(i, N) {
+        ll now = f(f, i, K);
+        chmin(ans, now);
     }
     Out(ans);
 

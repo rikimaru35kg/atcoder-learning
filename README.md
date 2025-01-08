@@ -1897,6 +1897,9 @@
 ## set,map
 - 定数倍がかなり重い（感覚では5倍ぐらい）ので計算量が厳しい問題では慎重に使うこと！
 - 文字列をmapやsetのキーにするとその長さ分だけ計算量が増えるので注意
+- pairやベクターをunordered_mapのキーにできない場合、long longに変換できればキーにできる。この時、pairにマイナスの値があると上手く変換できないので要注意。
+- 事前に下駄をはかせて全て0以上にしてからlong longに変換すれば良い
+- ちなみに、__int128もキーにできるので、もし桁が足りなければ使うと良いかも
 
 ## 文字列
 - S.substr(開始位置, 長さ)で部分文字列を取得可能。長さが後ろをはみ出しても大丈夫
@@ -1998,17 +2001,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [M - 線分の交差判定](https://atcoder.jp/contests/past16-open/tasks/past202309_m)
-- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
-- [J - 忍者](https://atcoder.jp/contests/past15-open/tasks/past202306_j)
-- [G - Add and Multiply Queries](https://atcoder.jp/contests/abc368/tasks/abc368_g)
-- [D - Maximum Average Sets](https://atcoder.jp/contests/abc057/tasks/abc057_d)
-- [A - ロケット打ち上げ (Rocket Launching) ](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_a)
-- [B - JOIG ツアー (JOIG Tour)](https://atcoder.jp/contests/joigsc2022/tasks/joigsc2022_b)
-- [C - 国土分割 (Land Division)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_c)
-- [E - イルミネーション (Illumination)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_e)
-- [B - 愉快なロゴデザイン](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_b)
-- [flu - インフルエンザ (Flu)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_flu)
 - [D - ぴょんぴょん川渡り](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_d)
 - [anagram - アナグラム (Anagram)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_anagra)
 - [route - 象使い (Route)](https://atcoder.jp/contests/joisc2007/tasks/joisc2007_route)
@@ -2073,3 +2065,5 @@
 - [No.2828 Remainder Game](https://yukicoder.me/problems/no/2828)
 - [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
 - [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
+- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
+- [flu - インフルエンザ (Flu)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_flu)
