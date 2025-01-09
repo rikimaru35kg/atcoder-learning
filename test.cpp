@@ -223,97 +223,114 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
 }
 
 void solve() {
-    LONG(N,M,D,K);
-    ll Z = 1000;
-    ll Y = 1e18;
-    auto gid=[&](ll x, ll y) -> ll {
-        return x*Y + y;
-        return x*Z+y;
-    };
-    auto rid=[&](ll id) -> Pr {
-        ll x = id/(2*Z), y = id%(2*Z);
-        x -= Z, y -= Z;
-        return {x,y};
-    };
-    vvl city(Z, vl(Z, -1));
-    vp pos;
-    umap<sll,ll> mp;
-    rep(i, N) {
+    LONG(N, M);
+    vvl as(2), bs(2);
+    rep(i, M) {
         LONG(x,y);
-        mp[gid(x,y)] = i;
-        city[x][y] = i;
-        pos.emplace_back(x,y);
+        ll a = y - x;
+        ll b = x + y;
+        if((x+y)%2==0) as[0].push_back(a);
+        else as[1].push_back(a);
+        if((x+y)%2==0) bs[0].push_back(b);
+        else bs[1].push_back(b);
     }
-
-    vvl from(N);
-    rep(i, N) {
-        auto [x0,y0] = pos[i];
-        repk(x,x0-D,x0+D+1) repk(y,y0-D,y0+D+1) {
-            if(x==x0 && y==y0) continue;
-            if(!isin(x,y,Z,Z)) continue;
-            if(city[x][y]==-1) continue;
-            if(euclid_dist2({x0,y0},{x,y}) > D*D) continue;
-            from[i].push_back(city[x][y]);
-        }
-    }
-    vvl from2(N);
-    for(auto [id,ni]: mp) {
-        auto [x0,y0] = rid(id);
-        repk(x,x0-D,x0+D+1) repk(y,y0-D,y0+D+1) {
-            if(x==x0 && y==y0) continue;
-            // if(!isin(x,y,Z,Z)) continue;
-            if(euclid_dist2({x0,y0},{x,y}) > D*D) continue;
-            ll nid = gid(x,y);
-            if(!mp.count(nid)) continue;
-            if(ni==28 && mp[nid]==1161) {
-                // de4(x0,y0,x,y)
-                // de2(id,nid)
-                // de(euclid_dist2(pos[28],pos[1161]))
-            }
-            from2[ni].push_back(mp[nid]);
-        }
-    }
-    // de(pos[28])
-    // de(pos[1161])
-    // de(D*D)
-    // rep(i, N) {
-    //     if(from[i]!=from2[i]) {
-    //         // de(from[i])
-    //         // de(from2[i])
-    //         return;
-    //     }
-    // }
-    assert(from==from2);
-
-    vl dist(N, INF);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv: from[v]) push(nv, dist[v]+1);
+    rep(i, 2) {
+        unique(as[i]);
+        unique(bs[i]);
     }
     ll ans = 0;
-    rep(i, N) if(dist[i]<=K && dist[i]>K-M) {
-        ++ans;
-        // de(i)
+    rep(i, 2) {
+        for(auto a: as[i]) { ans += max(N-abs(a), 0LL); }
+        for(auto b: bs[i]) { ans += max(N-abs(N-1-b), 0LL); }
     }
-    // de(dist)
+    rep(i, 2) {
+        for(auto a: as[i]) {
+            vl &cbs = bs[i];
+            ll l = max(-a,a);
+            ll r = min(2*N-a, 2*N+a);
+            auto [n1,x1] = lowbou(cbs, l);
+            auto [n2,x2] = lowbou(cbs, r);
+            ans -= n2-n1;
+        }
+    }
+
     Out(ans);
 
 }
@@ -325,3 +342,4 @@ int main () {
 }
 
 // ### test.cpp ###
+

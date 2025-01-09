@@ -223,41 +223,134 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(K);
-    STRING(S);
-    ll N = S.size();
-    vl A;
-    for(auto c: S) {
-        if(c=='J') A.push_back(0);
-        if(c=='O') A.push_back(1);
-        if(c=='I') A.push_back(2);
-    }
-    rep(i, N) A.push_back(A[i]);
-    ll N2 = N+N;
-    vvl cnt(3, vl(N2+1));
-    rep(i, N2) cnt[A[i]][i+1]++;
-    rep(c, 3) rep(i, N2) cnt[c][i+1] += cnt[c][i];
-
-    auto f=[&](auto f, ll si, ll k) -> ll {
-        if(k==0) return 0;
-        ll w = 1LL<<(2*(k-1));
-        ll ret = 0;
-        rep(i, 3) {
-            ll same = cnt[i][si+(i+1)*w] - cnt[i][si+i*w];
-            ret += w-same;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
-        ret += f(f, si+3*w, k-1);
-        return ret;
-    };
-
-    ll ans = N2;
-    rep(i, N) {
-        ll now = f(f, i, K);
-        chmin(ans, now);
     }
-    Out(ans);
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
+void solve() {
+    LONG(W,H,K);
+    vvp row(H);
+    vvp col(W);
+    row[0].emplace_back(0,0); col[0].emplace_back(0,0);
+    rep(i, K) {
+        LONGM(c,r);
+        row[r].emplace_back(c, i+1);
+        col[c].emplace_back(r, i+1);
+    }
+    row[H-1].emplace_back(W-1,K+1);
+    col[W-1].emplace_back(H-1,K+1);
+    rep(i, H) sort(all(row[i]));
+    rep(j, W) sort(all(col[j]));
+    vvp from0(K+2), from1(K+2);
+    rep(i, H) {
+        vp &v = row[i];
+        ll n = v.size();
+        rep(j, n-1) {
+            auto [c1,v1] = v[j];
+            auto [c2,v2] = v[j+1];
+            from1[v1].emplace_back(v2,c2-c1);
+            from1[v2].emplace_back(v1,c2-c1);
+        }
+    }
+    rep(j, W) {
+        vp &v = col[j];
+        ll n = v.size();
+        rep(i, n-1) {
+            auto [r1,v1] = v[i];
+            auto [r2,v2] = v[i+1];
+            from0[v1].emplace_back(v2,r2-r1);
+            from0[v2].emplace_back(v1,r2-r1);
+        }
+    }
+    priority_queue<t3,vt3,greater<t3>> que;
+    vvl dist(K+2, vl(2, INF));
+    auto push=[&](ll v, ll sw, ll d) {
+        ll &pd = dist[v][sw];
+        if(pd<=d) return;
+        pd = d;
+        que.emplace(d,v,sw);
+    };
+    push(0,0,0);
+    while(que.size()) {
+        auto [d,v,sw] = que.top(); que.pop();
+        if(dist[v][sw]!=d) continue;
+        if(sw==0) {
+            for(auto [nv,c]: from0[v]) { push(nv, sw, d+c); }
+        } else {
+            for(auto [nv,c]: from1[v]) { push(nv, sw, d+c); }
+        }
+        if(v>=1 && v<=K) push(v,sw^1,d+1);
+    }
+    ll ans = min(dist[K+1][0], dist[K+1][1]);
+    ch1(ans);
+    Out(ans);
 }
 
 int main () {
