@@ -130,6 +130,12 @@
 - 基本 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
 - !復習価値低 ロボット移動 [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
+## Ready&Go探索
+- 条件を満たした地点から全探索を始める
+### 例題
+- 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+- !復習価値中 [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
+
 # ソート
 
 ## STLのソート
@@ -1850,12 +1856,6 @@
 ### 例題
 - !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
-## お堀問題（ニッチすぎてNote非掲載）
-- 外側を番兵でぐるっと囲むと見通しよくなる
-- Union Findが使える場合多し
-### 例題
-- 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
-
 ## 線分交差判定（ニッチすぎてNote非掲載）
 - 外積を4回使うと良い
 ### 例題
@@ -2001,8 +2001,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
-- [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
 - [typhoon - 台風 (Typhoon)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_typhoon)
 - [No.2947 Sing a Song](https://yukicoder.me/problems/no/2947)
 - [No.2896 Monotonic Prime Factors](https://yukicoder.me/problems/no/2896)
@@ -2045,6 +2043,7 @@
 - [F - チョコレートを増やせ (Increase Chocolates)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_f)
 - [3 - 現代的な屋敷 (Modern Mansion)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho3)
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
+- [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

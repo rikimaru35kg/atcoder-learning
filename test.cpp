@@ -223,115 +223,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(N, M);
-    vvl as(2), bs(2);
-    rep(i, M) {
-        LONG(x,y);
-        ll a = y - x;
-        ll b = x + y;
-        if((x+y)%2==0) as[0].push_back(a);
-        else as[1].push_back(a);
-        if((x+y)%2==0) bs[0].push_back(b);
-        else bs[1].push_back(b);
-    }
-    rep(i, 2) {
-        unique(as[i]);
-        unique(bs[i]);
-    }
-    ll ans = 0;
-    rep(i, 2) {
-        for(auto a: as[i]) { ans += max(N-abs(a), 0LL); }
-        for(auto b: bs[i]) { ans += max(N-abs(N-1-b), 0LL); }
-    }
-    rep(i, 2) {
-        for(auto a: as[i]) {
-            vl &cbs = bs[i];
-            ll l = max(-a,a);
-            ll r = min(2*N-a, 2*N+a);
-            auto [n1,x1] = lowbou(cbs, l);
-            auto [n2,x2] = lowbou(cbs, r);
-            ans -= n2-n1;
-        }
-    }
+    LONG(R);
+    LONG(W1,H1,sj1,si1); --sj1, --si1;
+    VVL(A1,H1,W1);
+    LONG(W2,H2,sj2,si2); --sj2, --si2;
+    VVL(A2,H2,W2);
 
+    auto calc=[&](vvl &A, ll si, ll sj) -> vp {
+        ll H = A.size(), W = A[0].size();
+        map<ll,vp> mp;
+        rep(i, H) rep(j, W) {
+            mp[A[i][j]].emplace_back(i,j);
+        }
+
+        vp ret;
+        ret.emplace_back(0,0);
+        vvb visited(H, vb(W));
+        ll cnt = 0;
+
+        for(auto [a,vp]: mp) {
+            queue<Pr> que;
+            auto push=[&](ll i, ll j) {
+                que.emplace(i,j);
+            };
+            for(auto [i,j]: vp) {
+                if(i==si&&j==sj) { push(i,j); continue; }
+                for(auto [di,dj]: dij) {
+                    ll ni = i + di, nj = j + dj;
+                    if(!isin(ni,nj,H,W)) continue;
+                    if(visited[ni][nj]) push(i,j);
+                }
+            }
+            while(que.size()) {
+                auto [i,j] = que.front(); que.pop();
+                if(visited[i][j]) continue;
+                visited[i][j] = true;
+                ++cnt;
+                for(auto [di,dj]: dij) {
+                    ll ni = i + di, nj = j + dj;
+                    if(!isin(ni,nj,H,W)) continue;
+                    if(A[ni][nj]<=a) push(ni,nj);
+                }
+            }
+            ret.emplace_back(cnt,a);
+        }
+        return ret;
+    };
+    auto v1 = calc(A1,si1,sj1);
+    auto v2 = calc(A2,si2,sj2);
+    vl level1(H1*W1+1, INF);
+    vl level2(H2*W2+1, INF);
+    for(auto [cnt,a]: v1) { chmin(level1[cnt], a); }
+    for(auto [cnt,a]: v2) { chmin(level2[cnt], a); }
+    repr(i, H1*W1) chmin(level1[i], level1[i+1]);
+    repr(i, H2*W2) chmin(level2[i], level2[i+1]);
+    de(level1)
+    de(level2)
+    ll ans = INF;
+    repr(r1, H1*W1+1) {
+        ll r2 = R - r1;
+        if(r2<0 || r2>H2*W2) continue;
+        ll now = level1[r1] + level2[r2];
+        chmin(ans, now);
+    }
     Out(ans);
+
 
 }
 
@@ -342,4 +299,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
