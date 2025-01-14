@@ -223,37 +223,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-#include <atcoder/scc>
-
 void solve() {
-    LONG(N); VLM(F, N);
-    scc_graph scc(N);
-    rep(i, N) {
-        scc.add_edge(i, F[i]);
+    LONG(N);
+    VVLM(A, N, N);
+    ll r = -1, c = -1;
+    rep(i, N) rep(j, N) {
+        if(A[i][j]==-1) r=i, c=j;
     }
-    auto grs = scc.scc();
-    mint ans = 1;
-    for(auto gr: grs) {
-        if(SIZE(gr)==1) {
-            if(F[gr[0]]==gr[0]) ans *= 2;
-        } else ans *= 2;
-    }
-    --ans;
-    Out(ans);
 
+    auto prejudge=[&]() -> bool {
+        rep(i, N) rep(j, N) rep(k, N) {
+            if(i==r&&j==c) continue;
+            if(j==r&&k==c) continue;
+            // de5(i,j,k,A[A[i][j]][k], A[i][A[j][k]])
+            ll x = A[A[i][j]][k];
+            ll y = A[i][A[j][k]];
+            if(x==-1 || y==-1) continue;
+            if(A[A[i][j]][k] != A[i][A[j][k]]) return false;
+        }
+        return true;
+    };
+    if(!prejudge()) Pm0
+
+    ll ans = 0;
+    rep(x, N) {
+        A[r][c] = x;
+        bool ok = true;
+        {  // i = r
+            ll i = r;
+            rep(j, N) rep(k, N) {
+                if(A[A[i][j]][k] != A[i][A[j][k]]) ok = false;
+            }
+        }
+        {  // k = c
+            ll k = c;
+            rep(i, N) rep(j, N) {
+                if(A[A[i][j]][k] != A[i][A[j][k]]) ok = false;
+            }
+        }
+        if(ok) {
+            ++ans;
+        }
+    }
+    Out(ans);
 
 }
 

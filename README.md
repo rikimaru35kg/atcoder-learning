@@ -2029,6 +2029,7 @@
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 - [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
 - [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
+- [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
