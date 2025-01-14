@@ -2001,15 +2001,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [typhoon - 台風 (Typhoon)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_typhoon)
-- [No.2947 Sing a Song](https://yukicoder.me/problems/no/2947)
-- [No.2896 Monotonic Prime Factors](https://yukicoder.me/problems/no/2896)
-- [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
-- [No.2880 Max Sigma Mod](https://yukicoder.me/problems/no/2880)
-- [No.2923 Mayor's Job](https://yukicoder.me/problems/no/2923)
-- [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
-- [C11 - Election](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fi)
-- [B18 - Subset Sum with Restoration](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_cq)
 - [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
 - [B38 - Heights of Grass](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dk)
 - [A42 - Soccer](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ap)
@@ -2044,6 +2035,10 @@
 - [3 - 現代的な屋敷 (Modern Mansion)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho3)
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
+- [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
+- [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
+- [D - Coming of Age Celebration](https://atcoder.jp/contests/abc388/tasks/abc388_d)
+- [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2055,3 +2050,5 @@
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [flu - インフルエンザ (Flu)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_flu)
 - [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
+- [No.2923 Mayor's Job](https://yukicoder.me/problems/no/2923)
+- [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
