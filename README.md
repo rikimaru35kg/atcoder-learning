@@ -2,7 +2,7 @@
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
 ## 最後の一斉復習日
-2024/10/31
+2025/1/14
 
 # 全探索
 
@@ -2001,19 +2001,6 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
-- [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
-- [B38 - Heights of Grass](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dk)
-- [A42 - Soccer](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ap)
-- [A70 - Lanterns](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_br)
-- [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
-- [B - MAX-=min](https://atcoder.jp/contests/arc105/tasks/arc105_b)
-- [C - Shuffle Permutation](https://atcoder.jp/contests/arc107/tasks/arc107_c)
-- [C - Large RPS Tournament](https://atcoder.jp/contests/arc109/tasks/arc109_c)
-- [B - Many 110](https://atcoder.jp/contests/arc110/tasks/arc110_b)
-- [A - B = C](https://atcoder.jp/contests/arc112/tasks/arc112_a)
-- [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
-- [B - Special Subsets](https://atcoder.jp/contests/arc114/tasks/arc114_b)
-- [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
@@ -2039,6 +2026,9 @@
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [D - Coming of Age Celebration](https://atcoder.jp/contests/abc388/tasks/abc388_d)
 - [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
+- [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
+- [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
+- [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2052,3 +2042,4 @@
 - [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
 - [No.2923 Mayor's Job](https://yukicoder.me/problems/no/2923)
 - [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
+- [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
