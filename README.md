@@ -923,8 +923,8 @@
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/editorial)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
 - !復習価値低 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
-- !復習価値高 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
 - !要復習 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
+- !復習価値高 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
 
 ## 全方位木DP
 - まず木DPで下向き部分木の求めたい値を求める
@@ -2032,6 +2032,7 @@
 - [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
 - [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
 - [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
+- [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

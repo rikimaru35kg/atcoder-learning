@@ -223,46 +223,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    VL(A, N);
+using PR = pair<ll,db>;
+using vPR = vector<PR>;
+using vvPR = vector<vPR>;
 
-    INF = 1;
-    vvvl dp(N, vvl(2, vl(K+1, -INF)));
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        dp[v][0][0] = 0;
-        dp[v][1][1] = A[v];
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            { // dp[v][0][*]
-                repr(j, K+1) rep(z, 2) rep(k, K-j+1) {
-                    if(dp[nv][z][k]==-INF) continue;
-                    chmax(dp[v][0][j], dp[v][0][j] + dp[nv][z][k]);
-                }
-            }
-            { // dp[v][1][*]
-                rep(j, K+1) rep(k, K+1) {
-                    if(j+k>K) continue;
-                    if(pdp[1][j]==-INF) continue;
-                    if(dp[nv][0][k]==-INF) continue;
-                    chmax(cdp[1][j+k], pdp[1][j] + dp[nv][0][k]);
-                }
-            }
-            de2(v,nv)
-            de(cdp)
+void solve() {
+    LONG(N, M);
+    VL(P, N);
+    vvPR from(N);
+    rep(i, M) {
+        LONGM(a, b); DOUBLE(w);
+        from[a].emplace_back(b, w);
+    }
+
+    vb reach(N);
+    vb visited(N);
+    auto f=[&](auto f, ll v) -> void {
+        if(visited[v]) return;
+        visited[v] = true;
+        if(v==N-1) {
+            reach[v] = true; return;
         }
-        dp[v] = cdp;
+        for(auto [nv,w]: from[v]) {
+            f(f, nv);
+            if(reach[nv]) reach[v] = true;
+        }
     };
-    dfs(dfs, 0);
-    ll ans = max(dp[0][0][K], dp[0][1][K]);
-    if(ans==-INF) Outend(-1);
+    f(f, 0);
+    // de(reach)
+    if(!reach[0]) Pm1
+
+    vd point(N, -INF);
+    auto dfs=[&](auto f, ll v) -> db {
+        db &ret = point[v];
+        if(ret!=-INF) return ret;
+        ret = 0;
+        for(auto [nv,w]: from[v]) {
+            if(!reach[nv]) continue;
+            chmax(ret, w*f(f, nv));
+        }
+        ret += P[v];
+        return ret;
+    };
+    db ans = dfs(dfs, 0);
     Out(ans);
+    
 
 }
 

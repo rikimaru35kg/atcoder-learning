@@ -223,48 +223,81 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
 void solve() {
     LONG(N);
-    VL(A, 3*N);
-    ll ans = INF;
+    VL(B, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) { cc.add(B[i]); }
+    rep(i, N) B[i] = cc(B[i]);
+    ll M = cc.size();
 
-    ll cnt = 0;
-    auto f=[&](auto f, ll i, vvl v) -> void {
-        ++cnt;
-        ll n = v.size();
-        if(i==3*N) {
-            if(SIZE(v)!=N) return;
-            ll mx = -INF, mn = INF;
-            rep(j, N) {
-                ll now = 0;
-                rep(k, 3) now += A[v[j][k]];
-                chmax(mx, now);
-                chmin(mn, now);
-            }
-            chmin(ans, mx-mn);
-            return;
-        }
-        if(i==0) {
-            v.push_back(vl());
-            v.back().push_back(i);
-            f(f, i+1, v);
-            return;
-        }
-        rep(j, n) {
-            if(SIZE(v[j])==3) continue;
-            v[j].push_back(i);
-            f(f, i+1, v);
-            v[j].pop_back();
-        }
-        if(n<N) {
-            v.push_back(vl());
-            v.back().push_back(i);
-            f(f, i+1, v);
-        }
+    using SEG = segtree<S,op,e>;
+    SEG down(M), up(M);
+
+    auto update=[&](SEG &seg, ll i, ll x) {
+        seg.set(i, op(seg.get(i), x));
     };
-    f(f, 0, vvl());
-    de(cnt)
+
+    rep(i, N) {
+        ll dmx = up.prod(B[i]+1, M)+1;
+        ll umx = down.prod(0, B[i])+1;
+        update(down, B[i], dmx);
+        update(up, B[i], umx);
+    }
+    ll ans = up.all_prod();
+    chmax(ans, down.all_prod());
     Out(ans);
+
+
+
 
 }
 
