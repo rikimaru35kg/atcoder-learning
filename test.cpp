@@ -224,47 +224,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VVLM(A, N, N);
-    ll r = -1, c = -1;
-    rep(i, N) rep(j, N) {
-        if(A[i][j]==-1) r=i, c=j;
+    LONG(N, K);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+    VL(A, N);
 
-    auto prejudge=[&]() -> bool {
-        rep(i, N) rep(j, N) rep(k, N) {
-            if(i==r&&j==c) continue;
-            if(j==r&&k==c) continue;
-            // de5(i,j,k,A[A[i][j]][k], A[i][A[j][k]])
-            ll x = A[A[i][j]][k];
-            ll y = A[i][A[j][k]];
-            if(x==-1 || y==-1) continue;
-            if(A[A[i][j]][k] != A[i][A[j][k]]) return false;
+    INF = 1;
+    vvvl dp(N, vvl(2, vl(K+1, -INF)));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        dp[v][0][0] = 0;
+        dp[v][1][1] = A[v];
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            { // dp[v][0][*]
+                repr(j, K+1) rep(z, 2) rep(k, K-j+1) {
+                    if(dp[nv][z][k]==-INF) continue;
+                    chmax(dp[v][0][j], dp[v][0][j] + dp[nv][z][k]);
+                }
+            }
+            { // dp[v][1][*]
+                rep(j, K+1) rep(k, K+1) {
+                    if(j+k>K) continue;
+                    if(pdp[1][j]==-INF) continue;
+                    if(dp[nv][0][k]==-INF) continue;
+                    chmax(cdp[1][j+k], pdp[1][j] + dp[nv][0][k]);
+                }
+            }
+            de2(v,nv)
+            de(cdp)
         }
-        return true;
+        dp[v] = cdp;
     };
-    if(!prejudge()) Pm0
-
-    ll ans = 0;
-    rep(x, N) {
-        A[r][c] = x;
-        bool ok = true;
-        {  // i = r
-            ll i = r;
-            rep(j, N) rep(k, N) {
-                if(A[A[i][j]][k] != A[i][A[j][k]]) ok = false;
-            }
-        }
-        {  // k = c
-            ll k = c;
-            rep(i, N) rep(j, N) {
-                if(A[A[i][j]][k] != A[i][A[j][k]]) ok = false;
-            }
-        }
-        if(ok) {
-            ++ans;
-        }
-    }
+    dfs(dfs, 0);
+    ll ans = max(dp[0][0][K], dp[0][1][K]);
+    if(ans==-INF) Outend(-1);
     Out(ans);
 
 }
