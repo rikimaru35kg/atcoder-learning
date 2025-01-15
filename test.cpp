@@ -223,51 +223,144 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using PR = pair<ll,db>;
-using vPR = vector<PR>;
-using vvPR = vector<vPR>;
+const long long base = 12345;
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+}
 
 void solve() {
-    LONG(N, M);
-    VL(P, N);
-    vvPR from(N);
-    rep(i, M) {
-        LONGM(a, b); DOUBLE(w);
-        from[a].emplace_back(b, w);
+    ll N = 4;
+    VVL(S,N,N); VVL(T,N,N);
+
+    auto makehash=[&](vvl &s) -> mints {
+        mints now=0;
+        rep(i, N) rep(j, N) {
+            now = now*base + s[i][j];
+        }
+        return now;
+    };
+
+    using MP = umap<mints,ll>;
+    auto calc=[&](vvl ss) -> MP {
+        queue<vvl> que;
+        MP dist;
+        auto push=[&](vvl &s, ll d) {
+            mints h = makehash(s);
+            if(dist.count(h)) return;
+            dist[h] = d;
+            que.push(s);
+        };
+        push(ss, 0);
+        while(que.size()) {
+            auto s = que.front(); que.pop();
+            mints h = makehash(s);
+            ll d = dist[h];
+            if(d>=15) break;
+            ll zi=-1,zj=-1;
+            [&]{rep(i, N) rep(j, N) {
+                if(s[i][j]==-1) {
+                    zi=i, zj=j;
+                    return;
+                }
+            }}();
+            for(auto [di,dj]: dij) {
+                ll ni = zi + di, nj = zj + dj;
+                if(!isin(ni,nj,N,N)) continue;
+                vvl ns = s;
+                swap(ns[zi][zj], ns[ni][nj]);
+                push(ns, d+1);
+            }
+        }
+        return dist;
+    };
+
+    auto dists=calc(S);
+    auto distt=calc(T);
+    ll ans = INF;
+    for(auto [h,d]: dists) {
+        if(!distt.count(h)) continue;
+        ll now = d + distt[h];
+        chmin(ans, now);
     }
-
-    vb reach(N);
-    vb visited(N);
-    auto f=[&](auto f, ll v) -> void {
-        if(visited[v]) return;
-        visited[v] = true;
-        if(v==N-1) {
-            reach[v] = true; return;
-        }
-        for(auto [nv,w]: from[v]) {
-            f(f, nv);
-            if(reach[nv]) reach[v] = true;
-        }
-    };
-    f(f, 0);
-    // de(reach)
-    if(!reach[0]) Pm1
-
-    vd point(N, -INF);
-    auto dfs=[&](auto f, ll v) -> db {
-        db &ret = point[v];
-        if(ret!=-INF) return ret;
-        ret = 0;
-        for(auto [nv,w]: from[v]) {
-            if(!reach[nv]) continue;
-            chmax(ret, w*f(f, nv));
-        }
-        ret += P[v];
-        return ret;
-    };
-    db ans = dfs(dfs, 0);
+    ch1(ans);
     Out(ans);
-    
+    // de(dists.size())
 
 }
 

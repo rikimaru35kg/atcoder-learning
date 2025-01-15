@@ -223,81 +223,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
 #include <atcoder/segtree>
 using namespace atcoder;
 
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
+struct S {
+    db s, p;
+    S(db s, db p): s(s),p(p) {};
+};
+S op(S a, S b) {
+    return S(a.s+a.p*b.s, a.p*b.p);
+}
+S e() { return S(0,1);}
 
 void solve() {
-    LONG(N);
-    VL(B, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) { cc.add(B[i]); }
-    rep(i, N) B[i] = cc(B[i]);
-    ll M = cc.size();
-
-    using SEG = segtree<S,op,e>;
-    SEG down(M), up(M);
-
-    auto update=[&](SEG &seg, ll i, ll x) {
-        seg.set(i, op(seg.get(i), x));
-    };
-
+    LONG(N); VL(A, N);
+    DOUBLE(x);
+    LONG(Q);
+    segtree<S,op,e> seg(N);
     rep(i, N) {
-        ll dmx = up.prod(B[i]+1, M)+1;
-        ll umx = down.prod(0, B[i])+1;
-        update(down, B[i], dmx);
-        update(up, B[i], umx);
+        seg.set(i, S(A[i], x));
     }
-    ll ans = up.all_prod();
-    chmax(ans, down.all_prod());
-    Out(ans);
 
-
-
+    rep(i, Q) {
+        LONG(l, r); --l;
+        de2(l,r)
+        auto [ans,p] = seg.prod(l,r);
+        Out(ans);
+    }
 
 }
 
