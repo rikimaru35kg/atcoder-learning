@@ -223,33 +223,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S {
-    db s, p;
-    S(db s, db p): s(s),p(p) {};
-};
-S op(S a, S b) {
-    return S(a.s+a.p*b.s, a.p*b.p);
-}
-S e() { return S(0,1);}
-
 void solve() {
-    LONG(N); VL(A, N);
-    DOUBLE(x);
-    LONG(Q);
-    segtree<S,op,e> seg(N);
+    STRING(S); ll ns = S.size();
+    LONG(N);
+    umap<char,ll> mp;
     rep(i, N) {
-        seg.set(i, S(A[i], x));
+        CHAR(c); LONG(v);
+        mp[c] = v;
     }
-
-    rep(i, Q) {
-        LONG(l, r); --l;
-        de2(l,r)
-        auto [ans,p] = seg.prod(l,r);
-        Out(ans);
+    ll ans = 0;
+    auto get=[&](char c) -> ll {
+        if(islower(c)) {
+            return  mp[c];
+        } else {
+            return c-'0';
+        }
+    };
+    ans = get(S[0]);
+    for(ll i=1; i<ns; i+=2) {
+        ll coef = 1;
+        if(S[i]=='-') coef = -1;
+        ll x = get(S[i+1]);
+        ans += coef*x;
+        de(ans)
     }
+    Out(ans);
 
 }
 
