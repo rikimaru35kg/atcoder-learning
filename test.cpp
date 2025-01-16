@@ -223,54 +223,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
 void solve() {
     LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    VS(S, N);
+
+    vl dist(1<<M, -1);
+    queue<ll> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]!=-1) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        rep(i, M) {
+            ll nv = v^1<<i;
+            push(nv, dist[v]+1);
+        }
     }
 
-    vb visited(N);
-    vl vs;
-    auto euler=[&](auto f, ll v) -> void {
-        if(visited[v]) return;
-        visited[v] = true;
-        vs.push_back(v);
-        for(auto nv: from[v]) f(f, nv);
-    };
-    ll now = 0, sz = 0;
-    vl color(N,-1);
-    auto dfs=[&](auto f, ll i) -> void {
-        if(i==sz) {
-            ++now; return;
-        }
-        rep(c, 3) {
-            bool ok = true;
-            for(auto nv: from[vs[i]]) {
-                if(color[nv]==-1) continue;
-                if(color[nv]==c) ok = false;
-            }
-            if(ok) {
-                color[vs[i]] = c;
-                f(f, i+1);
-                color[vs[i]] = -1;
-            }
-        }
-    };
-
-    ll ans = 1;
+    ll zero=0, one=0;
     rep(i, N) {
-        if(visited[i]) continue;
-        vs = vl();
-        euler(euler, i);
-        de(vs)
-        sz = vs.size(); now = 0;
-        dfs(dfs, 0);
-        ans *= now;
+        ll now = 0;
+        for(auto c: S[i]) {
+            now = now*2+ c-'0';
+        }
+        if(dist[now]%2) ++one;
+        else ++zero;
     }
-    Out(ans);
+    de2(one,zero)
+    Out(one*zero);
 
 }
 

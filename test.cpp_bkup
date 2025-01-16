@@ -223,51 +223,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 void solve() {
-    ll N = 4, M = 5;
-    VVL(A, N, N);
-
-    vvb visited(M, vb(M));
-    vvb pat(N, vb(N));
-    auto flip=[&](ll i, ll j) {
-        repk(ci,i,N) pat[ci][j] = !pat[ci][j];
-    };
-    auto check=[&]() -> bool {
-        rep(i, N) rep(j, N) {
-            if(A[i][j]==1 && !pat[i][j]) return false;
-        }
-        return true;
-    };
-    ll si=-1, sj=-1;
-    ll ans = 0;
-    auto dfs=[&](auto f, ll i, ll j, ll k) -> void {
-        if(k>2 && si==i && sj==j) {
-            if(check()) ++ans;
-            return;
-        }
-        if(visited[i][j]) return;
-        visited[i][j] = true;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,M,M)) continue;
-            if(i==ni) flip(i, min(j,nj));
-            f(f, ni, nj, k+1);
-            if(i==ni) flip(i, min(j,nj));
-        }
-        visited[i][j] = false;
-    };
-
-    rep(i, M) rep(j, M) {
-        si = i, sj = j;
-        pat = vvb(N, vb(N));
-        dfs(dfs, i,j,0);
-        visited[i][j] = true;
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    Out(ans/2);
 
+    vb visited(N);
+    vl vs;
+    auto euler=[&](auto f, ll v) -> void {
+        if(visited[v]) return;
+        visited[v] = true;
+        vs.push_back(v);
+        for(auto nv: from[v]) f(f, nv);
+    };
+    ll now = 0, sz = 0;
+    vl color(N,-1);
+    auto dfs=[&](auto f, ll i) -> void {
+        if(i==sz) {
+            ++now; return;
+        }
+        rep(c, 3) {
+            bool ok = true;
+            for(auto nv: from[vs[i]]) {
+                if(color[nv]==-1) continue;
+                if(color[nv]==c) ok = false;
+            }
+            if(ok) {
+                color[vs[i]] = c;
+                f(f, i+1);
+                color[vs[i]] = -1;
+            }
+        }
+    };
+
+    ll ans = 1;
+    rep(i, N) {
+        if(visited[i]) continue;
+        vs = vl();
+        euler(euler, i);
+        de(vs)
+        sz = vs.size(); now = 0;
+        dfs(dfs, 0);
+        ans *= now;
+    }
+    Out(ans);
 
 }
 
