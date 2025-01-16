@@ -1766,6 +1766,7 @@
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
 ### 例題
 - 基本 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
+- !復習価値中 [L - 書き換え](https://atcoder.jp/contests/past18-open/tasks/past18_l)
 
 ## ヒストグラム最大長方形（スパン）
 - ヒストグラムの中で取りうる長方形の最大面積をO(N)で求める問題
@@ -2049,3 +2050,4 @@
 - [No.2923 Mayor's Job](https://yukicoder.me/problems/no/2923)
 - [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
 - [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
+- [H - Cを探せ！](https://atcoder.jp/contests/past18-open/tasks/past18_h)

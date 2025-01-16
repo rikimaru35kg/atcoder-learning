@@ -223,115 +223,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
-    VL(B, N);
+using PR = pair<string,ll>;
+using vPR = vector<PR>;
 
-    auto same=[&](vl A, vl B) -> bool {
-        sort(all(A));
-        sort(all(B));
-        return A==B;
-    };
-    if(!same(A,B)) PNo
-
-    auto diff=[&](vl &A, vl &B) -> vl {
-        vl ret;
-        rep(i, N) { if(A[i]!=B[i]) ret.push_back(i); }
-        return ret;
-    };
-
-    vl is = diff(A,B);
-    if(SIZE(is)==0) PYes
-    if(SIZE(is)>4) PNo
-
-    if(SIZE(is)==4) {
-        if(is[0]+1!=is[1]) PNo
-        if(is[2]+1!=is[3]) PNo
-        swap(A[is[0]], A[is[1]]);
-        swap(A[is[2]], A[is[3]]);
-        if(A==B) PYes PNo
-    } else if(SIZE(is)==3) {
-        if(is[0]+2!=is[2]) PNo
-        {
-            vl C = A;
-            swap(C[is[0]], C[is[1]]);
-            swap(C[is[1]], C[is[2]]);
-            if(C==B) PYes
+vl solve(ll N, ll Q, vPR op, vl X) {
+    ll upp = INF, low = -INF;
+    ll a = 1;
+    rep(i, N) {
+        auto [s,p] = op[i];
+        if(s=="NEGATE") {
+            swap(upp,low);
+            upp *= -1;
+            low *= -1;
+            a *= -1;
+        } else if (s=="CHMIN") {
+            chmin(upp, p);
+            chmin(low, p);
+        } else {
+            chmax(upp, p);
+            chmax(low, p);
         }
-        {
-            vl C = A;
-            swap(C[is[1]], C[is[2]]);
-            swap(C[is[0]], C[is[1]]);
-            if(C==B) PYes
-        }
-        PNo
-    } else if(SIZE(is)==2) {
-        if(is[0]+2<is[1]) PNo
-        if(is[0]+2==is[1]) {
-            {
-                vl C = A;
-                swap(C[is[0]], C[is[0]+1]);
-                swap(C[is[0]+1], C[is[0]+2]);
-                if(C==B) PYes
-            }
-            {
-                vl C = A;
-                swap(C[is[0]+1], C[is[0]+2]);
-                swap(C[is[0]], C[is[0]+1]);
-                if(C==B) PYes
-            }
-            PNo
-        }
-        if(is[0]+1==is[1]) {
-            {
-                vl C = A;
-                swap(C[is[0]], C[is[1]]);
-                if(C==B) {
-                    rep(i, N-1) if(C[i]==C[i+1]) PYes
-                }
-            }
-            if(is[0]) {
-                {
-                    vl C = A;
-                    swap(C[is[0]-1], C[is[0]]);
-                    swap(C[is[0]], C[is[0]+1]);
-                    if(C==B) PYes
-                }
-                {
-                    vl C = A;
-                    swap(C[is[0]], C[is[0]+1]);
-                    swap(C[is[0]-1], C[is[0]]);
-                    if(C==B) PYes
-                }
-            }
-            if(is[1]<N-1) {
-                {
-                    vl C = A;
-                    swap(C[is[1]], C[is[1]+1]);
-                    swap(C[is[1]-1], C[is[1]]);
-                    if(C==B) PYes
-                }
-                {
-                    vl C = A;
-                    swap(C[is[1]-1], C[is[1]]);
-                    swap(C[is[1]], C[is[1]+1]);
-                    if(C==B) PYes
-                }
-            }
-            PNo
-        }
-        PNo
     }
-    PNo
+    de3(a,low,upp)
+    vl ans;
+    rep(i, Q) {
+        ll x = X[i];
+        x *= a;
+        chmin(x, upp);
+        chmax(x, low);
+        ans.push_back(x);
+    }
+    return ans;
+}
 
-
+vl solve2(ll N,ll Q,vPR op, vl X) {
+    vl ret;
+    rep(i, Q) {
+        ll x = X[i];
+        for(auto [s,p]: op) {
+            if(s=="NEGATE") x *= -1;
+            else if(s=="CHMIN") chmin(x, p);
+            else chmax(x, p);
+        }
+        ret.push_back(x);
+    }
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N, Q);
+    vPR op;
+    rep(i, N) {
+        STRING(s); LONG(p);
+        op.emplace_back(s,p);
+    }
+    VL(X, Q);
+
+    // ll M = 10000;
+    // rep(i, N) {
+    //     ll r = rand()%3;
+    //     string s;
+    //     if(r%3==0) s = "NEGATE";
+    //     else if(r%3==1) s = "CHMIN";
+    //     else s = "CHMAX";
+    //     ll p = rand()%M;
+    //     if(s=="CHMAX") p = -p;
+    //     op.emplace_back(s,p);
+    // }
+    // vl X;
+    // rep(i, Q) {
+    //     ll p = rand()%M/5;
+    //     X.push_back(p);
+    // }
+    // for(auto [s,p]: op) {
+    //     de(s)de(p)
+    // }
+    // de(X)
+
+    auto ans1 = solve(N,Q,op,X);
+    // auto ans2 = solve2(N,Q,op,X);
+    Out(ans1);
+    // Out(ans2);
 }
 
 // ### test.cpp ###

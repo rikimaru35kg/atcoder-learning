@@ -224,28 +224,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S); ll ns = S.size();
     LONG(N);
-    umap<char,ll> mp;
-    rep(i, N) {
-        CHAR(c); LONG(v);
-        mp[c] = v;
+    VL(A, N);
+    ll M = 35;
+    vl d(M);
+    ll two = 1;
+    rep(k, M) {
+        umap<ll,ll> mp;
+        rep(i, N) {
+            ll now = Percent(-A[i], two);
+            d[k] += mp[now];
+            mp[A[i]%two]++;
+        }
+        two *= 2;
     }
     ll ans = 0;
-    auto get=[&](char c) -> ll {
-        if(islower(c)) {
-            return  mp[c];
-        } else {
-            return c-'0';
-        }
-    };
-    ans = get(S[0]);
-    for(ll i=1; i<ns; i+=2) {
-        ll coef = 1;
-        if(S[i]=='-') coef = -1;
-        ll x = get(S[i+1]);
-        ans += coef*x;
-        de(ans)
+    rep(k, M-1) {
+        ans += k*(d[k]-d[k+1]);
     }
     Out(ans);
 
