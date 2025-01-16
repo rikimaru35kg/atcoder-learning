@@ -47,10 +47,10 @@
 ### 例題
 - 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
-- 基本 バックトラック [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
-- !復習価値高 お堀の決め方の数（DFSとUF両方で解いてね） [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
-- !復習価値低 DFSの訓練に良い [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
-- 基本 ポリオミオ（Polyomio）の種類数が少ないから解ける [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
+- 基本 [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
+- 基本 お堀の決め方の数（DFSとUF両方で解いてね） [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
+- 基本 彩色数全探索 [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
+- 基本 ポリオミオ（Polyomio） [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
 - !復習価値高 [J - 3 人組](https://atcoder.jp/contests/past19-open/tasks/past19_j)
 - !要復習 [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
 

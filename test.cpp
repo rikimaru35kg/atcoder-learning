@@ -223,201 +223,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    // cross>0 means *this->v is counterclockwise.
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    Vecll rot90(bool counterclockwise=true) { 
-        if(counterclockwise) return Vecll(-y, x);
-        else return Vecll(y, -x);
-    }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
-    }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
-    }
-};
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-bool overlapping(long long l1, long long r1, long long l2, long long r2) {
-    if(l1>r1) swap(l1, r1);
-    if(l2>r2) swap(l2, r2);
-    long long lmax = max(l1, l2);
-    long long rmin = min(r1, r2);
-    return lmax <= rmin;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
-    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
-    if(c12_13 * c12_14 > 0) return false;
-    if(c34_31 * c34_32 > 0) return false;
-    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
-        // both x & y conditions necessary considering vertical cases
-        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
-           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
-        else return false;
-    }
-    return true;
-}
-const long long base = 12345;
-const long long MX = 2;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
-        }
-        return ret;
-    }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-}
-
-struct Complex {
-    long long a, b;
-    Complex(long long a, long long b): a(a), b(b) {}
-    Complex operator+(const Complex &o) const { return Complex(a+o.a, b+o.b); }
-    Complex& operator+=(const Complex &o) { *this = *this + o; return *this; }
-    Complex operator-(const Complex &o) const { return Complex(a-o.a, b-o.b); }
-    Complex& operator-=(const Complex &o) { *this = *this - o; return *this; }
-    Complex operator*(const Complex &o) const { return Complex(a*o.a-b*o.b, a*o.b+b*o.a); }
-    Complex& operator*=(const Complex &o) { *this = *this * o; return *this; }
-    bool operator<(const Complex &o) const {
-        if(a==o.a) return b<o.b;
-        return a<o.a;
-    }
-    bool operator==(const Complex &o) const { return a==o.a && b==o.b; }
-    long long norm2() { return a*a + b*b; }
-};
-
 void solve() {
-    LONG(N);
-    using VC = vector<Complex>;
-    VC P, Q;
-    rep(i, N) {
-        LONG(x,y);
-        P.emplace_back(x,y);
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    rep(i, N) {
-        LONG(x,y);
-        Q.emplace_back(x,y);
-    }
-    if(N==1) PYes
 
-    auto trans=[&](VC P, Complex o, Complex m) -> VC {
-        rep(i, N) P[i] -= o;
-        rep(i, N) P[i] *= m;
-        sort(all(P));
-        return P;
+    vb visited(N);
+    vl vs;
+    auto euler=[&](auto f, ll v) -> void {
+        if(visited[v]) return;
+        visited[v] = true;
+        vs.push_back(v);
+        for(auto nv: from[v]) f(f, nv);
+    };
+    ll now = 0, sz = 0;
+    vl color(N,-1);
+    auto dfs=[&](auto f, ll i) -> void {
+        if(i==sz) {
+            ++now; return;
+        }
+        rep(c, 3) {
+            bool ok = true;
+            for(auto nv: from[vs[i]]) {
+                if(color[nv]==-1) continue;
+                if(color[nv]==c) ok = false;
+            }
+            if(ok) {
+                color[vs[i]] = c;
+                f(f, i+1);
+                color[vs[i]] = -1;
+            }
+        }
     };
 
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        Complex c1 = P[i]-P[j];
-        Complex c2 = Q[0]-Q[1];
-        if(c1.norm2()!=c2.norm2()) continue;
-
-        VC R = trans(P, P[i], Q[1]-Q[0]);
-        VC S = trans(Q, Q[0], P[j]-P[i]);
-        if(R==S) PYes
+    ll ans = 1;
+    rep(i, N) {
+        if(visited[i]) continue;
+        vs = vl();
+        euler(euler, i);
+        de(vs)
+        sz = vs.size(); now = 0;
+        dfs(dfs, 0);
+        ans *= now;
     }
-    PNo
+    Out(ans);
 
 }
 

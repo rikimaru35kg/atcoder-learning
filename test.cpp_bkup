@@ -223,44 +223,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 void solve() {
-    LONG(deg, dis);
-    deg *= 10;
-    vs dir = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-              "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
-    auto getdir=[&](ll deg) -> string {
-        ll step = 2250;
-        de(deg)
-        repk(i, 1, 16) {
-            ll mid = i*step;
-            de3(i,mid-step/2,mid+step/2)
-            if(mid-step/2<=deg && deg<mid+step/2) return dir[i];
+    ll N = 4, M = 5;
+    VVL(A, N, N);
+
+    vvb visited(M, vb(M));
+    vvb pat(N, vb(N));
+    auto flip=[&](ll i, ll j) {
+        repk(ci,i,N) pat[ci][j] = !pat[ci][j];
+    };
+    auto check=[&]() -> bool {
+        rep(i, N) rep(j, N) {
+            if(A[i][j]==1 && !pat[i][j]) return false;
         }
-        return dir[0];
+        return true;
+    };
+    ll si=-1, sj=-1;
+    ll ans = 0;
+    auto dfs=[&](auto f, ll i, ll j, ll k) -> void {
+        if(k>2 && si==i && sj==j) {
+            if(check()) ++ans;
+            return;
+        }
+        if(visited[i][j]) return;
+        visited[i][j] = true;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,M,M)) continue;
+            if(i==ni) flip(i, min(j,nj));
+            f(f, ni, nj, k+1);
+            if(i==ni) flip(i, min(j,nj));
+        }
+        visited[i][j] = false;
     };
 
-    auto getwind=[&](ll wind) -> ll {
-        if(wind<=2) return 0;
-        if(wind<=15) return 1;
-        if(wind<=33) return 2;
-        if(wind<=54) return 3;
-        if(wind<=79) return 4;
-        if(wind<=107) return 5;
-        if(wind<=138) return 6;
-        if(wind<=171) return 7;
-        if(wind<=207) return 8;
-        if(wind<=244) return 9;
-        if(wind<=284) return 10;
-        if(wind<=326) return 11;
-        return 12;
-    };
+    rep(i, M) rep(j, M) {
+        si = i, sj = j;
+        pat = vvb(N, vb(N));
+        dfs(dfs, i,j,0);
+        visited[i][j] = true;
+    }
+    Out(ans/2);
 
-    db wind = (db)dis*10/60;
-    dis = round(wind);
-    ll a2 = getwind(dis);
-    if(a2==0) Outend("C 0");
-    string a1 = getdir(deg);
-    cout<<a1<<' '<<a2<<endl;
+
 }
 
 int main () {
