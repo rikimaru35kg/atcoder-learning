@@ -2,7 +2,7 @@
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
 ## 最後の一斉復習日
-2025/1/14
+2024/12/2 - 2025/1/14
 
 # 全探索
 
@@ -2051,3 +2051,4 @@
 - [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
 - [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
 - [H - Cを探せ！](https://atcoder.jp/contests/past18-open/tasks/past18_h)
+- [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)

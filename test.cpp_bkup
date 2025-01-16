@@ -224,26 +224,43 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(A, N);
-    ll M = 35;
-    vl d(M);
-    ll two = 1;
-    rep(k, M) {
-        umap<ll,ll> mp;
-        rep(i, N) {
-            ll now = Percent(-A[i], two);
-            d[k] += mp[now];
-            mp[A[i]%two]++;
+    LONG(deg, dis);
+    deg *= 10;
+    vs dir = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+              "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+    auto getdir=[&](ll deg) -> string {
+        ll step = 2250;
+        de(deg)
+        repk(i, 1, 16) {
+            ll mid = i*step;
+            de3(i,mid-step/2,mid+step/2)
+            if(mid-step/2<=deg && deg<mid+step/2) return dir[i];
         }
-        two *= 2;
-    }
-    ll ans = 0;
-    rep(k, M-1) {
-        ans += k*(d[k]-d[k+1]);
-    }
-    Out(ans);
+        return dir[0];
+    };
 
+    auto getwind=[&](ll wind) -> ll {
+        if(wind<=2) return 0;
+        if(wind<=15) return 1;
+        if(wind<=33) return 2;
+        if(wind<=54) return 3;
+        if(wind<=79) return 4;
+        if(wind<=107) return 5;
+        if(wind<=138) return 6;
+        if(wind<=171) return 7;
+        if(wind<=207) return 8;
+        if(wind<=244) return 9;
+        if(wind<=284) return 10;
+        if(wind<=326) return 11;
+        return 12;
+    };
+
+    db wind = (db)dis*10/60;
+    dis = round(wind);
+    ll a2 = getwind(dis);
+    if(a2==0) Outend("C 0");
+    string a1 = getdir(deg);
+    cout<<a1<<' '<<a2<<endl;
 }
 
 int main () {
