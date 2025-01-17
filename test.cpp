@@ -223,60 +223,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N, M);
-    VS(S, N);
-
-    vl dist(1<<M, -1);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]!=-1) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        rep(i, M) {
-            ll nv = v^1<<i;
-            push(nv, dist[v]+1);
-        }
-    }
-
-    ll zero=0, one=0;
+    LONG(N,X);
+    VL(A, N);
+    VL(P, N);
+    vvl from(N);
+    vl svs;
     rep(i, N) {
-        ll now = 0;
-        for(auto c: S[i]) {
-            now = now*2+ c-'0';
+        if(P[i]==-1) {
+            svs.push_back(i); continue;
         }
-        if(dist[now]%2) ++one;
-        else ++zero;
+        from[P[i]-1].emplace_back(i);
     }
-    de2(one,zero)
-    Out(one*zero);
+    ll ans = -1;
+    auto dfs=[&](auto f, ll v, ll x) -> void {
+        if(x>X) return;
+        chmax(ans, v+1);
+        for(auto nv: from[v]) {
+            f(f, nv, x+A[nv]);
+        }
+    };
+    for(auto v: svs) {
+        dfs(dfs, v, A[v]);
+    }
+    Out(ans);
 
 }
 
