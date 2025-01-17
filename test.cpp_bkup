@@ -223,43 +223,112 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
 }
 
 void solve() {
-    // vl es, os, ss;
-    // rep1(i, 100) {
-    //     auto ds = listup_divisor(i);
-    //     ll odd=0, even=0;
-    //     for(auto d: ds) {
-    //         if(d%2) odd++;
-    //         else even++;
-    //     }
-    //     if(odd==even) printf("%lld: same\n", i), ss.push_back(i);
-    //     if(odd>even) printf("%lld: odd\n", i), os.push_back(i);
-    //     if(odd<even) printf("%lld: even\n", i), es.push_back(i);
-    // }
-    // de(ss)de(os)de(es)
-    LONG(N);
-    if(N%2) Out("Odd");
-    else if(N%4==0) Out("Even");
-    else Out("Same");
+    LONG(X,Y,Z,P);
+    VL(A,X); VL(B,Y); VL(C,Z);
+    sort(all(A)); sort(all(B)); sort(all(C));
+
+    ll ans = -INF;
+    {
+        ll now = 0;
+        now += A.back();
+        now += C.back();
+        now -= P;
+        de(P-A[X-1]-C[Z-1])
+        auto [n,b] = lowbou(B, P-A[X-1]-C[Z-1]);
+        if(n!=Y) {
+            now += b;
+            chmax(ans, now);
+        }
+    }
+    {
+        ll now = 0;
+        now += P;
+        now -= A[0];
+        now -= B.back();
+        now -= C[0];
+        de(now)
+        chmax(ans, now);
+    }
+    Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

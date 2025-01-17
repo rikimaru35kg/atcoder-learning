@@ -2054,3 +2054,4 @@
 - [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
 - [H - Cを探せ！](https://atcoder.jp/contests/past18-open/tasks/past18_h)
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
+- [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
