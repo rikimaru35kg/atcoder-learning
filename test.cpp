@@ -223,31 +223,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+    int mu(long long k) { return mobius[k]; }
+};
+
+void judge(vl &A) {
+    ll N = A.size();
+    ll g = 0;
+    rep(i, N) g = gcd(g, A[i]);
+    assert(g==1);
+
+    de(*max_element(all(A)));
+    rep(i, N) {
+        assert(A[i]>=1 && A[i]<=10000);
+    }
+
+    uset<ll> st;
+    rep(i, N) {
+        if(!st.insert(A[i]).second) assert(0);
+    }
+    rep(i, N) rep(j, i) {
+        ll now = gcd(A[i], A[j]);
+        assert(now!=1);
+    }
+}
+
 
 void solve() {
     LONG(N);
-    VL(A, N);
-    sort(all(A));
-    mint ans = 1;
-    ll pre = 0;
-    rep(i, N) {
-        ans *= (A[i] - pre)+1;
-        pre = A[i];
+    vl A(N);
+
+    A[0] = 10;
+    A[1] = 6;
+    A[2] = 15;
+    uset<ll> cand;
+    rep(i, 3) {
+        ll k = 2;
+        while(k*A[i]<=10000) {
+            cand.insert(k*A[i]);
+            ++k;
+        }
     }
-    Out(ans);
+    ll idx=3;
+    auto it = cand.begin();
+    while(idx<N) {
+        A[idx++] = *it;
+        it = cand.erase(it);
+    }
+
+    judge(A);
+    Out(A);
+    
 
 }
 

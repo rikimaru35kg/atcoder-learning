@@ -2059,3 +2059,5 @@
 - [H - Cを探せ！](https://atcoder.jp/contests/past18-open/tasks/past18_h)
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
 - [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
+- [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
+- [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
