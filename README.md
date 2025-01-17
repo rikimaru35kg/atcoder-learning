@@ -1811,6 +1811,10 @@
 - !復習価値低 [O - 通知](https://atcoder.jp/contests/past202012-open/tasks/past202012_o)
 - !復習価値中 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
 
+## 階差を考える
+### 例題
+- [B - ARC Wrecker](https://atcoder.jp/contests/arc117/tasks/arc117_b)
+
 ## 最大と最小の差の最小化
 - 最小値を固定すると貪欲に選択できる事が多い
 ### 例題

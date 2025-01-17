@@ -223,105 +223,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(X,Y,Z,P);
-    VL(A,X); VL(B,Y); VL(C,Z);
-    sort(all(A)); sort(all(B)); sort(all(C));
+    LONG(A,B);
+    bool flip = false;
+    if(A>B) swap(A,B), flip=true;
+    vl X(A), Y(B);
 
-    ll ans = -INF;
-    {
-        ll now = 0;
-        now += A.back();
-        now += C.back();
-        now -= P;
-        de(P-A[X-1]-C[Z-1])
-        auto [n,b] = lowbou(B, P-A[X-1]-C[Z-1]);
-        if(n!=Y) {
-            now += b;
-            chmax(ans, now);
-        }
-    }
-    {
-        ll now = 0;
-        now += P;
-        now -= A[0];
-        now -= B.back();
-        now -= C[0];
-        de(now)
-        chmax(ans, now);
-    }
-    Out(ans);
+    auto tri=[&](ll x) -> ll {
+        return x*(x+1)/2;
+    };
+    rep(i, B) Y[i] = i+1;
+    rep(i, A-1) X[i] = i+1;
+    X.back() = tri(B) - tri(A-1);
+    if(flip) swap(X,Y), swap(A,B);
+    rep(i, B) Y[i] = -Y[i];
+    rep(i, A) printf("%lld ", X[i]);
+    rep(i, B) printf("%lld ", Y[i]);
+    cout<<endl;
+    ll tot = accumulate(all(X), 0LL) + accumulate(all(Y),0LL);
+    de(tot)
 
 }
 
