@@ -2042,6 +2042,7 @@
 - [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 - [B - ビリヤード (Billiards)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b)
+- [A - Max Add](https://atcoder.jp/contests/arc120/tasks/arc120_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

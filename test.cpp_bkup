@@ -223,89 +223,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +-*/ leads to overflowing
-//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
-//! BE CAREFUL ABOUT CALCULATION COST!
-//! O(logM) just for initializing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b==0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
         }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
     }
-    Frac operator+(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return *this + Frac(x);
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
     }
-    Frac operator+(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
     }
-    Frac operator-(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return *this - Frac(x);
-    }
-    Frac operator-(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
-    }
-    Frac operator*(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return Frac(p*x, q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    Frac operator/(const ll x) {
-        if (q==0 || x==0) return Frac(1, 0);
-        return Frac(p, q*x);
-    }
-    Frac operator/(const Frac &rhs) {
-        if (q==0 || rhs.p==0) return Frac(1, 0);
-        return Frac(p*rhs.q, q*rhs.p);
-    }
-    bool operator<(const ll x) const { return *this < Frac(x); }
-    bool operator<(const Frac &rhs) const { return p*rhs.q - q*rhs.p < 0; }
-    bool operator<=(const ll x) const { return *this <= Frac(x); }
-    bool operator<=(const Frac &rhs) const { return p*rhs.q - q*rhs.p <= 0; }
-    bool operator>(const ll x) const { return *this > Frac(x); }
-    bool operator>(const Frac &rhs) const { return p*rhs.q - q*rhs.p > 0; }
-    bool operator>=(const ll x) const { return *this >= Frac(x); }
-    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }
-    bool operator==(const ll x) const { return (q==1 && p==x); }
-    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }
+    int mu(long long k) { return mobius[k]; }
 };
 
+void judge(vl &A) {
+    ll N = A.size();
+    ll g = 0;
+    rep(i, N) g = gcd(g, A[i]);
+    assert(g==1);
+
+    de(*max_element(all(A)));
+    rep(i, N) {
+        assert(A[i]>=1 && A[i]<=10000);
+    }
+
+    uset<ll> st;
+    rep(i, N) {
+        if(!st.insert(A[i]).second) assert(0);
+    }
+    rep(i, N) rep(j, i) {
+        ll now = gcd(A[i], A[j]);
+        assert(now!=1);
+    }
+}
+
+
 void solve() {
-    LONG(K, N, M);
-    VL(A, K);
-    ll rem = M;
-    vl B(K);
-    vector<pair<Frac,ll>> v;
-    rep(i, K) {
-        B[i] = A[i]*M/N;
-        rem -= B[i];
-        Frac now = Frac(A[i]*M,N) - Frac(B[i],1);
-        v.emplace_back(now, i);
+    LONG(N);
+    vl A(N);
+
+    A[0] = 10;
+    A[1] = 6;
+    A[2] = 15;
+    uset<ll> cand;
+    rep(i, 3) {
+        ll k = 2;
+        while(k*A[i]<=10000) {
+            cand.insert(k*A[i]);
+            ++k;
+        }
     }
-    de(B)
-    de(rem)
-    // ll cycle = rem/K;
-    // rep(i, K) B[i] += cycle;
-    // rem -= cycle*K;
-    sort(allr(v));
-    rep(i, rem) {
-        auto [f, ci] = v[i];
-        B[ci]++;
+    ll idx=3;
+    auto it = cand.begin();
+    while(idx<N) {
+        A[idx++] = *it;
+        it = cand.erase(it);
     }
-    Out(B);
+
+    judge(A);
+    Out(A);
+    
 
 }
 
