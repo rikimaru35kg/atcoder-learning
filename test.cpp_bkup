@@ -223,149 +223,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! [Danger] might lead to RE because of too large return size.
-//! Caululate size of nCk * k beforehand.
-vector<vector<int>> listup_combinations(int n, int k) {
-    vector<vector<int>> ret;
-    auto f=[&](auto f, int i=0, vector<int> &v) -> void {
-        if((int)v.size()==k) {
-            ret.push_back(v);
-            return;
-        }
-        if(i>=n) return;
-        f(f, i+1, v);
-        v.push_back(i);
-        f(f, i+1, v);
-        v.pop_back();
-    };
-    vector<int> v={};
-    f(f, 0, v);
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
     return ret;
 }
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
+    return ret;
 }
 
 void solve() {
     LONG(N);
-    N = N+N;
-    vvl X(3);
-    rep(i, N) {
-        LONG(a); CHAR(c);
-        if(c=='R') X[0].emplace_back(a);
-        if(c=='G') X[1].emplace_back(a);
-        if(c=='B') X[2].emplace_back(a);
-    }
-    rep(i, 3) sort(all(X[i]));
-    rep(i, 3) {
-        if(SIZE(X[i])%2==0) {
-            swap(X[i],X[0]);
-            break;
-        }
-    }
-    ll r = SIZE(X[0]), g = SIZE(X[1]), b = SIZE(X[2]);
-    if(g%2==0) Pm0
+    auto v = separate_digit(N);
+    ll m = v.size();
+    ll ans = 0;
+    ll ten = 1;
+    rep(i, m-1) ten *= 10;
+    ll low = N;
 
-    t3 mn(INF,-1,-1);
-    rep(i, g) {
-        ll val = X[1][i];
-        auto [n,x] = lowbou(X[2], val);
-        if(n!=b) chmin(mn, t3(abs(val-x),i,n));
-        if(n) {
-            ll pval = X[2][n-1];
-            chmin(mn, t3(abs(val-pval),i,n-1));
-        }
-    }
 
-    auto [ans,j,k] = mn;
-    if(r==0) Outend(ans);
-
-    auto calc=[&](vl &X, vl &Y) -> ll {
-        ll m = Y.size();
-        ll ret = INF;
-        for(auto x: X) {
-            auto [mi,y] = lowbou(Y, x);
-            if(mi!=m) chmin(ret, abs(x-y));
-            if(mi) {
-                chmin(ret, abs(x-Y[mi-1]));
-            }
-        }
-        return ret;
+    auto below=[&](ll k) -> bool {
+        ll base = 0;
+        rep(i, k) base = base*10 + v[i];
+        ll now = 0;
+        rep(i, k) now = now*10 + 1;
+        return now<base;
+    };
+    auto equal=[&](ll k) -> bool {
+        ll base = 0;
+        rep(i, k) base = base*10 + v[i];
+        ll now = 0;
+        rep(i, k) now = now*10 + 1;
+        return now==base;
     };
 
-    chmin(ans, calc(X[1],X[0]) + calc(X[2],X[0]));
+    rep(i, m) {
+        low -= v[i]*ten;
+        de2(low, ten)
+        if(i==0) {
+            if(v[i]>1) ans += ten;
+            else ans += low+1;
+        } else {
+            ans += ten * i;
+            if(below(i+1)) ans += ten;
+            else if(equal(i+1)) ans += low+1;
+        }
+        de(ans)
+        ten /= 10;
+    }
+
     Out(ans);
-
-
-
 
 }
 
