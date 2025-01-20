@@ -51,6 +51,9 @@
 - 基本 お堀の決め方の数（DFSとUF両方で解いてね） [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 - 基本 彩色数全探索 [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - 基本 ポリオミオ（Polyomio） [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [J - 3 人組](https://atcoder.jp/contests/past19-open/tasks/past19_j)
 - !要復習 [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
 
@@ -1717,7 +1720,7 @@
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
 
-## N以下の数字の何かを求める（自分用なのでNote非掲載）
+## N以下の数字の何かを求める
 - 以下、桁和の総和を求め方
 - 314159の上から3桁目を考える（4のところ）
 - 0-3の場合、上側が0-31の32通り、下側が1000通り
@@ -1750,6 +1753,10 @@
 - !復習価値中 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
 - 基本 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
 - !復習価値中 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+
+## まとめ買いを個別買いに変換
+### 例題
+- [E - Square Price](https://atcoder.jp/contests/abc389/tasks/abc389_e)
 
 ## パスカルの三角形
 - 各行の総和は2^行番号となる
@@ -2043,6 +2050,10 @@
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 - [B - ビリヤード (Billiards)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b)
 - [A - Max Add](https://atcoder.jp/contests/arc120/tasks/arc120_a)
+- [F - Rated Range](https://atcoder.jp/contests/abc389/tasks/abc389_f)
+- [D - Squares in Circle](https://atcoder.jp/contests/abc389/tasks/abc389_d)
+- [B - RGB Matching](https://atcoder.jp/contests/arc121/tasks/arc121_b)
+- [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

@@ -223,89 +223,149 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
+//! [Danger] might lead to RE because of too large return size.
+//! Caululate size of nCk * k beforehand.
+vector<vector<int>> listup_combinations(int n, int k) {
+    vector<vector<int>> ret;
+    auto f=[&](auto f, int i=0, vector<int> &v) -> void {
+        if((int)v.size()==k) {
+            ret.push_back(v);
+            return;
         }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-};
-
-void judge(vl &A) {
-    ll N = A.size();
-    ll g = 0;
-    rep(i, N) g = gcd(g, A[i]);
-    assert(g==1);
-
-    de(*max_element(all(A)));
-    rep(i, N) {
-        assert(A[i]>=1 && A[i]<=10000);
-    }
-
-    uset<ll> st;
-    rep(i, N) {
-        if(!st.insert(A[i]).second) assert(0);
-    }
-    rep(i, N) rep(j, i) {
-        ll now = gcd(A[i], A[j]);
-        assert(now!=1);
-    }
+        if(i>=n) return;
+        f(f, i+1, v);
+        v.push_back(i);
+        f(f, i+1, v);
+        v.pop_back();
+    };
+    vector<int> v={};
+    f(f, 0, v);
+    return ret;
 }
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
     LONG(N);
-    vl A(N);
-
-    A[0] = 10;
-    A[1] = 6;
-    A[2] = 15;
-    uset<ll> cand;
+    N = N+N;
+    vvl X(3);
+    rep(i, N) {
+        LONG(a); CHAR(c);
+        if(c=='R') X[0].emplace_back(a);
+        if(c=='G') X[1].emplace_back(a);
+        if(c=='B') X[2].emplace_back(a);
+    }
+    rep(i, 3) sort(all(X[i]));
     rep(i, 3) {
-        ll k = 2;
-        while(k*A[i]<=10000) {
-            cand.insert(k*A[i]);
-            ++k;
+        if(SIZE(X[i])%2==0) {
+            swap(X[i],X[0]);
+            break;
         }
     }
-    ll idx=3;
-    auto it = cand.begin();
-    while(idx<N) {
-        A[idx++] = *it;
-        it = cand.erase(it);
+    ll r = SIZE(X[0]), g = SIZE(X[1]), b = SIZE(X[2]);
+    if(g%2==0) Pm0
+
+    t3 mn(INF,-1,-1);
+    rep(i, g) {
+        ll val = X[1][i];
+        auto [n,x] = lowbou(X[2], val);
+        if(n!=b) chmin(mn, t3(abs(val-x),i,n));
+        if(n) {
+            ll pval = X[2][n-1];
+            chmin(mn, t3(abs(val-pval),i,n-1));
+        }
     }
 
-    judge(A);
-    Out(A);
-    
+    auto [ans,j,k] = mn;
+    if(r==0) Outend(ans);
+
+    auto calc=[&](vl &X, vl &Y) -> ll {
+        ll m = Y.size();
+        ll ret = INF;
+        for(auto x: X) {
+            auto [mi,y] = lowbou(Y, x);
+            if(mi!=m) chmin(ret, abs(x-y));
+            if(mi) {
+                chmin(ret, abs(x-Y[mi-1]));
+            }
+        }
+        return ret;
+    };
+
+    chmin(ans, calc(X[1],X[0]) + calc(X[2],X[0]));
+    Out(ans);
+
+
+
 
 }
 

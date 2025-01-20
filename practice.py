@@ -29,12 +29,10 @@ INF = int(3e18)
 
 
 def main():
-    M,N = inints()
-    num = 1
-    for i in range(N):
-        num *= M-i
-    ans = 1 - num/pow(M,N)
-    print(ans)
+    S = instr();
+    S = S.replace('x', '*')
+    de(S)
+    print(eval(S))
 
 
 

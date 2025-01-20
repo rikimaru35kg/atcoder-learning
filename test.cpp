@@ -223,20 +223,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N); VL(A, N);
-    ll pre=0;
-    ll sum=0;
-    ll mx = 0;
-    rep(i, N) {
-        chmax(mx, A[i]);
-        sum += A[i];
-        ll base = pre + sum;
-        ll ans = base + mx*(i+1);
-        Out(ans);
-        pre = base;
+    LONG(N);
+    VL(A, N);
+
+    auto calnum=[&]() -> vvm {
+        vvm dp(N, vm(2));
+        dp[0][0] = 1; // 0:plus, 1:minus
+        rep(i, N-1) {
+            rep(j, 2) rep(k, 2) {
+                if(j==1 && k==1) continue;
+                dp[i+1][k] += dp[i][j];
+            }
+        }
+        return dp;
+    };
+
+    auto num = calnum();
+
+    mint ans = 0;
+    repk(i, 0, N) {
+        ll l = i;
+        ll r = N-1-i;
+        rep(j, 2) rep(k, 2) {
+            if(j==1 && k==1) continue;
+            ll coef = 1;
+            if(j==1) coef = -1;
+            ans += coef * num[l][j] * num[r][k] * A[i];
+        }
     }
+    Out(ans);
 
 }
 
