@@ -68,8 +68,12 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using t3 = tuple<ll,ll,ll>;
+istream& operator>>(istream &is, t3 &t) { is>>get<0>(t)>>get<1>(t)>>get<2>(t); return is; }
+ostream& operator<<(ostream& os, const t3& t) { os<<"("<<get<0>(t)<<','<<get<1>(t)<<','<<get<2>(t)<<")"; return os; }
 using t3d = tuple<db,db,db>;
 using t4 = tuple<ll,ll,ll,ll>;
+istream& operator>>(istream &is, t4 &t) { is>>get<0>(t)>>get<1>(t)>>get<2>(t)>>get<3>(t); return is; }
+ostream& operator<<(ostream& os, const t4& t) { os<<"("<<get<0>(t)<<','<<get<1>(t)<<','<<get<2>(t)<<','<<get<3>(t)<<")"; return os; }
 using vt3 = vector<t3>;
 using vt3d = vector<t3d>;
 using vt4 = vector<t4>;
