@@ -228,33 +228,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, L, W);
-    VL(A, N);
+    LONG(N);
+    STRING(S);
+    S += 'C';
 
-    vp span;
-    rep(i, N) {
-        if(span.size() && span.back().second>=A[i]) {
-            span.back().second = A[i]+W;
-        } else span.emplace_back(A[i], A[i]+W);
+    auto calc=[&](string &s) -> string {
+        ll a = 0, b = 0;
+        for(auto c: s) {
+            if(c=='A') ++a;
+            else ++b;
+        }
+        string ret(a, 'A');
+        ret += string(b/2, 'A');
+        if(b%2) ret += 'B';
+        return ret;
+    };
 
+    string now, ans;
+    for(auto c: S) {
+        if(c=='C') {
+            ans += calc(now);
+            now = "";
+            ans += c;
+        } else {
+            now += c;
+        }
     }
-    // ll idx = 0;
-    // while(idx<N) {
-    //     ll r = idx;
-    //     while(r<N-1 && A[r+1]-A[r]<=W) ++r;
-    //     span.emplace_back(A[idx], A[r]+W);
-    //     idx = r+1;
-    // }
-    de(span)
-    span.insert(span.begin(), Pr(0,0));
-    span.emplace_back(L,L);
-    ll M = span.size();
-    ll ans = 0;
-    rep(i, M-1) {
-        auto [l1,r1] = span[i];
-        auto [l2,r2] = span[i+1];
-        ans += Divceil(l2-r1, W);
-    }
+
+    ans.pop_back();
     Out(ans);
 
 }

@@ -227,119 +227,15 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S{
-    ll mn, mx;
-    S(ll mn, ll mx): mn(mn), mx(mx) {}
-};
-S op(S a, S b) {return S(min(a.mn,b.mn), max(a.mx,b.mx));}
-S e() {return S(INF,-INF);}
-
 void solve() {
-    LONG(N);
-    STRING(Str);
-    ll M = 26;
-    vl cnt(M);
-    rep(i, N) cnt[Str[i]-'a']++;
-
-    auto getmin=[&]() -> char {
-        rep(i, M) {
-            if(cnt[i]) return i+'a';
+    LONG(L,R);
+    for(ll k=R-L; k>=1; --k) {
+        repk(l, L, R+1-k) {
+            ll r = l+k;
+            if(gcd(l,r)==1) Outend(r-l);
         }
-        assert(0);
-        return '$';
-    };
-
-    ll l=0, r=N-1;
-    while(l<r) {
-        char mn = getmin();
-        if(mn==Str[l]) {
-            cnt[Str[l]-'a']--;
-            ++l; continue;
-        }
-        while(Str[r]!=mn) {
-            cnt[Str[r]-'a']--;
-            --r;
-        }
-        swap(Str[l], Str[r]);
-        cnt[Str[l]-'a']--;
-        cnt[Str[r]-'a']--;
-        ++l, --r;
     }
-    Out(Str);
+    Out(1);
 
 }
 
