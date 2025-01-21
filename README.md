@@ -2075,3 +2075,4 @@
 - [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
 - [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
+- [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)

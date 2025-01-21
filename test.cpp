@@ -228,6 +228,15 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(N);
+    VL(A, N);
+    ll XOR = 0;
+    rep(i, N) XOR ^= A[i];
+    rep(i, N) {
+        if(A[i]==XOR) Outend("Win");
+    }
+    if(N%2==0) Out("Lose");
+    else Out("Win");
 
 }
 
