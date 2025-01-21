@@ -228,52 +228,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(P, N);
-    // if(N==2) {
-    //     if(P[0]==1) Out(0);
-    //     else Out(1);
-    //     return;
-    // }
+    LONG(N, L, W);
+    VL(A, N);
 
-    bool fwd = false;
+    vp span;
     rep(i, N) {
-        if(P[i]!=1) continue;
-        if(i && P[i-1]==N) {
-            fwd = true; break;
-        }
-        if(i<N-1 && P[i+1]==2) {
-            fwd = true; break;
-        }
-    }
+        if(span.size() && span.back().second>=A[i]) {
+            span.back().second = A[i]+W;
+        } else span.emplace_back(A[i], A[i]+W);
 
-    if(fwd) {
-        ll i1 = -1;
-        rep(i, N) {
-            if(P[i]==1) {
-                i1 = i; break;
-            }
-        }
-        // rotate
-        ll ans = i1;
-        // reverse+rotate+reverse;
-        ll now = 1 + N-i1 + 1;
-        chmin(ans, now);
-        Out(ans);
-    } else {
-        ll iN = -1;
-        rep(i, N) {
-            if(P[i]==N) {
-                iN = i; break;
-            }
-        }
-        // rotate+reverse
-        ll ans = iN+1;
-        // reverse+rotate;
-        ll now = 1 + N-iN;
-        chmin(ans, now);
-        Out(ans);
     }
+    // ll idx = 0;
+    // while(idx<N) {
+    //     ll r = idx;
+    //     while(r<N-1 && A[r+1]-A[r]<=W) ++r;
+    //     span.emplace_back(A[idx], A[r]+W);
+    //     idx = r+1;
+    // }
+    de(span)
+    span.insert(span.begin(), Pr(0,0));
+    span.emplace_back(L,L);
+    ll M = span.size();
+    ll ans = 0;
+    rep(i, M-1) {
+        auto [l1,r1] = span[i];
+        auto [l2,r2] = span[i+1];
+        ans += Divceil(l2-r1, W);
+    }
+    Out(ans);
 
 }
 

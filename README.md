@@ -2057,6 +2057,7 @@
 - [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 - [A - Gold and Silver](https://atcoder.jp/contests/arc128/tasks/arc128_a)
 - [A - Erase by Value](https://atcoder.jp/contests/arc133/tasks/arc133_a)
+- [B - Reserve or Reverse](https://atcoder.jp/contests/arc134/tasks/arc134_b)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
