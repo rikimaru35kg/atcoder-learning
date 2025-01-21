@@ -230,13 +230,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 void solve() {
     LONG(N);
     VL(A, N);
-    ll XOR = 0;
-    rep(i, N) XOR ^= A[i];
+    ll fi=-1, se=-1;
     rep(i, N) {
-        if(A[i]==XOR) Outend("Win");
+        if(fi==-1) {
+            fi = A[i];
+            continue;
+        }
+        if(se==-1 && A[i]!=fi) {
+            se = A[i];
+        }
     }
-    if(N%2==0) Out("Lose");
-    else Out("Win");
+    de2(fi,se)
+    if(se==-1) Outend("");
+
+    rep(i, N-1) {
+        if(A[i+1]<A[i]) {
+            vl ans;
+            rep(j, N) {
+                if(A[j]==A[i]) continue;
+                ans.push_back(A[j]);
+            }
+            Outend(ans);
+        }
+    }
+    ll x = A.back();
+    vl ans;
+    rep(i, N) {
+        if(A[i]==x) continue;
+        ans.push_back(A[i]);
+    }
+    Out(ans);
 
 }
 

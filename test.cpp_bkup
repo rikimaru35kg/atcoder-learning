@@ -228,20 +228,52 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W);
-    VS(S, H);
-    rep(i, H) rep(j, W) {
-        if(S[i][j]!='.') continue;
-        set<ll> st;
-        rep1(j, 5) st.insert(j);
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            st.erase(S[ni][nj]-'0');
+    LONG(N);
+    VL(P, N);
+    // if(N==2) {
+    //     if(P[0]==1) Out(0);
+    //     else Out(1);
+    //     return;
+    // }
+
+    bool fwd = false;
+    rep(i, N) {
+        if(P[i]!=1) continue;
+        if(i && P[i-1]==N) {
+            fwd = true; break;
         }
-        S[i][j] = *st.begin()+'0';
+        if(i<N-1 && P[i+1]==2) {
+            fwd = true; break;
+        }
     }
-    Out(S);
+
+    if(fwd) {
+        ll i1 = -1;
+        rep(i, N) {
+            if(P[i]==1) {
+                i1 = i; break;
+            }
+        }
+        // rotate
+        ll ans = i1;
+        // reverse+rotate+reverse;
+        ll now = 1 + N-i1 + 1;
+        chmin(ans, now);
+        Out(ans);
+    } else {
+        ll iN = -1;
+        rep(i, N) {
+            if(P[i]==N) {
+                iN = i; break;
+            }
+        }
+        // rotate+reverse
+        ll ans = iN+1;
+        // reverse+rotate;
+        ll now = 1 + N-iN;
+        chmin(ans, now);
+        Out(ans);
+    }
 
 }
 
