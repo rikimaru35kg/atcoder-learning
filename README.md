@@ -243,7 +243,8 @@
 - 基本 [美術展 (Art Exhibition)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_b)
 
 ## Mo's Algorithm
-- 連続部分列の区間1増減をO(1)で計算できる場合、クエリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
+- 連続部分列の区間1増減をO(1)で計算できる場合、akiyomi 
+エリ回数QとするとO(N sqrt(Q))で全てのクエリに答えられる
 - クエリ[l,r)を座標上にプロットし、sqrt(Q)個に分割（すなわち高さをN/sqrt(Q)に分割）し、各分割ブロックごとに小さい順に辿って行けば良い
 - r>=lの領域をはみ出さないように、さきに--lと++rをした方が良い
 ### 例題
@@ -1684,6 +1685,7 @@
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - 基本 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+- !復習価値中 [F - Operations on a Matrix](https://atcoder.jp/contests/abc253/tasks/abc253_f)
 
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
