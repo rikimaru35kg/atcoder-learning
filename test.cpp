@@ -227,112 +227,106 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
     }
     return ret;
 }
 
-ll solve(ll N) {
-    auto v = separate_digit(N);
-    ll m = SIZE(v);
-    vl cand;
-    rep1(d, m) {
-        if(d==1) continue;
-        if(m%d!=0) continue;
-        ll w = m/d;
-        vl xs;
-        rep(i, d) {
-            ll now = 0;
-            repk(j, w*i, w*i+w) now = now*10 + v[j];
-            xs.push_back(now);
-        }
-        bool ok = true;
-        repk(i, 1, d) {
-            if(xs[i]==xs[0]) continue;
-            if(xs[i]<xs[0]) {ok = false;break;}
-            break;
-        }
-        ll ten = 1;
-        rep(i, w) ten*=10;
-        if(ok) {
-            ll x = 0;
-            rep(i, d) x = x*ten + xs[0];
-            cand.push_back(x);
-        } else {
-            ll x = 0;
-            rep(i, d) x = x*ten + xs[0]-1;
-            auto vz = separate_digit(x);
-            if(SIZE(vz)==m) cand.push_back(x);
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+ll solve(ll N, string S) {
+    rep(i, N-1) {
+        if(S[i]>'1' && S[i+1]>'1') {
+            return -1;
         }
     }
-    sort(allr(cand));
 
-    if(SIZE(cand)>0) {
-        return cand[0];
+    bool er = false;
+    if(S[0]>'1') {
+        er = true;
+        S.erase(S.begin());
     }
 
+    auto v = run_length_encoding(S);
+    mint ans = 0;
+    if(v.back().first=='1') {
+        auto [c,n] = pop(v);
+        ans += n;
+    }
+    ll m = v.size();
+
+    vp line;
+    for(ll i=0; i<m; i+=2) {
+        auto [c1,n1] = v[i];
+        auto [c2,n2] = v[i+1];
+        assert(c1=='1' && c2!='1');
+        line.emplace_back(n1, c2-'0');
+    }
+    de(line)
+
+    reverse(all(line));
+    for(auto [x,y]: line) {
+        mint n = x+ans*(y-1);
+        ans += n + y;
+    }
+
+    if(!er) --ans;
+    return ans.val();;
+}
+
+ll solve2(ll N, string S) {
     ll ans = 0;
-    rep(i, m-1) ans = ans*10 + 9;
+    while(SIZE(S)>1) {
+        ++ans;
+        string ns;
+        ll m = S.size();
+        rep(i, m-1) {
+            ll y = S[i+1]-'0';
+            rep(j, y) {
+                ns += S[i];
+            }
+        }
+        swap(ns, S);
+    }
     return ans;
 }
-
-ll solve2(ll N) {
-    for(ll x=N; x>=11; --x) {
-        auto v = separate_digit(x);
-        ll m = v.size();
-        rep1(d, m) {
-            if(d==1) continue;
-            if(m%d!=0) continue;
-            ll w = m/d;
-            bool allok = true;
-            rep(i, w) {
-                bool ok = true;
-                rep(j, d) {
-                    if(v[w*j+i]!=v[i]) ok = false;
-                }
-                if(!ok) allok = false;
-            }
-            if(allok) return x;
-        }
-    }
-}
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) {
-        LONG(N);
-        ll ans = solve(N);
-        Out(ans);
-    }
-    // repk(N, 11, 10000000) {
-    //     ll x = solve(N);
-    //     ll y = solve2(N);
-    //     if(x!=y) {
-    //         de3(N, x, y);
-    //         assert(0);
-    //     }
-    // }
+    LONG(N); STRING(S);
+    ll ans = solve(N, S);
+    Out(ans);
+
+    // ll ans2 = solve2(N, S);
+    // de(ans2);
 }
 
 // ### test.cpp ###
