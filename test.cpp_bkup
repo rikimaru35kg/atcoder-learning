@@ -227,36 +227,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    STRING(S);
-    S += 'C';
-
-    auto calc=[&](string &s) -> string {
-        ll a = 0, b = 0;
-        for(auto c: s) {
-            if(c=='A') ++a;
-            else ++b;
-        }
-        string ret(a, 'A');
-        ret += string(b/2, 'A');
-        if(b%2) ret += 'B';
-        return ret;
-    };
-
-    string now, ans;
-    for(auto c: S) {
-        if(c=='C') {
-            ans += calc(now);
-            now = "";
-            ans += c;
-        } else {
-            now += c;
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
         }
     }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
-    ans.pop_back();
+void solve() {
+    LONG(N, K);
+    STRING(S);
+    vl A;
+    for(auto c: S) A.emplace_back(c-'a');
+    ll M = 26;
+    auto ds = listup_divisor(N);
+
+    ll ans = N;
+    for(auto d: ds) {
+        if(d==1) continue;
+        ll w = N/d;
+        ll now = 0;
+        rep(i, w) {
+            vl cnt(M);
+            for(ll j=i; j<N; j+=w) {
+                cnt[A[j]]++;
+            }
+            ll mx = *max_element(all(cnt));
+            ll num = d-mx;
+            now += num;
+        }
+        if(now<=K) chmin(ans, w);
+    }
     Out(ans);
+
 
 }
 

@@ -227,22 +227,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(L,R);
-    for(ll k=R-L; k>=1; --k) {
-        repk(l, L, R+1-k) {
-            ll r = l+k;
-            if(gcd(l,r)==1) Outend(r-l);
-        }
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
     }
-    Out(1);
+    return ret;
+}
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
+void solve(ll N, string S) {
+    auto v = run_length_encoding(S);
+    ll m = v.size();
+    vl rensa;
+    ll other = 0;
+    multiset<ll> st;
+    rep(i, m-2) {
+        auto [c1,n1] = v[i];
+        auto [c2,n2] = v[i+1];
+        auto [c3,n3] = v[i+2];
+        if(c1!='A') continue;
+        if(c2!='R') continue;
+        if(c3!='C') continue;
+        if(n2!=1) continue;
+        ll mn = min(n1,n3);
+        st.insert(mn);
+    }
+    ll ans = 0;
+    ll f = 0;
+    while(st.size()) {
+        ++ans;
+        if(f==0) {
+            auto it = prev(st.end());
+            ll x = *it;
+            st.erase(it);
+            --x;
+            if(x) st.insert(x);
+        } else {
+            auto it = st.begin();
+            st.erase(it);
+        }
+        f ^= 1;
+    }
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    STRING(S);
+    solve(N, S);
+    // while(true) {
+    //     string S="";
+    //     rep(i, N) {
+    //         ll r = rand()%3;
+    //         if(r==0) S += 'A';
+    //         if(r==1) S += 'R';
+    //         if(r==2) S += 'C';
+    //     }
+    //     solve(N, S);
+    // }
 }
 
 // ### test.cpp ###
