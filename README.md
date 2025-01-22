@@ -1449,6 +1449,7 @@
 - 基本 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - 基本 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 - 基本 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
+- !要復習 [F - Permutation Distance](https://atcoder.jp/contests/abc283/tasks/abc283_f)
 
 ## XY独立に考える
 ### 例題
