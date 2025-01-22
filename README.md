@@ -2060,6 +2060,7 @@
 - [B - Reserve or Reverse](https://atcoder.jp/contests/arc134/tasks/arc134_b)
 - [A - Trailing Zeros](https://atcoder.jp/contests/arc139/tasks/arc139_a)
 - [B - Shorten ARC](https://atcoder.jp/contests/arc140/tasks/arc140_b)
+- [A - Periodic Number](https://atcoder.jp/contests/arc141/tasks/arc141_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
