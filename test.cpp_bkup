@@ -227,122 +227,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
+#include <atcoder/segtree>
+using namespace atcoder;
 
-template<typename T>
-class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    T _sum (long long i) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    // ![CAUTION]   0 <= l,r <= _n
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
-        }
-    }
-    T get (long long i) {
-        return _sum(i);
-    }
-};
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -INF;}
 
 void solve() {
-    LONG(N, M, Q);
-    SpanBIT<ll> bit(M);
+    LONG(N);
+    VLM(P, N);
 
-    vt4 query;
-    rep(i, Q) {
-        LONG(t,l,r);
-        if(t==1) {
-            LONG(x);
-            query.emplace_back(t,l,r,x);
-        } else query.emplace_back(t,l,r,-1);
-    }
-    vl last(N, -1);
-    vvp pre(Q);
-    rep(qi, Q) {
-        auto [t,l,r,z] = query[qi];
-        if(t==2) {
-            // ll i = l-1, x = r;
-            ll i = l-1;
-            last[i] = qi;
-        } else if(t==3) {
-            ll i = l-1, j = r-1;
-            if(last[i]==-1) continue;
-            pre[last[i]].emplace_back(qi, j);
-        }
-    }
-    vl base(Q);
-    rep(qi, Q) {
-        auto [t,l,r,z] = query[qi];
-        if(t==1) {
-            bit.add(l-1,r,z);
-        } else if (t==2) {
-            // ll i = l-1, x = r;
-            ll x = r;
-            for(auto [nqi, j]: pre[qi]) {
-                base[nqi] = x - bit.get(j);
+    vl ans(N, INF);
+    rep(ri, 2) {
+        rep(si, 2) {
+            segtree<S,op,e> seg(N);
+            rep(i, N) {
+                ll now = P[i]+i;
+                ll mx = seg.prod(0, P[i]);
+                chmin(ans[i], now-mx);
+                seg.set(P[i], now);
             }
-        } else {
-            // ll i = l-1, j = r-1;
-            ll j = r-1;
-            ll ans = bit.get(j) + base[qi];
-            Out(ans);
+            de(P)
+            de(ans)
         }
+        reverse(all(P));
+        reverse(all(ans));
     }
+    Out(ans);
 
 }
 

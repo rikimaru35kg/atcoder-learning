@@ -249,6 +249,7 @@
 - r>=lの領域をはみ出さないように、さきに--lと++rをした方が良い
 ### 例題
 - 基本 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
+- 基本 [G - Triple Index](https://atcoder.jp/contests/abc293/tasks/abc293_g)
 - !復習価値低 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
 - !復習価値中 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
 

@@ -227,34 +227,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return -INF;}
-
 void solve() {
-    LONG(N);
-    VLM(P, N);
+    LONG(N, Q);
+    VL(A, N);
+    VL2(L, R, Q);
+    rep(i, Q) L[i]--;
 
-    vl ans(N, INF);
-    rep(ri, 2) {
-        rep(si, 2) {
-            segtree<S,op,e> seg(N);
-            rep(i, N) {
-                ll now = P[i]+i;
-                ll mx = seg.prod(0, P[i]);
-                chmin(ans[i], now-mx);
-                seg.set(P[i], now);
-            }
-            de(P)
-            de(ans)
+    auto nC3=[&](ll n) -> ll {
+        if(n<0) return 0;
+        return n*(n-1)*(n-2)/6;
+    };
+    
+    ll M = 2e5+10;
+    vl cnt(M);
+    ll now = 0;
+
+    auto add=[&](ll x, ll coef=1) {
+        now -= nC3(cnt[x]);
+        cnt[x] += coef;
+        now += nC3(cnt[x]);
+    };
+    auto del=[&](ll x) { add(x, -1); };
+
+    ll hw = max(N/sqrt(Q), 1.0);
+
+    vl p(Q);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        auto hi = R[i]/hw, hj = R[j]/hw;
+        if(hi==hj) {
+            if(hi%2) return L[i]<L[j];
+            else return L[i]>L[j];
         }
-        reverse(all(P));
-        reverse(all(ans));
+        else return hi<hj;
+    });
+
+    ll l=0, r=0;
+    vl ans(Q);
+    for(auto i: p) {
+        ll lt = L[i], rt = R[i];
+        while(l>lt) add(A[--l]);
+        while(r<rt) add(A[r++]);
+        while(l<lt) del(A[l++]);
+        while(r>rt) del(A[--r]);
+        ans[i] = now;
     }
-    Out(ans);
+
+    for(auto x: ans) Out(x);
+
+
+
+
+
 
 }
 
