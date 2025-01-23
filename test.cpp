@@ -214,8 +214,8 @@ const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
-const vi di = {0, 0, -1};
-const vi dj = {1, -1, 0};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
@@ -228,56 +228,45 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W);
-    VVL(A, H, W);
-
-    ll ans = INF;
-    rep(r1, 2) rep(r2, 2) {
-        vvl dp(2, vl(2, INF));
-        vvl edp = dp;
-        dp[r1][r2] = r1+r2;
-        {
-            bool ok = true;
-            rep(a, W) {
-                bool iso = true;
-                if((A[0][a]^r1)==(A[1][a]^r2)) iso = false;
-                if(a<W-1 && A[0][a]==A[0][a+1]) iso = false;
-                if(a && A[0][a]==A[0][a-1]) iso = false;
-                if(iso) { ok = false; break; }
-            }
-            if(!ok) continue;
-        }
-
-        rep(i, H-2) { // fix i,i+1, check i+1, flip i+2
-            vvl pdp = edp; swap(pdp, dp);
-            rep(j, 2) rep(k, 2) rep(m, 2) {
-                if(pdp[j][k]==INF) continue;
-                bool ok = true;
-                rep(a, W) {
-                    bool iso = true;
-                    if((A[i+1][a]^k)==(A[i][a]^j)) iso = false;
-                    if((A[i+1][a]^k)==(A[i+2][a]^m)) iso = false;
-                    if(a<W-1 && A[i+1][a]==A[i+1][a+1]) iso = false;
-                    if(a && A[i+1][a]==A[i+1][a-1]) iso = false;
-                    if(iso) { ok = false; break; }
-                }
-                if(!ok) continue;
-                chmin(dp[k][m], pdp[j][k]+m);
-            }
-        }
-        rep(j, 2) rep(k, 2) {
-            bool ok = true;
-            rep(a, W) {
-                bool iso = true;
-                if((A[H-2][a]^j)==(A[H-1][a]^k)) iso = false;
-                if(a<W-1 && A[H-1][a]==A[H-1][a+1]) iso = false;
-                if(a && A[H-1][a]==A[H-1][a-1]) iso = false;
-                if(iso) { ok = false; break; }
-            }
-            if(ok) chmin(ans, dp[j][k]);
-        }
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a,b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    ch1(ans);
+
+    vl sz(N), dp(N);
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
+        sz[v] = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            sz[v] += sz[nv];
+            dp[v] += sz[nv] + dp[nv];
+        }
+    };
+    dfs0(dfs0, 0);
+    de(sz)de(dp)
+
+    ll sum = 0;
+    auto dfs=[&](auto f, ll v, ll p=-1, ll psz=0, ll pdp=0) -> void {
+        ll now = pdp;
+        ll cdp = pdp + psz;
+        for(auto nv: from[v]) if(nv!=p) {
+            now += dp[nv];
+            cdp += dp[nv] + sz[nv];
+        }
+        sum += now;
+        de2(v, now)
+
+        for(auto nv: from[v]) if(nv!=p) {
+            ll ndp = cdp - dp[nv] - sz[nv];
+            f(f, nv, v, N-sz[nv], ndp);
+        }
+    };
+    dfs(dfs, 0);
+    de(sum)
+    ll ans = N*(N-1)*(N-2)/6 - sum/2;
     Out(ans);
 
 }

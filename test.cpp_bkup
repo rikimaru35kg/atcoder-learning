@@ -214,8 +214,8 @@ const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
-const vi di = {0, 1, 0, -1};
-const vi dj = {1, 0, -1, 0};
+const vi di = {0, 0, -1};
+const vi dj = {1, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
@@ -227,79 +227,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct MergeSortTree {
-    int n;
-    vector<vector<long long>> a, s; // s: cumulated sum
-    MergeSortTree(int mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2);
-        s.resize(n*2, vl(1));
-    }
-    void set_only(int i, long long x) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;
-        a[i] = {x};
-        s[i] = {0, x};
-    }
-    void set(int i, long long x) { // [CAUTION] O(N*log(N)) for 1 execution
-        assert(i>=0 && i<n);
-        set_only(i, x);
-        i += n; i>>=1;
-        while(i) {
-            update(i);
-            i>>=1;
+void solve() {
+    LONG(H, W);
+    VVL(A, H, W);
+
+    auto check=[&](vl &a0, vl &a1, vl &a2) -> bool {
+        rep(j, W) {
+            if(a1[j]==a0[j]) continue;
+            if(a1[j]==a2[j]) continue;
+            if(j && a1[j]==a1[j-1]) continue;
+            if(j<W-1 && a1[j]==a1[j+1]) continue;
+            return false;
+        }
+        return true;
+    };
+    auto get=[&](ll i, ll f) -> vl {
+        vl ret = A[i];
+        rep(j, W) ret[j] ^= f;
+        return ret;
+    };
+
+    ll ans = INF;
+    rep(r1, 2) rep(r2, 2) {
+        vvl dp(2, vl(2, INF));
+        vvl edp = dp;
+        dp[r1][r2] = r1+r2;
+        {
+            vl a0(W, -1);
+            vl a1 = get(0, r1);
+            vl a2 = get(1, r2);
+            if(!check(a0,a1,a2)) continue;
+        }
+
+        rep(i, H-2) { // fix i,i+1, check i+1, flip i+2
+            vvl pdp = edp; swap(pdp, dp);
+            rep(j, 2) rep(k, 2) rep(m, 2) {
+                if(pdp[j][k]==INF) continue;
+                vl a0 = get(i, j);
+                vl a1 = get(i+1, k);
+                vl a2 = get(i+2, m);
+                if(check(a0,a1,a2)) chmin(dp[k][m], pdp[j][k]+m);
+            }
+        }
+        rep(j, 2) rep(k, 2) {
+            vl a0 = get(H-2, j);
+            vl a1 = get(H-1, k);
+            vl a2(W, -1);
+            if(check(a0,a1,a2)) chmin(ans, dp[j][k]);
         }
     }
-    void update(int i) {
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;
-        a[i] = vector<long long>();
-        merge(a[l].begin(),a[l].end(),a[r].begin(),a[r].end(),
-              back_inserter(a[i]));
-        int m = a[i].size();
-        s[i].resize(m+1);
-        for(int j=0; j<m; ++j) s[i][j+1] = s[i][j] + a[i][j];
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    long long get(int i, long long x) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        int idx = upper_bound(a[i].begin(), a[i].end(), x) - a[i].begin();
-        return s[i][idx];
-    }
-    long long prod(int ql, int qr, long long x) { // cumsum s.t. A[i]<=x
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, long long i) -> long long {
-            if(r<=ql || l>=qr) return 0;
-            if(l>=ql && r<=qr) return get(i-n, x);
-            int m = (l+r)/2;
-            long long ret = f(f, l, m, i<<1) + f(f, m, r, (i<<1)|1);
-            return ret;
-        };
-        long long ret = f(f, 0, n, 1);
-        return ret;
-    }
-};
-
-void solve() {
-    LONG(N); VL(A, N);
-
-    MergeSortTree tree(N);
-    rep(i, N) { tree.set_only(i, A[i]); }
-    tree.build();
-
-    LONG(Q);
-    ll ans = 0;
-    rep(i, Q) {
-        LONG(al,be,ga);
-        ll l = al^ans; ll r = be^ans; ll x = ga^ans;
-        --l;
-        ans = tree.prod(l,r,x);
-        Out(ans);
-    }
+    ch1(ans);
+    Out(ans);
 
 }
 
