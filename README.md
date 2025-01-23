@@ -1418,6 +1418,7 @@
 - !復習価値中 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
 - !復習価値高 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !要復習 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
+- !復習価値中 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
