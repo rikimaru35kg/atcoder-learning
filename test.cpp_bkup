@@ -227,58 +227,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    VL2(L, R, Q);
-    rep(i, Q) L[i]--;
+    LONG(N);
+    mint inv2 = mint(2).inv();
+    vvm p(N+1, vm(N+1));
+    p[1][1] = 1;
 
-    auto nC3=[&](ll n) -> ll {
-        if(n<0) return 0;
-        return n*(n-1)*(n-2)/6;
-    };
-    
-    ll M = 2e5+10;
-    vl cnt(M);
-    ll now = 0;
-
-    auto add=[&](ll x, ll coef=1) {
-        now -= nC3(cnt[x]);
-        cnt[x] += coef;
-        now += nC3(cnt[x]);
-    };
-    auto del=[&](ll x) { add(x, -1); };
-
-    ll hw = max(N/sqrt(Q), 1.0);
-
-    vl p(Q);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        auto hi = R[i]/hw, hj = R[j]/hw;
-        if(hi==hj) {
-            if(hi%2) return L[i]<L[j];
-            else return L[i]>L[j];
+    repk(i, 2, N+1) {
+        // p[i][*];
+        vm a(N+1), b(N+1);
+        a[i] = 1;
+        rep1(j, i) {
+            if(j==1) {
+                a[j] = inv2; b[j] = 0;
+                continue;
+            }
+            a[j] = a[j-1]*inv2;
+            b[j] = (p[i-1][j-1] + b[j-1]) * inv2;
         }
-        else return hi<hj;
-    });
-
-    ll l=0, r=0;
-    vl ans(Q);
-    for(auto i: p) {
-        ll lt = L[i], rt = R[i];
-        while(l>lt) add(A[--l]);
-        while(r<rt) add(A[r++]);
-        while(l<lt) del(A[l++]);
-        while(r>rt) del(A[--r]);
-        ans[i] = now;
+        mint x = b[i]/(1-a[i]);
+        rep1(j, i) p[i][j] = a[j]*x + b[j];
     }
-
-    for(auto x: ans) Out(x);
-
-
-
-
-
+    de(p)
+    vm ans;
+    rep1(i, N) ans.push_back(p[N][i]);
+    Out(ans);
 
 }
 

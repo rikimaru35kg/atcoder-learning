@@ -435,6 +435,12 @@
 - 基本 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
 - !復習価値低 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
+## 通りがけ順
+- 二分木の場合に定義される（下側を通る順番の事）
+- 通りがけ順を適当な（上手い）範囲で取り出すと部分木になっており、根より早く登場する頂点は左側子孫、遅く出現する頂点は根の右側子孫となる
+### 例題
+- [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
+
 ## 木の次数列
 - 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる
 ### 例題
