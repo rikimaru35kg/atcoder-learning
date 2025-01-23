@@ -746,6 +746,13 @@
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
+## マージソートツリー
+- マージソートしながらセグ木を構築
+- オンラインで葉を更新するのは計算量が大きすぎるので注意！
+- オンラインで範囲クエリに答えるのは得意 O(Q*log^2(N))
+### 例題
+- [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
+
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける
 ### 例題
