@@ -214,8 +214,8 @@ const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
-const vi di = {0, 0, -1};
-const vi dj = {1, -1, 0};
+const vi di = {0, 1, 0, -1};
+const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
@@ -228,55 +228,26 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W);
-    VVL(A, H, W);
-
-    auto check=[&](vl &a0, vl &a1, vl &a2) -> bool {
-        rep(j, W) {
-            if(a1[j]==a0[j]) continue;
-            if(a1[j]==a2[j]) continue;
-            if(j && a1[j]==a1[j-1]) continue;
-            if(j<W-1 && a1[j]==a1[j+1]) continue;
-            return false;
-        }
-        return true;
-    };
-    auto get=[&](ll i, ll f) -> vl {
-        vl ret = A[i];
-        rep(j, W) ret[j] ^= f;
-        return ret;
-    };
-
-    ll ans = INF;
-    rep(r1, 2) rep(r2, 2) {
-        vvl dp(2, vl(2, INF));
-        vvl edp = dp;
-        dp[r1][r2] = r1+r2;
-        {
-            vl a0(W, -1);
-            vl a1 = get(0, r1);
-            vl a2 = get(1, r2);
-            if(!check(a0,a1,a2)) continue;
-        }
-
-        rep(i, H-2) { // fix i,i+1, check i+1, flip i+2
-            vvl pdp = edp; swap(pdp, dp);
-            rep(j, 2) rep(k, 2) rep(m, 2) {
-                if(pdp[j][k]==INF) continue;
-                vl a0 = get(i, j);
-                vl a1 = get(i+1, k);
-                vl a2 = get(i+2, m);
-                if(check(a0,a1,a2)) chmin(dp[k][m], pdp[j][k]+m);
-            }
-        }
-        rep(j, 2) rep(k, 2) {
-            vl a0 = get(H-2, j);
-            vl a1 = get(H-1, k);
-            vl a2(W, -1);
-            if(check(a0,a1,a2)) chmin(ans, dp[j][k]);
-        }
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a,b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    ch1(ans);
+
+    vl sz(N);
+    ll ans = N*(N-1)*(N-2)/6;
+    ans += N*(N-1)/2;
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
+        sz[v] = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            sz[v] += sz[nv];
+            ans -= sz[nv]*(N-sz[nv]);
+        }
+    };
+    dfs0(dfs0, 0);
     Out(ans);
 
 }

@@ -2103,3 +2103,4 @@
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
+- [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)

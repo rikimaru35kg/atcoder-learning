@@ -227,47 +227,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+#include <atcoder/segtree>
+using namespace atcoder;
+
+struct S {
+    ll cnt[26];
+    S() { rep(i, 26) cnt[i] = 0; }
+    S(char c) {
+        rep(i, 26) cnt[i] = 0;
+        cnt[c-'a'] = 1;
+    }
+};
+S op(S a, S b) {
+    rep(i, 26) { a.cnt[i] += b.cnt[i]; }
+    return a;
+}
+S e() {return S();}
+
 void solve() {
     LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a,b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    STRING(Str);
+    fenwick_tree<ll> tree(N);
+    auto set=[&](ll i, ll x) {
+        tree.add(i, x-tree.sum(i,i+1));
+    };
+    rep(i, N-1) { if(Str[i]>Str[i+1]) set(i, 1); }
+
+    segtree<S,op,e> seg(N);
+    rep(i, N) seg.set(i, S(Str[i]));
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(x); CHAR(c);
+            Str[x] = c;
+            seg.set(x, S(c));
+            if(x) {
+                if(Str[x-1]>Str[x]) set(x-1, 1);
+                else set(x-1, 0);
+            }
+            if(x<N-1) {
+                if(Str[x]>Str[x+1]) set(x, 1);
+                else set(x, 0);
+            }
+        } else {
+            LONGM(l, r);
+            ll sum = tree.sum(l,r);
+            if(sum>0) Out("No");
+            else {
+                auto now = seg.prod(l, r+1);
+                auto all = seg.all_prod();
+                vp p;
+                ll fi=-1,la=-1;
+                rep(m, 26) {
+                    if(fi==-1 && now.cnt[m]>0) {
+                        fi = m;
+                    }
+                    if(now.cnt[m]>0) la = m;
+                }
+                bool ok = true;
+                repk(m, fi+1, la) {
+                    if(now.cnt[m]!=all.cnt[m]) ok = false;
+                }
+                if(ok) Out("Yes");
+                else Out("No");
+            }
+        }
     }
-
-    vl sz(N), dp(N);
-    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
-        sz[v] = 1;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            sz[v] += sz[nv];
-            dp[v] += sz[nv] + dp[nv];
-        }
-    };
-    dfs0(dfs0, 0);
-    de(sz)de(dp)
-
-    ll sum = 0;
-    auto dfs=[&](auto f, ll v, ll p=-1, ll psz=0, ll pdp=0) -> void {
-        ll now = pdp;
-        ll cdp = pdp + psz;
-        for(auto nv: from[v]) if(nv!=p) {
-            now += dp[nv];
-            cdp += dp[nv] + sz[nv];
-        }
-        sum += now;
-        de2(v, now)
-
-        for(auto nv: from[v]) if(nv!=p) {
-            ll ndp = cdp - dp[nv] - sz[nv];
-            f(f, nv, v, N-sz[nv], ndp);
-        }
-    };
-    dfs(dfs, 0);
-    de(sum)
-    ll ans = N*(N-1)*(N-2)/6 - sum/2;
-    Out(ans);
 
 }
 
