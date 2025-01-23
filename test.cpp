@@ -214,8 +214,8 @@ const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
-const vi di = {0, 1, 0, -1};
-const vi dj = {1, 0, -1, 0};
+const vi di = {0, 0, -1};
+const vi dj = {1, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
@@ -227,79 +227,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct MergeSortTree {
-    int n;
-    vector<vector<long long>> a, s; // s: cumulated sum
-    MergeSortTree(int mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2);
-        s.resize(n*2, vl(1));
-    }
-    void set_only(int i, long long x) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;
-        a[i] = {x};
-        s[i] = {0, x};
-    }
-    void set(int i, long long x) { // [CAUTION] O(N*log(N)) for 1 execution
-        assert(i>=0 && i<n);
-        set_only(i, x);
-        i += n; i>>=1;
-        while(i) {
-            update(i);
-            i>>=1;
+void solve() {
+    LONG(H, W);
+    VVL(A, H, W);
+
+    ll ans = INF;
+    rep(r1, 2) rep(r2, 2) {
+        vvl dp(2, vl(2, INF));
+        vvl edp = dp;
+        dp[r1][r2] = r1+r2;
+        {
+            bool ok = true;
+            rep(a, W) {
+                bool iso = true;
+                if((A[0][a]^r1)==(A[1][a]^r2)) iso = false;
+                if(a<W-1 && A[0][a]==A[0][a+1]) iso = false;
+                if(a && A[0][a]==A[0][a-1]) iso = false;
+                if(iso) { ok = false; break; }
+            }
+            if(!ok) continue;
+        }
+
+        rep(i, H-2) { // fix i,i+1, check i+1, flip i+2
+            vvl pdp = edp; swap(pdp, dp);
+            rep(j, 2) rep(k, 2) rep(m, 2) {
+                if(pdp[j][k]==INF) continue;
+                bool ok = true;
+                rep(a, W) {
+                    bool iso = true;
+                    if((A[i+1][a]^k)==(A[i][a]^j)) iso = false;
+                    if((A[i+1][a]^k)==(A[i+2][a]^m)) iso = false;
+                    if(a<W-1 && A[i+1][a]==A[i+1][a+1]) iso = false;
+                    if(a && A[i+1][a]==A[i+1][a-1]) iso = false;
+                    if(iso) { ok = false; break; }
+                }
+                if(!ok) continue;
+                chmin(dp[k][m], pdp[j][k]+m);
+            }
+        }
+        rep(j, 2) rep(k, 2) {
+            bool ok = true;
+            rep(a, W) {
+                bool iso = true;
+                if((A[H-2][a]^j)==(A[H-1][a]^k)) iso = false;
+                if(a<W-1 && A[H-1][a]==A[H-1][a+1]) iso = false;
+                if(a && A[H-1][a]==A[H-1][a-1]) iso = false;
+                if(iso) { ok = false; break; }
+            }
+            if(ok) chmin(ans, dp[j][k]);
         }
     }
-    void update(int i) {
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;
-        a[i] = vector<long long>();
-        merge(a[l].begin(),a[l].end(),a[r].begin(),a[r].end(),
-              back_inserter(a[i]));
-        int m = a[i].size();
-        s[i].resize(m+1);
-        for(int j=0; j<m; ++j) s[i][j+1] = s[i][j] + a[i][j];
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    long long get(int i, long long x) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        int idx = upper_bound(a[i].begin(), a[i].end(), x) - a[i].begin();
-        return s[i][idx];
-    }
-    long long prod(int ql, int qr, long long x) { // cumsum s.t. A[i]<=x
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, long long i) -> long long {
-            if(r<=ql || l>=qr) return 0;
-            if(l>=ql && r<=qr) return get(i-n, x);
-            int m = (l+r)/2;
-            long long ret = f(f, l, m, i<<1) + f(f, m, r, (i<<1)|1);
-            return ret;
-        };
-        long long ret = f(f, 0, n, 1);
-        return ret;
-    }
-};
-
-void solve() {
-    LONG(N); VL(A, N);
-
-    MergeSortTree tree(N);
-    rep(i, N) { tree.set_only(i, A[i]); }
-    tree.build();
-
-    LONG(Q);
-    ll ans = 0;
-    rep(i, Q) {
-        LONG(al,be,ga);
-        ll l = al^ans; ll r = be^ans; ll x = ga^ans;
-        --l;
-        ans = tree.prod(l,r,x);
-        Out(ans);
-    }
+    ch1(ans);
+    Out(ans);
 
 }
 

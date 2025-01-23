@@ -2080,6 +2080,7 @@
 - [B - Shorten ARC](https://atcoder.jp/contests/arc140/tasks/arc140_b)
 - [A - Periodic Number](https://atcoder.jp/contests/arc141/tasks/arc141_a)
 - [E - Duplicate](https://atcoder.jp/contests/abc313/tasks/abc313_e)
+- [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

@@ -227,30 +227,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct MergeSortTree {
+    int n;
+    vector<vector<long long>> a, s; // s: cumulated sum
+    MergeSortTree(int mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2);
+        s.resize(n*2, vl(1));
+    }
+    void set_only(int i, long long x) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;
+        a[i] = {x};
+        s[i] = {0, x};
+    }
+    void set(int i, long long x) { // [CAUTION] O(N*log(N)) for 1 execution
+        assert(i>=0 && i<n);
+        set_only(i, x);
+        i += n; i>>=1;
+        while(i) {
+            update(i);
+            i>>=1;
+        }
+    }
+    void update(int i) {
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;
+        a[i] = vector<long long>();
+        merge(a[l].begin(),a[l].end(),a[r].begin(),a[r].end(),
+              back_inserter(a[i]));
+        int m = a[i].size();
+        s[i].resize(m+1);
+        for(int j=0; j<m; ++j) s[i][j+1] = s[i][j] + a[i][j];
+    }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
+    }
+    long long get(int i, long long x) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        int idx = upper_bound(a[i].begin(), a[i].end(), x) - a[i].begin();
+        return s[i][idx];
+    }
+    long long prod(int ql, int qr, long long x) { // cumsum s.t. A[i]<=x
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, long long i) -> long long {
+            if(r<=ql || l>=qr) return 0;
+            if(l>=ql && r<=qr) return get(i-n, x);
+            int m = (l+r)/2;
+            long long ret = f(f, l, m, i<<1) + f(f, m, r, (i<<1)|1);
+            return ret;
+        };
+        long long ret = f(f, 0, n, 1);
+        return ret;
+    }
+};
+
 void solve() {
-    LONG(N);
-    VLM(P, N);
-    VLM(I, N);
-    if(P[0]!=0) Pm1
+    LONG(N); VL(A, N);
 
-    vl idx(N);
-    rep(i, N) idx[I[i]] = i;
+    MergeSortTree tree(N);
+    rep(i, N) { tree.set_only(i, A[i]); }
+    tree.build();
 
-    vp ans(N);
-
-    auto f=[&](auto f, ll lp, ll li, ll n) -> ll {
-        if(n==0) return 0;
-        ll rv = P[lp];
-        ll mli = idx[rv];
-        if(mli<li || mli>=li+n) Pm1
-        ll nl = mli - li, nr = n-1-nl;
-        ll left = f(f, lp+1, li, nl);
-        ll right = f(f, lp+1+nl, mli+1, nr);
-        ans[rv] = {left, right};
-        return rv+1;
-    };
-    f(f, 0, 0, N);
-    Out(ans);
+    LONG(Q);
+    ll ans = 0;
+    rep(i, Q) {
+        LONG(al,be,ga);
+        ll l = al^ans; ll r = be^ans; ll x = ga^ans;
+        --l;
+        ans = tree.prod(l,r,x);
+        Out(ans);
+    }
 
 }
 
