@@ -227,44 +227,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
     LONG(N);
-    mint inv2 = mint(2).inv();
-    vvm p(N+1, vm(N+1));
-    p[1][1] = 1;
+    VLM(P, N);
+    VLM(I, N);
+    if(P[0]!=0) Pm1
 
-    repk(i, 2, N+1) {
-        // p[i][*];
-        vm a(N+1), b(N+1);
-        a[i] = 1;
-        rep1(j, i) {
-            if(j==1) {
-                a[j] = inv2; b[j] = 0;
-                continue;
-            }
-            a[j] = a[j-1]*inv2;
-            b[j] = (p[i-1][j-1] + b[j-1]) * inv2;
-        }
-        mint x = b[i]/(1-a[i]);
-        rep1(j, i) p[i][j] = a[j]*x + b[j];
-    }
-    de(p)
-    vm ans;
-    rep1(i, N) ans.push_back(p[N][i]);
+    vl idx(N);
+    rep(i, N) idx[I[i]] = i;
+
+    vp ans(N);
+
+    auto f=[&](auto f, ll lp, ll li, ll n) -> ll {
+        if(n==0) return 0;
+        ll rv = P[lp];
+        ll mli = idx[rv];
+        if(mli<li || mli>=li+n) Pm1
+        ll nl = mli - li, nr = n-1-nl;
+        ll left = f(f, lp+1, li, nl);
+        ll right = f(f, lp+1+nl, mli+1, nr);
+        ans[rv] = {left, right};
+        return rv+1;
+    };
+    f(f, 0, 0, N);
     Out(ans);
 
 }
