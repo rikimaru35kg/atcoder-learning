@@ -227,75 +227,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-#include <atcoder/segtree>
-using namespace atcoder;
-
-struct S {
-    ll cnt[26];
-    S() { rep(i, 26) cnt[i] = 0; }
-    S(char c) {
-        rep(i, 26) cnt[i] = 0;
-        cnt[c-'a'] = 1;
-    }
-};
-S op(S a, S b) {
-    rep(i, 26) { a.cnt[i] += b.cnt[i]; }
-    return a;
-}
-S e() {return S();}
-
 void solve() {
-    LONG(N);
-    STRING(Str);
-    fenwick_tree<ll> tree(N);
-    auto set=[&](ll i, ll x) {
-        tree.add(i, x-tree.sum(i,i+1));
-    };
-    rep(i, N-1) { if(Str[i]>Str[i+1]) set(i, 1); }
+    LONG(N); VLM(A, N);
+    vl B = A;
+    sort(all(B));
+    ll M = 4;
+    vvl edge(M, vl(M));
+    rep(i, N) { edge[A[i]][B[i]]++; }
 
-    segtree<S,op,e> seg(N);
-    rep(i, N) seg.set(i, S(Str[i]));
-
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(x); CHAR(c);
-            Str[x] = c;
-            seg.set(x, S(c));
-            if(x) {
-                if(Str[x-1]>Str[x]) set(x-1, 1);
-                else set(x-1, 0);
-            }
-            if(x<N-1) {
-                if(Str[x]>Str[x+1]) set(x, 1);
-                else set(x, 0);
-            }
-        } else {
-            LONGM(l, r);
-            ll sum = tree.sum(l,r);
-            if(sum>0) Out("No");
-            else {
-                auto now = seg.prod(l, r+1);
-                auto all = seg.all_prod();
-                vp p;
-                ll fi=-1,la=-1;
-                rep(m, 26) {
-                    if(fi==-1 && now.cnt[m]>0) {
-                        fi = m;
-                    }
-                    if(now.cnt[m]>0) la = m;
-                }
-                bool ok = true;
-                repk(m, fi+1, la) {
-                    if(now.cnt[m]!=all.cnt[m]) ok = false;
-                }
-                if(ok) Out("Yes");
-                else Out("No");
-            }
-        }
+    ll cycle = 0;
+    rep(i, M) {
+        cycle += edge[i][i];
+        edge[i][i] = 0;
     }
+    rep(i, M) rep(j, i) {
+        ll mn = min(edge[i][j], edge[j][i]);
+        cycle += mn;
+        edge[i][j] -= mn; edge[j][i] -= mn;
+    }
+
+    ll x4max = 0;
+    ll es = 0;
+    rep(i, M) rep(j, M) es += edge[i][j];
+
+    vl p(M);
+    iota(all(p), 0);
+    do {
+        vvl g = edge;
+        ll mn = min({g[p[0]][p[1]], g[p[1]][p[2]], g[p[2]][p[3]], g[p[3]][p[0]]});
+        chmax(x4max, mn);
+    } while(next_permutation(all(p)));
+    // de2(mx, cycle)
+    ll x3 = (es-4*x4max)/3;
+    ll mx = x4max+x3;
+
+    ll ans = N-mx-cycle;
+    Out(ans);
+
 
 }
 
