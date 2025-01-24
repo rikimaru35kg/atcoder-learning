@@ -671,8 +671,8 @@
 
 ## bitset
 ### 例題
-- [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
-- [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
+- !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
+- !要復習 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
