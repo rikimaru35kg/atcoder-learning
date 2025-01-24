@@ -1238,6 +1238,7 @@
 - 基本 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
 - !復習価値低 max(LCM,GCD) [C - LCM of GCDs](https://atcoder.jp/contests/arc124/tasks/arc124_c)
 - 基本 高度合成数を求める [D - 2016](https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_d)
+- !復習価値中 [F - Palindromic Expression](https://atcoder.jp/contests/abc363/tasks/abc363_f)
 
 ## GCD最大公約数と拡張ユークリッドの互除法
 - 最大公約数は各素因数の最小指数を選んだもの
