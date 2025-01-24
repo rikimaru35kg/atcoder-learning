@@ -227,79 +227,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 void solve() {
     LONG(N);
-    auto ds = listup_divisor(N, true);
-    ds.erase(ds.begin());
-    vl nds;
-    for(auto d: ds) {
-        string s = to_string(d);
-        bool ok = true;
-        for(auto c: s) if(c=='0') ok = false;
-        if(ok) nds.push_back(d);
-    }
-    swap(ds, nds);
+    VL(P, N);
+    if(N%2==0) {
+        vl event(N);
+        ll dif=0, now=0;
+        rep(i, N) {
+            ll a = P[i], b = i;
+            b -= a;
+            if(b<0) b += N;
+            ll m = N/2;
+            ll d1 = m-b;
+            if(d1>=0) event[d1] -= 2;
+            else event[d1+N] -= 2;
+            ll d0 = 0-b;
+            if(d0>=0) event[d0] += 2;
+            else event[d0+N] += 2;
 
-    auto check=[&](ll x) -> bool {
-        string s = to_string(x);
-        ll n = s.size();
-        rep(i, n) { if(s[i]!=s[n-1-i]) return false; }
-        rep(i, n) if(s[i]=='0') return false;
-        return true;
-    };
-    auto calc=[&](ll x) -> ll {
-        ll ret = x;
-        string s = to_string(x);
-        reverse(all(s));
-        ret *= stoll(s);
-        return ret;
-    };
-    vl ds2;
-    for(auto d: ds) {
-        ds2.push_back(calc(d));
-    }
-    ll m = ds2.size();
-
-    uset<ll> mem;
-    auto f=[&](auto f, ll x, vl hist) -> void {
-        if(mem.count(x)) return;
-        mem.insert(x);
-        if(check(x)) {
-            if(!hist.size()) Outend(x);
-            string fr;
-            for(auto z: hist) {
-                string s = to_string(z);
-                fr += s;
-                fr += '*';
-            }
-            string rr = fr; reverse(all(rr));
-            string ans = fr + to_string(x) + rr;
-            Outend(ans);
+            now += min(b, N-b);
+            if(b>0 && b<=N/2) dif++;
+            else dif--;
+            // de4(b,d1,d0,dif)
+            // de(event)
         }
-
-        rep(i, m) {
-            auto d = ds[i], d2 = ds2[i];
-            if(x%d2!=0) continue;
-            vl nhist = hist;
-            nhist.push_back(d);
-            f(f, x/d2, nhist);
+        ll ans = INF;
+        rep(i, N) {
+            // de2(now, dif)
+            chmin(ans, now);
+            dif += event[i];
+            now += dif;
         }
-    };
-    vl v;
-    f(f, N, v);
-    Pm1
+        Outend(ans);
+    }
+
+    vl event(N);
+    ll dif=0, now=0;
+    rep(i, N) {
+        ll a = P[i], b = i;
+        b -= a;
+        if(b<0) b += N;
+        ll m = N/2;
+        ll d1 = m-b;
+        if(d1>=0) {
+            event[d1] -= 1;
+            event[(d1+1)%N] -= 1;
+        } else {
+            event[d1+N] -= 1;
+            event[(d1+N+1)%N] -= 1;
+        }
+        ll d0 = 0-b;
+        if(d0>=0) event[d0] += 2;
+        else event[d0+N] += 2;
+
+        now += min(b, N-b);
+        if(b>0 && b<=N/2) dif++;
+        else if(b==N/2+1) dif += 0;
+        else dif--;
+        de4(b,d1,d0,dif)
+        de(event)
+    }
+    ll ans = INF;
+    rep(i, N) {
+        de2(now, dif)
+        chmin(ans, now);
+        dif += event[i];
+        now += dif;
+    }
+    Out(ans);
 }
 
 int main () {

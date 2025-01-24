@@ -1,6 +1,10 @@
-test.cpp: In function ‘void solve()’:
-test.cpp:260:28: error: no match for ‘operator+’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} and ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’})
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
+test.cpp: In lambda function:
+test.cpp:288:39: error: no match for ‘operator+’ (operand types are ‘std::__cxx11::basic_string<char>’ and ‘void’)
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                   ~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~
+      |                                 |              |
+      |                                 |              void
+      |                                 std::__cxx11::basic_string<char>
 In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
                  from /usr/include/c++/12/bits/specfun.h:45,
                  from /usr/include/c++/12/cmath:1935,
@@ -9,16 +13,16 @@ In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
   630 |     operator+(typename reverse_iterator<_Iterator>::difference_type __n,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/stl_iterator.h:630:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::reverse_iterator<_IteratorL>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/stl_iterator.h:1804:5: note: candidate: ‘template<class _Iterator> constexpr std::move_iterator<_IteratorL> std::operator+(typename move_iterator<_IteratorL>::difference_type, const move_iterator<_IteratorL>&)’
  1804 |     operator+(typename move_iterator<_Iterator>::difference_type __n,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/stl_iterator.h:1804:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::move_iterator<_IteratorL>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::move_iterator<_IteratorL>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 In file included from /usr/include/c++/12/string:53,
                  from /usr/include/c++/12/bits/locale_classes.h:40,
                  from /usr/include/c++/12/bits/ios_base.h:41,
@@ -32,184 +36,176 @@ In file included from /usr/include/c++/12/string:53,
  3440 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3440:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 In file included from /usr/include/c++/12/string:54:
 /usr/include/c++/12/bits/basic_string.tcc:606:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const _CharT*, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
   606 |     operator+(const _CharT* __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.tcc:606:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   mismatched types ‘const _CharT*’ and ‘std::__debug::vector<atcoder::static_modint<998244353> >’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const _CharT*’ and ‘std::__cxx11::basic_string<char>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.tcc:627:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(_CharT, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
   627 |     operator+(_CharT __lhs, const basic_string<_CharT, _Traits, _Alloc>& __rhs)
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.tcc:627:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3480:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’
  3480 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3480:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const _CharT*’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3497:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, _CharT)’
  3497 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs, _CharT __rhs)
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3497:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   deduced conflicting types for parameter ‘_CharT’ (‘char’ and ‘void’)
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3510:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
  3510 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3510:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3517:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
  3517 |     operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3517:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3524:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
  3524 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3524:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3547:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(const _CharT*, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
  3547 |     operator+(const _CharT* __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3547:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   mismatched types ‘const _CharT*’ and ‘std::__debug::vector<atcoder::static_modint<998244353> >’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const _CharT*’ and ‘std::__cxx11::basic_string<char>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3554:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(_CharT, __cxx11::basic_string<_CharT, _Traits, _Allocator>&&)’
  3554 |     operator+(_CharT __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3554:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3561:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, const _CharT*)’
  3561 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3561:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const _CharT*’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/basic_string.h:3568:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr std::__cxx11::basic_string<_CharT, _Traits, _Allocator> std::operator+(__cxx11::basic_string<_CharT, _Traits, _Allocator>&&, _CharT)’
  3568 |     operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
       |     ^~~~~~~~
 /usr/include/c++/12/bits/basic_string.h:3568:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   deduced conflicting types for parameter ‘_CharT’ (‘char’ and ‘void’)
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/complex:332:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const complex<_Tp>&, const complex<_Tp>&)’
   332 |     operator+(const complex<_Tp>& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
 /usr/include/c++/12/complex:332:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::complex<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::complex<_Tp>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/complex:341:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const complex<_Tp>&, const _Tp&)’
   341 |     operator+(const complex<_Tp>& __x, const _Tp& __y)
       |     ^~~~~~~~
 /usr/include/c++/12/complex:341:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::complex<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::complex<_Tp>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/complex:350:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const _Tp&, const complex<_Tp>&)’
   350 |     operator+(const _Tp& __x, const complex<_Tp>& __y)
       |     ^~~~~~~~
 /usr/include/c++/12/complex:350:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::complex<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::complex<_Tp>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/complex:451:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator+(const complex<_Tp>&)’
   451 |     operator+(const complex<_Tp>& __x)
       |     ^~~~~~~~
 /usr/include/c++/12/complex:451:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::complex<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::complex<_Tp>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 In file included from /usr/include/c++/12/valarray:603,
                  from stdc++.h:95:
 /usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
   405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
   405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
   405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
   405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/bits/valarray_after.h:405:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__plus, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__plus, typename _Dom1::value_type>::result_type> std::operator+(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
   405 |     _DEFINE_EXPR_BINARY_OPERATOR(+, struct std::__plus)
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/bits/valarray_after.h:405:5: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/valarray:1186:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__plus, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__plus, _Tp>::result_type> std::operator+(const valarray<_Tp>&, const valarray<_Tp>&)’
  1186 | _DEFINE_BINARY_OPERATOR(+, __plus)
       | ^~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/valarray:1186:1: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::valarray<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::valarray<_Tp>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/valarray:1186:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__plus, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__plus, _Tp>::result_type> std::operator+(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
  1186 | _DEFINE_BINARY_OPERATOR(+, __plus)
       | ^~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/valarray:1186:1: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} is not derived from ‘const std::valarray<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘const std::valarray<_Tp>’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 /usr/include/c++/12/valarray:1186:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__plus, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__plus, _Tp>::result_type> std::operator+(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
  1186 | _DEFINE_BINARY_OPERATOR(+, __plus)
       | ^~~~~~~~~~~~~~~~~~~~~~~
 /usr/include/c++/12/valarray:1186:1: note:   template argument deduction/substitution failed:
-test.cpp:260:35: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<atcoder::static_modint<998244353> >, atcoder::static_modint<998244353> >::value_type’ {aka ‘atcoder::static_modint<998244353>’} is not derived from ‘const std::valarray<_Tp>’
-  260 |             b[j] = (p[j-1] + b[j-1]) * inv2;
-      |                                   ^
+test.cpp:288:55: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘void’
+  288 |             ret = s + "*" + res + "*" + reverse(all(s));
+      |                                                       ^
 test.cpp:225:4: note: candidate: ‘Pr operator+(Pr, Pr)’
   225 | Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
       |    ^~~~~~~~
-test.cpp:225:18: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
+test.cpp:225:18: note:   no known conversion for argument 1 from ‘std::__cxx11::basic_string<char>’ to ‘Pr’ {aka ‘std::pair<long long int, long long int>’}
   225 | Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
       |               ~~~^
-In file included from /opt/ac-library/atcoder/modint:1,
-                 from test.cpp:230:
-/opt/ac-library/atcoder/modint.hpp:116:17: note: candidate: ‘atcoder::static_modint<998244353>::mint atcoder::operator+(const static_modint<998244353>::mint&, const static_modint<998244353>::mint&)’
-  116 |     friend mint operator+(const mint& lhs, const mint& rhs) {
-      |                 ^~~~~~~~
-/opt/ac-library/atcoder/modint.hpp:116:39: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<atcoder::static_modint<998244353> > >, std::__debug::vector<atcoder::static_modint<998244353> > >::value_type’ {aka ‘std::__debug::vector<atcoder::static_modint<998244353> >’} to ‘const atcoder::static_modint<998244353>::mint&’ {aka ‘const atcoder::static_modint<998244353>&’}
-  116 |     friend mint operator+(const mint& lhs, const mint& rhs) {
-      |                           ~~~~~~~~~~~~^~~

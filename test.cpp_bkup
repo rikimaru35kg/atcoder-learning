@@ -227,44 +227,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
 void solve() {
-    LONG(N); VLM(A, N);
-    vl B = A;
-    sort(all(B));
-    ll M = 4;
-    vvl edge(M, vl(M));
-    rep(i, N) { edge[A[i]][B[i]]++; }
-
-    ll cycle = 0;
-    rep(i, M) {
-        cycle += edge[i][i];
-        edge[i][i] = 0;
+    LONG(N);
+    auto ds = listup_divisor(N, true);
+    ds.erase(ds.begin());
+    vl nds;
+    for(auto d: ds) {
+        string s = to_string(d);
+        bool ok = true;
+        for(auto c: s) if(c=='0') ok = false;
+        if(ok) nds.push_back(d);
     }
-    rep(i, M) rep(j, i) {
-        ll mn = min(edge[i][j], edge[j][i]);
-        cycle += mn;
-        edge[i][j] -= mn; edge[j][i] -= mn;
+    swap(ds, nds);
+
+    auto check=[&](ll x) -> bool {
+        string s = to_string(x);
+        ll n = s.size();
+        rep(i, n) { if(s[i]!=s[n-1-i]) return false; }
+        rep(i, n) if(s[i]=='0') return false;
+        return true;
+    };
+    auto calc=[&](ll x) -> ll {
+        ll ret = x;
+        string s = to_string(x);
+        reverse(all(s));
+        ret *= stoll(s);
+        return ret;
+    };
+    vl ds2;
+    for(auto d: ds) {
+        ds2.push_back(calc(d));
     }
+    ll m = ds2.size();
 
-    ll x4max = 0;
-    ll es = 0;
-    rep(i, M) rep(j, M) es += edge[i][j];
-
-    vl p(M);
-    iota(all(p), 0);
-    do {
-        vvl g = edge;
-        ll mn = min({g[p[0]][p[1]], g[p[1]][p[2]], g[p[2]][p[3]], g[p[3]][p[0]]});
-        chmax(x4max, mn);
-    } while(next_permutation(all(p)));
-    // de2(mx, cycle)
-    ll x3 = (es-4*x4max)/3;
-    ll mx = x4max+x3;
-
-    ll ans = N-mx-cycle;
+    umap<ll,string> mem;
+    auto f=[&](auto f, ll x) -> string {
+        if(mem.count(x)) return mem[x];
+        string &ret = mem[x];
+        if(check(x)) {
+            return to_string(x);
+        }
+        rep(i, m) {
+            auto d = ds[i], d2 = ds2[i];
+            if(x%d2!=0) continue;
+            string res = f(f, x/d2);
+            if(res=="-1") continue;
+            string s = to_string(d);
+            string t = s; reverse(all(t));
+            return ret = s + "*" + res + "*" + t;
+        }
+        ret = "-1";
+        return ret;
+    };
+    string ans = f(f, N);
     Out(ans);
-
-
 }
 
 int main () {
