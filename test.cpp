@@ -228,29 +228,66 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VVL(A, N, M);
+    LONG(N);
+    VL(D, N);
+    vvp from(N);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
 
-    using BS = bitset<2000>;
-    using vBS = vector<BS>;
-    vBS bs(N);
-
-    rep(j, M) {
-        vvl is(1000);
-        rep(i, N) { is[A[i][j]].push_back(i); }
-        BS cbs;
-        rep(a, 1000) {
-            for(auto i: is[a]) cbs[i] = 1;
-            for(auto i: is[a]) bs[i] ^= cbs;
-            for(auto i: is[a]) cbs[i] = 0;
+    vvl dp(N, vl(2, -INF));
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ll d = D[v];
+        if(p!=-1 && SIZE(from[v])==1) {
+            if(d==0) dp[v][0] = 0;
+            else dp[v][0] = dp[v][1] = 0;
+            return;
         }
-    }
+        vl gain;
+        ll base = 0;
+        for(auto [nv,c]: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            ll con = dp[nv][1] + c;
+            ll noc = dp[nv][0];
+            ll plus = max(con-noc, 0LL);
+            gain.emplace_back(plus);
+            base += noc;
+        }
+        gain.push_back(0);
+        sort(allr(gain));
 
-    ll ans = 0;
-    rep(i, N) rep(j, i) {
-        ans += bs[i][j];
-    }
+        dp[v][0] = dp[v][1] = base;
+        rep(i, d) { dp[v][0] += gain[i]; }
+        rep(i, d-1) { dp[v][1] += gain[i]; }
+        if(d==0) dp[v][1] = -INF;
+
+        // vl cdp(d+1, -INF);
+        // cdp[0] = 0;
+        // for(auto [nv,c]: from[v]) if(nv!=p) {
+        //     f(f, nv, v);
+        //     vl pdp(d+1, -INF); swap(pdp, cdp);
+        //     rep(j, d+1) {
+        //         if(pdp[j]==-INF) continue;
+        //         // connect
+        //         if(j<d) chmax(cdp[j+1], pdp[j]+dp[nv][1]+c);
+        //         // no connect
+        //         chmax(cdp[j], pdp[j]+dp[nv][0]);
+        //         chmax(cdp[j], pdp[j]+dp[nv][1]);
+        //     }
+        //     // if(v==4) de(cdp)
+        // }
+        // // extra edge
+        // // if(v==4) de(cdp)
+        // rep(j, d) chmax(dp[v][1], cdp[j]);
+        // // no extra edge
+        // chmax(dp[v][0], cdp[d]);
+    };
+    dfs(dfs, 0);
+    ll ans = max(dp[0][0], dp[0][1]);
     Out(ans);
+    de(dp)
 
 }
 

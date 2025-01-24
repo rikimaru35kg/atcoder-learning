@@ -227,25 +227,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using BS = bitset<3000>;
-
 void solve() {
-    LONG(N);
-    VS(S, N);
-    vector<BS> bs(N);
-    rep(i, N) {
-        rep(j, N) {
-            if(S[i][j]=='1') bs[j][i] = 1;
+    LONG(N, M);
+    VVL(A, N, M);
+
+    using BS = bitset<2000>;
+    using vBS = vector<BS>;
+    vBS bs(N);
+
+    rep(j, M) {
+        vvl is(1000);
+        rep(i, N) { is[A[i][j]].push_back(i); }
+        BS cbs;
+        rep(a, 1000) {
+            for(auto i: is[a]) cbs[i] = 1;
+            for(auto i: is[a]) bs[i] ^= cbs;
+            for(auto i: is[a]) cbs[i] = 0;
         }
     }
 
     ll ans = 0;
     rep(i, N) rep(j, i) {
-        if(S[i][j]=='0') continue;
-        ll cnt = (bs[i]&bs[j]).count();
-        ans += cnt;
+        ans += bs[i][j];
     }
-    Out(ans/3);
+    Out(ans);
 
 }
 
