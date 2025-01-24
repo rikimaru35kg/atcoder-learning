@@ -669,6 +669,11 @@
 - !復習価値中 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
 - !復習価値低 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
+## bitset
+### 例題
+- [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
+- [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
+
 ## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
 - ランダムアクセスはO(N)だが、指定要素の前後へのアクセス、挿入はO(1)

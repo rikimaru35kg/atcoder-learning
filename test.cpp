@@ -228,73 +228,30 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(P, N);
-    if(N%2==0) {
-        vl event(N);
-        ll dif=0, now=0;
-        rep(i, N) {
-            ll a = P[i], b = i;
-            b -= a;
-            if(b<0) b += N;
-            ll m = N/2;
-            ll d1 = m-b;
-            if(d1>=0) event[d1] -= 2;
-            else event[d1+N] -= 2;
-            ll d0 = 0-b;
-            if(d0>=0) event[d0] += 2;
-            else event[d0+N] += 2;
+    LONG(N, M);
+    VVL(A, N, M);
 
-            now += min(b, N-b);
-            if(b>0 && b<=N/2) dif++;
-            else dif--;
-            // de4(b,d1,d0,dif)
-            // de(event)
+    using BS = bitset<2000>;
+    using vBS = vector<BS>;
+    vBS bs(N);
+
+    rep(j, M) {
+        vvl is(1000);
+        rep(i, N) { is[A[i][j]].push_back(i); }
+        BS cbs;
+        rep(a, 1000) {
+            for(auto i: is[a]) cbs[i] = 1;
+            for(auto i: is[a]) bs[i] ^= cbs;
+            for(auto i: is[a]) cbs[i] = 0;
         }
-        ll ans = INF;
-        rep(i, N) {
-            // de2(now, dif)
-            chmin(ans, now);
-            dif += event[i];
-            now += dif;
-        }
-        Outend(ans);
     }
 
-    vl event(N);
-    ll dif=0, now=0;
-    rep(i, N) {
-        ll a = P[i], b = i;
-        b -= a;
-        if(b<0) b += N;
-        ll m = N/2;
-        ll d1 = m-b;
-        if(d1>=0) {
-            event[d1] -= 1;
-            event[(d1+1)%N] -= 1;
-        } else {
-            event[d1+N] -= 1;
-            event[(d1+N+1)%N] -= 1;
-        }
-        ll d0 = 0-b;
-        if(d0>=0) event[d0] += 2;
-        else event[d0+N] += 2;
-
-        now += min(b, N-b);
-        if(b>0 && b<=N/2) dif++;
-        else if(b==N/2+1) dif += 0;
-        else dif--;
-        de4(b,d1,d0,dif)
-        de(event)
-    }
-    ll ans = INF;
-    rep(i, N) {
-        de2(now, dif)
-        chmin(ans, now);
-        dif += event[i];
-        now += dif;
+    ll ans = 0;
+    rep(i, N) rep(j, i) {
+        ans += bs[i][j];
     }
     Out(ans);
+
 }
 
 int main () {
