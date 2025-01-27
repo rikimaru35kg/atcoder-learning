@@ -227,166 +227,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-const int MX = 32;  // DEFINE PROPERLY!!
-template <typename T>
-class Mat {
-public:
-    int n; T a[MX][MX];
-    // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
-            }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(long long i=0; i<n; ++i) for(long long j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    Mat pow(long long k) {
-        return pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    T ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
-    void print(string debugname="------") {  // for debug
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-    }
-#else
-    void print(string debugname="------") {}
-#endif
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, M);
-    vp ng;
-    vs S;
-    ll D = 5;
-    rep(i, M) {
-        STRING(s);
-        S.push_back(s);
-    }
-
-    auto make=[&](ll s, ll n) -> string {
-        string t;
-        rep(i, n) {
-            if(s>>i&1) t += 'b';
-            else t += 'a';
+    VL(A, 3);
+    ll ans = 0;
+    while(true) {
+        sort(all(A));
+        if(A[0]==A[2]) Outend(ans+A[0]);
+        if(A[0]!=A[1]) {
+            ll d = A[1]-A[0];
+            A[1] -= d, A[2] -= d;
+            ans += d;
         }
-        reverse(all(t));
-        return t;
-    };
-    auto check=[&](string &s) -> bool {
-        for(auto cs: S) {
-            if(s.find(cs)!=string::npos) return false;
+        de(A)de(ans)
+        sort(all(A));
+        if(A[0]==A[2]) Outend(ans+A[0]);
+        ll d = A[2]-A[1];
+        ll d2 = d/2;
+        if(d2==0) {
+            if(A[1]==0) Pm1
+            A[1]--, A[2]--;
+            ++ans;
+        } else {
+            if(A[0]<d2 || A[1]<d2) Pm1
+            A[0] -= d2, A[1] -= d2, A[2] -= 2*d2;
+            ans += d2*2;
         }
-        return true;
-    };
-
-    if(N<=D) {
-        ll ans = 0;
-        rep(s, 1<<N) {
-            string t = make(s, N);
-            if(check(t)) ++ans;
-        }
-        Outend(ans);
+        de(A)de(ans)
     }
+    // sort(all(A));
+    // if(A[2]==0) Pm0
+    // if(A[1]==0) Pm1
+    // if(A[0]==0) {
+    //     if(A[1]==A[2]) Outend(A[1]);
+    //     else Outend(-1);
+    // }
 
-    mint C[MX][MX];
-    rep(i, MX) rep(j, MX) C[i][j] = 0;
-    ll mask = (1<<D)-1;
+    // ll ans = 0;
+    // ll d = A[1]-A[0];
+    // A[1] -= d, A[2] -= d;
+    // ans += d;
+    // sort(all(A));
 
-    rep(s, MX) {
-        rep(a, 2) {
-            string t = make(s,D);
-            t += a+'a';
-            if(!check(t)) continue;
-            ll ns = (s<<1) + a;
-            ns &= mask;
-            C[ns][s] = 1;
-        }
-    }
-    Mat<mint> A(MX, *C);
-    vm x(MX);
-    rep(i, MX) {
-        string t = make(i, D);
-        if(check(t)) { x[i] = 1; }
-    }
-    auto Apow = A.pow(N-D);
-    auto y = Apow * x;
-    mint ans = 0;
-    rep(i, MX) ans += y[i];
-    Out(ans);
+    // d = A[2]-A[1];
+    // ll d2 = d/2;
+    // if(A[0]<d2) Pm1
+    // if(A[1]<d2) Pm1
+    // A[0] -= d2, A[1] -= d2, A[2] -= 2*d2;
+    // ans += d2*2;
+    // sort(all(A));
+
+    // if(A[0]==A[2]) Outend(ans+A[0]);
+    // if(A[0]==0 && A[1]==0) Pm1
+    // if(A[0]==0) Outend(ans+1);
+
+    // A[1]--, A[2]--;
+    // sort(all(A));
+    // ++ans;
+    // A[1]--, A[2]--;
+    // sort(all(A));
+    // ++ans;
+
+    // ans += A[0];
+    // Out(ans);
+
 
 
 }
