@@ -227,114 +227,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
+template<typename T>
+class SpanBIT {
+    long long size;
+    vector<T> bit;
+    void _add (long long i, T x) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
+        ++i;
+        for (; i<size; i+=i&-i) bit[i] += x;
     }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
+    T _sum (long long i) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
+        ++i;
+        T ret = 0;
+        for (; i>0; i-=i&-i) ret += bit[i];
+        return ret;
     }
-    return ret;
-}
-
-ll solve(string S) {
-    auto v = run_length_encoding(S);
-    if(v[0].first=='0') v.erase(v.begin());
-    if(v.empty()) return 0;
-    if(v.back().first=='1') v.pop_back();
-    if(v.empty()) return 0;
-    ll m = v.size();
-
-    ll one=0;
-    ll ans = 0;
-    for(ll i=0; i<m; i+=2) {
-        auto [c1,n1] = v[i];
-        auto [c2,n2] = v[i+1];
-        one += n1;
-        if(one<=1) {
-            one = 0; continue;
+public:
+    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    // ![CAUTION]   0 <= l,r <= _n
+    void add (long long l, long long r, T x) { // [l,r)
+        if(l<=r) {_add(l, x); _add(r, -x);}
+        else {
+            _add(l, x); _add(size-2, -x);
+            _add(0, x); _add(r, -x);
         }
-        ll n = one/2;
-        ans += n*n2;
-        one = n*2;
     }
-    return ans;
-
-    // vvp p;
-    // vp now;
-    // for(ll i=m-2; i>=0; i-=2) {
-    //     auto [c1,n1] = v[i];
-    //     auto [c2,n2] = v[i+1];
-    //     if(n1==1) {
-    //         p.push_back(now);
-    //         now = vp();
-    //     } else {
-    //         ll n = n1/2;
-    //         now.emplace_back(n2, n);
-    //         if(n1%2) {
-    //             p.push_back(now);
-    //             now = vp();
-    //         }
-    //     }
-    // }
-    // if(now.size()) p.push_back(now);
-    // de(p)
-    // ll ans = 0;
-    // for(auto now: p) {
-    //     ll s = 0;
-    //     for(auto [x,n]: now) {
-    //         s += x;
-    //         ans += s*n;
-    //     }
-    // }
-    // return ans;
-}
-
-ll solve2(string S) {
-    ll ans = 0;
-    while(S.find("110")!=string::npos) {
-        ll idx = S.rfind("110");
-        ++ans;
-        S[idx] = '0';
-        S[idx+1] = '1';
-        S[idx+2] = '1';
+    T get (long long i) {
+        return _sum(i);
     }
-    return ans;
+};
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N, P);
+    mint::set_mod(P);
+    using BIT = SpanBIT<mint>;
+    vector<BIT> dp(N+1, BIT(N+1));
+    dp[0].add(0,1,1);
+
+    vl ten(10, 1);
+    rep(i, 9) ten[i+1] = ten[i]*10;
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        de("-- dprint --")
+        rep(j, N+1) {
+            rep(i, N+1) fprintf(stderr, "%d ", dp[j].get(i).val());
+            cerr<<endl;
+        }
+    #endif
+    };
+
+    rep(j, N) {
+        rep(i, N) {
+            mint now = dp[j].get(i);
+            for(ll p=2; p<=5; ++p) {
+                if(j+p>N) break;
+                ll l = i+ten[p-2], r = i+ten[p-1];
+                if(l>N) continue;
+                chmin(l, N+1), chmin(r, N+1);
+                ll coef = 25;
+                if(i==0) coef = 26;
+                dp[j+p].add(l,r,now*coef);
+            }
+        }
+        // dprint();
+    }
+
+    mint ans = 0;
+    rep(j, N) ans += dp[j].get(N);
+    Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    STRING(S);
-    ll ans = solve(S);
-    Out(ans);
-    // while(true) {
-    //     ll x = rand();
-    //     if(x==0) continue;
-    //     string S;
-    //     while(x) {
-    //         S += x%2 + '0';
-    //         x >>= 1;
-    //     }
-    //     ll ans = solve(S);
-    //     // Out(ans);
-    //     ll ans2 = solve2(S);
-    //     if(ans!=ans2) {
-    //         de(S)
-    //         de2(ans, ans2)
-    //         assert(0);
-    //     }
-    // }
+    solve();
 }
 
 // ### test.cpp ###
