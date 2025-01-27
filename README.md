@@ -2116,3 +2116,4 @@
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
+- [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
