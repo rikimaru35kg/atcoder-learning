@@ -741,7 +741,6 @@
 - なお、一点取得しか必要ない場合、モノイドの結合（op,e）は適当な関数で良い
 - モノイドにはありうるパターンが少なければ全て載せておいて、rotateやswapで変更するという手もある
 ### 例題
-- 基本 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
 - 基本 オセロ（基本+α） [F - Simplified Reversi](https://atcoder.jp/contests/abc179/tasks/abc179_f)
 - 基本 矩形の中に最大何個のりんご？（ど典型） [F - Apples](https://atcoder.jp/contests/abc327/tasks/abc327_f)
 - 基本 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
@@ -1859,6 +1858,11 @@
 ### 例題
 - 基本 [B - ジョイ四人組 (JOI04)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_b)
 
+## 斜め45度を水平垂直に直す
+### 例題
+- 基本 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
+- !要復習 [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
+
 ## 挿入ソート
 - 任意のトランプを取り出して好きな位置に挿入できる場合、LISとの関連が深い
 ### 例題
@@ -2118,4 +2122,3 @@
 - [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
-- [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
