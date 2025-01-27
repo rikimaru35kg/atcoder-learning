@@ -228,22 +228,24 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(X,Y);
-    vp edge;
-    ll v = 0;
-    rep(i, X) {
-        rep(j, Y) {
-            if(j!=0) edge.emplace_back(v, v-1);
-            ++v;
+    LONG(N, D, K);
+    VL(A, N); VL(C, N);
+
+    vvl dp(D+1, vl(K+1, -INF));
+    // vvl edp = dp;
+    dp[0][0] = 0;
+    rep(i, N) {
+        // vvl pdp = edp; swap(pdp, dp);
+        repr(k, K+1) repr(j, D+1){
+            if(dp[j][k]==-INF) continue;
+            // chmax(dp[j][k], pdp[j][k]);
+            if(j<D) chmax(dp[j+1][min(k+C[i],K)], dp[j][k]+A[i]);
         }
     }
-    rep(i, X-1) edge.emplace_back(i*Y, (i+1)*Y);
-    edge.emplace_back(Y*(X-1), 0);
-    printf("%lld %lld\n", X*Y, X*Y);
-    for(auto &[a,b]: edge) {
-        ++a, ++b;
-    }
-    Out(edge);
+
+    ll ans = dp[D][K];
+    if(ans==-INF) PNo
+    Out(ans);
 
 }
 

@@ -227,45 +227,114 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N,M,P,Y);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
     }
-    vl dist(N,INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]<=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-    while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto [nv,c]: from[v]) {
-            push(nv, d+c);
-        }
-    }
-    de(dist)
-    ll ans = 0;
-    rep(i, P) {
-        LONG(d, e); --d;
-        ll money = max(Y-dist[d], 0LL);
-        de2(d, money)
-        chmax(ans, money/e);
-    }
-    Out(ans);
+    return ret;
+}
 
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
+ll solve(string S) {
+    auto v = run_length_encoding(S);
+    if(v[0].first=='0') v.erase(v.begin());
+    if(v.empty()) return 0;
+    if(v.back().first=='1') v.pop_back();
+    if(v.empty()) return 0;
+    ll m = v.size();
+
+    ll one=0;
+    ll ans = 0;
+    for(ll i=0; i<m; i+=2) {
+        auto [c1,n1] = v[i];
+        auto [c2,n2] = v[i+1];
+        one += n1;
+        if(one<=1) {
+            one = 0; continue;
+        }
+        ll n = one/2;
+        ans += n*n2;
+        one = n*2;
+    }
+    return ans;
+
+    // vvp p;
+    // vp now;
+    // for(ll i=m-2; i>=0; i-=2) {
+    //     auto [c1,n1] = v[i];
+    //     auto [c2,n2] = v[i+1];
+    //     if(n1==1) {
+    //         p.push_back(now);
+    //         now = vp();
+    //     } else {
+    //         ll n = n1/2;
+    //         now.emplace_back(n2, n);
+    //         if(n1%2) {
+    //             p.push_back(now);
+    //             now = vp();
+    //         }
+    //     }
+    // }
+    // if(now.size()) p.push_back(now);
+    // de(p)
+    // ll ans = 0;
+    // for(auto now: p) {
+    //     ll s = 0;
+    //     for(auto [x,n]: now) {
+    //         s += x;
+    //         ans += s*n;
+    //     }
+    // }
+    // return ans;
+}
+
+ll solve2(string S) {
+    ll ans = 0;
+    while(S.find("110")!=string::npos) {
+        ll idx = S.rfind("110");
+        ++ans;
+        S[idx] = '0';
+        S[idx+1] = '1';
+        S[idx+2] = '1';
+    }
+    return ans;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    STRING(S);
+    ll ans = solve(S);
+    Out(ans);
+    // while(true) {
+    //     ll x = rand();
+    //     if(x==0) continue;
+    //     string S;
+    //     while(x) {
+    //         S += x%2 + '0';
+    //         x >>= 1;
+    //     }
+    //     ll ans = solve(S);
+    //     // Out(ans);
+    //     ll ans2 = solve2(S);
+    //     if(ans!=ans2) {
+    //         de(S)
+    //         de2(ans, ans2)
+    //         assert(0);
+    //     }
+    // }
 }
 
 // ### test.cpp ###
