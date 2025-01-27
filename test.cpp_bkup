@@ -227,40 +227,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    T _sum (long long i) {
-        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    // ![CAUTION]   0 <= l,r <= _n
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
-        }
-    }
-    T get (long long i) {
-        return _sum(i);
-    }
-};
-
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -273,42 +242,30 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N, P);
-    mint::set_mod(P);
-    using BIT = SpanBIT<mint>;
-    vector<BIT> dp(N+1, BIT(N+1));
-    dp[0].add(0,1,1);
+    LONG(N, M);
+    VS(S, N);
+    rep(i, N-1) rep(j, M) {
+        if(S[i][j]=='.') continue;
+        S[i+1][j] = '#';
+        if(j<M-1) S[i+1][j+1] = '#';
+    }
+    de(S)
 
-    vl ten(10, 1);
-    rep(i, 9) ten[i+1] = ten[i]*10;
-    auto dprint=[&](){
-    #ifdef __DEBUG
-        de("-- dprint --")
-        rep(j, N+1) {
-            rep(i, N+1) fprintf(stderr, "%d ", dp[j].get(i).val());
-            cerr<<endl;
-        }
-    #endif
-    };
+    vvm dp(N+2, vm(M+1));
+    dp[1][M] = 1;
 
-    rep(j, N) {
-        rep(i, N) {
-            mint now = dp[j].get(i);
-            for(ll p=2; p<=5; ++p) {
-                if(j+p>N) break;
-                ll l = i+ten[p-2], r = i+ten[p-1];
-                if(l>N) continue;
-                chmin(l, N+1), chmin(r, N+1);
-                ll coef = 25;
-                if(i==0) coef = 26;
-                dp[j+p].add(l,r,now*coef);
-            }
+    rep1r(j, M) {
+        rep(i, N+2) {
+            // down
+            if(i==0 || (i<N+1 && S[i-1][j-1]=='.')) dp[i+1][j] += dp[i][j];
+            // left
+            if(i) dp[i-1][j-1] += dp[i][j];
         }
-        // dprint();
+        de(dp)
     }
 
     mint ans = 0;
-    rep(j, N) ans += dp[j].get(N);
+    rep(i, N+2) ans += dp[i][0];
     Out(ans);
 
 }

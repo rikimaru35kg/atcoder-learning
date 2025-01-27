@@ -1542,6 +1542,7 @@
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 - !復習価値低 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
+- !要復習 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）
 - x, yが1次を保ったまま変換される場合は、アフィン変換可能
