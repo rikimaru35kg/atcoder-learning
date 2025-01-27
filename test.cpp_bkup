@@ -227,47 +227,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
-void solve() {
-    LONG(H, W);
-    auto ask=[&](ll i, ll j) -> ll {
-        printf("? %lld %lld\n", i+1, j+1);
-        cout<<flush;
-        LONG(d);
-        assert(d!=-1);
-        return d;
-    };
-    auto answer=[&](ll i, ll j) {
-        printf("! %lld %lld\n", i+1, j+1);
-        cout<<flush;
-        exit(0);
-    };
-    if(H==1 && W==1) { answer(0,0); }
-    if(H==1 || W==1) {
-        ll d2 = ask(0,0);
-        rep(i, H) rep(j, W) {
-            if(euclid_dist2({0,0},{i,j})==d2) {
-                answer(i,j);
-            }
+template<typename T>
+class SpanBIT {
+    long long size;
+    vector<T> bit;
+    void _add (long long i, T x) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _add(i,x)");
+        ++i;
+        for (; i<size; i+=i&-i) bit[i] += x;
+    }
+    T _sum (long long i) {
+        if(i<0 || i>=size-1) assert(0&&"Error: not 0<=i<=n in SpanBIT _sum(i)");
+        ++i;
+        T ret = 0;
+        for (; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+public:
+    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    // ![CAUTION]   0 <= l,r <= _n
+    void add (long long l, long long r, T x) { // [l,r)
+        if(l<=r) {_add(l, x); _add(r, -x);}
+        else {
+            _add(l, x); _add(size-2, -x);
+            _add(0, x); _add(r, -x);
         }
     }
-
-    ll d2_1 = ask(0,0);
-    ll d2_2 = ask(0,W-1);
-    rep(i, H) rep(j, W) {
-        if(euclid_dist2({0,0},{i,j})!=d2_1) continue;
-        if(euclid_dist2({0,W-1},{i,j})!=d2_2) continue;
-        answer(i,j);
+    T get (long long i) {
+        return _sum(i);
     }
+};
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N, P);
+    mint::set_mod(P);
+    using BIT = SpanBIT<mint>;
+    vector<BIT> dp(N+1, BIT(N+1));
+    dp[0].add(0,1,1);
+
+    vl ten(10, 1);
+    rep(i, 9) ten[i+1] = ten[i]*10;
+    auto dprint=[&](){
+    #ifdef __DEBUG
+        de("-- dprint --")
+        rep(j, N+1) {
+            rep(i, N+1) fprintf(stderr, "%d ", dp[j].get(i).val());
+            cerr<<endl;
+        }
+    #endif
+    };
+
+    rep(j, N) {
+        rep(i, N) {
+            mint now = dp[j].get(i);
+            for(ll p=2; p<=5; ++p) {
+                if(j+p>N) break;
+                ll l = i+ten[p-2], r = i+ten[p-1];
+                if(l>N) continue;
+                chmin(l, N+1), chmin(r, N+1);
+                ll coef = 25;
+                if(i==0) coef = 26;
+                dp[j+p].add(l,r,now*coef);
+            }
+        }
+        // dprint();
+    }
+
+    mint ans = 0;
+    rep(j, N) ans += dp[j].get(N);
+    Out(ans);
 
 }
 
