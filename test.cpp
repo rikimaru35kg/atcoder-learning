@@ -228,43 +228,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vl idx(N);
-    rep(i, N) idx[A[i]] = i;
-
-    vector<pair<char,ll>> ans;
-    auto op=[&](ll i, ll t) {
-        ans.emplace_back(t-1+'A', i+1);
-        swap(A[i],A[i+t]);
-        swap(idx[A[i]], idx[A[i+t]]);
-    };
-
-    rep(i, N) {
-        if(i%2!=A[i]%2) {
-            ll j = i;
-            while(j>=2) {
-                if((j-2)%2!=A[j-2]%2) break;
-                op(j-2,2);
-                j -= 2;
-            }
-        }
+    LONG(N); VL(A, N);
+    sort(all(A));
+    vl B;
+    rep(i, N-1) {
+        ll x = A[i+1]-A[i];
+        if(x) B.push_back(x);
     }
+    if(B.empty()) Outend(1);
 
-    rep(i, N) { if(i%2!=A[i]%2) { op(i,1); } }
-
-    rep(a, N) {
-        ll i = idx[a];
-        while(i>a) {
-            op(i-2,2);
-            i -= 2;
-        }
+    ll g = 0;
+    for(auto b: B) {
+        g = gcd(g,b);
     }
+    if(g>=2) Outend(1);
+    else Outend(2);
+    // sort(all(B));
+    // ll b0 = B[0];
+    // if(b0==1) Outend(2);
+    // for(auto b: B) {
+    //     if(b%b0!=0) Outend(2);
+    // }
+    // Outend(1);
 
-    Out(ans.size());
-    for(auto [c,i]: ans) {
-        cout << c << ' ' << i << '\n';
-    }
 
 }
 

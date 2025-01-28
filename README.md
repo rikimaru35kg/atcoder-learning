@@ -2104,6 +2104,7 @@
 - [A - AB Palindrome](https://atcoder.jp/contests/arc145/tasks/arc145_a)
 - [B - AB Game](https://atcoder.jp/contests/arc145/tasks/arc145_b)
 - [A - Three Cards](https://atcoder.jp/contests/arc146/tasks/arc146_a)
+- [A - mod M](https://atcoder.jp/contests/arc148/tasks/arc148_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

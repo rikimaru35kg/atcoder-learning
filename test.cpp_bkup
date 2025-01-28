@@ -227,35 +227,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve(ll N, vl A) {
-    multiset<ll> st;
-    rep(i, N) { st.insert(A[i]); }
-    ll ans = 0;
-    while(SIZE(st)>1) {
-        ++ans;
-        auto it1 = st.begin();
-        auto it2 = prev(st.end());
-        auto a = *it1, b = *it2;
-        st.erase(it2);
-        b = b%a;
-        if(b) st.insert(b);
-        de(st)
+void solve() {
+    LONG(N);
+    VLM(A, N);
+    vl idx(N);
+    rep(i, N) idx[A[i]] = i;
+
+    vector<pair<char,ll>> ans;
+    auto op=[&](ll i, ll t) {
+        ans.emplace_back(t-1+'A', i+1);
+        swap(A[i],A[i+t]);
+        swap(idx[A[i]], idx[A[i+t]]);
+    };
+
+    rep(i, N) {
+        if(i%2!=A[i]%2) {
+            ll j = i;
+            while(j>=2) {
+                if((j-2)%2!=A[j-2]%2) break;
+                op(j-2,2);
+                j -= 2;
+            }
+        }
     }
-    Out(ans);
+
+    rep(i, N) { if(i%2!=A[i]%2) { op(i,1); } }
+
+    rep(a, N) {
+        ll i = idx[a];
+        while(i>a) {
+            op(i-2,2);
+            i -= 2;
+        }
+    }
+
+    Out(ans.size());
+    for(auto [c,i]: ans) {
+        cout << c << ' ' << i << '\n';
+    }
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A,N);
-    // vl A;
-    // ll m = 100;
-    // rep(i, N) {
-    //     A.push_back(rand()%m+1);
-    // }
-    solve(N, A);
+    solve();
 }
 
 // ### test.cpp ###
