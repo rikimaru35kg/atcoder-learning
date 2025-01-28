@@ -228,76 +228,64 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    VL(A, 3);
-    ll ans = 0;
-    while(true) {
-        sort(all(A));
-        if(A[0]==A[2]) Outend(ans+A[0]);
-        if(A[0]!=A[1]) {
-            ll d = A[1]-A[0];
-            A[1] -= d, A[2] -= d;
-            ans += d;
-        }
-        de(A)de(ans)
-        sort(all(A));
-        if(A[0]==A[2]) Outend(ans+A[0]);
-        ll d = A[2]-A[1];
-        ll d2 = d/2;
-        if(d2==0) {
-            if(A[1]==0) Pm1
-            A[1]--, A[2]--;
-            ++ans;
-        } else {
-            if(A[0]<d2 || A[1]<d2) Pm1
-            A[0] -= d2, A[1] -= d2, A[2] -= 2*d2;
-            ans += d2*2;
-        }
-        de(A)de(ans)
+    LONG(N,A,B);
+    if(N<=A) {
+        if(N!=A) Pm0
+        Outend(1);
     }
-    // sort(all(A));
-    // if(A[2]==0) Pm0
-    // if(A[1]==0) Pm1
-    // if(A[0]==0) {
-    //     if(A[1]==A[2]) Outend(A[1]);
-    //     else Outend(-1);
-    // }
+    if(A<=B) {
+        ll lose = A-1;
+        ll win = N-lose;
+        Outend(win);
+    }
+    ll lose = A-1;
+    ll win = 0;
+    N -= lose;
+    ll cycle = N/A;
+    win += cycle * B;
+    lose += cycle * (A-B);
+    ll rem = N%A;
+    win += min(B, rem);
+    lose += max(rem-B, 0LL);
+    Out(win);
 
-    // ll ans = 0;
-    // ll d = A[1]-A[0];
-    // A[1] -= d, A[2] -= d;
-    // ans += d;
-    // sort(all(A));
+}
 
-    // d = A[2]-A[1];
-    // ll d2 = d/2;
-    // if(A[0]<d2) Pm1
-    // if(A[1]<d2) Pm1
-    // A[0] -= d2, A[1] -= d2, A[2] -= 2*d2;
-    // ans += d2*2;
-    // sort(all(A));
-
-    // if(A[0]==A[2]) Outend(ans+A[0]);
-    // if(A[0]==0 && A[1]==0) Pm1
-    // if(A[0]==0) Outend(ans+1);
-
-    // A[1]--, A[2]--;
-    // sort(all(A));
-    // ++ans;
-    // A[1]--, A[2]--;
-    // sort(all(A));
-    // ++ans;
-
-    // ans += A[0];
-    // Out(ans);
-
-
-
+void solve2() {
+    LONG(N, A, B);
+    vvl mem(N+1, vl(2, -1));
+    auto f=[&](auto f, ll n, ll t) -> ll {
+        ll &ret = mem[n][t];
+        if(ret!=-1) return ret;
+        if(t==0) {
+            ret = 0;
+            for(ll x=A; n-x>=0; x+=A) {
+                ll res = f(f, n-x, t^1);
+                if(res==1) {
+                    return ret = 1;
+                }
+            }
+        } else {
+            ret = 1;
+            for(ll x=B; n-x>=0; x+=B) {
+                ll res = f(f, n-x, t^1);
+                if(res==0) {
+                    return ret = 0;
+                }
+            }
+        }
+        return ret;
+    };
+    rep1(n, N) {
+        de2(n, f(f, n, 0));
+    }
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     solve();
+    // solve2();
 }
 
 // ### test.cpp ###
