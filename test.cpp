@@ -227,49 +227,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
-    auto dnum=[&](ll x) -> ll {
-        ll ret = 0;
-        while(x) {
-            x /= 10;
-            ++ret;
-        }
-        return ret;
-    };
-
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        ll di = dnum(A[i]), dj = dnum(A[j]);
-        if(di==dj) return A[i]>A[j];
-        else return di>dj;
-    });
-    vl v;
-    rep(j, 3) {
-        ll i = p[j];
-        v.emplace_back(A[i]);
-    }
-    sort(all(v));
+void solve(ll N, vl A) {
+    multiset<ll> st;
+    rep(i, N) { st.insert(A[i]); }
     ll ans = 0;
-    do {
-        string now;
-        rep(i, 3) {
-            now += to_string(v[i]);
-        }
-        ll x = stoll(now);
-        chmax(ans, x);
-    } while(next_permutation(all(v)));
+    while(SIZE(st)>1) {
+        ++ans;
+        auto it1 = st.begin();
+        auto it2 = prev(st.end());
+        auto a = *it1, b = *it2;
+        st.erase(it2);
+        b = b%a;
+        if(b) st.insert(b);
+        de(st)
+    }
     Out(ans);
-
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    VL(A,N);
+    // vl A;
+    // ll m = 100;
+    // rep(i, N) {
+    //     A.push_back(rand()%m+1);
+    // }
+    solve(N, A);
 }
 
 // ### test.cpp ###

@@ -54,7 +54,7 @@
 - 基本 彩色数全探索 [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - 基本 ポリオミオ（Polyomio） [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
 <!-- #############################
-# current review point (where i am now)
+# current review point (where i am now) last submission 2025/1/15
 ############################# -->
 - !復習価値高 [J - 3 人組](https://atcoder.jp/contests/past19-open/tasks/past19_j)
 - !要復習 [joi_flag - 日本情報オリンピック旗](https://atcoder.jp/contests/joisc2012/tasks/joisc2012_joi_flag)
@@ -2127,3 +2127,4 @@
 - [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
+- [A - Max Mod Min](https://atcoder.jp/contests/arc147/tasks/arc147_a)
