@@ -228,43 +228,32 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vl idx(N);
-    rep(i, N) idx[A[i]] = i;
+    LONG(N, M);
 
-    vector<pair<char,ll>> ans;
-    auto op=[&](ll i, ll t) {
-        ans.emplace_back(t-1+'A', i+1);
-        swap(A[i],A[i+t]);
-        swap(idx[A[i]], idx[A[i+t]]);
+    auto getmax=[&](Pr p1, Pr p2) -> Pr {
+        auto [x1,d1] = p1;
+        auto [x2,d2] = p2;
+        if(d1>d2) return p1;
+        if(d1<d2) return p2;
+        if(x1>x2) return p1;
+        return p2;
     };
 
-    rep(i, N) {
-        if(i%2!=A[i]%2) {
-            ll j = i;
-            while(j>=2) {
-                if((j-2)%2!=A[j-2]%2) break;
-                op(j-2,2);
-                j -= 2;
+    Pr cand(-1,-1);
+    rep1(x, 9) {
+        ll now = 0;
+        rep(i, N) {
+            now = (now*10 + x)%M;
+            if(now==0) {
+                cand = getmax(cand, Pr(x,i+1));
             }
         }
     }
-
-    rep(i, N) { if(i%2!=A[i]%2) { op(i,1); } }
-
-    rep(a, N) {
-        ll i = idx[a];
-        while(i>a) {
-            op(i-2,2);
-            i -= 2;
-        }
-    }
-
-    Out(ans.size());
-    for(auto [c,i]: ans) {
-        cout << c << ' ' << i << '\n';
-    }
+    if(cand.first==-1) Pm1
+    string ans;
+    auto [x,d] = cand;
+    rep(i, d) ans += x+'0';
+    Out(ans);
 
 }
 
