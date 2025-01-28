@@ -228,64 +228,48 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,A,B);
-    if(N<=A) {
-        if(N!=A) Pm0
-        Outend(1);
-    }
-    if(A<=B) {
-        ll lose = A-1;
-        ll win = N-lose;
-        Outend(win);
-    }
-    ll lose = A-1;
-    ll win = 0;
-    N -= lose;
-    ll cycle = N/A;
-    win += cycle * B;
-    lose += cycle * (A-B);
-    ll rem = N%A;
-    win += min(B, rem);
-    lose += max(rem-B, 0LL);
-    Out(win);
-
-}
-
-void solve2() {
-    LONG(N, A, B);
-    vvl mem(N+1, vl(2, -1));
-    auto f=[&](auto f, ll n, ll t) -> ll {
-        ll &ret = mem[n][t];
-        if(ret!=-1) return ret;
-        if(t==0) {
-            ret = 0;
-            for(ll x=A; n-x>=0; x+=A) {
-                ll res = f(f, n-x, t^1);
-                if(res==1) {
-                    return ret = 1;
-                }
-            }
-        } else {
-            ret = 1;
-            for(ll x=B; n-x>=0; x+=B) {
-                ll res = f(f, n-x, t^1);
-                if(res==0) {
-                    return ret = 0;
-                }
-            }
+    LONG(N);
+    VL(A, N);
+    auto dnum=[&](ll x) -> ll {
+        ll ret = 0;
+        while(x) {
+            x /= 10;
+            ++ret;
         }
         return ret;
     };
-    rep1(n, N) {
-        de2(n, f(f, n, 0));
+
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll di = dnum(A[i]), dj = dnum(A[j]);
+        if(di==dj) return A[i]>A[j];
+        else return di>dj;
+    });
+    vl v;
+    rep(j, 3) {
+        ll i = p[j];
+        v.emplace_back(A[i]);
     }
+    sort(all(v));
+    ll ans = 0;
+    do {
+        string now;
+        rep(i, 3) {
+            now += to_string(v[i]);
+        }
+        ll x = stoll(now);
+        chmax(ans, x);
+    } while(next_permutation(all(v)));
+    Out(ans);
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     solve();
-    // solve2();
 }
 
 // ### test.cpp ###
