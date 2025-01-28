@@ -228,32 +228,13 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-
-    auto getmax=[&](Pr p1, Pr p2) -> Pr {
-        auto [x1,d1] = p1;
-        auto [x2,d2] = p2;
-        if(d1>d2) return p1;
-        if(d1<d2) return p2;
-        if(x1>x2) return p1;
-        return p2;
-    };
-
-    Pr cand(-1,-1);
-    rep1(x, 9) {
-        ll now = 0;
-        rep(i, N) {
-            now = (now*10 + x)%M;
-            if(now==0) {
-                cand = getmax(cand, Pr(x,i+1));
-            }
-        }
+    LONG(N,a,b,c,d);
+    if(abs(b-c)>=2) PNo
+    if(b==0 && c==0) {
+        if(a && d) PNo
+        PYes
     }
-    if(cand.first==-1) Pm1
-    string ans;
-    auto [x,d] = cand;
-    rep(i, d) ans += x+'0';
-    Out(ans);
+    PYes
 
 }
 

@@ -1596,6 +1596,7 @@
 - 辺の削除クエリの場合
 ### 例題
 - 基本 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
+- !復習価値低 （DPでも解いてみよう） [E - Stamp](https://atcoder.jp/contests/abc329/tasks/abc329_e)
 - 基本 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !要復習 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
@@ -2106,6 +2107,8 @@
 - [A - Three Cards](https://atcoder.jp/contests/arc146/tasks/arc146_a)
 - [A - mod M](https://atcoder.jp/contests/arc148/tasks/arc148_a)
 - [B - Two LIS Sum](https://atcoder.jp/contests/arc149/tasks/arc149_b)
+- [A - Continuous 1](https://atcoder.jp/contests/arc150/tasks/arc150_a)
+- [A - XXYYX](https://atcoder.jp/contests/arc157/tasks/arc157_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

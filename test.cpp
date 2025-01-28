@@ -227,102 +227,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-long long lis_length(vector<T> &a) {
-    int n = a.size(), ret = 0;
-    vector<T> v(n, (ll)3e18);
-    for(int i=0; i<n; ++i) {
-        int idx = lower_bound(v.begin(), v.end(), a[i]) - v.begin();
-        v[idx] = a[i];
-        ret = max(ret, idx+1);
-    }
-    return ret;
-}
-template <typename T>
-long long dis_length(vector<T> &a) {
-    vector<T> b = a;
-    for(auto &x: b) x = -x;
-    long long ret = lis_length(b);
-    return ret;
-}
+void solve() {
+    LONG(N, M);
+    STRING(S, T);
 
-void solve(ll N, vl A, vl B) {
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return A[i]<A[j];
-    });
-
-    ll ans = 0;
-    vl a, b;
-    for(auto i: p) {
-        a.push_back(A[i]);
-        b.push_back(B[i]);
-    }
-    ll lisa = lis_length(a);
-    ll lisb = lis_length(b);
-    chmax(ans, lisa+lisb);
-
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return B[i]<B[j];
-    });
-
-    a = vl(), b = vl();
-    for(auto i: p) {
-        a.push_back(A[i]);
-        b.push_back(B[i]);
-    }
-    lisa = lis_length(a);
-    lisb = lis_length(b);
-    chmax(ans, lisa+lisb);
-    Out(ans);
-}
-
-void solve2(ll N, vl A, vl B) {
-    vl p(N);
-    iota(all(p), 0);
-
-    ll ans = 0;
-    do {
-        vl a, b;
-        rep(i, N) {
-            a.push_back(A[p[i]]);
-            b.push_back(B[p[i]]);
+    vb dp(M);
+    rep(i, N) {
+        if(i==0) {
+            if(S[i]==T[0]) dp[0] = true;
+            continue;
         }
-        ll lisa = lis_length(a);
-        ll lisb = lis_length(b);
-        chmax(ans, lisa+lisb);
-    } while(next_permutation(all(p)));
-    de(ans);
+        vb pdp(M); swap(pdp, dp);
+        rep(j, M) {
+            if(!pdp[j]) continue;
+            // start from T[0];
+            if(S[i]==T[0]) dp[0] = true;
+            // continuous
+            if(j<M-1 && S[i]==T[j+1]) dp[j+1] = true;
+            // dive
+            if(j==M-1) {
+                rep(k, M) if(S[i]==T[k]) dp[k] = true;
+            }
+        }
+        de(dp)
+    }
+
+    if(dp[M-1]) PYes PNo
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VL(A, N);
-    VL(B, N);
-    solve(N,A,B);
-    // while(true) {
-    //     vl A(N), B(N);
-    //     iota(all(A), 1);
-    //     iota(all(B), 1);
-
-    //     rep(i, 10) {
-    //         ll i1 = rand()%N;
-    //         ll i2 = rand()%N;
-    //         swap(A[i1],A[i2]);
-    //     }
-    //     rep(i, 10) {
-    //         ll i1 = rand()%N;
-    //         ll i2 = rand()%N;
-    //         swap(B[i1],B[i2]);
-    //     }
-    //     de(A)de(B)
-    //     solve(N, A, B);
-    //     solve2(N, A, B);
-    // }
+    solve();
 }
 
 // ### test.cpp ###
