@@ -2109,6 +2109,7 @@
 - [B - Two LIS Sum](https://atcoder.jp/contests/arc149/tasks/arc149_b)
 - [A - Continuous 1](https://atcoder.jp/contests/arc150/tasks/arc150_a)
 - [A - XXYYX](https://atcoder.jp/contests/arc157/tasks/arc157_a)
+- [A - Copy and Paste Graph](https://atcoder.jp/contests/arc159/tasks/arc159_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

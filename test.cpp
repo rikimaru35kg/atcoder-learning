@@ -228,31 +228,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    STRING(S, T);
+    LONG(N, K);
+    VVL(A, N, N);
+    de(A)
+    vvl B = A;
+    rep(i, N) rep(j, N) if(B[i][j]==0) B[i][j] = INF;
+    rep(k, N) rep(i, N) rep(j, N) chmin(B[i][j], B[i][k]+B[k][j]);
+    de(B)
 
-    vb dp(M);
-    rep(i, N) {
-        if(i==0) {
-            if(S[i]==T[0]) dp[0] = true;
-            continue;
-        }
-        vb pdp(M); swap(pdp, dp);
-        rep(j, M) {
-            if(!pdp[j]) continue;
-            // start from T[0];
-            if(S[i]==T[0]) dp[0] = true;
-            // continuous
-            if(j<M-1 && S[i]==T[j+1]) dp[j+1] = true;
-            // dive
-            if(j==M-1) {
-                rep(k, M) if(S[i]==T[k]) dp[k] = true;
-            }
-        }
-        de(dp)
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(a,b);
+        a %= N, b %= N;
+        ll d = B[a][b];
+        ch1(d);
+        Out(d);
     }
 
-    if(dp[M-1]) PYes PNo
+    // ll NK = N*K;
+    // vvl X(NK, vl(NK));
+    // rep(ki, K) rep(kj, K) {
+    //     ll si=ki*N, sj=kj*N;
+    //     de2(ki,kj)
+    //     rep(i, N) rep(j, N) {
+    //         X[si+i][sj+j] = A[i][j];
+    //     }
+    // }
+
+    // rep(i, NK) rep(j, NK) if(X[i][j]==0) X[i][j] = INF;
+    // rep(i, NK) X[i][i] = 0;
+    // rep(k, NK) rep(i, NK) rep(j, NK) chmin(X[i][j], X[i][k]+X[k][j]);
+    // de(X)
+
 
 }
 
