@@ -227,102 +227,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void inssort(vl &v, ll i, ll j) {
-    vl ext;
-    repk(k, i, i+2) ext.push_back(v[k]);
-    rep(k, 2) v.erase(v.begin()+i);
-    v.insert(v.begin()+j, all(ext));
-}
-bool sameswap(ll N, vl P) {
-    vb used(N);
-    ll cnt = 0;
-    rep(i, N) {
-        if(used[i]) continue;
-        ll x = i;
-        while(!used[x]) {
-            // de(x)
-            used[x] = true;
-            x = P[x];
-        }
-        cnt ^= 1;
-    }
-    return N%2 == cnt;
-}
-
-#include <atcoder/fenwicktree>
+#include <atcoder/dsu>
 using namespace atcoder;
 
-bool solve(ll N, vl P) {
-    if(N==2) {
-        if(P[0]==0 && P[1]==1) {
-            puts("Yes");
-            Out(0);
-            return true;
-        } else {
-            puts("No");
-            return false;
-        }
+void solve() {
+    LONG(N, M);
+    vp edge;
+    rep(i, M) {
+        LONGM(a,b);
+        edge.emplace_back(a,b);
     }
-    ll cnt = 0;
-    fenwick_tree<ll> tree(N);
-    rep(i, N) {
-        cnt += tree.sum(P[i],N);
-        tree.add(P[i], 1);
+    VL(C, N);
+    dsu uf(N);
+    for(auto [a,b]: edge) {
+        if(C[a]==C[b]) continue;
+        uf.merge(a,b);
     }
-    if(cnt%2) {
-        puts("No"); return false;
+    for(auto [a,b]: edge) {
+        if(C[a]!=C[b]) continue;
+        if(uf.same(a,b)) PYes
     }
+    PNo
 
-    vp ans;
-    auto excute=[&](ll i, ll j) {
-        inssort(P, i, j);
-        ans.emplace_back(i+1, j);
-    };
-    rep(i, N) {
-        if(is_sorted(all(P))) break;
-        ll idx = -1;
-        rep(j, N) if(P[j]==i) idx=j;
-        de(idx)
-        if(idx==N-1) {
-            excute(i, N-2);
-            excute(N-3, i);
-        } else excute(idx, i);
-    }
-    puts("Yes");
-    Out(ans.size());
-    Out(ans);
-    return true;
-}
-
-bool solve2(ll N, vl P) {
-    rep(_, 10000) {
-        ll i = rand()%(N-1);
-        ll j = rand()%(N-1);
-        inssort(P,i,j);
-        if(is_sorted(all(P))) return true;
-    }
-    return false;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(P, N);
-    solve(N, P);
-    // rep(z, 100) {
-    //     vl P(N);
-    //     iota(all(P), 0);
-    //     rep(_, 1000) {
-    //         ll i = rand()%N;
-    //         ll j = rand()%N;
-    //         swap(P[i],P[j]);
-    //     }
-    //     de(P)
-    //     bool b1= solve(N, P);
-    //     bool b2= solve2(N, P);
-    //     de2(b1,b2);
-    // }
+    solve();
 }
 
 // ### test.cpp ###

@@ -2111,6 +2111,7 @@
 - [A - XXYYX](https://atcoder.jp/contests/arc157/tasks/arc157_a)
 - [A - Copy and Paste Graph](https://atcoder.jp/contests/arc159/tasks/arc159_a)
 - [A - Make M](https://atcoder.jp/contests/arc161/tasks/arc161_a)
+- [B - Switching Travel](https://atcoder.jp/contests/arc164/tasks/arc164_b)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
