@@ -227,46 +227,102 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    VVL(A, N, N);
-    de(A)
-    vvl B = A;
-    rep(i, N) rep(j, N) if(B[i][j]==0) B[i][j] = INF;
-    rep(k, N) rep(i, N) rep(j, N) chmin(B[i][j], B[i][k]+B[k][j]);
-    de(B)
+void inssort(vl &v, ll i, ll j) {
+    vl ext;
+    repk(k, i, i+2) ext.push_back(v[k]);
+    rep(k, 2) v.erase(v.begin()+i);
+    v.insert(v.begin()+j, all(ext));
+}
+bool sameswap(ll N, vl P) {
+    vb used(N);
+    ll cnt = 0;
+    rep(i, N) {
+        if(used[i]) continue;
+        ll x = i;
+        while(!used[x]) {
+            // de(x)
+            used[x] = true;
+            x = P[x];
+        }
+        cnt ^= 1;
+    }
+    return N%2 == cnt;
+}
 
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(a,b);
-        a %= N, b %= N;
-        ll d = B[a][b];
-        ch1(d);
-        Out(d);
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
+bool solve(ll N, vl P) {
+    if(N==2) {
+        if(P[0]==0 && P[1]==1) {
+            puts("Yes");
+            Out(0);
+            return true;
+        } else {
+            puts("No");
+            return false;
+        }
+    }
+    ll cnt = 0;
+    fenwick_tree<ll> tree(N);
+    rep(i, N) {
+        cnt += tree.sum(P[i],N);
+        tree.add(P[i], 1);
+    }
+    if(cnt%2) {
+        puts("No"); return false;
     }
 
-    // ll NK = N*K;
-    // vvl X(NK, vl(NK));
-    // rep(ki, K) rep(kj, K) {
-    //     ll si=ki*N, sj=kj*N;
-    //     de2(ki,kj)
-    //     rep(i, N) rep(j, N) {
-    //         X[si+i][sj+j] = A[i][j];
-    //     }
-    // }
+    vp ans;
+    auto excute=[&](ll i, ll j) {
+        inssort(P, i, j);
+        ans.emplace_back(i+1, j);
+    };
+    rep(i, N) {
+        if(is_sorted(all(P))) break;
+        ll idx = -1;
+        rep(j, N) if(P[j]==i) idx=j;
+        de(idx)
+        if(idx==N-1) {
+            excute(i, N-2);
+            excute(N-3, i);
+        } else excute(idx, i);
+    }
+    puts("Yes");
+    Out(ans.size());
+    Out(ans);
+    return true;
+}
 
-    // rep(i, NK) rep(j, NK) if(X[i][j]==0) X[i][j] = INF;
-    // rep(i, NK) X[i][i] = 0;
-    // rep(k, NK) rep(i, NK) rep(j, NK) chmin(X[i][j], X[i][k]+X[k][j]);
-    // de(X)
-
-
+bool solve2(ll N, vl P) {
+    rep(_, 10000) {
+        ll i = rand()%(N-1);
+        ll j = rand()%(N-1);
+        inssort(P,i,j);
+        if(is_sorted(all(P))) return true;
+    }
+    return false;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    VLM(P, N);
+    solve(N, P);
+    // rep(z, 100) {
+    //     vl P(N);
+    //     iota(all(P), 0);
+    //     rep(_, 1000) {
+    //         ll i = rand()%N;
+    //         ll j = rand()%N;
+    //         swap(P[i],P[j]);
+    //     }
+    //     de(P)
+    //     bool b1= solve(N, P);
+    //     bool b2= solve2(N, P);
+    //     de2(b1,b2);
+    // }
 }
 
 // ### test.cpp ###

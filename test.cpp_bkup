@@ -227,30 +227,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll solve() {
-    VL(A,3);
-    sort(all(A));
-    repr(i, 3) A[i] -= A[0];
-    rep(i, 3) { if(A[i]%2) return -1; }
-    rep(i, 3) { A[i] /= 2; }
-    ll s = accumulate(all(A), 0LL);
-    if(s%3) return -1;
-    ll t = s/3;
-    ll p = 0, m = 0;
-    rep(i, 3) {
-        if(A[i]>t) m += A[i]-t;
-        if(A[i]<t) p += t-A[i];
+void solve() {
+    LONG(N); VLM(A, N);
+    ll mx = -1;
+    ll ans = 0;
+    vl P(N);
+    rep(i, N) P[A[i]] = i;
+    rep(i, N) {
+        ll p = P[i];
+        if(mx<p) {
+            ++ans;
+        }
+        chmax(mx, p);
     }
-    return p;
+    Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(T);
-    rep(i, T) {
-        Out(solve());
-    }
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

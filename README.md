@@ -2110,6 +2110,7 @@
 - [A - Continuous 1](https://atcoder.jp/contests/arc150/tasks/arc150_a)
 - [A - XXYYX](https://atcoder.jp/contests/arc157/tasks/arc157_a)
 - [A - Copy and Paste Graph](https://atcoder.jp/contests/arc159/tasks/arc159_a)
+- [A - Make M](https://atcoder.jp/contests/arc161/tasks/arc161_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2135,3 +2136,4 @@
 - [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
 - [A - Max Mod Min](https://atcoder.jp/contests/arc147/tasks/arc147_a)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
+- [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
