@@ -227,27 +227,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 void solve() {
-    LONG(N, M);
-    vp edge;
-    rep(i, M) {
-        LONGM(a,b);
-        edge.emplace_back(a,b);
+    LONG(N);
+    VL(A, N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(p);
+        from[p].emplace_back(i+1);
     }
-    VL(C, N);
-    dsu uf(N);
-    for(auto [a,b]: edge) {
-        if(C[a]==C[b]) continue;
-        uf.merge(a,b);
+
+    vl dist(N, -1);
+    auto dfs=[&](auto f, ll v, ll d=0) -> void {
+        dist[v] = d;
+        for(auto nv: from[v]) {
+            f(f, nv, d+1);
+        }
+    };
+    dfs(dfs, 0);
+    vl tot(N);
+    rep(i, N) {
+        tot[dist[i]] += A[i];
     }
-    for(auto [a,b]: edge) {
-        if(C[a]!=C[b]) continue;
-        if(uf.same(a,b)) PYes
+    repr(i, N) {
+        if(tot[i]==0) continue;
+        if(tot[i]>0) Outend("+");
+        else Outend("-");
     }
-    PNo
+    Out(0);
 
 }
 

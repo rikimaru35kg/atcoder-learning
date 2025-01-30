@@ -227,46 +227,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
+void solve() {
+    LONG(N);
+    STRING(S);
+    ll cnt = 0, ans = 0;
+    for(auto c: S) {
+        if(c=='<') {
+            cnt = 0;
+        } else {
+            ++cnt;
+            ans += cnt;
+        }
     }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
+    Out(ans);
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
-bool solve() {
-    LONG(N, K);
-    auto v = separate_digit(N, 3);
-    ll cnt = 0;
-    for(auto x: v) cnt += x;
-    if(cnt>K) return false;
-    return cnt%2==K%2;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) {
-        if(solve()) puts("Yes");
-        else puts("No");
-    }
+    solve();
 }
 
 // ### test.cpp ###

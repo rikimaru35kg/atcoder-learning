@@ -2112,6 +2112,7 @@
 - [A - Copy and Paste Graph](https://atcoder.jp/contests/arc159/tasks/arc159_a)
 - [A - Make M](https://atcoder.jp/contests/arc161/tasks/arc161_a)
 - [B - Switching Travel](https://atcoder.jp/contests/arc164/tasks/arc164_b)
+- 競プロ知らない人にパズル問として紹介する際に使えそう [A - Replace C or Swap AB](https://atcoder.jp/contests/arc166/tasks/arc166_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2138,3 +2139,4 @@
 - [A - Max Mod Min](https://atcoder.jp/contests/arc147/tasks/arc147_a)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
 - [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
+- [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
