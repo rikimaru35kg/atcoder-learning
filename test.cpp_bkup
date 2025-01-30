@@ -228,61 +228,35 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W, N);
-    VL(A, N);
-    ll M = 26;
+    LONG(N, C); VL(A, N);
+    ll tot = accumulate(all(A), 0LL);
+    ll ans = tot;
 
-    auto mult=[&](vl &v, ll x) {
-        for(auto &c: v) c *= x;
-    };
-    auto merge=[&](vl &v1, vl &v2) {
-        rep(i, M) v1[i] += v2[i];
-    };
-
-    map<Pr,vl> mp;
-    auto f=[&](auto f, ll h, ll w) -> vl {
-        if(h==0 || w==0) {
-            vl ret(M);
-            return ret;
+    auto getmax=[&](vl &A) -> ll {
+        ll slmin = 0;
+        ll sr = 0;
+        ll ret = -INF;
+        rep(i, N) {
+            sr += A[i];
+            chmax(ret, sr-slmin);
+            chmin(slmin, sr);
         }
-        if(mp.count({h,w})) return mp[{h,w}];
-        vl &ret = mp[{h,w}];
-        ret.resize(M,0);
-        ll level=0;
-        ll lim = min(h,w);
-        while((1LL<<(level+1))<=lim) level+=1;
-        chmin(level, M-1);
-        ll d = 1LL<<level;
-        ll n1 = h/d, n2 = w/d;
-        ret[level] += n1*n2;
-
-        vl res1 = f(f, d, w%d);
-        mult(res1, n1);
-        vl res2 = f(f, h%d, d);
-        mult(res2, n2);
-        vl res3 = f(f, h%d, w%d);
-
-        merge(ret, res1);
-        merge(ret, res2);
-        merge(ret, res3);
         return ret;
     };
-    vl cnt = f(f, H, W);
-    de(cnt)
 
-    sort(allr(A));
-    ll level = M-1;
-    rep(i, N) {
-        while(A[i]<level) {
-            cnt[level-1] += cnt[level]*4;
-            cnt[level] = 0;
-            --level;
-        }
-        cnt[level]--;
-        if(cnt[level]<0) PNo
+    if(C>0) {
+        ll mx = getmax(A);
+        ll sum = tot + (C-1)*mx;
+        de3(tot, mx, sum)
+        chmax(ans, sum);
+    } else {
+        rep(i, N) A[i] = -A[i];
+        ll mn = -getmax(A);
+        ll sum = tot + (C-1)*mn;
+        chmax(ans, sum);
+        rep(i, N) A[i] = -A[i];
     }
-    de(cnt)
-    PYes
+    Out(ans);
 
 }
 

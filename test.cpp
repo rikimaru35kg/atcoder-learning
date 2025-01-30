@@ -227,73 +227,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+void solve() {
+    LONG(N);
+    VLM(P, N);
+    STRING(S);
+    vl A;
+    for(auto c: S) {
+        if(c=='L') A.push_back(0);
+        if(c=='R') A.push_back(1);
+        if(c=='?') A.push_back(-1);
     }
-    return ret;
-}
+    auto idx=[&](ll i) -> ll { return Percent(i, N); };
 
-ll solve(ll K) {
-    ll d=1, n=9;
-    ll tot = n;
-    while(K>tot) {
-        d++, n*=9, tot += n;
-    }
-    if(d==1) {
-        return K;
-    }
-    K -= tot-n;
-    // K--;
-    auto v = separate_digit(K, 9, d);
-    vl nine(20, 1);
-    rep(i, 19) nine[i+1] = nine[i]*9;
-    assert(SIZE(v)==d);
-    ll lx = 0;
-    ll ans = 0;
-    rep(i, d) {
-        ll rd = d-1-i;
-        for(ll x=0; x<=9; ++x) {
-            if(x==lx) continue;
-            if(K>nine[rd]) {
-                K -= nine[rd]; continue;
+    auto calc=[&](ll c=0) -> mint {
+        mint ret = 1;
+        vb taken(N);
+        rep(i, N) {
+            ll p = P[i];
+            if(taken[idx(p+c)]) return 0;
+            if(!taken[idx(p+1-c)]) {
+                if(A[p]!=-1 && A[p]!=c) return 0;
+            } else {
+                if(A[p]==-1) ret *= 2;
             }
-            ans = ans*10 + x;
-            lx = x;
-            break;
+            taken[idx(p+c)] = true;
+            de(taken)
         }
-    }
-    return ans;
+        de(c)
+        return ret;
+    };
+
+    mint ans = calc(0) + calc(1);
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep1(i, T) {
-        LONG(K);
-        // ll K = i;
-        ll ans = solve(K);
-        Out(ans);
-        // printf("%lld %lld\n", K, ans);
-    }
+    solve();
 }
 
 // ### test.cpp ###

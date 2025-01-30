@@ -2144,3 +2144,4 @@
 - [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
 - [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
+- [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
