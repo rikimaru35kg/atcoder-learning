@@ -2116,6 +2116,7 @@
 - [B - Switching Travel](https://atcoder.jp/contests/arc164/tasks/arc164_b)
 - 競プロ知らない人にパズル問として紹介する際に使えそう [A - Replace C or Swap AB](https://atcoder.jp/contests/arc166/tasks/arc166_a)
 - [A - Chocolate](https://atcoder.jp/contests/arc172/tasks/arc172_a)
+- [C - Routing](https://atcoder.jp/contests/arc177/tasks/arc177_c)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2145,3 +2146,4 @@
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
 - [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
 - [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
+- [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)

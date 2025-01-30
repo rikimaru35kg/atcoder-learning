@@ -227,35 +227,17 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
 void solve() {
-    LONG(N, C); VL(A, N);
-    ll tot = accumulate(all(A), 0LL);
-    ll ans = tot;
-
-    auto getmax=[&](vl &A) -> ll {
-        ll slmin = 0;
-        ll sr = 0;
-        ll ret = -INF;
-        rep(i, N) {
-            sr += A[i];
-            chmax(ret, sr-slmin);
-            chmin(slmin, sr);
-        }
-        return ret;
-    };
-
-    if(C>0) {
-        ll mx = getmax(A);
-        ll sum = tot + (C-1)*mx;
-        de3(tot, mx, sum)
-        chmax(ans, sum);
-    } else {
-        rep(i, N) A[i] = -A[i];
-        ll mn = -getmax(A);
-        ll sum = tot + (C-1)*mn;
-        chmax(ans, sum);
-        rep(i, N) A[i] = -A[i];
+    LONG(N);
+    STRING(S);
+    string ans;
+    repr(i, N) {
+        if(S[i]=='0') continue;
+        ans += string(i+1, 'A');
+        ans += string(i, 'B');
     }
+    Out(ans.size());
     Out(ans);
 
 }

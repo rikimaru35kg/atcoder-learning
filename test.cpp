@@ -227,51 +227,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
     LONG(N);
-    VLM(P, N);
-    STRING(S);
-    vl A;
-    for(auto c: S) {
-        if(c=='L') A.push_back(0);
-        if(c=='R') A.push_back(1);
-        if(c=='?') A.push_back(-1);
-    }
-    auto idx=[&](ll i) -> ll { return Percent(i, N); };
+    VS(S, N);
 
-    auto calc=[&](ll c=0) -> mint {
-        mint ret = 1;
-        vb taken(N);
-        rep(i, N) {
-            ll p = P[i];
-            if(taken[idx(p+c)]) return 0;
-            if(!taken[idx(p+1-c)]) {
-                if(A[p]!=-1 && A[p]!=c) return 0;
-            } else {
-                if(A[p]==-1) ret *= 2;
+    auto calc=[&](vs &S, char c) -> ll {
+        vvl dist(N, vl(N, INF));
+        deque<Pr> que;
+        auto push=[&](ll i, ll j, ll d, bool fr) {
+            if(dist[i][j]<=d) return;
+            dist[i][j] = d;
+            if(fr) que.emplace_front(i, j);
+            else que.emplace_back(i, j);
+        };
+        push(0, 0, 0, true);
+        while(que.size()) {
+            auto [i,j] = que.front(); que.pop_front();
+            ll d = dist[i][j];
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,N,N)) continue;
+                ll nd = d;
+                if(S[ni][nj]!=c) nd++;
+                push(ni,nj,nd,d==nd);
             }
-            taken[idx(p+c)] = true;
-            de(taken)
         }
-        de(c)
-        return ret;
+        return dist[N-1][N-1];
     };
 
-    mint ans = calc(0) + calc(1);
+    ll ans = calc(S, 'R');
+    reverse(all(S));
+    ans += calc(S, 'B');
+    reverse(all(S));
     Out(ans);
 
 }
