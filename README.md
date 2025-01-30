@@ -1666,6 +1666,7 @@
 - 基本 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
 - !復習価値中 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
 - !復習価値低 [F - L番目のK番目の数 (LthKthNumber)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_f)
+- !復習価値高 [ A - Neq Number](https://atcoder.jp/contests/arc173/tasks/arc173_a)
 - !復習価値低 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 
 ## 偶奇に注目

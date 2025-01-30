@@ -227,69 +227,73 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(H, W, N);
-    VL(A, N);
-    ll M = 26;
-
-    auto mult=[&](vl &v, ll x) {
-        for(auto &c: v) c *= x;
-    };
-    auto merge=[&](vl &v1, vl &v2) {
-        rep(i, M) v1[i] += v2[i];
-    };
-
-    map<Pr,vl> mp;
-    auto f=[&](auto f, ll h, ll w) -> vl {
-        if(h==0 || w==0) {
-            vl ret(M);
-            return ret;
-        }
-        if(mp.count({h,w})) return mp[{h,w}];
-        vl &ret = mp[{h,w}];
-        ret.resize(M,0);
-        ll level=0;
-        ll lim = min(h,w);
-        while((1LL<<(level+1))<=lim) level+=1;
-        chmin(level, M-1);
-        ll d = 1LL<<level;
-        ll n1 = h/d, n2 = w/d;
-        ret[level] += n1*n2;
-
-        vl res1 = f(f, d, w%d);
-        mult(res1, n1);
-        vl res2 = f(f, h%d, d);
-        mult(res2, n2);
-        vl res3 = f(f, h%d, w%d);
-
-        merge(ret, res1);
-        merge(ret, res2);
-        merge(ret, res3);
-        return ret;
-    };
-    vl cnt = f(f, H, W);
-    de(cnt)
-
-    sort(allr(A));
-    ll level = M-1;
-    rep(i, N) {
-        while(A[i]<level) {
-            cnt[level-1] += cnt[level]*4;
-            cnt[level] = 0;
-            --level;
-        }
-        cnt[level]--;
-        if(cnt[level]<0) PNo
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    de(cnt)
-    PYes
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+ll solve(ll K) {
+    ll d=1, n=9;
+    ll tot = n;
+    while(K>tot) {
+        d++, n*=9, tot += n;
+    }
+    if(d==1) {
+        return K;
+    }
+    K -= tot-n;
+    // K--;
+    auto v = separate_digit(K, 9, d);
+    vl nine(20, 1);
+    rep(i, 19) nine[i+1] = nine[i]*9;
+    assert(SIZE(v)==d);
+    ll lx = 0;
+    ll ans = 0;
+    rep(i, d) {
+        ll rd = d-1-i;
+        for(ll x=0; x<=9; ++x) {
+            if(x==lx) continue;
+            if(K>nine[rd]) {
+                K -= nine[rd]; continue;
+            }
+            ans = ans*10 + x;
+            lx = x;
+            break;
+        }
+    }
+    return ans;
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep1(i, T) {
+        LONG(K);
+        // ll K = i;
+        ll ans = solve(K);
+        Out(ans);
+        // printf("%lld %lld\n", K, ans);
+    }
 }
 
 // ### test.cpp ###
