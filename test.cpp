@@ -227,40 +227,135 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(p);
-        from[p].emplace_back(i+1);
-    }
-
-    vl dist(N, -1);
-    auto dfs=[&](auto f, ll v, ll d=0) -> void {
-        dist[v] = d;
-        for(auto nv: from[v]) {
-            f(f, nv, d+1);
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
-    };
-    dfs(dfs, 0);
-    vl tot(N);
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve(ll N, vl A) {
+    ll M = 10;
+
+    ll bad = 0;
     rep(i, N) {
-        tot[dist[i]] += A[i];
+        set<ll> past, ok;
+        // de(i)
+        for(ll j=i; j<N && j<i+2*M; ++j) {
+            // de(past)de(ok)
+            if(!ok.count(A[j])) ++bad;
+            else break;
+
+            for(auto x: past) {
+                ll nxt = 2*A[j]-x;
+                if(nxt<0 || nxt>=M) continue;
+                ok.insert(nxt);
+            }
+            past.insert(A[j]);
+        }
+        // de(bad)
+        // de("----------")
     }
-    repr(i, N) {
-        if(tot[i]==0) continue;
-        if(tot[i]>0) Outend("+");
-        else Outend("-");
-    }
-    Out(0);
+    // de(bad)
+    ll ans = N*(N+1)/2 - bad;
+    Out(ans);
+
+    // auto good=[&](ll l, ll r) -> bool {
+    //     repk(i, l, r) repk(j, i+1, r) repk(k, j+1, r) {
+    //         if(A[k]-A[j]==A[j]-A[i]) return true;
+    //     }
+    //     return false;
+    // };
+
+    // ll tmp = 0;
+    // rep(l, N) repk(r, l+1, N+1) {
+    //     if(good(l,r)) ++tmp;
+    // }
+    // de(tmp)
+
+    // if(ans!=tmp) {
+    //     de(A)
+    //     de2(ans,tmp)
+    //     assert(0);
+    // }
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    VLM(A,N);
+    solve(N, A);
+    // while(true) {
+    //     vl A(N);
+    //     rep(i, N) A[i] = rand()%10;
+    //     solve(N, A);
+    // }
 }
 
 // ### test.cpp ###
