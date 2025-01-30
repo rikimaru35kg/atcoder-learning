@@ -2114,6 +2114,7 @@
 - [A - Make M](https://atcoder.jp/contests/arc161/tasks/arc161_a)
 - [B - Switching Travel](https://atcoder.jp/contests/arc164/tasks/arc164_b)
 - 競プロ知らない人にパズル問として紹介する際に使えそう [A - Replace C or Swap AB](https://atcoder.jp/contests/arc166/tasks/arc166_a)
+- [A - Chocolate](https://atcoder.jp/contests/arc172/tasks/arc172_a)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

@@ -227,57 +227,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll solve(ll N, string S, string T) {
-    return 0;
-
-}
-
-ll solve2(ll N, string S, string T) {
-    vl dist(1<<N, -1);
-    queue<ll> que;
-    auto gid=[&](string &s) -> ll {
-        ll ret = 0;
-        for(auto c: s) {
-            ll x = 0;
-            if(c=='B') x = 1;
-            ret = ret*2 + x;
-        }
-        return ret;
-    };
-    auto push=[&](ll v, ll d) {
-        if(dist[v]!=-1) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(gid(S), 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        rep(i, N) rep(j, i) {
-            ll nv = v;
-            nv |= 1LL<<j;
-            nv &= ~(1LL<<i);
-            push(nv, dist[v]+1);
-        }
-    }
-    return dist[gid(T)];
+bool solve() {
+    LONG(N, A, B);
+    ll H = N - A, W = N-A;
+    if(H<0) return false;
+    ll limH = Divceil(N,2LL);
+    chmin(limH, H);
+    if(B>W*limH) return false;
+    return true;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    rep(s, 1LL<<N) rep(t, 1LL<<N) {
-        string S, T;
-        rep(i, N) {
-            if(~s>>i&1) S += 'A';
-            else S += 'B';
-            if(~t>>i&1) T += 'A';
-            else T += 'B';
-        }
-        ll ans = solve2(N,S,T);
-        de3(S,T,ans)
+    LONG(T);
+    rep(i, T) {
+        if(solve()) puts("Yes");
+        else puts("No");
     }
-    // solve();
 }
 
 // ### test.cpp ###

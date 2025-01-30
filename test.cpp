@@ -227,135 +227,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+void solve() {
+    LONG(H, W, N);
+    VL(A, N);
+    ll M = 26;
 
-void solve(ll N, vl A) {
-    ll M = 10;
+    auto mult=[&](vl &v, ll x) {
+        for(auto &c: v) c *= x;
+    };
+    auto merge=[&](vl &v1, vl &v2) {
+        rep(i, M) v1[i] += v2[i];
+    };
 
-    ll bad = 0;
+    map<Pr,vl> mp;
+    auto f=[&](auto f, ll h, ll w) -> vl {
+        if(h==0 || w==0) {
+            vl ret(M);
+            return ret;
+        }
+        if(mp.count({h,w})) return mp[{h,w}];
+        vl &ret = mp[{h,w}];
+        ret.resize(M,0);
+        ll level=0;
+        ll lim = min(h,w);
+        while((1LL<<(level+1))<=lim) level+=1;
+        chmin(level, M-1);
+        ll d = 1LL<<level;
+        ll n1 = h/d, n2 = w/d;
+        ret[level] += n1*n2;
+
+        vl res1 = f(f, d, w%d);
+        mult(res1, n1);
+        vl res2 = f(f, h%d, d);
+        mult(res2, n2);
+        vl res3 = f(f, h%d, w%d);
+
+        merge(ret, res1);
+        merge(ret, res2);
+        merge(ret, res3);
+        return ret;
+    };
+    vl cnt = f(f, H, W);
+    de(cnt)
+
+    sort(allr(A));
+    ll level = M-1;
     rep(i, N) {
-        set<ll> past, ok;
-        // de(i)
-        for(ll j=i; j<N && j<i+2*M; ++j) {
-            // de(past)de(ok)
-            if(!ok.count(A[j])) ++bad;
-            else break;
-
-            for(auto x: past) {
-                ll nxt = 2*A[j]-x;
-                if(nxt<0 || nxt>=M) continue;
-                ok.insert(nxt);
-            }
-            past.insert(A[j]);
+        while(A[i]<level) {
+            cnt[level-1] += cnt[level]*4;
+            cnt[level] = 0;
+            --level;
         }
-        // de(bad)
-        // de("----------")
+        cnt[level]--;
+        if(cnt[level]<0) PNo
     }
-    // de(bad)
-    ll ans = N*(N+1)/2 - bad;
-    Out(ans);
-
-    // auto good=[&](ll l, ll r) -> bool {
-    //     repk(i, l, r) repk(j, i+1, r) repk(k, j+1, r) {
-    //         if(A[k]-A[j]==A[j]-A[i]) return true;
-    //     }
-    //     return false;
-    // };
-
-    // ll tmp = 0;
-    // rep(l, N) repk(r, l+1, N+1) {
-    //     if(good(l,r)) ++tmp;
-    // }
-    // de(tmp)
-
-    // if(ans!=tmp) {
-    //     de(A)
-    //     de2(ans,tmp)
-    //     assert(0);
-    // }
+    de(cnt)
+    PYes
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A,N);
-    solve(N, A);
-    // while(true) {
-    //     vl A(N);
-    //     rep(i, N) A[i] = rand()%10;
-    //     solve(N, A);
-    // }
+    solve();
 }
 
 // ### test.cpp ###
