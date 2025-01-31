@@ -227,18 +227,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 void solve() {
-    LONG(N);
-    STRING(S);
-    string ans;
-    repr(i, N) {
-        if(S[i]=='0') continue;
-        ans += string(i+1, 'A');
-        ans += string(i, 'B');
+    LONG(N, K);
+
+    vl A;
+    vl cnt(N+1, K);
+    cnt[0] = 0;
+    if(N%2) {
+        while(cnt[N/2+1]) {
+            A.push_back(N/2+1);
+            cnt[N/2+1]--;
+        }
+        if(cnt[N/2]) {
+            A.push_back(N/2);
+            cnt[N/2]--;
+        }
+        rep1r(i, N) {
+            while(cnt[i]) {
+                A.push_back(i);
+                cnt[i]--;
+            }
+        }
+        Out(A);
+    } else {
+        A.push_back(N/2);
+        cnt[N/2]--;
+        rep1r(i, N) {
+            while(cnt[i]) {
+                A.push_back(i);
+                cnt[i]--;
+            }
+        }
+        Out(A);
     }
-    Out(ans.size());
-    Out(ans);
+    // vl A;
+    // rep1(i, N) {
+    //     rep1(j, K) {
+    //         A.push_back(i);
+    //     }
+    // }
+    // sort(all(A));
+    // ll S = 0;
+    // do {++S;} while(next_permutation(all(A)));
+    // cerr<<endl;
+    // de(S)
+    // ll n = 0;
+    // do {
+    //     if(n==(S-1)/2) {de(A)}
+    //     ++n;
+    // } while(next_permutation(all(A)));
 
 }
 

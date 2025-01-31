@@ -228,45 +228,51 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VS(S, N);
+    LONG(N, M);
+    ll S = N*(N+1)%M;
+    if(S==0 || S>N) {
+        puts("Alice"); return;
+    } else puts("Bob");
 
-    auto calc=[&](vs &S, char c) -> ll {
-        vvl dist(N, vl(N, INF));
-        deque<Pr> que;
-        auto push=[&](ll i, ll j, ll d, bool fr) {
-            if(dist[i][j]<=d) return;
-            dist[i][j] = d;
-            if(fr) que.emplace_front(i, j);
-            else que.emplace_back(i, j);
-        };
-        push(0, 0, 0, true);
-        while(que.size()) {
-            auto [i,j] = que.front(); que.pop_front();
-            ll d = dist[i][j];
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,N,N)) continue;
-                ll nd = d;
-                if(S[ni][nj]!=c) nd++;
-                push(ni,nj,nd,d==nd);
-            }
-        }
-        return dist[N-1][N-1];
-    };
 
-    ll ans = calc(S, 'R');
-    reverse(all(S));
-    ans += calc(S, 'B');
-    reverse(all(S));
-    Out(ans);
+
+    // vvc res(N+1, vc(M+1));
+    // rep1(n, N) repk(m, n+1, M+1) {
+    //     auto f=[&](auto f, vb a, vb b, ll sum) -> bool {
+    //         ll cnt = 0;
+    //         rep(i, n) if(a[i]) ++cnt;
+    //         if(cnt==0) return true;
+
+    //         bool ret = false;
+    //         rep(i, n) {
+    //             if(!a[i]) continue;
+    //             if((i+1+sum)%m==0) continue;
+    //             a[i] = false;
+    //             bool r = f(f, b, a, (sum+i+1)%m);
+    //             if(!r) ret = true;
+    //             a[i] = true;
+    //         }
+    //         return ret;
+    //     };
+    //     vb a(n, true), b(n, true);
+    //     if(f(f, a, b, 0)) res[n][m] = 'A';
+    //     else res[n][m] = 'B';
+    // }
+    // rep1(n, N) {
+    //     rep1(m, M) {
+    //         if(m<=n) cout<<"  ";
+    //         else cout<<res[n][m]<< ' ';
+    //     }
+    //     cout<<endl;
+    // }
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i , T) solve();
 }
 
 // ### test.cpp ###
