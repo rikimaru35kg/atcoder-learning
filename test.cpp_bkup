@@ -227,13 +227,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 void solve() {
     LONG(N);
-    VS(S, N);
-    rep(i, N) reverse(all(S[i]));
-    sort(all(S));
-    rep(i, N) reverse(all(S[i]));
-    Out(S);
+    VPD(P, N);
+    db ans = 0;
+    rep(i, N) repk(j, i+1, N) {
+        db now = euclid_distd(P[i], P[j]);
+        chmax(ans, now);
+    }
+    Out(ans);
 
 }
 
