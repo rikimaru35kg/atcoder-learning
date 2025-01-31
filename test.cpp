@@ -213,7 +213,7 @@ const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
+const double EPS = 1e-10;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -227,57 +227,92 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Date {
-    int y, m, d;
-    vector<int> mon, mon_cum;
-    Date(int y, int m, int d): y(y), m(m), d(d), mon(12), mon_cum(13) {
-        mon = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        for(int i=0; i<12; ++i) mon_cum[i+1] = mon_cum[i] + mon[i];
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    int total_days() {
-        int ret = year_to_day(y-1) + mon_cum[m-1] + d;
-        if(is_leap(y) && m>=3) ++ret;
-        ret += 6;  // fine adjustment so that Monday = 0
-        return ret;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    int weekday() {  // 0:Monday - 6:Sunday
-        int ret = total_days() % 7;
-        return ret;
-    }
-    int year_to_day(int y) {
-        int ret = y*365; ret += y/4; ret -= y/100; ret += y/400;
-        return ret;
-    }
-    bool is_leap(int y) {
-        if(y%400==0) return true;
-        if(y%4==0 && y%100!=0) return true;
-        return false;
-    }
-    tuple<int,int,int> get_day() {
-        return {y,m,d};
-    }
-    void inc_day() { // +1day
-        if(m==12 && d==31) { ++y, m=1, d=1; return; }
-        int lim = mon[m-1];
-        if(is_leap(y) && m==2) ++lim;
-        if(d==lim) {++m, d=1; return;}
-        ++d;
-    };
-};
+    return ok;
+}
 
 void solve() {
-    int Y, M, D;
-    scanf("%d/%d/%d", &Y, &M, &D);
-    de3(Y,M,D)
-    Date d(Y,M,D);
-    while(true) {
-        auto [y,m,da] = d.get_day();
-        de3(y,m,da)
-        if(y%(m*da)==0) break;
-        d.inc_day();
+    LONG(N, M);
+    VS(S, N);
+    ll si=-1, sj=-1;
+    ll gi=-1, gj=-1;
+    rep(i, N) rep(j, M) {
+        if(S[i][j]=='s') si=i, sj=j;
+        if(S[i][j]=='g') gi=i, gj=j;
     }
-    auto [y,m,da] = d.get_day();
-    printf("%04d/%02d/%02d\n", y, m, da);
+    auto can=[&]() -> bool {
+        vvl dist(N, vl(M, INF));
+        queue<Pr> que;
+        auto push=[&](ll i, ll j, ll d) {
+            if(dist[i][j]<=d) return;
+            dist[i][j] = d;
+            que.emplace(i, j);
+        };
+        push(si, sj, 0);
+        while(que.size()) {
+            auto [i,j] = que.front(); que.pop();
+            ll d = dist[i][j];
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,N,M)) continue;
+                if(S[ni][nj]=='#') continue;
+                push(ni,nj,d+1);
+            }
+        }
+        return dist[gi][gj]!=INF;
+    };
+    if(!can()) Pm1
+
+    auto f=[&](db x) -> bool {
+        vvl dist(N, vl(M, INF));
+        queue<Pr> que;
+        auto push=[&](ll i, ll j, ll d) {
+            if(dist[i][j]<=d) return;
+            dist[i][j] = d;
+            que.emplace(i, j);
+        };
+        push(si, sj, 0);
+        while(que.size()) {
+            auto [i,j] = que.front(); que.pop();
+            ll d = dist[i][j];
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,N,M)) continue;
+                if(S[ni][nj]=='#') continue;
+                if(S[ni][nj]=='s') continue;
+                if(S[ni][nj]=='g') {
+                    push(ni,nj,d+1);
+                } else {
+                    ll a = S[ni][nj]-'0';
+                    if(a*pow(0.99, d+1)<x) continue;
+                    push(ni,nj,d+1);
+                }
+            }
+        }
+        // de(dist)
+        return dist[gi][gj]!=INF;
+    };
+
+    // if(!f(-1)) Pm1
+    db ans = binary_search(0.0, 10.0, f);
+    Out(ans);
 
 }
 

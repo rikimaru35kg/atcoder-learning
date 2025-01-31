@@ -2150,3 +2150,4 @@
 - [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
 - [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)
 - [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
+- [C - 暗闇帰り道](https://atcoder.jp/contests/arc003/tasks/arc003_3)
