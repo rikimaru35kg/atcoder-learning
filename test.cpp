@@ -227,52 +227,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Date {
+    int y, m, d;
+    vector<int> mon, mon_cum;
+    Date(int y, int m, int d): y(y), m(m), d(d), mon(12), mon_cum(13) {
+        mon = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        for(int i=0; i<12; ++i) mon_cum[i+1] = mon_cum[i] + mon[i];
+    }
+    int total_days() {
+        int ret = year_to_day(y-1) + mon_cum[m-1] + d;
+        if(is_leap(y) && m>=3) ++ret;
+        ret += 6;  // fine adjustment so that Monday = 0
+        return ret;
+    }
+    int weekday() {  // 0:Monday - 6:Sunday
+        int ret = total_days() % 7;
+        return ret;
+    }
+    int year_to_day(int y) {
+        int ret = y*365; ret += y/4; ret -= y/100; ret += y/400;
+        return ret;
+    }
+    bool is_leap(int y) {
+        if(y%400==0) return true;
+        if(y%4==0 && y%100!=0) return true;
+        return false;
+    }
+    tuple<int,int,int> get_day() {
+        return {y,m,d};
+    }
+    void inc_day() { // +1day
+        if(m==12 && d==31) { ++y, m=1, d=1; return; }
+        int lim = mon[m-1];
+        if(is_leap(y) && m==2) ++lim;
+        if(d==lim) {++m, d=1; return;}
+        ++d;
+    };
+};
+
 void solve() {
-    LONG(N, M);
-    ll S = N*(N+1)%M;
-    if(S==0 || S>N) {
-        puts("Alice"); return;
-    } else puts("Bob");
-
-
-
-    // vvc res(N+1, vc(M+1));
-    // rep1(n, N) repk(m, n+1, M+1) {
-    //     auto f=[&](auto f, vb a, vb b, ll sum) -> bool {
-    //         ll cnt = 0;
-    //         rep(i, n) if(a[i]) ++cnt;
-    //         if(cnt==0) return true;
-
-    //         bool ret = false;
-    //         rep(i, n) {
-    //             if(!a[i]) continue;
-    //             if((i+1+sum)%m==0) continue;
-    //             a[i] = false;
-    //             bool r = f(f, b, a, (sum+i+1)%m);
-    //             if(!r) ret = true;
-    //             a[i] = true;
-    //         }
-    //         return ret;
-    //     };
-    //     vb a(n, true), b(n, true);
-    //     if(f(f, a, b, 0)) res[n][m] = 'A';
-    //     else res[n][m] = 'B';
-    // }
-    // rep1(n, N) {
-    //     rep1(m, M) {
-    //         if(m<=n) cout<<"  ";
-    //         else cout<<res[n][m]<< ' ';
-    //     }
-    //     cout<<endl;
-    // }
+    int Y, M, D;
+    scanf("%d/%d/%d", &Y, &M, &D);
+    de3(Y,M,D)
+    Date d(Y,M,D);
+    while(true) {
+        auto [y,m,da] = d.get_day();
+        de3(y,m,da)
+        if(y%(m*da)==0) break;
+        d.inc_day();
+    }
+    auto [y,m,da] = d.get_day();
+    printf("%04d/%02d/%02d\n", y, m, da);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i , T) solve();
+    solve();
 }
 
 // ### test.cpp ###

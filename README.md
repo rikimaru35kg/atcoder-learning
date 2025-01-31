@@ -1171,12 +1171,14 @@
 - k-bit目を考えるなら、x%(2*2^k)で考えれば無駄な上位桁を排除できる（kは0-indexed）
 - この状態で2数の和を考えると、0以上4*2^k未満となるが、その結果からk-bit目の0/1が判断できる（周期性より、0~2^kは0、2^k~2*2^kは1、2*2^k~3*2^kは0、3^2^k~4*2^kは1）
 - この手法は下の桁からの繰り上がりまで考慮できる点に強みがある
+- XORを無理やり足し算と関連付けさせたいとき、x^y = x+y-2*(x&y)の変形が考察に使える
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - !復習価値中 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値中 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
+- !要復習 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
 ## OR
 - ORは各ビットの和集合

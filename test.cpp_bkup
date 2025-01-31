@@ -227,62 +227,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-
-    vl A;
-    vl cnt(N+1, K);
-    cnt[0] = 0;
-    if(N%2) {
-        while(cnt[N/2+1]) {
-            A.push_back(N/2+1);
-            cnt[N/2+1]--;
-        }
-        if(cnt[N/2]) {
-            A.push_back(N/2);
-            cnt[N/2]--;
-        }
-        rep1r(i, N) {
-            while(cnt[i]) {
-                A.push_back(i);
-                cnt[i]--;
-            }
-        }
-        Out(A);
-    } else {
-        A.push_back(N/2);
-        cnt[N/2]--;
-        rep1r(i, N) {
-            while(cnt[i]) {
-                A.push_back(i);
-                cnt[i]--;
-            }
-        }
-        Out(A);
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    // vl A;
-    // rep1(i, N) {
-    //     rep1(j, K) {
-    //         A.push_back(i);
-    //     }
-    // }
-    // sort(all(A));
-    // ll S = 0;
-    // do {++S;} while(next_permutation(all(A)));
-    // cerr<<endl;
-    // de(S)
-    // ll n = 0;
-    // do {
-    //     if(n==(S-1)/2) {de(A)}
-    //     ++n;
-    // } while(next_permutation(all(A)));
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
 
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+ll solve() {
+    LONG(N, K);
+    auto v = separate_digit(N, 2);
+    ll cnt = 0;
+    for(auto x: v) if(x==0) ++cnt;
+    ll MX = 1LL<<cnt;
+    if(MX<K) return -1;
+
+    ll two = 1;
+    if(cnt>0) two = 1LL<<(cnt-1);
+
+    for(auto &x: v) {
+        if(x==1) continue;
+        if(two<K) {
+            K -= two;
+            x = 1;
+        }
+        two>>=1;
+    }
+
+    ll ans = consolidate_digit(v, 2);
+    return ans;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) {
+        ll ans = solve();
+        Out(ans);
+    }
 }
 
 // ### test.cpp ###
