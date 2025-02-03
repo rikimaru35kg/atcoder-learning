@@ -29,10 +29,10 @@ INF = int(3e18)
 
 
 def main():
-    S = instr();
-    S = S.replace('x', '*')
-    de(S)
-    print(eval(S))
+    X = instr()
+    S = instr()
+    S = S.replace(X, '')
+    print(S)
 
 
 

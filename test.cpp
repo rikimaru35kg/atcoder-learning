@@ -227,86 +227,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
 }
 
 void solve() {
     LONG(N);
-    vl A(N, INF);
-    ll ans = 0;
+    vpd P(N), B(N);
     rep(i, N) {
-        LONG(w);
-        auto [n,x] = lowbou(A, w);
-        A[n] = w;
-        chmax(ans, n+1);
+        LONG(x,y,t,r);
+        P[i] = {x,y};
+        B[i] = {t,r};
+    }
+
+    using PR = pair<int,db>;
+    using vP = vector<PR>;
+    using vvP = vector<vP>;
+    vvP from(N);
+    rep(i, N) rep(j, N) {
+        if(i==j) continue;
+        db spd = min(B[i].first, B[j].second);
+        db dist = euclid_distd(P[i], P[j]);
+        db dt = dist / spd;
+        from[i].emplace_back(j, dt);
+    }
+
+    vd dist(N, INF);
+    dist[0] = 0;
+    vb fixed(N);
+    while (true) {
+        Pr mn(INF, -1);
+        rep(i, N) {
+            if(fixed[i]) continue;
+            chmin(mn, Pr(dist[i], i));
+        }
+        ll v = mn.second;
+        if(v == -1) break;
+        fixed[v] = true;
+        for(auto [nv,c]: from[v]) {
+            chmin(dist[nv], dist[v] + c);
+        }
+    }
+    de(dist)
+    dist.erase(dist.begin());
+    sort(allr(dist));
+    db ans = 0;
+    rep(i, N-1) {
+        db now = i+dist[i];
+        chmax(ans, now);
     }
     Out(ans);
 

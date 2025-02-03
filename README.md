@@ -2156,3 +2156,4 @@
 - [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
 - [C - 暗闇帰り道](https://atcoder.jp/contests/arc003/tasks/arc003_3)
 - [B - 2点間距離の最大と最小 ( Maximum and Minimum )](https://atcoder.jp/contests/arc004/tasks/arc004_2)
+- [C - THE☆たこ焼き祭り2012](https://atcoder.jp/contests/arc008/tasks/arc008_3)

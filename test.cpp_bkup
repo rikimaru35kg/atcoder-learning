@@ -227,48 +227,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> split(string &s, char t) {
-    vector<string> ret; string now;
-    for(auto c: s) {
-        if(c==t) {
-            if(now.size()) ret.push_back(now);
-            now = "";
-        } else now += c;
-    }
-    if(now.size()) ret.push_back(now);
-    return ret;
-}
-
 void solve() {
-    string s;
-    getline(cin, s);
-    auto v = split(s, ' ');
-    ll N = stoll(v[0]), L = stoll(v[1]);
-    vs S(L);
-    rep(i, L) { getline(cin, S[i]); }
-    string e;
-    getline(cin, e);
-
-    reverse(all(S));
-    ll p = -1;
-    rep(i, 2*N+1) {
-        if(e[i]=='o') {
-            p=i;
-            break;
-        }
+    LONG(N, M);
+    ll K = 26;
+    vl target(K), onekit(K), cnt(K);
+    STRING(name);
+    STRING(kit);
+    for(auto c: name) target[c-'A']++;
+    for(auto c: kit) onekit[c-'A']++;
+    ll ans = 0;
+    rep(i, K) {
+        if(target[i]==0) continue;
+        if(onekit[i]==0) Pm1
+        chmax(ans, Divceil(target[i], onekit[i]));
     }
-    for(auto s: S) {
-        if(p && s[p-1]=='-') {
-            p -= 2;
-        } else if(p<2*N && s[p+1]=='-') {
-            p += 2;
-        }
-    }
-    p /= 2;
-    Out(p+1);
-
-
-
+    Out(ans);
 
 }
 
