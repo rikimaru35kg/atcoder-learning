@@ -2122,6 +2122,7 @@
 - [C - Routing](https://atcoder.jp/contests/arc177/tasks/arc177_c)
 - [D - Gravity](https://atcoder.jp/contests/abc391/tasks/abc391_d)
 - [E - Hierarchical Majority Vote](https://atcoder.jp/contests/abc391/tasks/abc391_e)
+- [C - 積み重ね](https://atcoder.jp/contests/arc006/tasks/arc006_3)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

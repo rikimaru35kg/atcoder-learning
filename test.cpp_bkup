@@ -227,24 +227,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<string> split(string &s, char t) {
+    vector<string> ret; string now;
+    for(auto c: s) {
+        if(c==t) {
+            if(now.size()) ret.push_back(now);
+            now = "";
+        } else now += c;
+    }
+    if(now.size()) ret.push_back(now);
+    return ret;
+}
+
 void solve() {
-    VL(E, 6); LONG(B); VL(L, 6);
-    ll cnt = 0;
-    rep(i, 6) {
-        rep(j, 6) {
-            if(L[i]==E[j]) ++cnt;
+    string s;
+    getline(cin, s);
+    auto v = split(s, ' ');
+    ll N = stoll(v[0]), L = stoll(v[1]);
+    vs S(L);
+    rep(i, L) { getline(cin, S[i]); }
+    string e;
+    getline(cin, e);
+
+    reverse(all(S));
+    ll p = -1;
+    rep(i, 2*N+1) {
+        if(e[i]=='o') {
+            p=i;
+            break;
         }
     }
-    if(cnt==6) Outend(1);
-    if(cnt==5) {
-        rep(i, 6) {
-            if(L[i]==B) Outend(2);
+    for(auto s: S) {
+        if(p && s[p-1]=='-') {
+            p -= 2;
+        } else if(p<2*N && s[p+1]=='-') {
+            p += 2;
         }
-        Outend(3);
     }
-    if(cnt==4) Outend(4);
-    if(cnt==3) Outend(5);
-    Out(0);
+    p /= 2;
+    Out(p+1);
+
+
+
 
 }
 
