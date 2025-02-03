@@ -1050,6 +1050,7 @@
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
+- !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
 ## 戻すDP
 - 可換な操作であればDPテーブルを戻すことが可能
@@ -2119,6 +2120,8 @@
 - 競プロ知らない人にパズル問として紹介する際に使えそう [A - Replace C or Swap AB](https://atcoder.jp/contests/arc166/tasks/arc166_a)
 - [A - Chocolate](https://atcoder.jp/contests/arc172/tasks/arc172_a)
 - [C - Routing](https://atcoder.jp/contests/arc177/tasks/arc177_c)
+- [D - Gravity](https://atcoder.jp/contests/abc391/tasks/abc391_d)
+- [E - Hierarchical Majority Vote](https://atcoder.jp/contests/abc391/tasks/abc391_e)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
