@@ -227,71 +227,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
+bool solve() {
+    ll N = 19;
+    VS(S, N);
 
-void solve() {
-    LONG(N);
-    vpd P(N), B(N);
-    rep(i, N) {
-        LONG(x,y,t,r);
-        P[i] = {x,y};
-        B[i] = {t,r};
-    }
-
-    using PR = pair<int,db>;
-    using vP = vector<PR>;
-    using vvP = vector<vP>;
-    vvP from(N);
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        db spd = min(B[i].first, B[j].second);
-        db dist = euclid_distd(P[i], P[j]);
-        db dt = dist / spd;
-        from[i].emplace_back(j, dt);
-    }
-
-    vd dist(N, INF);
-    dist[0] = 0;
-    vb fixed(N);
-    while (true) {
-        Pr mn(INF, -1);
-        rep(i, N) {
-            if(fixed[i]) continue;
-            chmin(mn, Pr(dist[i], i));
+    auto check5=[&](char c, ll i, ll j, ll di, ll dj) -> bool {
+        ll m = 5;
+        rep(k, m) {
+            if(!isin(i,j,N,N)) return false;
+            if(S[i][j]!=c) return false;
+            i += di, j += dj;
         }
-        ll v = mn.second;
-        if(v == -1) break;
-        fixed[v] = true;
-        for(auto [nv,c]: from[v]) {
-            chmin(dist[nv], dist[v] + c);
+        return true;
+    };
+    auto check=[&](char c) -> bool {
+        rep(si, N) rep(sj, N) {
+            if(check5(c, si, sj, 0, 1)) return true;
+            if(check5(c, si, sj, 1, 0)) return true;
+            if(check5(c, si, sj, 1, 1)) return true;
+            if(check5(c, si, sj, 1, -1)) return true;
+        }
+        return false;
+    };
+
+    ll white = 0, black = 0;
+    for(auto s: S) {
+        for(auto c: s) {
+            if(c=='o') ++black;
+            if(c=='x') ++white;
         }
     }
-    de(dist)
-    dist.erase(dist.begin());
-    sort(allr(dist));
-    db ans = 0;
-    rep(i, N-1) {
-        db now = i+dist[i];
-        chmax(ans, now);
+    if(white>black) return false;
+    if(white<black-1) return false;
+    if(white==0 && black==0) return true;
+
+    if(white==black) { // last white
+        bool ok = false;
+        rep(i, N) rep(j, N) {
+            if(S[i][j]!='x') continue;
+            S[i][j]='.';
+            if(!check('o') && !check('x')) ok = true;
+            S[i][j]='x';
+        }
+        if(ok) return true;
+        else return false;
     }
-    Out(ans);
-
-
+    if(white<black) { // last black
+        bool ok = false;
+        rep(i, N) rep(j, N) {
+            if(S[i][j]!='o') continue;
+            S[i][j]='.';
+            if(!check('o') && !check('x')) ok = true;
+            S[i][j]='o';
+        }
+        if(ok) return true;
+        else return false;
+    }
+    assert(0);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    if(solve()) puts("YES");
+    else puts("NO");
 }
 
 // ### test.cpp ###

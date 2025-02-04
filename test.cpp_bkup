@@ -228,20 +228,13 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    ll K = 26;
-    vl target(K), onekit(K), cnt(K);
-    STRING(name);
-    STRING(kit);
-    for(auto c: name) target[c-'A']++;
-    for(auto c: kit) onekit[c-'A']++;
-    ll ans = 0;
-    rep(i, K) {
-        if(target[i]==0) continue;
-        if(onekit[i]==0) Pm1
-        chmax(ans, Divceil(target[i], onekit[i]));
+    LONG(N); DOUBLE(va, vb, L);
+    db v = va-vb;
+    rep(i, N) {
+        db t = L/va;
+        L -= t*v;
     }
-    Out(ans);
+    Out(L);
 
 }
 

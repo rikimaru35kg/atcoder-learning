@@ -2123,6 +2123,7 @@
 - [D - Gravity](https://atcoder.jp/contests/abc391/tasks/abc391_d)
 - [E - Hierarchical Majority Vote](https://atcoder.jp/contests/abc391/tasks/abc391_e)
 - [C - 積み重ね](https://atcoder.jp/contests/arc006/tasks/arc006_3)
+- [A - 鉛筆リサイクルの新技術](https://atcoder.jp/contests/arc011/tasks/arc011_1)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2157,3 +2158,4 @@
 - [C - 暗闇帰り道](https://atcoder.jp/contests/arc003/tasks/arc003_3)
 - [B - 2点間距離の最大と最小 ( Maximum and Minimum )](https://atcoder.jp/contests/arc004/tasks/arc004_2)
 - [C - THE☆たこ焼き祭り2012](https://atcoder.jp/contests/arc008/tasks/arc008_3)
+- [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
