@@ -227,70 +227,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-bool solve() {
-    ll N = 19;
-    VS(S, N);
-
-    auto check5=[&](char c, ll i, ll j, ll di, ll dj) -> bool {
-        ll m = 5;
-        rep(k, m) {
-            if(!isin(i,j,N,N)) return false;
-            if(S[i][j]!=c) return false;
-            i += di, j += dj;
-        }
-        return true;
-    };
-    auto check=[&](char c) -> bool {
-        rep(si, N) rep(sj, N) {
-            if(check5(c, si, sj, 0, 1)) return true;
-            if(check5(c, si, sj, 1, 0)) return true;
-            if(check5(c, si, sj, 1, 1)) return true;
-            if(check5(c, si, sj, 1, -1)) return true;
-        }
-        return false;
-    };
-
-    ll white = 0, black = 0;
-    for(auto s: S) {
-        for(auto c: s) {
-            if(c=='o') ++black;
-            if(c=='x') ++white;
-        }
+bool is_prime(long long n) {
+    if(n<=1) return false;
+    for(long long i=2; i*i<=n; ++i) {
+        if(n%i==0) return false;
     }
-    if(white>black) return false;
-    if(white<black-1) return false;
-    if(white==0 && black==0) return true;
+    return true;
+}
 
-    if(white==black) { // last white
-        bool ok = false;
-        rep(i, N) rep(j, N) {
-            if(S[i][j]!='x') continue;
-            S[i][j]='.';
-            if(!check('o') && !check('x')) ok = true;
-            S[i][j]='x';
-        }
-        if(ok) return true;
-        else return false;
-    }
-    if(white<black) { // last black
-        bool ok = false;
-        rep(i, N) rep(j, N) {
-            if(S[i][j]!='o') continue;
-            S[i][j]='.';
-            if(!check('o') && !check('x')) ok = true;
-            S[i][j]='o';
-        }
-        if(ok) return true;
-        else return false;
-    }
-    assert(0);
+void solve() {
+    LONG(N);
+    if(is_prime(N)) Out("YES");
+    else Out("NO");
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if(solve()) puts("YES");
-    else puts("NO");
+    solve();
 }
 
 // ### test.cpp ###
