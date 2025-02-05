@@ -29,10 +29,14 @@ INF = int(3e18)
 
 
 def main():
-    X = instr()
     S = instr()
-    S = S.replace(X, '')
-    print(S)
+    S = S.lower()
+    s = "ict"
+    idx = 0
+    for c in S:
+        if(s[idx]==c): idx += 1
+        if(idx==3): print("YES"); exit()
+    print("NO")
 
 
 

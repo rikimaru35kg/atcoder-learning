@@ -3,7 +3,7 @@ using namespace std;
 
 struct Diameter {
     int n, a, b; bool done=false;
-    long long d;
+    long long diam;
     using PRII = pair<int,int>;
     using PRLI = pair<long long,int>;
     vector<vector<PRLI>> from;
@@ -24,14 +24,15 @@ struct Diameter {
         done = true;
         a = dfs(0).second;
         auto [dtmp, btmp] = dfs(a);
-        b = btmp, d = dtmp;
+        b = btmp, diam = dtmp;
         return {a,b};
     }
     int get_diameter() {
         get_end_points();
-        return d;
+        return diam;
     }
-    // dist is input, but return value practically
+    // calculate dist(N) from sv using DFS
+    // &dist(N) is input, but it is return value practically
     void caldist(int sv, vector<long long> &dist) {
         auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
             dist[v] = d;
