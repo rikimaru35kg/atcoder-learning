@@ -227,35 +227,15 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 void solve() {
     LONG(N);
-    vl ds;
-    for(ll i=1; i*i<=N; i++){
-        if(N%i==0) {
-            ds.push_back(i);
-            if(i!=N/i) ds.push_back(N/i);
+    VS(S, 2);
+    ll ans = 1;
+    rep(i, N) {
+        for(ll x=0; x<=9; ++x) {
+
         }
     }
-    ll sum = 0;
-    for(auto d: ds) {
-        if(d==N) continue;
-        sum += d;
-    }
-    if(sum<N) Out("Deficient");
-    else if(sum==N) Out("Perfect");
-    else Out("Abundant");
 
 }
 

@@ -227,38 +227,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/segtree>
+#include <atcoder/dsu>
 using namespace atcoder;
 
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-
-void solve() {
-    LONG(N, L);
-    segtree<S,op,e> seg(L+1);
-    vt3 light;
+ll solve(ll N, string S1, string S2) {
+    // for(auto &c: S1) {
+    //     if(isupper(c)) c = tolower(c);
+    // }
+    ll M = 26;
+    auto id=[&](char c) -> ll {
+        if(islower(c)) return c-'a'+10;
+        else if(isupper(c)) return c-'A'+M+10;
+        else return c-'0';
+    };
+    // for(auto c: S1) de(id(c));
+    // de("")
+    // for(auto c: S2) de(id(c));
+    ll K = 2*M+10;
+    dsu uf(K);
     rep(i, N) {
-        LONG(l,r,c);
-        light.emplace_back(r,l,c);
+        uf.merge(id(S1[i]), id(S2[i]));
     }
-    sort(all(light));
-
-    seg.set(0, 0);
-
-    for(auto [r,l,c]: light) {
-        ll mn = seg.prod(l,r);
-        seg.set(r, min(seg.get(r), mn+c));
+    ll ans = 1;
+    vb used(K);
+    for(auto c: S1) used[id(c)] = true;
+    for(auto c: S2) used[id(c)] = true;
+    repk(i, 10, K) if(i==uf.leader(i)) {
+        if(!used[i]) continue;
+        de(char(i-10-26+'A'))
+        bool connum = false;
+        rep(j, 10) if(uf.same(i,j)) connum = true;
+        if(connum) continue;
+        if(uf.same(i, id(S1[0])) || uf.same(i, id(S2[0]))) ans *= 9;
+        else ans *= 10;
     }
-    ll ans = seg.get(L);
-    Out(ans);
+    return ans;
 
+}
+ll solve2(ll N, string S1, string S2) {
+    rep1(i, N) {
+
+    }
+    return 0;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    STRING(S1, S2);
+    ll ans = solve(N,S1,S2);
+    Out(ans);
 }
 
 // ### test.cpp ###
