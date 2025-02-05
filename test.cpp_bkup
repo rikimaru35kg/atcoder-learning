@@ -227,12 +227,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 void solve() {
-    ll N = 7;
-    VL(D, N); VL(J, N);
+    LONG(H, W);
+    VVL(C, H, W);
+    rep(i, H) rep(j, W) {
+        if((i+j)%2) C[i][j] *= -1;
+    }
+    auto Sc = cumsum(C);
+
+    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
+        ll ret = 0;
+        ret += Sc[i2][j2];
+        ret -= Sc[i1][j2];
+        ret -= Sc[i2][j1];
+        ret += Sc[i1][j1];
+        return ret;
+    };
+
     ll ans = 0;
-    rep(i, N) {
-        ans += max(D[i],J[i]);
+    rep(i1, H) repk(i2, i1, H) rep(j1, W) repk(j2, j1, W) {
+        ll now = sum(i1,i2+1,j1,j2+1);
+        // de5(i1,i2,j1,j2,now)
+        if(now!=0) continue;
+        chmax(ans, (i2-i1+1)*(j2-j1+1));
     }
     Out(ans);
 
