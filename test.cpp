@@ -227,41 +227,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return min(a,b);}
+S e() {return INF;}
+
 void solve() {
-    LONG(N, M, R, T);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-
-    auto dijk=[&](ll sv) -> vl {
-        vl dist(N, INF);
-        pq que;
-        auto push=[&](ll v, ll d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.emplace(d, v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto [d,v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv,c]: from[v]) {
-                push(nv, d+c);
-            }
-        }
-        return dist;
-    };
+    LONG(N, L);
+    segtree<S,op,e> seg(L+1);
+    vt3 light;
     rep(i, N) {
-        auto dist = dijk(i);
-        sort(all(dist));
-        vl dt = dist, dr = dist;
-        rep(i, N) dt[i] = R*dt[i];
-        rep(i, N) dr[i] = T*dr[i];
+        LONG(l,r,c);
+        light.emplace_back(r,l,c);
     }
+    sort(all(light));
 
+    seg.set(0, 0);
+
+    for(auto [r,l,c]: light) {
+        ll mn = seg.prod(l,r);
+        seg.set(r, min(seg.get(r), mn+c));
+    }
+    ll ans = seg.get(L);
+    Out(ans);
 
 }
 

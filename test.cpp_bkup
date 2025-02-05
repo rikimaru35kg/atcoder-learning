@@ -227,52 +227,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
     return ret;
 }
 
 void solve() {
-    LONG(H, W);
-    VVL(C, H, W);
-    rep(i, H) rep(j, W) {
-        if((i+j)%2) C[i][j] *= -1;
+    LONG(N);
+    vl ds;
+    for(ll i=1; i*i<=N; i++){
+        if(N%i==0) {
+            ds.push_back(i);
+            if(i!=N/i) ds.push_back(N/i);
+        }
     }
-    auto Sc = cumsum(C);
-
-    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
-        ll ret = 0;
-        ret += Sc[i2][j2];
-        ret -= Sc[i1][j2];
-        ret -= Sc[i2][j1];
-        ret += Sc[i1][j1];
-        return ret;
-    };
-
-    ll ans = 0;
-    rep(i1, H) repk(i2, i1, H) rep(j1, W) repk(j2, j1, W) {
-        ll now = sum(i1,i2+1,j1,j2+1);
-        // de5(i1,i2,j1,j2,now)
-        if(now!=0) continue;
-        chmax(ans, (i2-i1+1)*(j2-j1+1));
+    ll sum = 0;
+    for(auto d: ds) {
+        if(d==N) continue;
+        sum += d;
     }
-    Out(ans);
+    if(sum<N) Out("Deficient");
+    else if(sum==N) Out("Perfect");
+    else Out("Abundant");
 
 }
 
