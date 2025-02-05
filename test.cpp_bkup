@@ -228,19 +228,11 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(A, N);
-    ll M = 1e5+10;
-    vl cnt(M);
-    ll r = 0;
+    ll N = 7;
+    VL(D, N); VL(J, N);
     ll ans = 0;
-    rep(l, N) {
-        while(r<N) {
-            if(cnt[A[r]]) break;
-            cnt[A[r]]++;
-            ++r;
-        }
-        chmax(ans, r-l);
-        cnt[A[l]]--;
+    rep(i, N) {
+        ans += max(D[i],J[i]);
     }
     Out(ans);
 

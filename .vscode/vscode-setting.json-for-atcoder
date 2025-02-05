@@ -38,7 +38,7 @@
             ]
         }
     },
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "onFocusChange",
     "editor.fontFamily": "'Anonymous Pro', monospace",
     "files.autoSaveDelay": 500,
     "highlight.decorations": { "rangeBehavior": 3 },
@@ -55,8 +55,8 @@
         ],
         "([+])": [
             {
-                "color":"#ffff6c",
-                "fontWeight": "bold"
+                "color":"#ff00ee",
+                // "fontWeight": "bold"
             },
         ],
         "(//  DO NOT.+)": [
@@ -74,4 +74,12 @@
         ],
     },
     "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "codeium.disableSupercomplete": false,
+    "codeium.enableCodeLens": false,
 }
