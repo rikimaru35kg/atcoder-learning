@@ -227,57 +227,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
-ll solve(ll N, string S1, string S2) {
-    // for(auto &c: S1) {
-    //     if(isupper(c)) c = tolower(c);
-    // }
-    ll M = 26;
-    auto id=[&](char c) -> ll {
-        if(islower(c)) return c-'a'+10;
-        else if(isupper(c)) return c-'A'+M+10;
-        else return c-'0';
-    };
-    // for(auto c: S1) de(id(c));
-    // de("")
-    // for(auto c: S2) de(id(c));
-    ll K = 2*M+10;
-    dsu uf(K);
+void solve() {
+    LONG(X,Y);
+    ll M = X+Y;
+    LONG(N);
+    // INF = 1;
+    vvl dp(X+1, vl(M+1, -INF));
+    dp[0][0] = 0;
     rep(i, N) {
-        uf.merge(id(S1[i]), id(S2[i]));
+        LONG(t, h);
+        vvl pdp(X+1, vl(M+1, -INF)); swap(pdp, dp);
+        rep(n, X+1) rep(j, M+1) {
+            if(pdp[n][j]==-INF) continue;
+            chmax(dp[n][j], pdp[n][j]);
+            if(n<X && j+t<=M) chmax(dp[n+1][j+t], pdp[n][j]+h);
+        }
     }
-    ll ans = 1;
-    vb used(K);
-    for(auto c: S1) used[id(c)] = true;
-    for(auto c: S2) used[id(c)] = true;
-    repk(i, 10, K) if(i==uf.leader(i)) {
-        if(!used[i]) continue;
-        de(char(i-10-26+'A'))
-        bool connum = false;
-        rep(j, 10) if(uf.same(i,j)) connum = true;
-        if(connum) continue;
-        if(uf.same(i, id(S1[0])) || uf.same(i, id(S2[0]))) ans *= 9;
-        else ans *= 10;
-    }
-    return ans;
+    ll ans = 0;
+    rep(n, X+1)rep(j, M+1) chmax(ans, dp[n][j]);
+    Out(ans);
 
-}
-ll solve2(ll N, string S1, string S2) {
-    rep1(i, N) {
-
-    }
-    return 0;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    STRING(S1, S2);
-    ll ans = solve(N,S1,S2);
-    Out(ans);
+    solve();
 }
 
 // ### test.cpp ###

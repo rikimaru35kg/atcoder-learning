@@ -2125,6 +2125,7 @@
 - [C - 積み重ね](https://atcoder.jp/contests/arc006/tasks/arc006_3)
 - [A - 鉛筆リサイクルの新技術](https://atcoder.jp/contests/arc011/tasks/arc011_1)
 - [C - 蛍光灯](https://atcoder.jp/contests/arc026/tasks/arc026_3)
+- [C - 最高のトッピングにしような](https://atcoder.jp/contests/arc027/tasks/arc027_3)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
