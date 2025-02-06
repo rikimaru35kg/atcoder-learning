@@ -227,97 +227,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/fenwicktree>
-using namespace atcoder;
+void solve() {
+    LONG(N);
+    ll M = 9*18;
+    vl ans;
+    rep1r(d, M) {
+        ll x = N-d;
+        // if(d==4) {
+        //     cout<<"";
+        // }
+        if(x<=0) continue;
+        ll _x = x;
+        ll cd = 0;
+        while(_x) {
+            cd += _x%10;
+            _x /= 10;
+        }
+        if(d==cd) ans.push_back(x);
+    }
+    Out(ans.size());
+    for(auto x: ans) Out(x);
 
-ll solve(ll N, vl B) {
-    auto calinv=[&](vl &B) -> vl {
-        vl ret(N+1);
-        fenwick_tree<ll> tree(N);
-        ll now = 0;
-        rep(i, N) {
-            now += tree.sum(B[i], N);
-            ret[i+1] = now;
-            tree.add(B[i],1);
-        }
-        return ret;
-    };
-    auto fr = calinv(B);
-    reverse(all(B));
-    auto rr = calinv(B);
-    reverse(all(B));
-    reverse(all(rr));
-
-    de(fr)de(rr)
-    ll ans = INF;
-    rep(i, N+1) {
-        ll now = fr[i] + rr[i];
-        chmin(ans, now);
-    }
-    return ans;
-}
-ll solve2(ll N, vl B) {
-    map<vl,ll> dist;
-    queue<vl> que;
-    auto push=[&](vl v, ll d) {
-        if(dist.count(v)) return;
-        dist[v] = d;
-        que.push(v);
-    };
-    push(B, 0);
-    while(que.size()) {
-        auto v = que.front(); que.pop();
-        ll d = dist[v];
-        rep(i, N-1) {
-            swap(v[i], v[i+1]);
-            push(v, d+1);
-            swap(v[i], v[i+1]);
-        }
-    }
-    auto judge=[&](vl &v) -> bool {
-        Pr mx(-1,-1);
-        rep(i, N) {
-            chmax(mx, Pr(v[i], i));
-        }
-        ll ti = mx.second;
-        rep(i, ti) if(v[i]>=v[i+1]) return false;
-        repk(i, ti, N-1) if(v[i]<=v[i+1]) return false;
-        return true;
-    };
-    ll ans = INF;
-    for(auto [v,d]: dist) {
-        vl nv = v;
-        if(!judge(nv)) continue;
-        if(d==4) de(nv)
-        chmin(ans, d);
-    }
-    return ans;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(B, N);
-    ll ans = solve(N,B);
-    ll ans2 = solve2(N,B);
-    de2(ans, ans2)
-    // LONG(N);
-    // while(true) {
-    //     vl B(N);
-    //     iota(all(B), 0);
-    //     rep(i, 100) {
-    //         ll idx = rand() % (N-1);
-    //         swap(B[idx], B[idx+1]);
-    //     }
-    //     ll ans = solve(N,B);
-    //     ll ans2 = solve2(N,B);
-    //     if(ans!=ans2) {
-    //         de(B)
-    //         de2(ans, ans2)
-    //         assert(0);
-    //     }
-    // }
-
+    solve();
 }
 
 // ### test.cpp ###
