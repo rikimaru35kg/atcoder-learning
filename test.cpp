@@ -227,51 +227,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
-    }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
-}
-
-#include <atcoder/modint>
+#include <atcoder/dsu>
 using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 void solve() {
-    LONG(A, B);
-    umap<ll,ll> mp;
-    for(ll x=B+1; x<=A; ++x) {
-        auto v = prime_factorization(x);
-        for(auto [p,n]: v) {
-            mp[p] += n;
-        }
+    LONG(N, M);
+    dsu uf(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a,b);
+        uf.merge(a,b);
+        edge.emplace_back(a,b);
     }
-    mint ans = 1;
-    for(auto [p,n]: mp) {
-        ans *= n+1;
+    vl e(N);
+    for(auto [a,b]: edge) {
+        e[uf.leader(a)]++;
+    }
+    ll ans = 0;
+    rep(i, N) if(i==uf.leader(i)) {
+        if(uf.size(i)==e[i]+1) ++ans;
     }
     Out(ans);
+
 
 }
 

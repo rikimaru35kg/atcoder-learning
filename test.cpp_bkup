@@ -229,24 +229,12 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    ll M = 9*18;
-    vl ans;
-    rep1r(d, M) {
-        ll x = N-d;
-        // if(d==4) {
-        //     cout<<"";
-        // }
-        if(x<=0) continue;
-        ll _x = x;
-        ll cd = 0;
-        while(_x) {
-            cd += _x%10;
-            _x /= 10;
-        }
-        if(d==cd) ans.push_back(x);
+    ll ans = 0;
+    rep(i, N) {
+        LONG(x);
+        ans += max(80-x, 0LL);
     }
-    Out(ans.size());
-    for(auto x: ans) Out(x);
+    Out(ans);
 
 }
 
