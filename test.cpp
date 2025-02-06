@@ -227,24 +227,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 void solve() {
-    LONG(X,Y);
-    ll M = X+Y;
-    LONG(N);
-    // INF = 1;
-    vvl dp(X+1, vl(M+1, -INF));
-    dp[0][0] = 0;
-    rep(i, N) {
-        LONG(t, h);
-        vvl pdp(X+1, vl(M+1, -INF)); swap(pdp, dp);
-        rep(n, X+1) rep(j, M+1) {
-            if(pdp[n][j]==-INF) continue;
-            chmax(dp[n][j], pdp[n][j]);
-            if(n<X && j+t<=M) chmax(dp[n+1][j+t], pdp[n][j]+h);
-        }
-    }
+    LONG(N); VLM(B, N);
+    vl idx(N);
+    rep(i, N) idx[B[i]] = i;
+    fenwick_tree<ll> tree(N);
+    rep(i, N) tree.add(i, 1);
+
     ll ans = 0;
-    rep(n, X+1)rep(j, M+1) chmax(ans, dp[n][j]);
+    rep(i, N) {
+        ll ci = idx[i];
+        ll left = tree.sum(0, ci);
+        ll right = tree.sum(ci+1, N);
+        ans += min(left,right);
+        tree.add(ci, -1);
+    }
     Out(ans);
 
 }

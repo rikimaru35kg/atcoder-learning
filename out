@@ -1,0 +1,464 @@
+test.cpp: In function ‘int main()’:
+test.cpp:305:17: error: no matching function for call to ‘swap(__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type&, __gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type)’
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:126:
+/usr/include/c++/12/any:429:15: note: candidate: ‘void std::swap(any&, any&)’ (near match)
+  429 |   inline void swap(any& __x, any& __y) noexcept { __x.swap(__y); }
+      |               ^~~~
+/usr/include/c++/12/any:429:15: note:   conversion of argument 2 would be ill-formed:
+test.cpp:305:32: error: cannot bind non-const lvalue reference of type ‘std::any&’ to an rvalue of type ‘std::any’
+  305 |             swap(B[idx], B[idx]+1);
+/usr/include/c++/12/any:190:7: note:   after user-defined conversion: ‘std::any::any(_Tp&&) [with _Tp = long long int; _VTp = long long int; _Mgr = _Manager_internal<long long int>; typename std::enable_if<(is_copy_constructible_v<_VTp> && (! __is_in_place_type_v<_VTp>)), bool>::type <anonymous> = true]’
+  190 |       any(_Tp&& __value)
+      |       ^~~
+In file included from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/sstream:1185:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_stringbuf<_CharT, _Traits, _Alloc>&, basic_stringbuf<_CharT, _Traits, _Alloc>&)’
+ 1185 |     swap(basic_stringbuf<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1185:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_stringbuf<_CharT, _Traits, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/sstream:1193:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_istringstream<_CharT, _Traits, _Allocator>&, basic_istringstream<_CharT, _Traits, _Allocator>&)’
+ 1193 |     swap(basic_istringstream<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1193:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_istringstream<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/sstream:1200:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_ostringstream<_CharT, _Traits, _Allocator>&, basic_ostringstream<_CharT, _Traits, _Allocator>&)’
+ 1200 |     swap(basic_ostringstream<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1200:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_ostringstream<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/sstream:1207:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_stringstream<_CharT, _Traits, _Allocator>&, basic_stringstream<_CharT, _Traits, _Allocator>&)’
+ 1207 |     swap(basic_stringstream<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/sstream:1207:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_stringstream<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/regex:66,
+                 from stdc++.h:110:
+/usr/include/c++/12/bits/regex.h:880:5: note: candidate: ‘template<class _Ch_type, class _Rx_traits> void std::__cxx11::swap(basic_regex<_Ch_type, _Rx_traits>&, basic_regex<_Ch_type, _Rx_traits>&)’
+  880 |     swap(basic_regex<_Ch_type, _Rx_traits>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/bits/regex.h:880:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_regex<_Ch_type, _Rx_traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/regex.h:2185:5: note: candidate: ‘template<class _Bi_iter, class _Alloc> void std::__cxx11::swap(match_results<_BiIter, _Alloc>&, match_results<_BiIter, _Alloc>&)’
+ 2185 |     swap(match_results<_Bi_iter, _Alloc>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/bits/regex.h:2185:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::match_results<_BiIter, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/deque:70,
+                 from stdc++.h:68:
+/usr/include/c++/12/debug/deque:715:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(deque<_Tp, _Allocator>&, deque<_Tp, _Allocator>&)’
+  715 |     swap(deque<_Tp, _Alloc>& __lhs, deque<_Tp, _Alloc>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/debug/deque:715:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::deque<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/unordered_map:52,
+                 from /usr/include/c++/12/functional:61,
+                 from stdc++.h:71:
+/usr/include/c++/12/debug/unordered_map:847:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&, unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
+  847 |     swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_map:847:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/debug/unordered_map:1564:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&, unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
+ 1564 |     swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_map:1564:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62:
+/usr/include/c++/12/debug/vector:793:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(vector<_Tp, _Alloc>&, vector<_Tp, _Alloc>&)’
+  793 |     swap(vector<_Tp, _Alloc>& __lhs, vector<_Tp, _Alloc>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/debug/vector:793:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::vector<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/list:67,
+                 from stdc++.h:79:
+/usr/include/c++/12/debug/list:968:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(list<_Tp, _Allocator>&, list<_Tp, _Allocator>&)’
+  968 |     swap(list<_Tp, _Alloc>& __lhs, list<_Tp, _Alloc>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/debug/list:968:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::list<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/debug/map:43,
+                 from /usr/include/c++/12/map:67,
+                 from stdc++.h:81:
+/usr/include/c++/12/debug/map.h:798:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> void std::__debug::swap(map<_Key, _Tp, _Compare, _Allocator>&, map<_Key, _Tp, _Compare, _Allocator>&)’
+  798 |     swap(map<_Key, _Tp, _Compare, _Allocator>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/debug/map.h:798:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::map<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/debug/map:44:
+/usr/include/c++/12/debug/multimap.h:680:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> void std::__debug::swap(multimap<_Key, _Tp, _Compare, _Allocator>&, multimap<_Key, _Tp, _Compare, _Allocator>&)’
+  680 |     swap(multimap<_Key, _Tp, _Compare, _Allocator>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/debug/multimap.h:680:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/debug/set:41,
+                 from /usr/include/c++/12/set:67,
+                 from stdc++.h:87:
+/usr/include/c++/12/debug/set.h:655:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> void std::__debug::swap(set<_Key, _Compare, _Allocator>&, set<_Key, _Compare, _Allocator>&)’
+  655 |     swap(set<_Key, _Compare, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/set.h:655:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::set<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/debug/set:42:
+/usr/include/c++/12/debug/multiset.h:645:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> void std::__debug::swap(multiset<_Key, _Compare, _Allocator>&, multiset<_Key, _Compare, _Allocator>&)’
+  645 |     swap(multiset<_Key, _Compare, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/multiset.h:645:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::multiset<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/forward_list:43,
+                 from stdc++.h:104:
+/usr/include/c++/12/debug/forward_list:913:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(forward_list<_Tp, _Allocator>&, forward_list<_Tp, _Allocator>&)’
+  913 |     swap(forward_list<_Tp, _Alloc>& __lx, forward_list<_Tp, _Alloc>& __ly)
+      |     ^~~~
+/usr/include/c++/12/debug/forward_list:913:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::forward_list<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/unordered_set:52,
+                 from stdc++.h:118:
+/usr/include/c++/12/debug/unordered_set:716:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_set<_Tp, _Hash, _Pred, _Allocator>&, unordered_set<_Tp, _Hash, _Pred, _Allocator>&)’
+  716 |     swap(unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_set:716:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_set<_Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/debug/unordered_set:1393:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&, unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&)’
+ 1393 |     swap(unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/debug/unordered_set:1393:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_multiset<_Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_pair.h:61,
+                 from /usr/include/c++/12/bits/stl_algobase.h:64,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/move.h:196:5: note: candidate: ‘constexpr std::_Require<std::__not_<std::__is_tuple_like<_Tp> >, std::is_move_constructible<_Tp>, std::is_move_assignable<_Tp> > std::swap(_Tp&, _Tp&) [with _Tp = long long int; _Require<__not_<__is_tuple_like<_Tp> >, is_move_constructible<_Tp>, is_move_assignable<_Tp> > = void]’ (near match)
+  196 |     swap(_Tp& __a, _Tp& __b)
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:196:5: note:   conversion of argument 2 would be ill-formed:
+test.cpp:305:32: error: cannot bind non-const lvalue reference of type ‘long long int&’ to an rvalue of type ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+/usr/include/c++/12/bits/move.h:220:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr std::__enable_if_t<std::__is_swappable<_Tp>::value> std::swap(_Tp (&)[_Nm], _Tp (&)[_Nm])’
+  220 |     swap(_Tp (&__a)[_Nm], _Tp (&__b)[_Nm])
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:220:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘_Tp [_Nm]’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:707:5: note: candidate: ‘template<class _T1, class _T2> constexpr typename std::enable_if<std::__and_<std::__is_swappable<_T1>, std::__is_swappable<_T2> >::value>::type std::swap(pair<_T1, _T2>&, pair<_T1, _T2>&)’
+  707 |     swap(pair<_T1, _T2>& __x, pair<_T1, _T2>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_pair.h:707:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:715:5: note: candidate: ‘template<class _T1, class _T2> typename std::enable_if<(! std::__and_<std::__is_swappable<_T1>, std::__is_swappable<_T2> >::value)>::type std::swap(pair<_T1, _T2>&, pair<_T1, _T2>&)’ (deleted)
+  715 |     swap(pair<_T1, _T2>&, pair<_T1, _T2>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/bits/stl_pair.h:715:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/string:53,
+                 from /usr/include/c++/12/bits/locale_classes.h:40,
+                 from /usr/include/c++/12/bits/ios_base.h:41,
+                 from /usr/include/c++/12/ios:42,
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/sstream:38:
+/usr/include/c++/12/bits/basic_string.h:3853:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr void std::swap(__cxx11::basic_string<_CharT, _Traits, _Allocator>&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 3853 |     swap(basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~
+/usr/include/c++/12/bits/basic_string.h:3853:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:70:
+/usr/include/c++/12/fstream:1269:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_filebuf<_CharT, _Traits>&, basic_filebuf<_CharT, _Traits>&)’
+ 1269 |     swap(basic_filebuf<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1269:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_filebuf<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/fstream:1276:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ifstream<_CharT, _Traits>&, basic_ifstream<_CharT, _Traits>&)’
+ 1276 |     swap(basic_ifstream<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1276:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_ifstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/fstream:1283:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ofstream<_CharT, _Traits>&, basic_ofstream<_CharT, _Traits>&)’
+ 1283 |     swap(basic_ofstream<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1283:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_ofstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/fstream:1290:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_fstream<_CharT, _Traits>&, basic_fstream<_CharT, _Traits>&)’
+ 1290 |     swap(basic_fstream<_CharT, _Traits>& __x,
+      |     ^~~~
+/usr/include/c++/12/fstream:1290:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_fstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/functional:54:
+/usr/include/c++/12/tuple:1758:5: note: candidate: ‘template<class ... _Elements> constexpr typename std::enable_if<std::__and_<std::__is_swappable<_Elements>...>::value>::type std::swap(tuple<_UTypes ...>&, tuple<_UTypes ...>&)’
+ 1758 |     swap(tuple<_Elements...>& __x, tuple<_Elements...>& __y)
+      |     ^~~~
+/usr/include/c++/12/tuple:1758:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/tuple:1766:5: note: candidate: ‘template<class ... _Elements> constexpr typename std::enable_if<(! std::__and_<std::__is_swappable<_Elements>...>::value)>::type std::swap(tuple<_UTypes ...>&, tuple<_UTypes ...>&)’ (deleted)
+ 1766 |     swap(tuple<_Elements...>&, tuple<_Elements...>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/tuple:1766:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/functional:59:
+/usr/include/c++/12/bits/std_function.h:757:5: note: candidate: ‘template<class _Res, class ... _Args> void std::swap(function<_Res(_ArgTypes ...)>&, function<_Res(_ArgTypes ...)>&)’
+  757 |     swap(function<_Res(_Args...)>& __x, function<_Res(_Args...)>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/std_function.h:757:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::function<_Res(_ArgTypes ...)>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/functional:63:
+/usr/include/c++/12/array:380:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr typename std::enable_if<typename std::__array_traits<_Tp, _Nm>::_Is_swappable::value>::type std::swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&)’
+  380 |     swap(array<_Tp, _Nm>& __one, array<_Tp, _Nm>& __two)
+      |     ^~~~
+/usr/include/c++/12/array:380:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::array<_Tp, _Nm>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/array:388:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> typename std::enable_if<(! typename std::__array_traits<_Tp, _Nm>::_Is_swappable::value)>::type std::swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&)’ (deleted)
+  388 |     swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/array:388:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::array<_Tp, _Nm>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/map:60:
+/usr/include/c++/12/bits/stl_tree.h:1680:5: note: candidate: ‘template<class _Key, class _Val, class _KeyOfValue, class _Compare, class _Alloc> void std::swap(_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&, _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&)’
+ 1680 |     swap(_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_tree.h:1680:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/memory:75,
+                 from stdc++.h:82:
+/usr/include/c++/12/bits/unique_ptr.h:808:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(unique_ptr<_Tp, _Dp>&, unique_ptr<_Tp, _Dp>&)’
+  808 |     swap(unique_ptr<_Tp, _Dp>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/unique_ptr.h:808:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::unique_ptr<_Tp, _Dp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/unique_ptr.h:815:5: note: candidate: ‘template<class _Tp, class _Dp> typename std::enable_if<(! std::__is_swappable<_T2>::value)>::type std::swap(unique_ptr<_Tp, _Dp>&, unique_ptr<_Tp, _Dp>&)’ (deleted)
+  815 |     swap(unique_ptr<_Tp, _Dp>&,
+      |     ^~~~
+/usr/include/c++/12/bits/unique_ptr.h:815:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::unique_ptr<_Tp, _Dp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/shared_ptr.h:53,
+                 from /usr/include/c++/12/memory:76:
+/usr/include/c++/12/bits/shared_ptr_base.h:1917:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> void std::swap(__shared_ptr<_Tp, _Lp>&, __shared_ptr<_Tp, _Lp>&)’
+ 1917 |     swap(__shared_ptr<_Tp, _Lp>& __a, __shared_ptr<_Tp, _Lp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:1917:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__shared_ptr<_Tp, _Lp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:2126:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> void std::swap(__weak_ptr<_Tp, _Lp>&, __weak_ptr<_Tp, _Lp>&)’
+ 2126 |     swap(__weak_ptr<_Tp, _Lp>& __a, __weak_ptr<_Tp, _Lp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:2126:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::__weak_ptr<_Tp, _Lp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr.h:692:5: note: candidate: ‘template<class _Tp> void std::swap(shared_ptr<_Tp>&, shared_ptr<_Tp>&)’
+  692 |     swap(shared_ptr<_Tp>& __a, shared_ptr<_Tp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr.h:692:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::shared_ptr<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr.h:888:5: note: candidate: ‘template<class _Tp> void std::swap(weak_ptr<_Tp>&, weak_ptr<_Tp>&)’
+  888 |     swap(weak_ptr<_Tp>& __a, weak_ptr<_Tp>& __b) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/shared_ptr.h:888:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::weak_ptr<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/queue:64,
+                 from stdc++.h:86:
+/usr/include/c++/12/bits/stl_queue.h:447:5: note: candidate: ‘template<class _Tp, class _Seq> typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(queue<_Tp, _Seq>&, queue<_Tp, _Seq>&)’
+  447 |     swap(queue<_Tp, _Seq>& __x, queue<_Tp, _Seq>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_queue.h:447:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::queue<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_queue.h:836:5: note: candidate: ‘template<class _Tp, class _Sequence, class _Compare> typename std::enable_if<std::__and_<std::__is_swappable<_T2>, std::__is_swappable<_Compare> >::value>::type std::swap(priority_queue<_Tp, _Sequence, _Compare>&, priority_queue<_Tp, _Sequence, _Compare>&)’
+  836 |     swap(priority_queue<_Tp, _Sequence, _Compare>& __x,
+      |     ^~~~
+/usr/include/c++/12/bits/stl_queue.h:836:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::priority_queue<_Tp, _Sequence, _Compare>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/stack:61,
+                 from stdc++.h:89:
+/usr/include/c++/12/bits/stl_stack.h:423:5: note: candidate: ‘template<class _Tp, class _Seq> typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(stack<_Tp, _Seq>&, stack<_Tp, _Seq>&)’
+  423 |     swap(stack<_Tp, _Seq>& __x, stack<_Tp, _Seq>& __y)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_stack.h:423:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::stack<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/condition_variable:40,
+                 from stdc++.h:103:
+/usr/include/c++/12/bits/unique_lock.h:236:5: note: candidate: ‘template<class _Mutex> void std::swap(unique_lock<_Mutex>&, unique_lock<_Mutex>&)’
+  236 |     swap(unique_lock<_Mutex>& __x, unique_lock<_Mutex>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/unique_lock.h:236:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::unique_lock<_Mutex>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:105:
+/usr/include/c++/12/future:1195:5: note: candidate: ‘template<class _Res> void std::swap(promise<_Res>&, promise<_Res>&)’
+ 1195 |     swap(promise<_Res>& __x, promise<_Res>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/future:1195:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::promise<_Res>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/future:1660:5: note: candidate: ‘template<class _Res, class ... _ArgTypes> void std::swap(packaged_task<_Res(_ArgTypes ...)>&, packaged_task<_Res(_ArgTypes ...)>&)’
+ 1660 |     swap(packaged_task<_Res(_ArgTypes...)>& __x,
+      |     ^~~~
+/usr/include/c++/12/future:1660:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::packaged_task<_Res(_ArgTypes ...)>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:122:
+/usr/include/c++/12/shared_mutex:851:5: note: candidate: ‘template<class _Mutex> void std::swap(shared_lock<_Mutex>&, shared_lock<_Mutex>&)’
+  851 |     swap(shared_lock<_Mutex>& __x, shared_lock<_Mutex>& __y) noexcept
+      |     ^~~~
+/usr/include/c++/12/shared_mutex:851:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::shared_lock<_Mutex>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:130:
+/usr/include/c++/12/optional:1436:5: note: candidate: ‘template<class _Tp> constexpr std::enable_if_t<(is_move_constructible_v<_Tp> && is_swappable_v<_Tp>)> std::swap(optional<_Tp>&, optional<_Tp>&)’
+ 1436 |     swap(optional<_Tp>& __lhs, optional<_Tp>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/optional:1436:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/optional:1442:5: note: candidate: ‘template<class _Tp> std::enable_if_t<(!(is_move_constructible_v<_Tp> && is_swappable_v<_Tp>))> std::swap(optional<_Tp>&, optional<_Tp>&)’ (deleted)
+ 1442 |     swap(optional<_Tp>&, optional<_Tp>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/optional:1442:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:133:
+/usr/include/c++/12/variant:1295:5: note: candidate: ‘template<class ... _Types> constexpr std::enable_if_t<((is_move_constructible_v<_Types> && ...) && (is_swappable_v<_Types> && ...))> std::swap(variant<_Types ...>&, variant<_Types ...>&)’
+ 1295 |     swap(variant<_Types...>& __lhs, variant<_Types...>& __rhs)
+      |     ^~~~
+/usr/include/c++/12/variant:1295:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::variant<_Types ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/variant:1302:5: note: candidate: ‘template<class ... _Types> std::enable_if_t<(!((is_move_constructible_v<_Types> && ...) && (is_swappable_v<_Types> && ...)))> std::swap(variant<_Types ...>&, variant<_Types ...>&)’ (deleted)
+ 1302 |     swap(variant<_Types...>&, variant<_Types...>&) = delete;
+      |     ^~~~
+/usr/include/c++/12/variant:1302:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::variant<_Types ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:151:
+/usr/include/c++/12/syncstream:304:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::swap(basic_syncbuf<_CharT, _Traits, _Alloc>&, basic_syncbuf<_CharT, _Traits, _Alloc>&)’
+  304 |     swap(basic_syncbuf<_CharT, _Traits, _Allocator>& __x,
+      |     ^~~~
+/usr/include/c++/12/syncstream:304:5: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_syncbuf<_CharT, _Traits, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from stdc++.h:157:
+/usr/include/c++/12/spanstream:214:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_spanbuf<_CharT, _Traits>&, basic_spanbuf<_CharT, _Traits>&)’
+  214 |   swap(basic_spanbuf<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:214:3: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_spanbuf<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/spanstream:306:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ispanstream<_CharT, _Traits>&, basic_ispanstream<_CharT, _Traits>&)’
+  306 |   swap(basic_ispanstream<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:306:3: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_ispanstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/spanstream:374:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ospanstream<_CharT, _Traits>&, basic_ospanstream<_CharT, _Traits>&)’
+  374 |   swap(basic_ospanstream<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:374:3: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_ospanstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/spanstream:442:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_spanstream<_CharT, _Traits>&, basic_spanstream<_CharT, _Traits>&)’
+  442 |   swap(basic_spanstream<_CharT, _Traits>& __x,
+      |   ^~~~
+/usr/include/c++/12/spanstream:442:3: note:   template argument deduction/substitution failed:
+test.cpp:305:17: note:   mismatched types ‘std::basic_spanstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  305 |             swap(B[idx], B[idx]+1);
+      |             ~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/stop_token:35,
+                 from /usr/include/c++/12/condition_variable:46:
+/usr/include/c++/12/bits/std_thread.h:306:3: note: candidate: ‘void std::swap(thread&, thread&)’
+  306 |   swap(thread& __x, thread& __y) noexcept
+      |   ^~~~
+/usr/include/c++/12/bits/std_thread.h:306:16: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘std::thread&’
+  306 |   swap(thread& __x, thread& __y) noexcept
+      |        ~~~~~~~~^~~

@@ -1529,6 +1529,7 @@
 - 基本 [E - カードゲーム 3 (Card Game 3)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_e)
 - 基本 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - 基本 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+- !要復習 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値低 着く駅の数最大化（実装メイン） [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
 
