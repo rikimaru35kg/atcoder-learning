@@ -2164,3 +2164,4 @@
 - [C - THE☆たこ焼き祭り2012](https://atcoder.jp/contests/arc008/tasks/arc008_3)
 - [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
 - [B - 大事な数なのでZ回書きまLた。](https://atcoder.jp/contests/arc027/tasks/arc027_2)
+- [C - Z塗り](https://atcoder.jp/contests/arc040/tasks/arc040_c)

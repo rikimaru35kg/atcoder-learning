@@ -227,64 +227,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        assert(n<=mx);
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        assert(n<=mx);
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
 void solve() {
-    LONG(N,K);
-    Combination comb(1000, M107);
-    if(N>K) {
-        ll ans = comb.nHr(N, K);
-        Outend(ans);
+    LONG(N, R);
+    STRING(S);
+    ll li=-1;
+    repr(i, N) {
+        if(S[i]=='.') {
+            li = i; break;
+        }
     }
-    ll r = K%N;
-    ll ans = comb(N, r);
+    li -= R-1;
+    chmax(li, 0LL);
+    ll ans = li;
+
+    ll i = N-1;
+    while(i>=0) {
+        if(S[i]=='o') {
+            --i; continue;
+        }
+        ++ans;
+        ll si = max(i-R+1, 0LL);
+        for(ll j=si; j<=i; ++j) {
+            S[i]='o';
+        }
+        i = si-1;
+    }
     Out(ans);
-    comb.get_fact(10000);
 
 }
 
