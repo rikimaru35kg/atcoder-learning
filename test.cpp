@@ -227,28 +227,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+//! count the # of t in s.  O(|S||T|)
+long long count(string &s, string t) {
+    long long ret = 0;
+    long long i=0;
+    while(i<(long long)s.size()) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
+    }
+    return ret;
+}
+long long count(vector<string> &s, string t) {
+    long long ret = 0;
+    for(long long i=0; i<(long long)s.size(); ++i) {
+        ret += count(s[i], t);
+    }
+    return ret;
+}
 
 void solve() {
-    LONG(N, M);
-    dsu uf(N);
-    vp edge;
-    rep(i, M) {
-        LONGM(a,b);
-        uf.merge(a,b);
-        edge.emplace_back(a,b);
-    }
-    vl e(N);
-    for(auto [a,b]: edge) {
-        e[uf.leader(a)]++;
-    }
-    ll ans = 0;
-    rep(i, N) if(i==uf.leader(i)) {
-        if(uf.size(i)==e[i]+1) ++ans;
-    }
-    Out(ans);
+    LONG(N);
+    VS(S, N);
+    ll r = count(S, "R");
+    ll b = count(S, "B");
+    de2(r,b)
+    if(r==b) puts("DRAW");
+    else if(r>b) puts("TAKAHASHI");
+    else puts("AOKI");
 
+    string s = "aaaaabbbbbaaabbb";
+    de(count(s, "ab"));
 
 }
 

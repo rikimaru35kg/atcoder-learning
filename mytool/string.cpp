@@ -13,18 +13,26 @@ vector<string> split(string &s, char t) {
     return ret;
 }
 
-//! count the # of t in s
-long long count(string s, string t) {
+//! count the # of t in s.  O(|S||T|)
+long long count(string &s, string t) {
     long long ret = 0;
-    while(s.rfind(t)!=string::npos) {
-        ++ret;
-        s.erase(s.begin()+s.rfind(t), s.end());
+    long long i=0;
+    while(i<(long long)s.size()) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
+    }
+    return ret;
+}
+long long count(vector<string> &s, string t) {
+    long long ret = 0;
+    for(long long i=0; i<(long long)s.size(); ++i) {
+        ret += count(s[i], t);
     }
     return ret;
 }
 
-//! Count the # of chars of s in t
-//! If ret==tn, t is subsequence of s.
+//! Judge if t is subsequence of s.
+//! If ret==t.size(), then t is subsequence of s.
 long long subsequence(string &s, string &t) {
     long long sn = s.size(), tn = t.size();
     long long ti = 0;
