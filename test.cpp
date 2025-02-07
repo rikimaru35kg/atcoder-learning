@@ -242,6 +242,11 @@ vector<string> split(string &s, char t) {
 void solve() {
     string S;
     getline(cin, S);
+    // ll a = S.back();
+    // de(a)
+    // if(S.back()==13) S.pop_back();
+    de(S.size())
+    // S.pop_back();
     vs s = split(S, ' ');
     vc ans;
     for(auto cs: s) {
