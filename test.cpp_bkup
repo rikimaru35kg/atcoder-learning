@@ -228,13 +228,8 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    --N;
-    ll d = N/9+1;
-    ll k = N%9+1;
-    string ans;
-    rep(i, d) ans += k+'0';
-    Out(ans);
+    CHAR(C,c);
+    if((C^32)==c) PYes PNo
 
 }
 

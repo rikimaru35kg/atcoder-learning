@@ -227,36 +227,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(_N, A, B);
-    if(_N<=A) puts("Takahashi");
-    else if(A>B) puts("Takahashi");
-    else if(A<B) puts("Aoki");
-    else {
-        if(_N%(A+1)==0) puts("Aoki");
-        else puts("Takahashi");
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    // {
-    //     ll N = _N;
-    //     vvc ans(A, vc(B));
-    //     rep1(a, A) rep1(b, B) {
-    //         vvl mem(N+1, vl(100, -1));
-    //         auto f=[&](auto f, ll n, ll a, ll b) -> ll {
-    //             if(n<=a) return 1;
-    //             ll &ret = mem[n][a];
-    //             if(ret!=-1) return ret;
-    //             ret = 0;
-    //             rep1(i, a) {
-    //                 if(f(f, n-i, b, a)==0) ret = 1;
-    //             }
-    //             // de4(n,a,b,ret)
-    //             return ret;
-    //         };
-    //         if(f(f,N,a,b)==1) ans[a-1][b-1] = 'T';
-    //         else ans[a-1][b-1] = 'A';
-    //     }
-    //     de(ans)
-    // }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+void solve() {
+    LONG(R, B, x, y);
+
+    auto f=[&](ll k) -> bool {
+        if(R<k || B<k) return false;
+        ll cnt = 0;
+        cnt += (R-k)/(x-1);
+        cnt += (B-k)/(y-1);
+        return cnt>=k;
+    };
+
+    ll ans = binary_search(0, INF, f);
+    Out(ans);
+
 }
 
 int main () {
