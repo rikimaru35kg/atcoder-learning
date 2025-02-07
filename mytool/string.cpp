@@ -1,6 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+string instr() {
+    string ret;
+    getline(cin, ret);
+    if(ret.back()<=32 || ret.back()>=127) ret.pop_back();
+    return ret;
+}
+
 vector<string> split(string &s, char t) {
     vector<string> ret; string now;
     for(auto c: s) {

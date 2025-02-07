@@ -2323,4 +2323,15 @@
       "}",
     ],
   },
+  "Snippet(instring)": {
+    "prefix": "instr_getline",
+    "body": [
+      "string instr() {",
+      "    string ret;",
+      "    getline(cin, ret);",
+      "    if(ret.back()<=32 || ret.back()>=127) ret.pop_back();",
+      "    return ret;",
+      "}",
+    ],
+  },
 }

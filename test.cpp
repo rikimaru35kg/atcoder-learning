@@ -239,9 +239,15 @@ vector<string> split(string &s, char t) {
     return ret;
 }
 
+string instr() {
+    string ret;
+    getline(cin, ret);
+    if(ret.back()<=32 || ret.back()>=127) ret.pop_back();
+    return ret;
+}
+
 void solve() {
-    string S;
-    getline(cin, S);
+    string S = instr();
     // ll a = S.back();
     // de(a)
     // if(S.back()==13) S.pop_back();
