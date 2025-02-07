@@ -2170,3 +2170,4 @@
 - [B - 大事な数なのでZ回書きまLた。](https://atcoder.jp/contests/arc027/tasks/arc027_2)
 - [C - Z塗り](https://atcoder.jp/contests/arc040/tasks/arc040_c)
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
+- [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)

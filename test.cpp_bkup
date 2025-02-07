@@ -228,8 +228,15 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    CHAR(C,c);
-    if((C^32)==c) PYes PNo
+    LONG(K);
+    ll a = 2, b = 1;
+    rep(_, K-1) {
+        ll nb = a;
+        ll na = a+b;
+        a = na, b = nb;
+        de2(a,b)
+    }
+    printf("%lld %lld\n", a, b);
 
 }
 

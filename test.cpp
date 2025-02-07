@@ -227,40 +227,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(R, B, x, y);
+    LONG(N, A, B);
+    multiset<ll> st;
+    rep(i, N) {
+        LONG(a); st.insert(a);
+    }
+    if(A==1) {
+        for(auto x: st) Out(x);
+        return;
+    }
 
-    auto f=[&](ll k) -> bool {
-        if(R<k || B<k) return false;
-        ll cnt = 0;
-        cnt += (R-k)/(x-1);
-        cnt += (B-k)/(y-1);
-        return cnt>=k;
-    };
+    while(B) {
+        auto it1 = st.begin();
+        auto it2 = prev(st.end());
+        ll a = *it1, b = *it2;
+        if(A*a>=b) break;
+        st.erase(it1);
+        st.insert(A*a);
+        --B;
+    }
 
-    ll ans = binary_search(0, INF, f);
-    Out(ans);
+    vm X;
+    for(auto x: st) X.push_back(x);
+    ll cycle = B/N;
+    ll r = B%N;
+    rep(i, N) {
+        if(i<r) {
+            X[i] *= mint(A).pow(cycle+1);
+        } else {
+            X[i] *= mint(A).pow(cycle);
+        }
+    }
+    rotate(X.begin(), X.begin()+r, X.end());
+    for(auto x: X) Out(x);
 
 }
 
