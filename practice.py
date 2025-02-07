@@ -27,12 +27,8 @@ def de(*args, **kwargs):
     pass
 INF = int(3e18)
 
-
 def main():
-    S = instr()
-    S = S.replace("Left", "<").replace("Right", ">").replace("AtCoder", "A")
-    print(S)
-
+    pass
 
 
 
