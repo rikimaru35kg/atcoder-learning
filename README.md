@@ -2131,6 +2131,7 @@
 - [C - 蛍光灯](https://atcoder.jp/contests/arc026/tasks/arc026_3)
 - [C - 最高のトッピングにしような](https://atcoder.jp/contests/arc027/tasks/arc027_3)
 - [C - 約数かつ倍数](https://atcoder.jp/contests/arc034/tasks/arc034_3)
+- [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

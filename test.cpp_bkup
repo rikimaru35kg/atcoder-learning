@@ -227,38 +227,13 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N); VL(A, N);
-    if(A[0]!=0) Pm0
-    vl cnt(N);
-    rep(i, N) cnt[A[i]]++;
-    if(cnt[0]!=1) Pm0
-    rep(i, N-1) if(cnt[i+1]>0 && cnt[i]==0) Pm0
-    auto nC2=[&](ll n) -> ll { return n*(n-1)/2; };
-    mint ans = 1;
-    rep1(i, N-1) {
-        ll a = cnt[i-1], b = cnt[i];
-        if(b==0) break;
-        ans *= (mint(2).pow(a)-1).pow(b);
-        de3(a,b,ans.val())
-        ans *= mint(2).pow(nC2(b));
-        de3(a,b,ans.val())
-        de("===")
-    }
+    LONG(N);
+    --N;
+    ll d = N/9+1;
+    ll k = N%9+1;
+    string ans;
+    rep(i, d) ans += k+'0';
     Out(ans);
 
 }

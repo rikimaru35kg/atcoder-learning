@@ -227,44 +227,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> split(string &s, char t) {
-    vector<string> ret; string now;
-    for(auto c: s) {
-        if(c==t) {
-            if(now.size()) ret.push_back(now);
-            now = "";
-        } else now += c;
-    }
-    if(now.size()) ret.push_back(now);
-    return ret;
-}
-
-string instr() {
-    string ret;
-    getline(cin, ret);
-    if(ret.back()<=32 || ret.back()>=127) ret.pop_back();
-    return ret;
-}
-
 void solve() {
-    string S = instr();
-    // ll a = S.back();
-    // de(a)
-    // if(S.back()==13) S.pop_back();
-    de(S.size())
-    // S.pop_back();
-    vs s = split(S, ' ');
-    vc ans;
-    for(auto cs: s) {
-        if(cs=="Left") ans.push_back('<');
-        if(cs=="Right") ans.push_back('>');
-        if(cs=="AtCoder") ans.push_back('A');
+    LONG(_N, A, B);
+    if(_N<=A) puts("Takahashi");
+    else if(A>B) puts("Takahashi");
+    else if(A<B) puts("Aoki");
+    else {
+        if(_N%(A+1)==0) puts("Aoki");
+        else puts("Takahashi");
     }
-    de(ans)
-    Out(ans);
-
-
-
+    // {
+    //     ll N = _N;
+    //     vvc ans(A, vc(B));
+    //     rep1(a, A) rep1(b, B) {
+    //         vvl mem(N+1, vl(100, -1));
+    //         auto f=[&](auto f, ll n, ll a, ll b) -> ll {
+    //             if(n<=a) return 1;
+    //             ll &ret = mem[n][a];
+    //             if(ret!=-1) return ret;
+    //             ret = 0;
+    //             rep1(i, a) {
+    //                 if(f(f, n-i, b, a)==0) ret = 1;
+    //             }
+    //             // de4(n,a,b,ret)
+    //             return ret;
+    //         };
+    //         if(f(f,N,a,b)==1) ans[a-1][b-1] = 'T';
+    //         else ans[a-1][b-1] = 'A';
+    //     }
+    //     de(ans)
+    // }
 }
 
 int main () {
