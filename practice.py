@@ -30,13 +30,9 @@ INF = int(3e18)
 
 def main():
     S = instr()
-    S = S.lower()
-    s = "ict"
-    idx = 0
-    for c in S:
-        if(s[idx]==c): idx += 1
-        if(idx==3): print("YES"); exit()
-    print("NO")
+    S = S.replace("Left", "<").replace("Right", ">").replace("AtCoder", "A")
+    print(S)
+
 
 
 

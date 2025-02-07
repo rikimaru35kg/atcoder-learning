@@ -227,17 +227,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VS(S, N);
-    ll ans = 0;
-    rep(i, N) repr(j, N) {
-        if(S[i][j]=='o') continue;
-        ++ans;
-        for(ll k=0; k<=j; ++k) S[i][k] = 'o';
-        if(i<N-1) for(ll k=j; k<N; ++k)  S[i+1][k] = 'o';
+vector<string> split(string &s, char t) {
+    vector<string> ret; string now;
+    for(auto c: s) {
+        if(c==t) {
+            if(now.size()) ret.push_back(now);
+            now = "";
+        } else now += c;
     }
+    if(now.size()) ret.push_back(now);
+    return ret;
+}
+
+void solve() {
+    string S;
+    getline(cin, S);
+    vs s = split(S, ' ');
+    vc ans;
+    for(auto cs: s) {
+        if(cs=="Left") ans.push_back('<');
+        if(cs=="Right") ans.push_back('>');
+        if(cs=="AtCoder") ans.push_back('A');
+    }
+    de(ans)
     Out(ans);
+
+
 
 }
 
