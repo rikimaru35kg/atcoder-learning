@@ -28,7 +28,8 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 def main():
-    pass
+    N = inint()
+    print(10**N+7)
 
 
 

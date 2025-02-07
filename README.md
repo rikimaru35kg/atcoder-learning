@@ -1964,6 +1964,8 @@
 ## 文字列
 - S.substr(開始位置, 長さ)で部分文字列を取得可能。長さが後ろをはみ出しても大丈夫
 - regex_match(S, regex("正規表現"))で一致性を確認可能
+- regex_replace(S, regex("正規表現"), "置換後文字列")でreplace可能（inplaceでないので注意）
+- [a-zA-Z]で全てのアルファベットを表す
 - ただし正規表現は遅い。計算量がシビアな問題ではなるべく使わない
 - S.find(s)は文字列sの含まれる最初の位置を出力。存在しない場合はstring::npos(==-1)を出力（sは文字でも可）
 - S.rfind(s)は文字列sが最後に含まれる位置を出力。存在しない場合はstring::nposを出力
@@ -2132,6 +2134,7 @@
 - [C - 最高のトッピングにしような](https://atcoder.jp/contests/arc027/tasks/arc027_3)
 - [C - 約数かつ倍数](https://atcoder.jp/contests/arc034/tasks/arc034_3)
 - [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
+- [B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

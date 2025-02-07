@@ -227,10 +227,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/dsu>
+using namespace atcoder;
+
 void solve() {
-    STRING(S);
-    S = regex_replace(S, regex("[a-zA-Z]"), "");
-    de(S)
+    LONG(N, M, S); --S;
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a,b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+
+    vl dist(N, -1);
+    priority_queue<Pr> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]>=d) return;
+        dist[v] = d;
+        que.emplace(d, v);
+    };
+    push(S, S);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        for(auto nv: from[v]) {
+            push(nv, min(nv,d));
+        }
+    }
+    rep(i, N) {
+        if(dist[i]>=i) Out(i+1);
+    }
+
 
 }
 
