@@ -1602,6 +1602,7 @@
 - 基本 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
 - !復習価値低 （DPでも解いてみよう） [E - Stamp](https://atcoder.jp/contests/abc329/tasks/abc329_e)
 - 基本 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
+- !復習価値中 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !要復習 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
 - !復習価値中 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
@@ -1894,6 +1895,14 @@
 - !復習価値低 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - !要復習 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
+## 畳み込み（FFT/NTT）
+- ACLで求める
+- 分布同士の掛け算的なものが高速に求まる（多項式の積）
+- c_{i+j} += ai * bjとなる
+### 例題
+- [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
+- [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
+
 ## 凸包
 - 凸な多角形を作る事で上手くいく問題
 ### 
@@ -2135,6 +2144,7 @@
 - [C - 最高のトッピングにしような](https://atcoder.jp/contests/arc027/tasks/arc027_3)
 - [C - 約数かつ倍数](https://atcoder.jp/contests/arc034/tasks/arc034_3)
 - [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
+- [E - Cables and Servers](https://atcoder.jp/contests/abc392/tasks/abc392_e)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
