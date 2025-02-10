@@ -227,172 +227,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
+template <class S, S(*op)(S, S), S(*e)()>
+struct SegTree {
+    int n;
+    vector<S> a;
+    SegTree(int mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
+    }
+    void set_only(int i, S x) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;  // i is node id
+        a[i] = x;
+    }
+    void set(int i, S x) {
+        assert(i>=0 && i<n);
+        set_only(i, x);
+        i += n; i>>=1;  // i is node id
+        while(i) {
+            update(i);
+            i>>=1;
         }
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
     }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
+    S get(int i) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        return a[i];
     }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+    S prod(int ql, int qr) {
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, int i) -> S {
+            if(r<=ql || l>=qr) return e();
+            if(l>=ql && r<=qr) return get(i-n);
+            int m = (l+r)/2;
+            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
+            return ret;
+        };
+        S ret = f(f, 0, n, 1);
+        return ret;
+    }
+};
 
-template<typename T>
-struct RangeBIT {
-    long long size;
-    vector<vector<T>> bit;
-    RangeBIT (int _n): size(_n+1), bit(2, vector<T>(_n+1)) {}
-    void add(int l, int r, T x) {  // [l,r) half-open interval
-        add_sub(0, l, -x*(l-1)); add_sub(0, r, x*(r-1));
-        add_sub(1, l, x); add_sub(1, r, -x);
-    }
-    T sum(int l, int r) { // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        return sum_sub(0,i) + sum_sub(1,i)*i;
-    }
-    void add_sub(int p, int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
-        for(; i<size; i+=i&-i) bit[p][i] += x;
-    }
-    T sum_sub(int p, int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[p][i];
-        return ret;
-    }
-};
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
+using S = ll;
+S op(S a, S b) {return gcd(a,b);}
+S e() {return 0;}
 
 void solve() {
-    LONG(N, K);
-    VL(A, N); VL(B, N);
-    vl price;
-    rep(i, N) price.push_back(A[i]);
-    rep(i, N) price.push_back(B[i]);
-    ll now = N, dis=0;
-    ll ans = 0;
-    vl disup, disdown;
-    rep(i, N) { disup.push_back(A[i]+1); }
-    rep(i, N) { disdown.push_back(B[i]+1); }
-    sort(allr(disup));
-    sort(allr(disdown));
-    sort(all(price));
-    for(auto p: price) {
-        while(disup.size() && disup.back()<=p) {
-            ++dis;
-            disup.pop_back();
-        }
-        while(disdown.size() && disdown.back()<=p) {
-            --dis, --now;
-            disdown.pop_back();
-        }
-        if(dis<=K) chmax(ans, now*p);
+    LONG(N, Q);
+    VL(A, N);
+    SegTree<S,op,e> seg(N-1);
+    rep(i, N-1) {
+        seg.set_only(i, abs(A[i+1]-A[i]));
+    }
+    seg.build();
+    vl ans;
+    rep(i, Q) {
+        LONGM(l, r);
+        S m = seg.prod(l, r);
+        ans.push_back(m);
     }
     Out(ans);
+
 
 }
 
