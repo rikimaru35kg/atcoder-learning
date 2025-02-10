@@ -683,6 +683,13 @@
       "using namespace atcoder;",
     ],
   },
+  "atcoder/convolution(Snippet)": {
+    "prefix": "at_conv",
+    "body": [
+      "#include<atcoder/convolution>",
+      "using namespace atcoder;",
+    ],
+  },
   "Pascal(Snippet)": {
     "prefix": "pascal",
     "body": [
