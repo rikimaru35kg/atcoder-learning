@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### B.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -227,37 +227,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
 void solve() {
-    LONG(N, M, S); --S;
-    vvl from(N);
+    LONG(N, M);
+    vb exist(N+1);
     rep(i, M) {
-        LONGM(a,b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        LONG(a);
+        exist[a] = true;
     }
-
-    vl dist(N, -1);
-    priority_queue<Pr> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]>=d) return;
-        dist[v] = d;
-        que.emplace(d, v);
-    };
-    push(S, S);
-    while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(dist[v]!=d) continue;
-        for(auto nv: from[v]) {
-            push(nv, min(nv,d));
-        }
+    vl ans;
+    rep1(i, N) {
+        if(!exist[i]) ans.push_back(i);
     }
-    rep(i, N) {
-        if(dist[i]>=i) Out(i+1);
-    }
-
+    Out(ans.size());
+    if(SIZE(ans)==0) cout<<endl;
+    Out(ans);
 
 }
 
@@ -267,4 +250,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### B.cpp ###

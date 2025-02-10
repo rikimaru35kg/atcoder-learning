@@ -1,464 +1,942 @@
-test.cpp: In function ‘int main()’:
-test.cpp:305:17: error: no matching function for call to ‘swap(__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type&, __gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type)’
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:126:
-/usr/include/c++/12/any:429:15: note: candidate: ‘void std::swap(any&, any&)’ (near match)
-  429 |   inline void swap(any& __x, any& __y) noexcept { __x.swap(__y); }
-      |               ^~~~
-/usr/include/c++/12/any:429:15: note:   conversion of argument 2 would be ill-formed:
-test.cpp:305:32: error: cannot bind non-const lvalue reference of type ‘std::any&’ to an rvalue of type ‘std::any’
-  305 |             swap(B[idx], B[idx]+1);
-/usr/include/c++/12/any:190:7: note:   after user-defined conversion: ‘std::any::any(_Tp&&) [with _Tp = long long int; _VTp = long long int; _Mgr = _Manager_internal<long long int>; typename std::enable_if<(is_copy_constructible_v<_VTp> && (! __is_in_place_type_v<_VTp>)), bool>::type <anonymous> = true]’
-  190 |       any(_Tp&& __value)
-      |       ^~~
-In file included from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/sstream:1185:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_stringbuf<_CharT, _Traits, _Alloc>&, basic_stringbuf<_CharT, _Traits, _Alloc>&)’
- 1185 |     swap(basic_stringbuf<_CharT, _Traits, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/sstream:1185:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_stringbuf<_CharT, _Traits, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/sstream:1193:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_istringstream<_CharT, _Traits, _Allocator>&, basic_istringstream<_CharT, _Traits, _Allocator>&)’
- 1193 |     swap(basic_istringstream<_CharT, _Traits, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/sstream:1193:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_istringstream<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/sstream:1200:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_ostringstream<_CharT, _Traits, _Allocator>&, basic_ostringstream<_CharT, _Traits, _Allocator>&)’
- 1200 |     swap(basic_ostringstream<_CharT, _Traits, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/sstream:1200:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_ostringstream<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/sstream:1207:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::__cxx11::swap(basic_stringstream<_CharT, _Traits, _Allocator>&, basic_stringstream<_CharT, _Traits, _Allocator>&)’
- 1207 |     swap(basic_stringstream<_CharT, _Traits, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/sstream:1207:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_stringstream<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+test.cpp: In function ‘ll solve()’:
+test.cpp:236:27: error: no match for ‘operator=’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} and ‘ll’ {aka ‘long long int’})
+  236 |             person[a] = i+1;
+      |                           ^
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62,
+                 from stdc++.h:71:
+/usr/include/c++/12/debug/vector:239:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>& std::__debug::vector<_Tp, _Allocator>::operator=(const std::__debug::vector<_Tp, _Allocator>&) [with _Tp = long long int; _Allocator = std::allocator<long long int>]’
+  239 |       operator=(const vector&) = default;
+      |       ^~~~~~~~
+/usr/include/c++/12/debug/vector:239:17: note:   no known conversion for argument 1 from ‘ll’ {aka ‘long long int’} to ‘const std::__debug::vector<long long int>&’
+  239 |       operator=(const vector&) = default;
+      |                 ^~~~~~~~~~~~~
+/usr/include/c++/12/debug/vector:242:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>& std::__debug::vector<_Tp, _Allocator>::operator=(std::__debug::vector<_Tp, _Allocator>&&) [with _Tp = long long int; _Allocator = std::allocator<long long int>]’
+  242 |       operator=(vector&&) = default;
+      |       ^~~~~~~~
+/usr/include/c++/12/debug/vector:242:17: note:   no known conversion for argument 1 from ‘ll’ {aka ‘long long int’} to ‘std::__debug::vector<long long int>&&’
+  242 |       operator=(vector&&) = default;
+      |                 ^~~~~~~~
+/usr/include/c++/12/debug/vector:245:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>& std::__debug::vector<_Tp, _Allocator>::operator=(std::initializer_list<_Tp>) [with _Tp = long long int; _Allocator = std::allocator<long long int>]’
+  245 |       operator=(initializer_list<value_type> __l)
+      |       ^~~~~~~~
+/usr/include/c++/12/debug/vector:245:46: note:   no known conversion for argument 1 from ‘ll’ {aka ‘long long int’} to ‘std::initializer_list<long long int>’
+  245 |       operator=(initializer_list<value_type> __l)
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+test.cpp:242:26: error: cannot convert ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} to ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} in assignment
+  242 |         ans[i] = person[i];
+      |                          ^
+test.cpp:245:24: error: no match for ‘operator!=’ (operand types are ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} and ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’})
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
 In file included from /usr/include/c++/12/regex:66,
                  from stdc++.h:110:
-/usr/include/c++/12/bits/regex.h:880:5: note: candidate: ‘template<class _Ch_type, class _Rx_traits> void std::__cxx11::swap(basic_regex<_Ch_type, _Rx_traits>&, basic_regex<_Ch_type, _Rx_traits>&)’
-  880 |     swap(basic_regex<_Ch_type, _Rx_traits>& __lhs,
-      |     ^~~~
-/usr/include/c++/12/bits/regex.h:880:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_regex<_Ch_type, _Rx_traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/regex.h:2185:5: note: candidate: ‘template<class _Bi_iter, class _Alloc> void std::__cxx11::swap(match_results<_BiIter, _Alloc>&, match_results<_BiIter, _Alloc>&)’
- 2185 |     swap(match_results<_Bi_iter, _Alloc>& __lhs,
-      |     ^~~~
-/usr/include/c++/12/bits/regex.h:2185:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::match_results<_BiIter, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/deque:70,
-                 from stdc++.h:68:
-/usr/include/c++/12/debug/deque:715:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(deque<_Tp, _Allocator>&, deque<_Tp, _Allocator>&)’
-  715 |     swap(deque<_Tp, _Alloc>& __lhs, deque<_Tp, _Alloc>& __rhs)
-      |     ^~~~
-/usr/include/c++/12/debug/deque:715:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::deque<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/unordered_map:52,
-                 from /usr/include/c++/12/functional:61,
-                 from stdc++.h:71:
-/usr/include/c++/12/debug/unordered_map:847:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&, unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
-  847 |     swap(unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~
-/usr/include/c++/12/debug/unordered_map:847:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/debug/unordered_map:1564:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&, unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&)’
- 1564 |     swap(unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~
-/usr/include/c++/12/debug/unordered_map:1564:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/vector:74,
-                 from /usr/include/c++/12/functional:62:
-/usr/include/c++/12/debug/vector:793:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(vector<_Tp, _Alloc>&, vector<_Tp, _Alloc>&)’
-  793 |     swap(vector<_Tp, _Alloc>& __lhs, vector<_Tp, _Alloc>& __rhs)
-      |     ^~~~
-/usr/include/c++/12/debug/vector:793:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::vector<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/list:67,
-                 from stdc++.h:79:
-/usr/include/c++/12/debug/list:968:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(list<_Tp, _Allocator>&, list<_Tp, _Allocator>&)’
-  968 |     swap(list<_Tp, _Alloc>& __lhs, list<_Tp, _Alloc>& __rhs)
-      |     ^~~~
-/usr/include/c++/12/debug/list:968:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::list<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/debug/map:43,
-                 from /usr/include/c++/12/map:67,
-                 from stdc++.h:81:
-/usr/include/c++/12/debug/map.h:798:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> void std::__debug::swap(map<_Key, _Tp, _Compare, _Allocator>&, map<_Key, _Tp, _Compare, _Allocator>&)’
-  798 |     swap(map<_Key, _Tp, _Compare, _Allocator>& __lhs,
-      |     ^~~~
-/usr/include/c++/12/debug/map.h:798:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::map<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/debug/map:44:
-/usr/include/c++/12/debug/multimap.h:680:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> void std::__debug::swap(multimap<_Key, _Tp, _Compare, _Allocator>&, multimap<_Key, _Tp, _Compare, _Allocator>&)’
-  680 |     swap(multimap<_Key, _Tp, _Compare, _Allocator>& __lhs,
-      |     ^~~~
-/usr/include/c++/12/debug/multimap.h:680:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/debug/set:41,
-                 from /usr/include/c++/12/set:67,
-                 from stdc++.h:87:
-/usr/include/c++/12/debug/set.h:655:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> void std::__debug::swap(set<_Key, _Compare, _Allocator>&, set<_Key, _Compare, _Allocator>&)’
-  655 |     swap(set<_Key, _Compare, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/debug/set.h:655:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::set<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/debug/set:42:
-/usr/include/c++/12/debug/multiset.h:645:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> void std::__debug::swap(multiset<_Key, _Compare, _Allocator>&, multiset<_Key, _Compare, _Allocator>&)’
-  645 |     swap(multiset<_Key, _Compare, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/debug/multiset.h:645:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::multiset<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/forward_list:43,
-                 from stdc++.h:104:
-/usr/include/c++/12/debug/forward_list:913:5: note: candidate: ‘template<class _Tp, class _Alloc> void std::__debug::swap(forward_list<_Tp, _Allocator>&, forward_list<_Tp, _Allocator>&)’
-  913 |     swap(forward_list<_Tp, _Alloc>& __lx, forward_list<_Tp, _Alloc>& __ly)
-      |     ^~~~
-/usr/include/c++/12/debug/forward_list:913:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::forward_list<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/unordered_set:52,
-                 from stdc++.h:118:
-/usr/include/c++/12/debug/unordered_set:716:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_set<_Tp, _Hash, _Pred, _Allocator>&, unordered_set<_Tp, _Hash, _Pred, _Allocator>&)’
-  716 |     swap(unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~
-/usr/include/c++/12/debug/unordered_set:716:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_set<_Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/debug/unordered_set:1393:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> void std::__debug::swap(unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&, unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&)’
- 1393 |     swap(unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
-      |     ^~~~
-/usr/include/c++/12/debug/unordered_set:1393:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__debug::unordered_multiset<_Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/bits/stl_pair.h:61,
-                 from /usr/include/c++/12/bits/stl_algobase.h:64,
+/usr/include/c++/12/bits/regex.h:1248:5: note: candidate: ‘template<class _Bi_iter, class _Ch_traits, class _Ch_alloc> bool std::__cxx11::operator==(const sub_match<_BiIter>&, __sub_match_string<_Bi_iter, _Ch_traits, _Ch_alloc>&)’ (reversed)
+ 1248 |     operator==(const sub_match<_Bi_iter>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/regex.h:1248:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/regex.h:1415:5: note: candidate: ‘template<class _Bi_iter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type*)’ (reversed)
+ 1415 |     operator==(const sub_match<_Bi_iter>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/regex.h:1415:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/regex.h:1587:5: note: candidate: ‘template<class _Bi_iter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const typename std::iterator_traits<_Iter>::value_type&)’ (reversed)
+ 1587 |     operator==(const sub_match<_Bi_iter>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/regex.h:1587:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::__cxx11::sub_match<_BiIter>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/bits/stl_algobase.h:67,
                  from /usr/include/c++/12/bits/specfun.h:45,
                  from /usr/include/c++/12/cmath:1935,
                  from stdc++.h:41:
-/usr/include/c++/12/bits/move.h:196:5: note: candidate: ‘constexpr std::_Require<std::__not_<std::__is_tuple_like<_Tp> >, std::is_move_constructible<_Tp>, std::is_move_assignable<_Tp> > std::swap(_Tp&, _Tp&) [with _Tp = long long int; _Require<__not_<__is_tuple_like<_Tp> >, is_move_constructible<_Tp>, is_move_assignable<_Tp> > = void]’ (near match)
-  196 |     swap(_Tp& __a, _Tp& __b)
-      |     ^~~~
-/usr/include/c++/12/bits/move.h:196:5: note:   conversion of argument 2 would be ill-formed:
-test.cpp:305:32: error: cannot bind non-const lvalue reference of type ‘long long int&’ to an rvalue of type ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-/usr/include/c++/12/bits/move.h:220:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr std::__enable_if_t<std::__is_swappable<_Tp>::value> std::swap(_Tp (&)[_Nm], _Tp (&)[_Nm])’
-  220 |     swap(_Tp (&__a)[_Nm], _Tp (&__b)[_Nm])
-      |     ^~~~
-/usr/include/c++/12/bits/move.h:220:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘_Tp [_Nm]’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_pair.h:707:5: note: candidate: ‘template<class _T1, class _T2> constexpr typename std::enable_if<std::__and_<std::__is_swappable<_T1>, std::__is_swappable<_T2> >::value>::type std::swap(pair<_T1, _T2>&, pair<_T1, _T2>&)’
-  707 |     swap(pair<_T1, _T2>& __x, pair<_T1, _T2>& __y)
-      |     ^~~~
-/usr/include/c++/12/bits/stl_pair.h:707:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_pair.h:715:5: note: candidate: ‘template<class _T1, class _T2> typename std::enable_if<(! std::__and_<std::__is_swappable<_T1>, std::__is_swappable<_T2> >::value)>::type std::swap(pair<_T1, _T2>&, pair<_T1, _T2>&)’ (deleted)
-  715 |     swap(pair<_T1, _T2>&, pair<_T1, _T2>&) = delete;
-      |     ^~~~
-/usr/include/c++/12/bits/stl_pair.h:715:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/string:53,
+/usr/include/c++/12/bits/stl_iterator.h:530:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (reversed)
+  530 |     operator==(const reverse_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:530:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::reverse_iterator<_IteratorL>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/stl_iterator.h:1674:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator==(const move_iterator<_IteratorL>&, const move_iterator<_IteratorR>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (reversed)
+ 1674 |     operator==(const move_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:1674:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::move_iterator<_IteratorL>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/string:41,
                  from /usr/include/c++/12/bits/locale_classes.h:40,
                  from /usr/include/c++/12/bits/ios_base.h:41,
                  from /usr/include/c++/12/ios:42,
                  from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38:
-/usr/include/c++/12/bits/basic_string.h:3853:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr void std::swap(__cxx11::basic_string<_CharT, _Traits, _Allocator>&, __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
- 3853 |     swap(basic_string<_CharT, _Traits, _Alloc>& __lhs,
-      |     ^~~~
-/usr/include/c++/12/bits/basic_string.h:3853:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:70:
-/usr/include/c++/12/fstream:1269:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_filebuf<_CharT, _Traits>&, basic_filebuf<_CharT, _Traits>&)’
- 1269 |     swap(basic_filebuf<_CharT, _Traits>& __x,
-      |     ^~~~
-/usr/include/c++/12/fstream:1269:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_filebuf<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/fstream:1276:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ifstream<_CharT, _Traits>&, basic_ifstream<_CharT, _Traits>&)’
- 1276 |     swap(basic_ifstream<_CharT, _Traits>& __x,
-      |     ^~~~
-/usr/include/c++/12/fstream:1276:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_ifstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/fstream:1283:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ofstream<_CharT, _Traits>&, basic_ofstream<_CharT, _Traits>&)’
- 1283 |     swap(basic_ofstream<_CharT, _Traits>& __x,
-      |     ^~~~
-/usr/include/c++/12/fstream:1283:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_ofstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/fstream:1290:5: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_fstream<_CharT, _Traits>&, basic_fstream<_CharT, _Traits>&)’
- 1290 |     swap(basic_fstream<_CharT, _Traits>& __x,
-      |     ^~~~
-/usr/include/c++/12/fstream:1290:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_fstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+                 from /usr/include/c++/12/sstream:38,
+                 from /usr/include/c++/12/complex:45,
+                 from /usr/include/c++/12/ccomplex:39,
+                 from stdc++.h:54:
+/usr/include/c++/12/bits/allocator.h:219:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const allocator<_CharT>&, const allocator<_T2>&)’ (reversed)
+  219 |     operator==(const allocator<_T1>&, const allocator<_T2>&)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/allocator.h:219:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::allocator<_CharT>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/bits/basic_string.h:47,
+                 from /usr/include/c++/12/string:53:
+/usr/include/c++/12/string_view:546:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(basic_string_view<_CharT, _Traits>, __type_identity_t<basic_string_view<_CharT, _Traits> >)’ (reversed)
+  546 |     operator==(basic_string_view<_CharT, _Traits> __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/string_view:546:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘std::__debug::vector<long long int>’ is not derived from ‘std::basic_string_view<_CharT, _Traits>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/basic_string.h:3607:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr bool std::operator==(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const _CharT*)’ (reversed)
+ 3607 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3607:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/complex:469:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const complex<_Tp>&, const _Tp&)’ (reversed)
+  469 |     operator==(const complex<_Tp>& __x, const _Tp& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:469:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::complex<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from /usr/include/c++/12/functional:54:
-/usr/include/c++/12/tuple:1758:5: note: candidate: ‘template<class ... _Elements> constexpr typename std::enable_if<std::__and_<std::__is_swappable<_Elements>...>::value>::type std::swap(tuple<_UTypes ...>&, tuple<_UTypes ...>&)’
- 1758 |     swap(tuple<_Elements...>& __x, tuple<_Elements...>& __y)
-      |     ^~~~
-/usr/include/c++/12/tuple:1758:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/tuple:1766:5: note: candidate: ‘template<class ... _Elements> constexpr typename std::enable_if<(! std::__and_<std::__is_swappable<_Elements>...>::value)>::type std::swap(tuple<_UTypes ...>&, tuple<_UTypes ...>&)’ (deleted)
- 1766 |     swap(tuple<_Elements...>&, tuple<_Elements...>&) = delete;
-      |     ^~~~
-/usr/include/c++/12/tuple:1766:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::tuple<_UTypes ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/tuple:1496:5: note: candidate: ‘template<class ... _TElements, class ... _UElements> constexpr bool std::operator==(const tuple<_UTypes ...>&, const tuple<_UTypes ...>&)’ (reversed)
+ 1496 |     operator==(const tuple<_TElements...>& __t,
+      |     ^~~~~~~~
+/usr/include/c++/12/tuple:1496:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::tuple<_UTypes ...>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from /usr/include/c++/12/functional:59:
-/usr/include/c++/12/bits/std_function.h:757:5: note: candidate: ‘template<class _Res, class ... _Args> void std::swap(function<_Res(_ArgTypes ...)>&, function<_Res(_ArgTypes ...)>&)’
-  757 |     swap(function<_Res(_Args...)>& __x, function<_Res(_Args...)>& __y) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/std_function.h:757:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::function<_Res(_ArgTypes ...)>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/functional:63:
-/usr/include/c++/12/array:380:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr typename std::enable_if<typename std::__array_traits<_Tp, _Nm>::_Is_swappable::value>::type std::swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&)’
-  380 |     swap(array<_Tp, _Nm>& __one, array<_Tp, _Nm>& __two)
-      |     ^~~~
-/usr/include/c++/12/array:380:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::array<_Tp, _Nm>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/array:388:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> typename std::enable_if<(! typename std::__array_traits<_Tp, _Nm>::_Is_swappable::value)>::type std::swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&)’ (deleted)
-  388 |     swap(array<_Tp, _Nm>&, array<_Tp, _Nm>&) = delete;
-      |     ^~~~
-/usr/include/c++/12/array:388:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::array<_Tp, _Nm>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/map:60:
-/usr/include/c++/12/bits/stl_tree.h:1680:5: note: candidate: ‘template<class _Key, class _Val, class _KeyOfValue, class _Compare, class _Alloc> void std::swap(_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&, _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&)’
- 1680 |     swap(_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x,
-      |     ^~~~
-/usr/include/c++/12/bits/stl_tree.h:1680:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/std_function.h:718:5: note: candidate: ‘template<class _Res, class ... _Args> bool std::operator==(const function<_Res(_ArgTypes ...)>&, nullptr_t)’ (reversed)
+  718 |     operator==(const function<_Res(_Args...)>& __f, nullptr_t) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/std_function.h:718:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::function<_Res(_ArgTypes ...)>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from /usr/include/c++/12/memory:75,
                  from stdc++.h:82:
-/usr/include/c++/12/bits/unique_ptr.h:808:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(unique_ptr<_Tp, _Dp>&, unique_ptr<_Tp, _Dp>&)’
-  808 |     swap(unique_ptr<_Tp, _Dp>& __x,
-      |     ^~~~
-/usr/include/c++/12/bits/unique_ptr.h:808:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::unique_ptr<_Tp, _Dp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/unique_ptr.h:815:5: note: candidate: ‘template<class _Tp, class _Dp> typename std::enable_if<(! std::__is_swappable<_T2>::value)>::type std::swap(unique_ptr<_Tp, _Dp>&, unique_ptr<_Tp, _Dp>&)’ (deleted)
-  815 |     swap(unique_ptr<_Tp, _Dp>&,
-      |     ^~~~
-/usr/include/c++/12/bits/unique_ptr.h:815:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::unique_ptr<_Tp, _Dp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/unique_ptr.h:824:5: note: candidate: ‘template<class _Tp, class _Dp, class _Up, class _Ep> constexpr bool std::operator==(const unique_ptr<_Tp, _Dp>&, const unique_ptr<_Up, _Ep>&)’ (reversed)
+  824 |     operator==(const unique_ptr<_Tp, _Dp>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/unique_ptr.h:824:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/unique_ptr.h:832:5: note: candidate: ‘template<class _Tp, class _Dp> constexpr bool std::operator==(const unique_ptr<_Tp, _Dp>&, nullptr_t)’ (reversed)
+  832 |     operator==(const unique_ptr<_Tp, _Dp>& __x, nullptr_t) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/unique_ptr.h:832:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::unique_ptr<_Tp, _Dp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from /usr/include/c++/12/bits/shared_ptr.h:53,
                  from /usr/include/c++/12/memory:76:
-/usr/include/c++/12/bits/shared_ptr_base.h:1917:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> void std::swap(__shared_ptr<_Tp, _Lp>&, __shared_ptr<_Tp, _Lp>&)’
- 1917 |     swap(__shared_ptr<_Tp, _Lp>& __a, __shared_ptr<_Tp, _Lp>& __b) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:1917:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__shared_ptr<_Tp, _Lp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:2126:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> void std::swap(__weak_ptr<_Tp, _Lp>&, __weak_ptr<_Tp, _Lp>&)’
- 2126 |     swap(__weak_ptr<_Tp, _Lp>& __a, __weak_ptr<_Tp, _Lp>& __b) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/shared_ptr_base.h:2126:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::__weak_ptr<_Tp, _Lp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:692:5: note: candidate: ‘template<class _Tp> void std::swap(shared_ptr<_Tp>&, shared_ptr<_Tp>&)’
-  692 |     swap(shared_ptr<_Tp>& __a, shared_ptr<_Tp>& __b) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/shared_ptr.h:692:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::shared_ptr<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/shared_ptr.h:888:5: note: candidate: ‘template<class _Tp> void std::swap(weak_ptr<_Tp>&, weak_ptr<_Tp>&)’
-  888 |     swap(weak_ptr<_Tp>& __a, weak_ptr<_Tp>& __b) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/shared_ptr.h:888:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::weak_ptr<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:1793:5: note: candidate: ‘template<class _Tp1, class _Tp2, __gnu_cxx::_Lock_policy _Lp> bool std::operator==(const __shared_ptr<_Tp1, _Lp>&, const __shared_ptr<_Tp2, _Lp>&)’ (reversed)
+ 1793 |     operator==(const __shared_ptr<_Tp1, _Lp>& __a,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:1793:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::__shared_ptr<_Tp1, _Lp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/shared_ptr_base.h:1799:5: note: candidate: ‘template<class _Tp, __gnu_cxx::_Lock_policy _Lp> bool std::operator==(const __shared_ptr<_Tp, _Lp>&, nullptr_t)’ (reversed)
+ 1799 |     operator==(const __shared_ptr<_Tp, _Lp>& __a, nullptr_t) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/shared_ptr_base.h:1799:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::__shared_ptr<_Tp, _Lp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/shared_ptr.h:555:5: note: candidate: ‘template<class _Tp, class _Up> bool std::operator==(const shared_ptr<_Tp>&, const shared_ptr<_Tp>&)’ (reversed)
+  555 |     operator==(const shared_ptr<_Tp>& __a, const shared_ptr<_Up>& __b) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/shared_ptr.h:555:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::shared_ptr<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/shared_ptr.h:561:5: note: candidate: ‘template<class _Tp> bool std::operator==(const shared_ptr<_Tp>&, nullptr_t)’ (reversed)
+  561 |     operator==(const shared_ptr<_Tp>& __a, nullptr_t) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/shared_ptr.h:561:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::shared_ptr<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’ (reversed)
+  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’ (reversed)
+  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’ (reversed)
+  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’ (reversed)
+  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:417:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__equal_to, typename _Dom1::value_type>::result_type> std::operator==(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’ (reversed)
+  417 |     _DEFINE_EXPR_BINARY_OPERATOR(==, struct std::__equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:417:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’ (reversed)
+ 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::valarray<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’ (reversed)
+ 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from stdc++.h:111:
+/usr/include/c++/12/scoped_allocator:499:5: note: candidate: ‘template<class _OutA1, class _OutA2, class ... _InA> bool std::operator==(const scoped_allocator_adaptor<_OutA1, _InA ...>&, const scoped_allocator_adaptor<_InnerHead, _InnerTail ...>&)’ (reversed)
+  499 |     operator==(const scoped_allocator_adaptor<_OutA1, _InA...>& __a,
+      |     ^~~~~~~~
+/usr/include/c++/12/scoped_allocator:499:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::scoped_allocator_adaptor<_OutA1, _InA ...>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from stdc++.h:130:
+/usr/include/c++/12/optional:1222:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Tp, _Up> std::operator==(const optional<_Tp>&, const optional<_Up>&)’ (reversed)
+ 1222 |     operator==(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1222:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::optional<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/optional:1282:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const optional<_Tp>&, nullopt_t)’ (reversed)
+ 1282 |     operator==(const optional<_Tp>& __lhs, nullopt_t) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1282:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::optional<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/optional:1350:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Tp, _Up> std::operator==(const optional<_Tp>&, const _Up&)’ (reversed)
+ 1350 |     operator==(const optional<_Tp>& __lhs, const _Up& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1350:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::optional<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/optional:1356:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_eq_t<_Up, _Tp> std::operator==(const _Up&, const optional<_Tp>&)’ (reversed)
+ 1356 |     operator==(const _Up& __lhs, const optional<_Tp>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1356:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/x86_64-linux-gnu/c++/12/bits/c++allocator.h:33,
+                 from /usr/include/c++/12/bits/allocator.h:46:
+/usr/include/c++/12/bits/new_allocator.h:196:9: note: candidate: ‘template<class _Up> constexpr bool std::operator==(const __new_allocator<long long int>&, const __new_allocator<_Tp>&)’ (reversed)
+  196 |         operator==(const __new_allocator&, const __new_allocator<_Up>&)
+      |         ^~~~~~~~
+/usr/include/c++/12/bits/new_allocator.h:196:9: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__new_allocator<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/bits/ios_base.h:46:
+/usr/include/c++/12/system_error:460:3: note: candidate: ‘bool std::operator==(const error_code&, const error_condition&)’ (reversed)
+  460 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/12/system_error:460:32: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} to ‘const std::error_code&’
+  460 |   operator==(const error_code& __lhs, const error_condition& __rhs) noexcept
+      |              ~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/12/bits/regex.h:1077:5: note: candidate: ‘template<class _BiIter> bool std::__cxx11::operator==(const sub_match<_BiIter>&, const sub_match<_BiIter>&)’ (rewritten)
+ 1077 |     operator==(const sub_match<_BiIter>& __lhs, const sub_match<_BiIter>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/regex.h:1077:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx11::sub_match<_BiIter>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/regex.h:2145:5: note: candidate: ‘template<class _Bi_iter, class _Alloc> bool std::__cxx11::operator==(const match_results<_BiIter, _Alloc>&, const match_results<_BiIter, _Alloc>&)’ (rewritten)
+ 2145 |     operator==(const match_results<_Bi_iter, _Alloc>& __m1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/regex.h:2145:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx11::match_results<_BiIter, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/deque:70,
+                 from stdc++.h:68:
+/usr/include/c++/12/debug/deque:672:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const deque<_Tp, _Allocator>&, const deque<_Tp, _Allocator>&)’ (rewritten)
+  672 |     operator==(const deque<_Tp, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/deque:672:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::deque<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/unordered_map:52,
+                 from /usr/include/c++/12/functional:61:
+/usr/include/c++/12/debug/unordered_map:855:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&, const unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>&)’ (rewritten)
+  855 |     operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/unordered_map:855:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::unordered_map<_Key, _Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/debug/unordered_map:1572:5: note: candidate: ‘template<class _Key, class _Tp, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&, const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>&)’ (rewritten)
+ 1572 |     operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/unordered_map:1572:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::unordered_multimap<_Key, _Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/debug/vector:750:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const vector<_Tp, _Alloc>&, const vector<_Tp, _Alloc>&)’ (rewritten)
+  750 |     operator==(const vector<_Tp, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/vector:750:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::vector<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/list:67,
+                 from stdc++.h:79:
+/usr/include/c++/12/debug/list:925:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const list<_Tp, _Allocator>&, const list<_Tp, _Allocator>&)’ (rewritten)
+  925 |     operator==(const list<_Tp, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/list:925:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::list<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/debug/map:43,
+                 from /usr/include/c++/12/map:67,
+                 from stdc++.h:81:
+/usr/include/c++/12/debug/map.h:748:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> bool std::__debug::operator==(const map<_Key, _Tp, _Compare, _Allocator>&, const map<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
+  748 |     operator==(const map<_Key, _Tp, _Compare, _Allocator>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/map.h:748:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::map<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/debug/map:44:
+/usr/include/c++/12/debug/multimap.h:630:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Allocator> bool std::__debug::operator==(const multimap<_Key, _Tp, _Compare, _Allocator>&, const multimap<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
+  630 |     operator==(const multimap<_Key, _Tp, _Compare, _Allocator>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/multimap.h:630:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::multimap<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/debug/set:41,
+                 from /usr/include/c++/12/set:67,
+                 from stdc++.h:87:
+/usr/include/c++/12/debug/set.h:611:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> bool std::__debug::operator==(const set<_Key, _Compare, _Allocator>&, const set<_Key, _Compare, _Allocator>&)’ (rewritten)
+  611 |     operator==(const set<_Key, _Compare, _Allocator>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/set.h:611:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::set<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/debug/set:42:
+/usr/include/c++/12/debug/multiset.h:601:5: note: candidate: ‘template<class _Key, class _Compare, class _Allocator> bool std::__debug::operator==(const multiset<_Key, _Compare, _Allocator>&, const multiset<_Key, _Compare, _Allocator>&)’ (rewritten)
+  601 |     operator==(const multiset<_Key, _Compare, _Allocator>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/multiset.h:601:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::multiset<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/forward_list:43,
+                 from stdc++.h:104:
+/usr/include/c++/12/debug/forward_list:865:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__debug::operator==(const forward_list<_Tp, _Allocator>&, const forward_list<_Tp, _Allocator>&)’ (rewritten)
+  865 |     operator==(const forward_list<_Tp, _Alloc>& __lx,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/forward_list:865:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::forward_list<_Tp, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/unordered_set:52,
+                 from stdc++.h:118:
+/usr/include/c++/12/debug/unordered_set:723:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_set<_Tp, _Hash, _Pred, _Allocator>&, const unordered_set<_Tp, _Hash, _Pred, _Allocator>&)’ (rewritten)
+  723 |     operator==(const unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/unordered_set:723:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::unordered_set<_Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/debug/unordered_set:1400:5: note: candidate: ‘template<class _Value, class _Hash, class _Pred, class _Alloc> bool std::__debug::operator==(const unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&, const unordered_multiset<_Tp, _Hash, _Pred, _Allocator>&)’ (rewritten)
+ 1400 |     operator==(const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/debug/unordered_set:1400:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__debug::unordered_multiset<_Tp, _Hash, _Pred, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/bits/stl_algobase.h:64:
+/usr/include/c++/12/bits/stl_pair.h:640:5: note: candidate: ‘template<class _T1, class _T2> constexpr bool std::operator==(const pair<_T1, _T2>&, const pair<_T1, _T2>&)’ (rewritten)
+  640 |     operator==(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_pair.h:640:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::pair<_T1, _T2>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/stl_iterator.h:589:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorL>&) requires requires{{std::operator==::__x->base() == std::operator==::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’ (rewritten)
+  589 |     operator==(const reverse_iterator<_Iterator>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:589:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::reverse_iterator<_IteratorL>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/stl_iterator.h:1744:5: note: candidate: ‘template<class _Iterator> constexpr bool std::operator==(const move_iterator<_IteratorL>&, const move_iterator<_IteratorL>&)’ (rewritten)
+ 1744 |     operator==(const move_iterator<_Iterator>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:1744:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::move_iterator<_IteratorL>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/iosfwd:40,
+                 from /usr/include/c++/12/ios:38:
+/usr/include/c++/12/bits/postypes.h:192:5: note: candidate: ‘template<class _StateT> bool std::operator==(const fpos<_StateT>&, const fpos<_StateT>&)’ (rewritten)
+  192 |     operator==(const fpos<_StateT>& __lhs, const fpos<_StateT>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/postypes.h:192:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::fpos<_StateT>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/string_view:540:5: note: candidate: ‘template<class _CharT, class _Traits> constexpr bool std::operator==(basic_string_view<_CharT, _Traits>, basic_string_view<_CharT, _Traits>)’ (rewritten)
+  540 |     operator==(basic_string_view<_CharT, _Traits> __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/string_view:540:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘std::basic_string_view<_CharT, _Traits>’ and ‘long long int’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/basic_string.h:3583:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> constexpr bool std::operator==(const __cxx11::basic_string<_CharT, _Traits, _Allocator>&, const __cxx11::basic_string<_CharT, _Traits, _Allocator>&)’ (rewritten)
+ 3583 |     operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3583:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/basic_string.h:3592:5: note: candidate: ‘template<class _CharT> constexpr typename __gnu_cxx::__enable_if<std::__is_char<_Tp>::__value, bool>::__type std::operator==(const __cxx11::basic_string<_CharT>&, const __cxx11::basic_string<_CharT>&)’ (rewritten)
+ 3592 |     operator==(const basic_string<_CharT>& __lhs,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/basic_string.h:3592:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx11::basic_string<_CharT>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/bits/locale_facets.h:48,
+                 from /usr/include/c++/12/bits/basic_ios.h:37,
+                 from /usr/include/c++/12/ios:44:
+/usr/include/c++/12/bits/streambuf_iterator.h:233:5: note: candidate: ‘template<class _CharT, class _Traits> bool std::operator==(const istreambuf_iterator<_CharT, _Traits>&, const istreambuf_iterator<_CharT, _Traits>&)’ (rewritten)
+  233 |     operator==(const istreambuf_iterator<_CharT, _Traits>& __a,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/streambuf_iterator.h:233:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::istreambuf_iterator<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/complex:464:5: note: candidate: ‘template<class _Tp> constexpr bool std::operator==(const complex<_Tp>&, const complex<_Tp>&)’ (rewritten)
+  464 |     operator==(const complex<_Tp>& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/complex:464:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::complex<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/functional:63:
+/usr/include/c++/12/array:304:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr bool std::operator==(const array<_Tp, _Nm>&, const array<_Tp, _Nm>&)’ (rewritten)
+  304 |     operator==(const array<_Tp, _Nm>& __one, const array<_Tp, _Nm>& __two)
+      |     ^~~~~~~~
+/usr/include/c++/12/array:304:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::array<_Tp, _Nm>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from /usr/include/c++/12/queue:64,
                  from stdc++.h:86:
-/usr/include/c++/12/bits/stl_queue.h:447:5: note: candidate: ‘template<class _Tp, class _Seq> typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(queue<_Tp, _Seq>&, queue<_Tp, _Seq>&)’
-  447 |     swap(queue<_Tp, _Seq>& __x, queue<_Tp, _Seq>& __y)
-      |     ^~~~
-/usr/include/c++/12/bits/stl_queue.h:447:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::queue<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_queue.h:836:5: note: candidate: ‘template<class _Tp, class _Sequence, class _Compare> typename std::enable_if<std::__and_<std::__is_swappable<_T2>, std::__is_swappable<_Compare> >::value>::type std::swap(priority_queue<_Tp, _Sequence, _Compare>&, priority_queue<_Tp, _Sequence, _Compare>&)’
-  836 |     swap(priority_queue<_Tp, _Sequence, _Compare>& __x,
-      |     ^~~~
-/usr/include/c++/12/bits/stl_queue.h:836:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::priority_queue<_Tp, _Sequence, _Compare>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_queue.h:380:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator==(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’ (rewritten)
+  380 |     operator==(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_queue.h:380:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::queue<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from /usr/include/c++/12/stack:61,
                  from stdc++.h:89:
-/usr/include/c++/12/bits/stl_stack.h:423:5: note: candidate: ‘template<class _Tp, class _Seq> typename std::enable_if<std::__is_swappable<_T2>::value>::type std::swap(stack<_Tp, _Seq>&, stack<_Tp, _Seq>&)’
-  423 |     swap(stack<_Tp, _Seq>& __x, stack<_Tp, _Seq>& __y)
-      |     ^~~~
-/usr/include/c++/12/bits/stl_stack.h:423:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::stack<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/condition_variable:40,
-                 from stdc++.h:103:
-/usr/include/c++/12/bits/unique_lock.h:236:5: note: candidate: ‘template<class _Mutex> void std::swap(unique_lock<_Mutex>&, unique_lock<_Mutex>&)’
-  236 |     swap(unique_lock<_Mutex>& __x, unique_lock<_Mutex>& __y) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/unique_lock.h:236:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::unique_lock<_Mutex>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:105:
-/usr/include/c++/12/future:1195:5: note: candidate: ‘template<class _Res> void std::swap(promise<_Res>&, promise<_Res>&)’
- 1195 |     swap(promise<_Res>& __x, promise<_Res>& __y) noexcept
-      |     ^~~~
-/usr/include/c++/12/future:1195:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::promise<_Res>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/future:1660:5: note: candidate: ‘template<class _Res, class ... _ArgTypes> void std::swap(packaged_task<_Res(_ArgTypes ...)>&, packaged_task<_Res(_ArgTypes ...)>&)’
- 1660 |     swap(packaged_task<_Res(_ArgTypes...)>& __x,
-      |     ^~~~
-/usr/include/c++/12/future:1660:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::packaged_task<_Res(_ArgTypes ...)>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:122:
-/usr/include/c++/12/shared_mutex:851:5: note: candidate: ‘template<class _Mutex> void std::swap(shared_lock<_Mutex>&, shared_lock<_Mutex>&)’
-  851 |     swap(shared_lock<_Mutex>& __x, shared_lock<_Mutex>& __y) noexcept
-      |     ^~~~
-/usr/include/c++/12/shared_mutex:851:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::shared_lock<_Mutex>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:130:
-/usr/include/c++/12/optional:1436:5: note: candidate: ‘template<class _Tp> constexpr std::enable_if_t<(is_move_constructible_v<_Tp> && is_swappable_v<_Tp>)> std::swap(optional<_Tp>&, optional<_Tp>&)’
- 1436 |     swap(optional<_Tp>& __lhs, optional<_Tp>& __rhs)
-      |     ^~~~
-/usr/include/c++/12/optional:1436:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/optional:1442:5: note: candidate: ‘template<class _Tp> std::enable_if_t<(!(is_move_constructible_v<_Tp> && is_swappable_v<_Tp>))> std::swap(optional<_Tp>&, optional<_Tp>&)’ (deleted)
- 1442 |     swap(optional<_Tp>&, optional<_Tp>&) = delete;
-      |     ^~~~
-/usr/include/c++/12/optional:1442:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_stack.h:356:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator==(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’ (rewritten)
+  356 |     operator==(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_stack.h:356:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::stack<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__equal_to, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__equal_to, _Tp>::result_type> std::operator==(const valarray<_Tp>&, const valarray<_Tp>&)’ (rewritten)
+ 1198 | _DEFINE_BINARY_OPERATOR(==, __equal_to)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1198:1: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/random:51,
+                 from stdc++.h:108:
+/usr/include/c++/12/bits/random.tcc:1905:5: note: candidate: ‘template<class _RealType1> bool std::operator==(const normal_distribution<_RealType>&, const normal_distribution<_RealType>&)’ (rewritten)
+ 1905 |     operator==(const std::normal_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.tcc:1905:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::normal_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
 In file included from stdc++.h:133:
-/usr/include/c++/12/variant:1295:5: note: candidate: ‘template<class ... _Types> constexpr std::enable_if_t<((is_move_constructible_v<_Types> && ...) && (is_swappable_v<_Types> && ...))> std::swap(variant<_Types ...>&, variant<_Types ...>&)’
- 1295 |     swap(variant<_Types...>& __lhs, variant<_Types...>& __rhs)
-      |     ^~~~
-/usr/include/c++/12/variant:1295:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::variant<_Types ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/variant:1302:5: note: candidate: ‘template<class ... _Types> std::enable_if_t<(!((is_move_constructible_v<_Types> && ...) && (is_swappable_v<_Types> && ...)))> std::swap(variant<_Types ...>&, variant<_Types ...>&)’ (deleted)
- 1302 |     swap(variant<_Types...>&, variant<_Types...>&) = delete;
-      |     ^~~~
-/usr/include/c++/12/variant:1302:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::variant<_Types ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:151:
-/usr/include/c++/12/syncstream:304:5: note: candidate: ‘template<class _CharT, class _Traits, class _Allocator> void std::swap(basic_syncbuf<_CharT, _Traits, _Alloc>&, basic_syncbuf<_CharT, _Traits, _Alloc>&)’
-  304 |     swap(basic_syncbuf<_CharT, _Traits, _Allocator>& __x,
-      |     ^~~~
-/usr/include/c++/12/syncstream:304:5: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_syncbuf<_CharT, _Traits, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-In file included from stdc++.h:157:
-/usr/include/c++/12/spanstream:214:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_spanbuf<_CharT, _Traits>&, basic_spanbuf<_CharT, _Traits>&)’
-  214 |   swap(basic_spanbuf<_CharT, _Traits>& __x,
-      |   ^~~~
-/usr/include/c++/12/spanstream:214:3: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_spanbuf<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/spanstream:306:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ispanstream<_CharT, _Traits>&, basic_ispanstream<_CharT, _Traits>&)’
-  306 |   swap(basic_ispanstream<_CharT, _Traits>& __x,
-      |   ^~~~
-/usr/include/c++/12/spanstream:306:3: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_ispanstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/spanstream:374:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_ospanstream<_CharT, _Traits>&, basic_ospanstream<_CharT, _Traits>&)’
-  374 |   swap(basic_ospanstream<_CharT, _Traits>& __x,
-      |   ^~~~
-/usr/include/c++/12/spanstream:374:3: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_ospanstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/spanstream:442:3: note: candidate: ‘template<class _CharT, class _Traits> void std::swap(basic_spanstream<_CharT, _Traits>&, basic_spanstream<_CharT, _Traits>&)’
-  442 |   swap(basic_spanstream<_CharT, _Traits>& __x,
-      |   ^~~~
-/usr/include/c++/12/spanstream:442:3: note:   template argument deduction/substitution failed:
-test.cpp:305:17: note:   mismatched types ‘std::basic_spanstream<_CharT, _Traits>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
-  305 |             swap(B[idx], B[idx]+1);
-      |             ~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/variant:1241:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator==(const variant<_Types ...>&, const variant<_Types ...>&)’ (rewritten)
+ 1241 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(==, equal)
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/variant:1241:3: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::variant<_Types ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/deque:64:
+/usr/include/c++/12/bits/stl_deque.h:2290:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__cxx1998::operator==(const deque<_Tp, _Alloc>&, const deque<_Tp, _Alloc>&)’ (rewritten)
+ 2290 |     operator==(const deque<_Tp, _Alloc>& __x, const deque<_Tp, _Alloc>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_deque.h:2290:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::deque<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/unordered_map:47:
+/usr/include/c++/12/bits/unordered_map.h:2134:5: note: candidate: ‘template<class _Key1, class _Tp1, class _Hash1, class _Pred1, class _Alloc1> bool std::__cxx1998::operator==(const unordered_map<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&, const unordered_map<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&)’ (rewritten)
+ 2134 |     operator==(const unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/unordered_map.h:2134:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::unordered_map<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/unordered_map.h:2148:5: note: candidate: ‘template<class _Key1, class _Tp1, class _Hash1, class _Pred1, class _Alloc1> bool std::__cxx1998::operator==(const unordered_multimap<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&, const unordered_multimap<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>&)’ (rewritten)
+ 2148 |     operator==(const unordered_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/unordered_map.h:2148:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::unordered_multimap<_Key1, _Tp1, _Hash1, _Pred1, _Alloc1>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/vector:64:
+/usr/include/c++/12/bits/stl_vector.h:2035:5: note: candidate: ‘template<class _Tp, class _Alloc> constexpr bool std::__cxx1998::operator==(const vector<_Tp, _Alloc>&, const vector<_Tp, _Alloc>&)’ (rewritten)
+ 2035 |     operator==(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_vector.h:2035:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::vector<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/list:63:
+/usr/include/c++/12/bits/stl_list.h:2124:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__cxx1998::operator==(const __cxx11::list<_Tp, _Alloc>&, const __cxx11::list<_Tp, _Alloc>&)’ (rewritten)
+ 2124 |     operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_list.h:2124:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::__cxx11::list<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/map:61:
+/usr/include/c++/12/bits/stl_map.h:1511:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> bool std::__cxx1998::operator==(const map<_Key, _Tp, _Compare, _Allocator>&, const map<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
+ 1511 |     operator==(const map<_Key, _Tp, _Compare, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_map.h:1511:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::map<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/map:62:
+/usr/include/c++/12/bits/stl_multimap.h:1132:5: note: candidate: ‘template<class _Key, class _Tp, class _Compare, class _Alloc> bool std::__cxx1998::operator==(const multimap<_Key, _Tp, _Compare, _Allocator>&, const multimap<_Key, _Tp, _Compare, _Allocator>&)’ (rewritten)
+ 1132 |     operator==(const multimap<_Key, _Tp, _Compare, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_multimap.h:1132:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::multimap<_Key, _Tp, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/set:61:
+/usr/include/c++/12/bits/stl_set.h:985:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> bool std::__cxx1998::operator==(const set<_Key, _Compare, _Allocator>&, const set<_Key, _Compare, _Allocator>&)’ (rewritten)
+  985 |     operator==(const set<_Key, _Compare, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_set.h:985:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::set<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/set:62:
+/usr/include/c++/12/bits/stl_multiset.h:972:5: note: candidate: ‘template<class _Key, class _Compare, class _Alloc> bool std::__cxx1998::operator==(const multiset<_Key, _Compare, _Allocator>&, const multiset<_Key, _Compare, _Allocator>&)’ (rewritten)
+  972 |     operator==(const multiset<_Key, _Compare, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_multiset.h:972:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::multiset<_Key, _Compare, _Allocator>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/forward_list:40:
+/usr/include/c++/12/bits/forward_list.tcc:393:5: note: candidate: ‘template<class _Tp, class _Alloc> bool std::__cxx1998::operator==(const forward_list<_Tp, _Alloc>&, const forward_list<_Tp, _Alloc>&)’ (rewritten)
+  393 |     operator==(const forward_list<_Tp, _Alloc>& __lx,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/forward_list.tcc:393:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::forward_list<_Tp, _Alloc>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/unordered_set:47:
+/usr/include/c++/12/bits/unordered_set.h:1804:5: note: candidate: ‘template<class _Value1, class _Hash1, class _Pred1, class _Alloc1> bool std::__cxx1998::operator==(const unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>&, const unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>&)’ (rewritten)
+ 1804 |     operator==(const unordered_set<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/unordered_set.h:1804:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::unordered_set<_Value1, _Hash1, _Pred1, _Alloc1>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/unordered_set.h:1818:5: note: candidate: ‘template<class _Value1, class _Hash1, class _Pred1, class _Alloc1> bool std::__cxx1998::operator==(const unordered_multiset<_Value1, _Hash1, _Pred1, _Alloc1>&, const unordered_multiset<_Value1, _Hash1, _Pred1, _Alloc1>&)’ (rewritten)
+ 1818 |     operator==(const unordered_multiset<_Value, _Hash, _Pred, _Alloc>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/unordered_set.h:1818:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::__cxx1998::unordered_multiset<_Value1, _Hash1, _Pred1, _Alloc1>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from stdc++.h:142:
+/usr/include/c++/12/coroutine:146:3: note: candidate: ‘constexpr bool std::__n4861::operator==(coroutine_handle<void>, coroutine_handle<void>)’ (rewritten)
+  146 |   operator==(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/12/coroutine:146:33: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘std::__n4861::coroutine_handle<void>’
+  146 |   operator==(coroutine_handle<> __a, coroutine_handle<> __b) noexcept
+      |              ~~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/system_error:444:3: note: candidate: ‘bool std::operator==(const error_code&, const error_code&)’ (rewritten)
+  444 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/12/system_error:444:32: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘const std::error_code&’
+  444 |   operator==(const error_code& __lhs, const error_code& __rhs) noexcept
+      |              ~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/12/system_error:475:3: note: candidate: ‘bool std::operator==(const error_condition&, const error_condition&)’ (rewritten)
+  475 |   operator==(const error_condition& __lhs,
+      |   ^~~~~~~~
+/usr/include/c++/12/system_error:475:37: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘const std::error_condition&’
+  475 |   operator==(const error_condition& __lhs,
+      |              ~~~~~~~~~~~~~~~~~~~~~~~^~~~~
 In file included from /usr/include/c++/12/stop_token:35,
-                 from /usr/include/c++/12/condition_variable:46:
-/usr/include/c++/12/bits/std_thread.h:306:3: note: candidate: ‘void std::swap(thread&, thread&)’
-  306 |   swap(thread& __x, thread& __y) noexcept
-      |   ^~~~
-/usr/include/c++/12/bits/std_thread.h:306:16: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘std::thread&’
-  306 |   swap(thread& __x, thread& __y) noexcept
-      |        ~~~~~~~~^~~
+                 from /usr/include/c++/12/condition_variable:46,
+                 from stdc++.h:103:
+/usr/include/c++/12/bits/std_thread.h:311:3: note: candidate: ‘bool std::operator==(thread::id, thread::id)’ (rewritten)
+  311 |   operator==(thread::id __x, thread::id __y) noexcept
+      |   ^~~~~~~~
+/usr/include/c++/12/bits/std_thread.h:311:25: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘std::thread::id’
+  311 |   operator==(thread::id __x, thread::id __y) noexcept
+      |              ~~~~~~~~~~~^~~
+/usr/include/c++/12/variant:1248:18: note: candidate: ‘constexpr bool std::operator==(monostate, monostate)’ (rewritten)
+ 1248 |   constexpr bool operator==(monostate, monostate) noexcept { return true; }
+      |                  ^~~~~~~~
+/usr/include/c++/12/variant:1248:29: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘std::monostate’
+ 1248 |   constexpr bool operator==(monostate, monostate) noexcept { return true; }
+      |                             ^~~~~~~~~
+/usr/include/c++/12/bits/allocator.h:205:7: note: candidate: ‘constexpr bool std::operator==(const allocator<long long int>&, const allocator<long long int>&)’ (rewritten)
+  205 |       operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+      |       ^~~~~~~~
+/usr/include/c++/12/bits/allocator.h:205:18: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘const std::allocator<long long int>&’
+  205 |       operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+      |                  ^~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:538:5: note: candidate: ‘template<class _IteratorL, class _IteratorR> constexpr bool std::operator!=(const reverse_iterator<_IteratorL>&, const reverse_iterator<_IteratorR>&) requires requires{{std::operator!=::__x->base() != std::operator!=::__y->base()} -> decltype(auto) [requires std::convertible_to<<placeholder>, bool>];}’
+  538 |     operator!=(const reverse_iterator<_IteratorL>& __x,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_iterator.h:538:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::reverse_iterator<_IteratorL>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/postypes.h:197:5: note: candidate: ‘template<class _StateT> bool std::operator!=(const fpos<_StateT>&, const fpos<_StateT>&)’
+  197 |     operator!=(const fpos<_StateT>& __lhs, const fpos<_StateT>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/postypes.h:197:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::fpos<_StateT>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/stl_queue.h:406:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator!=(const queue<_Tp, _Seq>&, const queue<_Tp, _Seq>&)’
+  406 |     operator!=(const queue<_Tp, _Seq>& __x, const queue<_Tp, _Seq>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_queue.h:406:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::queue<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/stl_stack.h:382:5: note: candidate: ‘template<class _Tp, class _Seq> bool std::operator!=(const stack<_Tp, _Seq>&, const stack<_Tp, _Seq>&)’
+  382 |     operator!=(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/stl_stack.h:382:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::stack<_Tp, _Seq>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:418:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__not_equal_to, typename _Dom1::value_type>::result_type> std::operator!=(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  418 |     _DEFINE_EXPR_BINARY_OPERATOR(!=, struct std::__not_equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:418:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:418:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__not_equal_to, typename _Dom1::value_type>::result_type> std::operator!=(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  418 |     _DEFINE_EXPR_BINARY_OPERATOR(!=, struct std::__not_equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:418:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:418:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__not_equal_to, typename _Dom1::value_type>::result_type> std::operator!=(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  418 |     _DEFINE_EXPR_BINARY_OPERATOR(!=, struct std::__not_equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:418:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:418:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__not_equal_to, typename _Dom1::value_type>::result_type> std::operator!=(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  418 |     _DEFINE_EXPR_BINARY_OPERATOR(!=, struct std::__not_equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:418:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/valarray_after.h:418:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__not_equal_to, typename _Dom1::value_type>::result_type> std::operator!=(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  418 |     _DEFINE_EXPR_BINARY_OPERATOR(!=, struct std::__not_equal_to)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:418:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/valarray:1199:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__not_equal_to, _Tp>::result_type> std::operator!=(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1199 | _DEFINE_BINARY_OPERATOR(!=, __not_equal_to)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1199:1: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/valarray:1199:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__not_equal_to, _Tp>::result_type> std::operator!=(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1199 | _DEFINE_BINARY_OPERATOR(!=, __not_equal_to)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1199:1: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/valarray:1199:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__not_equal_to, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__not_equal_to, _Tp>::result_type> std::operator!=(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1199 | _DEFINE_BINARY_OPERATOR(!=, __not_equal_to)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1199:1: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::valarray<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+In file included from /usr/include/c++/12/random:49:
+/usr/include/c++/12/bits/random.h:435:5: note: candidate: ‘template<class _UIntType, _UIntType __a, _UIntType __c, _UIntType __m> bool std::operator!=(const linear_congruential_engine<_UIntType, __a, __c, __m>&, const linear_congruential_engine<_UIntType, __a, __c, __m>&)’
+  435 |     operator!=(const std::linear_congruential_engine<_UIntType, __a,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:435:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::linear_congruential_engine<_UIntType, __a, __c, __m>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:672:5: note: candidate: ‘template<class _UIntType, long unsigned int __w, long unsigned int __n, long unsigned int __m, long unsigned int __r, _UIntType __a, long unsigned int __u, _UIntType __d, long unsigned int __s, _UIntType __b, long unsigned int __t, _UIntType __c, long unsigned int __l, _UIntType __f> bool std::operator!=(const mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>&, const mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>&)’
+  672 |     operator!=(const std::mersenne_twister_engine<_UIntType, __w, __n, __m,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:672:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:873:5: note: candidate: ‘template<class _UIntType, long unsigned int __w, long unsigned int __s, long unsigned int __r> bool std::operator!=(const subtract_with_carry_engine<_UIntType, __w, __s, __r>&, const subtract_with_carry_engine<_UIntType, __w, __s, __r>&)’
+  873 |     operator!=(const std::subtract_with_carry_engine<_UIntType, __w,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:873:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:1096:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __p, long unsigned int __r> bool std::operator!=(const discard_block_engine<_RandomNumberEngine, __p, __r>&, const discard_block_engine<_RandomNumberEngine, __p, __r>&)’
+ 1096 |     operator!=(const std::discard_block_engine<_RandomNumberEngine, __p,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:1096:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::discard_block_engine<_RandomNumberEngine, __p, __r>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:1293:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __w, class _UIntType> bool std::operator!=(const independent_bits_engine<_RandomNumberEngine, __w, _UIntType>&, const independent_bits_engine<_RandomNumberEngine, __w, _UIntType>&)’
+ 1293 |     operator!=(const std::independent_bits_engine<_RandomNumberEngine, __w,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:1293:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:1548:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __k> bool std::operator!=(const shuffle_order_engine<_RandomNumberEngine, __k>&, const shuffle_order_engine<_RandomNumberEngine, __k>&)’
+ 1548 |     operator!=(const std::shuffle_order_engine<_RandomNumberEngine,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:1548:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::shuffle_order_engine<_RandomNumberEngine, __k>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:1703:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const uniform_int_distribution<_IntType>&, const uniform_int_distribution<_IntType>&)’
+ 1703 |     operator!=(const std::uniform_int_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:1703:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::uniform_int_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:1924:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const uniform_real_distribution<_IntType>&, const uniform_real_distribution<_IntType>&)’
+ 1924 |     operator!=(const std::uniform_real_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:1924:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::uniform_real_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:2181:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const normal_distribution<_RealType>&, const normal_distribution<_RealType>&)’
+ 2181 |     operator!=(const std::normal_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:2181:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::normal_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:2392:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const lognormal_distribution<_RealType>&, const lognormal_distribution<_RealType>&)’
+ 2392 |     operator!=(const std::lognormal_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:2392:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::lognormal_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:2623:6: note: candidate: ‘template<class _RealType> bool std::operator!=(const gamma_distribution<_RealType>&, const gamma_distribution<_RealType>&)’
+ 2623 |      operator!=(const std::gamma_distribution<_RealType>& __d1,
+      |      ^~~~~~~~
+/usr/include/c++/12/bits/random.h:2623:6: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::gamma_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:2847:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const chi_squared_distribution<_RealType>&, const chi_squared_distribution<_RealType>&)’
+ 2847 |     operator!=(const std::chi_squared_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:2847:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::chi_squared_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:3021:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const cauchy_distribution<_RealType>&, const cauchy_distribution<_RealType>&)’
+ 3021 |     operator!=(const std::cauchy_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:3021:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::cauchy_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:3285:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const fisher_f_distribution<_RealType>&, const fisher_f_distribution<_RealType>&)’
+ 3285 |     operator!=(const std::fisher_f_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:3285:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::fisher_f_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:3507:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const student_t_distribution<_RealType>&, const student_t_distribution<_RealType>&)’
+ 3507 |     operator!=(const std::student_t_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:3507:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::student_t_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:3970:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const binomial_distribution<_IntType>&, const binomial_distribution<_IntType>&)’
+ 3970 |     operator!=(const std::binomial_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:3970:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::binomial_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:4149:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const geometric_distribution<_IntType>&, const geometric_distribution<_IntType>&)’
+ 4149 |     operator!=(const std::geometric_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:4149:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::geometric_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:4403:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const negative_binomial_distribution<_IntType>&, const negative_binomial_distribution<_IntType>&)’
+ 4403 |     operator!=(const std::negative_binomial_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:4403:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::negative_binomial_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:4629:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const poisson_distribution<_IntType>&, const poisson_distribution<_IntType>&)’
+ 4629 |     operator!=(const std::poisson_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:4629:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::poisson_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:4820:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const exponential_distribution<_RealType>&, const exponential_distribution<_RealType>&)’
+ 4820 |     operator!=(const std::exponential_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:4820:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::exponential_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:5030:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const weibull_distribution<_RealType>&, const weibull_distribution<_RealType>&)’
+ 5030 |     operator!=(const std::weibull_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:5030:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::weibull_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:5240:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const extreme_value_distribution<_RealType>&, const extreme_value_distribution<_RealType>&)’
+ 5240 |     operator!=(const std::extreme_value_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:5240:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::extreme_value_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:5505:5: note: candidate: ‘template<class _IntType> bool std::operator!=(const discrete_distribution<_IntType>&, const discrete_distribution<_IntType>&)’
+ 5505 |     operator!=(const std::discrete_distribution<_IntType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:5505:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::discrete_distribution<_IntType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:5776:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const piecewise_constant_distribution<_RealType>&, const piecewise_constant_distribution<_RealType>&)’
+ 5776 |     operator!=(const std::piecewise_constant_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:5776:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::piecewise_constant_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:6049:5: note: candidate: ‘template<class _RealType> bool std::operator!=(const piecewise_linear_distribution<_RealType>&, const piecewise_linear_distribution<_RealType>&)’
+ 6049 |     operator!=(const std::piecewise_linear_distribution<_RealType>& __d1,
+      |     ^~~~~~~~
+/usr/include/c++/12/bits/random.h:6049:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::piecewise_linear_distribution<_RealType>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/optional:1231:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_ne_t<_Tp, _Up> std::operator!=(const optional<_Tp>&, const optional<_Up>&)’
+ 1231 |     operator!=(const optional<_Tp>& __lhs, const optional<_Up>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1231:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/optional:1362:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_ne_t<_Tp, _Up> std::operator!=(const optional<_Tp>&, const _Up&)’
+ 1362 |     operator!=(const optional<_Tp>& __lhs, const _Up& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1362:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::optional<_Tp>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/optional:1368:5: note: candidate: ‘template<class _Tp, class _Up> constexpr std::__optional_ne_t<_Up, _Tp> std::operator!=(const _Up&, const optional<_Tp>&)’
+ 1368 |     operator!=(const _Up& __lhs, const optional<_Tp>& __rhs)
+      |     ^~~~~~~~
+/usr/include/c++/12/optional:1368:5: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   ‘__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type’ {aka ‘std::__debug::vector<long long int>’} is not derived from ‘const std::optional<_Tp>’
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/variant:1242:3: note: candidate: ‘template<class ... _Types> constexpr bool std::operator!=(const variant<_Types ...>&, const variant<_Types ...>&)’
+ 1242 |   _VARIANT_RELATION_FUNCTION_TEMPLATE(!=, not_equal)
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/variant:1242:3: note:   template argument deduction/substitution failed:
+test.cpp:245:34: note:   mismatched types ‘const std::variant<_Types ...>’ and ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’}
+  245 |         if(ans[i%(N*M)]!=person[i]) return {-1};
+      |                                  ^
+/usr/include/c++/12/bits/random.h:3695:3: note: candidate: ‘bool std::operator!=(const bernoulli_distribution&, const bernoulli_distribution&)’
+ 3695 |   operator!=(const std::bernoulli_distribution& __d1,
+      |   ^~~~~~~~
+/usr/include/c++/12/bits/random.h:3695:49: note:   no known conversion for argument 1 from ‘__gnu_cxx::__alloc_traits<std::allocator<long long int>, long long int>::value_type’ {aka ‘long long int’} to ‘const std::bernoulli_distribution&’
+ 3695 |   operator!=(const std::bernoulli_distribution& __d1,
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+test.cpp:249:1: warning: control reaches end of non-void function [-Wreturn-type]
+  249 | }
+      | ^

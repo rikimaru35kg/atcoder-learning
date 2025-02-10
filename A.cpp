@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### A.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,11 +228,12 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(A,B,K,L);
-    ll ans = K/L*B;
-    K %= L;
-    ans += min(B, K*A);
-    Out(ans);
+    VL(A, 3);
+    sort(all(A));
+    do {
+        if(A[0]*A[1]==A[2]) PYes
+    } while(next_permutation(all(A)));
+    PNo
 
 }
 
@@ -242,4 +243,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### A.cpp ###

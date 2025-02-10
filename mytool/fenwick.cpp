@@ -1,34 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+template<typename T>
 struct BIT {
     long long size;
-    vector<long long> bit;
-    BIT (long long _n): size(_n+1), bit(_n+1, 0) {}
-
-    void add (long long i, long long x) {
-        for (; i < size; i += (i & -i)) {
-            bit[i] += x;
-        }
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    long long sum (long long i) {
-        long long ret = 0;
-        for (; i > 0; i -= (i) & (-i)) {
-            ret += bit[i];
-        }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
         return ret;
     }
-    long long sum_lower_bound(long long k) {
-        long long x = 0, len = 1;
-        while ((len << 1) < size) len <<= 1;
-        while(len > 0) {
-            if (x + len < size && bit[x + len] < k) {
-                k -= bit[x + len];
-                x += len;
-            }
-            len >>= 1;
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
-        return x + 1;
+        return t;
+    }
+};
+
+template<typename T>
+struct RangeBIT {
+    long long size;
+    vector<vector<T>> bit;
+    RangeBIT (int _n): size(_n+1), bit(2, vector<T>(_n+1)) {}
+    void add(int l, int r, T x) {  // [l,r) half-open interval
+        add_sub(0, l, -x*(l-1)); add_sub(0, r, x*(r-1));
+        add_sub(1, l, x); add_sub(1, r, -x);
+    }
+    T sum(int l, int r) { // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        return sum_sub(0,i) + sum_sub(1,i)*i;
+    }
+    void add_sub(int p, int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
+        for(; i<size; i+=i&-i) bit[p][i] += x;
+    }
+    T sum_sub(int p, int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[p][i];
+        return ret;
     }
 };
 
