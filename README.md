@@ -2145,6 +2145,7 @@
 - [C - 約数かつ倍数](https://atcoder.jp/contests/arc034/tasks/arc034_3)
 - [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
 - [E - Cables and Servers](https://atcoder.jp/contests/abc392/tasks/abc392_e)
+- [E. Best Price](https://codeforces.com/contest/2051/problem/E)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
