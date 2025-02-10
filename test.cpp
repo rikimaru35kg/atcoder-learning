@@ -236,14 +236,15 @@ struct SegTree {
         while(n<mx) n<<=1;
         a.resize(n*2, e());
     }
-    void set_only(int i, S x) { // build() is needed afterwards
+    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
         assert(i>=0 && i<n);
         i += n;  // i is node id
-        a[i] = x;
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    void set(int i, S x) {
+    void set(int i, S x, bool do_op=true) {
         assert(i>=0 && i<n);
-        set_only(i, x);
+        set_only(i, x, do_op);
         i += n; i>>=1;  // i is node id
         while(i) {
             update(i);
@@ -275,36 +276,163 @@ struct SegTree {
         S ret = f(f, 0, n, 1);
         return ret;
     }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=n);
+        if(l==n) return n;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return n;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=n);
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+};
+
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
 };
 
 using S = ll;
-S op(S a, S b) {return gcd(a,b);}
+S op(S a, S b) {return a+b;}
 S e() {return 0;}
 
 void solve() {
     LONG(N, Q);
-    VL(A, N);
-    SegTree<S,op,e> seg(N-1);
-    rep(i, N-1) {
-        seg.set_only(i, abs(A[i+1]-A[i]));
-    }
-    seg.build();
-    vl ans;
+    VL(P, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(P[i]);
+    vt3 query;
     rep(i, Q) {
-        LONGM(l, r);
-        S m = seg.prod(l, r);
-        ans.push_back(m);
+        LONG(t);
+        if(t==1) {
+            LONG(a, x); --a;
+            cc.add(x);
+            query.emplace_back(t,a,x);
+        } else if(t==2) {
+            LONGM(a);
+            query.emplace_back(t,a,-1);
+        } else {
+            LONG(r);
+            query.emplace_back(t,r,-1);
+        }
     }
-    Out(ans);
+    ll m = cc.size();
+    rep(i, N) P[i] = cc(P[i]);
+    SegTree<S,op,e> seg(m);
+    // auto print=[&]() {
+    //     rep(i, m) {
+    //         printf("%lld ", seg.get(i));
+    //     }
+    //     cout<<endl;
+    // };
+    // de(P)
+    rep(i, N) {
+        seg.set(P[i], 1);
+        // print();
+    }
+    vl Pinv(m, -1);
+    rep(i, N) Pinv[P[i]] = i;
 
+    for(auto [t,a,x]: query) {
+        if(t==1) {
+            seg.set(P[a], -1);
+            // Pinv[P[a]] = -1;
+            P[a] = cc(x);
+            seg.set(P[a], 1);
+            Pinv[P[a]] = a;
+        } else if(t==2) {
+            ll sum = seg.prod(P[a], m);
+            Out(sum);
+        } else {
+            ll r = a;
+            auto f=[&](S x) {
+                return x<r;
+            };
+            ll pi = seg.min_left(m, f)-1;
+            ll ans = Pinv[pi]+1;
+            Out(ans);
+        }
+    }
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
