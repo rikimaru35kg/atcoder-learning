@@ -2148,6 +2148,7 @@
 - [E. Best Price](https://codeforces.com/contest/2051/problem/E)
 - [E. Reverse the Rivers](https://codeforces.com/contest/2036/problem/E)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
+- 競プロ知らない人にパズル問として紹介する際に使えそう [C. Competitive Fishing](https://codeforces.com/contest/2042/problem/C)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

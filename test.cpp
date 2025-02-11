@@ -228,20 +228,25 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(l,r,g);
-    ll mn=Divceil(l, g)*g;
-    ll mx=r/g*g;
-    rep(k, 300) {
-        for(ll x=mn; x<=mx && x<=mn+k*g; x+=g) {
-            ll y = mx-mn-k*g+x;
-            if(y<x) continue;
-            if(y>mx) continue;
-            if(gcd(x,y)!=g) continue;
-            printf("%lld %lld\n", x, y);
-            return;
-        }
+    LONG(N, K);
+    STRING(S);
+    ll ba = 0;
+    vl cand;
+    repr(i, N) {
+        if(S[i]=='1') ba++;
+        else ba--;
+        if(i==0) break;
+        cand.push_back(ba);
     }
-    Out("-1 -1"); return;
+    sort(allr(cand));
+    ll ans = 0;
+    rep(i, N-1) {
+        ++ans;
+        K -= cand[i];
+        if(K<=0) break;
+    }
+    if(K>0) Out(-1);
+    else Out(ans+1);
 }
 
 int main () {
