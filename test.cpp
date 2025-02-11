@@ -227,124 +227,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(N, M, Q);
-    VVL(A, N, M);
-    vvl col(M);
-    rep(j, M) {
-        ll now = 0;
-        rep(i, N) {
-            now = now | A[i][j];
-            col[j].push_back(now);
+    LONG(l,r,g);
+    ll mn=Divceil(l, g)*g;
+    ll mx=r/g*g;
+    rep(k, 300) {
+        for(ll x=mn; x<=mx && x<=mn+k*g; x+=g) {
+            ll y = mx-mn-k*g+x;
+            if(y<x) continue;
+            if(y>mx) continue;
+            if(gcd(x,y)!=g) continue;
+            printf("%lld %lld\n", x, y);
+            return;
         }
     }
-    rep(i,Q) {
-        LONG(m);
-        umap<ll,Pr> mp;
-        rep(j, m) {
-            LONGM(a);CHAR(c);LONG(b);
-            if(mp.count(a)) {
-                auto &[l,r] = mp[a];
-                if(c=='>') chmax(l, b);
-                else chmin(r, b);
-            } else {
-                if(c=='>') {
-                    mp[a] = {b,INF};
-                } else {
-                    mp[a] = {-INF,b};
-                }
-            }
-        }
-        ll low=-INF, upp=INF;
-        for(auto [a,p]: mp) {
-            vl &v = col[a];
-            auto [l,r] = p;
-            auto [n1,x1] = uppbou(v, l);
-            auto [n2,x2] = lowbou(v, r);
-            chmax(low, n1);
-            chmin(upp, n2);
-        }
-        if(low>=upp) Out(-1);
-        else Out(low+1);
-    }
-
+    Out("-1 -1"); return;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

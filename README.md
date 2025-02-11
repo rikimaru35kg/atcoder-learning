@@ -2147,6 +2147,7 @@
 - [E - Cables and Servers](https://atcoder.jp/contests/abc392/tasks/abc392_e)
 - [E. Best Price](https://codeforces.com/contest/2051/problem/E)
 - [E. Reverse the Rivers](https://codeforces.com/contest/2036/problem/E)
+- [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2186,3 +2187,4 @@
 - [C - Z塗り](https://atcoder.jp/contests/arc040/tasks/arc040_c)
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
+- [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)

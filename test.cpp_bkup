@@ -227,81 +227,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
 void solve() {
-    LONG(H, W);
-    VS(S, H);
-    string h="1543";
-    ll K = min(H,W)/2;
-    auto dist=[&](ll i, ll j) -> ll {
-        ll ret = INF;
-        chmin(ret, i); chmin(ret, j);
-        chmin(ret, H-1-i); chmin(ret, W-1-j);
-        return ret;
-    };
-
-    auto calc=[&](string &s) -> ll {
-        ll n = s.size();
-        ll ret = 0;
-        rep(i, n) {
-            bool ok = true;
-            rep(j, 4) if(s[(i+j)%n]!=h[j]) ok = false;
-            if(ok) ++ret;
+    LONG(N);
+    VL(A, N);
+    vl F, S;
+    bool first = true;
+    ll mid = INF;
+    ll sum = 0;
+    rep(i, N) {
+        if(first) {
+            sum += A[i];
+            if(A[i]==1 || A[i]==-1) F.push_back(A[i]);
+            else mid = A[i], first = false;
         }
-        return ret;
-    };
-    ll ans = 0;
-    rep(k, K) {
-        string now;
-        ll si = k, sj = k;
-        ll dir = 0;
-        ll i = si, j = sj;
-        while(SIZE(now)==0 || (i!=si || j!=sj)) {
-            now += S[i][j];
-            auto [di,dj] = dij[dir];
-            ll ni = i + di, nj = j + dj;
-            if(dist(ni,nj)<k) {
-                dir = (dir+1)%4;
-                auto [di,dj] = dij[dir];
-                ni = i + di, nj = j + dj;
-            }
-            i = ni, j = nj;
-        }
-        ans += calc(now);
+        else S.push_back(A[i]);
     }
+    // de(F)de(S)
+    auto calc=[&](vl &v) -> t4 {
+        ll l=0, r=0;
+        ll mn=0, mx=0;
+        ll now = 0;
+        ll n = v.size();
+        rep(i, n) {
+            now += v[i];
+            chmin(mn, now); chmax(mx, now);
+            chmin(l, now-mx);
+            chmax(r, now-mn);
+        }
+        return {l,r,mn,mx};
+    };
+    auto [l1,r1,mn1,mx1] = calc(F);
+    vl ans;
+    for(ll i=l1; i<=r1; ++i) ans.push_back(i);
+    if(mid==INF) {
+        Out(ans.size());
+        Out(ans);
+        return;
+    }
+    for(ll i=mn1; i<=mx1; ++i) ans.push_back(sum-i);
+    if(S.empty()) {
+        unique(ans);
+        Out(ans.size());
+        Out(ans);
+        return;
+    }
+    auto [l2,r2,mn2,mx2] = calc(S);
+    for(ll i=l2; i<=r2; ++i) ans.push_back(i);
+    for(ll i=mn2+sum-mx1; i<=mx2+sum-mn1; ++i) ans.push_back(i);
+    // de5(l1,r1,l2,r2,sum)
+    unique(ans);
+    Out(ans.size());
     Out(ans);
-
-    // ll ans = 0;
-    // vt4 route;
-    // auto f=[&](auto f, ll i, ll j, ll k, ll dir) -> void {
-    //     route.emplace_back(i,j,k,dir);
-    //     if(k==3) {
-    //         if(S[i][j]==h[3]) {
-    //             ++ans;
-    //             de(route)
-    //         }
-    //         route.pop_back();
-    //         return;
-    //     }
-    //     if(S[i][j]!=h[k]) {
-    //         route.pop_back();
-    //         return;
-    //     }
-    //     auto [di,dj] = dij[dir];
-    //     ll ni = i + di, nj = j + dj;
-    //     if(isin(ni,nj,H,W)) {
-    //         f(f, ni,nj,k+1,dir);
-    //         f(f, ni,nj,k+1,(dir+1)%4);
-    //     }
-    //     route.pop_back();
-    // };
-    // rep(i, H) rep(j, W) {
-    //     if(S[i][j]!=h[0]) continue;
-    //     rep(k, 4) {
-    //         f(f, i, j, 0, k);
-    //     }
-    // }
-    // Out(ans/2);
-
 }
 
 int main () {
