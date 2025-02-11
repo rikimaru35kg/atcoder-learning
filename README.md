@@ -1297,6 +1297,14 @@
 - 基本 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 基本 LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 
+## 素数の密度
+- 10^18以下では最大の間隔は1500程度
+- つまり互いに素なペアを見つけるにはどちらか一方が素数であれば良いので、そのぐらいの間隔を調べれば良い
+- ただし実際には1500ではなく30個程度調べれば十分との話もある
+### 例題
+- [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
+- [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
+
 ## 剰余埋めつくし系
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
 - より一般には、0,a,2a,...はg=gcd(a,N)とすると0,g,2g,3g,...(MOD N)を埋めつくす（順番はいろいろ）
@@ -2169,7 +2177,6 @@
 - [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
-- [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
 - [A - Max Mod Min](https://atcoder.jp/contests/arc147/tasks/arc147_a)
@@ -2188,4 +2195,3 @@
 - [C - Z塗り](https://atcoder.jp/contests/arc040/tasks/arc040_c)
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
-- [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
