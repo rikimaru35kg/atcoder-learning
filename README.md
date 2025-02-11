@@ -70,10 +70,11 @@
 - 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
 - 基本 超ど典型として人に紹介したい問題 [D - 展覧会 2 (Exhibition 2)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_d)
+- !復習価値低 超ど典型問題として人に紹介したい問題 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
 - 基本 丸太切り [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - 基本 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
 - 基本 幸福度最大握手 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
-- 基本 ようかん（判定悩ましい良問） [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
+- 基本 ようかん [001 - Yokan Party（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_a)
 - 基本 道路コストP以下が丁度K本の数 [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 - 基本 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - 基本 [B - 自習 (Self Study)](https://atcoder.jp/contests/joi2022ho/tasks/joi2022ho_b)
@@ -2100,7 +2101,6 @@
 - [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [D - Coming of Age Celebration](https://atcoder.jp/contests/abc388/tasks/abc388_d)
-- [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 - [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
 - [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
