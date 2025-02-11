@@ -227,76 +227,80 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()>
-struct SegTree {
-    int n;
-    vector<S> a;
-    SegTree(int mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;  // i is node id
-        a[i] = x;
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<n);
-        set_only(i, x);
-        i += n; i>>=1;  // i is node id
-        while(i) {
-            update(i);
-            i>>=1;
-        }
-    }
-    void update(int i) {  // i is node id
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;  // l,r are children
-        a[i] = op(a[l], a[r]);
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    S get(int i) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        return a[i];
-    }
-    S prod(int ql, int qr) {
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, int i) -> S {
-            if(r<=ql || l>=qr) return e();
-            if(l>=ql && r<=qr) return get(i-n);
-            int m = (l+r)/2;
-            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
-            return ret;
-        };
-        S ret = f(f, 0, n, 1);
-        return ret;
-    }
-};
-
-using S = ll;
-S op(S a, S b) {return gcd(a,b);}
-S e() {return 0;}
-
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    SegTree<S,op,e> seg(N-1);
-    rep(i, N-1) {
-        seg.set_only(i, abs(A[i+1]-A[i]));
-    }
-    seg.build();
-    vl ans;
-    rep(i, Q) {
-        LONGM(l, r);
-        S m = seg.prod(l, r);
-        ans.push_back(m);
+    LONG(H, W);
+    VS(S, H);
+    string h="1543";
+    ll K = min(H,W)/2;
+    auto dist=[&](ll i, ll j) -> ll {
+        ll ret = INF;
+        chmin(ret, i); chmin(ret, j);
+        chmin(ret, H-1-i); chmin(ret, W-1-j);
+        return ret;
+    };
+
+    auto calc=[&](string &s) -> ll {
+        ll n = s.size();
+        ll ret = 0;
+        rep(i, n) {
+            bool ok = true;
+            rep(j, 4) if(s[(i+j)%n]!=h[j]) ok = false;
+            if(ok) ++ret;
+        }
+        return ret;
+    };
+    ll ans = 0;
+    rep(k, K) {
+        string now;
+        ll si = k, sj = k;
+        ll dir = 0;
+        ll i = si, j = sj;
+        while(SIZE(now)==0 || (i!=si || j!=sj)) {
+            now += S[i][j];
+            auto [di,dj] = dij[dir];
+            ll ni = i + di, nj = j + dj;
+            if(dist(ni,nj)<k) {
+                dir = (dir+1)%4;
+                auto [di,dj] = dij[dir];
+                ni = i + di, nj = j + dj;
+            }
+            i = ni, j = nj;
+        }
+        ans += calc(now);
     }
     Out(ans);
 
+    // ll ans = 0;
+    // vt4 route;
+    // auto f=[&](auto f, ll i, ll j, ll k, ll dir) -> void {
+    //     route.emplace_back(i,j,k,dir);
+    //     if(k==3) {
+    //         if(S[i][j]==h[3]) {
+    //             ++ans;
+    //             de(route)
+    //         }
+    //         route.pop_back();
+    //         return;
+    //     }
+    //     if(S[i][j]!=h[k]) {
+    //         route.pop_back();
+    //         return;
+    //     }
+    //     auto [di,dj] = dij[dir];
+    //     ll ni = i + di, nj = j + dj;
+    //     if(isin(ni,nj,H,W)) {
+    //         f(f, ni,nj,k+1,dir);
+    //         f(f, ni,nj,k+1,(dir+1)%4);
+    //     }
+    //     route.pop_back();
+    // };
+    // rep(i, H) rep(j, W) {
+    //     if(S[i][j]!=h[0]) continue;
+    //     rep(k, 4) {
+    //         f(f, i, j, 0, k);
+    //     }
+    // }
+    // Out(ans/2);
 
 }
 

@@ -227,204 +227,116 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()>
-struct SegTree {
-    int n;
-    vector<S> a;
-    SegTree(int mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x, bool do_op=true) {
-        assert(i>=0 && i<n);
-        set_only(i, x, do_op);
-        i += n; i>>=1;  // i is node id
-        while(i) {
-            update(i);
-            i>>=1;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    void update(int i) {  // i is node id
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;  // l,r are children
-        a[i] = op(a[l], a[r]);
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    S get(int i) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        return a[i];
-    }
-    S prod(int ql, int qr) {
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, int i) -> S {
-            if(r<=ql || l>=qr) return e();
-            if(l>=ql && r<=qr) return get(i-n);
-            int m = (l+r)/2;
-            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
-            return ret;
-        };
-        S ret = f(f, 0, n, 1);
-        return ret;
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=n);
-        if(l==n) return n;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
         }
-        return n;
     }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=n);
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
         }
-        return 0;
     }
-};
-
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e() {return 0;}
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(N, Q);
-    VL(P, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(P[i]);
-    vt3 query;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(a, x); --a;
-            cc.add(x);
-            query.emplace_back(t,a,x);
-        } else if(t==2) {
-            LONGM(a);
-            query.emplace_back(t,a,-1);
-        } else {
-            LONG(r);
-            query.emplace_back(t,r,-1);
+    LONG(N, M, Q);
+    VVL(A, N, M);
+    vvl col(M);
+    rep(j, M) {
+        ll now = 0;
+        rep(i, N) {
+            now = now | A[i][j];
+            col[j].push_back(now);
         }
     }
-    ll m = cc.size();
-    rep(i, N) P[i] = cc(P[i]);
-    SegTree<S,op,e> seg(m);
-    // auto print=[&]() {
-    //     rep(i, m) {
-    //         printf("%lld ", seg.get(i));
-    //     }
-    //     cout<<endl;
-    // };
-    // de(P)
-    rep(i, N) {
-        seg.set(P[i], 1);
-        // print();
-    }
-    vl Pinv(m, -1);
-    rep(i, N) Pinv[P[i]] = i;
-
-    for(auto [t,a,x]: query) {
-        if(t==1) {
-            seg.set(P[a], -1);
-            // Pinv[P[a]] = -1;
-            P[a] = cc(x);
-            seg.set(P[a], 1);
-            Pinv[P[a]] = a;
-        } else if(t==2) {
-            ll sum = seg.prod(P[a], m);
-            Out(sum);
-        } else {
-            ll r = a;
-            auto f=[&](S x) {
-                return x<r;
-            };
-            ll pi = seg.min_left(m, f)-1;
-            ll ans = Pinv[pi]+1;
-            Out(ans);
+    rep(i,Q) {
+        LONG(m);
+        umap<ll,Pr> mp;
+        rep(j, m) {
+            LONGM(a);CHAR(c);LONG(b);
+            if(mp.count(a)) {
+                auto &[l,r] = mp[a];
+                if(c=='>') chmax(l, b);
+                else chmin(r, b);
+            } else {
+                if(c=='>') {
+                    mp[a] = {b,INF};
+                } else {
+                    mp[a] = {-INF,b};
+                }
+            }
         }
+        ll low=-INF, upp=INF;
+        for(auto [a,p]: mp) {
+            vl &v = col[a];
+            auto [l,r] = p;
+            auto [n1,x1] = uppbou(v, l);
+            auto [n2,x2] = lowbou(v, r);
+            chmax(low, n1);
+            chmin(upp, n2);
+        }
+        if(low>=upp) Out(-1);
+        else Out(low+1);
     }
 
 }
