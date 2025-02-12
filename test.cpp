@@ -227,122 +227,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    map<string,ll> mp;
-    map<ll,string> rmp;
-    mp["BG"] = 0;
-    mp["BR"] = 1;
-    mp["BY"] = 2;
-    mp["GR"] = 3;
-    mp["GY"] = 4;
-    mp["RY"] = 5;
-    LONG(N, Q);
-    vl A(N);
-    vvl pos(6);
+    LONG(N);
+    STRING(S);
+    ll o=0, c=0;
     rep(i, N) {
-        STRING(s);
-        pos[mp[s]].push_back(i);
-        A[i] = mp[s];
+        if(S[i]=='(') ++o;
+        if(S[i]==')') ++c;
     }
-    auto overlap=[&](ll x, ll y) -> bool {
-        if(x>y) swap(x,y);
-        if(x==0 && y==5) return false;
-        if(x==1 && y==4) return false;
-        if(x==2 && y==3) return false;
-        return true;
-    };
-    rep(i, Q) {
-        LONGM(x,y);
-        if(overlap(A[x], A[y])) {
-            Out(abs(y-x)); continue;
-        }
-        ll ans = INF;
-        rep(k, 6) {
-            if(k==A[x] || k==A[y]) continue;
-            vl &p = pos[k];
-            ll sz = p.size();
-            auto [n,z] = lowbou(p, x);
-            if(n!=sz) {
-                chmin(ans, abs(x-z)+abs(z-y));
+    o = N/2-o, c = N/2-c;
+    vl stck;
+    ll ans = 0;
+    rep(i, N) {
+        if(i%2) {
+            if(S[i]=='(') { stck.push_back(i); }
+            else {
+                assert(stck.size());
+                ans += i-pop(stck);
             }
-            if(n!=0) {
-                chmin(ans, abs(x-p[n-1])+abs(p[n-1]-y));
-            }
+            continue;
         }
-        ch1(ans);
-        Out(ans);
+        ll now = stck.size();
+        if(now==0 || c==0) {
+            assert(o>0);
+            stck.push_back(i);
+            --o;
+        } else {
+            assert(stck.size());
+            ans += i-pop(stck);
+            --c;
+        }
     }
+    Out(ans);
 
 }
 

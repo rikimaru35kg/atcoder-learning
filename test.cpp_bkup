@@ -227,23 +227,116 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    VL(A, N);
-    sort(allr(A));
-    for(ll i=0; i<N-1; i+=2) {
-        ll plus = min(A[i]-A[i+1], K);
-        A[i+1] += plus;
-        K -= plus;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
+void solve() {
+    LONG(W); ll H =2;
+    VS(S, H);
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    WeightedUnionFind uf(H*W);
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='x') continue;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='x') continue;
+            uf.merge(gid(i,j), gid(ni,nj));
+        }
+    }
+    ll base = 0;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='x') continue;
+        ll id = gid(i,j);
+        if(id!=uf.leader(id)) continue;
+        ++base;
+    }
+    de(base)
+
+    auto calnum=[&](vs &field) -> ll {
+        auto gid2=[&](ll i, ll j) -> ll {
+            return i*3+j;
+        };
+        WeightedUnionFind uf(9);
+        rep(i, 3) rep(j, 3) {
+            if(field[i][j]=='x') continue;
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,3,3)) continue;
+                if(field[ni][nj]=='x') continue;
+                uf.merge(gid2(i,j), gid2(ni,nj));
+            }
+        }
+        ll ret = 0;
+        rep(i, 3) rep(j, 3) {
+            if(field[i][j]=='x') continue;
+            ll id = gid2(i,j);
+            if(id!=uf.leader(id)) continue;
+            ++ret;
+        }
+        return ret;
+    };
+
+    auto calc=[&](ll si, ll sj) -> ll {
+        WeightedUnionFind uf(9);
+        vs field(3, string(3, 'x'));
+        repk(a, -1, 2) repk(b, -1, 2) {
+            ll i = si+a, j = sj+b;
+            if(!isin(i,j,H,W)) continue;
+            if(S[i][j]=='x') continue;
+            field[a+1][b+1] = '.';
+        }
+        ll base = calnum(field);
+        field[1][1] = 'x';
+        ll upd = calnum(field);
+        return upd-base;
+    };
+
     ll ans = 0;
-    rep(i, N) {
-        if(i%2==0) ans += A[i];
-        else ans -= A[i];
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='x') continue;
+        if(calc(i,j)+base==3) ++ans;
     }
     Out(ans);
-    
-
 
 }
 
