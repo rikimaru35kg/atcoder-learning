@@ -227,26 +227,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+//! count the # of t in s.  O(|S||T|)
+long long count(string &s, string t) {
+    long long ret = 0;
+    long long i=0;
+    while(i<(long long)s.size()) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
+    }
+    return ret;
+}
+long long count(vector<string> &s, string t) {
+    long long ret = 0;
+    for(long long i=0; i<(long long)s.size(); ++i) {
+        ret += count(s[i], t);
+    }
+    return ret;
+}
+
 void solve() {
-    LONG(N, K);
+    LONG(N);
     STRING(S);
-    ll ba = 0;
-    vl cand;
+    ll one = count(S, "1");
+    auto f=[&](ll k) -> bool {
+        vb sel(N);
+        ll cnt = 0;
+        repr(i, N) {
+            if(S[i]=='1') {
+                sel[i] = true;
+                cnt++;
+            }
+            if(cnt==k) break;
+        }
+        ll rem = 0;
+        rep(i, N) {
+            if(!sel[i]) {
+                ++rem;
+            } else {
+                if(rem==0) return false;
+                --rem;
+            }
+        }
+        return true;
+    };
+    ll k = binary_search(0, one+1, f);
+    ll sum = 0;
     repr(i, N) {
-        if(S[i]=='1') ba++;
-        else ba--;
-        if(i==0) break;
-        cand.push_back(ba);
+        if(k==0) break;
+        if(S[i]=='1') sum += i+1, --k;
     }
-    sort(allr(cand));
-    ll ans = 0;
-    rep(i, N-1) {
-        ++ans;
-        K -= cand[i];
-        if(K<=0) break;
-    }
-    if(K>0) Out(-1);
-    else Out(ans+1);
+    de(sum)
+    Out(N*(N+1)/2-sum);
+
 }
 
 int main () {

@@ -1297,7 +1297,7 @@
 - 基本 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 基本 LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
 
-## 素数の密度
+## 素数の間隔
 - 10^18以下では最大の間隔は1500程度
 - つまり互いに素なペアを見つけるにはどちらか一方が素数であれば良いので、そのぐらいの間隔を調べれば良い
 - ただし実際には1500ではなく30個程度調べれば十分との話もある
@@ -2157,6 +2157,7 @@
 - [E. Reverse the Rivers](https://codeforces.com/contest/2036/problem/E)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - 競プロ知らない人にパズル問として紹介する際に使えそう [C. Competitive Fishing](https://codeforces.com/contest/2042/problem/C)
+- [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

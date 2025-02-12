@@ -227,69 +227,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
 void solve() {
     LONG(N);
-    VL(A, N);
-    vl F, S;
-    bool first = true;
-    ll mid = INF;
-    ll sum = 0;
-    rep(i, N) {
-        if(first) {
-            sum += A[i];
-            if(A[i]==1 || A[i]==-1) F.push_back(A[i]);
-            else mid = A[i], first = false;
-        }
-        else S.push_back(A[i]);
-    }
-    // de(F)de(S)
-    auto calc=[&](vl &v) -> t4 {
-        ll l=0, r=0;
-        ll mn=0, mx=0;
-        ll now = 0;
-        ll n = v.size();
-        rep(i, n) {
-            now += v[i];
-            chmin(mn, now); chmax(mx, now);
-            chmin(l, now-mx);
-            chmax(r, now-mn);
-        }
-        return {l,r,mn,mx};
-    };
-    auto [l1,r1,mn1,mx1] = calc(F);
-    vl ans;
-    for(ll i=l1; i<=r1; ++i) ans.push_back(i);
-    if(mid==INF) {
-        Out(ans.size());
-        Out(ans);
-        return;
-    }
-    for(ll i=mn1; i<=mx1; ++i) ans.push_back(sum-i);
-    if(S.empty()) {
-        unique(ans);
-        Out(ans.size());
-        Out(ans);
-        return;
-    }
-    auto [l2,r2,mn2,mx2] = calc(S);
-    for(ll i=l2; i<=r2; ++i) ans.push_back(i);
-    for(ll i=mn2+sum-mx1; i<=mx2+sum-mn1; ++i) ans.push_back(i);
-    // de5(l1,r1,l2,r2,sum)
-    unique(ans);
-    Out(ans.size());
-    Out(ans);
+    vt3 t(N);
+    rep(i, N) cin>>t[i];
+    Out(t);
+
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
