@@ -227,86 +227,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-//! count the # of t in s.  O(|S||T|)
-long long count(string &s, string t) {
-    long long ret = 0;
-    long long i=0;
-    while(i<(long long)s.size()) {
-        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
-        else ++i;
-    }
-    return ret;
-}
-long long count(vector<string> &s, string t) {
-    long long ret = 0;
-    for(long long i=0; i<(long long)s.size(); ++i) {
-        ret += count(s[i], t);
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N);
-    STRING(S);
-    ll one = count(S, "1");
-    auto f=[&](ll k) -> bool {
-        vb sel(N);
-        ll cnt = 0;
-        repr(i, N) {
-            if(S[i]=='1') {
-                sel[i] = true;
-                cnt++;
-            }
-            if(cnt==k) break;
-        }
-        ll rem = 0;
-        rep(i, N) {
-            if(!sel[i]) {
-                ++rem;
-            } else {
-                if(rem==0) return false;
-                --rem;
-            }
-        }
-        return true;
-    };
-    ll k = binary_search(0, one+1, f);
-    ll sum = 0;
-    repr(i, N) {
-        if(k==0) break;
-        if(S[i]=='1') sum += i+1, --k;
+    LONG(N, M);
+    VL(R, N);
+    vl cnts(M+1), cnti(M+1);
+    rep(i, N) {
+        if(R[i]>0) cnti[R[i]]++;
+        if(R[i]<0) cnts[-R[i]]++;
     }
-    de(sum)
-    Out(N*(N+1)/2-sum);
+    vl dp(M+1, -INF);
+    dp[0] = 0;
+    ll tot = 0;
+    rep(i, N) {
+        if(R[i]!=0) {
+            if(R[i]>0) cnti[R[i]]--;
+            if(R[i]<0) cnts[-R[i]]--;
+        } else {
+            vl pdp(M+1, -INF); swap(pdp, dp);
+            rep(j, M+1) {
+                if(pdp[j]==-INF) continue;
+                ll intl = j, strn = tot-j;
+                chmax(dp[j+1], pdp[j]+cnti[intl+1]);
+                chmax(dp[j], pdp[j]+cnts[strn+1]);
+            }
+            ++tot;
+        }
+    }
+    ll ans = 0;
+    rep(i, M+1) chmax(ans, dp[i]);
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
