@@ -227,42 +227,130 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    VL(R, N);
-    vl cnts(M+1), cnti(M+1);
-    rep(i, N) {
-        if(R[i]>0) cnti[R[i]]++;
-        if(R[i]<0) cnts[-R[i]]++;
-    }
-    vl dp(M+1, -INF);
-    dp[0] = 0;
-    ll tot = 0;
-    rep(i, N) {
-        if(R[i]!=0) {
-            if(R[i]>0) cnti[R[i]]--;
-            if(R[i]<0) cnts[-R[i]]--;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
         } else {
-            vl pdp(M+1, -INF); swap(pdp, dp);
-            rep(j, M+1) {
-                if(pdp[j]==-INF) continue;
-                ll intl = j, strn = tot-j;
-                chmax(dp[j+1], pdp[j]+cnti[intl+1]);
-                chmax(dp[j], pdp[j]+cnts[strn+1]);
-            }
-            ++tot;
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    ll ans = 0;
-    rep(i, M+1) chmax(ans, dp[i]);
-    Out(ans);
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    map<string,ll> mp;
+    map<ll,string> rmp;
+    mp["BG"] = 0;
+    mp["BR"] = 1;
+    mp["BY"] = 2;
+    mp["GR"] = 3;
+    mp["GY"] = 4;
+    mp["RY"] = 5;
+    LONG(N, Q);
+    vl A(N);
+    vvl pos(6);
+    rep(i, N) {
+        STRING(s);
+        pos[mp[s]].push_back(i);
+        A[i] = mp[s];
+    }
+    auto overlap=[&](ll x, ll y) -> bool {
+        if(x>y) swap(x,y);
+        if(x==0 && y==5) return false;
+        if(x==1 && y==4) return false;
+        if(x==2 && y==3) return false;
+        return true;
+    };
+    rep(i, Q) {
+        LONGM(x,y);
+        if(overlap(A[x], A[y])) {
+            Out(abs(y-x)); continue;
+        }
+        ll ans = INF;
+        rep(k, 6) {
+            if(k==A[x] || k==A[y]) continue;
+            vl &p = pos[k];
+            ll sz = p.size();
+            auto [n,z] = lowbou(p, x);
+            if(n!=sz) {
+                chmin(ans, abs(x-z)+abs(z-y));
+            }
+            if(n!=0) {
+                chmin(ans, abs(x-p[n-1])+abs(p[n-1]-y));
+            }
+        }
+        ch1(ans);
+        Out(ans);
+    }
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

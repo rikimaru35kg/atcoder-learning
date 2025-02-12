@@ -2162,6 +2162,7 @@
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - 競プロ知らない人にパズル問として紹介する際に使えそう [C. Competitive Fishing](https://codeforces.com/contest/2042/problem/C)
 - [D. Attribute Checks](https://codeforces.com/contest/2025/problem/D)
+- [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
@@ -2200,3 +2201,4 @@
 - [C - Z塗り](https://atcoder.jp/contests/arc040/tasks/arc040_c)
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
+- [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
