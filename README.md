@@ -70,7 +70,6 @@
 - 二分探索で最小値を求める問題の場合、f(l)=false、f(r)=trueとなる関数を用いて最終的な答えはr。この時f(x)は答えをx以下（正確にはxを上界）にできるかを返す関数であり、頭が混乱するので注意（Yokan Partyはこの逆）
 ### 例題
 - 基本 超ど典型として人に紹介したい問題 [D - 展覧会 2 (Exhibition 2)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_d)
-- !復習価値低 超ど典型問題として人に紹介したい問題 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
 - 基本 丸太切り [E - Logs](https://atcoder.jp/contests/abc174/tasks/abc174_e)
 - 基本 二分探索良問 [D - 射撃王](https://atcoder.jp/contests/abc023/tasks/abc023_d)
 - 基本 幸福度最大握手 [E - Handshake](https://atcoder.jp/contests/abc149/tasks/abc149_e)
@@ -96,6 +95,11 @@
 - 基本 平均最大化の類題 [F - Beautiful Path](https://atcoder.jp/contests/abc324/tasks/abc324_f)
 - 基本 砂糖水濃度最大化 [F - Sugar Water 2](https://atcoder.jp/contests/abc294/tasks/abc294_f)
 - 基本 平均＆中央値最大化（良問） [E - Average and Median](https://atcoder.jp/contests/abc236/tasks/abc236_e)
+
+## 二分探索による最大ペアリング探索
+### 例題
+- !復習価値低 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
+- !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
@@ -2157,7 +2161,6 @@
 - [E. Reverse the Rivers](https://codeforces.com/contest/2036/problem/E)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - 競プロ知らない人にパズル問として紹介する際に使えそう [C. Competitive Fishing](https://codeforces.com/contest/2042/problem/C)
-- [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
