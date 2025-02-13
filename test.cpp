@@ -227,37 +227,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    STRING(S);
-    ll o=0, c=0;
-    rep(i, N) {
-        if(S[i]=='(') ++o;
-        if(S[i]==')') ++c;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    o = N/2-o, c = N/2-c;
-    vl stck;
-    ll ans = 0;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+void solve() {
+    LONG(N); VL(A, N); VL(B, N);
+    ll ba = 0, bb = 0;
+    ll bp=0, bm=0;
     rep(i, N) {
-        if(i%2) {
-            if(S[i]=='(') { stck.push_back(i); }
-            else {
-                assert(stck.size());
-                ans += i-pop(stck);
-            }
+        ll a = A[i], b = B[i];
+        if(a==0 && b==0) continue;
+        if(a==b) {
+            if(a==1) ++bp;
+            else ++bm;
             continue;
         }
-        ll now = stck.size();
-        if(now==0 || c==0) {
-            assert(o>0);
-            stck.push_back(i);
-            --o;
-        } else {
-            assert(stck.size());
-            ans += i-pop(stck);
-            --c;
-        }
+        if(a>b) ba += a;
+        else bb += b;
     }
+
+    auto f=[&](ll x) -> bool {
+        ll a = ba, b = bb;
+        ll p = bp, m = bm;
+        if(a<x) p -= x-a, a = x;
+        if(b<x) p -= x-b, b = x;
+        if(p<0) return false;
+        if(a>x) {
+            ll mn = min(m, a-x);
+            m -= mn;
+            a -= mn;
+        }
+        if(b>x) {
+            ll mn = min(m, b-x);
+            m -= mn;
+            b -= mn;
+        }
+        if(p>=m) return true;
+        m -= p;
+        ll buf = a-x + b-x;
+        return buf>=m;
+    };
+    de(f(2))
+
+    ll ans = binary_search(-(ll)1e6, (ll)1e6, f);
     Out(ans);
 
 }

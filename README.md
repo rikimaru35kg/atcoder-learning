@@ -2164,6 +2164,8 @@
 - [D. Attribute Checks](https://codeforces.com/contest/2025/problem/D)
 - [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
 - [C. Even Positions](https://codeforces.com/contest/1997/problem/C)
+- [B. Substring and Subsequence](https://codeforces.com/contest/1989/problem/B)
+- [C. Two Movies](https://codeforces.com/contest/1989/problem/C)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
