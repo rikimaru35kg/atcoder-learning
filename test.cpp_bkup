@@ -227,27 +227,98 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Judge if t is subsequence of s.
-//! If ret==t.size(), then t is subsequence of s.
-long long subsequence(string &s, string t) {
-    long long sn = s.size(), tn = t.size();
-    long long ti = 0;
-    for(long long si=0; si<sn && ti<tn; ++si) {
-        if(s[si]==t[ti]) ++ti;
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    return ti;
-}
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+};
 
 void solve() {
-    STRING(S, T);
-    ll N = S.size(), M = T.size();
-    ll mx = 0;
-    rep(i, M) {
-        ll now = subsequence(S, T.substr(i));
-        chmax(mx, now);
+    LONG(N, M);
+    ll K = N+M+1;
+    VL(A, K); VL(B, K);
+    BIT<ll> cnta(K), cntb(K), sa_g(K), sb_g(K);
+    BIT<ll> sa_a(K), sb_a(K);
+
+    auto add=[&](BIT<ll> &cnt, BIT<ll> &sa, ll i, ll x, ll coef=1) {
+        cnt.add(i, coef);
+        sa.add(i, coef*x);
+    };
+    rep(i, K) {
+        if(A[i]>B[i]) add(cnta, sa_g, i, A[i], 1);
+        else add(cntb, sb_g, i, B[i], 1);
+        sa_a.add(i, A[i]);
+        sb_a.add(i, B[i]);
     }
-    ll ans = N + M - mx;
-    Out(ans);
+
+    if(N==0) {
+        ll tot = sb_a.sum(0,K);
+        vl ans;
+        rep(i, K) {
+            ans.push_back(tot-B[i]);
+        }
+        Out(ans);
+        return;
+    }
+    if(M==0) {
+        ll tot = sa_a.sum(0,K);
+        vl ans;
+        rep(i, K) {
+            ans.push_back(tot-A[i]);
+        }
+        Out(ans);
+        return;
+    }
+
+    vl ansv;
+    rep(i, K) {
+        if(A[i]>B[i]) add(cnta, sa_g, i, A[i], -1);
+        else add(cntb, sb_g, i, B[i], -1);
+        sa_a.add(i, -A[i]); sb_a.add(i, -B[i]);
+
+        ll ai = cnta.lower_bound(N);
+        ll bi = cntb.lower_bound(M);
+        ll mi = min(ai, bi);
+        ll ans = 0;
+        ans += sa_g.sum(0,mi+1);
+        ans += sb_g.sum(0,mi+1);
+        if(ai<bi) {
+            ans += sb_a.sum(mi+1,K);
+        } else {
+            ans += sa_a.sum(mi+1,K);
+        }
+        ansv.push_back(ans);
+
+        if(A[i]>B[i]) add(cnta, sa_g, i, A[i], 1);
+        else add(cntb, sb_g, i, B[i], 1);
+        sa_a.add(i, A[i]); sb_a.add(i, B[i]);
+    }
+    Out(ansv);
+
 
 }
 
