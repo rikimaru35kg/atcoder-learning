@@ -227,97 +227,196 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+template<class T,T(*op)(T,T),T(*e)(),class F,T(*mapping)(F f,T x),F(*composition)(F f,F g),F(*id)()>
+class ImplicitTreap{
+    struct Node{
+        T val,acc=e();
+        int priority;
+        int cnt=1;
+        F lazy=id();
+        bool rev=false;
+        Node *l, *r;
+        Node(T val,int priority):val(val),priority(priority),l(nullptr),r(nullptr){};
     }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
+    *root=nullptr;
+    using Tree=Node *;
+
+    int cnt(Tree t) { return t ? t->cnt : 0; }
+    T acc(Tree t){ return t ? t->acc : e(); }
+    void update(Tree t){
+        if(t){
+            t->cnt=1+cnt(t->l)+cnt(t->r);
+            t->acc=op(t->val,op(acc(t->l),acc(t->r)));
+        }
     }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
+    void pushdown(Tree t){
+        if(t && t->rev){
+            t->rev=false;
+            std::swap(t->l,t->r);
+            if(t->l)t->l->rev^=1;
+            if(t->r)t->r->rev^=1;
+        }
+        if(t && t->lazy!=id()){
+            if(t->l){
+                t->l->lazy=composition(t->l->lazy,t->lazy);
+                t->l->acc=mapping(t->lazy,t->l->acc);
+            }
+            if(t->r){
+                t->r->lazy=composition(t->r->lazy,t->lazy);
+                t->r->acc=mapping(t->lazy,t->r->acc);
+            }
+            t->val=mapping(t->lazy,t->val);
+            t->lazy=id();
+        }
+        update(t);
+    }
+    void split(Tree t, int key, Tree& l,Tree& r){
+        if(!t){
+            l=r=nullptr;
+            return;
+        }
+        pushdown(t);
+        int implicit_key=cnt(t->l)+1;
+        if(key<implicit_key){
+            split(t->l,key,l,t->l),r=t;
+        }else{
+            split(t->r,key-implicit_key,t->r,r),l=t;
+        }
+        update(t);
+    }
+    void insert(Tree& t,int key,Tree item){
+        Tree t1,t2;
+        split(t,key,t1,t2);
+        merge(t1,t1,item);
+        merge(t,t1,t2);
+    }
+    void merge(Tree& t, Tree l, Tree r){
+        pushdown(l);
+        pushdown(r);
+        if(!l || !r){
+            t=l?l:r;
+        }else if(l->priority>r->priority){
+            merge(l->r,l->r,r),t=l;
+        }else{
+            merge(r->l,l,r->l),t=r;
+        }
+        update(t);
+    }
+    void erase(Tree& t,int key){
+        Tree t1,t2,t3;
+        split(t,key+1,t1,t2);
+        split(t1,key,t1,t3);
+        merge(t,t1,t2);
+    }
+    T prod(Tree t,int l,int r){
+        Tree t1,t2,t3;
+        split(t,l,t1,t2);
+        split(t2,r-l,t2,t3);
+        T ret=t2->acc;
+        merge(t2,t2,t3);
+        merge(t,t1,t2);
         return ret;
     }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
+    void apply(Tree t,int l,int r,F x){
+        Tree t1,t2,t3;
+        split(t,l,t1,t2);
+        split(t2,r-l,t2,t3);
+        t2->lazy=composition(t2->lazy,x);
+        t2->acc=mapping(x,t2->acc);
+        merge(t2,t2,t3);
+        merge(t,t1,t2);
+    }
+    void reverse(Tree t,int l,int r){
+        if(l>r)return;
+        Tree t1,t2,t3;
+        split(t,l,t1,t2);
+        split(t2,r-l,t2,t3);
+        t2->rev^=1;
+        merge(t2,t2,t3);
+        merge(t,t1,t2);
+    }
+    void rotate(Tree t,int l,int m,int r){
+        reverse(t,l,r);
+        reverse(t,l,l+r-m);
+        reverse(t,l+r-m,r);
+    }
+    void dump(Tree t) {
+        if (!t) return;
+        pushdown(t);
+        dump(t->l);
+        std::cerr << t->val << " ";
+        dump(t->r);
+    }
+public:
+    ImplicitTreap() {}
+    ImplicitTreap(std::vector<T> as){
+        std::reverse(as.begin(),as.end());
+        for(T a:as){ insert(0,a); }
+    }
+    void insert(int pos,T val){
+        //valをposの場所に追加する O(log N)
+        insert(root,pos,new Node(val,rand()));
+    }
+    void erase(T pos){
+        //posにある要素を消す O(log N)
+        erase(root,pos);
+    }
+    int size(){ return cnt(root); }
+    T operator[](int pos) {
+        Tree t1, t2, t3;
+        split(root, pos + 1, t1, t2);
+        split(t1, pos, t1, t3);
+        T ret = t3->acc;
+        merge(t1, t1, t3);
+        merge(root, t1, t2);
+        return ret;
+    }
+    T prod(int l, int r){
+        //[l,r)の区間 O(log N)
+        return prod(root,l,r);
+    }
+    void apply(int l,int r,F x){ apply(root,l,r,x); }
+    void reverse(int l,int r){ reverse(root,l,r); }
+    void rotate(int l,int m,int r){ rotate(root,l,m,r); }
+    void dump(){ 
+        #ifdef __DEBUG
+        dump(root);std::cerr<<std::endl;
+        #endif
     }
 };
 
+using S = ll;
+S op(S a, S b) {return min(a,b);}
+S e() {return INF;}
+using F= ll;
+S mapping(F f, S x) {return f+x;}
+F composition(F f, F g) {return f+g;}
+F id() {return 0;}
+
 void solve() {
-    LONG(N, M);
-    ll K = N+M+1;
-    VL(A, K); VL(B, K);
-    BIT<ll> cnta(K), cntb(K), sa_g(K), sb_g(K);
-    BIT<ll> sa_a(K), sb_a(K);
-
-    auto add=[&](BIT<ll> &cnt, BIT<ll> &sa, ll i, ll x, ll coef=1) {
-        cnt.add(i, coef);
-        sa.add(i, coef*x);
-    };
-    rep(i, K) {
-        if(A[i]>B[i]) add(cnta, sa_g, i, A[i], 1);
-        else add(cntb, sb_g, i, B[i], 1);
-        sa_a.add(i, A[i]);
-        sb_a.add(i, B[i]);
+    LONG(N);
+    ImplicitTreap<S,op,e,F,mapping,composition,id> tree;
+    rep1(i, N) {
+        LONGM(p);
+        tree.insert(p, i);
     }
-
-    if(N==0) {
-        ll tot = sb_a.sum(0,K);
-        vl ans;
-        rep(i, K) {
-            ans.push_back(tot-B[i]);
-        }
-        Out(ans);
-        return;
+    tree.dump();
+    tree.prod(0,2);
+    tree.prod(0,4);
+    tree.prod(2,4);
+    tree.prod(3,4);
+    tree.prod(1,2);
+    tree.apply(2,4,5);
+    tree.insert(4,10);
+    tree.dump();
+    tree.reverse(2, 5);
+    tree.dump();
+    tree.rotate(1,2,4);
+    tree.dump();
+    rep(i, 5) {
+        printf("%lld ", tree[i]);
     }
-    if(M==0) {
-        ll tot = sa_a.sum(0,K);
-        vl ans;
-        rep(i, K) {
-            ans.push_back(tot-A[i]);
-        }
-        Out(ans);
-        return;
-    }
-
-    vl ansv;
-    rep(i, K) {
-        if(A[i]>B[i]) add(cnta, sa_g, i, A[i], -1);
-        else add(cntb, sb_g, i, B[i], -1);
-        sa_a.add(i, -A[i]); sb_a.add(i, -B[i]);
-
-        ll ai = cnta.lower_bound(N);
-        ll bi = cntb.lower_bound(M);
-        ll mi = min(ai, bi);
-        ll ans = 0;
-        ans += sa_g.sum(0,mi+1);
-        ans += sb_g.sum(0,mi+1);
-        if(ai<bi) {
-            ans += sb_a.sum(mi+1,K);
-        } else {
-            ans += sa_a.sum(mi+1,K);
-        }
-        ansv.push_back(ans);
-
-        if(A[i]>B[i]) add(cnta, sa_g, i, A[i], 1);
-        else add(cntb, sb_g, i, B[i], 1);
-        sa_a.add(i, A[i]); sb_a.add(i, B[i]);
-    }
-    Out(ansv);
+    cout<<endl;
 
 
 }
@@ -325,8 +424,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

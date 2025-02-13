@@ -227,197 +227,128 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<class T,T(*op)(T,T),T(*e)(),class F,T(*mapping)(F f,T x),F(*composition)(F f,F g),F(*id)()>
-class ImplicitTreap{
-    struct Node{
-        T val,acc=e();
-        int priority;
-        int cnt=1;
-        F lazy=id();
-        bool rev=false;
-        Node *l, *r;
-        Node(T val,int priority):val(val),priority(priority),l(nullptr),r(nullptr){};
+template <class S, S(*op)(S, S), S(*e)()>
+struct SegTree {
+    int n, mx;
+    vector<S> a;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    *root=nullptr;
-    using Tree=Node *;
-
-    int cnt(Tree t) { return t ? t->cnt : 0; }
-    T acc(Tree t){ return t ? t->acc : e(); }
-    void update(Tree t){
-        if(t){
-            t->cnt=1+cnt(t->l)+cnt(t->r);
-            t->acc=op(t->val,op(acc(t->l),acc(t->r)));
+    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x, bool do_op=true) {
+        assert(i>=0 && i<n);
+        set_only(i, x, do_op);
+        i += n; i>>=1;  // i is node id
+        while(i) {
+            update(i);
+            i>>=1;
         }
     }
-    void pushdown(Tree t){
-        if(t && t->rev){
-            t->rev=false;
-            std::swap(t->l,t->r);
-            if(t->l)t->l->rev^=1;
-            if(t->r)t->r->rev^=1;
-        }
-        if(t && t->lazy!=id()){
-            if(t->l){
-                t->l->lazy=composition(t->l->lazy,t->lazy);
-                t->l->acc=mapping(t->lazy,t->l->acc);
-            }
-            if(t->r){
-                t->r->lazy=composition(t->r->lazy,t->lazy);
-                t->r->acc=mapping(t->lazy,t->r->acc);
-            }
-            t->val=mapping(t->lazy,t->val);
-            t->lazy=id();
-        }
-        update(t);
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
     }
-    void split(Tree t, int key, Tree& l,Tree& r){
-        if(!t){
-            l=r=nullptr;
-            return;
-        }
-        pushdown(t);
-        int implicit_key=cnt(t->l)+1;
-        if(key<implicit_key){
-            split(t->l,key,l,t->l),r=t;
-        }else{
-            split(t->r,key-implicit_key,t->r,r),l=t;
-        }
-        update(t);
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
     }
-    void insert(Tree& t,int key,Tree item){
-        Tree t1,t2;
-        split(t,key,t1,t2);
-        merge(t1,t1,item);
-        merge(t,t1,t2);
+    S get(int i) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        return a[i];
     }
-    void merge(Tree& t, Tree l, Tree r){
-        pushdown(l);
-        pushdown(r);
-        if(!l || !r){
-            t=l?l:r;
-        }else if(l->priority>r->priority){
-            merge(l->r,l->r,r),t=l;
-        }else{
-            merge(r->l,l,r->l),t=r;
-        }
-        update(t);
-    }
-    void erase(Tree& t,int key){
-        Tree t1,t2,t3;
-        split(t,key+1,t1,t2);
-        split(t1,key,t1,t3);
-        merge(t,t1,t2);
-    }
-    T prod(Tree t,int l,int r){
-        Tree t1,t2,t3;
-        split(t,l,t1,t2);
-        split(t2,r-l,t2,t3);
-        T ret=t2->acc;
-        merge(t2,t2,t3);
-        merge(t,t1,t2);
+    S prod(int ql, int qr) {
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, int i) -> S {
+            if(r<=ql || l>=qr) return e();
+            if(l>=ql && r<=qr) return get(i-n);
+            int m = (l+r)/2;
+            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
+            return ret;
+        };
+        S ret = f(f, 0, n, 1);
         return ret;
     }
-    void apply(Tree t,int l,int r,F x){
-        Tree t1,t2,t3;
-        split(t,l,t1,t2);
-        split(t2,r-l,t2,t3);
-        t2->lazy=composition(t2->lazy,x);
-        t2->acc=mapping(x,t2->acc);
-        merge(t2,t2,t3);
-        merge(t,t1,t2);
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=n);
+        if(l==n) return n;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return n;
     }
-    void reverse(Tree t,int l,int r){
-        if(l>r)return;
-        Tree t1,t2,t3;
-        split(t,l,t1,t2);
-        split(t2,r-l,t2,t3);
-        t2->rev^=1;
-        merge(t2,t2,t3);
-        merge(t,t1,t2);
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=n);
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
     }
-    void rotate(Tree t,int l,int m,int r){
-        reverse(t,l,r);
-        reverse(t,l,l+r-m);
-        reverse(t,l+r-m,r);
-    }
-    void dump(Tree t) {
-        if (!t) return;
-        pushdown(t);
-        dump(t->l);
-        std::cerr << t->val << " ";
-        dump(t->r);
-    }
-public:
-    ImplicitTreap() {}
-    ImplicitTreap(std::vector<T> as){
-        std::reverse(as.begin(),as.end());
-        for(T a:as){ insert(0,a); }
-    }
-    void insert(int pos,T val){
-        //valをposの場所に追加する O(log N)
-        insert(root,pos,new Node(val,rand()));
-    }
-    void erase(T pos){
-        //posにある要素を消す O(log N)
-        erase(root,pos);
-    }
-    int size(){ return cnt(root); }
-    T operator[](int pos) {
-        Tree t1, t2, t3;
-        split(root, pos + 1, t1, t2);
-        split(t1, pos, t1, t3);
-        T ret = t3->acc;
-        merge(t1, t1, t3);
-        merge(root, t1, t2);
-        return ret;
-    }
-    T prod(int l, int r){
-        //[l,r)の区間 O(log N)
-        return prod(root,l,r);
-    }
-    void apply(int l,int r,F x){ apply(root,l,r,x); }
-    void reverse(int l,int r){ reverse(root,l,r); }
-    void rotate(int l,int m,int r){ rotate(root,l,m,r); }
-    void dump(){ 
+    void dump() {
         #ifdef __DEBUG
-        dump(root);std::cerr<<std::endl;
+        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
+        cerr<<endl;
         #endif
     }
 };
 
 using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-using F= ll;
-S mapping(F f, S x) {return f+x;}
-F composition(F f, F g) {return f+g;}
-F id() {return 0;}
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
 void solve() {
-    LONG(N);
-    ImplicitTreap<S,op,e,F,mapping,composition,id> tree;
-    rep1(i, N) {
-        LONGM(p);
-        tree.insert(p, i);
+    LONG(N, D);
+    ll Mx = 5;
+    SegTree<S,op,e> seg(Mx);
+    ll ans = 0;
+    rep(i, N) {
+        LONGM(a);
+        ll l = max(a-D, 0LL);
+        ll r = min(a+D+1, Mx);
+        ll now = seg.prod(l,r) + 1;
+        chmax(ans, now);
+        seg.set(a, now);
+        seg.dump();
     }
-    tree.dump();
-    tree.prod(0,2);
-    tree.prod(0,4);
-    tree.prod(2,4);
-    tree.prod(3,4);
-    tree.prod(1,2);
-    tree.apply(2,4,5);
-    tree.insert(4,10);
-    tree.dump();
-    tree.reverse(2, 5);
-    tree.dump();
-    tree.rotate(1,2,4);
-    tree.dump();
-    rep(i, 5) {
-        printf("%lld ", tree[i]);
-    }
-    cout<<endl;
-
+    Out(ans);
 
 }
 

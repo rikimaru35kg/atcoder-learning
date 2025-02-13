@@ -3,9 +3,9 @@ using namespace std;
 
 template <class S, S(*op)(S, S), S(*e)()>
 struct SegTree {
-    int n;
+    int n, mx;
     vector<S> a;
-    SegTree(int mx) {
+    SegTree(int mx): mx(mx) {
         n = 1;
         while(n<mx) n<<=1;
         a.resize(n*2, e());
@@ -95,5 +95,11 @@ struct SegTree {
             if((r&-r)==r) break;  // left most node -> return 0
         }
         return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
+        cerr<<endl;
+        #endif
     }
 };
