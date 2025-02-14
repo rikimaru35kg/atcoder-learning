@@ -2206,3 +2206,4 @@
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
 - [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
+- [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
