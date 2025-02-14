@@ -227,21 +227,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    STRING(S);
-    ll N = S.size();
-    vvl dp(N+1, vl(N+1));
-    rep(i, N) repk(j, i+1, N) {
-        if(S[i]=='?' || S[j]=='?' || S[i]==S[j]) {
-            chmax(dp[i+1][j+1], dp[i][j]+1);
-        }
+bool solve() {
+    LONG(N, K);
+    vp P(N);
+    rep(i, N) cin>> P[i].second;
+    rep(i, N) {
+        LONG(x);
+        x = abs(x);
+        P[i].first = x;
     }
-    ll ans = 0;
-    rep(i, N+1) repk(j, i+1, N+1) {
-        if(dp[i][j]!=j-i) continue;
-        chmax(ans, (j-i)*2);
+    sort(all(P));
+    ll sh = 0;
+    for(auto [x,h]: P) {
+        sh += h;
+        if(K*x<sh) return false;
     }
-    Out(ans);
+    return true;
 
 
 }
@@ -250,7 +251,10 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(T);
-    rep(i, T) solve();
+    rep(i, T) {
+        if(solve()) puts("YES");
+        else puts("NO");
+    }
 }
 
 // ### test.cpp ###
