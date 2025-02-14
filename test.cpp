@@ -330,32 +330,45 @@ struct SegTree {
     }
 };
 
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
+ll op(ll a, ll b) {return max(a,b);}
+ll e() {return 0;}
 
 void solve() {
-    LONG(N, D);
-    ll Mx = 5;
-    SegTree<S,op,e> seg(Mx);
-    ll ans = 0;
-    rep(i, N) {
-        LONGM(a);
-        ll l = max(a-D, 0LL);
-        ll r = min(a+D+1, Mx);
-        ll now = seg.prod(l,r) + 1;
-        chmax(ans, now);
-        seg.set(a, now);
-        seg.dump();
+    LONG(N, K);
+    VL(A, N);
+    ll tot = accumulate(all(A),0LL);
+    // INF= ;
+    vvl dp(K+1, vl(N, -INF));
+    dp[0][0] = 0;
+    repk(i, 1, N) {
+        rep(z, K+1) chmax(dp[z][i], dp[z][i-1]);
+        rep1(j, K) {
+            ll mn = INF;
+            ll pi = i-j;
+            if(pi<0) continue;
+            repk(m,pi,i+1) { chmin(mn, A[m]); }
+            ll sum = 0;
+            repk(m,pi,i+1) { sum += A[m]-mn; }
+
+            rep(z, K-j+1) {
+                if(dp[z][pi]==-INF) continue;
+                if(pi) chmax(dp[z+j][i], dp[z][pi-1]+sum);
+                else chmax(dp[z+j][i], sum);
+            }
+        }
     }
-    Out(ans);
+    de(dp)
+    ll mx = 0;
+    rep(i,K+1) rep(j,N) chmax(mx, dp[i][j]);
+    Out(tot-mx);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

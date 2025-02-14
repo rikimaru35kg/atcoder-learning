@@ -386,38 +386,25 @@ public:
 };
 
 using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-using F= ll;
-S mapping(F f, S x) {return f+x;}
-F composition(F f, F g) {return f+g;}
-F id() {return 0;}
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
 void solve() {
-    LONG(N);
-    ImplicitTreap<S,op,e,F,mapping,composition,id> tree;
-    rep1(i, N) {
-        LONGM(p);
-        tree.insert(p, i);
+    LONG(N, D);
+    ll Mx = 5e5;
+    vl v(Mx);
+    ImplicitTreap<S,op,e,S,op,op,e> seg(v);
+    ll ans = 0;
+    rep(i, N) {
+        LONGM(a);
+        ll l = max(a-D, 0LL);
+        ll r = min(a+D+1, Mx);
+        ll now = seg.prod(l,r) + 1;
+        chmax(ans, now);
+        seg.apply(a, a+1, now);
+        // seg.dump();
     }
-    tree.dump();
-    tree.prod(0,2);
-    tree.prod(0,4);
-    tree.prod(2,4);
-    tree.prod(3,4);
-    tree.prod(1,2);
-    tree.apply(2,4,5);
-    tree.insert(4,10);
-    tree.dump();
-    tree.reverse(2, 5);
-    tree.dump();
-    tree.rotate(1,2,4);
-    tree.dump();
-    rep(i, 5) {
-        printf("%lld ", tree[i]);
-    }
-    cout<<endl;
-
+    Out(ans);
 
 }
 
