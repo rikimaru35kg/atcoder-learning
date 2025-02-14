@@ -2167,6 +2167,7 @@
 - [B. Substring and Subsequence](https://codeforces.com/contest/1989/problem/B)
 - [C. Two Movies](https://codeforces.com/contest/1989/problem/C)
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
+- [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)

@@ -68,7 +68,6 @@ vector<long long> z_algo(string s) {
     a[0] = n;  // substitute ovious value at last
     return a;
 }
-
 vector<long long> z_algo(vector<long long> s) {
     long long n = s.size();
     vector<long long> a(n);

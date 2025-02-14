@@ -227,44 +227,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
-    }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
-    }
-    return ret;
-}
-
 void solve() {
-    STRING(X, Y);
-    ll N = X.size();
-    ll si=-1;
-    rep(i, N) {
-        if(X[i]!=Y[i]) {
-            si=i; break;
+    LONG(N);
+    VS(S, 2);
+    vvb visited(2, vb(N));
+    vvp next(2, vp(N));
+    rep(i, 2) rep(j, N) {
+        if(S[i][j]=='<') next[i][j] = {i, j-1};
+        else next[i][j] = {i, j+1};
+    }
+
+    queue<Pr> que;
+    auto push=[&](ll i, ll j) {
+        visited[i][j] = true;
+        auto [ni,nj] = next[i][j];
+        if(visited[ni][nj]) return;
+        visited[ni][nj] = true;
+        que.emplace(ni,nj);
+    };
+    que.emplace(0,0);
+    visited[0][0] = true;
+    while(que.size()) {
+        auto [i,j] = que.front(); que.pop();
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,2,N)) continue;
+            push(ni,nj);
         }
     }
-    if(si==-1) { Out(X); Out(Y); return; }
-
-    if(X[si]>Y[si]) swap(X, Y);
-
-    repk(i, si+1, N) {
-        if(X[i]<Y[i]) swap(X[i], Y[i]);
-    }
-    Out(X);
-    Out(Y);
+    de(visited)
+    if(visited[1].back()) puts("YES");
+    else puts("NO");
 
 }
 
@@ -272,9 +265,7 @@ int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(T);
-    rep(i, T) {
-        solve();
-    }
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
