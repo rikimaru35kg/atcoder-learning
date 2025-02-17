@@ -1336,6 +1336,7 @@
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 - !要復習 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
+- !復習価値高（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
 - t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
@@ -1846,6 +1847,7 @@
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
+- !復習価値中 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 

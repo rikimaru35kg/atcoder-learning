@@ -40,7 +40,7 @@
     },
     "files.autoSave": "afterDelay",
     "editor.fontFamily": "'Anonymous Pro', monospace",
-    "files.autoSaveDelay": 100,
+    "files.autoSaveDelay": 200,
     "highlight.decorations": { "rangeBehavior": 3 },
     "highlight.regexFlags": "gi",
     "highlight.minDelay": 50,
