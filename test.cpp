@@ -89,6 +89,8 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define PFi {puts("First"); exit(0);}
+#define PSe {puts("Second"); exit(0);}
 #define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
@@ -124,7 +126,7 @@ inline int parity(ll s, ll n=-1) { // n!=-1 for # of 0
     if(n==-1) return __builtin_parityll(s);
     return (n-__builtin_popcountll(s))%2;
 }
-inline void Out(double x) {printf("%.15f\n",x);}
+inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
 inline void Out(vector<string> v) {rep(i,SIZE(v)) cout<<v[i]<<'\n';}
@@ -224,112 +226,48 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-// namespace std {
-// template<> struct hash<vl> {
-//     size_t operator()(const vl &x) const {
-//         size_t seed = 0;
-//         hash<long long> phash;
-//         int n = x.size();
-//         for(ll i=0; i<n; ++i) {
-//             seed ^= phash(x[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         }
-//         return seed;
-//     }
-// };
-// }
-// namespace std {
-// template<> struct hash<Pr> {
-//     size_t operator()(const Pr &x) const {
-//         size_t seed = 0;
-//         hash<long long> phash;
-//         seed ^= phash(x.first) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         seed ^= phash(x.second) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         return seed;
-//     }
-// };
-// }
-// namespace std {
-// template<> struct hash<t3> {
-//     size_t operator()(const t3 &x) const {
-//         size_t seed = 0;
-//         hash<long long> phash;
-//         seed ^= phash(get<0>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         seed ^= phash(get<1>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         seed ^= phash(get<2>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         return seed;
-//     }
-// };
-// }
-// namespace std {
-// template<> struct hash<t4> {
-//     size_t operator()(const t4 &x) const {
-//         size_t seed = 0;
-//         hash<long long> phash;
-//         seed ^= phash(get<0>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         seed ^= phash(get<1>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         seed ^= phash(get<2>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         seed ^= phash(get<3>(x)) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//         return seed;
-//     }
-// };
-// }
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 void solve() {
-    LONG(K, N);
-    vvp p(3);
-    rep(i, N) {
-        LONGM(x,y); CHAR(c);
-        if(c=='J') p[0].emplace_back(y,x);
-        if(c=='O') p[1].emplace_back(y,x);
-        if(c=='I') p[2].emplace_back(y,x);
-    }
+    LONG(N, K);
+    VL(A, N); VL(B, N);
+    ll amx = A.back();
 
-    map<t4,ll> mem;
-    auto dfs=[&](auto f, ll si, ll sj, ll k, ll t) -> ll {
-        if(mem.count({si,sj,k,t})) return mem[{si,sj,k,t}];
-        ll &ret = mem[{si,sj,k,t}];
-        ret = INF;
-        ll w = 1LL<<k;
-
-
-        if(t<=2) {
-            ll cnt = 0;
-            rep(a, 3) {
-                if(a==t) continue;
-                for(auto [i,j]: p[a]) {
-                    if(i<si || i>=si+w || j<sj || j>=sj+w) continue;
-                    ++cnt;
-                }
-            }
-            return ret = cnt;
+    auto f=[&](ll x) -> bool {
+        ll cnt = 0;
+        ll r = 0;
+        repr(i, N) {
+            ll d = min(B[i], r);
+            ll b = B[i] - d;
+            r -= d;
+            ll n = Divceil(b, x-A[i]);
+            cnt += n;
+            if(cnt>K) return false;
+            r += n*(x-A[i]) - b;
         }
-        if(k==0) return ret = 0;
-
-        ll tot = 0;
-        rep(a, 3) {
-            for(auto [i,j]: p[a]) {
-                if(i<si || i>=si+w || j<sj || j>=sj+w) continue;
-                ++tot;
-            }
-        }
-        if(tot==0) return ret = 0;
-
-        vl perm(4);
-        iota(all(perm), 0);
-        ll dw = w>>1;
-        do {
-            ll cost = 0;
-            cost += f(f, si, sj, k-1, perm[0]);
-            cost += f(f, si, sj+dw, k-1, perm[1]);
-            cost += f(f, si+dw, sj, k-1, perm[2]);
-            cost += f(f, si+dw, sj+dw, k-1, perm[3]);
-            chmin(ret, cost);
-        } while(next_permutation(all(perm)));
-
-        return ret;
+        return cnt <= K;
     };
-
-    ll ans = dfs(dfs, 0, 0, K, 3);
+    ll ans = binary_search(INF, amx, f);
     Out(ans);
 
 }

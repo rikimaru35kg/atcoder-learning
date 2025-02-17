@@ -74,13 +74,13 @@
 - 基本 道路コストP以下が丁度K本の数 [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 - 基本 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - 基本 [B - 自習 (Self Study)](https://atcoder.jp/contests/joi2022ho/tasks/joi2022ho_b)
+- !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
+- 基本 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
-- !復習価値低 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - 基本 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
-- !要復習 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
+- !復習価値中 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
 
 ## 二分探索による中央値探索
 ### 例題

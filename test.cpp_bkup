@@ -227,37 +227,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
     LONG(N);
-    ll M = 3;
-    VL(A, 3*N);
+    VVL(A, N, 5);
 
-    vvl grs(N);
-    ll ans = INF;
-    auto dfs=[&](auto f, ll i, ll mx) -> void {
-        if(i==3*N) {
-            ll mx = -INF, mn = INF;
-            rep(j, N) {
-                ll now = 0;
-                rep(k, 3) now += A[grs[j][k]];
-                chmin(mn, now); chmax(mx, now);
-            }
-            chmin(ans, mx-mn);
-            return;
+    auto get=[&](ll i, ll x) -> ll {
+        ll ret = 0;
+        rep(j, 5) {
+            ll y = A[i][j]>=x? 1: 0;
+            ret = ret*2 + y;
         }
-        rep(j, mx) {
-            if(SIZE(grs[j])==M) continue;
-            grs[j].push_back(i);
-            f(f, i+1, mx);
-            grs[j].pop_back();
-        }
-        if(mx<N) {
-            grs[mx].push_back(i);
-            f(f, i+1, mx+1);
-            grs[mx].pop_back();
-        }
+        return ret;
     };
-    dfs(dfs, 0, 0);
+
+    auto f=[&](ll x) -> bool {
+        ll M = 32;
+        vb able(M);
+        rep(i, N) {
+            ll now = get(i, x);
+            able[now] = true;
+        }
+        rep(i, M) rep(j, M) rep(k, M) {
+            if(able[i] && able[j] && able[k]) {
+                ll tmp = i|j|k;
+                if(tmp==31) return true;
+            }
+        }
+        return false;
+    };
+
+    ll ans = binary_search(0, 1e9+1, f);
     Out(ans);
 
 }
