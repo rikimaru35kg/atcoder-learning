@@ -137,15 +137,15 @@
 - 基本 [051 - Typical Shop（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ay)
 - 基本 XORが0になる経路数 [F - XOR on Grid Path](https://atcoder.jp/contests/abc271/tasks/abc271_f)
 - 基本 [O - 15パズル](https://atcoder.jp/contests/past19-open/tasks/past19_o)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 ロボット移動 [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
+- 基本 ロボット移動 [F - Robot Rotation](https://atcoder.jp/contests/abc326/tasks/abc326_f)
 
 ## Ready&Go探索
 - 条件を満たした地点から全探索を始める
 ### 例題
 - 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
 
 # ソート
