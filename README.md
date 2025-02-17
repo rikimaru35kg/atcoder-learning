@@ -76,9 +76,6 @@
 - 基本 [B - 自習 (Self Study)](https://atcoder.jp/contests/joi2022ho/tasks/joi2022ho_b)
 - !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - 基本 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - 基本 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
 - !復習価値中 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
 
@@ -98,6 +95,9 @@
 
 ## 二分探索による最大ペアリング探索
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 

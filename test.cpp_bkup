@@ -227,7 +227,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
@@ -250,35 +249,25 @@ double binary_search (double ok, double ng, auto f) {
 }
 
 void solve() {
-    LONG(N);
-    VVL(A, N, 5);
-
-    auto get=[&](ll i, ll x) -> ll {
-        ll ret = 0;
-        rep(j, 5) {
-            ll y = A[i][j]>=x? 1: 0;
-            ret = ret*2 + y;
-        }
-        return ret;
-    };
+    LONG(N, K);
+    VL(A, N); VL(B, N);
+    ll amx = A.back();
 
     auto f=[&](ll x) -> bool {
-        ll M = 32;
-        vb able(M);
-        rep(i, N) {
-            ll now = get(i, x);
-            able[now] = true;
+        ll cnt = 0;
+        ll r = 0;
+        repr(i, N) {
+            ll d = min(B[i], r);
+            ll b = B[i] - d;
+            r -= d;
+            ll n = Divceil(b, x-A[i]);
+            cnt += n;
+            if(cnt>K) return false;
+            r += n*(x-A[i]) - b;
         }
-        rep(i, M) rep(j, M) rep(k, M) {
-            if(able[i] && able[j] && able[k]) {
-                ll tmp = i|j|k;
-                if(tmp==31) return true;
-            }
-        }
-        return false;
+        return cnt <= K;
     };
-
-    ll ans = binary_search(0, 1e9+1, f);
+    ll ans = binary_search(INF, amx, f);
     Out(ans);
 
 }

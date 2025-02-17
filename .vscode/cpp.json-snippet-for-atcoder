@@ -2341,8 +2341,8 @@
       "}",
     ],
   },
-  "Snippet(BIT)": {
-    "prefix": "bit(fenwick_tree)",
+  "Snippet(BIT_FenwickTree)": {
+    "prefix": "fenwick_tree_bit",
     "body": [
       "template<typename T>",
       "struct BIT {",

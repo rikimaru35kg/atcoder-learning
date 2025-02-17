@@ -228,6 +228,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 long long binary_search (long long ok, long long ng, auto f) {
+    de(2)
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
         long long m = l + (r-l)/2;
@@ -240,6 +241,7 @@ long long binary_search (long long ok, long long ng, auto f) {
 //! TO CORRECTLY INFER THE PROPER FUNCTION!!
 double binary_search (double ok, double ng, auto f) {
     const int REPEAT = 100;
+    de(1)
     for(int i=0; i<=REPEAT; ++i) {
         double m = (ok + ng) / 2;
         if (f(m)) ok = m;
@@ -248,26 +250,59 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+};
+
+#include <atcoder/fenwicktree>
+using namespace atcoder;
+
 void solve() {
-    LONG(N, K);
-    VL(A, N); VL(B, N);
-    ll amx = A.back();
+    LONG(N); VL(A, N);
+    ll M = N*(N+1)/2;
+    ll half = (M+1)/2;
 
     auto f=[&](ll x) -> bool {
         ll cnt = 0;
-        ll r = 0;
-        repr(i, N) {
-            ll d = min(B[i], r);
-            ll b = B[i] - d;
-            r -= d;
-            ll n = Divceil(b, x-A[i]);
-            cnt += n;
-            if(cnt>K) return false;
-            r += n*(x-A[i]) - b;
+        // BIT<ll> bit(2*N+1);
+        fenwick_tree<ll> bit(2*N+1);
+        bit.add(N,1);
+        ll sum = 0;
+        rep(i, N) {
+            sum += A[i]>=x?1:-1;
+            cnt += bit.sum(0,sum+1+N);
+            bit.add(sum+N,1);
         }
-        return cnt <= K;
+        return cnt >= half;
     };
-    ll ans = binary_search(INF, amx, f);
+
+    ll ans = binary_search(0, 1e9+1, f);
     Out(ans);
 
 }
