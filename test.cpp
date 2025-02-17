@@ -227,38 +227,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N);
-    VL(A, N);
+    LONG(N, M);
+    vl rmn(M, M); // M->ng
+    VPM(span, N);
+    sort(allr(span));
 
-    auto f=[&](ll k) -> bool {
-        rep(i, k) {
-            if(2*A[i]>A[N-k+i]) return false;
+    multiset<ll> st;
+    for(auto [l,r]: span) st.insert(r);
+
+    ll ans = 0;
+    rep(l, M) {
+        while(span.size() && span.back().first<l) {
+            auto [cl,cr] = pop(span);
+            erase(st, cr);
         }
-        return true;
-    };
-    ll ans = binary_search(0, (N+2)/2, f);
+        ll rmn = M;
+        if(st.size()) rmn = *st.begin();
+        ans += rmn-l;
+    }
     Out(ans);
 
 }
