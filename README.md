@@ -160,10 +160,7 @@
 - 基本 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
 - 基本 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 - 基本 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
-- !復習価値低 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
+- !復習価値中 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
 
 ## ペア積（要素積）のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い
@@ -172,6 +169,9 @@
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/60403345)
 
 ## ペアつなぎ

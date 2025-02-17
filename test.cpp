@@ -228,69 +228,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(R);
-    LONG(W1,H1,sj1,si1); --si1, --sj1;
-    VVL(A1, H1, W1);
-    LONG(W2,H2,sj2,si2); --si2, --sj2;
-    VVL(A2, H2, W2);
+    LONG(N, Q);
+    vl A(N);
+    iota(all(A), 1);
+    set<ll> is;
+    is.insert(INF);
 
-    auto calc=[&](vvl &A, ll si, ll sj) -> vp {
-        ll H = A.size(), W = A[0].size();
-        map<ll,vp> mp;
-        rep(i, H) rep(j, W) {
-            mp[A[i][j]].emplace_back(i, j);
-        }
-        vvb open(H, vb(W));
-        ll cnt = 0;
-        vp ret;
-        ret.emplace_back(0,0);
-
-        for(auto [a,vp]: mp) {
-            queue<Pr> que;
-            for(auto [i,j]: vp) {
-                if(i==si && j==sj) {
-                    que.emplace(i,j);
-                    continue;
-                }
-                for(auto [di,dj]: dij) {
-                    ll ni = i + di, nj = j + dj;
-                    if(!isin(ni,nj,H,W)) continue;
-                    if(open[ni][nj]) que.emplace(i,j);
-                }
-            }
-            while(que.size()) {
-                auto [i,j] = que.front(); que.pop();
-                if(open[i][j]) continue;
-                open[i][j] = true;
-                ++cnt;
-                for(auto [di,dj]: dij) {
-                    ll ni = i + di, nj = j + dj;
-                    if(!isin(ni,nj,H,W)) continue;
-                    if(A[ni][nj]<=a) que.emplace(ni,nj);
-                }
-            }
-            ret.emplace_back(a,cnt);
-        }
-        return ret;
+    auto sw=[&](ll i) {
+        swap(A[i], A[i+1]);
+        if(i && A[i-1]>A[i]) is.insert(i-1);
+        else is.erase(i-1);
+        if(A[i]>A[i+1]) is.insert(i);
+        else is.erase(i);
+        if(i<N-2 && A[i+1]>A[i+2]) is.insert(i+1);
+        else is.erase(i+1);
     };
-
-    auto r1 = calc(A1, si1, sj1);
-    auto r2 = calc(A2, si2, sj2);
-
-    vl num1(H1*W1+1, INF);
-    for(auto [a,cnt]: r1) chmin(num1[cnt], a);
-    repr(i, H1*W1) chmin(num1[i], num1[i+1]);
-    vl num2(H2*W2+1, INF);
-    for(auto [a,cnt]: r2) chmin(num2[cnt], a);
-    repr(i, H2*W2) chmin(num2[i], num2[i+1]);
-
-    ll ans = INF;
-    rep(i, H1*W1) {
-        ll j = R-i;
-        if(j<0 || j>H2*W2) continue;
-        chmin(ans, num1[i]+num2[j]);
+    rep(i, Q) {
+        LONG(t, x, y); --x, --y;
+        if(t==1) sw(x);
+        else {
+            ll di = *is.lower_bound(x);
+            while(di<y) {
+                sw(di);
+                di = *is.lower_bound(x);
+            }
+        }
     }
-    Out(ans);
+    Out(A);
+
 
 }
 

@@ -227,95 +227,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N, X, Y);
-    VL(A, N);
-    while((SIZE(A)%4)) A.push_back(0);
-    ll N4 = A.size();
-    ll M = N4/4;
-    vl x,y;
-    rep(i, N4) {
-        if(i%2) x.push_back(A[i]);
-        else y.push_back(A[i]);
-    }
-    using MP = umap<ll,ll>;
+    LONG(R);
+    LONG(W1,H1,sj1,si1); --si1, --sj1;
+    VVL(A1, H1, W1);
+    LONG(W2,H2,sj2,si2); --si2, --sj2;
+    VVL(A2, H2, W2);
 
-    auto asearch=[&](vl &x) -> vp {
+    auto calc=[&](vvl &A, ll si, ll sj) -> vp {
+        ll H = A.size(), W = A[0].size();
+        map<ll,vp> mp;
+        rep(i, H) rep(j, W) {
+            mp[A[i][j]].emplace_back(i, j);
+        }
+        vvb open(H, vb(W));
+        ll cnt = 0;
         vp ret;
-        auto f=[&](auto f, ll i, ll sum, ll op) -> void {
-            if(i==M) {
-                // ret[sum] = op;
-                ret.emplace_back(sum,op);
-                return;
+        ret.emplace_back(0,0);
+
+        for(auto [a,vp]: mp) {
+            queue<Pr> que;
+            for(auto [i,j]: vp) {
+                if(i==si && j==sj) {
+                    que.emplace(i,j);
+                    continue;
+                }
+                for(auto [di,dj]: dij) {
+                    ll ni = i + di, nj = j + dj;
+                    if(!isin(ni,nj,H,W)) continue;
+                    if(open[ni][nj]) que.emplace(i,j);
+                }
             }
-            f(f, i+1, sum+x[i], op<<1|1);
-            f(f, i+1, sum-x[i], op<<1);
-        };
-        f(f, 0, 0, 0);
+            while(que.size()) {
+                auto [i,j] = que.front(); que.pop();
+                if(open[i][j]) continue;
+                open[i][j] = true;
+                ++cnt;
+                for(auto [di,dj]: dij) {
+                    ll ni = i + di, nj = j + dj;
+                    if(!isin(ni,nj,H,W)) continue;
+                    if(A[ni][nj]<=a) que.emplace(ni,nj);
+                }
+            }
+            ret.emplace_back(a,cnt);
+        }
         return ret;
     };
 
-    auto calc=[&](vl &x, ll S) -> ll {
-        vl x1 = vl(x.begin(), x.begin()+M);
-        vl x2 = vl(x.begin()+M, x.end());
-        vp vp1 = asearch(x1);
-        vp vp2 = asearch(x2);
-        MP mp2;
-        for(auto [s,op]: vp2) {
-            mp2[s] = op;
-        }
-        for(auto [s1,op1]: vp1) {
-            if(!mp2.count(S-s1)) continue;
-            ll ret = (op1<<M) + mp2[S-s1];
-            return ret;
-        }
-        return INF;
-    };
-    ll opx = calc(x, X);
-    ll opy = calc(y, Y);
-    if(opx==INF || opy==INF) PNo
+    auto r1 = calc(A1, si1, sj1);
+    auto r2 = calc(A2, si2, sj2);
 
-    vl vx = separate_digit(opx, 2, 2*M);
-    vl vy = separate_digit(opy, 2, 2*M);
+    vl num1(H1*W1+1, INF);
+    for(auto [a,cnt]: r1) chmin(num1[cnt], a);
+    repr(i, H1*W1) chmin(num1[i], num1[i+1]);
+    vl num2(H2*W2+1, INF);
+    for(auto [a,cnt]: r2) chmin(num2[cnt], a);
+    repr(i, H2*W2) chmin(num2[i], num2[i+1]);
 
-    ll d=1;
-    string ans;
-    rep(i, N) {
-        ll j = i/2;
-        if(i%2) {
-            if(d==vx[j]) ans += 'R';
-            else ans += 'L';
-            d = vx[j];
-        } else {
-            if(d==vy[j]) ans += 'L';
-            else ans += 'R';
-            d = vy[j];
-        }
+    ll ans = INF;
+    rep(i, H1*W1) {
+        ll j = R-i;
+        if(j<0 || j>H2*W2) continue;
+        chmin(ans, num1[i]+num2[j]);
     }
-    puts("Yes");
     Out(ans);
 
 }
