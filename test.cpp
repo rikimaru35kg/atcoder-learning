@@ -227,42 +227,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, Q);
-    vl A(N);
-    iota(all(A), 1);
-    set<ll> is;
-    is.insert(INF);
+// [方針]
+// A=Bの場合は自明に解を計算して終了（以下A=Bでない場合）
+// AB以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
+// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
+// 最大ペア積がab未満となる最大のxを二分探索すれば良いのだが、良い理由が
+// 分かりづらいので以下に記す
+// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
+// xの偶奇で場合分け可能。
+// AもBが真ん中以下の数であれば、絶対不可能
+// マッチングさせていった時、必ずAB以上となるペアができてしまう
+// 逆にAもBも真ん中以上の数であれば絶対可能
+// マッチングさせていった時、必ずAB未満である事が保証される
+// （xの偶奇に注意して考えると正当性が分かる）
+// Aが真ん中未満、Bが真ん中より大のケースのみ考える
+// この時の最大マッチングは真ん中同士の積となるので、これを判定すれば良い
+// なお、絶対不可能、絶対可能と前述したケースについても実は同じ判定で大丈夫
 
-    auto sw=[&](ll i) {
-        swap(A[i], A[i+1]);
-        if(i && A[i-1]>A[i]) is.insert(i-1);
-        else is.erase(i-1);
-        if(A[i]>A[i+1]) is.insert(i);
-        else is.erase(i);
-        if(i<N-2 && A[i+1]>A[i+2]) is.insert(i+1);
-        else is.erase(i+1);
-    };
-    rep(i, Q) {
-        LONG(t, x, y); --x, --y;
-        if(t==1) sw(x);
-        else {
-            ll di = *is.lower_bound(x);
-            while(di<y) {
-                sw(di);
-                di = *is.lower_bound(x);
-            }
-        }
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    Out(A);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
+void solve() {
+    LONG(A,B);
+    if(A==B) {
+        Out((A-1)*2); return;
+    }
 
+    auto f=[&](ll y) -> bool {
+        ll x = y+1;
+        if(x%2) {
+            ll m = (x+1)/2;
+            return m*m<A*B;
+        }
+        ll m = x/2;
+        return m*(m+1)<A*B;
+    };
+
+    ll ans = binary_search(0, (ll)1e10, f);
+    Out(ans);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(Q);
+    rep(i, Q) solve();
 }
 
 // ### test.cpp ###

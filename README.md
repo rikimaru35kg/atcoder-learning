@@ -169,10 +169,7 @@
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/60403345)
+- !復習価値高 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/62866492)
 
 ## ペアつなぎ
 - 個別の区間に注目すると、最低何本は線があるかどうか分かる（下界）
@@ -203,6 +200,9 @@
 - 基本 （累積和ではないのでNote非掲載 ）[C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
 - !復習価値高 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
 
