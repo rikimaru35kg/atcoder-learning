@@ -227,25 +227,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vl rmn(M, M); // M->ng
-    VPM(span, N);
-    sort(allr(span));
-
-    multiset<ll> st;
-    for(auto [l,r]: span) st.insert(r);
-
-    ll ans = 0;
-    rep(l, M) {
-        while(span.size() && span.back().first<l) {
-            auto [cl,cr] = pop(span);
-            erase(st, cr);
-        }
-        ll rmn = M;
-        if(st.size()) rmn = *st.begin();
-        ans += rmn-l;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+void solve() {
+    LONG(N, X, Y);
+    VL(A, N);
+    while((SIZE(A)%4)) A.push_back(0);
+    ll N4 = A.size();
+    ll M = N4/4;
+    vl x,y;
+    rep(i, N4) {
+        if(i%2) x.push_back(A[i]);
+        else y.push_back(A[i]);
+    }
+    using MP = umap<ll,ll>;
+
+    auto asearch=[&](vl &x) -> vp {
+        vp ret;
+        auto f=[&](auto f, ll i, ll sum, ll op) -> void {
+            if(i==M) {
+                // ret[sum] = op;
+                ret.emplace_back(sum,op);
+                return;
+            }
+            f(f, i+1, sum+x[i], op<<1|1);
+            f(f, i+1, sum-x[i], op<<1);
+        };
+        f(f, 0, 0, 0);
+        return ret;
+    };
+
+    auto calc=[&](vl &x, ll S) -> ll {
+        vl x1 = vl(x.begin(), x.begin()+M);
+        vl x2 = vl(x.begin()+M, x.end());
+        vp vp1 = asearch(x1);
+        vp vp2 = asearch(x2);
+        MP mp2;
+        for(auto [s,op]: vp2) {
+            mp2[s] = op;
+        }
+        for(auto [s1,op1]: vp1) {
+            if(!mp2.count(S-s1)) continue;
+            ll ret = (op1<<M) + mp2[S-s1];
+            return ret;
+        }
+        return INF;
+    };
+    ll opx = calc(x, X);
+    ll opy = calc(y, Y);
+    if(opx==INF || opy==INF) PNo
+
+    vl vx = separate_digit(opx, 2, 2*M);
+    vl vy = separate_digit(opy, 2, 2*M);
+
+    ll d=1;
+    string ans;
+    rep(i, N) {
+        ll j = i/2;
+        if(i%2) {
+            if(d==vx[j]) ans += 'R';
+            else ans += 'L';
+            d = vx[j];
+        } else {
+            if(d==vy[j]) ans += 'L';
+            else ans += 'R';
+            d = vy[j];
+        }
+    }
+    puts("Yes");
     Out(ans);
 
 }

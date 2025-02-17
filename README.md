@@ -143,10 +143,7 @@
 - 条件を満たした地点から全探索を始める
 ### 例題
 - 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
+- !復習価値低 [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
 
 # ソート
 
@@ -164,6 +161,9 @@
 - 基本 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 - 基本 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
 - !復習価値低 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 
 ## ペア積（要素積）のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い
