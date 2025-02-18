@@ -227,134 +227,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-};
-
 void solve() {
-    LONG(N);
-    VVL(A, 2, N);
-    CoordinateCompression<ll> cc;
-    rep(t, 2) rep(i, N) cc.add(A[t][i]);
-    rep(t, 2) rep(i, N) A[t][i] = cc(A[t][i]);
-    ll M = cc.size();
-
-    vector<BIT<ll>> sum(2, BIT<ll>(M));
-    vector<BIT<ll>> cnt(2, BIT<ll>(M));
-    ll x = 0, y = 0;
-
-    LONG(K);
-    VL2(X, Y, K);
-
-    ll h = max(N/sqrt(K), 1.0);
-    vl p(K);
+    LONG(N); VL(P, N);
+    vl p(N);
     iota(all(p), 0);
     sort(all(p), [&](ll i, ll j){
-        ll hi = Y[i]/h, hj = Y[j]/h;
-        if(hi==hj) {
-            // if(hi%2) return X[i]>X[j];
-            // else return X[i]<X[j];
-            return X[i]>X[j];
-        } else {
-            return hi<hj;
-        }
+        return P[i]>P[j];
     });
 
-    ll now = 0;
-    auto add=[&](ll x, ll t) {
-        ll val = cc[x];
-        ll s = cnt[t^1].sum(0,x)*val - sum[t^1].sum(0,x);
-        s += sum[t^1].sum(x,M) - cnt[t^1].sum(x,M)*val;
-        now += s;
-        cnt[t].add(x,1);
-        sum[t].add(x,val);
-    };
-    auto del=[&](ll x, ll t) {
-        ll val = cc[x];
-        ll s = cnt[t^1].sum(0,x)*val - sum[t^1].sum(0,x);
-        s += sum[t^1].sum(x,M) - cnt[t^1].sum(x,M)*val;
-        now -= s;
-        cnt[t].add(x,-1);
-        sum[t].add(x,-val);
-    };
-
-    vl ans(K);
+    multiset<ll> st;
+    st.insert(N); st.insert(N);
+    st.insert(-1); st.insert(-1);
+    ll ans = 0;
     for(auto i: p) {
-        ll xt = X[i], yt = Y[i];
-        while(x<xt) add(A[0][x], 0), ++x;
-        while(x>xt) --x, del(A[0][x], 0);
-        while(y<yt) add(A[1][y], 1), ++y;
-        while(y>yt) --y, del(A[1][y], 1);
-        ans[i] = now;
+        auto it = st.insert(i);
+        vl ls(2), rs(2);
+        rep(i, 2) {
+            --it;
+            ls[i] = *it;
+        }
+        rep(i, 2) ++it;
+        rep(i, 2) {
+            ++it;
+            rs[i] = *it;
+        }
+        ll cnt = (i-ls[0]) * (rs[1]-rs[0]);
+        cnt += (ls[0]-ls[1]) * (rs[0]-i);
+        ans += cnt * P[i];
+        de2(i,cnt)
+        de(st)
     }
-    for(auto x: ans) Out(x);
+    Out(ans);
 
 }
 

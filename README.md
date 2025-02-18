@@ -266,10 +266,7 @@
 - 文章ではわかりにくいので、[snuke氏の解説参照](https://www.youtube.com/live/VSeggcnxwrc?feature=shared&t=5618)
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
+- 基本 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
 - 基本 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
 
@@ -287,6 +284,9 @@
 ### 例題
 - 基本 [D - テンキー (Tenkey)](https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_d)
 - 基本 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
 - !要復習 [C - 鉄道運賃 (Train Fare)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_c)
 
