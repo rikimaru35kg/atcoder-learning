@@ -243,10 +243,7 @@
 - 基本 区間の中でXに一致する個数 [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - 基本 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
 - 基本 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [H - JOIOJI](https://atcoder.jp/contests/joisc2014/tasks/joisc2014_h)
+- 基本 [H - JOIOJI](https://atcoder.jp/contests/joisc2014/tasks/joisc2014_h)
 - 基本 [美術展 (Art Exhibition)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_b)
 
 ## Mo's Algorithm
@@ -257,6 +254,9 @@
 ### 例題
 - 基本 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 - 基本 [G - Triple Index](https://atcoder.jp/contests/abc293/tasks/abc293_g)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
 - !復習価値中 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
 

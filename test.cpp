@@ -227,126 +227,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N, M, K);
-    VL(A, N);
-    K -= accumulate(all(A),0LL);
-    vp P;
-    rep(i, N) P.emplace_back(A[i],i);
-    sort(allr(P));
-    vl ord(N);
-    rep(i, N) { ord[P[i].second] = i; }
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
-
-    vl ans;
+    LONG(N);
+    STRING(S);
+    ll a=0, b=0;
+    auto hash=[&](ll a, ll b) -> ll {
+        return a*N+b;
+    };
+    umap<ll,ll> mp;
+    mp[hash(0,0)] = 0;
+    ll ans = 0;
     rep(i, N) {
-        auto f=[&](ll x) -> bool {
-            ll y = A[i]+x+1;
-            auto [n,z] = uppbou(P, Pr(y,-1), false);
-            if(n>=M) return false;
-            ll m = M;
-            if(ord[i]<M) ++m;
-            ll sum = (m-n)*y;
-            sum -= Sc[m]-Sc[n];
-            if(ord[i]<M) sum -= y-A[i];
-            return sum > K-x;
-        };
-        ll x = binary_search(K+1, -1, f);
-        if(x==K+1) ans.push_back(-1);
-        else ans.push_back(x);
+        if(S[i]=='J') ++a, ++b;
+        if(S[i]=='O') --a;
+        if(S[i]=='I') --b;
+        ll h = hash(a,b);
+        if(mp.contains(h)) chmax(ans, i+1-mp[h]);
+        else mp[h] = i+1;
     }
     Out(ans);
 
