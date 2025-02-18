@@ -227,22 +227,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// [方針]
-// A=Bの場合は自明に解を計算して終了（以下A=Bでない場合）
-// AB以下のペアを最大y組作れるとすると、順位はx=y+1までを考えれば良い。
-// （高橋のA位B位ペアを含めるとy+1位まで考えれば良いから）
-// 最大ペア積がab未満となる最大のxを二分探索すれば良いのだが、良い理由が
-// 分かりづらいので以下に記す
-// 順位x位以下でペア積がmaxとなるのは中心付近同士の掛け算であり、
-// xの偶奇で場合分け可能。
-// AもBが真ん中以下の数であれば、絶対不可能
-// マッチングさせていった時、必ずAB以上となるペアができてしまう
-// 逆にAもBも真ん中以上の数であれば絶対可能
-// マッチングさせていった時、必ずAB未満である事が保証される
-// （xの偶奇に注意して考えると正当性が分かる）
-// Aが真ん中未満、Bが真ん中より大のケースのみ考える
-// この時の最大マッチングは真ん中同士の積となるので、これを判定すれば良い
-// なお、絶対不可能、絶対可能と前述したケースについても実は同じ判定で大丈夫
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
@@ -266,30 +320,42 @@ double binary_search (double ok, double ng, auto f) {
 }
 
 void solve() {
-    LONG(A,B);
-    if(A==B) {
-        Out((A-1)*2); return;
+    LONG(N, M, K);
+    VL(A, N);
+    K -= accumulate(all(A),0LL);
+    vp P;
+    rep(i, N) P.emplace_back(A[i],i);
+    sort(allr(P));
+    vl ord(N);
+    rep(i, N) { ord[P[i].second] = i; }
+    vl Sc(N+1);
+    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
+
+    vl ans;
+    rep(i, N) {
+        auto f=[&](ll x) -> bool {
+            ll y = A[i]+x+1;
+            auto [n,z] = uppbou(P, Pr(y,-1), false);
+            if(n>=M) return false;
+            ll m = M;
+            if(ord[i]<M) ++m;
+            ll sum = (m-n)*y;
+            sum -= Sc[m]-Sc[n];
+            if(ord[i]<M) sum -= y-A[i];
+            return sum > K-x;
+        };
+        ll x = binary_search(K+1, -1, f);
+        if(x==K+1) ans.push_back(-1);
+        else ans.push_back(x);
     }
-
-    auto f=[&](ll y) -> bool {
-        ll x = y+1;
-        if(x%2) {
-            ll m = (x+1)/2;
-            return m*m<A*B;
-        }
-        ll m = x/2;
-        return m*(m+1)<A*B;
-    };
-
-    ll ans = binary_search(0, (ll)1e10, f);
     Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
+    solve();
 }
 
 // ### test.cpp ###

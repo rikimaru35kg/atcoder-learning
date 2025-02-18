@@ -200,11 +200,8 @@
 - 基本 （累積和ではないのでNote非掲載 ）[C - GCD on Blackboard](https://atcoder.jp/contests/abc125/tasks/abc125_c)
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
-- !復習価値高 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
+- 基本 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
+- !復習価値中 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる
@@ -246,6 +243,9 @@
 - 基本 区間の中でXに一致する個数 [D - Range Count Query](https://atcoder.jp/contests/abc248/tasks/abc248_d)
 - 基本 連続部分文字列がMOD Pで0になる個数 その2 [E - Divisible Substring](https://atcoder.jp/contests/abc158/tasks/abc158_e)
 - 基本 累積和MODが部分列の長さと一致の個数数え上げ [E - Rem of Sum is Num](https://atcoder.jp/contests/abc146/tasks/abc146_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [H - JOIOJI](https://atcoder.jp/contests/joisc2014/tasks/joisc2014_h)
 - 基本 [美術展 (Art Exhibition)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_b)
 
