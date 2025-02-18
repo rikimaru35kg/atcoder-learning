@@ -15,7 +15,7 @@ struct Diameter {
     PRLI dfs(int v, long long d=0, int p=-1) {
         PRLI ret(d, v);
         for(auto [nv,c]: from[v]) if(nv!=p) {
-            chmax(ret, dfs(nv, d+c, v));
+            ret = max(ret, dfs(nv, d+c, v));
         }
         return ret;
     }
@@ -32,14 +32,13 @@ struct Diameter {
         return diam;
     }
     // calculate dist(N) from sv using DFS
-    // &dist(N) is input, but it is return value practically
-    void caldist(int sv, vector<long long> &dist) {
+    vector<long long> caldist(int sv) {
+        vector<long long> dist(n);
         auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
             dist[v] = d;
-            for(auto [nv,c]: from[v]) if(nv!=p) {
-                f(f, nv, d+c, v);
-            }
+            for(auto [nv,c]: from[v]) if(nv!=p) { f(f, nv, d+c, v); }
         };
         dfs(dfs, sv);
+        return dist;
     }
 };
