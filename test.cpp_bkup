@@ -227,39 +227,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Diameter {
+    int n, a, b; bool done=false;
+    long long diam;
+    using II = pair<int,int>;
+    using LI = pair<long long,int>;
+    vector<vector<LI>> from;
+    Diameter(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1) {
+        assert(0<=a && a<n && 0<=b && b<n);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+    LI dfs(int v, long long d=0, int p=-1) {
+        LI ret(d, v);
+        for(auto [nv,c]: from[v]) if(nv!=p) {
+            ret = max(ret, dfs(nv, d+c, v));
+        }
+        return ret;
+    }
+    II get_end_points() {
+        if(done) return {a,b};
+        done = true;
+        a = dfs(0).second;
+        auto [dtmp, btmp] = dfs(a);
+        b = btmp, diam = dtmp;
+        return {a,b};
+    }
+    int get_diameter() {
+        get_end_points();
+        return diam;
+    }
+    // calculate dist(N) from sv using DFS
+    vector<long long> caldist(int sv) {
+        assert(0<=sv && sv<n);
+        vector<long long> dist(n);
+        auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
+            dist[v] = d;
+            for(auto [nv,c]: from[v]) if(nv!=p) { f(f, nv, d+c, v); }
+        };
+        dfs(dfs, sv);
+        return dist;
+    }
+};
+
 void solve() {
     LONG(N);
-    vvl from(N);
+    Diameter tree(2*N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+        LONGM(a, b); LONG(c);
+        tree.add_edge(a,b,c);
     }
-    VL(C, N);
-    ll tot = accumulate(all(C), 0LL);
+    VL(D, N);
+    rep(i, N) tree.add_edge(i,i+N,D[i]);
 
-    vl sz(N);
-    auto dfs0=[&](auto f, ll v, ll d, ll p=-1) -> ll {
-        sz[v] = C[v];
-        ll ret = d*C[v];
-        for(auto nv: from[v]) if(nv!=p) {
-            ret += f(f, nv, d+1, v);
-            sz[v] += sz[nv];
-        }
-        return ret;
-    };
-    ll now = dfs0(dfs0, 0, 0);
+    auto [a,b] = tree.get_end_points();
+    auto dista = tree.caldist(a);
+    auto distb = tree.caldist(b);
 
-    auto dfs=[&](auto f, ll v, ll x, ll p=-1) -> ll {
-        ll ret = x;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll nx = x-sz[nv]+(tot-sz[nv]);
-            chmin(ret, f(f, nv, nx, v));
-        }
-        return ret;
-    };
-    ll ans = dfs(dfs, 0, now);
-    Out(ans);
+    rep(i, N) {
+        ll ans = 0;
+        if(i+N!=a) chmax(ans, dista[i]);
+        if(i+N!=b) chmax(ans, distb[i]);
+        Out(ans);
+    }
 
 }
 

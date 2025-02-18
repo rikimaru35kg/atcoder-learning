@@ -227,69 +227,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Diameter {
-    int n, a, b; bool done=false;
-    long long diam;
-    using II = pair<int,int>;
-    using LI = pair<long long,int>;
-    vector<vector<LI>> from;
-    Diameter(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c=1) {
-        assert(0<=a && a<n && 0<=b && b<n);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-    LI dfs(int v, long long d=0, int p=-1) {
-        LI ret(d, v);
-        for(auto [nv,c]: from[v]) if(nv!=p) {
-            ret = max(ret, dfs(nv, d+c, v));
-        }
-        return ret;
-    }
-    II get_end_points() {
-        if(done) return {a,b};
-        done = true;
-        a = dfs(0).second;
-        auto [dtmp, btmp] = dfs(a);
-        b = btmp, diam = dtmp;
-        return {a,b};
-    }
-    int get_diameter() {
-        get_end_points();
-        return diam;
-    }
-    // calculate dist(N) from sv using DFS
-    vector<long long> caldist(int sv) {
-        assert(0<=sv && sv<n);
-        vector<long long> dist(n);
-        auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
-            dist[v] = d;
-            for(auto [nv,c]: from[v]) if(nv!=p) { f(f, nv, d+c, v); }
-        };
-        dfs(dfs, sv);
-        return dist;
-    }
-};
-
 void solve() {
-    LONG(N);
-    Diameter tree(2*N);
-    rep(i, N-1) {
-        LONGM(a, b); LONG(c);
-        tree.add_edge(a,b,c);
-    }
-    VL(D, N);
-    rep(i, N) tree.add_edge(i,i+N,D[i]);
-
-    auto [a,b] = tree.get_end_points();
-    auto dista = tree.caldist(a);
-    auto distb = tree.caldist(b);
-
+    LONG(N, M);
+    vl p1(N,-1), p2(N,-1);
+    vvl from1(N) ,from2(N);
+    ll pa1=-1,pa2=-1;
     rep(i, N) {
-        ll ans = 0;
-        if(i+N!=a) chmax(ans, dista[i]);
-        if(i+N!=b) chmax(ans, distb[i]);
-        Out(ans);
+        LONGM(p1,p2);
+        if(p1!=-1) from1[p1].push_back(i);
+        if(p2!=-1) from2[p2].push_back(i);
+        if(p1==-1) pa1=i;
+        if(p2==-1) pa2=i;
+    }
+    vvl spy1(N),spy2(N);
+    rep(i, M) {
+        LONGM(s1,s2);
+        spy1[s1].push_back(i);
+        spy2[s2].push_back(i);
+    }
+
+    auto cal=[&](ll pa, vvl &from, vvl &spy) -> pair<vl,vp> {
+        vp span(M);
+        vl ord(N);
+        ll idx=0;
+        auto dfs=[&](auto f, ll v) -> void {
+            for(auto s: spy[v]) { span[s].first = idx; }
+            ord[v] = idx++;
+            for(auto nv: from[v]) { f(f, nv); }
+            for(auto s: spy[v]) { span[s].second = idx; }
+        };
+        dfs(dfs, pa);
+        return {ord, span};
+    };
+
+    auto [ord1, span1] = cal(pa1, from1, spy1);
+    auto [ord2, span2] = cal(pa2, from2, spy2);
+
+    vvl imos(N+1, vl(N+1));
+    rep(i, M) {
+        auto [i1,i2] = span1[i];
+        auto [j1,j2] = span2[i];
+        imos[i1][j1]++;
+        imos[i2][j1]--;
+        imos[i1][j2]--;
+        imos[i2][j2]++;
+    }
+    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
+    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
+
+    rep(k, N) {
+        ll i = ord1[k], j = ord2[k];
+        Out(imos[i][j]);
     }
 
 }
