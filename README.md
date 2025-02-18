@@ -323,14 +323,11 @@
 - 基本 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 - 基本 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
 - 基本 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
+- 基本 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
 - 基本 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 基本 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
-- !復習価値低 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
-- !要復習 [F - タクシー 2 (Taxis 2)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_f)
+- 基本 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
+- !復習価値低 [F - タクシー 2 (Taxis 2)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_f)
 
 ## ポテンシャル法
 - ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる
@@ -355,6 +352,9 @@
 - 当然だが、三角不等式が不成立の場合はおかしいので、この場合はワーシャルフロイド後の行列として間違っていたということ
 ### 例題
 - 基本問題 [D - バスと避けられない運命](https://atcoder.jp/contests/abc012/tasks/abc012_4)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
 - 基本 仕組みを理解する教育的良問 [D - Shortest Path Queries 2](https://atcoder.jp/contests/abc208/tasks/abc208_d)
 - 基本 ワーシャルフロイド後行列 [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
