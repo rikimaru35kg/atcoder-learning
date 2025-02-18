@@ -228,35 +228,59 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,M);
-    vvl dist(N, vl(N, INF));
+    LONG(N, M, P);
+    vt3 edge;
+    vvl from(N), ifrom(N);
     rep(i, M) {
-        LONG(a,b,d);
-        chmin(dist[a][b], d);
-    }
-    rep(i, N) chmin(dist[i][i], 0LL);
-
-    bool neg = false;
-    [&]{rep(k, N) rep(i, N) rep(j, N) {
-        if(dist[i][k]==INF) continue;
-        if(dist[k][j]==INF) continue;
-        chmin(dist[i][j], dist[i][k]+dist[k][j]);
-        if(i==j && dist[i][j]<0) {
-            neg = true;
-            return;
-        }
-    }}();
-    if(neg) Outend("NEGATIVE CYCLE");
-
-    rep(i, N) {
-        rep(j, N) {
-            if(dist[i][j]==INF) cout<<"INF";
-            else printf("%lld", dist[i][j]);
-            if(j==N-1) cout<<'\n';
-            else cout<<' ';
-        }
+        LONGM(a,b); LONG(c);
+        edge.emplace_back(a,b,c-P);
+        from[a].push_back(b);
+        ifrom[b].push_back(a);
     }
 
+    auto bfs=[&](ll sv, vvl &from) -> vb {
+        vb ret(N);
+        queue<ll> que;
+        auto push=[&](ll v) {
+            if(ret[v]) return;
+            ret[v] = true;
+            que.push(v);
+        };
+        push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                push(nv);
+            }
+        }
+        return ret;
+    };
+    auto reach1 = bfs(0, from);
+    auto reachN = bfs(N-1, ifrom);
+
+    vb ng(N);
+    rep(i, N) { if(!reach1[i] || !reachN[i]) ng[i] = true; }
+
+    bool upd = true;
+    ll cnt = 0;
+    vl coin(N, -INF);
+    coin[0] = 0;
+    while(upd && cnt<N+1) {
+        upd = false;
+        for(auto [a,b,c]: edge) {
+            if(ng[a] || ng[b]) continue;
+            if(coin[a]==-INF) continue;
+            if(coin[b]<coin[a]+c) {
+                upd = true;
+                coin[b] = coin[a]+c;
+            }
+        }
+        ++cnt;
+    }
+    if(cnt>N) Pm1
+    ll ans = coin.back();
+    chmax(ans, 0LL);
+    Out(ans);
 
 }
 

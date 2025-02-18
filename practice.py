@@ -28,8 +28,10 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 def main():
-    N = inint()
-    print(10**N+7)
+    from datetime import datetime
+    dt = datetime.now()
+    tmp = dt.strftime("%Y/%m/%d-%H:%M:%S")
+    print(tmp)
 
 
 
