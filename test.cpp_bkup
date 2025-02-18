@@ -228,27 +228,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    vl P(N, -1);
-    vl c(N);
-    repk(i, 1, N) {
-        LONGM(p);
-        P[i] = p;
-        c[p]++;
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    rep(i, Q) {
-        LONG(M);
-        uset<ll> vs;
-        rep(j, M) {
-            LONGM(v); vs.insert(v);
+    VL(C, N);
+    ll tot = accumulate(all(C), 0LL);
+
+    vl sz(N);
+    auto dfs0=[&](auto f, ll v, ll d, ll p=-1) -> ll {
+        sz[v] = C[v];
+        ll ret = d*C[v];
+        for(auto nv: from[v]) if(nv!=p) {
+            ret += f(f, nv, d+1, v);
+            sz[v] += sz[nv];
         }
-        ll ans = vs.size();
-        for(auto v: vs) ans += c[v];
-        for(auto v: vs) {
-            if(vs.count(P[v])) ans -= 2;
+        return ret;
+    };
+    ll now = dfs0(dfs0, 0, 0);
+
+    auto dfs=[&](auto f, ll v, ll x, ll p=-1) -> ll {
+        ll ret = x;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll nx = x-sz[nv]+(tot-sz[nv]);
+            chmin(ret, f(f, nv, nx, v));
         }
-        Out(ans);
-    }
+        return ret;
+    };
+    ll ans = dfs(dfs, 0, now);
+    Out(ans);
 
 }
 

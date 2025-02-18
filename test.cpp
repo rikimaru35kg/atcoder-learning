@@ -230,22 +230,23 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 struct Diameter {
     int n, a, b; bool done=false;
     long long diam;
-    using PRII = pair<int,int>;
-    using PRLI = pair<long long,int>;
-    vector<vector<PRLI>> from;
+    using II = pair<int,int>;
+    using LI = pair<long long,int>;
+    vector<vector<LI>> from;
     Diameter(int n): n(n), from(n) {}
     void add_edge(int a, int b, long long c=1) {
+        assert(0<=a && a<n && 0<=b && b<n);
         from[a].emplace_back(b, c);
         from[b].emplace_back(a, c);
     }
-    PRLI dfs(int v, long long d=0, int p=-1) {
-        PRLI ret(d, v);
+    LI dfs(int v, long long d=0, int p=-1) {
+        LI ret(d, v);
         for(auto [nv,c]: from[v]) if(nv!=p) {
             ret = max(ret, dfs(nv, d+c, v));
         }
         return ret;
     }
-    PRII get_end_points() {
+    II get_end_points() {
         if(done) return {a,b};
         done = true;
         a = dfs(0).second;
@@ -259,6 +260,7 @@ struct Diameter {
     }
     // calculate dist(N) from sv using DFS
     vector<long long> caldist(int sv) {
+        assert(0<=sv && sv<n);
         vector<long long> dist(n);
         auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
             dist[v] = d;
@@ -271,44 +273,24 @@ struct Diameter {
 
 void solve() {
     LONG(N);
-    vvl from(N);
-    Diameter diam(N);
+    Diameter tree(2*N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-        diam.add_edge(a,b);
+        LONGM(a, b); LONG(c);
+        tree.add_edge(a,b,c);
     }
+    VL(D, N);
+    rep(i, N) tree.add_edge(i,i+N,D[i]);
 
-    auto [a,b] = diam.get_end_points();
-    vl dista = diam.caldist(a);
-    vl distb = diam.caldist(b);
-    LONG(Q);
-    vl ans(Q, -1);
-    vvp query(N);
-    rep(i, Q) {
-        LONG(u, k); --u;
-        query[u].emplace_back(k, i);
+    auto [a,b] = tree.get_end_points();
+    auto dista = tree.caldist(a);
+    auto distb = tree.caldist(b);
+
+    rep(i, N) {
+        ll ans = 0;
+        if(i+N!=a) chmax(ans, dista[i]);
+        if(i+N!=b) chmax(ans, distb[i]);
+        Out(ans);
     }
-
-    auto cal=[&](ll sv) {
-        de(sv)
-        deque<ll> vs;
-        auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-            vs.push_front(v);
-            for(auto [k, qi]: query[v]) {
-                if(k>=SIZE(vs)) continue;
-                ans[qi] = vs[k]+1;
-            }
-            for(auto nv: from[v]) if(nv!=p) {
-                f(f, nv, v);
-            }
-            vs.pop_front();
-        };
-        dfs(dfs, sv);
-    };
-    cal(a); cal(b);
-    for(auto x: ans) Out(x);
 
 }
 
