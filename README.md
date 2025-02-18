@@ -312,11 +312,8 @@
 - 基本 Kの倍数の時だけ発車可能 [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
 - 基本 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 - 基本 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [D - フクロモモンガ (Sugar Glider)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho4)
-- !要復習 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
+- 基本 [D - フクロモモンガ (Sugar Glider)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho4)
+- !復習価値低 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
 
 ## 拡張ダイクストラ法（or 拡張BFS）
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
@@ -326,6 +323,9 @@
 - 基本 2プレーヤー [D - Synchronized Players](https://atcoder.jp/contests/abc339/tasks/abc339_d)
 - 基本 [D - Go Stone Puzzle](https://atcoder.jp/contests/abc361/tasks/abc361_d)
 - 基本 [E - パレード (Parade)](https://atcoder.jp/contests/joig2021-open/tasks/joig2021_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 温度差屋敷脱出 [F - ヘビの JOI 君 (Snake JOI)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_f)
 - 基本 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 基本 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)

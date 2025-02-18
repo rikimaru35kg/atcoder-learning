@@ -227,95 +227,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N, Q);
-    ll three=1;
-    rep(i, N) three*=3;
-    vl dist(three, INF);
-    queue<ll> que;
+    LONG(N, M, X);
+    VL(H, N);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
 
+    vl dist(N, INF);
+    pq que;
     auto push=[&](ll v, ll d) {
         if(dist[v]<=d) return;
         dist[v] = d;
-        que.push(v);
+        que.emplace(d,v);
     };
-    auto getnum=[&](string &s) -> ll {
-        ll ret = 0;
-        for(auto c: s) ret = ret*3 + c-'A';
-        return ret;
-    };
-    VS(S, Q);
-    vvl from(three);
-    rep(v, three) {
-        auto z = separate_digit(v, 3, N);
-        repk(k, 2, N+1) {
-            vl nz = z;
-            reverse(nz.begin(), nz.begin()+k);
-            ll nv = consolidate_digit(nz, 3);
-            from[v].push_back(nv);
-        }
-    }
-    // rep(i, Q) {
-    //     string s = S[i];
-    //     sort(all(s));
-    //     push(getnum(s), 0);
-    // }
-    auto good=[&](auto f, ll i, ll x) -> void {
-        if(i==N) {
-            push(x, 0); return;
-        }
-        rep(j, 3) {
-            if(x%3>j) continue;
-            ll nx = x*3 + j;
-            f(f, i+1, nx);
-        }
-    };
-    good(good, 0, 0);
 
+    auto geth=[&](ll v) -> ll {
+        if(dist[v]<X) return X-dist[v];
+        else return 0;
+    };
+    push(0, 0);
     while(que.size()) {
-        auto v = que.front(); que.pop();
-        for(auto nv: from[v]) {
-            push(nv, dist[v]+1);
+        auto [d,v] = que.top(); que.pop();
+        if(dist[v]!=d) continue;
+        ll h = geth(v);
+        for(auto [nv,c]: from[v]) {
+            if(v==1 && nv==3) {
+                cout<<"";
+            }
+            if(H[v]<c) continue;
+            if(h>=H[nv]+c) push(nv, d+h-H[nv]);
+            else if (h>=c) push(nv, d+c);
+            else push(nv, d+c-h+c);
         }
-        // auto z = separate_digit(v, 3, N);
-        // repk(k, 2, N+1) {
-        //     vl nz = z;
-        //     // rep(i, k) nz.push_back(z[i]);
-        //     // reverse(all(nz));
-        //     // repk(i, k, N) nz.push_back(z[i]);
-        //     reverse(nz.begin(), nz.begin()+k);
-        //     ll nv = consolidate_digit(nz, 3);
-        //     push(nv, dist[v]+1);
-        // }
     }
 
-    rep(i, Q) {
-        Out(dist[getnum(S[i])]);
-    }
-
+    ll d = dist.back();
+    if(d==INF) Pm1
+    ll h = geth(N-1);
+    ll ans = H[N-1] - h + d;
+    Out(ans);
 
 }
 
@@ -326,4 +280,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
