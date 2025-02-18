@@ -284,11 +284,8 @@
 ### 例題
 - 基本 [D - テンキー (Tenkey)](https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_d)
 - 基本 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
-- !要復習 [C - 鉄道運賃 (Train Fare)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_c)
+- !要復習 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
+- !復習価値中 [C - 鉄道運賃 (Train Fare)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_c)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能
@@ -315,6 +312,9 @@
 - 基本 Kの倍数の時だけ発車可能 [E - Train](https://atcoder.jp/contests/abc192/tasks/abc192_e)
 - 基本 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 - 基本 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [D - フクロモモンガ (Sugar Glider)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho4)
 - !要復習 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
 

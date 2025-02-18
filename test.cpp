@@ -228,36 +228,67 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(P, N);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return P[i]>P[j];
-    });
-
-    multiset<ll> st;
-    st.insert(N); st.insert(N);
-    st.insert(-1); st.insert(-1);
-    ll ans = 0;
-    for(auto i: p) {
-        auto it = st.insert(i);
-        vl ls(2), rs(2);
-        rep(i, 2) {
-            --it;
-            ls[i] = *it;
-        }
-        rep(i, 2) ++it;
-        rep(i, 2) {
-            ++it;
-            rs[i] = *it;
-        }
-        ll cnt = (i-ls[0]) * (rs[1]-rs[0]);
-        cnt += (ls[0]-ls[1]) * (rs[0]-i);
-        ans += cnt * P[i];
-        de2(i,cnt)
-        de(st)
+    LONG(N, M, Q);
+    vvp from(N);
+    vp edge(M);
+    vb deled(M);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b, i);
+        from[b].emplace_back(a, i);
     }
-    Out(ans);
+
+    queue<ll> que;
+    vl dist(N, INF);
+    auto push=[&](ll v, ll d) {
+        if(dist[v]<=d) return;
+        dist[v] = d;
+        que.push(v);
+    };
+    push(0, 0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto [nv,ei]: from[v]) {
+            push(nv, dist[v]+1);
+        }
+    }
+    vl deg(N);
+    rep(v, N) {
+        for(auto [nv,ei]: from[v]) {
+            if(dist[nv]==dist[v]) {
+                deled[ei] = true; continue;
+            }
+            if(dist[nv]!=dist[v]+1) continue;
+            edge[ei] = {v,nv};
+            deg[nv]++;
+        }
+    }
+    de(deled)
+
+    ll now = 0;
+    rep(i, Q) {
+        LONGM(r);
+        if(deled[r]) {
+            Out(now);continue;
+        }
+        deled[r] = true;
+        auto [v1,v2] = edge[r];
+        deg[v2]--;
+        queue<ll> q;
+        if(deg[v2]==0) q.push(v2);
+        while(q.size()) {
+            auto v = q.front(); q.pop();
+            ++now;
+            for(auto [nv,ei]: from[v]) {
+                if(deled[ei]) continue;
+                deled[ei] = true;
+                deg[nv]--;
+                if(deg[nv]==0) q.push(nv);
+            }
+        }
+        Out(now);
+        de(deg)
+    }
 
 }
 
