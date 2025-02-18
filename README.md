@@ -352,10 +352,7 @@
 - 当然だが、三角不等式が不成立の場合はおかしいので、この場合はワーシャルフロイド後の行列として間違っていたということ
 ### 例題
 - 基本問題 [D - バスと避けられない運命](https://atcoder.jp/contests/abc012/tasks/abc012_4)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
+- 基本 負閉路検出付きの基本問題 [All Pairs Shortest Path](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=ja)
 - 基本 仕組みを理解する教育的良問 [D - Shortest Path Queries 2](https://atcoder.jp/contests/abc208/tasks/abc208_d)
 - 基本 ワーシャルフロイド後行列 [D - Restoring Road Network](https://atcoder.jp/contests/abc074/tasks/arc083_b)
 
@@ -366,6 +363,9 @@
 - 更新ステップ数がNを超えたら、負閉路があるということ
 - 始点と終点に関係ない点をあらかじめ除いておく事で、関係ない負閉路を使うことを避ける事も重要
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [E - Coins Respawn](https://atcoder.jp/contests/abc137/tasks/abc137_e)
 
 ## 一度に複数辺を進める場合の最短経路

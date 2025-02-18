@@ -228,40 +228,35 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N,M,Q,L);
-    vvp from(N);
+    LONG(N,M);
+    vvl dist(N, vl(N, INF));
     rep(i, M) {
-        LONGM(a, b); LONGM(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONG(a,b,d);
+        chmin(dist[a][b], d);
     }
+    rep(i, N) chmin(dist[i][i], 0LL);
 
-    ll K = 30;
-    vvl dist(N, vl(K, INF));
-    priority_queue<t3,vt3,greater<t3>> que;
-    auto push=[&](ll v, ll b, ll d) {
-        if(d>L) return;
-        if(b>=K) return;
-        if(dist[v][b]<=d) return;
-        dist[v][b] = d;
-        que.emplace(d,v,b);
-    };
-    push(0,0,1);
-    while(que.size()) {
-        auto [d,v,b] = que.top(); que.pop();
-        if(dist[v][b]!=d) continue;
-        for(auto [nv,c]: from[v]) {
-            ll cost = 1LL<<b;
-            push(nv, b+c, d+cost);
+    bool neg = false;
+    [&]{rep(k, N) rep(i, N) rep(j, N) {
+        if(dist[i][k]==INF) continue;
+        if(dist[k][j]==INF) continue;
+        chmin(dist[i][j], dist[i][k]+dist[k][j]);
+        if(i==j && dist[i][j]<0) {
+            neg = true;
+            return;
+        }
+    }}();
+    if(neg) Outend("NEGATIVE CYCLE");
+
+    rep(i, N) {
+        rep(j, N) {
+            if(dist[i][j]==INF) cout<<"INF";
+            else printf("%lld", dist[i][j]);
+            if(j==N-1) cout<<'\n';
+            else cout<<' ';
         }
     }
-    rep(i, Q) {
-        LONGM(t);
-        ll ans = INF;
-        rep(b, K) chmin(ans, dist[t][b]);
-        if(ans==INF) puts("Large");
-        else Out(ans);
-    }
+
 
 }
 
