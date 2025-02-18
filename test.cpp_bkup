@@ -227,128 +227,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N, M, K);
+    LONG(N);
     VL(A, N);
-    K -= accumulate(all(A),0LL);
-    vp P;
-    rep(i, N) P.emplace_back(A[i],i);
-    sort(allr(P));
-    vl ord(N);
-    rep(i, N) { ord[P[i].second] = i; }
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
+    LONG(Q);
+    vl L(Q), R(Q);
+    rep(i, Q) { cin>>L[i]>>R[i]; }
+    rep(i, Q) L[i]--;
 
-    vl ans;
-    rep(i, N) {
-        auto f=[&](ll x) -> bool {
-            ll y = A[i]+x+1;
-            auto [n,z] = uppbou(P, Pr(y,-1), false);
-            if(n>=M) return false;
-            ll m = M;
-            if(ord[i]<M) ++m;
-            ll sum = (m-n)*y;
-            sum -= Sc[m]-Sc[n];
-            if(ord[i]<M) sum -= y-A[i];
-            return sum > K-x;
-        };
-        ll x = binary_search(K+1, -1, f);
-        if(x==K+1) ans.push_back(-1);
-        else ans.push_back(x);
+    ll h = max(N/sqrt(Q),1.0);
+
+    vl p(Q);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = R[i]/h, hj = R[j]/h;
+        if(hi==hj) {
+            if(hi%2) return L[i]>L[j];
+            else return L[i]<L[j];
+        } else {
+            return hi<hj;
+        }
+    });
+
+    ll now = 0;
+    multiset<ll> st;
+    auto p2=[&](ll x) {return x*x;};
+
+    auto add=[&](ll x) {
+        auto it = st.insert(x);
+        if(SIZE(st)==1) return;
+        // auto it = st.find(x);
+        if(it!=st.begin() && next(it)!=st.end()) {
+            ll a = *prev(it), b = *next(it);
+            now -= p2(a-b);
+            now += p2(a-x) + p2(b-x);
+        } else if (it==st.begin()) {
+            ll b = *next(it);
+            now += p2(b-x);
+        } else {
+            ll a = *prev(it);
+            now += p2(a-x);
+        }
+    };
+    auto del=[&](ll x) {
+        if(SIZE(st)==1) {
+            erase(st, x); return;
+        }
+        auto it = st.find(x);
+        if(it!=st.begin() && next(it)!=st.end()) {
+            ll a = *prev(it), b = *next(it);
+            now += p2(a-b);
+            now -= p2(a-x) + p2(b-x);
+        } else if (it==st.begin()) {
+            ll b = *next(it);
+            now -= p2(b-x);
+        } else {
+            ll a = *prev(it);
+            now -= p2(a-x);
+        }
+        erase(st, x);
+    };
+
+    vl ans(Q);
+    ll l = 0, r = 0;
+    for(auto i: p) {
+        ll lt = L[i], rt = R[i];
+        while(l>lt) --l, add(A[l]);
+        while(r<rt) add(A[r]), ++r;
+        while(l<lt) del(A[l]), ++l;
+        while(r>rt) --r, del(A[r]);
+        ans[i] = now;
     }
-    Out(ans);
+    for(auto x: ans) Out(x);
 
 }
 

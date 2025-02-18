@@ -254,11 +254,8 @@
 ### 例題
 - 基本 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 - 基本 [G - Triple Index](https://atcoder.jp/contests/abc293/tasks/abc293_g)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
-- !復習価値中 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
+- 基本 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
+- !復習価値低 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
 
 ## ある順列P{1,2,...,N}の区間max値の総和
 - 全区間を試すとO(N^2)なので、ある数が何回出現するかを高速にカウントすれば、O(N)（本当はO(NlogN)）で求められる
@@ -269,6 +266,9 @@
 - 文章ではわかりにくいので、[snuke氏の解説参照](https://www.youtube.com/live/VSeggcnxwrc?feature=shared&t=5618)
 - 本テクニックは、区間2nd maxやK-th maxでも応用可能
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 区間2nd maxの総和 [E - Second Sum](https://atcoder.jp/contests/abc140/tasks/abc140_e)
 - 基本 全2頂点間最大辺の総和問題（グラフでなく数列であっても同じ考え方でいけるはず） [D - Sum of Maximum Weights](https://atcoder.jp/contests/abc214/tasks/abc214_d)
 
