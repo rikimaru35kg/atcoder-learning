@@ -561,7 +561,7 @@
 - 基本 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)  
   雑証明: SCCを縮約したあと、非連結なもの同士を先につないでいく。これで入次数と出次数を両方とも1ずつ減らせる。この操作でSCCが新たにできる事はない。次に、トポソして最後の頂点から最初の頂点に結ぶ。この操作でSCCが新たに発生しなければ次数が両方とも1減る。SCCが発生する場合、どちらかの次数が1つ減る。両方減らない場合、それはすなわち全体がSCCになったという事なので、操作終了。
 - 基本 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
-- !復習価値低 [2 - プレゼント (Presents)](https://atcoder.jp/contests/joisc2013-day4/tasks/joisc2013_presents)
+- 基本 [2 - プレゼント (Presents)](https://atcoder.jp/contests/joisc2013-day4/tasks/joisc2013_presents)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く
@@ -647,14 +647,11 @@
 ### 例題
 - 基本 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - 基本 [C - 塗りつぶし (Painting)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_c)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
+- !復習価値小 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
 - 基本 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - 基本 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
-- !要復習 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
-- !復習価値中 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
+- 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
+- 基本 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
@@ -670,6 +667,9 @@
 ### 例題
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
 - 基本 [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [D - Santa Claus 2](https://atcoder.jp/contests/abc385/tasks/abc385_d)
 - !復習価値中 [L - マンションの改築](https://atcoder.jp/contests/past202010-open/tasks/past202010_l)
 - 基本 [E - Smart Infants](https://atcoder.jp/contests/abc170/tasks/abc170_e)
