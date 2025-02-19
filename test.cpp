@@ -227,57 +227,109 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vl p1(N,-1), p2(N,-1);
-    vvl from1(N) ,from2(N);
-    ll pa1=-1,pa2=-1;
-    rep(i, N) {
-        LONGM(p1,p2);
-        if(p1!=-1) from1[p1].push_back(i);
-        if(p2!=-1) from2[p2].push_back(i);
-        if(p1==-1) pa1=i;
-        if(p2==-1) pa2=i;
-    }
-    vvl spy1(N),spy2(N);
-    rep(i, M) {
-        LONGM(s1,s2);
-        spy1[s1].push_back(i);
-        spy2[s2].push_back(i);
-    }
+#include <atcoder/segtree>
+#include <atcoder/fenwicktree>
+using namespace atcoder;
 
-    auto cal=[&](ll pa, vvl &from, vvl &spy) -> pair<vl,vp> {
-        vp span(M);
-        vl ord(N);
-        ll idx=0;
-        auto dfs=[&](auto f, ll v) -> void {
-            for(auto s: spy[v]) { span[s].first = idx; }
-            ord[v] = idx++;
-            for(auto nv: from[v]) { f(f, nv); }
-            for(auto s: spy[v]) { span[s].second = idx; }
-        };
-        dfs(dfs, pa);
-        return {ord, span};
+using S = int;
+S op(S a, S b) {return min(a, b);}
+S e() {return 1001001001;}
+
+// LCA with online cost changes
+struct LCA2 {
+    int n, idx=0;
+    vector<int> et, in, ein, eout;  // EulerTour, in-order, edge-in-order, edge-out-order
+    vector<long long> depth, ws;  // depth, weights
+    struct Edge {
+        int to, id;
+        long long w;
     };
-
-    auto [ord1, span1] = cal(pa1, from1, spy1);
-    auto [ord2, span2] = cal(pa2, from2, spy2);
-
-    vvl imos(N+1, vl(N+1));
-    rep(i, M) {
-        auto [i1,i2] = span1[i];
-        auto [j1,j2] = span2[i];
-        imos[i1][j1]++;
-        imos[i2][j1]--;
-        imos[i1][j2]--;
-        imos[i2][j2]++;
+    vector<vector<Edge>> from;
+    segtree<S,op,e> rmq;
+    fenwick_tree<long long> tree;
+    LCA2(long long n): n(n) {
+        from.resize(n);
+        in.resize(n);
+        depth.resize(n);
+        ws.resize(n-1);
+        ein.resize(n-1);
+        eout.resize(n-1);
     }
-    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
-    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w, idx);
+        from[b].emplace_back(a, w, idx);
+        ws[idx] = w;
+        ++idx;
+    };
+    void euler_tour(int v=0) {
+        dfs(v);
+        rmq = segtree<S,op,e>(et.size());
+        tree = fenwick_tree<long long>(et.size());
+        for(int i=0; i<(int)et.size(); ++i) {
+            rmq.set(i, in[et[i]]);
+        }
+        for(int i=0; i<n-1; ++i) {
+            tree.add(ein[i], ws[i]);
+            tree.add(eout[i], -ws[i]);
+        }
+    }
+    void change_cost(int id, long long w) {
+        long long precost = ws[id];
+        long long dif = w - precost;
+        tree.add(ein[id], dif);
+        tree.add(eout[id], -dif);
+        ws[id] = w;
+    }
+    void dfs(int v, long long d=0, int p=-1) {
+        in[v] = et.size();
+        depth[v] = d;
+        et.push_back(v);
+        for(auto [nv, w, id]: from[v]) if (nv != p) {
+            ein[id] = et.size()-1;
+            dfs(nv, d+w, v);
+            eout[id] = et.size()-1;
+            et.push_back(v);
+        }
+    }
+    int lca(int a, int b) {
+        int l = in[a], r = in[b];
+        if (l > r) swap(l, r);
+        return et[rmq.prod(l, r+1)];
+    }
+    long long dist(int a, int b) {
+        long long ret = 0;
+        int c = lca(a, b);
+        if (a!=c) ret += depth[a] - depth[c];
+        if (b!=c) ret += depth[b] - depth[c];
+        return ret;
+    }
+    long long dist_with_changecost(int a, int b) {
+        long long ret = 0;
+        int c = lca(a, b);
+        if (a!=c) ret += tree.sum(in[c], in[a]);
+        if (b!=c) ret += tree.sum(in[c], in[b]);
+        return ret;
+    }
+};
 
-    rep(k, N) {
-        ll i = ord1[k], j = ord2[k];
-        Out(imos[i][j]);
+void solve() {
+    LONG(N);
+    LCA2 tree(N);
+    rep(i, N-1) {
+        LONGM(a,b); LONG(w);
+        tree.add_edge(a,b,w);
+    }
+    tree.euler_tour();
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(i,w); --i;
+            tree.change_cost(i,w);
+        } else {
+            LONGM(a,b);
+            Out(tree.dist_with_changecost(a,b));
+        }
     }
 
 }

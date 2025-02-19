@@ -425,9 +425,6 @@
 - オイラーツアーの順に区間用のセグツリーやBIT木を適用すると色々対応可能
 ### 
 - 基本 [D - 閉路](https://atcoder.jp/contests/abc014/tasks/abc014_4)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
 
 ## 完全二分木
@@ -437,6 +434,9 @@
 - 長さが二倍二倍と増えていく場合、操作後の先頭からの番号を二進数で表すと見通しが良くなる
 ### 例題
 - 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [D - Strange Mirroring](https://atcoder.jp/contests/abc380/tasks/abc380_d)
 - 基本 [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - 基本 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
