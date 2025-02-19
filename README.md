@@ -498,9 +498,6 @@
 - 任意の2頂点間の距離が2以下である
 ### 例題
 - 基本 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !要復習 [joitter - ジョイッター (Joitter)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_joitter)
 
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
@@ -516,10 +513,10 @@
 - 基本 [D - Restricted Permutation](https://atcoder.jp/contests/abc223/tasks/abc223_d)
 - 基本 基本の復習に丁度良い [E - Prerequisites](https://atcoder.jp/contests/abc315/tasks/abc315_e)
 - 基本 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
-- !復習価値高 [sheet - 色紙 (Sheet)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_sheet)
+- 基本 [sheet - 色紙 (Sheet)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_sheet)
 - 基本 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 - !復習価値低 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
-- !要復習 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
+- !復習価値低 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
 
 ## サイクル検出
 - 無向グラフ：検出するだけならunion findを使うべし（**DFSは難しい。**直前の頂点に戻らないようにしないといけないし、更に言うとけんちょんページのやり方も単純でないグラフでは適用不可。どうしてもやりたいなら使った辺も管理が必要）
@@ -541,6 +538,9 @@
 - 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
 - 基本 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 - 基本 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
 - !復習価値高（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 

@@ -228,30 +228,42 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
-    }
-
-    auto dif=[&](ll c) -> ll {
-        if(c!=1) return 1;
-        return 2;
+    LONG(N);
+    VVLM(A, N, N-1);
+    ll M = N*(N-1)/2;
+    vvl from(M);
+    auto gid=[&](ll i, ll j) {
+        if(i<j) swap(i,j);
+        return i*(i-1)/2+j;
     };
-
-    vl ans(N, -1);
-    auto dfs=[&](auto f, ll v) -> void {
-        for(auto [nv, c]: from[v]) if(ans[nv]==-1) {
-            if(ans[v]==c) ans[nv] = dif(c);
-            else ans[nv] = c;
-            f(f, nv);
+    rep(i, N) {
+        rep(j, N-2) {
+            from[gid(i,A[i][j])].push_back(gid(i,A[i][j+1]));
         }
+    }
+    vb seen(M), finished(M);
+    vl dp(M);
+    auto dfs=[&](auto f, ll v) -> ll {
+        ll ret = 1;
+        seen[v] = true;
+        for(auto nv: from[v]) {
+            if(finished[nv]) {
+                chmax(ret, dp[nv]+1);
+                continue;
+            }
+            if(seen[nv]) Pm1
+            chmax(ret, f(f, nv)+1);
+        }
+        finished[v] = true;
+        return dp[v] = ret;
     };
-    ans[0] = 1;
-    dfs(dfs, 0);
-    for(auto x: ans) Out(x);
+
+    ll ans = 0;
+    rep(i, M) {
+        if(finished[i]) continue;
+        chmax(ans, dfs(dfs, i));
+    }
+    Out(ans);
 
 }
 

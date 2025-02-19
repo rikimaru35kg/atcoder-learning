@@ -42,7 +42,7 @@ using ll = long long;
 using ull = unsigned long long;
 using sll = __int128_t;
 using db = double;
-using Pr = pair<ll, ll>;
+using Pr = pair<int, int>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -228,45 +228,36 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, K);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b,i);
-        from[b].emplace_back(a,i);
-    }
-    if(K%2) PNo
+    LONG(H, W);
+    VVI(A, H, W);
 
-    vb visited(N);
-    vl ans;
-    auto dfs=[&](auto f, ll v, ll ei=-1) -> ll {
-        if(visited[v]) return 0;
-        visited[v] = true;
-        ll status=0;
-        for(auto [nv,nei]: from[v]) {
-            status ^= f(f, nv, nei);
-        }
-        if(ei==-1) {
-            if(status==1) --K;
-            return 0;
-        }
-        ll target=0;
-        if(K) target=1;
+    vvb finished(H, vb(W));
+    using vst = vector<set<Pr>>;
+    using vvst = vector<vst>;
+    vvst mem(H, vst(W));
+    auto dfs=[&](auto f, ll i, ll j) -> set<Pr> {
+        if(mem[i][j].size()) return mem[i][j];
 
-        ll ret = 0;
-        if(target!=status) {
-            ans.push_back(ei+1);
-            ret = 1;
+        set<Pr> &ret = mem[i][j];
+        bool nxt=false;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(A[ni][nj]>=A[i][j]) continue;
+            nxt = true;
+            ret.merge(f(f,ni,nj));
         }
-        if(target==1) --K;
+        if(!nxt) ret.emplace(i,j);
+
+        while(SIZE(ret)>2) { ret.erase(ret.begin()); }
+        finished[i][j] = true;
         return ret;
     };
-    rep(i, N) if(!visited[i]) {
-        dfs(dfs, i, -1);
+    ll ans = 0;
+    rep(i, H) rep(j, W) {
+        auto res = dfs(dfs, i, j);
+        if(SIZE(res)>=2) ++ans;
     }
-    if(K!=0) PNo
-    puts("Yes");
-    Out(ans.size());
     Out(ans);
 
 }
