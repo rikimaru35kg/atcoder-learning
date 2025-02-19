@@ -227,51 +227,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N,M,K);
-    vt4 edge;
+    LONG(N, M, K);
+    vvp from(N);
     rep(i, M) {
-        LONGM(a,b); LONG(c);
-        edge.emplace_back(c,a,b,i);
+        LONGM(a, b);
+        from[a].emplace_back(b,i);
+        from[b].emplace_back(a,i);
     }
-    sort(allr(edge));
+    if(K%2) PNo
 
-    vector<dsu> uf(K, dsu(N));
-    vl ans(M);
-    for (auto[c,a,b,mi]: edge) {
-        auto f=[&](ll i) -> bool {
-            return !uf[i].same(a,b);
-        };
-        ll idx = binary_search(K,-1,f);
-        if(idx==K) continue;
-        ans[mi] = idx+1;
-        uf[idx].merge(a,b);
+    vb visited(N);
+    vl ans;
+    auto dfs=[&](auto f, ll v, ll ei=-1) -> ll {
+        if(visited[v]) return 0;
+        visited[v] = true;
+        ll status=0;
+        for(auto [nv,nei]: from[v]) {
+            status ^= f(f, nv, nei);
+        }
+        if(ei==-1) {
+            if(status==1) --K;
+            return 0;
+        }
+        ll target=0;
+        if(K) target=1;
+
+        ll ret = 0;
+        if(target!=status) {
+            ans.push_back(ei+1);
+            ret = 1;
+        }
+        if(target==1) --K;
+        return ret;
+    };
+    rep(i, N) if(!visited[i]) {
+        dfs(dfs, i, -1);
     }
-    for(auto x: ans) Out(x);
+    if(K!=0) PNo
+    puts("Yes");
+    Out(ans.size());
+    Out(ans);
 
 }
 

@@ -227,39 +227,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
-
-struct UnionFind {
-    using vi = vector<int>;
-    int n;
-    vi p, sz;
-    UnionFind(int n): n(n), p(n,-1), sz(n,1) {}
-
-    int leader(int x) {
-        if(p[x]==-1) return x;
-        return p[x] = leader(p[x]);
-    }
-    void merge(int x, int y) {
-        x = leader(x), y = leader(y);
-        if(size(x)>size(y)) swap(x,y);
-        p[x] = y;
-        sz[y] += sz[x];
-    }
-    int size(int x) {
-        x = leader(x);
-        return sz[x];
-    }
-};
-
 void solve() {
-    LONG(N,M);
-    UnionFind uf(N);
+    LONG(N, M);
+    vvp from(N);
     rep(i, M) {
-        LONGM(a,b);
-        uf.merge(a,b);
-        de(uf.size(a))
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
 
+    auto dif=[&](ll c) -> ll {
+        if(c!=1) return 1;
+        return 2;
+    };
+
+    vl ans(N, -1);
+    auto dfs=[&](auto f, ll v) -> void {
+        for(auto [nv, c]: from[v]) if(ans[nv]==-1) {
+            if(ans[v]==c) ans[nv] = dif(c);
+            else ans[nv] = c;
+            f(f, nv);
+        }
+    };
+    ans[0] = 1;
+    dfs(dfs, 0);
+    for(auto x: ans) Out(x);
 
 }
 

@@ -476,10 +476,7 @@
 ### 例題
 - 基本 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
 - 基本 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !要復習 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
+- 基本 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
 - !復習価値低 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
@@ -501,6 +498,9 @@
 - 任意の2頂点間の距離が2以下である
 ### 例題
 - 基本 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 [joitter - ジョイッター (Joitter)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_joitter)
 
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
