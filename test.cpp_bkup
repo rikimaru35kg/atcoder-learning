@@ -228,44 +228,56 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, A); --A;
-    STRING(K);
-    VLM(B, N);
+    LONG(N, K);
+    VLM(P, N);
+    VL(C, N);
 
-    vl vs;
-    vl ord(N, -1);
-    ll len=0;
-    ll x = A;
-    while(ord[x]==-1) {
-        vs.push_back(x);
-        ord[x] = len++;
-        x = B[x];
-    }
-    ll a = ord[x];
-    ll b = len-a;
-    de(vs)
+    auto cal1=[&](vl &cs, ll K) -> ll {
+        ll ret = -INF;
+        ll m = cs.size();
+        rep(j, m) {
+            ll now = 0;
+            rep(k, K) {
+                now += cs[(j+k)%m];
+                chmax(ret, now);
+            }
+        }
+        return ret;
+    };
 
-    ll now = 0;
-    bool toolong = false;
-    for(auto c: K) {
-        now = now*10 + c-'0';
-        if(now>=len) {
-            toolong = true; break;
+    vl ord(N,-1);
+    ll ans = -INF;
+    rep(i, N) {
+        if(ord[i]!=-1) continue;
+
+        ll x = i;
+        vl cs;
+        ll len=0;
+        while(ord[x]==-1) {
+            cs.push_back(C[x]);
+            ord[x] = len++;
+            x = P[x];
+        }
+
+        ll m = cs.size();
+        ll tot = accumulate(all(cs), 0LL);
+        if(K<=m) {
+            chmax(ans, cal1(cs, K));
+            continue;
+        }
+        if(tot<=0) {
+            chmax(ans, cal1(cs, m));
+            continue;
+        }
+        rep(j, m) {
+            ll now = 0;
+            rep(k, m) {
+                now += cs[(j+k)%m];
+                chmax(ans, now+(K-k-1)/m*tot);
+            }
         }
     }
-    if(!toolong) { Outend(vs[now]+1); }
-
-
-    now = 0;
-    for(auto c: K) {
-        now = now*10 + c-'0';
-        now %= b;
-    }
-    now = ((now-a)%b+b)%b;
-    now += a;
-    Out(vs[now]+1);
-
-
+    Out(ans);
 
 }
 

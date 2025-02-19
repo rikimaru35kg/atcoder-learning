@@ -561,10 +561,7 @@
 - 基本 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)  
   雑証明: SCCを縮約したあと、非連結なもの同士を先につないでいく。これで入次数と出次数を両方とも1ずつ減らせる。この操作でSCCが新たにできる事はない。次に、トポソして最後の頂点から最初の頂点に結ぶ。この操作でSCCが新たに発生しなければ次数が両方とも1減る。SCCが発生する場合、どちらかの次数が1つ減る。両方減らない場合、それはすなわち全体がSCCになったという事なので、操作終了。
 - 基本 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !要復習 [2 - プレゼント (Presents)](https://atcoder.jp/contests/joisc2013-day4/tasks/joisc2013_presents)
+- !復習価値低 [2 - プレゼント (Presents)](https://atcoder.jp/contests/joisc2013-day4/tasks/joisc2013_presents)
 
 ## 完全グラフ
 - 全頂点をつないだグラフで、K_Nなどと書く
@@ -597,6 +594,9 @@
 ### 例題
 - 基本 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
 
