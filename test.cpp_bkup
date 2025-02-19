@@ -227,57 +227,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/scc>
+using namespace atcoder;
+
 void solve() {
-    LONG(N, K);
-    VLM(P, N);
-    VL(C, N);
+    LONG(N);
+    vl P(N),B(N),C(N),D(N);
+    rep(i, N) cin>>P[i]>>B[i]>>C[i]>>D[i];
+    rep(i, N) P[i]--;
 
-    auto cal1=[&](vl &cs, ll K) -> ll {
-        ll ret = -INF;
-        ll m = cs.size();
-        rep(j, m) {
-            ll now = 0;
-            rep(k, K) {
-                now += cs[(j+k)%m];
-                chmax(ret, now);
-            }
-        }
-        return ret;
-    };
+    scc_graph scc(N);
+    rep(i, N) scc.add_edge(i, P[i]);
+    auto grs = scc.scc();
 
-    vl ord(N,-1);
-    ll ans = -INF;
-    rep(i, N) {
-        if(ord[i]!=-1) continue;
-
-        ll x = i;
-        vl cs;
-        ll len=0;
-        while(ord[x]==-1) {
-            cs.push_back(C[x]);
-            ord[x] = len++;
-            x = P[x];
-        }
-
-        ll m = cs.size();
-        ll tot = accumulate(all(cs), 0LL);
-        if(K<=m) {
-            chmax(ans, cal1(cs, K));
+    ll ans = 0;
+    for(auto gr: grs) {
+        ll m = gr.size();
+        if(m==1) {
+            ll v = gr[0];
+            ll p = P[v];
+            ll now = max(C[p],D[p])*B[v];
+            ans += now;
             continue;
         }
-        if(tot<=0) {
-            chmax(ans, cal1(cs, m));
-            continue;
+        ll mx = 0;
+        ll base = 0;
+        vl gain;
+        for(auto v: gr) {
+            ll p = P[v];
+            base += C[p]*B[v];
+            gain.push_back((D[p]-C[p])*B[v]);
         }
-        rep(j, m) {
-            ll now = 0;
-            rep(k, m) {
-                now += cs[(j+k)%m];
-                chmax(ans, now+(K-k-1)/m*tot);
+        chmax(mx, base);
+        sort(allr(gain));
+        ll plus=0;
+        rep(i, m) {
+            plus += gain[i];
+            if(i%2) {
+                ll now = base + plus;
+                chmax(mx, now);
             }
         }
+        ans += mx;
     }
     Out(ans);
+
+
 
 }
 

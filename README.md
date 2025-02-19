@@ -594,10 +594,7 @@
 ### 例題
 - 基本 2部グラフの性質 [D - Make Bipartitte 2](https://atcoder.jp/contests/abc282/tasks/abc282_d)
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
+- 基本 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
 
 ## 超頂点を設ける
@@ -625,6 +622,9 @@
 ### 例題
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - 基本 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 解放チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
 - !復習価値低 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
 

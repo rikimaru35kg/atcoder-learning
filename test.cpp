@@ -227,52 +227,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/scc>
+#include <atcoder/dsu>
 using namespace atcoder;
 
 void solve() {
-    LONG(N);
-    vl P(N),B(N),C(N),D(N);
-    rep(i, N) cin>>P[i]>>B[i]>>C[i]>>D[i];
-    rep(i, N) P[i]--;
+    bool bip = true;
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a,b);
+        from[a].push_back(b);  
+        from[b].push_back(a);  
+    }
 
-    scc_graph scc(N);
-    rep(i, N) scc.add_edge(i, P[i]);
-    auto grs = scc.scc();
 
-    ll ans = 0;
-    for(auto gr: grs) {
-        ll m = gr.size();
-        if(m==1) {
-            ll v = gr[0];
-            ll p = P[v];
-            ll now = max(C[p],D[p])*B[v];
-            ans += now;
-            continue;
-        }
-        ll mx = 0;
-        ll base = 0;
-        vl gain;
-        for(auto v: gr) {
-            ll p = P[v];
-            base += C[p]*B[v];
-            gain.push_back((D[p]-C[p])*B[v]);
-        }
-        chmax(mx, base);
-        sort(allr(gain));
-        ll plus=0;
-        rep(i, m) {
-            plus += gain[i];
-            if(i%2) {
-                ll now = base + plus;
-                chmax(mx, now);
+    vl color(N, -1);
+    auto judge=[&](auto f, ll v, ll x) -> void {
+        color[v] = x;
+        for(auto nv: from[v]) {
+            if(color[nv]!=-1) {
+                if(color[v]==color[nv]) bip = false;
+                continue;
             }
+            f(f, nv, x^1);
         }
-        ans += mx;
+    };
+    rep(i, N) if(color[i]==-1) {
+        judge(judge, i, 0);
+    }
+
+    if(!bip) {
+        ll ans = N*(N-1)/2-M;
+        Outend(ans);
+    }
+
+    vl c(N,-1);
+    vl num(2);
+    auto dfs=[&](auto f, ll v, ll x) -> void {
+        if(c[v]!=-1) return;
+        c[v] = x;
+        num[x]++;
+        for(auto nv: from[v]) {
+            f(f, nv, x^1);
+        }
+    };
+    ll ans = -M;
+    rep(i, N) {
+        if(c[i]!=-1) continue;
+        num = vl(2);
+        dfs(dfs, i, 0);
+        ans += num[0] * num[1];
     }
     Out(ans);
-
-
 
 }
 
