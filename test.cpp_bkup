@@ -228,57 +228,24 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vl p1(N,-1), p2(N,-1);
-    vvl from1(N) ,from2(N);
-    ll pa1=-1,pa2=-1;
-    rep(i, N) {
-        LONGM(p1,p2);
-        if(p1!=-1) from1[p1].push_back(i);
-        if(p2!=-1) from2[p2].push_back(i);
-        if(p1==-1) pa1=i;
-        if(p2==-1) pa2=i;
+    STRING(S);
+    ll N = S.size();
+    LONG(Q);
+    VLM(K, Q);
+    rep(i, Q) {
+        ll k = K[i]/N;
+        ll l = 0, r = 1LL<<60;
+        ll flip=0;
+        while(r-l>1) {
+            ll m = (l+r)/2;
+            if(k<m) r = m;
+            else l = m, flip^=1;
+        }
+        char ans = S[K[i]%N];
+        if(flip) ans ^= 32;
+        cout<<ans<<' ';
     }
-    vvl spy1(N),spy2(N);
-    rep(i, M) {
-        LONGM(s1,s2);
-        spy1[s1].push_back(i);
-        spy2[s2].push_back(i);
-    }
-
-    auto cal=[&](ll pa, vvl &from, vvl &spy) -> pair<vl,vp> {
-        vp span(M);
-        vl ord(N);
-        ll idx=0;
-        auto dfs=[&](auto f, ll v) -> void {
-            for(auto s: spy[v]) { span[s].first = idx; }
-            ord[v] = idx++;
-            for(auto nv: from[v]) { f(f, nv); }
-            for(auto s: spy[v]) { span[s].second = idx; }
-        };
-        dfs(dfs, pa);
-        return {ord, span};
-    };
-
-    auto [ord1, span1] = cal(pa1, from1, spy1);
-    auto [ord2, span2] = cal(pa2, from2, spy2);
-
-    vvl imos(N+1, vl(N+1));
-    rep(i, M) {
-        auto [i1,i2] = span1[i];
-        auto [j1,j2] = span2[i];
-        imos[i1][j1]++;
-        imos[i2][j1]--;
-        imos[i1][j2]--;
-        imos[i2][j2]++;
-    }
-    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
-    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
-
-    rep(k, N) {
-        ll i = ord1[k], j = ord2[k];
-        Out(imos[i][j]);
-    }
+    cout<<endl;
 
 }
 
