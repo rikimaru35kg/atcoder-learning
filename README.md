@@ -465,11 +465,8 @@
 - 基本 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 - 基本 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
 - 基本 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値中 [E - Sum of Max Matching](https://atcoder.jp/contests/abc383/tasks/abc383_e)
-- !要復習 [K - 遺産相続](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_k)
+- 基本 [K - 遺産相続](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_k)
 
 ## 全域木の構成
 - 無向グラフから全域木を構成すると見通しが良くなる事がある
@@ -479,6 +476,9 @@
 ### 例題
 - 基本 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
 - 基本 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
 - !復習価値低 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 

@@ -227,34 +227,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, X, K);
-    auto children=[&](ll x, ll k) -> ll {
-        // x*2^k>N -> NG
-        if(k>60) return 0;
-        ll w = 1LL<<k;
-        if(x>Div(N, w)) return 0;
-        ll l = x*w, r = l+w;
-        chmin(r, N+1);
-        return r-l;
-    };
 
-    ll ans = children(X, K);
-    while(K>=2 && X>=2) {
-        ll y = X^1;
-        ans += children(y, K-2);
-        X>>=1, --K;
+
+struct UnionFind {
+    using vi = vector<int>;
+    int n;
+    vi p, sz;
+    UnionFind(int n): n(n), p(n,-1), sz(n,1) {}
+
+    int leader(int x) {
+        if(p[x]==-1) return x;
+        return p[x] = leader(p[x]);
     }
-    if(X>=2 && K==1) ++ans;
-    Out(ans);
+    void merge(int x, int y) {
+        x = leader(x), y = leader(y);
+        if(size(x)>size(y)) swap(x,y);
+        p[x] = y;
+        sz[y] += sz[x];
+    }
+    int size(int x) {
+        x = leader(x);
+        return sz[x];
+    }
+};
+
+void solve() {
+    LONG(N,M);
+    UnionFind uf(N);
+    rep(i, M) {
+        LONGM(a,b);
+        uf.merge(a,b);
+        de(uf.size(a))
+    }
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

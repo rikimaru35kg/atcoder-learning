@@ -230,44 +230,48 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 #include <atcoder/dsu>
 using namespace atcoder;
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N, M);
-    VL(D, N);
-    ll tot = accumulate(all(D), 0LL);
-    if(tot!=2*(N-1)) Pm1
-    dsu uf(N);
-
+    LONG(N,M,K);
+    vt4 edge;
     rep(i, M) {
-        LONGM(a,b);
-        if(uf.same(a,b)) Pm1
-        uf.merge(a,b);
-        D[a]--, D[b]--;
+        LONGM(a,b); LONG(c);
+        edge.emplace_back(c,a,b,i);
     }
-    rep(i, N) if(D[i]<0) Pm1
+    sort(allr(edge));
 
-    vvl rs(N);
-    rep(i, N) {
-        ll d = D[i];
-        if(d==0) continue;
-        rep(j, d) rs[uf.leader(i)].push_back(i);
+    vector<dsu> uf(K, dsu(N));
+    vl ans(M);
+    for (auto[c,a,b,mi]: edge) {
+        auto f=[&](ll i) -> bool {
+            return !uf[i].same(a,b);
+        };
+        ll idx = binary_search(K,-1,f);
+        if(idx==K) continue;
+        ans[mi] = idx+1;
+        uf[idx].merge(a,b);
     }
-
-    set<Pr> st;
-    rep(i, N) if(uf.leader(i)==i) {
-        if(rs[i].size()==0) Pm1
-        st.emplace(rs[i].size(),i);
-    }
-
-    vp ans;
-    while(SIZE(st)>1) {
-        auto it1 = st.begin(), it2 = prev(st.end());
-        auto [n1,a] = *it1; auto [n2,b] = *it2;
-        ans.emplace_back(pop(rs[a])+1, pop(rs[b])+1);
-        st.erase(it1); st.erase(it2);
-        st.emplace(n2-1,b);
-    }
-    Out(ans);
-
+    for(auto x: ans) Out(x);
 
 }
 
