@@ -538,11 +538,8 @@
 - 基本 奇妙な電卓 [058 - Original Calculator（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bf)
 - 基本 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 - 基本 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
-- !復習価値高（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
+- 基本 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
+- !復習価値中（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
@@ -564,6 +561,9 @@
 - 基本 （証明が分からんが…）[道路網改修](https://onlinejudge.u-aizu.ac.jp/problems/0366)  
   雑証明: SCCを縮約したあと、非連結なもの同士を先につないでいく。これで入次数と出次数を両方とも1ずつ減らせる。この操作でSCCが新たにできる事はない。次に、トポソして最後の頂点から最初の頂点に結ぶ。この操作でSCCが新たに発生しなければ次数が両方とも1減る。SCCが発生する場合、どちらかの次数が1つ減る。両方減らない場合、それはすなわち全体がSCCになったという事なので、操作終了。
 - 基本 [D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 [2 - プレゼント (Presents)](https://atcoder.jp/contests/joisc2013-day4/tasks/joisc2013_presents)
 
 ## 完全グラフ

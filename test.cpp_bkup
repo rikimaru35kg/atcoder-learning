@@ -228,42 +228,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VVLM(A, N, N-1);
-    ll M = N*(N-1)/2;
-    vvl from(M);
-    auto gid=[&](ll i, ll j) {
-        if(i<j) swap(i,j);
-        return i*(i-1)/2+j;
-    };
-    rep(i, N) {
-        rep(j, N-2) {
-            from[gid(i,A[i][j])].push_back(gid(i,A[i][j+1]));
-        }
-    }
-    vb seen(M), finished(M);
-    vl dp(M);
-    auto dfs=[&](auto f, ll v) -> ll {
-        ll ret = 1;
-        seen[v] = true;
-        for(auto nv: from[v]) {
-            if(finished[nv]) {
-                chmax(ret, dp[nv]+1);
-                continue;
-            }
-            if(seen[nv]) Pm1
-            chmax(ret, f(f, nv)+1);
-        }
-        finished[v] = true;
-        return dp[v] = ret;
-    };
+    LONG(N, A); --A;
+    STRING(K);
+    VLM(B, N);
 
-    ll ans = 0;
-    rep(i, M) {
-        if(finished[i]) continue;
-        chmax(ans, dfs(dfs, i));
+    vl vs;
+    vl ord(N, -1);
+    ll len=0;
+    ll x = A;
+    while(ord[x]==-1) {
+        vs.push_back(x);
+        ord[x] = len++;
+        x = B[x];
     }
-    Out(ans);
+    ll a = ord[x];
+    ll b = len-a;
+    de(vs)
+
+    ll now = 0;
+    bool toolong = false;
+    for(auto c: K) {
+        now = now*10 + c-'0';
+        if(now>=len) {
+            toolong = true; break;
+        }
+    }
+    if(!toolong) { Outend(vs[now]+1); }
+
+
+    now = 0;
+    for(auto c: K) {
+        now = now*10 + c-'0';
+        now %= b;
+    }
+    now = ((now-a)%b+b)%b;
+    now += a;
+    Out(vs[now]+1);
+
+
 
 }
 

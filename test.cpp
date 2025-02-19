@@ -42,7 +42,7 @@ using ll = long long;
 using ull = unsigned long long;
 using sll = __int128_t;
 using db = double;
-using Pr = pair<int, int>;
+using Pr = pair<ll, ll>;
 using Pd = pair<double, double>;
 using vi = vector<int>;
 using vs = vector<string>;
@@ -228,35 +228,54 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W);
-    VVI(A, H, W);
+    LONG(N, K);
+    VLM(P, N);
+    VL(C, N);
 
-    vvb finished(H, vb(W));
-    using vst = vector<set<Pr>>;
-    using vvst = vector<vst>;
-    vvst mem(H, vst(W));
-    auto dfs=[&](auto f, ll i, ll j) -> set<Pr> {
-        if(mem[i][j].size()) return mem[i][j];
-
-        set<Pr> &ret = mem[i][j];
-        bool nxt=false;
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            if(!isin(ni,nj,H,W)) continue;
-            if(A[ni][nj]>=A[i][j]) continue;
-            nxt = true;
-            ret.merge(f(f,ni,nj));
+    auto cal1=[&](vl &cs, ll K) -> ll {
+        ll ret = -INF;
+        ll m = cs.size();
+        rep(j, m) {
+            ll now = 0;
+            rep(k, K) {
+                now += cs[(j+k)%m];
+                chmax(ret, now);
+            }
         }
-        if(!nxt) ret.emplace(i,j);
-
-        while(SIZE(ret)>2) { ret.erase(ret.begin()); }
-        finished[i][j] = true;
         return ret;
     };
-    ll ans = 0;
-    rep(i, H) rep(j, W) {
-        auto res = dfs(dfs, i, j);
-        if(SIZE(res)>=2) ++ans;
+
+    vl ord(N,-1);
+    ll ans = -INF;
+    rep(i, N) {
+        if(ord[i]!=-1) continue;
+
+        ll x = i;
+        vl cs;
+        ll len=0;
+        while(ord[x]==-1) {
+            cs.push_back(C[x]);
+            ord[x] = len++;
+            x = P[x];
+        }
+
+        ll m = cs.size();
+        ll tot = accumulate(all(cs), 0LL);
+        if(K<=m) {
+            chmax(ans, cal1(cs, K));
+            continue;
+        }
+        if(tot<=0) {
+            chmax(ans, cal1(cs, m));
+            continue;
+        }
+        rep(j, m) {
+            ll now = 0;
+            rep(k, m) {
+                now += cs[(j+k)%m];
+                chmax(ans, now+(K-k-1)/m*tot);
+            }
+        }
     }
     Out(ans);
 
