@@ -228,31 +228,33 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    LONG(Q);
-    VLM(K, Q);
-    rep(i, Q) {
-        ll k = K[i]/N;
-        ll l = 0, r = 1LL<<60;
-        ll flip=0;
-        while(r-l>1) {
-            ll m = (l+r)/2;
-            if(k<m) r = m;
-            else l = m, flip^=1;
-        }
-        char ans = S[K[i]%N];
-        if(flip) ans ^= 32;
-        cout<<ans<<' ';
+    LONG(N, X, K);
+    auto children=[&](ll x, ll k) -> ll {
+        // x*2^k>N -> NG
+        if(k>60) return 0;
+        ll w = 1LL<<k;
+        if(x>Div(N, w)) return 0;
+        ll l = x*w, r = l+w;
+        chmin(r, N+1);
+        return r-l;
+    };
+
+    ll ans = children(X, K);
+    while(K>=2 && X>=2) {
+        ll y = X^1;
+        ans += children(y, K-2);
+        X>>=1, --K;
     }
-    cout<<endl;
+    if(X>=2 && K==1) ++ans;
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

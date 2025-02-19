@@ -227,34 +227,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, X, K);
-    auto children=[&](ll x, ll k) -> ll {
-        // x*2^k>N -> NG
-        if(k>60) return 0;
-        ll w = 1LL<<k;
-        if(x>Div(N, w)) return 0;
-        ll l = x*w, r = l+w;
-        chmin(r, N+1);
-        return r-l;
-    };
+#include <atcoder/dsu>
+using namespace atcoder;
 
-    ll ans = children(X, K);
-    while(K>=2 && X>=2) {
-        ll y = X^1;
-        ans += children(y, K-2);
-        X>>=1, --K;
+void solve() {
+    LONG(N, M);
+    VL(D, N);
+    ll tot = accumulate(all(D), 0LL);
+    if(tot!=2*(N-1)) Pm1
+    dsu uf(N);
+
+    rep(i, M) {
+        LONGM(a,b);
+        if(uf.same(a,b)) Pm1
+        uf.merge(a,b);
+        D[a]--, D[b]--;
     }
-    if(X>=2 && K==1) ++ans;
+    rep(i, N) if(D[i]<0) Pm1
+
+    vvl rs(N);
+    rep(i, N) {
+        ll d = D[i];
+        if(d==0) continue;
+        rep(j, d) rs[uf.leader(i)].push_back(i);
+    }
+
+    set<Pr> st;
+    rep(i, N) if(uf.leader(i)==i) {
+        if(rs[i].size()==0) Pm1
+        st.emplace(rs[i].size(),i);
+    }
+
+    vp ans;
+    while(SIZE(st)>1) {
+        auto it1 = st.begin(), it2 = prev(st.end());
+        auto [n1,a] = *it1; auto [n2,b] = *it2;
+        ans.emplace_back(pop(rs[a])+1, pop(rs[b])+1);
+        st.erase(it1); st.erase(it2);
+        st.emplace(n2-1,b);
+    }
     Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
