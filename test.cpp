@@ -227,58 +227,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+struct Bridge {
+    using II = pair<int,int>;
+    int n, m, idx;
+    bool done = false;
+    vector<vector<II>> from;
+    vector<int> ord, low, bridge, artcl;
+    Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
+    void add_edge(int a, int b, int ei=-1) {
+        if(ei==-1) {
+            from[a].emplace_back(b, m); from[b].emplace_back(a, m);
+            ++m;
+        } else {
+            from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
+        }
+    }
+    void start_calc() {
+        if(done) return;
+        done = true;
+        de(from)
+        rep(i, n) if(ord[i]==-1) dfs(i);
+    }
+    void dfs(int v, int p=-1) {
+        ord[v] = idx++; low[v] = ord[v];
+        int c = 0;
+        bool art = false;
+        for(auto [nv,ei]: from[v]) if(nv!=p) {
+            if(ord[nv]!=-1) {
+                low[v] = min(low[v], ord[nv]); continue;
+            }
+            ++c;
+            dfs(nv, v);
+            low[v] = min(low[v], low[nv]);
+            if(low[nv]>ord[v]) bridge.push_back(ei);
+            if(low[nv]>=ord[v]) art = true;
+        }
+        if(p!=-1 && art) artcl.push_back(v);
+        if(p==-1 && c>1) artcl.push_back(v);
+    }
+    vector<int> get_bridge() { start_calc(); return bridge;}
+    vector<int> get_articulation() { start_calc(); return artcl;}
+};
 
 void solve() {
-    bool bip = true;
     LONG(N, M);
-    vvl from(N);
+    vvp from(N);
+    vt3 edge;
     rep(i, M) {
-        LONGM(a,b);
-        from[a].push_back(b);  
-        from[b].push_back(a);  
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+        edge.emplace_back(a,b,c);
     }
-
-
-    vl color(N, -1);
-    auto judge=[&](auto f, ll v, ll x) -> void {
-        color[v] = x;
-        for(auto nv: from[v]) {
-            if(color[nv]!=-1) {
-                if(color[v]==color[nv]) bip = false;
-                continue;
+    Bridge graph(N);
+    auto dijk=[&](ll sv) -> vl {
+        vl dist(N, INF);
+        pq que;
+        auto push=[&](ll v, ll d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d,v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d,v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv,c]: from[v]) {
+                push(nv, d+c);
             }
-            f(f, nv, x^1);
         }
+        return dist;
     };
-    rep(i, N) if(color[i]==-1) {
-        judge(judge, i, 0);
+    auto dist1=dijk(0), distN=dijk(N-1);
+    rep(i, M) {
+        auto[a,b,c] = edge[i];
+        if(dist1[a]+distN[b]+c==dist1[N-1]) graph.add_edge(a,b,i);
+        else if(distN[a]+dist1[b]+c==dist1[N-1]) graph.add_edge(a,b,i);
     }
-
-    if(!bip) {
-        ll ans = N*(N-1)/2-M;
-        Outend(ans);
+    auto brs = graph.get_bridge();
+    vb ans(M);
+    for(auto bi: brs) {
+        ans[bi] = true;
     }
-
-    vl c(N,-1);
-    vl num(2);
-    auto dfs=[&](auto f, ll v, ll x) -> void {
-        if(c[v]!=-1) return;
-        c[v] = x;
-        num[x]++;
-        for(auto nv: from[v]) {
-            f(f, nv, x^1);
-        }
-    };
-    ll ans = -M;
-    rep(i, N) {
-        if(c[i]!=-1) continue;
-        num = vl(2);
-        dfs(dfs, i, 0);
-        ans += num[0] * num[1];
+    de(ans)
+    rep(i, M) {
+        if(ans[i]) puts("Yes");
+        else puts("No");
     }
-    Out(ans);
 
 }
 
