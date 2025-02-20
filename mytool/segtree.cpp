@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 template <class S, S(*op)(S, S), S(*e)()>
 struct SegTree {
     int n, mx;
@@ -52,8 +51,8 @@ struct SegTree {
     }
     S all_prod() { return a[1]; }
     int max_right(int l, auto f) {
-        assert(l>=0 && l<=n);
-        if(l==n) return n;
+        assert(l>=0 && l<=mx);
+        if(l==mx) return mx;
         l += n;  // l is node id
         S cum = e();  // cumulation of fixed span
         while(true) {
@@ -71,10 +70,10 @@ struct SegTree {
             cum = op(cum, a[l]); ++l;
             if((l&-l)==l) break;  // right most node -> return n
         }
-        return n;
+        return mx;
     }
     int min_left(int r, auto f) {
-        assert(r>=0 && r<=n);
+        assert(r>=0 && r<=mx);
         if(r==0) return 0;
         r += n;  // r is node id(+1)
         S cum = e();  // cumulation of fixed span

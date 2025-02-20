@@ -733,11 +733,11 @@
 ### 例題
 - 基本 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
 - 基本 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+- !復習価値低 [M - ランキング](https://atcoder.jp/contests/past202203-open/tasks/past202203_m)
+- 基本 [N - 旅行会社](https://atcoder.jp/contests/past202012-open/tasks/past202012_n)
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- !復習価値低 [M - ランキング](https://atcoder.jp/contests/past202203-open/tasks/past202203_m)
-- 基本 [N - 旅行会社](https://atcoder.jp/contests/past202012-open/tasks/past202012_n)
 - !復習価値低 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)
 
 ## 遅延伝播セグメントツリー（Lazy segment tree）

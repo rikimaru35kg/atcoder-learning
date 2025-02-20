@@ -227,136 +227,153 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+template <class S, S(*op)(S, S), S(*e)()>
+struct SegTree {
+    int n, mx;
+    vector<S> a;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
+    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-#ifdef __DEBUG
-    void print() {
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-    }
-#else
-    void print() {}
-#endif
-};
-
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+    void set(int i, S x, bool do_op=true) {
+        assert(i>=0 && i<n);
+        set_only(i, x, do_op);
+        i += n; i>>=1;  // i is node id
+        while(i) {
+            update(i);
+            i>>=1;
         }
-        return t;
+    }
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
+    }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
+    }
+    S get(int i) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        return a[i];
+    }
+    S prod(int ql, int qr) {
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, int i) -> S {
+            if(r<=ql || l>=qr) return e();
+            if(l>=ql && r<=qr) return get(i-n);
+            int m = (l+r)/2;
+            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
+            return ret;
+        };
+        S ret = f(f, 0, n, 1);
+        return ret;
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
     }
     void dump() {
         #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
+        cerr<<endl;
         #endif
     }
 };
 
-void solve() {
-    LONG(N);VL(A,N);
-    vl A_save = A;
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]);
-    LONG(Q);
-    vt3 query;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(k,d); --k;
-            A[k] += d;
-            cc.add(A[k]);
-            query.emplace_back(t,k,d);
-        } else {
-            LONG(x);
-            cc.add(x);
-            query.emplace_back(t,x,-1);
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
+void solve(ll N, vl A) {
+    SegTree<S,op,e> seg(N);
+    rep(i, N) seg.set_only(i, A[i], false);
+    seg.build();
+
+    ll T = 1000;
+    auto get=[&](ll l, ll x) {
+        repk(i, l, N) {
+            if(A[i]>=x) return i;
         }
-    }
-    ll m = cc.size();
-    cc.print();
-    swap(A_save, A);
-    BIT<ll> sum(m), cnt(m);
-    auto add=[&](ll i, ll coef=1) {
-        ll cci = cc(A[i]);
-        cnt.add(cci,coef);
-        sum.add(cci,coef*A[i]);
+        return N;
     };
-    auto del=[&](ll i) { add(i, -1); };
-
-    rep(i, N) add(i);
-
-    for(auto [t,k,d]: query) {
-        if(t==1) {
-            del(k);
-            A[k] += d;
-            add(k);
-        } else {
-            ll x = k;
-            ll cci = cc(x);
-            ll tot = sum.sum(cci, m) - x*cnt.sum(cci,m);
-            tot += x*cnt.sum(0,cci) - sum.sum(0,cci);
-            Out(tot);
-        }
-        sum.dump();
+    // de(A)
+    rep(i, T) {
+        // de(i)
+        ll l = rand()%(N+2);
+        ll mx = rand()%(ll)(1e9+1);
+        auto f=[&](S x) {return x<mx;};
+        ll idx = seg.max_right(l, f);
+        // if(i==62) {
+            // de4(l,mx,idx, get(l,mx))
+        // }
+        assert(idx==get(l,mx));
     }
-
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    // solve(N,M,A,B);
+    ll mx = 1e9;
+    while(true) {
+        vl A(N);
+        rep(i, N) A[i] = rand()%mx+1;
+        solve(N, A);
+    }
 }
 
 // ### test.cpp ###
