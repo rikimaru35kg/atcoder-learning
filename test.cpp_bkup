@@ -227,143 +227,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +-*/ leads to overflowing
-//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
-//! BE CAREFUL ABOUT CALCULATION COST!
-//! O(logM) just for initializing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b==0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return *this + Frac(x);
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
-    }
-    Frac operator-(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return *this - Frac(x);
-    }
-    Frac operator-(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
-    }
-    Frac operator*(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return Frac(p*x, q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    Frac operator/(const ll x) {
-        if (q==0 || x==0) return Frac(1, 0);
-        return Frac(p, q*x);
-    }
-    Frac operator/(const Frac &rhs) {
-        if (q==0 || rhs.p==0) return Frac(1, 0);
-        return Frac(p*rhs.q, q*rhs.p);
-    }
-    bool operator<(const ll x) const { return *this < Frac(x); }
-    bool operator<(const Frac &rhs) const { return p*rhs.q - q*rhs.p < 0; }
-    bool operator<=(const ll x) const { return *this <= Frac(x); }
-    bool operator<=(const Frac &rhs) const { return p*rhs.q - q*rhs.p <= 0; }
-    bool operator>(const ll x) const { return *this > Frac(x); }
-    bool operator>(const Frac &rhs) const { return p*rhs.q - q*rhs.p > 0; }
-    bool operator>=(const ll x) const { return *this >= Frac(x); }
-    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }
-    bool operator==(const ll x) const { return (q==1 && p==x); }
-    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }
-};
-
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    set<ll> st;
-    multiset<Frac> mst;
-    auto Sc = cumsum(A);
-
-    auto add=[&](ll i) {
-        auto it = st.insert(i).first;
-        if(it!=st.begin() && next(it)!=st.end()) {
-            ll l = *prev(it), r = *next(it);
-            Frac d(Sc[r]-Sc[l], r-l);
-            erase(mst, d);
-        }
-        if(it!=st.begin()) {
-            ll l = *prev(it);
-            Frac d(Sc[i]-Sc[l], i-l);
-            mst.insert(d);
-        }
-        if(next(it)!=st.end()) {
-            ll r = *next(it);
-            Frac d(Sc[r]-Sc[i], r-i);
-            mst.insert(d);
-        }
-    };
-    auto del=[&](ll i) {
-        auto it = st.find(i);
-        if(it!=st.begin() && next(it)!=st.end()) {
-            ll l = *prev(it), r = *next(it);
-            Frac d(Sc[r]-Sc[l], r-l);
-            mst.insert(d);
-        }
-        if(it!=st.begin()) {
-            ll l = *prev(it);
-            Frac d(Sc[i]-Sc[l], i-l);
-            erase(mst, d);
-        }
-        if(next(it)!=st.end()) {
-            ll r = *next(it);
-            Frac d(Sc[r]-Sc[i], r-i);
-            erase(mst, d);
-        }
-        st.erase(it);
-    };
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            if(st.count(x)) del(x);
-            else add(x);
-        } else {
-            auto it = prev(mst.end());
-            auto d = *it;
-            printf("%lld %lld\n", d.p, d.q);
-        }
+    LONG(N);
+    VS(A, N);
+    using BS = bitset<3000>;
+    using vBS = vector<BS>;
+    vBS bit(N);
+    rep(i, N) rep(j, N) {
+        if(A[i][j]=='0') continue;
+        bit[i][j] = 1;
     }
+    ll ans = 0;
+    rep(i, N) rep(j, i) {
+        if(A[i][j]=='0') continue;
+        BS nbit = bit[i] & bit[j];
+        ll cnt = nbit.count();
+        ans += cnt;
+    }
+    ans /= 3;
+    Out(ans);
 
 }
 

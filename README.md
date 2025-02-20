@@ -678,11 +678,8 @@
 
 ## bitset
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
-- !要復習 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
+- !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
@@ -697,6 +694,9 @@
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
 - 基本 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 - !復習価値低 寿司おいしさ+種類数ボーナス最大化（想定解ではHeadK不要なのでnote未掲載というかheadkは非本質） [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 

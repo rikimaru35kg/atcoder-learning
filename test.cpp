@@ -227,18 +227,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template <class T>
-using pset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
 void solve() {
-    pset<ll> st;
-    st.insert(5);
-    st.insert(5);
-    st.insert(5);
-    // Out(st.size());
+    LONG(N, M);
+    VVL(A,N,M);
+    using BS = bitset<2000>;
+    using vBS = vector<BS>;
+    vBS bs(N);
+    rep(j, M) {
+        umap<ll,vl> mp;
+        rep(i, N) { mp[A[i][j]].push_back(i); }
+        for(auto [a,is]: mp) {
+            BS now;
+            for(auto ci: is) now[ci] = 1;
+            for(auto ci: is) bs[ci] ^= now;
+        }
+    }
+    ll ans = 0;
+    rep(i, N) rep(j, i) ans += bs[i][j];
+    Out(ans);
+
 }
 
 int main () {
