@@ -227,33 +227,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, M, S);
-    ll N2 = N*N;
-    mint::set_mod(100000);
-    vvm dp(N2+1, vm(S+1));
-    dp[0][0] = 1;
-    rep1(i, M) {
-        // vvm pdp(N2+1, vm(S+1));
-        rep(j, N2+1) rep(k, S+1) {
-            if(j<N2 && k+i<=S) dp[j+1][k+i] += dp[j][k];
-        }
+    LONG(N, D);
+    VD(W, N);
+    db ave = accumulate(all(W), 0.0);
+    ave /= D;
+    ll N2 = 1LL<<N;
+
+    vd sum(N2);
+    rep(s, N2) {
+        db now = 0;
+        rep(i, N) if(s>>i&1) now += W[i];
+        sum[s] = now;
     }
-    mint ans = dp[N2][S];
+    auto p2=[&](db x) {return x*x;};
+
+    vd dp(N2, INF);
+    dp[N2-1] = 0;
+    rep(i, D) {
+        vd pdp(N2, INF); swap(pdp, dp);
+        for(ll s=N2-1; s>=0; --s) {
+            if(pdp[s]==INF) continue;
+            for(ll t=s; t>=0; t=(t-1)&s) {
+                ll u = t^s;
+                db now = p2(sum[t]-ave)/D;
+                chmin(dp[u], pdp[s]+now);
+                if(t==0) break;
+            }
+        }
+        de(1)
+    }
+    db ans = dp[0];
     Out(ans);
 
 }
