@@ -227,75 +227,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-const int MX = 9;
-int D;
-vl ten(12, 1);
-struct S {
-    ll x[MX];
-    S(ll z=0) {
-        rep(i, D) {
-            x[i] = z;
-            ll msb = z/ten[D-1];
-            z -= msb*ten[D-1];
-            z *= 10;
-            z += msb;
-        }
-    };
-};
-S op(S a, S b) {
-    rep(i, D) a.x[i] ^= b.x[i];
-    return a;
-}
-S e() {return S(0);}
-using F = ll;
-S mapping(F f, S x) {
-    f %= D;
-    rotate(x.x, x.x+f, x.x+D);
-    return x;
-}
-F composition(F f, F g) { return (f+g)%D; }
-F id() {return 0;}
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N); cin>>D;
-    rep(i, D) ten[i+1] = 10*ten[i];
-    VL(A, N);
-    vector<S> init(N);
-    rep(i, N) { init[i] = S(A[i]); }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-
-    LONG(Q);
-    ll si = 0;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            si += x;
-        } else if (t==2) {
-            LONG(l,r,y); --l, --r;
-            l = (si+l)%N, r = (si+r)%N;
-            if(l<=r) {
-                seg.apply(l,r+1,y);
-            } else {
-                seg.apply(l,N,y);
-                seg.apply(0,r+1,y);
-            }
-        } else {
-            LONGM(l,r);
-            l = (si+l)%N, r = (si+r)%N;
-            ll ans = 0;
-            if(l<=r) {
-                ans ^= seg.prod(l,r+1).x[0];
-            } else {
-                ans ^= seg.prod(l,N).x[0];
-                ans ^= seg.prod(0,r+1).x[0];
-            }
-            Out(ans);
+    LONG(N, M, S);
+    ll N2 = N*N;
+    mint::set_mod(100000);
+    vvm dp(N2+1, vm(S+1));
+    dp[0][0] = 1;
+    rep1(i, M) {
+        // vvm pdp(N2+1, vm(S+1));
+        rep(j, N2+1) rep(k, S+1) {
+            if(j<N2 && k+i<=S) dp[j+1][k+i] += dp[j][k];
         }
     }
+    mint ans = dp[N2][S];
+    Out(ans);
 
 }
 

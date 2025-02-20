@@ -230,59 +230,69 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 #include <atcoder/lazysegtree>
 using namespace atcoder;
 
-const ll MX = 11;
+const int MX = 9;
+int D;
+vl ten(12, 1);
 struct S {
-    ll cnt[MX], w;
-    S(ll x=-1, ll w=0): w(w) {
-        rep(i, MX) cnt[i] = 0;
-        if(x!=-1) cnt[x]++;
-    }
+    ll x[MX];
+    S(ll z=0) {
+        rep(i, D) {
+            x[i] = z;
+            ll msb = z/ten[D-1];
+            z -= msb*ten[D-1];
+            z *= 10;
+            z += msb;
+        }
+    };
 };
 S op(S a, S b) {
-    rep(i, MX) a.cnt[i] += b.cnt[i];
-    a.w += b.w;
+    rep(i, D) a.x[i] ^= b.x[i];
     return a;
 }
-S e() { return S(-1,0); }
+S e() {return S(0);}
 using F = ll;
 S mapping(F f, S x) {
-    if(f==INF) return x;
-    S ret(-1, x.w);
-    ret.cnt[f] += x.w;
-    return ret;
+    f %= D;
+    rotate(x.x, x.x+f, x.x+D);
+    return x;
 }
-F composition(F f, F g) {
-    if(f==INF) return g;
-    return f;
-}
-F id() {return INF;}
+F composition(F f, F g) { return (f+g)%D; }
+F id() {return 0;}
 
 void solve() {
-    LONG(N, Q);
+    LONG(N); cin>>D;
+    rep(i, D) ten[i+1] = 10*ten[i];
     VL(A, N);
-    vector<S> v(N);
-    rep(i, N) { v[i] = S(A[i],1); }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
-    rep(_, Q) {
-        LONG(t,l,r); --l;
+    vector<S> init(N);
+    rep(i, N) { init[i] = S(A[i]); }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+
+    LONG(Q);
+    ll si = 0;
+    rep(i, Q) {
+        LONG(t);
         if(t==1) {
-            S tmp = seg.prod(l, r);
-            rep(i, MX) {
-                ll num = tmp.cnt[i];
-                seg.apply(l, l+num, i);
-                l += num;
-            }
+            LONG(x);
+            si += x;
         } else if (t==2) {
-            S tmp = seg.prod(l, r);
-            repr(i, MX) {
-                ll num = tmp.cnt[i];
-                seg.apply(l, l+num, i);
-                l += num;
+            LONG(l,r,y); --l, --r;
+            l = (si+l)%N, r = (si+r)%N;
+            if(l<=r) {
+                seg.apply(l,r+1,y);
+            } else {
+                seg.apply(l,N,y);
+                seg.apply(0,r+1,y);
             }
         } else {
-            S tmp = seg.prod(l, r);
+            LONGM(l,r);
+            l = (si+l)%N, r = (si+r)%N;
             ll ans = 0;
-            rep(i, MX) { ans += tmp.cnt[i]*i; }
+            if(l<=r) {
+                ans ^= seg.prod(l,r+1).x[0];
+            } else {
+                ans ^= seg.prod(l,N).x[0];
+                ans ^= seg.prod(0,r+1).x[0];
+            }
             Out(ans);
         }
     }

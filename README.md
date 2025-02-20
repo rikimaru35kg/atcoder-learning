@@ -762,7 +762,7 @@
 - オンラインで範囲クエリに答えるのは得意 O(Q*log^2(N))
 ### 例題
 <!-- #############################
-# current review point (where i am now)
+# back review point (last submission 2025/1/23)
 ############################# -->
 - !要復習 [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
 
@@ -798,7 +798,7 @@
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
 - 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
-- !復習価値高 [F - ビンゴ](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_f)
+- !復習価値中 [F - ビンゴ](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_f)
 - 基本 グリッド上AB差の最小値 [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - 基本 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
 - 基本 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
@@ -847,6 +847,9 @@
 - N=15の時、4^N=1e9、3^N=1e7なので、N=15ぐらいのときはこのテクニックが効いてくる
 ### 例題
 - 基本 グループ分け [U - Grouping](https://atcoder.jp/contests/dp/tasks/dp_u)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
 ## 耳DP
