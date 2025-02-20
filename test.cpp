@@ -298,10 +298,7 @@ struct BIT {
     }
     void dump() {
         #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) {
-            cerr<<sum(i,i+1)<<' ';
-        }
-        cerr<<'\n';
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
         #endif
     }
 };
