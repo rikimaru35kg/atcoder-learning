@@ -881,12 +881,12 @@
 - idxが最後まで進んだら一致しなかったという事でアウト。
 - なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [I - 部分列ペア](https://atcoder.jp/contests/past17-open/tasks/past17_i)
 - 基本 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - 基本 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 部分列DP [K - 部分列](https://atcoder.jp/contests/past202206-open/tasks/past202206_k)
 - 基本 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
 

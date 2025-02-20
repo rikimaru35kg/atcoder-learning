@@ -227,35 +227,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(K); STRING(S); STRING(T);
-    ll N = S.size(), M = T.size();
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    vvl dp(N+1, vl(2*K+1, INF));
-    dp[0][K] = 0;
-    rep(i, N+1) {
-        rep(k, 2*K+1) {
-            ll now = dp[i][k];
-            if(now==INF) continue;
-            ll dj= k-K;
-            ll j = i+dj;
-            if(j<0 || j>M) continue;
-            if(i<N && k) {
-                chmin(dp[i+1][k-1], now+1);
+vector<vector<int>> make_next(string &s, char base='a') {
+    int n = s.size(), Z = 26;
+    vector<vector<int>> next(Z, vector<int>(n, n));
+    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
+    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
+        next[z][i] = min(next[z][i], next[z][i+1]);
+    }
+    return next;
+}
+
+void solve() {
+    STRING(S, T);
+    ll N = S.size(), M = T.size();
+    ll Z = 26;
+    auto ns = make_next(S);
+    auto nt = make_next(T);
+
+    auto cal=[&](string &s, vvi &next) -> mint {
+        ll N = s.size();
+        vm dp(N+1);
+        dp[0] = 1;
+        rep(i, N) {
+            if(dp[i]==0) continue;
+            rep(z, Z) {
+                ll ni = next[z][i]+1;
+                if(ni>N) continue;
+                dp[ni] += dp[i];
             }
-            if(j<M && k<2*K) {
-                chmin(dp[i][k+1], now+1);
-            }
-            if(i<N && j<M) chmin(dp[i+1][k], now+1);
-            if(i<N && j<M && S[i]==T[j]) chmin(dp[i+1][k], now);
+        }
+        mint ret;
+        rep1(i, N) ret += dp[i];
+        return ret;
+    };
+    mint a = cal(S, ns), b = cal(T, nt);
+    de2(a.val(), b.val())
+
+    vvm dp(N+1, vm(M+1));
+    dp[0][0] = 1;
+    rep(i, N) rep(j, M) {
+        mint now = dp[i][j];
+        if(now==0) continue;
+        rep(z, Z) {
+            ll ni = ns[z][i]+1;
+            ll nj = nt[z][j]+1;
+            if(ni>N || nj>M) continue;
+            dp[ni][nj] += now;
         }
     }
+    mint dup;
+    rep(i, N+1) rep(j, M+1) {
+        if(i==0 || j==0) continue;
+        dup += dp[i][j];
+    }
+    mint ans = a + b - dup;
+    Out(ans);
 
-    ll ofs = M-N;
-    if(ofs>K || ofs<-K) PNo
-    ll num = dp[N][K+ofs];
-    de(num)
-    if(num<=K) PYes PNo
 
 }
 

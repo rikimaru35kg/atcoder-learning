@@ -228,32 +228,26 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    STRING(S, T);
-    vl A, B;
-    for(auto c: S) {
-        if(c=='O') A.push_back(0);
-        else A.push_back(1);
-    }
-    for(auto c: T) {
-        if(c=='O') B.push_back(0);
-        else B.push_back(1);
-    }
-
-    vvvl dp(N+1, vvl(M+1, vl(2, -INF)));
-    rep(i, N+1) rep(j, M+1) dp[i][j][0] = 0;
-    rep(i, N+1) rep(j, M+1) rep(k, 2) {
-        ll now = dp[i][j][k];
-        if(now==-INF) continue;
-        if(i<N && A[i]!=k) {
-            chmax(dp[i+1][j][k^1], now+1);
+    LONG(N);
+    VS(S, N);
+    map<string,ll> cnt;
+    rep(i, N) {
+        ll m = S[i].size();
+        set<string> st;
+        rep(s, 1<<m) {
+            if(s==0) continue;
+            string now;
+            rep(j, m) if(s>>j&1) {
+                now += S[i][j];
+            }
+            st.insert(now);
         }
-        if(j<M && B[j]!=k) {
-            chmax(dp[i][j+1][k^1], now+1);
-        }
+        for(auto s: st) cnt[s]++;
     }
     ll ans = 0;
-    rep(i, N+1) rep(j, M+1) chmax(ans, dp[i][j][1]);
+    for(auto s: S) {
+        ans += cnt[s];
+    }
     Out(ans);
 
 }

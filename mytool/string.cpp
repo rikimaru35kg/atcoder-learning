@@ -49,6 +49,16 @@ long long subsequence(string &s, string &t) {
     return ti;
 }
 
+vector<vector<int>> make_next(string &s, char base='a') {
+    int n = s.size(), Z = 26;
+    vector<vector<int>> next(Z, vector<int>(n, n));
+    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
+    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
+        next[z][i] = min(next[z][i], next[z][i+1]);
+    }
+    return next;
+}
+
 vector<long long> z_algo(string s) {
     long long n = s.size();
     vector<long long> a(n);
