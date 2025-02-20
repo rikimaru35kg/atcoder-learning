@@ -717,10 +717,7 @@
 ### 例題
 - 基本 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
 - 基本 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [O - 整地クエリ](https://atcoder.jp/contests/past17-open/tasks/past17_o)
+- 基本 [O - 整地クエリ](https://atcoder.jp/contests/past17-open/tasks/past17_o)
 - 基本 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
 ## セグメントツリー（Segment tree）
@@ -736,6 +733,9 @@
 ### 例題
 - 基本 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
 - 基本 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [M - ランキング](https://atcoder.jp/contests/past202203-open/tasks/past202203_m)
 - 基本 [N - 旅行会社](https://atcoder.jp/contests/past202012-open/tasks/past202012_n)
 - !復習価値低 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)

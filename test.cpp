@@ -227,53 +227,132 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) {
+            cerr<<sum(i,i+1)<<' ';
+        }
+        cerr<<'\n';
+        #endif
+    }
+};
 
 void solve() {
-    LONG(N, K);
-    vvl sushi(N);
-    rep(i, N) {
-        LONGM(t); LONG(d);
-        sushi[t].push_back(d);
+    LONG(N);VL(A,N);
+    vl A_save = A;
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(A[i]);
+    LONG(Q);
+    vt3 query;
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(k,d); --k;
+            A[k] += d;
+            cc.add(A[k]);
+            query.emplace_back(t,k,d);
+        } else {
+            LONG(x);
+            cc.add(x);
+            query.emplace_back(t,x,-1);
+        }
     }
-    vl top, other;
-    rep(t, N) {
-        sort(all(sushi[t]));
-        if(sushi[t].size()) top.push_back(pop(sushi[t]));
-        while(sushi[t].size()) other.push_back(pop(sushi[t]));
-    }
-    sort(allr(top)); sort(allr(other));
-    vl St = cumsum(top);
-    vl Sc = cumsum(other);
-    de(top)de(other)
-    ll ans = 0;
-    rep1(k, K) {
-        if(SIZE(top)<k) break;
-        if(SIZE(other)<K-k) continue;
-        ll now = k*k + St[k] + Sc[K-k];
-        chmax(ans, now);
-    }
-    Out(ans);
+    ll m = cc.size();
+    cc.print();
+    swap(A_save, A);
+    BIT<ll> sum(m), cnt(m);
+    auto add=[&](ll i, ll coef=1) {
+        ll cci = cc(A[i]);
+        cnt.add(cci,coef);
+        sum.add(cci,coef*A[i]);
+    };
+    auto del=[&](ll i) { add(i, -1); };
 
+    rep(i, N) add(i);
+
+    for(auto [t,k,d]: query) {
+        if(t==1) {
+            del(k);
+            A[k] += d;
+            add(k);
+        } else {
+            ll x = k;
+            ll cci = cc(x);
+            ll tot = sum.sum(cci, m) - x*cnt.sum(cci,m);
+            tot += x*cnt.sum(0,cci) - sum.sum(0,cci);
+            Out(tot);
+        }
+        sum.dump();
+    }
 
 }
 
