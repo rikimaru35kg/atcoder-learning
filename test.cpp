@@ -228,37 +228,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, D);
-    VD(W, N);
-    db ave = accumulate(all(W), 0.0);
-    ave /= D;
-    ll N2 = 1LL<<N;
+    LONG(K); STRING(S); STRING(T);
+    ll N = S.size(), M = T.size();
 
-    vd sum(N2);
-    rep(s, N2) {
-        db now = 0;
-        rep(i, N) if(s>>i&1) now += W[i];
-        sum[s] = now;
-    }
-    auto p2=[&](db x) {return x*x;};
-
-    vd dp(N2, INF);
-    dp[N2-1] = 0;
-    rep(i, D) {
-        vd pdp(N2, INF); swap(pdp, dp);
-        for(ll s=N2-1; s>=0; --s) {
-            if(pdp[s]==INF) continue;
-            for(ll t=s; t>=0; t=(t-1)&s) {
-                ll u = t^s;
-                db now = p2(sum[t]-ave)/D;
-                chmin(dp[u], pdp[s]+now);
-                if(t==0) break;
+    vvl dp(N+1, vl(2*K+1, INF));
+    dp[0][K] = 0;
+    rep(i, N+1) {
+        rep(k, 2*K+1) {
+            ll now = dp[i][k];
+            if(now==INF) continue;
+            ll dj= k-K;
+            ll j = i+dj;
+            if(j<0 || j>M) continue;
+            if(i<N && k) {
+                chmin(dp[i+1][k-1], now+1);
             }
+            if(j<M && k<2*K) {
+                chmin(dp[i][k+1], now+1);
+            }
+            if(i<N && j<M) chmin(dp[i+1][k], now+1);
+            if(i<N && j<M && S[i]==T[j]) chmin(dp[i+1][k], now);
         }
-        de(1)
     }
-    db ans = dp[0];
-    Out(ans);
+
+    ll ofs = M-N;
+    if(ofs>K || ofs<-K) PNo
+    ll num = dp[N][K+ofs];
+    de(num)
+    if(num<=K) PYes PNo
 
 }
 
