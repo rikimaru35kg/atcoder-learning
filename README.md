@@ -694,11 +694,7 @@
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
 - 基本 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
-- !復習価値低 寿司おいしさ+種類数ボーナス最大化（想定解ではHeadK不要なのでnote未掲載というかheadkは非本質） [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 
 ## 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
@@ -721,6 +717,9 @@
 ### 例題
 - 基本 基本 [E - Mancala 2](https://atcoder.jp/contests/abc340/tasks/abc340_e)
 - 基本 [E - LEQ](https://atcoder.jp/contests/abc221/tasks/abc221_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [O - 整地クエリ](https://atcoder.jp/contests/past17-open/tasks/past17_o)
 - 基本 [F - Rook on Grid](https://atcoder.jp/contests/abc186/tasks/abc186_f)
 
@@ -2094,6 +2093,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできたがグダった問題
+- [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)

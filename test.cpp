@@ -227,24 +227,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 void solve() {
-    LONG(N, M);
-    VVL(A,N,M);
-    using BS = bitset<2000>;
-    using vBS = vector<BS>;
-    vBS bs(N);
-    rep(j, M) {
-        umap<ll,vl> mp;
-        rep(i, N) { mp[A[i][j]].push_back(i); }
-        for(auto [a,is]: mp) {
-            BS now;
-            for(auto ci: is) now[ci] = 1;
-            for(auto ci: is) bs[ci] ^= now;
-        }
+    LONG(N, K);
+    vvl sushi(N);
+    rep(i, N) {
+        LONGM(t); LONG(d);
+        sushi[t].push_back(d);
     }
+    vl top, other;
+    rep(t, N) {
+        sort(all(sushi[t]));
+        if(sushi[t].size()) top.push_back(pop(sushi[t]));
+        while(sushi[t].size()) other.push_back(pop(sushi[t]));
+    }
+    sort(allr(top)); sort(allr(other));
+    vl St = cumsum(top);
+    vl Sc = cumsum(other);
+    de(top)de(other)
     ll ans = 0;
-    rep(i, N) rep(j, i) ans += bs[i][j];
+    rep1(k, K) {
+        if(SIZE(top)<k) break;
+        if(SIZE(other)<K-k) continue;
+        ll now = k*k + St[k] + Sc[K-k];
+        chmax(ans, now);
+    }
     Out(ans);
+
 
 }
 
