@@ -735,10 +735,7 @@
 - 基本 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
 - !復習価値低 [M - ランキング](https://atcoder.jp/contests/past202203-open/tasks/past202203_m)
 - 基本 [N - 旅行会社](https://atcoder.jp/contests/past202012-open/tasks/past202012_n)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)
+- 基本 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)
 
 ## 遅延伝播セグメントツリー（Lazy segment tree）
 - セグメント木に加え、区間更新が可能
@@ -753,8 +750,8 @@
 - 基本 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
 - 基本 2数列区間加算区間内積クエリ [F - Two Sequence Queries](https://atcoder.jp/contests/abc357/tasks/abc357_f)
 - 基本 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
-- !復習価値高 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
-- !復習価値高 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
+- !復習価値中 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
+- !復習価値低 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値高 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
@@ -764,7 +761,10 @@
 - オンラインで葉を更新するのは計算量が大きすぎるので注意！
 - オンラインで範囲クエリに答えるのは得意 O(Q*log^2(N))
 ### 例題
-- [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
+- !要復習 [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
 
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける

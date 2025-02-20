@@ -223,8 +223,8 @@
   "Snippet(lazy_segtree)": {
     "prefix": "lazy_segtree",
     "body": [
-      "vector<S> v(N, S(**));"
-      "lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);"
+      "vector<S> init(N, S(**));"
+      "lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);"
     ]
   },
   "scc(Snippet)": {
