@@ -227,43 +227,143 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+//! BE CAREFUL ABOUT OVERFLOWING!
+//! repeated usage of +-*/ leads to overflowing
+//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
+//! BE CAREFUL ABOUT CALCULATION COST!
+//! O(logM) just for initializing
+struct Frac {
+    long long p, q;  // p/q: p over q (like y/x: y over x)
+    Frac(long long a=0, long long b=1) {
+        if (b==0) {
+            p = 1; q = 0;  // inf (no definition of -inf)
+            return;
+        }
+        long long g = gcd(a, b);
+        p = a/g; q = b/g;
+        if (q<0) {p=-p; q=-q;}
+    }
+    Frac operator+(const ll x) {
+        if (q==0) return Frac(1, 0);
+        return *this + Frac(x);
+    }
+    Frac operator+(const Frac &rhs) {
+        if (q==0 || rhs.q==0) return Frac(1, 0);
+        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
+    }
+    Frac operator-(const ll x) {
+        if (q==0) return Frac(1, 0);
+        return *this - Frac(x);
+    }
+    Frac operator-(const Frac &rhs) {
+        if (q==0 || rhs.q==0) return Frac(1, 0);
+        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
+    }
+    Frac operator*(const ll x) {
+        if (q==0) return Frac(1, 0);
+        return Frac(p*x, q);
+    }
+    Frac operator*(const Frac &rhs) {
+        if (q==0 || rhs.q==0) return Frac(1, 0);
+        return Frac(p*rhs.p, q*rhs.q);
+    }
+    Frac operator/(const ll x) {
+        if (q==0 || x==0) return Frac(1, 0);
+        return Frac(p, q*x);
+    }
+    Frac operator/(const Frac &rhs) {
+        if (q==0 || rhs.p==0) return Frac(1, 0);
+        return Frac(p*rhs.q, q*rhs.p);
+    }
+    bool operator<(const ll x) const { return *this < Frac(x); }
+    bool operator<(const Frac &rhs) const { return p*rhs.q - q*rhs.p < 0; }
+    bool operator<=(const ll x) const { return *this <= Frac(x); }
+    bool operator<=(const Frac &rhs) const { return p*rhs.q - q*rhs.p <= 0; }
+    bool operator>(const ll x) const { return *this > Frac(x); }
+    bool operator>(const Frac &rhs) const { return p*rhs.q - q*rhs.p > 0; }
+    bool operator>=(const ll x) const { return *this >= Frac(x); }
+    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }
+    bool operator==(const ll x) const { return (q==1 && p==x); }
+    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }
+};
+
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
 void solve() {
-    LONG(H, W);
-    VVL(A, H, W);
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-    auto calc=[&](vvl &A) -> vl {
-        dsu uf(H*W);
-        ll now = 0;
-        auto exe=[&](ll i1, ll j1, ll i2, ll j2) {
-            if(!isin(i2,j2,H,W)) return;
-            if(A[i1][j1]!=A[i2][j2]) return;
-            ll id1 = gid(i1,j1), id2=gid(i2,j2);
-            if(uf.same(id1,id2)) return;
-            --now;
-            uf.merge(id1,id2);
-        };
-        vl ret(W+1);
-        rep(j, W) {
-            now += H;
-            rep(i, H) {
-                if(j) exe(i,j,i,j-1);
-                if(i<H-1) exe(i,j,i+1,j);
-            }
-            ret[j+1] = now;
+    LONG(N, Q);
+    VL(A, N);
+    set<ll> st;
+    multiset<Frac> mst;
+    auto Sc = cumsum(A);
+
+    auto add=[&](ll i) {
+        auto it = st.insert(i).first;
+        if(it!=st.begin() && next(it)!=st.end()) {
+            ll l = *prev(it), r = *next(it);
+            Frac d(Sc[r]-Sc[l], r-l);
+            erase(mst, d);
         }
-        return ret;
+        if(it!=st.begin()) {
+            ll l = *prev(it);
+            Frac d(Sc[i]-Sc[l], i-l);
+            mst.insert(d);
+        }
+        if(next(it)!=st.end()) {
+            ll r = *next(it);
+            Frac d(Sc[r]-Sc[i], r-i);
+            mst.insert(d);
+        }
     };
-    vl left = calc(A);
-    rep(i, H) reverse(all(A[i]));
-    vl right = calc(A);
-    rep(i, H) reverse(all(A[i]));
-    reverse(all(right));
-    ll ans = INF;
-    repk(j,1,W) chmin(ans, left[j]+right[j]);
-    Out(ans);
+    auto del=[&](ll i) {
+        auto it = st.find(i);
+        if(it!=st.begin() && next(it)!=st.end()) {
+            ll l = *prev(it), r = *next(it);
+            Frac d(Sc[r]-Sc[l], r-l);
+            mst.insert(d);
+        }
+        if(it!=st.begin()) {
+            ll l = *prev(it);
+            Frac d(Sc[i]-Sc[l], i-l);
+            erase(mst, d);
+        }
+        if(next(it)!=st.end()) {
+            ll r = *next(it);
+            Frac d(Sc[r]-Sc[i], r-i);
+            erase(mst, d);
+        }
+        st.erase(it);
+    };
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            if(st.count(x)) del(x);
+            else add(x);
+        } else {
+            auto it = prev(mst.end());
+            auto d = *it;
+            printf("%lld %lld\n", d.p, d.q);
+        }
+    }
 
 }
 

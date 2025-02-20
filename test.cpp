@@ -227,43 +227,18 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/dsu>
-using namespace atcoder;
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <class T>
+using pset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 void solve() {
-    LONG(N);
-    vt3 P;
-    rep(i, N) {
-        LONG(x,y);
-        P.emplace_back(x,y,i);
-    }
-    sort(all(P));
-    dsu uf(N);
-    set<Pr> st;
-    for(auto[x,y,i]: P) {
-        if(st.empty()) {
-            st.emplace(y,i);
-            continue;
-        }
-        auto it = st.begin();
-        auto [ymin, pi] = *it;
-        if(y<ymin) {
-            st.emplace(y,i);
-        } else {
-            uf.merge(i,pi);
-            ++it;
-            while(it!=st.end()) {
-                auto [cy,ci] = *it;
-                if(cy>y) break;
-                uf.merge(i,ci);
-                it = st.erase(it);
-            }
-        }
-    }
-    rep(i, N) {
-        Out(uf.size(i));
-    }
-
+    pset<ll> st;
+    st.insert(5);
+    st.insert(5);
+    st.insert(5);
+    // Out(st.size());
 }
 
 int main () {
