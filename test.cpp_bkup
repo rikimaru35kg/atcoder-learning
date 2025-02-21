@@ -227,88 +227,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
+#include <atcoder/scc>
 
 void solve() {
-    LONG(N,M,L);
-    ll Z = N+M+L;
-    VL(A, Z);
-    vl v;
-    rep(i, N) v.push_back(0); // taka
-    rep(i, M) v.push_back(1); // ao
-    rep(i, L) v.push_back(2); // table
-    auto hash=[&](vl &v) -> ll {
-        ll ret = 0;
-        rep(i, Z) ret = ret*3 + v[i];
-        return ret;
-    };
-    auto flip=[&](vl &v) {
-        rep(i, Z) {
-            if(v[i]==2) continue;
-            v[i] ^= 1;
-        }
-    };
-    ll three=1;
-    rep(i, Z) three *= 3;
-    vi mem(three,-1);
-    auto f=[&](auto f, ll s) -> int {
-        int &ret = mem[s];
-        if(ret != -1) return ret;
-        auto v = separate_digit(s,3,Z);
-        ll own=0;
-        rep(i, Z) if(v[i]==0) own++;
-        if(own==0) return ret = 0;
+    LONG(N, M);
+    VLM(A, N);
+    scc_graph scc(N);
+    rep(i, N) { scc.add_edge(A[i],i); }
 
-        ret = 0;
-        rep(i, Z) {
-            if(v[i]!=0) continue;
-            // modosanai
-            auto nv = v;
-            flip(nv);
-            nv[i] = 2;
-            // flip(nv);
-            ll ns = hash(nv);
-            if(f(f, ns)==0) return ret = 1;
-            nv[i] = 1;
-            // modosu
-            rep(j, Z) {
-                if(v[j]==2 && A[j]<A[i]) {
-                    // auto nv = v;
-                    swap(nv[i], nv[j]);
-                    // flip(nv);
-                    ll ns = hash(nv);
-                    if(f(f, ns)==0) return ret = 1;
-                    swap(nv[i], nv[j]);
-                }
+    vl id(N);
+    ll len=0;
+    auto grs = scc.scc();
+    for(auto gr: grs) {
+        for(auto v: gr) { id[v] = len; }
+        ++len;
+    }
+    vvl from(len);
+    vl deg(len);
+    rep(i, N) {
+        ll v1 = id[A[i]], v2 = id[i];
+        if(v1==v2) continue;
+        from[v1].push_back(v2);
+        deg[v2]++;
+    }
+    de(from)
+    vl ps;
+    rep(i, len) if(deg[i]==0) ps.push_back(i);
+
+    mint ans = 1;
+    for(auto sv: ps) {
+        auto dfs=[&](auto f, ll v) -> vm {
+            vm dp(M, 1);
+            for(auto nv: from[v]) {
+                vm ds = f(f, nv);
+                rep(i, M) { dp[i] *= ds[i]; }
             }
-        }
-        return ret;
-    };
-
-    ll s = hash(v);
-    if(f(f, s)==1) puts("Takahashi");
-    else puts("Aoki");
+            rep(i, M-1) dp[i+1] += dp[i];
+            return dp;
+        };
+        vm now = dfs(dfs, sv);
+        ans *= now[M-1];
+    }
+    Out(ans);
 
 }
 

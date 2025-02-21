@@ -227,25 +227,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N); VL(A, N);
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
-    ll ans = INF;
-    rep(ri, 2) {
-        vl dp(2, INF);
-        dp[ri] = 0;
-        rep(i, N) {
-            vl pdp(2, INF); swap(dp, pdp);
-            rep(j, 2) rep(k, 2) {
-                if(pdp[j]==INF) continue;
-                if(j==0 && k==0) continue;
-                ll cost = 0;
-                if(k==1) cost = A[i];
-                chmin(dp[k], pdp[j]+cost);
-            }
-        }
-        chmin(ans, dp[ri]);
+void solve() {
+    LONG(N); VL(D, N);
+    vvp from(N);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b,c);
+        from[b].emplace_back(a,c);
     }
+
+    auto dfs=[&](auto f, ll v, ll p=-1) -> Pr {
+        ll base = 0;
+        vl gains;
+        for(auto [nv,c]: from[v]) if(nv!=p) {
+            auto [z,o] = f(f, nv, v);
+            ll mx = max(z,o);
+            base += mx;
+            gains.push_back(max(o+c-mx,0LL));
+        }
+        if(D[v]==0) {
+            return {base,-INF};
+        }
+        sort(allr(gains));
+        ll K = gains.size();
+        vl Sc = cumsum(gains);
+        ll zero = base + Sc[min(D[v],K)];
+        if(D[v]>K) zero = -INF;
+        ll one = base + Sc[D[v]-1];
+        return {zero,one};
+    };
+    auto [z,o] = dfs(dfs, 0);
+    ll ans = max(z,o);
     Out(ans);
 
 }
