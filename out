@@ -1,39 +1,109 @@
-test.cpp: In lambda function:
-test.cpp:241:18: error: cannot decompose non-array non-class type ‘long long int’
-  241 |         for(auto [nv,c]: from[v]) {
-      |                  ^~~~~~
-In file included from /usr/include/c++/12/ext/alloc_traits.h:34,
-                 from /usr/include/c++/12/bits/basic_string.h:39,
-                 from /usr/include/c++/12/string:53,
-                 from /usr/include/c++/12/bits/locale_classes.h:40,
-                 from /usr/include/c++/12/bits/ios_base.h:41,
-                 from /usr/include/c++/12/ios:42,
-                 from /usr/include/c++/12/istream:38,
-                 from /usr/include/c++/12/sstream:38,
-                 from /usr/include/c++/12/complex:45,
-                 from /usr/include/c++/12/ccomplex:39,
-                 from stdc++.h:54:
-/usr/include/c++/12/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = long long int; _Args = {long long int&, long long int&}; _Tp = long long int; allocator_type = std::allocator<long long int>]’:
-/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = long long int; _Alloc = std::allocator<long long int>; reference = long long int&]’
-/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = long long int; _Allocator = std::allocator<long long int>; reference = long long int&]’
-test.cpp:235:29:   required from here
-/usr/include/c++/12/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(long long int*&, long long int&, long long int&)’
-  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
-      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/bits/stl_iterator.h:85,
-                 from /usr/include/c++/12/bits/stl_algobase.h:67,
-                 from /usr/include/c++/12/bits/specfun.h:45,
-                 from /usr/include/c++/12/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/12/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
-   94 |     construct_at(_Tp* __location, _Args&&... __args)
-      |     ^~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
-/usr/include/c++/12/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = long long int; _Args = {long long int&, long long int&}]’:
-/usr/include/c++/12/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = long long int; _Args = {long long int&, long long int&}; _Tp = long long int; allocator_type = std::allocator<long long int>]’
-/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘constexpr std::__cxx1998::vector<_Tp, _Alloc>::reference std::__cxx1998::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = long long int; _Alloc = std::allocator<long long int>; reference = long long int&]’
-/usr/include/c++/12/debug/vector:519:23:   required from ‘std::__debug::vector<_Tp, _Allocator>::reference std::__debug::vector<_Tp, _Allocator>::emplace_back(_Args&& ...) [with _Args = {long long int&, long long int&}; _Tp = long long int; _Allocator = std::allocator<long long int>; reference = long long int&]’
-test.cpp:235:29:   required from here
-/usr/include/c++/12/bits/stl_construct.h:96:17: error: new initializer expression list treated as compound expression [-fpermissive]
-   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test.cpp:233:20: error: invalid use of non-static data member ‘mints::MX’
+  233 |     long long data[MX];
+      |                    ^~
+test.cpp:232:21: note: declared here
+  232 |     const long long MX = 2;
+      |                     ^~
+test.cpp: In constructor ‘mints::mints(long long int)’:
+test.cpp:238:56: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  238 |     mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+      |                                                        ^
+test.cpp: In member function ‘mints mints::operator+(mints) const’:
+test.cpp:240:35: error: ‘struct mints’ has no member named ‘data’
+  240 |         for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+      |                                   ^~~~
+test.cpp:240:50: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  240 |         for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+      |                                                  ^
+test.cpp:240:56: error: ‘struct mints’ has no member named ‘data’
+  240 |         for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+      |                                                        ^~~~
+test.cpp: In member function ‘mints& mints::operator+=(mints)’:
+test.cpp:243:50: error: use of deleted function ‘mints& mints::operator=(mints&&)’
+  243 |     mints &operator+=(mints x) { *this = *this + x; return *this; }
+      |                                                  ^
+test.cpp:231:8: note: ‘mints& mints::operator=(mints&&)’ is implicitly deleted because the default definition would be ill-formed:
+  231 | struct mints {
+      |        ^~~~~
+test.cpp:231:8: error: non-static const member ‘const long long int mints::MX’, cannot use default assignment operator
+test.cpp: In member function ‘mints mints::operator-(mints) const’:
+test.cpp:246:35: error: ‘struct mints’ has no member named ‘data’
+  246 |         for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+      |                                   ^~~~
+test.cpp:246:50: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  246 |         for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+      |                                                  ^
+test.cpp:246:56: error: ‘struct mints’ has no member named ‘data’
+  246 |         for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+      |                                                        ^~~~
+test.cpp: In member function ‘mints& mints::operator-=(mints)’:
+test.cpp:249:50: error: use of deleted function ‘mints& mints::operator=(mints&&)’
+  249 |     mints &operator-=(mints x) { *this = *this - x; return *this; }
+      |                                                  ^
+test.cpp: In member function ‘mints mints::operator*(mints) const’:
+test.cpp:252:35: error: ‘struct mints’ has no member named ‘data’
+  252 |         for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+      |                                   ^~~~
+test.cpp:252:49: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  252 |         for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+      |                                                 ^
+test.cpp:252:55: error: ‘struct mints’ has no member named ‘data’
+  252 |         for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+      |                                                       ^~~~
+test.cpp: In member function ‘mints& mints::operator*=(mints)’:
+test.cpp:255:50: error: use of deleted function ‘mints& mints::operator=(mints&&)’
+  255 |     mints &operator*=(mints x) { *this = *this * x; return *this; }
+      |                                                  ^
+test.cpp: In member function ‘mints mints::pow(long long int) const’:
+test.cpp:260:21: error: use of deleted function ‘mints& mints::operator=(mints&&)’
+  260 |         ret = ret * ret;
+      |                     ^~~
+test.cpp:261:34: error: use of deleted function ‘mints& mints::operator=(mints&&)’
+  261 |         if (x%2==1) ret = ret * *this;
+      |                                  ^~~~
+test.cpp: In member function ‘mints mints::inv() const’:
+test.cpp:276:35: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  276 |             long long x = pow(data[i], p-2, p);
+      |                                   ^
+test.cpp:277:17: error: ‘struct mints’ has no member named ‘data’
+  277 |             ret.data[i] = x;
+      |                 ^~~~
+test.cpp: In member function ‘bool mints::operator<(mints) const’:
+test.cpp:282:41: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  282 |         for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+      |                                         ^
+test.cpp:282:50: error: ‘struct mints’ has no member named ‘data’
+  282 |         for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+      |                                                  ^~~~
+test.cpp:283:24: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  283 |             return data[i] < x.data[i];
+      |                        ^
+test.cpp:283:32: error: ‘struct mints’ has no member named ‘data’
+  283 |             return data[i] < x.data[i];
+      |                                ^~~~
+test.cpp: In member function ‘bool mints::operator==(mints) const’:
+test.cpp:288:41: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  288 |         for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+      |                                         ^
+test.cpp:288:50: error: ‘struct mints’ has no member named ‘data’
+  288 |         for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+      |                                                  ^~~~
+test.cpp: In member function ‘void mints::print() const’:
+test.cpp:292:45: error: invalid types ‘<unresolved overloaded function type>[int]’ for array subscript
+  292 |         for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+      |                                             ^
+test.cpp: In member function ‘std::size_t std::hash<mints>::operator()(const mints&) const’:
+test.cpp:301:24: error: ‘MX’ was not declared in this scope
+  301 |         for(int i=0; i<MX; ++i) {
+      |                        ^~
+test.cpp:303:29: error: ‘const struct mints’ has no member named ‘data’
+  303 |             seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+      |                             ^~~~
+test.cpp: In function ‘std::istream& operator>>(std::istream&, mints&)’:
+test.cpp:309:71: error: use of deleted function ‘mints& mints::operator=(mints&&)’
+  309 | istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
+      |                                                                       ^
+test.cpp: In function ‘std::ostream& operator<<(std::ostream&, mints&)’:
+test.cpp:310:52: error: ‘struct mints’ has no member named ‘data’
+  310 | ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
+      |                                                    ^~~~

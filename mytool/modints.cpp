@@ -67,7 +67,6 @@ struct mints {
         cerr << '\n';
     }
 };
-
 namespace std {
 template<>
 struct hash<mints> {
@@ -81,3 +80,5 @@ struct hash<mints> {
     }
 };
 }
+istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
+ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }

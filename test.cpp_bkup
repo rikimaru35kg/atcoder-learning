@@ -227,62 +227,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-#include <atcoder/scc>
+const long long base = 12345;
+const long long MX = 2;
+struct mints {
+    long long data[MX];
+    // long long ps[12];
+                            // 1000000033, 1000000087, 1000000093,
+                            // 1000000097, 1000000103, 1000000123,
+                            // 1000000181, 1000000207, 1000000223};
+    // const long long ps[12] = {1000000007, 1000000009, 1000000021,
+    //                         1000000033, 1000000087, 1000000093,
+    //                         1000000097, 1000000103, 1000000123,
+    //                         1000000181, 1000000207, 1000000223};
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
+    }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+}
+istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
+ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
 
 void solve() {
-    LONG(N, M);
-    VLM(A, N);
-    scc_graph scc(N);
-    rep(i, N) { scc.add_edge(A[i],i); }
-
-    vl id(N);
-    ll len=0;
-    auto grs = scc.scc();
-    for(auto gr: grs) {
-        for(auto v: gr) { id[v] = len; }
-        ++len;
-    }
-    vvl from(len);
-    vl deg(len);
-    rep(i, N) {
-        ll v1 = id[A[i]], v2 = id[i];
-        if(v1==v2) continue;
-        from[v1].push_back(v2);
-        deg[v2]++;
-    }
-    de(from)
-    vl ps;
-    rep(i, len) if(deg[i]==0) ps.push_back(i);
-
-    mint ans = 1;
-    for(auto sv: ps) {
-        auto dfs=[&](auto f, ll v) -> vm {
-            vm dp(M, 1);
-            for(auto nv: from[v]) {
-                vm ds = f(f, nv);
-                rep(i, M) { dp[i] *= ds[i]; }
-            }
-            rep(i, M-1) dp[i+1] += dp[i];
-            return dp;
-        };
-        vm now = dfs(dfs, sv);
-        ans *= now[M-1];
-    }
-    Out(ans);
+    mints x;cin>>x;
+    Out(x);
 
 }
 
