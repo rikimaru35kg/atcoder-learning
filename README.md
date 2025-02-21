@@ -915,10 +915,7 @@
 - 基本 2数のXOR [E - Sum Equals Xor](https://atcoder.jp/contests/abc129/tasks/abc129_e)
 - 基本 XORの和の最大値 [D - XXOR](https://atcoder.jp/contests/abc117/tasks/abc117_d)
 - 基本 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
+- 基本 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
 - 基本 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
 
 ## 対戦ゲームDP
@@ -931,6 +928,9 @@
 - 基本 [L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
 - 基本 [D - Stones](https://atcoder.jp/contests/abc270/tasks/abc270_d)
 - 基本 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 - 基本 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
 - !要復習 [F - Exchange Game](https://atcoder.jp/contests/abc380/tasks/abc380_f)
