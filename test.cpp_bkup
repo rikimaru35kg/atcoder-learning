@@ -228,33 +228,30 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, D);
+    VVL(A, D, N);
+    vvl dp(N, vl(2, INF));
+    rep(i, N) {
+        ll a = A[0][i];
+        dp[i][0] = a;
     }
-    auto nC2=[&](ll n) {return n*(n-1)/2;};
-    auto nC3=[&](ll n) {return n*(n-1)*(n-2)/6;};
-
-    ll sum = 0;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
-        ll ret = 1;
-        vl szz;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll csz = f(f, nv, v);
-            szz.push_back(csz);
-            sum += (N-csz) * csz;
-            ret += csz;
+    repk(i, 1, D) {
+        vvl pdp(N, vl(2, INF)); swap(pdp, dp);
+        ll mn = INF;
+        rep(j, N) chmin(mn, pdp[j][0]);
+        rep(j, N) chmin(mn, pdp[j][1]);
+        rep(j, N) {
+            // de2(i,j)
+            chmin(dp[j][0], mn+A[i][j]);
         }
-        return ret;
-    };
-    dfs(dfs, 0);
-    de(sum)
-    ll ans = nC3(N) - sum + nC2(N);
+        rep(j, N) {
+            chmin(dp[j][1], pdp[j][0]+A[i][j]*9/10);
+            chmin(dp[j][1], pdp[j][1]+A[i][j]*7/10);
+        }
+    }
+    ll ans = INF;
+    rep(i, N) rep(k, 2) chmin(ans, dp[i][k]);
     Out(ans);
-
 
 }
 
