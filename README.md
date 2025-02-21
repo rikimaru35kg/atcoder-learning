@@ -957,9 +957,6 @@
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 - !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値中 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !要復習 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
 
 ## 全方位木DP
@@ -1005,6 +1002,9 @@
 - 基本 飴の配り方 [M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
 - 基本 飛び飛びの場合の経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
 - 基本 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - !復習価値低 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
 - !要復習 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)

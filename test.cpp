@@ -226,35 +226,99 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, M);
+    N = N+N;
+    vvm dp0(N+1, vm(N+1));
+    vvm dp1(N+1, vm(N+1));
+    rep(i, N+1) dp0[i][i] = 1;
+    rep(i, N+1) dp1[i][i] = 1;
+    Combination comb(N, M998);
+    vvb frnd(N, vb(N));
+    rep(i, M) {
+        LONGM(a,b);
+        frnd[a][b] = frnd[b][a] = true;
     }
-    auto nC2=[&](ll n) {return n*(n-1)/2;};
-    auto nC3=[&](ll n) {return n*(n-1)*(n-2)/6;};
 
-    ll sum = 0;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
-        ll ret = 1;
-        vl szz;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll csz = f(f, nv, v);
-            szz.push_back(csz);
-            sum += (N-csz) * csz;
-            ret += csz;
+    for(ll w=2; w<=N; w+=2) {
+        rep(l, N+1-w) {
+            ll r = l+w;
+            // if(l==0&&r==4) {
+            //     cout<<"";
+            // }
+            if(frnd[l][r-1]) dp0[l][r] += dp1[l+1][r-1];
+            ll p = (r-l)/2;
+            for(ll m=l+2; m<r; m+=2) {
+                ll pl = (m-l)/2;
+                dp1[l][r] += (dp0[l][m]*dp1[m][r]) * comb(p,pl);
+            }
+            dp1[l][r] += dp0[l][r];
         }
-        return ret;
-    };
-    dfs(dfs, 0);
-    de(sum)
-    ll ans = nC3(N) - sum + nC2(N);
+    }
+    de(dp1)
+    mint ans = dp1[0][N];
     Out(ans);
-
 
 }
 

@@ -228,6 +228,33 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    auto nC2=[&](ll n) {return n*(n-1)/2;};
+    auto nC3=[&](ll n) {return n*(n-1)*(n-2)/6;};
+
+    ll sum = 0;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = 1;
+        vl szz;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll csz = f(f, nv, v);
+            szz.push_back(csz);
+            sum += (N-csz) * csz;
+            ret += csz;
+        }
+        return ret;
+    };
+    dfs(dfs, 0);
+    de(sum)
+    ll ans = nC3(N) - sum + nC2(N);
+    Out(ans);
+
 
 }
 
