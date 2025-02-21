@@ -941,10 +941,7 @@
 - 円環のどこかに必ず固定できる点があるのであれば、それを1番目かつN+1番目の要素とする事で、円環を固定できる場合あり
 ### 例題
 - 基本 同じ数字が隣り合ったらアウト [E - Distinct Adjacent](https://atcoder.jp/contests/abc307/tasks/abc307_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
+- 基本 隣り合う頂点を選択して全被覆 [E - Takahashi and Animals](https://atcoder.jp/contests/abc251/tasks/abc251_e)
 - 基本 生産性最大化の為の平日休日割当 [E - Work or Rest](https://atcoder.jp/contests/abc285/tasks/abc285_e)
 - 基本 2部グラフ作成 [F - Make Bipartite](https://atcoder.jp/contests/abc229/tasks/abc229_f)
 
@@ -957,6 +954,9 @@
 - 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/editorial)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 - !要復習 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値高 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)

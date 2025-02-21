@@ -227,88 +227,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N,M,L);
-    ll Z = N+M+L;
-    VL(A, Z);
-    vl v;
-    rep(i, N) v.push_back(0); // taka
-    rep(i, M) v.push_back(1); // ao
-    rep(i, L) v.push_back(2); // table
-    auto hash=[&](vl &v) -> ll {
-        ll ret = 0;
-        rep(i, Z) ret = ret*3 + v[i];
-        return ret;
-    };
-    auto flip=[&](vl &v) {
-        rep(i, Z) {
-            if(v[i]==2) continue;
-            v[i] ^= 1;
-        }
-    };
-    ll three=1;
-    rep(i, Z) three *= 3;
-    vi mem(three,-1);
-    auto f=[&](auto f, ll s) -> int {
-        int &ret = mem[s];
-        if(ret != -1) return ret;
-        auto v = separate_digit(s,3,Z);
-        ll own=0;
-        rep(i, Z) if(v[i]==0) own++;
-        if(own==0) return ret = 0;
+    LONG(N); VL(A, N);
 
-        ret = 0;
-        rep(i, Z) {
-            if(v[i]!=0) continue;
-            // modosanai
-            auto nv = v;
-            flip(nv);
-            nv[i] = 2;
-            // flip(nv);
-            ll ns = hash(nv);
-            if(f(f, ns)==0) ret = 1;
-            nv[i] = 1;
-            // modosu
-            rep(j, Z) {
-                if(v[j]==2 && A[j]<A[i]) {
-                    // auto nv = v;
-                    swap(nv[i], nv[j]);
-                    // flip(nv);
-                    ll ns = hash(nv);
-                    if(f(f, ns)==0) ret = 1;
-                    swap(nv[i], nv[j]);
-                }
+    ll ans = INF;
+    rep(ri, 2) {
+        vl dp(2, INF);
+        dp[ri] = 0;
+        rep(i, N) {
+            vl pdp(2, INF); swap(dp, pdp);
+            rep(j, 2) rep(k, 2) {
+                if(pdp[j]==INF) continue;
+                if(j==0 && k==0) continue;
+                ll cost = 0;
+                if(k==1) cost = A[i];
+                chmin(dp[k], pdp[j]+cost);
             }
         }
-        return ret;
-    };
-
-    ll s = hash(v);
-    if(f(f, s)==1) puts("Takahashi");
-    else puts("Aoki");
+        chmin(ans, dp[ri]);
+    }
+    Out(ans);
 
 }
 
