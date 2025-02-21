@@ -227,76 +227,179 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-vector<vector<int>> make_next(string &s, char base='a') {
-    int n = s.size(), Z = 26;
-    vector<vector<int>> next(Z, vector<int>(n, n));
-    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
-    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
-        next[z][i] = min(next[z][i], next[z][i+1]);
+template <class S, S(*op)(S, S), S(*e)()>
+struct SegTree {
+    int n, mx;
+    vector<S> a;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    return next;
-}
+    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x, bool do_op=true) {
+        assert(i>=0 && i<n);
+        set_only(i, x, do_op);
+        i += n; i>>=1;  // i is node id
+        while(i) {
+            update(i);
+            i>>=1;
+        }
+    }
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
+    }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
+    }
+    S get(int i) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        return a[i];
+    }
+    S prod(int ql, int qr) {
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, int i) -> S {
+            if(r<=ql || l>=qr) return e();
+            if(l>=ql && r<=qr) return get(i-n);
+            int m = (l+r)/2;
+            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
+            return ret;
+        };
+        S ret = f(f, 0, n, 1);
+        return ret;
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
+        cerr<<endl;
+        #endif
+    }
+};
+
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+#ifdef __DEBUG
+    void print() {
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+    }
+#else
+    void print() {}
+#endif
+};
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e(){return 0;}
 
 void solve() {
-    STRING(S, T);
-    ll N = S.size(), M = T.size();
-    ll Z = 26;
-    auto ns = make_next(S);
-    auto nt = make_next(T);
-
-    auto cal=[&](string &s, vvi &next) -> mint {
-        ll N = s.size();
-        vm dp(N+1);
-        dp[0] = 1;
-        rep(i, N) {
-            if(dp[i]==0) continue;
-            rep(z, Z) {
-                ll ni = next[z][i]+1;
-                if(ni>N) continue;
-                dp[ni] += dp[i];
-            }
-        }
-        mint ret;
-        rep1(i, N) ret += dp[i];
-        return ret;
-    };
-    mint a = cal(S, ns), b = cal(T, nt);
-    de2(a.val(), b.val())
-
-    vvm dp(N+1, vm(M+1));
-    dp[0][0] = 1;
-    rep(i, N) rep(j, M) {
-        mint now = dp[i][j];
-        if(now==0) continue;
-        rep(z, Z) {
-            ll ni = ns[z][i]+1;
-            ll nj = nt[z][j]+1;
-            if(ni>N || nj>M) continue;
-            dp[ni][nj] += now;
-        }
+    LONG(N); VL(A, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) {
+        cc.add(A[i]);
+        cc.add(A[i]+1);
     }
-    mint dup;
-    rep(i, N+1) rep(j, M+1) {
-        if(i==0 || j==0) continue;
-        dup += dp[i][j];
+    cc.add(0);
+    rep(i, N) A[i] = cc(A[i]);
+    ll m = cc.size();
+
+    SegTree<S,op,e> seg0(m), seg1(m);
+    Pr save(0,1);
+    rep(i, N) {
+        ll mx0 = seg0.prod(0,A[i]) + 1;
+        ll mx1 = seg1.prod(0,A[i]) + 1;
+        seg0.set(A[i],mx0);
+        seg1.set(A[i],mx1);
+
+        auto [bi,bx] = save;
+        seg1.set(bi, bx);
+        save = {A[i]+1,mx0+1};
     }
-    mint ans = a + b - dup;
+    ll ans = seg1.all_prod();
     Out(ans);
-
 
 }
 

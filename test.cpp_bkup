@@ -229,24 +229,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VS(S, N);
-    map<string,ll> cnt;
-    rep(i, N) {
-        ll m = S[i].size();
-        set<string> st;
-        rep(s, 1<<m) {
-            if(s==0) continue;
-            string now;
-            rep(j, m) if(s>>j&1) {
-                now += S[i][j];
-            }
-            st.insert(now);
-        }
-        for(auto s: st) cnt[s]++;
+    VL(A, N-1);
+    ll mx = 0;
+    ll c2 = 0;
+    ll j = -1;
+    rep(i, N-1) {
+        if(A[i]>mx+2) Pm0
+        if(A[i]==mx+2) ++c2, j = i;
+        chmax(mx, A[i]);
     }
-    ll ans = 0;
-    for(auto s: S) {
-        ans += cnt[s];
+    if(c2>=2) Pm0
+    if(c2==1) {
+        if(j==0) Outend(1);
+        rep(i, j) {
+            if(A[i]!=A[j]-2) continue;
+            Outend(j-i);
+        }
+    }
+
+    ll ans = 1;
+    mx = 0;
+    rep(i, N-1) {
+        chmax(mx, A[i]);
+        ans += mx+1-1;
     }
     Out(ans);
 
