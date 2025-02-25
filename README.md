@@ -443,10 +443,7 @@
 - 二分木の場合に定義される（下側を通る順番の事）
 - 通りがけ順を適当な（上手い）範囲で取り出すと部分木になっており、根より早く登場する頂点は左側子孫、遅く出現する頂点は根の右側子孫となる
 ### 例題
-<!-- #############################
-# back review point (last submission 2025/1/23)
-############################# -->
-- !要復習 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
+- !復習価値中 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
 
 ## 木の次数列
 - 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる
@@ -761,10 +758,7 @@
 - オンラインで葉を更新するのは計算量が大きすぎるので注意！
 - オンラインで範囲クエリに答えるのは得意 O(Q*log^2(N))
 ### 例題
-<!-- #############################
-# back review point (last submission 2025/1/23)
-############################# -->
-- !要復習 [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
+- !復習価値中 [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
 
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける
@@ -1006,19 +1000,22 @@
 - 基本 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - !復習価値低 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
 - !復習価値高 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
+- !復習価値低 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
+- !復習価値高 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
+- !復習価値中 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
+- !復習価値中 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 <!-- #############################
-# current review point (where i am now)
+# back review point (last submission: 2025/1/27)
 ############################# -->
-- !復習価値高 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
-- !要復習 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
-- !復習価値高 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
-- !復習価値高 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !復習価値中 [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
 ## 長さを持つDP
 - 何回操作したか等の長さもキーにするDP
 - 制約が小さいときに見かけがち
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
 - 基本 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 - 基本 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
