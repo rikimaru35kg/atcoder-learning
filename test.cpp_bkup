@@ -227,78 +227,111 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
 }
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
 }
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
 }
 
 void solve() {
-    LONG(N, L, D);
-    vd dealer(N+L+D);
-    dealer[0] = 1;
-    db sum = 1;
-    queue<db> que1;
-    auto push1=[&](db x) {
-        sum += x;
-        que1.push(x);
-        while(SIZE(que1)>D) {
-            db px = que1.front(); que1.pop();
-            sum -= px;
-        }
-    };
-    push1(1);
-    rep1(i, L+D-1) {
-        dealer[i] = sum/D;
-        if(i<L) push1(dealer[i]);
+    LONG(N, D, K);
+    vvl S(2);
+    S[0].push_back(0), S[1].push_back(0);
+    rep(i, N) {
+        LONG(p, s); --p;
+        S[p].push_back(s);
     }
-    rep(i, L) dealer[i] = 0;
-    // de(dealer)
-    // de(accumulate(all(dealer),0.0));
+    sort(all(S[0])); sort(all(S[1]));
+    ll A = S[0].size(), B = S[1].size();
 
-    auto Sc = cumsum(dealer);
-    // de(Sc)
-    db def = Sc[N+L+D] - Sc[N+1];
-    // de(def)
-    vd dp(N+1);
-    // dp[N] = def;
-    sum = 0;
-    queue<db> que;
-    auto push=[&](db x) {
-        sum += x;
-        que.push(x);
-        while(SIZE(que)>D) {
-            db px = que.front(); que.pop();
-            sum -= px;
-        }
-    };
-    repr(x, N+1) {
-        db noop = def + Sc[x];
-        db op = sum/D;
-        // de2(x,sum)
-        dp[x] = max(noop, op);
-        push(dp[x]);
+    vt3 event;
+    rep(i, A) event.emplace_back(S[0][i],0,i);
+    rep(i, B) event.emplace_back(S[1][i],1,i);
+    sort(all(event));
+
+    vvl dp(2);
+    rep(i, A) dp[0].push_back(0);
+    rep(i, B) dp[1].push_back(0);
+
+    for(auto [s,p,i]: event) {
+        ll now = dp[p][i];
+        ll cost = D+K*now+1;
+        auto [n,x] = lowbou(S[p^1], s+cost);
+        ll MX0 = A, MX1 = B;
+        if(p==1) swap(MX0, MX1);
+        if(n<MX1) chmax(dp[p^1][n], now+1);
+        if(i<MX0-1) chmax(dp[p][i+1], now+1);
     }
-    // de(dp)
-    Out(dp[0]);
-
-
-
+    ll ans = 0;
+    rep(i, A) chmax(ans, dp[0][i]);
+    rep(i, B) chmax(ans, dp[1][i]);
+    de(dp)
+    Out(ans);
 
 }
 

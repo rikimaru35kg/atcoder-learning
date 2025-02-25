@@ -227,44 +227,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N); VL(A, N);
+    LONG(N,L);
+    VL(X, N);
+    VL(T, N);
+    auto ins=[&](vl &x, ll l) {
+        x.insert(x.begin(), 0);
+        x.push_back(l);
+    };
+    ins(X, L);
+    ins(T, 0);
+    N += 2;
+    using vvvvl = vector<vvvl>;
+    vvvvl dp(N, vvvl(N, vvl(2, vl(N+1, INF))));
+    dp[0][N-1][0][0] = 0; dp[0][N-1][1][0] = 0;
 
-    using MP = map<ll,mint>;
-    vector<vector<MP>> dp(N+1, vector<MP>(N));
-    rep(i, N) rep(j, i) {
-        dp[2][i][A[i]-A[j]]++;
-    }
-
-    repk(l,2,N) rep(i,N) repk(j,i+1,N) {
-        ll d = A[j]-A[i];
-        dp[l+1][j][d] += dp[l][i][d];
-    }
-
-    vm ans(N);
-    ans[0] = N;
-    repk(l, 2, N+1) {
-        mint now = 0;
-        rep(i, N) {
-            for(auto [d,n]: dp[l][i]) now += n;
+    rep(l, N-2) for(ll r=N-1; r>l+1; --r) rep(n, N) {
+        // de5(l,r,0,n,dp[l][r][0][n])
+        // de5(l,r,1,n,dp[l][r][1][n])
+        {
+            ll now = dp[l][r][0][n];
+            ll nt = now + X[l+1]-X[l];
+            ll gain = 0;
+            if(nt<=T[l+1]) ++gain;
+            chmin(dp[l+1][r][0][n+gain], nt);
         }
-        ans[l-1] = now;
+        {
+            ll now = dp[l][r][0][n];
+            ll nt = now + L-(X[r-1]-X[l]);
+            ll gain = 0;
+            if(nt<=T[r-1]) ++gain;
+            chmin(dp[l][r-1][1][n+gain], nt);
+        }
+        {
+            ll now = dp[l][r][1][n];
+            ll nt = now + L-(X[r]-X[l+1]);
+            ll gain = 0;
+            if(nt<=T[l+1]) ++gain;
+            chmin(dp[l+1][r][0][n+gain], nt);
+        }
+        {
+            ll now = dp[l][r][1][n];
+            ll nt = now + X[r]-X[r-1];
+            ll gain = 0;
+            if(nt<=T[r-1]) ++gain;
+            chmin(dp[l][r-1][1][n+gain], nt);
+        }
+    }
+
+    ll ans = 0;
+    rep(l, N) rep(r, N) rep(k, 2) rep(n, N+1) {
+        if(dp[l][r][k][n]!=INF) chmax(ans, n);
     }
     Out(ans);
+
 
 }
 
