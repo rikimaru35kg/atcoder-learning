@@ -227,78 +227,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N, L, D);
-    vd dealer(N+L+D);
-    dealer[0] = 1;
-    db sum = 1;
-    queue<db> que1;
-    auto push1=[&](db x) {
-        sum += x;
-        que1.push(x);
-        while(SIZE(que1)>D) {
-            db px = que1.front(); que1.pop();
-            sum -= px;
-        }
-    };
-    push1(1);
-    rep1(i, L+D-1) {
-        dealer[i] = sum/D;
-        if(i<L) push1(dealer[i]);
+    LONG(N); VL(A, N);
+
+    using MP = map<ll,mint>;
+    vector<vector<MP>> dp(N+1, vector<MP>(N));
+    rep(i, N) rep(j, i) {
+        dp[2][i][A[i]-A[j]]++;
     }
-    rep(i, L) dealer[i] = 0;
-    // de(dealer)
-    // de(accumulate(all(dealer),0.0));
 
-    auto Sc = cumsum(dealer);
-    // de(Sc)
-    db def = Sc[N+L+D] - Sc[N+1];
-    // de(def)
-    vd dp(N+1);
-    // dp[N] = def;
-    sum = 0;
-    queue<db> que;
-    auto push=[&](db x) {
-        sum += x;
-        que.push(x);
-        while(SIZE(que)>D) {
-            db px = que.front(); que.pop();
-            sum -= px;
-        }
-    };
-    repr(x, N+1) {
-        db noop = def + Sc[x];
-        db op = sum/D;
-        // de2(x,sum)
-        dp[x] = max(noop, op);
-        push(dp[x]);
+    repk(l,2,N) rep(i,N) repk(j,i+1,N) {
+        ll d = A[j]-A[i];
+        dp[l+1][j][d] += dp[l][i][d];
     }
-    // de(dp)
-    Out(dp[0]);
 
-
-
+    vm ans(N);
+    ans[0] = N;
+    repk(l, 2, N+1) {
+        mint now = 0;
+        rep(i, N) {
+            for(auto [d,n]: dp[l][i]) now += n;
+        }
+        ans[l-1] = now;
+    }
+    Out(ans);
 
 }
 

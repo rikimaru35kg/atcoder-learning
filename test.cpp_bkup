@@ -227,20 +227,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 template <typename T> vector<T> cumsum(vector<T> &a) {
     int n = a.size();
     vector<T> ret(n+1);
@@ -263,31 +249,56 @@ template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
 }
 
 void solve() {
-    LONG(N); VL(A, N);
-
-    auto Sc = cumsum(A);
-    
-    using T3 = tuple<ll,ll,mint>;
-    using vT3 = vector<T3>;
-
-    vvm dp(N+1, vm(N+1));
-    vvm ds(N+1, vm(N+1));
-    dp[0][0] = 1;
-    ds[0][0] = 1;
-    rep(i, N) {
-        ll r = i+1;
-        ll sum = Sc[r];
-        vT3 save;
-        rep1(j, N) {
-            dp[r][j] += ds[j-1][sum%j];
-            save.emplace_back(j, sum%(j+1), dp[r][j]);
+    LONG(N, L, D);
+    vd dealer(N+L+D);
+    dealer[0] = 1;
+    db sum = 1;
+    queue<db> que1;
+    auto push1=[&](db x) {
+        sum += x;
+        que1.push(x);
+        while(SIZE(que1)>D) {
+            db px = que1.front(); que1.pop();
+            sum -= px;
         }
-        for(auto [j,k,x]: save) { ds[j][k] += x; }
+    };
+    push1(1);
+    rep1(i, L+D-1) {
+        dealer[i] = sum/D;
+        if(i<L) push1(dealer[i]);
     }
+    rep(i, L) dealer[i] = 0;
+    // de(dealer)
+    // de(accumulate(all(dealer),0.0));
 
-    mint ans = 0;
-    rep1(j, N) ans += dp[N][j];
-    Out(ans);
+    auto Sc = cumsum(dealer);
+    // de(Sc)
+    db def = Sc[N+L+D] - Sc[N+1];
+    // de(def)
+    vd dp(N+1);
+    // dp[N] = def;
+    sum = 0;
+    queue<db> que;
+    auto push=[&](db x) {
+        sum += x;
+        que.push(x);
+        while(SIZE(que)>D) {
+            db px = que.front(); que.pop();
+            sum -= px;
+        }
+    };
+    repr(x, N+1) {
+        db noop = def + Sc[x];
+        db op = sum/D;
+        // de2(x,sum)
+        dp[x] = max(noop, op);
+        push(dp[x]);
+    }
+    // de(dp)
+    Out(dp[0]);
+
+
+
 
 }
 

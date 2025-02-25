@@ -1013,9 +1013,6 @@
 - 何回操作したか等の長さもキーにするDP
 - 制約が小さいときに見かけがち
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
 - 基本 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 - 基本 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
@@ -1027,6 +1024,9 @@
 - 基本 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - 基本 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - 基本 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [D - 水ようかん (Mizuyokan)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_d)
 - !復習価値中 [F - Diversity](https://atcoder.jp/contests/abc383/tasks/abc383_f)
 - 基本 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
