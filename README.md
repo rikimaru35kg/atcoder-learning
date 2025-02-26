@@ -1054,9 +1054,6 @@
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 - !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
@@ -1068,12 +1065,15 @@
 - あるいは、元のDP配列がa,b,c,d,eで、加える値が2の場合はa,b,a+c,b+d,c+eとなる事を考えれば、戻す操作の手順が理解できるはず
 ### 例題
 - 基本 [F - #(subset sum = K) with Add and Erase](https://atcoder.jp/contests/abc321/tasks/abc321_f)
-- !復習価値中 [D - No Need](https://atcoder.jp/contests/arc070/tasks/arc070_b)
+- 基本 [D - No Need](https://atcoder.jp/contests/arc070/tasks/arc070_b)
 
 ## 挿入DP
 - 順列を作るとき、決めた長さまでの数字を使い{1,3,2}のように埋めておいて、次に2とする場合は2以上を繰り上げて{1,4,3,2}とする
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
 
 ## 決め打ちDP
