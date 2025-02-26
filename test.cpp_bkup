@@ -227,110 +227,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(N, D, K);
-    vvl S(2);
-    S[0].push_back(0), S[1].push_back(0);
-    rep(i, N) {
-        LONG(p, s); --p;
-        S[p].push_back(s);
-    }
-    sort(all(S[0])); sort(all(S[1]));
-    ll A = S[0].size(), B = S[1].size();
+    LONG(N);
+    VL2(H,P,N);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return P[i]+H[i]<P[j]+H[j];
+    });
 
-    vt3 event;
-    rep(i, A) event.emplace_back(S[0][i],0,i);
-    rep(i, B) event.emplace_back(S[1][i],1,i);
-    sort(all(event));
-
-    vvl dp(2);
-    rep(i, A) dp[0].push_back(0);
-    rep(i, B) dp[1].push_back(0);
-
-    for(auto [s,p,i]: event) {
-        ll now = dp[p][i];
-        ll cost = D+K*now+1;
-        auto [n,x] = lowbou(S[p^1], s+cost);
-        ll MX0 = A, MX1 = B;
-        if(p==1) swap(MX0, MX1);
-        if(n<MX1) chmax(dp[p^1][n], now+1);
-        if(i<MX0-1) chmax(dp[p][i+1], now+1);
+    vl dp(N+1, INF);
+    dp[0] = 0;
+    for(auto i: p) {
+        repr(j, N+1) {
+            if(dp[j]==INF) continue;
+            if(dp[j]<=H[i]) chmin(dp[j+1], dp[j]+P[i]);
+        }
     }
     ll ans = 0;
-    rep(i, A) chmax(ans, dp[0][i]);
-    rep(i, B) chmax(ans, dp[1][i]);
-    de(dp)
+    rep(i, N+1) {
+        if(dp[i]!=INF) chmax(ans, i);
+    }
     Out(ans);
 
 }

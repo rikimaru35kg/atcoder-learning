@@ -1040,9 +1040,6 @@
 - 基本 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
 - 基本 おやつ [C - おやつ ](https://atcoder.jp/contests/arc042/tasks/arc042_c)
 - 基本　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [N - 活動](https://atcoder.jp/contests/past202104-open/tasks/past202104_n)
 - 基本 重さ制限付きタワー [X - Tower](https://atcoder.jp/contests/dp/tasks/dp_x)
 - !復習価値低 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
@@ -1057,6 +1054,9 @@
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 - !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
