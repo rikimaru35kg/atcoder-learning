@@ -1096,10 +1096,7 @@
 - 経路問題、進んだステップ数もキーにする場合あり
 ### 例題
 - 基本 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [B - お菓子の分割](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_b)
+- 基本 [B - お菓子の分割](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_b)
 
 # 文字列
 
@@ -1118,6 +1115,9 @@
 - また、ハッシュ一致判定で**mapやumap**を使うなら、その定数倍も重い（5倍ぐらい？）ので注意！
 ### 例題
 - 基本 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
 
 ## LCP（Longest Common Prefix）最長共通接頭辞

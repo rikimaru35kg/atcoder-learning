@@ -227,45 +227,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct D {
-    ll v, c;
-    D(ll v=-INF, ll c=-1): v(v),c(c) {}
-};
-struct Data {
-    D d1, d2;
-    Data(D d1=D(), D d2=D(-INF-1,-2)): d1(d1),d2(d2) {}
-    void update(D d) {
-        if(d.v>d2.v) swap(d,d2);
-        if(d2.v>d1.v) swap(d1,d2);
-        if(d1.c==d2.c) swap(d2,d);
-    }
-    D get(ll c) {
-        if(d1.c!=c) return d1;
-        return d2;
-    };
-};
-
 void solve() {
-    LONG(N,K);
-    vector<Data> dp(K+1);
-    dp[0] = Data(D(0,-2),D());
+    LONG(N); VL(A, N-1);
 
-    rep(i, N) {
-        LONG(c,v);
-        vector<Data> pdp(K+1); swap(pdp, dp);
-        rep(j, K) {
-            dp[j+1] = pdp[j];
+    vvl dp(2, vl(N/2+1, INF));
+    dp[0][1] = 0;
+    rep(i, N-1) {
+        vvl pdp(2, vl(N/2+1, INF)); swap(pdp, dp);
+        rep(j, 2) rep(k, 2) rep(l, N/2+1) {
+            if(pdp[j][l]==INF) continue;
+            ll nl = l;
+            if(k==0) nl++;
+            if(nl>N/2) continue;
+            ll cost = 0;
+            if(j!=k) cost += A[i];
+            chmin(dp[k][nl], pdp[j][l]+cost);
         }
-        rep(j, K+1) {
-            D base = pdp[j].get(c);
-            auto [pv, pc] = base;
-            if(pv<=-INF) continue;
-            dp[j].update(D(pv+v, c));
-        }
+        de(dp)
     }
-
-    ll ans = dp[K].d1.v;
-    if(ans<=-INF) Pm1
+    ll ans = min(dp[0][N/2], dp[1][N/2]);
     Out(ans);
 
 }
