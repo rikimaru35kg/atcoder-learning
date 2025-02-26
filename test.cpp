@@ -227,6 +227,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Trie {
+    struct Node {
+        using MP = map<char,int>;
+        MP to;
+        int num;  // # of words that go through this node
+        int words; // # of words that end at this node
+        ll depth;
+        Node(MP to=MP(), int num=0, int words=0, ll depth=INF): to(to),num(num),words(words),depth(depth) {}
+    };
+    int n;  // # of nodes
+    vector<Node> node;
+    Trie(): n(1),node(1) {}  // only root node
+    void add(string &s) {
+        ll N = s.size();
+        int v = 0;
+        node[0].num++;
+        chmin(node[0].depth, N);
+        rep(i, N) {
+            char c = s[i];
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            v = node[v].to[c];
+            de(v)
+            node[v].num++;
+            chmin(node[v].depth, N-i-1);
+        }
+        node[v].words++;
+    }
+    int calc(string &s) {
+        ll N = s.size();
+        ll ret = N;
+        ll v = 0;
+        rep(i, N) {
+            char c = s[i];
+            chmin(ret, N-i+node[v].depth);
+            if(!node[v].to.count(c)) {
+                return ret;
+            }
+            v = node[v].to[c];
+        }
+        chmin(ret, node[v].depth);
+        return ret;
+    };
+    int search_num(string &s) { // # of s added to the trie
+        int v = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            v = node[v].to[c];
+        }
+        return node[v].words;
+    }
+    int search_prefix_num(string &s) { // # of words that have s as prefix
+        int v = 0;
+        int ret = node[v].num;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            v = node[v].to[c];
+            ret = node[v].num;
+        }
+        return ret;
+    }
+    int get_lcp(string &s) { // Use this function after s is added.
+        int v = 0;
+        int ret = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            int nv = node[v].to[c];
+            if(node[nv].num<=1) break;
+            ++ret;
+            v = nv;
+        }
+        return ret;
+    }
+};
+
 const long long base = 12345;
 const long long MX = 2;
 const long long ps[12] = {1000000007, 1000000009, 1000000021,
@@ -311,34 +389,23 @@ ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
 
 void solve() {
     LONG(N);
-    STRING(T);
-    ll N2 = N + N;
-    mints ha, hb;
-    repk(i, N, N2) ha = ha*base + T[i];
-    for(ll i=N-1; i>=0; --i) hb = hb*base + T[i];
-
-    mints m=1;
-    rep(i, N-1) m*=base;
-    mints mx = m;
-    mints binv = mints(base).inv();
-    rep(i, N+1) {
-        if(ha==hb) {
-            string ans = T.substr(i, N);
-            reverse(all(ans));
-            Out(ans);
-            Out(i);
-            return;
+    umap<mints,ll> mp;
+    auto update=[&](mints h, ll x) {
+        if(mp.count(h)) chmin(mp[h], x);
+        else mp[h] = x;
+    };
+    rep(i, N) {
+        STRING(s);
+        ll m = s.size();
+        ll ans = m;
+        mints h;
+        rep(j, m) {
+            h = h*base + s[j];
+            if(mp.count(h)) chmin(ans, m-1-j+mp[h]);
+            update(h, m-1-j);
         }
-        if(i==N) break;
-        ha += m*T[i];
-        ha -= m*T[i+N];
-        hb -= T[i];
-        hb *= binv;
-        hb += mx*T[i+N];
-
-        m *= binv;
+        Out(ans);
     }
-    Pm1
 
 }
 

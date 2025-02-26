@@ -1126,9 +1126,6 @@
 ### 例題
 - 基本 [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 
 ## Z-algorithm（Zアルゴリズム）
@@ -1146,6 +1143,9 @@
 ### 例題
 - 基本 反転時交互列最大化 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 - !復習価値高 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 
