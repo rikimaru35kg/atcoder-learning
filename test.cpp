@@ -227,40 +227,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N);
-    STRING(S);
-
-    vm dp(N+1);
-    dp[1] = 1;
-    rep(i, N-1) {
-        vm pdp(N+1); swap(pdp, dp);
-        vm Sc(N+2);
-        rep(j, N+1) Sc[j+1] = Sc[j] + pdp[j];
-        de(Sc)
-        repk(j, 1, i+3) {
-            de(j)
-            if(S[i]=='>') dp[j] = Sc[N+1] - Sc[j];
-            else dp[j] = Sc[j];
-        }
-        de(dp)
+    LONG(N, M);
+    VL(A, N);
+    vvt3 bonus(N+1);
+    rep(i, M) {
+        LONG(p,q,l,r); --q;
+        bonus[q].emplace_back(p,l,r);
     }
-    mint ans;
-    rep1(i, N) ans += dp[i];
+
+    ll K = 3;
+    ll ans = -INF;
+    rep(t, K) {
+        vl dp(K, -INF);
+        dp[0] = 0;
+        rep(i, N+1) {
+            for(auto [p,l,r]: bonus[i]) {
+                rep(j, K+1) {
+                    if(j==l && (j+r)%K==t) dp[j] += p;
+                }
+            }
+            if(i==N) break;
+            vl pdp(K, -INF); swap(pdp, dp);
+            rep(j, K) {
+                if(pdp[j]==-INF) continue;
+                chmax(dp[j], pdp[j]);
+                chmax(dp[(j+1)%K], pdp[j]+A[i]);
+            }
+        }
+        chmax(ans, dp[t]);
+    }
     Out(ans);
 
 

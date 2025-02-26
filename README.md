@@ -1077,10 +1077,7 @@
 - ある条件を決め打ってDPする事で、問題が解けるようになる場合あり
 - 決め打った条件と整合する場合のみ採用すればOK（円環の予測DPに近い考え方）
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [L - 展覧会](https://atcoder.jp/contests/past202209-open/tasks/past202209_l)
+- 基本 [L - 展覧会](https://atcoder.jp/contests/past202209-open/tasks/past202209_l)
 
 ## Top2を持つ
 - 和の最大値を求めるDPにおいて、隣が同じ色になってはNGの場合、最後に選んだ色をDPの状態に持てば良いが、計算量が収まらない場合あり
@@ -1091,6 +1088,9 @@
 - 関数(2) 新しい（色、値）のペアが来た際、Top2を更新する（入替する）
 ### 例題
 - 基本 [E - エゴイ展 (EGOI Exhibition)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
