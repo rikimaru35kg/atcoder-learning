@@ -227,185 +227,198 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
-    struct Node {
-        using MP = map<char,int>;
-        MP to;
-        int num;  // # of words that go through this node
-        int words; // # of words that end at this node
-        ll depth;
-        Node(MP to=MP(), int num=0, int words=0, ll depth=INF): to(to),num(num),words(words),depth(depth) {}
-    };
-    int n;  // # of nodes
-    vector<Node> node;
-    Trie(): n(1),node(1) {}  // only root node
-    void add(string &s) {
-        ll N = s.size();
-        int v = 0;
-        node[0].num++;
-        chmin(node[0].depth, N);
-        rep(i, N) {
-            char c = s[i];
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
+template<class T,T(*op)(T,T),T(*e)(),class F,T(*mapping)(F f,T x),F(*composition)(F f,F g),F(*id)()>
+class ImplicitTreap{
+    struct Node{
+        T val,acc=e();
+        int priority;
+        int cnt=1;
+        F lazy=id();
+        bool rev=false;
+        Node *l, *r;
+        Node(T val,int priority):val(val),priority(priority),l(nullptr),r(nullptr){};
+    }
+    *root=nullptr;
+    using Tree=Node *;
+
+    int cnt(Tree t) { return t ? t->cnt : 0; }
+    T acc(Tree t){ return t ? t->acc : e(); }
+    void update(Tree t){
+        if(t){
+            t->cnt=1+cnt(t->l)+cnt(t->r);
+            t->acc=op(t->val,op(acc(t->l),acc(t->r)));
+        }
+    }
+    void pushdown(Tree t){
+        if(t && t->rev){
+            t->rev=false;
+            std::swap(t->l,t->r);
+            if(t->l)t->l->rev^=1;
+            if(t->r)t->r->rev^=1;
+        }
+        if(t && t->lazy!=id()){
+            if(t->l){
+                t->l->lazy=composition(t->l->lazy,t->lazy);
+                t->l->acc=mapping(t->lazy,t->l->acc);
             }
-            v = node[v].to[c];
-            de(v)
-            node[v].num++;
-            chmin(node[v].depth, N-i-1);
-        }
-        node[v].words++;
-    }
-    int calc(string &s) {
-        ll N = s.size();
-        ll ret = N;
-        ll v = 0;
-        rep(i, N) {
-            char c = s[i];
-            chmin(ret, N-i+node[v].depth);
-            if(!node[v].to.count(c)) {
-                return ret;
+            if(t->r){
+                t->r->lazy=composition(t->r->lazy,t->lazy);
+                t->r->acc=mapping(t->lazy,t->r->acc);
             }
-            v = node[v].to[c];
+            t->val=mapping(t->lazy,t->val);
+            t->lazy=id();
         }
-        chmin(ret, node[v].depth);
-        return ret;
-    };
-    int search_num(string &s) { // # of s added to the trie
-        int v = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            v = node[v].to[c];
-        }
-        return node[v].words;
+        update(t);
     }
-    int search_prefix_num(string &s) { // # of words that have s as prefix
-        int v = 0;
-        int ret = node[v].num;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            v = node[v].to[c];
-            ret = node[v].num;
+    void split(Tree t, int key, Tree& l,Tree& r){
+        if(!t){
+            l=r=nullptr;
+            return;
         }
+        pushdown(t);
+        int implicit_key=cnt(t->l)+1;
+        if(key<implicit_key){
+            split(t->l,key,l,t->l),r=t;
+        }else{
+            split(t->r,key-implicit_key,t->r,r),l=t;
+        }
+        update(t);
+    }
+    void insert(Tree& t,int key,Tree item){
+        Tree t1,t2;
+        split(t,key,t1,t2);
+        merge(t1,t1,item);
+        merge(t,t1,t2);
+    }
+    void merge(Tree& t, Tree l, Tree r){
+        pushdown(l);
+        pushdown(r);
+        if(!l || !r){
+            t=l?l:r;
+        }else if(l->priority>r->priority){
+            merge(l->r,l->r,r),t=l;
+        }else{
+            merge(r->l,l,r->l),t=r;
+        }
+        update(t);
+    }
+    void erase(Tree& t,int key){
+        Tree t1,t2,t3;
+        split(t,key+1,t1,t2);
+        split(t1,key,t1,t3);
+        merge(t,t1,t2);
+    }
+    T prod(Tree t,int l,int r){
+        Tree t1,t2,t3;
+        split(t,l,t1,t2);
+        split(t2,r-l,t2,t3);
+        T ret=t2->acc;
+        merge(t2,t2,t3);
+        merge(t,t1,t2);
         return ret;
     }
-    int get_lcp(string &s) { // Use this function after s is added.
-        int v = 0;
-        int ret = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            int nv = node[v].to[c];
-            if(node[nv].num<=1) break;
-            ++ret;
-            v = nv;
-        }
+    void apply(Tree t,int l,int r,F x){
+        Tree t1,t2,t3;
+        split(t,l,t1,t2);
+        split(t2,r-l,t2,t3);
+        t2->lazy=composition(t2->lazy,x);
+        t2->acc=mapping(x,t2->acc);
+        merge(t2,t2,t3);
+        merge(t,t1,t2);
+    }
+    void reverse(Tree t,int l,int r){
+        if(l>r)return;
+        Tree t1,t2,t3;
+        split(t,l,t1,t2);
+        split(t2,r-l,t2,t3);
+        t2->rev^=1;
+        merge(t2,t2,t3);
+        merge(t,t1,t2);
+    }
+    void rotate(Tree t,int l,int m,int r){
+        reverse(t,l,r);
+        reverse(t,l,l+r-m);
+        reverse(t,l+r-m,r);
+    }
+    void dump(Tree t) {
+        if (!t) return;
+        pushdown(t);
+        dump(t->l);
+        std::cerr << t->val << " ";
+        dump(t->r);
+    }
+public:
+    ImplicitTreap() {}
+    ImplicitTreap(std::vector<T> as){
+        std::reverse(as.begin(),as.end());
+        for(T a:as){ insert(0,a); }
+    }
+    void insert(int pos,T val){
+        //valをposの場所に追加する O(log N)
+        insert(root,pos,new Node(val,rand()));
+    }
+    void erase(T pos){
+        //posにある要素を消す O(log N)
+        erase(root,pos);
+    }
+    int size(){ return cnt(root); }
+    T operator[](int pos) {
+        Tree t1, t2, t3;
+        split(root, pos + 1, t1, t2);
+        split(t1, pos, t1, t3);
+        T ret = t3->acc;
+        merge(t1, t1, t3);
+        merge(root, t1, t2);
         return ret;
+    }
+    T prod(int l, int r){
+        //[l,r)の区間 O(log N)
+        return prod(root,l,r);
+    }
+    void apply(int l,int r,F x){ apply(root,l,r,x); }
+    void reverse(int l,int r){ reverse(root,l,r); }
+    void rotate(int l,int m,int r){ rotate(root,l,m,r); }
+    void dump(){ 
+        #ifdef __DEBUG
+        dump(root);std::cerr<<std::endl;
+        #endif
     }
 };
 
-const long long base = 12345;
-const long long MX = 2;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
-        }
-        return ret;
-    }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-}
-istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
-ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
+using T = char;
+T op(T a, T b) {return a+b;}
+T e(){return 0;}
 
 void solve() {
-    LONG(N);
-    umap<mints,ll> mp;
-    auto update=[&](mints h, ll x) {
-        if(mp.count(h)) chmin(mp[h], x);
-        else mp[h] = x;
-    };
+    STRING(S);
+    ll N = S.size();
+    ll now = 0;
     rep(i, N) {
-        STRING(s);
-        ll m = s.size();
-        ll ans = m;
-        mints h;
-        rep(j, m) {
-            h = h*base + s[j];
-            if(mp.count(h)) chmin(ans, m-1-j+mp[h]);
-            update(h, m-1-j);
-        }
-        Out(ans);
+        if(S[i]=='(') ++now;
+        else if(S[i]==')') --now;
+        else if(now%2) S[i] ^= 32;
     }
+    vc init;
+    for(auto c: S) init.push_back(c);
+    ImplicitTreap<T,op,e,T,op,op,e> v(init);
+
+    vl stck;
+    vp span;
+    rep(i, N) {
+        if(S[i]=='(') stck.push_back(i);
+        else if(S[i]==')') {
+            ll pi = pop(stck);
+            if(pi+1<i) v.reverse(pi+1, i);
+        }
+    }
+
+    string ans;
+    rep(i, N) {
+        char c = v[i];
+        if(c=='(' || c==')') continue;
+        ans += c;
+    }
+    Out(ans);
 
 }
 
