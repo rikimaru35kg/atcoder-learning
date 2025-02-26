@@ -227,38 +227,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct D {
+    ll v, c;
+    D(ll v=-INF, ll c=-1): v(v),c(c) {}
+};
+struct Data {
+    D d1, d2;
+    Data(D d1=D(), D d2=D(-INF-1,-2)): d1(d1),d2(d2) {}
+    void update(D d) {
+        if(d.v>d2.v) swap(d,d2);
+        if(d2.v>d1.v) swap(d1,d2);
+        if(d1.c==d2.c) swap(d2,d);
+    }
+    D get(ll c) {
+        if(d1.c!=c) return d1;
+        return d2;
+    };
+};
+
 void solve() {
-    LONG(N, M);
-    VL(A, N);
-    vvt3 bonus(N+1);
-    rep(i, M) {
-        LONG(p,q,l,r); --q;
-        bonus[q].emplace_back(p,l,r);
-    }
+    LONG(N,K);
+    vector<Data> dp(K+1);
+    dp[0] = Data(D(0,-2),D());
 
-    ll K = 3;
-    ll ans = -INF;
-    rep(t, K) {
-        vl dp(K, -INF);
-        dp[0] = 0;
-        rep(i, N+1) {
-            for(auto [p,l,r]: bonus[i]) {
-                rep(j, K+1) {
-                    if(j==l && (j+r)%K==t) dp[j] += p;
-                }
-            }
-            if(i==N) break;
-            vl pdp(K, -INF); swap(pdp, dp);
-            rep(j, K) {
-                if(pdp[j]==-INF) continue;
-                chmax(dp[j], pdp[j]);
-                chmax(dp[(j+1)%K], pdp[j]+A[i]);
-            }
+    rep(i, N) {
+        LONG(c,v);
+        vector<Data> pdp(K+1); swap(pdp, dp);
+        rep(j, K) {
+            dp[j+1] = pdp[j];
         }
-        chmax(ans, dp[t]);
+        rep(j, K+1) {
+            D base = pdp[j].get(c);
+            auto [pv, pc] = base;
+            if(pv<=-INF) continue;
+            dp[j].update(D(pv+v, c));
+        }
     }
-    Out(ans);
 
+    ll ans = dp[K].d1.v;
+    if(ans<=-INF) Pm1
+    Out(ans);
 
 }
 

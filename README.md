@@ -644,7 +644,7 @@
 ### 例題
 - 基本 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - 基本 [C - 塗りつぶし (Painting)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_c)
-- !復習価値小 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
+- !復習価値低 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
 - 基本 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - 基本 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
@@ -1088,10 +1088,7 @@
 - 関数(2) 新しい（色、値）のペアが来た際、Top2を更新する（入替する）
 ### 例題
 - 基本 [E - エゴイ展 (EGOI Exhibition)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
+- !復習価値低 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
 - 自分的に苦手な考え方のDPをまとめておく
@@ -1099,6 +1096,9 @@
 - 経路問題、進んだステップ数もキーにする場合あり
 ### 例題
 - 基本 [E - Traveler](https://atcoder.jp/contests/abc197/tasks/abc197_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [B - お菓子の分割](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_b)
 
 # 文字列
