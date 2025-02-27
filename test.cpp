@@ -227,49 +227,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-#include <atcoder/string>
-using namespace atcoder;
-
 void solve() {
-    STRING(S);
-    auto v = suffix_array(S);
-    ll N = S.size();
+    LONG(N, K); ++K;
+    VL2(A,B,N);
 
-    LONG(Q);
-    rep(_, Q) {
-        STRING(t);
-        auto f=[&](ll i) -> bool {
-            ll m = t.size();
-            string tmp = S.substr(v[i], m);
-            return tmp >= t;
-        };
-        ll l = binary_search(N,-1,f);
-        t += '~';
-        ll r = binary_search(N,-1,f);
-        ll ans = r-l;
-        Out(ans);
+    ll ans = 0;
+    rep(d, 31) {
+        if(~K>>d&1) continue;
+        ll K2 = K&(~1LL<<d);
+        ll rmask = (1LL<<d)-1;
+        K2 |= rmask;
+
+        ll now = 0;
+        rep(i, N) {
+            if((K2&A[i])==A[i]) now += B[i];
+        }
+        chmax(ans, now);
     }
+    Out(ans);
 
 }
 

@@ -1004,9 +1004,6 @@
 - !復習価値高 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
 - !復習価値中 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値中 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
-<!-- #############################
-# back review point (last submission: 2025/1/27)
-############################# -->
 - !復習価値中 [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
 ## 長さを持つDP
@@ -1181,19 +1178,19 @@
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
+- 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
-- !復習価値中 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
+- !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
+<!-- #############################
+# back review point (last submission: 2025/1/31)
+############################# -->
 - !要復習 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
 ## OR
 - ORは各ビットの和集合
 - ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
 ### 例題
-- !復習価値中 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
+- !復習価値低 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
 
 ## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
@@ -1209,6 +1206,9 @@
 - 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
 
 ## 整数とMOD
