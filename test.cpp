@@ -227,62 +227,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// O(log(N)) for each operation
-struct OnlineMex {
-    int n;  // the maximum numbers possible to be input
-    set<int> rems;
-    vector<int> cnt;
-    OnlineMex(int n): n(n), cnt(n+1) {
-        for(int i=0; i<=n; ++i) rems.insert(i);
-    }
-    void add(long long x, int c=1) {
-        if(x>n) return;
-        rems.insert(x);
-        cnt[x] += c;
-        if(cnt[x]>0) rems.erase(x);
-        assert(cnt[x]>=0);
-    }
-    void del(int x) {add(x,-1);}
-    int get_mex() {
-        assert(!rems.empty());
-        return *rems.begin();
-    }
-};
-
 void solve() {
-    LONG(N, M);
-    VL(A, N);
-    OnlineMex mex(N);
-
-    auto judge=[&](ll i) -> bool {
-        mex.add(A[i]);
-        ll now = mex.get_mex();
-        mex.del(A[i]);
-        return now<M;
-    };
-
-    ll r = 0;
-    vl ans(N+10);
-    rep(l, N) {
-        de(l)
-        while(r<N && judge(r)) {
-            mex.add(A[r]);
-            ++r;
-        }
-        ans[r-l+1]++;
-        ans[N-l+1]--;
-        if(l==r) ++r;
-        else mex.del(A[l]);
+    LONG(L,R,G);
+    L = Divceil(L,G);
+    R = Div(R,G);
+    if(L>R) {
+        puts("-1 -1"); return;
     }
-    rep(i, N+1) ans[i+1] += ans[i];
-    rep1(i, N) Out(ans[i]);
-
+    for(ll w=R-L; w>=0; --w) {
+        repk(l, L, R+1-w) {
+            ll r = l+w;
+            if(gcd(l,r)==1) {
+                printf("%lld %lld\n", l*G, r*G);
+                return;
+            }
+        }
+    }
+    puts("-1 -1"); return;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

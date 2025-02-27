@@ -1206,10 +1206,7 @@
 - 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
+- !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
 
 ## 整数とMOD
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
@@ -1228,7 +1225,7 @@
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
 - !復習価値低 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - 基本 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
-- !復習価値低 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
+- 基本 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
 - 基本 おつなぎ数 [D - 88888888](https://atcoder.jp/contests/abc357/tasks/abc357_d)
 - 基本 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
 - 基本 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
@@ -1254,9 +1251,9 @@
 ### 例題
 - 基本 [C - Four Variables](https://atcoder.jp/contests/abc292/tasks/abc292_c)
 - 基本 ある操作を続けて1になれるか [F - Division or Subtraction](https://atcoder.jp/contests/abc161/tasks/abc161_f)
-- !復習価値低 max(LCM,GCD) [C - LCM of GCDs](https://atcoder.jp/contests/arc124/tasks/arc124_c)
+- 基本 [C - LCM of GCDs](https://atcoder.jp/contests/arc124/tasks/arc124_c)
 - 基本 高度合成数を求める [D - 2016](https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_d)
-- !復習価値中 [F - Palindromic Expression](https://atcoder.jp/contests/abc363/tasks/abc363_f)
+- 基本 [F - Palindromic Expression](https://atcoder.jp/contests/abc363/tasks/abc363_f)
 
 ## GCD最大公約数と拡張ユークリッドの互除法
 - 最大公約数は各素因数の最小指数を選んだもの
@@ -1309,8 +1306,8 @@
 - つまり互いに素なペアを見つけるにはどちらか一方が素数であれば良いので、そのぐらいの間隔を調べれば良い
 - ただし実際には1500ではなく30個程度調べれば十分との話もある
 ### 例題
-- [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
-- [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
+- 基本 [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
+- !要復習 [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
 
 ## 剰余埋めつくし系
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
@@ -1318,6 +1315,9 @@
 - DとMが互いに素の場合、0<=i<j<Mにおいて、iDとjDは合同にならない。つまり0からM-1まではD倍したときの余りがかぶらず、全てのMパターンの余りを埋めつくす
 - gcd(D, M)=gでD=gd、M=gmの場合、0<=i<j<mにおいて、iDとjDは必ずgの倍数であり、合同にならない。つまり0からm-1まではD倍したときの余りがかぶらず、gの倍数となる全ての余りmパターンを埋めつくす
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 埋めつくし計算式を理解していれば解ける良問 [D - Marking](https://atcoder.jp/contests/abc290/tasks/abc290_d)
 - 基本 埋めつくしによるMST構築 解説動画の前半は問題勘違いなので注意 [E - Ring MST](https://atcoder.jp/contests/abc210/tasks/abc210_e)
 

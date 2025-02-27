@@ -13,3 +13,7 @@
 13: p=41, sum=238, mul=   304250263527210, len(mul)=15
 14: p=43, sum=281, mul= 13082761331670030, len(mul)=17
 15: p=47, sum=328, mul=614889782588491410, len(mul)=18
+
+pi(N) := The number of primes less than or equal to N.
+pi(N) ~ N/log(N)
+density of prime number ~ 1/log(N)
