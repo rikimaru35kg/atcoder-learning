@@ -1150,9 +1150,6 @@
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
 - O(N)で求まるらしい（ACLにある）
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [G - Count Substring Query](https://atcoder.jp/contests/abc362/tasks/abc362_g)
 
 # 数
@@ -1184,6 +1181,9 @@
 ### 例題
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値中 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
