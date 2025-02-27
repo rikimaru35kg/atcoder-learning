@@ -228,22 +228,14 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(L,R,G);
-    L = Divceil(L,G);
-    R = Div(R,G);
-    if(L>R) {
-        puts("-1 -1"); return;
-    }
-    for(ll w=R-L; w>=0; --w) {
-        repk(l, L, R+1-w) {
-            ll r = l+w;
-            if(gcd(l,r)==1) {
-                printf("%lld %lld\n", l*G, r*G);
-                return;
-            }
-        }
-    }
-    puts("-1 -1"); return;
+    LONG(N,D,K); --K;
+    ll g = gcd(N,D);
+    ll block = N/g;
+    ll cycle = K/block;
+    ll rem = K%block;
+    ll ans = (cycle+rem*D)%N;
+    Out(ans);
+
 }
 
 int main () {

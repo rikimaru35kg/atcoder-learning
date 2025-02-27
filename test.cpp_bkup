@@ -228,22 +228,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(L, R);
-    ll D = 1440;
-    ll ans = 1;
-    repk(l, L, L+D+1) repk(r, R-D, R+1) {
-        if(l>=r) continue;
-        ll g = gcd(l,r);
-        if(g==1) chmax(ans, r-l);
+    LONG(L,R,G);
+    L = Divceil(L,G);
+    R = Div(R,G);
+    if(L>R) {
+        puts("-1 -1"); return;
     }
-    Out(ans);
-
+    for(ll w=R-L; w>=0; --w) {
+        repk(l, L, R+1-w) {
+            ll r = l+w;
+            if(gcd(l,r)==1) {
+                printf("%lld %lld\n", l*G, r*G);
+                return;
+            }
+        }
+    }
+    puts("-1 -1"); return;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
