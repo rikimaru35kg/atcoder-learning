@@ -227,30 +227,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
     LONG(N);
-    VL(X, N);
-    mint sum = 0;
-    mint ans;
-    rep(i, N-1) {
-        sum += mint(1)/(i+1);
-        ans += (X[i+1]-X[i])*sum;
+    VL2(L,R,N);
+
+    ll M = 110;
+    vvl Sc(N, vl(M));
+    rep(i, N) {
+        for(ll x=L[i]; x<=R[i]; ++x) Sc[i][x+1]++;
+        rep(j, M-1) Sc[i][j+1] += Sc[i][j];
     }
-    rep1(i, N-1) ans *= i;
+    de(Sc)
+
+    db ans = 0;
+    rep(i, N) repk(j, i+1, N) {
+        ll tot = (R[i]-L[i]+1) * (R[j]-L[j]+1);
+        ll cnt = 0;
+        for(ll x=L[j]; x<=R[j]; ++x) {
+            cnt += Sc[i][M-1] - Sc[i][x+1];
+        }
+        de2(tot, cnt)
+        ans += db(cnt)/tot;
+    }
     Out(ans);
 
 }

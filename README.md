@@ -1463,11 +1463,11 @@
 - E[X+Y] = E[X] + E[Y]
 - 場合の数が途方もない時、ある要素に注目すると計算量が押さえられる事がある（主客転倒的な発想）
 ### 例題
+- 基本 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
+- 基本 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- !復習価値低 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
-- !復習価値低 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - !復習価値低 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
 - !要復習 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
 
