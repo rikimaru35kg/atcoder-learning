@@ -1332,10 +1332,7 @@
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
 - 基本 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
+- !復習価値低 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 - !要復習 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
@@ -1394,7 +1391,7 @@
 - 2点(x1,y1), (x2,y2)を通る直線の方程式の一般形は以下の通り
 - (y2-y1)x - (x2-x1)y - x1y2 + x2y1 = 0
 ### 例題
-- !復習価値低 どういう典型か分類しかねるのでNote非掲載 [M - バランス](https://atcoder.jp/contests/past202109-open/tasks/past202109_m)
+- 基本 どういう典型か分類しかねるのでNote非掲載 [M - バランス](https://atcoder.jp/contests/past202109-open/tasks/past202109_m)
 
 
 # 場合の数と確率・期待値
@@ -1406,9 +1403,9 @@
 - 基本 [D - 多重ループ](https://atcoder.jp/contests/abc021/tasks/abc021_d)
 - 基本 [D - 11](https://atcoder.jp/contests/arc077/tasks/arc077_b)
 - 基本 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
-- !復習価値低 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
-- !復習価値低 2つの正方形を配置する場合の数 [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
-- !復習価値中 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
+- 基本 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
+- 基本 2つの正方形を配置する場合の数 [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
+- !復習価値低 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
 
@@ -1429,6 +1426,9 @@
 - 基本 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 - 基本 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
 - 基本 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4) （[解説は自分の提出参照](https://atcoder.jp/contests/abc003/submissions/58846679)）
 - !復習価値低 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
