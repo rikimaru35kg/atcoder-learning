@@ -226,10 +226,26 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
+        }
+    }
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
+}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -241,96 +257,55 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
 void solve() {
-    LONG(H, W);
-    LONG(N);
-    ll i1=INF,i2=-INF,j1=INF,j2=-INF;
-    vvb mascot(H, vb(W));
-    rep(k, N) {
-        LONGM(i,j);
-        mascot[i][j] = true;
-        chmin(i1,i); chmax(i2,i);
-        chmin(j1,j); chmax(j2,j);
-    }
-    ll cnt = 0;
-    for(ll i=i1;i<=i2;++i) for(ll j=j1;j<=j2;++j) {
-        if(!mascot[i][j]) ++cnt;
-    }
-    ll MX = max(H,W);
-    chmax(MX, cnt);
-    Combination comb(MX, M107);
-    mint st = comb.get_fact(cnt);
+    LONG(N, M);
+    VL(A, N);
 
-    vvm dp(H+1, vm(W+1));
-    dp[i2-i1+1][j2-j1+1] = st;
-    rep(i, H+1) rep(j, W+1) {
-        if(dp[i][j]==0) continue;
-        if(j<W) dp[i][j+1] += dp[i][j] * comb.get_fact(i);
-        if(i<H) dp[i+1][j] += dp[i][j] * comb.get_fact(j);
+    if(M==1) {
+        mint ans = 1;
+        rep(i, N) if(A[i]==1) ans *= 2;
+        --ans;
+        Out(ans);
+        return;
     }
-    de(dp)
-    mint ans = dp[H][W];
-    de(ans)
-    auto calc=[&](ll i1, ll i2, ll H) -> Pr {
-        ll l = i1;
-        ll r = H-1-i2;
-        return {l,r};
-    };
-    auto [l1,r1] = calc(i1,i2,H);
-    auto [l2,r2] = calc(j1,j2,W);
-    de4(l1,r1,l2,r2)
-    ans *= comb(l1+r1, l1);
-    ans *= comb(l2+r2, l2);
+    {
+        vl _A;
+        rep(i, N) if(M%A[i]==0) _A.push_back(A[i]);
+        swap(A, _A);
+        N = A.size();
+    }
+    auto v = prime_factorization(M);
+    vl ps;
+    for(auto [p,n]: v) {
+        ll now = 1;
+        rep(i, n) now *= p;
+        ps.push_back(now);
+    }
+    ll m = ps.size();
+    vl cnt(1<<m);
+    rep(i, N) {
+        ll s = 0;
+        rep(j, m) {
+            ll p = ps[j];
+            if(A[i]%p==0) s |= 1<<j;
+        }
+        cnt[s]++;
+    }
+
+    rep(i, m) rep(s, 1<<m) {
+        if(~s>>i&1) cnt[s|1<<i] += cnt[s];
+    }
+
+    mint ans = 0;
+    rep(s, 1<<m) {
+        mint now = mint(2).pow(cnt[s]);
+        if(parity(s,m)) ans -= now; 
+        else ans += now;
+    }
     Out(ans);
 
 }
+
 
 int main () {
     // ios::sync_with_stdio(false);

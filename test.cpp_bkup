@@ -227,78 +227,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
+        }
+        ret *= n-k+1;
+        ret /= k;
     }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
 
 void solve() {
-    LONG(N);
-    Combination comb(N, M107);
-    rep1(k, N) {
-        mint ans;
-        for(ll r=1; N-(k-1)*(r-1)>=r; ++r) {
-            mint now = comb(N-(k-1)*(r-1), r);
-            ans += now;
+    LONG(N, K);
+
+    auto calc=[&](ll s) -> ll {
+        ll ret = 0;
+        rep(k, 4) {
+            ll ns = s-3-k*N;
+            if(ns<0) continue;
+            ll now = nCr(ns+2, 2);
+            now *= nCr(3, k);
+            if(k%2) ret -= now;
+            else ret += now;
         }
-        Out(ans);
+        return ret;
+    };
+    auto p2=[&](ll x) {return x*x;};
+
+    repk(s, 3, 3*N+1) {
+        ll num = calc(s);
+        if(num<K) {
+            K -= num; continue;
+        }
+        rep1(a, N) {
+            // if(a+2*N<s || a+2>s) continue;
+            ll s2 = s-a;
+            // if(s2<2 || s2>2*N) continue;
+            ll bmax = s2-1, bmin = s2-N;
+            chmax(bmin, 1LL);
+            chmin(bmax, N);
+            ll num2 = max(bmax-bmin+1,0LL);
+            if(num2<K) {
+                K -= num2; continue;
+            }
+            de3(a, num2, K)
+            rep1(b, N) {
+                ll c = s-a-b;
+                if(c>N) continue;
+                --K;
+                if(K==0) {
+                    printf("%lld %lld %lld\n", a, b, c);
+                    return;
+                }
+            }
+        }
     }
+    assert(0);
 
 }
 
