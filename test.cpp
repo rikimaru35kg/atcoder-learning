@@ -227,39 +227,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N,D,X,Y);
-    if(X%D!=0) Pm0
-    if(Y%D!=0) Pm0
-    X /= D, Y /= D;
+    LONG(N);
 
-    vvd nCr(N+1, vd(N+1));
-    nCr[0][0] = 1;
-    rep(i, N) rep(j, N) {
-        nCr[i+1][j] += nCr[i][j]*0.5;
-        nCr[i+1][j+1] += nCr[i][j]*0.5;
+    vvm a(N+1, vm(N+1));
+    vvm b(N+1, vm(N+1));
+    vvm dp(N+1, vm(N+1));
+    dp[1][1] = 1;
+    mint twoinv = mint(2).inv();
+    repk(i, 2, N+1) {
+        a[i][1] = 1;
+        repk(j, 2, i+1) {
+            a[i][j] += a[i][j-1];
+            b[i][j] += b[i][j-1];
+            b[i][j] += dp[i-1][j-1];
+            a[i][j] *= twoinv, b[i][j] *= twoinv;
+        }
+        mint c = a[i][i]*twoinv, d = b[i][i]*twoinv;
+        dp[i][1] = d/(1-c);
+        repk(j, 2, N+1) {
+            dp[i][j] = a[i][j]*dp[i][1] + b[i][j];
+        }
     }
-
-    auto calc=[&](ll nx, ll X) -> Pr {
-        if((nx+X)%2!=0) return {-1,-1};
-        ll a = (nx+X)/2, b = (nx-X)/2;
-        if(a<0 || b<0) return {-1,-1};
-        return {a,b};
-    };
-
-    db ans = 0;
-    rep(nx, N+1) {
-        auto [a,b] = calc(nx, X);
-        if(a==-1) continue;
-        db px = nCr[nx][a];
-
-        ll ny = N-nx;
-        auto [c,d] = calc(ny, Y);
-        if(c==-1) continue;
-        db py = nCr[ny][c];
-
-        db now = px*py*nCr[N][nx];
-        ans += now;
+    vm ans;
+    rep1(i, N) {
+        ans.push_back(dp[N][i]);
     }
     Out(ans);
 

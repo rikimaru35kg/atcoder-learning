@@ -242,28 +242,15 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N, Q);
-    vt4 query;
-    rep(i, Q) {
-        LONGM(x,y,z); LONG(w);
-        query.emplace_back(x,y,z,w);
+    LONG(N);
+    VL(X, N);
+    mint sum = 0;
+    mint ans;
+    rep(i, N-1) {
+        sum += mint(1)/(i+1);
+        ans += (X[i+1]-X[i])*sum;
     }
-
-    mint ans = 1;
-    rep(d, 60) {
-        mint now;
-        rep(s, 1<<N) {
-            bool ok = true;
-            for(auto [x,y,z,w]: query) {
-                w = w>>d&1;
-                x = s>>x&1, y = s>>y&1, z = s>>z&1;
-                if((x|y|z) != w) ok = false;
-
-            }
-            if(ok) ++now;
-        }
-        ans *= now;
-    }
+    rep1(i, N-1) ans *= i;
     Out(ans);
 
 }

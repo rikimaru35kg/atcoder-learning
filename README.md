@@ -1451,21 +1451,21 @@
 - あくまで感覚だが、ポイント的なもの（出目の総和など）を状態にもつカエル型DPが多い気がする
 - 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
+- 基本 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
 - 基本 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - 基本 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
-- !復習価値中 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
+- 基本 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
 - !復習価値高 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
-- !要復習 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
+- !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値中 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
 - 場合の数が途方もない時、ある要素に注目すると計算量が押さえられる事がある（主客転倒的な発想）
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - !復習価値低 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - !復習価値低 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
