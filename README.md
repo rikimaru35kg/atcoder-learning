@@ -1434,16 +1434,16 @@
 ## 分布に対するDP
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
-- !復習価値低 （note非掲載下の問題と類似） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
+- !復習価値中 （note非掲載下の問題と類似） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 - 基本 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
 
 ## 独立事象を掛け合わせる
 ### 例題
 - 基本 [D - Nowhere P](https://atcoder.jp/contests/jsc2021/tasks/jsc2021_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
 - !復習価値高 N回後(X,Y)にいる確率 [D - 大ジャンプ](https://atcoder.jp/contests/abc011/tasks/abc011_4)
 
@@ -1918,8 +1918,8 @@
 - 分布同士の掛け算的なものが高速に求まる（多項式の積）
 - c_{i+j} += ai * bjとなる
 ### 例題
-- [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
-- [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
+- !要復習 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
+- !要復習 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 
 ## 凸包
 - 凸な多角形を作る事で上手くいく問題

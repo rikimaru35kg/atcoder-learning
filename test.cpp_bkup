@@ -227,72 +227,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
-
 void solve() {
-    LONG(N, K);
+    LONG(N);
+    VL(A, N);
+    ll M = 2e5+10;
+    vl cnt(M);
+    rep(i, N) cnt[A[i]]++;
 
-    auto calc=[&](ll s) -> ll {
-        ll ret = 0;
-        rep(k, 4) {
-            ll ns = s-3-k*N;
-            if(ns<0) continue;
-            ll now = nCr(ns+2, 2);
-            now *= nCr(3, k);
-            if(k%2) ret -= now;
-            else ret += now;
-        }
-        return ret;
-    };
-    auto p2=[&](ll x) {return x*x;};
-
-    repk(s, 3, 3*N+1) {
-        ll num = calc(s);
-        if(num<K) {
-            K -= num; continue;
-        }
-        rep1(a, N) {
-            // if(a+2*N<s || a+2>s) continue;
-            ll s2 = s-a;
-            // if(s2<2 || s2>2*N) continue;
-            ll bmax = s2-1, bmin = s2-N;
-            chmax(bmin, 1LL);
-            chmin(bmax, N);
-            ll num2 = max(bmax-bmin+1,0LL);
-            if(num2<K) {
-                K -= num2; continue;
-            }
-            de3(a, num2, K)
-            rep1(b, N) {
-                ll c = s-a-b;
-                if(c>N) continue;
-                --K;
-                if(K==0) {
-                    printf("%lld %lld %lld\n", a, b, c);
-                    return;
-                }
-            }
+    vl dp(4);
+    dp[0] = 1;
+    rep(i, M) {
+        if(cnt[i]==0) continue;
+        repr(j, 3) {
+            dp[j+1] += dp[j] * cnt[i];
         }
     }
-    assert(0);
+    ll ans = dp[3];
+    Out(ans);
 
 }
 
