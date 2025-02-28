@@ -227,22 +227,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
-    ll M = 2e5+10;
-    vl cnt(M);
-    rep(i, N) cnt[A[i]]++;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    vl dp(4);
-    dp[0] = 1;
-    rep(i, M) {
-        if(cnt[i]==0) continue;
-        repr(j, 3) {
-            dp[j+1] += dp[j] * cnt[i];
-        }
+void solve() {
+    LONG(N, Q);
+    vt4 query;
+    rep(i, Q) {
+        LONGM(x,y,z); LONG(w);
+        query.emplace_back(x,y,z,w);
     }
-    ll ans = dp[3];
+
+    mint ans = 1;
+    rep(d, 60) {
+        mint now;
+        rep(s, 1<<N) {
+            bool ok = true;
+            for(auto [x,y,z,w]: query) {
+                w = w>>d&1;
+                x = s>>x&1, y = s>>y&1, z = s>>z&1;
+                if((x|y|z) != w) ok = false;
+
+            }
+            if(ok) ++now;
+        }
+        ans *= now;
+    }
     Out(ans);
 
 }

@@ -227,87 +227,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-#include<atcoder/convolution>
-using namespace atcoder;
-
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    ll M = 26;
-    vl cnt(M);
-    for(auto c: S) cnt[c-'a']++;
+    LONG(N,D,X,Y);
+    if(X%D!=0) Pm0
+    if(Y%D!=0) Pm0
+    X /= D, Y /= D;
 
-    Combination comb(1e4, M998);
-    
-    vm dp(1, 1);
-    rep(i, M) {
-        vm ndp;
-        rep(n, cnt[i]+1) ndp.push_back(comb.get_factinv(n));
-        dp = convolution(dp, ndp);
+    vvd nCr(N+1, vd(N+1));
+    nCr[0][0] = 1;
+    rep(i, N) rep(j, N) {
+        nCr[i+1][j] += nCr[i][j]*0.5;
+        nCr[i+1][j+1] += nCr[i][j]*0.5;
     }
-    mint ans;
-    rep1(i, N) ans += dp[i] * comb.get_fact(i);
+
+    auto calc=[&](ll nx, ll X) -> Pr {
+        if((nx+X)%2!=0) return {-1,-1};
+        ll a = (nx+X)/2, b = (nx-X)/2;
+        if(a<0 || b<0) return {-1,-1};
+        return {a,b};
+    };
+
+    db ans = 0;
+    rep(nx, N+1) {
+        auto [a,b] = calc(nx, X);
+        if(a==-1) continue;
+        db px = nCr[nx][a];
+
+        ll ny = N-nx;
+        auto [c,d] = calc(ny, Y);
+        if(c==-1) continue;
+        db py = nCr[ny][c];
+
+        db now = px*py*nCr[N][nx];
+        ans += now;
+    }
     Out(ans);
 
 }

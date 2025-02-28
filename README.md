@@ -1441,11 +1441,8 @@
 ## 独立事象を掛け合わせる
 ### 例題
 - 基本 [D - Nowhere P](https://atcoder.jp/contests/jsc2021/tasks/jsc2021_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
-- !復習価値高 N回後(X,Y)にいる確率 [D - 大ジャンプ](https://atcoder.jp/contests/abc011/tasks/abc011_4)
+- 基本 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
+- !復習価値中 N回後(X,Y)にいる確率 [D - 大ジャンプ](https://atcoder.jp/contests/abc011/tasks/abc011_4)
 
 ## 確率・期待値
 - 期待値にも確率と同様に漸化式が成立する（dpで解ける問題があるという事）
@@ -1454,6 +1451,9 @@
 - あくまで感覚だが、ポイント的なもの（出目の総和など）を状態にもつカエル型DPが多い気がする
 - 考察の結果は必ずしも配るDPにはならないので、くどいが良く考える事
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [E - Revenge of "The Salary of AtCoder Inc."](https://atcoder.jp/contests/abc326/tasks/abc326_e)
 - 基本 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - 基本 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
