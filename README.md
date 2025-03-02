@@ -2175,6 +2175,8 @@
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
 - [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
 - [B. Monsters Attack!](https://codeforces.com/contest/1923/problem/B)
+- [D - Pigeon Swap](https://atcoder.jp/contests/abc395/tasks/abc395_d)
+- [F - Smooth Occlusion](https://atcoder.jp/contests/abc395/tasks/abc395_f)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
