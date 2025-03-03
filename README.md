@@ -1181,9 +1181,6 @@
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
-<!-- #############################
-# back review point (last submission: 2025/1/31)
-############################# -->
 - !要復習 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
 ## OR
@@ -1465,14 +1462,14 @@
 ### 例題
 - 基本 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - 基本 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
-- !要復習 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
+- 基本 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
+- !復習価値中 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
 
 ## 対称性を利用する
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 黒いボール位置の期待値 [E - Random Swaps of Balls](https://atcoder.jp/contests/abc360/tasks/abc360_e)
 - 基本 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 
