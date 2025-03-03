@@ -227,22 +227,8 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 //! n*n matrix
-const int MX = 2;  // DEFINE PROPERLY!!
+const int MX = 32;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
     Mat pow_recursive(Mat b, long long k) {
@@ -308,7 +294,8 @@ public:
     }
     // power k (A^k)
     Mat pow(long long k) { return pow_recursive(*this, k); }
-    T operator[](int i, int j) { return a[i][j]; }
+    void set(int i, int j, T x) { a[i][j] = x; }
+    T operator()(int i, int j) { return a[i][j]; }
     void print(string debugname="------") {  // for debug
         #ifdef __DEBUG
         cerr << n << '\n';
@@ -321,21 +308,89 @@ public:
     }
 };
 
-void solve() {
-    LONG(K, M);
-    mint::set_mod(M);
-    mint tmp[MX][MX] = {{10,1},{0,1}};
-    Mat<mint> a(MX, *tmp);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    mint ans = 0;
-    rep(i, K) {
-        LONG(c,d);
-        Mat<mint> b = a.pow(d);
-        mint now = b[0,1];
-        now *= c;
-        ans = ans*mint(10).pow(d) + now;
+void solve() {
+    LONG(N, M);
+    VS(S, M);
+    ll L = 5;
+
+    if(N<=L) {
+        ll ans = 0;
+        rep(s, 1<<N) {
+            string now;
+            rep(i, N) {
+                if(s>>i&1) now += 'a';
+                else now += 'b';
+            }
+            bool ok = true;
+            rep(i, M) {
+                if(now.find(S[i])!=string::npos) ok = false;
+            }
+            if(ok) ++ans;
+        }
+        Out(ans);
+        return;
     }
+
+    Mat<mint> A(MX);
+    rep(i, MX) rep(j, MX) A.set(i,j,0);
+
+    ll mask = MX-1;
+    auto gets=[&](ll s) -> string {
+        string ret;
+        while(s) {
+            ret += 'a' + s%2;
+            s >>= 1;
+        }
+        while(SIZE(ret)<L+1) ret += 'a';
+        reverse(all(ret));
+        return ret;
+    };
+    rep(s, MX) {
+        if(s==31) {
+            cout<<"";
+        }
+        {
+            bool ok = true;
+            ll tmp = s<<1;
+            rep(i, M) {
+                string now = gets(tmp);
+                if(now.find(S[i])!=string::npos) ok = false;
+            }
+            if(ok) A.set(tmp&mask, s, 1);
+        }
+        {
+            bool ok = true;
+            ll tmp = s<<1|1;
+            rep(i, M) {
+                string now = gets(tmp);
+                if(now.find(S[i])!=string::npos) ok = false;
+            }
+            if(ok) A.set(tmp&mask, s, 1);
+        }
+    }
+
+    vm x(MX, 1);
+    vm y = A.pow(N-5) * x;
+    mint ans = 0;
+    rep(i, MX) ans += y[i];
     Out(ans);
+
+
+
 
 }
 
