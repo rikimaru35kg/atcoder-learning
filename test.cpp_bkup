@@ -227,36 +227,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+//! O(ROW * COL^2 / 64?)
+const int COL = 64;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
+struct XorBase {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(int n): ROW(n), base(n) {}
+    void initialize(vBS _base) { base = _base;} 
+    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
+        if(rank==ROW) return;
+        base[rank] = bs;
+        sweep();  // O(ROW * COL^2 / 64?)
+    }
+    void sweep() {
+        rank = 0;
+        for(int j=0; j<COL; ++j) {  // find pivot for column j
+            int pi = -1;  // pivot i
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
+                pi = i; break;
+            }
+            if(pi==-1) continue;  // no pivot at column j
+
+            swap(base[rank], base[pi]);
+            // delete all other 1 at column j
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
+            }
+            ++rank;
+        }
+    }
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
+    BS get_row(int i) { return base[i]; }
+    vector<int> find_pivots() { // ret[idx_col] = idx_row
+        vector<int> ret(COL, -1);
+        int j = 0;
+        for(int i=0; i<rank; ++i) {
+            while(j<COL && !base[i][j]) ++j;
+            if(j<COL) ret[j] = i;
+        }
+        return ret;
+    }
+    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
+    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
+};
 
 void solve() {
-    LONG(K, M);
-    mint::set_mod(M);
-    mint ans = 0;
-    auto f=[&](auto f, ll c, ll d) -> mint {
-        if(d==0) return 0;
-        ll m = d/2;
-        mint ret = f(f, c, m);
-        ret = ret * mint(10).pow(m) + ret;
-        if(d%2) ret = ret*10 + c;
-        return ret;
-    };
-    rep(i, K) {
-        LONG(c,d);
-        mint now = f(f, c, d);
-        ans = ans * mint(10).pow(d) + now;
+    LONG(N);
+    vp C;
+    rep(i, 1LL<<N) {
+        if(i==0) continue;
+        LONG(c);
+        C.emplace_back(c, i);
+    }
+    sort(all(C));
+
+    XorBase base(N);
+
+    ll ans = 0;
+    for(auto [c,a]: C) {
+        if(base.get_rank()==N) break;
+        XorBase nbase = base;
+        nbase.set_new_row(BS(a));
+        if(base.get_rank() != nbase.get_rank()) {
+            ans += c;
+            swap(nbase, base);
+        }
     }
     Out(ans);
 

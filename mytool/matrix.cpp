@@ -182,7 +182,7 @@ public:
 };
 
 //! O(ROW * COL^2 / 64?)
-const int COL = 300;
+const int COL = 64;
 using BS = bitset<COL>; // size=COL
 using vBS = vector<BS>;
 struct XorBase {
@@ -227,6 +227,19 @@ struct XorBase {
             if(j<COL) ret[j] = i;
         }
         return ret;
+    }
+    bool operator==(const XorBase &o) const {
+        if(ROW != o.ROW) return false;
+        if(rank != o.rank) return false;
+        for(int i=0; i<rank; ++i) {
+            if (base[i] != o.base[i]) return false;
+        }
+        return true;
+    }
+    void dump() { // for debug
+        #ifdef __DEBUG
+        for(int i=0; i<ROW; ++i) { cerr << base[i] << endl; }
+        #endif
     }
     //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
