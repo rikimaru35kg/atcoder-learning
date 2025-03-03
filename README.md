@@ -1530,10 +1530,7 @@
 - 基本 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
 - 基本 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - 基本 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [B - 展覧会 (Exhibition)](https://atcoder.jp/contests/joi2019ho/tasks/joi2019ho_b)
+- !復習価値低 [B - 展覧会 (Exhibition)](https://atcoder.jp/contests/joi2019ho/tasks/joi2019ho_b)
 
 ## その他貪欲法
 - DPで計算量が間に合わないなら貪欲を疑ってみると良い
@@ -1545,7 +1542,7 @@
 - 基本 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 - !要復習 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
-- !復習価値低 着く駅の数最大化（実装メイン） [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
+- !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
 
 # 行列
 
@@ -1558,6 +1555,9 @@
 - 等比級数を求めたい時、a={{r,1},{0,1}}とすると、a^nのa[0][1]が項数nの等比級数となっている
 ### 例題
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
 - !要復習 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
