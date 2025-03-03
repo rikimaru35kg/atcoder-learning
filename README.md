@@ -1487,10 +1487,7 @@
 - 基本 プレゼントの配り方 [F - Jealous Two](https://atcoder.jp/contests/abc231/tasks/abc231_f)
 - 基本 区間クエリで色の種類数を答える [F - Range Set Query](https://atcoder.jp/contests/abc174/tasks/abc174_f)
 - 基本 xy min距離の最大値 [F - Dist Max 2](https://atcoder.jp/contests/abc215/tasks/abc215_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !要復習 [F - Permutation Distance](https://atcoder.jp/contests/abc283/tasks/abc283_f)
+- !復習価値低 [F - Permutation Distance](https://atcoder.jp/contests/abc283/tasks/abc283_f)
 
 ## XY独立に考える
 ### 例題
@@ -1533,6 +1530,9 @@
 - 基本 クーポンマッチング問題 [F - Vouchers](https://atcoder.jp/contests/abc308/tasks/abc308_f)
 - 基本 キーエンスプリント機械 [D - Printing Machine](https://atcoder.jp/contests/abc325/tasks/abc325_d)
 - 基本 日雇いアルバイト問題 [D - Summer Vacation](https://atcoder.jp/contests/abc137/tasks/abc137_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [B - 展覧会 (Exhibition)](https://atcoder.jp/contests/joi2019ho/tasks/joi2019ho_b)
 
 ## その他貪欲法
