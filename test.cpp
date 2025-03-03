@@ -227,41 +227,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -278,46 +243,14 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 
 void solve() {
     LONG(N, K);
-    VLM(P, N);
-    ll tot = 0;
-    {
-        BIT<ll> tree(N);
-        rep(i, N) {
-            tot += tree.sum(P[i], N);
-            tree.add(P[i], 1);
-        }
+    mint p=1;
+    rep(_, K) {
+        mint np=(mint(N-1)*(N-1)+1)*p/N/N;
+        np += mint(2)/N/N*(1-p);
+        p = np;
     }
-    de(tot)
-    BIT<ll> tree(N);
-    mint now = 0;
-    rep(i, K) {
-        now += tree.sum(P[i], N);
-        tree.add(P[i], 1);
-    }
-
-    auto add=[&](ll x) {
-        now += tree.sum(x, N);
-        tree.add(x, 1);
-    };
-    auto del=[&](ll x) {
-        tree.add(x, -1);
-        now -= tree.sum(0, x);
-    };
-    mint sum = 0;
-    rep(i, N+1-K) {
-        sum += now;
-        if(i==N-K) break;
-        add(P[i+K]);
-        del(P[i]);
-    }
-    de(sum)
-    ll w = N+1-K;
-
-    mint ans = tot;
-    ans -= sum/w;
-    ans += mint(K)*(K-1)/4;
+    mint ans = p + (1-p)*(2+N)/2;
     Out(ans);
-
 
 }
 
