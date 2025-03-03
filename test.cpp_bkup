@@ -227,22 +227,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    VL2(S,V,N);
-    vp P;
-    rep(i, N) { P.emplace_back(V[i], S[i]); }
-    VL(C, M);
-    sort(allr(C));
-    sort(allr(P));
-    ll i = 0;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    ll ans = 0;
-    for(auto c: C) {
-        while(i<N && P[0].second>c) ++i;
-        if(i<N) {
-            ++ans; ++i;
-        }
+void solve() {
+    LONG(K, M);
+    mint::set_mod(M);
+    mint ans = 0;
+    auto f=[&](auto f, ll c, ll d) -> mint {
+        if(d==0) return 0;
+        ll m = d/2;
+        mint ret = f(f, c, m);
+        ret = ret * mint(10).pow(m) + ret;
+        if(d%2) ret = ret*10 + c;
+        return ret;
+    };
+    rep(i, K) {
+        LONG(c,d);
+        mint now = f(f, c, d);
+        ans = ans * mint(10).pow(d) + now;
     }
     Out(ans);
 

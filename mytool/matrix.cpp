@@ -101,9 +101,16 @@ ostream& operator<<(ostream& os, const Vecd& v) {
 }
 
 //! n*n matrix
-const int MX = 10;  // DEFINE PROPERLY!!
+const int MX = 2;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
+    }
 public:
     int n; T a[MX][MX];
     // Initialize n*n matrix as unit matrix
@@ -146,39 +153,31 @@ public:
     }
     Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
         T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        if(abs(det)<EPS) assert(0&&"[Error]det(Mat)==0");
+        assert(abs(det)>=EPS);
         Mat ret(n);
         ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
         ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
         ret = ret * (1/det);
         return ret;
     }
+    void transpose() {
+        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
+            swap(a[i][j], a[j][i]);
+        }
+    }
     // power k (A^k)
-    void pow(long long k) {
-        *this = pow_recursive(*this, k);
-    }
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-    long long ij(long long i, long long j) {
-        return a[i][j];
-    }
-#ifdef __DEBUG
+    Mat pow(long long k) { return pow_recursive(*this, k); }
+    T operator[](int i, int j) { return a[i][j]; }
     void print(string debugname="------") {  // for debug
+        #ifdef __DEBUG
         cerr << n << '\n';
         cerr << debugname << ":\n";
         for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j] << (j==n-1? '\n': ' ');
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
         }
         cerr << "---------" << '\n';
+        #endif
     }
-#else
-    void print(string debugname="------") {}
-#endif
 };
 
 //! O(ROW * COL^2 / 64?)

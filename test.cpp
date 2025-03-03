@@ -227,48 +227,114 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N,M,K); K-=M;
-    LONG(A,B,C);
-    LONG(T);
-    VLM(S, M);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    vl cand;
-    ll ans = 0;
-    rep(j, M-1) {
-        ll i1 = S[j], i2 = S[j+1];
-        ll t = B*S[j];
-        if(t>T) break;
-
-        auto calc=[&](ll t, ll i) -> Pr {
-            ll k = Div(T-t,A)+1;
-            ll ni = i + k;
-            ll num = ni-i;
-            chmin(num, i2-i);
-            return {ni,num};
-        };
-        ll i = i1;
-        auto [ni,num] = calc(t, i);
-        ans += num;
-        t += (ni-i)*C;
-        i = ni;
-        ll cnt = 0;
-        while(i<i2 && t<=T && cnt<K) {
-            auto [ni,num] = calc(t, i);
-            cand.push_back(num);
-            ++cnt;
-            // de2(i, num)
-            t += (ni-i)*C;
-            i = ni;
+//! n*n matrix
+const int MX = 2;  // DEFINE PROPERLY!!
+template <typename T>
+class Mat {
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
+    }
+public:
+    int n; T a[MX][MX];
+    // Initialize n*n matrix as unit matrix
+    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
         }
     }
-    if((N-1)*B<=T) ++ans;
-    sort(allr(cand));
-    chmin(K, SIZE(cand));
-    rep(i, K) ans += cand[i];
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
+    }
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
+    }
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        assert(abs(det)>=EPS);
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    void transpose() {
+        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
+            swap(a[i][j], a[j][i]);
+        }
+    }
+    // power k (A^k)
+    Mat pow(long long k) { return pow_recursive(*this, k); }
+    T operator[](int i, int j) { return a[i][j]; }
+    void print(string debugname="------") {  // for debug
+        #ifdef __DEBUG
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+        #endif
+    }
+};
 
-    --ans;
+void solve() {
+    LONG(K, M);
+    mint::set_mod(M);
+    mint tmp[MX][MX] = {{10,1},{0,1}};
+    Mat<mint> a(MX, *tmp);
 
+    mint ans = 0;
+    rep(i, K) {
+        LONG(c,d);
+        Mat<mint> b = a.pow(d);
+        mint now = b[0,1];
+        now *= c;
+        ans = ans*mint(10).pow(d) + now;
+    }
     Out(ans);
 
 }
