@@ -228,7 +228,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! n*n matrix
-const int MX = 32;  // DEFINE PROPERLY!!
+const int MX = 2;  // DEFINE PROPERLY!!
 template <typename T>
 class Mat {
     Mat pow_recursive(Mat b, long long k) {

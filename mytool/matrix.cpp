@@ -167,7 +167,8 @@ public:
     }
     // power k (A^k)
     Mat pow(long long k) { return pow_recursive(*this, k); }
-    T operator[](int i, int j) { return a[i][j]; }
+    void set(int i, int j, T x) { a[i][j] = x; }
+    T operator()(int i, int j) { return a[i][j]; }
     void print(string debugname="------") {  // for debug
         #ifdef __DEBUG
         cerr << n << '\n';
