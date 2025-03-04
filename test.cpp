@@ -227,71 +227,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    vvl vs;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), vs(n) {
-        rep(i, n) vs[i] = {i};
-    }
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        for(auto v: vs[x]) vs[y].push_back(v);
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 void solve() {
-    LONG(N, Q);
-    WeightedUnionFind uf(N);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(u, v);
-            uf.merge(u, v);
+    LONG(N);
+    VL(P, N);
+    vl Pinv(N);
+    rep(i, N) Pinv[P[i]] = i;
+    ll gain = 0;
+    vl event(N);
+    ll now = 0;
+    rep(i, N) {
+        ll p = Pinv[i];
+        p = Percent(p-i, N);
+        now += min(p, N-p);
+        ll pp = Percent(p-1, N);
+        if(N%2) {
+            if(pp<N/2) gain += 1;
+            else if(pp!=N/2) gain -= 1;
         } else {
-            LONGM(u);
-            u = uf.leader(u);
-            vl ans;
-            for(auto v: uf.vs[u]) {
-                ans.push_back(v+1);
-            }
-            sort(all(ans));
-            Out(ans);
+            if(pp<N/2) gain += 1;
+            else gain -= 1;
+        }
+        if(N%2) {
+            event[Percent(N/2-p,N)]--;
+            event[Percent(N/2+1-p,N)]--;
+            event[Percent(N-p,N)] += 2;
+        } else {
+            event[Percent(N/2-p,N)] -= 2;
+            event[Percent(N-p,N)] += 2;
         }
     }
+
+    ll ans = INF;
+    rep(i, N) {
+        chmin(ans, now);
+        gain += event[i];
+        now += gain;
+    }
+    Out(ans);
 
 }
 

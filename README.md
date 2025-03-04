@@ -1671,10 +1671,7 @@
 - 基本 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
+- !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
 
 ## K番目の何かを答える
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
@@ -1683,6 +1680,9 @@
 - 基本 (snipett練習） [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
 - 基本 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
 - 基本 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
 - !復習価値低 [F - L番目のK番目の数 (LthKthNumber)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_f)
 - !復習価値高 [ A - Neq Number](https://atcoder.jp/contests/arc173/tasks/arc173_a)
