@@ -227,97 +227,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long base = 12345;
-const long long MX = 2;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    friend mints operator+(const ll& l, mints& r) {
-        return mints(l)+r;
-    }
-
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
-        }
-        return ret;
-    }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-}
-istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
-ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
-
 void solve() {
-    mints a;
-    cin>>a;
-    mints b = 10.0 + a;
-    b.print();
+    LONG(N);
+    ll M = 0;
+    vt3 edge;
+    vvl inedges(N);
+    rep(i, N-1) {
+        LONG(A);
+        rep(j, A) {
+            LONGM(p, q);
+            edge.emplace_back(i, p, q);
+            inedges[p].push_back(M);
+            inedges[q].push_back(M);
+            ++M;
+        }
+    }
+    vl cnt(M);
+    queue<ll> que;
+    vl dist(N, INF);
+    vb pushed(N);
+    auto push=[&](ll v) {
+        for(auto mi: inedges[v]) {
+            cnt[mi]++;
+            if(cnt[mi]==2) que.push(mi);
+        }
+    };
+    dist[N-1] = 0;
+    push(N-1);
+    while(que.size()) {
+        auto mi = que.front(); que.pop();
+        auto [v,p,q] = edge[mi];
+        if(dist[v]!=INF) continue;
+        ll now = max(dist[p], dist[q]) + 1;
+        dist[v] = now;
+        push(v);
+    }
+    ll ans = dist[0];
+    ch1(ans);
+    Out(ans);
 
 }
 

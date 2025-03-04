@@ -1611,14 +1611,11 @@
 - 辺の削除クエリの場合
 ### 例題
 - 基本 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 （DPでも解いてみよう） [E - Stamp](https://atcoder.jp/contests/abc329/tasks/abc329_e)
 - 基本 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
 - !復習価値中 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
-- !要復習 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
+- !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
 - !復習価値中 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
 
 ## 三つ組は真ん中を固定
@@ -1638,6 +1635,9 @@
 - 基本 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 （上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 - !要復習 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
 
