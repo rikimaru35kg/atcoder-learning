@@ -228,24 +228,43 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(W, H);
     LONG(N);
-    map<ll,ll> mp;
-    rep(i, N) {
-        LONG(u, v);
-        de4(u,v,u-v,u+v)
-        if(!mp.count(u-v)) mp[u-v] = u+v;
-        else chmax(mp[u-v], u+v);
+    VL2(X, Y, N);
+    vl Xs = X, Ys = Y;
+    sort(all(Xs)); sort(all(Ys));
+
+    auto calc=[&](ll x, ll y) -> ll {
+        ll ret = 0;
+        ll dmax = 0;
+        rep(i, N) {
+            ll d = abs(X[i]-x) + abs(Y[i]-y);
+            chmax(dmax, d);
+            ret += 2*d;
+        }
+        ret -= dmax;
+        return ret;
+    };
+    if(N%2) {
+        ll x = Xs[N/2], y = Ys[N/2];
+        ll ans = calc(x, y);
+        Out(ans);
+        printf("%lld %lld\n", x, y);
+        return;
     }
 
-    ll mx = -INF;
-    ll ans = 0;
-    for(auto [x,y]: mp) {
-        de2(x,y)
-        if(y<=mx) continue;
-        ++ans;
-        chmax(mx, y);
+    t3 ans(INF,-1,-1);
+    de(Xs)de(Ys)
+    rep(rx, 2) rep(ry, 2) {
+        ll x = Xs[N/2-rx], y = Ys[N/2-ry];
+        ll now = calc(x, y);
+        de3(x,y,now)
+        chmin(ans, {now,x,y});
     }
-    Out(ans);
+    auto [d,x,y] = ans;
+    Out(d);
+    printf("%lld %lld\n", x, y);
+
 
 }
 

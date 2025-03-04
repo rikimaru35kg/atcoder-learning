@@ -1644,10 +1644,7 @@
 ### 例題
 - 基本 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
 - 基本 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
+- !復習価値低 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 - 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
 
@@ -1656,6 +1653,9 @@
 - 二分木を下（葉）から足していく際、総和=Σ頂点のコスト*高さとなるので、葉が決まっている際に最小和を求めるためには、小さい順にマージしていけばよい
 ### 例題
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
 
 ## 標準形を考える
