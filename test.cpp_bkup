@@ -227,44 +227,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(W, H);
-    LONG(N);
-    VL2(X, Y, N);
-    vl Xs = X, Ys = Y;
-    sort(all(Xs)); sort(all(Ys));
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
-    auto calc=[&](ll x, ll y) -> ll {
-        ll ret = 0;
-        ll dmax = 0;
-        rep(i, N) {
-            ll d = abs(X[i]-x) + abs(Y[i]-y);
-            chmax(dmax, d);
-            ret += 2*d;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
-        ret -= dmax;
-        return ret;
-    };
-    if(N%2) {
-        ll x = Xs[N/2], y = Ys[N/2];
-        ll ans = calc(x, y);
-        Out(ans);
-        printf("%lld %lld\n", x, y);
-        return;
+        ret *= n-k+1;
+        ret /= k;
+    }
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
+
+void solve() {
+    LONG(N);
+    VL(A, N);
+    ll M = 1e6+10;
+    vl cnt(M);
+    rep(i, N) cnt[A[i]]++;
+    auto Sc = cumsum(cnt);
+
+    ll ans = 0;
+    rep1(i, M-1) {
+        for(ll l=i; l<M; l+=i) {
+            ll r = l+i;
+            chmin(r, M);
+            ll num = Sc[r]- Sc[l];
+            if(l==i) num -= cnt[i];
+            ans += cnt[i] * num * (l/i);
+        }
+        ans += nCr(cnt[i], 2);
     }
 
-    t3 ans(INF,-1,-1);
-    de(Xs)de(Ys)
-    rep(rx, 2) rep(ry, 2) {
-        ll x = Xs[N/2-rx], y = Ys[N/2-ry];
-        ll now = calc(x, y);
-        de3(x,y,now)
-        chmin(ans, {now,x,y});
-    }
-    auto [d,x,y] = ans;
-    Out(d);
-    printf("%lld %lld\n", x, y);
-
+    Out(ans);
 
 }
 

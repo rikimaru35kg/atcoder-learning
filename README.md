@@ -1653,10 +1653,7 @@
 - 二分木を下（葉）から足していく際、総和=Σ頂点のコスト*高さとなるので、葉が決まっている際に最小和を求めるためには、小さい順にマージしていけばよい
 ### 例題
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
+- 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
@@ -1674,6 +1671,9 @@
 - 基本 [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f)
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
 
 ## K番目の何かを答える
