@@ -1592,9 +1592,6 @@
 - 基本 [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - 基本 [D - すぬけ君の塗り絵](https://atcoder.jp/contests/abc045/tasks/arc061_b)
 - 基本 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 取り除く石 [N - 整地](https://atcoder.jp/contests/past201912-open/tasks/past201912_n)
 
 ## 時系列順に処理する
@@ -1603,6 +1600,9 @@
 - 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
 - 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
 - !復習価値低 [C16 - Flights](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fn)
 - !復習価値低 [E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)

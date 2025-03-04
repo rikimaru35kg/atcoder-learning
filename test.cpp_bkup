@@ -248,27 +248,33 @@ long long nHr (long long n, long long r, bool one=false) {
 }
 
 void solve() {
-    LONG(N); VLM(A, N);
+    LONG(N);
+    VL(A, N);
+    vvl is(N+1);
+    rep(i, N) is[A[i]].push_back(i);
 
-    vl cnt(N);
-    rep(i, N) { cnt[A[i]]++; }
-    ll now = 0;
-    rep(i, N) now += nCr(cnt[i], 2);
-
-    auto del=[&](ll x) {
-        now -= nCr(cnt[x], 2);
-        cnt[x]--;
-        now += nCr(cnt[x], 2);
+    auto calc=[&](vl &is) -> ll {
+        ll pi = -1;
+        is.push_back(N);
+        ll ret = 0;
+        for(auto i: is) {
+            ret += nCr(i-pi, 2);
+            pi = i;
+        }
+        is.pop_back();
+        return ret;
     };
 
-    ll l = 0, r = N-1;
     ll ans = 0;
-    while(l<r) {
-        ans += nCr(r-l+1, 2);
-        ans -= now;
-        del(A[l]);
-        del(A[r]);
-        ++l, --r;
+    rep1(i, N) {
+        ll cnt = calc(is[i-1]);
+        de2(i, cnt)
+        vl nis;
+        merge(all(is[i-1]), all(is[i]), back_inserter(nis));
+        de(nis)
+        cnt -= calc(nis);
+        de2(i, cnt)
+        ans += cnt;
     }
     Out(ans);
 

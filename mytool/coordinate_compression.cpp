@@ -29,15 +29,13 @@ public:
         if (!init) compress();
         return (long long)vec.size();
     }
-#ifdef __DEBUG
     void print() {
+        #ifdef __DEBUG
         printf("---- cc print ----\ni: ");
         for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
         printf("\nx: ");
         for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
         printf("\n-----------------\n");
+        #endif
     }
-#else
-    void print() {}
-#endif
 };
