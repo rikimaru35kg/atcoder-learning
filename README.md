@@ -1572,10 +1572,7 @@
 ### 例題
 - !復習価値中 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
 - !復習価値低 [D - 数列 XOR](https://atcoder.jp/contests/bitflyer2018-final/tasks/bitflyer2018_final_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [057 - Flip Flap（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_be)
+- !復習価値中 [057 - Flip Flap（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_be)
 
 # その他典型
 
@@ -1584,6 +1581,9 @@
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
 - !復習価値低 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
