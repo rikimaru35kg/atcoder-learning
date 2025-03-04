@@ -227,56 +227,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
-
 void solve() {
-    LONG(N);
-    VL(A, N);
-    vvl is(N+1);
-    rep(i, N) is[A[i]].push_back(i);
-
-    auto calc=[&](vl &is) -> ll {
-        ll pi = -1;
-        is.push_back(N);
-        ll ret = 0;
-        for(auto i: is) {
-            ret += nCr(i-pi, 2);
-            pi = i;
-        }
-        is.pop_back();
-        return ret;
-    };
-
+    LONG(N, M, K);
+    vt4 flight;
+    vector<pq> land(N);
+    rep(i, M) {
+        LONG(a,s,b,t); --a, --b;
+        t += K;
+        flight.emplace_back(s,t,a,b);
+    }
+    sort(all(flight));
+    vl mx(N);
     ll ans = 0;
-    rep1(i, N) {
-        ll cnt = calc(is[i-1]);
-        de2(i, cnt)
-        vl nis;
-        merge(all(is[i-1]), all(is[i]), back_inserter(nis));
-        de(nis)
-        cnt -= calc(nis);
-        de2(i, cnt)
-        ans += cnt;
+    for(auto [s,t,a,b]: flight) {
+        while(land[a].size() && land[a].top().first<=s) {
+            auto [lt, n] = land[a].top(); land[a].pop();
+            chmax(mx[a], n);
+        }
+        land[b].emplace(t, mx[a]+1);
+        chmax(ans, mx[a]+1);
     }
     Out(ans);
+
 
 }
 
