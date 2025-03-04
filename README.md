@@ -1581,20 +1581,20 @@
 - 例えば、N個からM個選んだ総和の絶対値のmaxを調べたいとき、先にM個選ぼうとすると組合せが膨大でTLEする。max(abs(x))はmax(x, -x)なので、そのままの総和と-を付けた総和のmax取りをすればよい。そのままの総和でも-を付けた総和でも、M個の選び方は自明（貪欲）
 - 複数のΣがある問題は、Σを入れ替えることで計算量を抑えられることがある
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
-- !復習価値低 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
+- 基本 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
-- !復習価値中 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
-- !要復習 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
+- !復習価値高 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
+- !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
 
 ## 投票方式で考える
 ### 例題
 - 基本 [C - Chinese Restaurant](https://atcoder.jp/contests/abc268/tasks/abc268_c)
 - 基本 [D - すぬけ君の塗り絵](https://atcoder.jp/contests/abc045/tasks/arc061_b)
 - 基本 ラッキーナンバー [E - Lucky Numbers](https://atcoder.jp/contests/abc255/tasks/abc255_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 取り除く石 [N - 整地](https://atcoder.jp/contests/past201912-open/tasks/past201912_n)
 
 ## 時系列順に処理する

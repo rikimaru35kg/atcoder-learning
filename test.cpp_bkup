@@ -227,83 +227,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 64;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(int n): ROW(n), base(n) {}
-    void initialize(vBS _base) { base = _base;} 
-    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
-        if(rank==ROW) return;
-        base[rank] = bs;
-        sweep();  // O(ROW * COL^2 / 64?)
-    }
-    void sweep() {
-        rank = 0;
-        for(int j=0; j<COL; ++j) {  // find pivot for column j
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;  // no pivot at column j
-
-            swap(base[rank], base[pi]);
-            // delete all other 1 at column j
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
+        ret *= n-k+1;
+        ret /= k;
     }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-    BS get_row(int i) { return base[i]; }
-    vector<int> find_pivots() { // ret[idx_col] = idx_row
-        vector<int> ret(COL, -1);
-        int j = 0;
-        for(int i=0; i<rank; ++i) {
-            while(j<COL && !base[i][j]) ++j;
-            if(j<COL) ret[j] = i;
-        }
-        return ret;
-    }
-    bool operator==(const XorBase &o) const {
-        if(ROW != o.ROW) return false;
-        if(rank != o.rank) return false;
-        for(int i=0; i<rank; ++i) {
-            if (base[i] != o.base[i]) return false;
-        }
-        return true;
-    }
-    void dump() { // for debug
-        #ifdef __DEBUG
-        for(int i=0; i<ROW; ++i) { cerr << base[i] << endl; }
-        #endif
-    }
-    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
-    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
-};
-
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
 
 void solve() {
-    LONG(N); VL(A, N); VL(B, N);
+    LONG(N); VLM(A, N);
 
-    XorBase a(N), b(N);
-    rep(i, N) {
-        a.base[i] = BS(A[i]);
-        b.base[i] = BS(B[i]);
+    vl cnt(N);
+    rep(i, N) { cnt[A[i]]++; }
+    ll now = 0;
+    rep(i, N) now += nCr(cnt[i], 2);
+
+    auto del=[&](ll x) {
+        now -= nCr(cnt[x], 2);
+        cnt[x]--;
+        now += nCr(cnt[x], 2);
+    };
+
+    ll l = 0, r = N-1;
+    ll ans = 0;
+    while(l<r) {
+        ans += nCr(r-l+1, 2);
+        ans -= now;
+        del(A[l]);
+        del(A[r]);
+        ++l, --r;
     }
-    a.sweep(); b.sweep();
-    de(a.get_rank())
-    a.dump();
-    if(a==b) PYes PNo
+    Out(ans);
 
 }
 
