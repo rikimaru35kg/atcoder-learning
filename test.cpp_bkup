@@ -274,33 +274,36 @@ struct XorBase {
         }
         return ret;
     }
+    bool operator==(const XorBase &o) const {
+        if(ROW != o.ROW) return false;
+        if(rank != o.rank) return false;
+        for(int i=0; i<rank; ++i) {
+            if (base[i] != o.base[i]) return false;
+        }
+        return true;
+    }
+    void dump() { // for debug
+        #ifdef __DEBUG
+        for(int i=0; i<ROW; ++i) { cerr << base[i] << endl; }
+        #endif
+    }
     //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
 };
 
+
 void solve() {
-    LONG(N);
-    vp C;
-    rep(i, 1LL<<N) {
-        if(i==0) continue;
-        LONG(c);
-        C.emplace_back(c, i);
-    }
-    sort(all(C));
+    LONG(N); VL(A, N); VL(B, N);
 
-    XorBase base(N);
-
-    ll ans = 0;
-    for(auto [c,a]: C) {
-        if(base.get_rank()==N) break;
-        XorBase nbase = base;
-        nbase.set_new_row(BS(a));
-        if(base.get_rank() != nbase.get_rank()) {
-            ans += c;
-            swap(nbase, base);
-        }
+    XorBase a(N), b(N);
+    rep(i, N) {
+        a.base[i] = BS(A[i]);
+        b.base[i] = BS(B[i]);
     }
-    Out(ans);
+    a.sweep(); b.sweep();
+    de(a.get_rank())
+    a.dump();
+    if(a==b) PYes PNo
 
 }
 

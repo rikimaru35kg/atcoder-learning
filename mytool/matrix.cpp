@@ -182,7 +182,7 @@ public:
 };
 
 //! O(ROW * COL^2 / 64?)
-const int COL = 64;
+const int COL = 300;
 using BS = bitset<COL>; // size=COL
 using vBS = vector<BS>;
 struct XorBase {
@@ -219,7 +219,8 @@ struct XorBase {
     vBS get_base() { return base;}
     int get_rank() { return rank;}
     BS get_row(int i) { return base[i]; }
-    vector<int> find_pivots() { // ret[idx_col] = idx_row
+    vector<int> find_pivots() {
+        // ret[idx_col] = idx_row, (-1: no pivit for the column)
         vector<int> ret(COL, -1);
         int j = 0;
         for(int i=0; i<rank; ++i) {
@@ -243,6 +244,7 @@ struct XorBase {
     }
     //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
+    //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）
 };
 
 //! n*n matrix

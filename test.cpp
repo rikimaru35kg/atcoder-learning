@@ -228,7 +228,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! O(ROW * COL^2 / 64?)
-const int COL = 64;
+const int COL = 300;
 using BS = bitset<COL>; // size=COL
 using vBS = vector<BS>;
 struct XorBase {
@@ -265,7 +265,8 @@ struct XorBase {
     vBS get_base() { return base;}
     int get_rank() { return rank;}
     BS get_row(int i) { return base[i]; }
-    vector<int> find_pivots() { // ret[idx_col] = idx_row
+    vector<int> find_pivots() {
+        // ret[idx_col] = idx_row, (-1: no pivit for the column)
         vector<int> ret(COL, -1);
         int j = 0;
         for(int i=0; i<rank; ++i) {
@@ -289,21 +290,51 @@ struct XorBase {
     }
     //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
     //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
+    //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）
 };
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N); VL(A, N); VL(B, N);
-
-    XorBase a(N), b(N);
+    LONG(N, M);
+    XorBase base(N);
     rep(i, N) {
-        a.base[i] = BS(A[i]);
-        b.base[i] = BS(B[i]);
+        LONG(T);
+        BS now;
+        rep(i, T) {
+            LONGM(a);
+            now[a] = 1;
+        }
+        base.base[i] = now;
     }
-    a.sweep(); b.sweep();
-    de(a.get_rank())
-    a.dump();
-    if(a==b) PYes PNo
+    base.sweep();
+    VL(S, M);
+    BS now;
+    rep(i, M) { now[i] = S[i]; }
+
+    auto ps = base.find_pivots();
+    rep(j, M) {
+        if(now[j]==0) continue;
+        ll i = ps[j];
+        if(i==-1) Pm0
+        now ^= base.base[i];
+    }
+
+    ll rank = base.get_rank();
+    mint ans = mint(2).pow(N-rank);
+    Out(ans);
 
 }
 
