@@ -228,43 +228,43 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(W, H);
     LONG(N);
-    ll M = 0;
-    vt3 edge;
-    vvl inedges(N);
-    rep(i, N-1) {
-        LONG(A);
-        rep(j, A) {
-            LONGM(p, q);
-            edge.emplace_back(i, p, q);
-            inedges[p].push_back(M);
-            inedges[q].push_back(M);
-            ++M;
+    VL2(X, Y, N);
+    vl Xs = X, Ys = Y;
+    sort(all(Xs)); sort(all(Ys));
+
+    auto calc=[&](ll x, ll y) -> ll {
+        ll ret = 0;
+        ll dmax = 0;
+        rep(i, N) {
+            ll d = abs(X[i]-x) + abs(Y[i]-y);
+            chmax(dmax, d);
+            ret += 2*d;
         }
-    }
-    vl cnt(M);
-    queue<ll> que;
-    vl dist(N, INF);
-    vb pushed(N);
-    auto push=[&](ll v) {
-        for(auto mi: inedges[v]) {
-            cnt[mi]++;
-            if(cnt[mi]==2) que.push(mi);
-        }
+        ret -= dmax;
+        return ret;
     };
-    dist[N-1] = 0;
-    push(N-1);
-    while(que.size()) {
-        auto mi = que.front(); que.pop();
-        auto [v,p,q] = edge[mi];
-        if(dist[v]!=INF) continue;
-        ll now = max(dist[p], dist[q]) + 1;
-        dist[v] = now;
-        push(v);
+    if(N%2) {
+        ll x = Xs[N/2], y = Ys[N/2];
+        ll ans = calc(x, y);
+        Out(ans);
+        printf("%lld %lld\n", x, y);
+        return;
     }
-    ll ans = dist[0];
-    ch1(ans);
-    Out(ans);
+
+    t3 ans(INF,-1,-1);
+    de(Xs)de(Ys)
+    rep(rx, 2) rep(ry, 2) {
+        ll x = Xs[N/2-rx], y = Ys[N/2-ry];
+        ll now = calc(x, y);
+        de3(x,y,now)
+        chmin(ans, {now,x,y});
+    }
+    auto [d,x,y] = ans;
+    Out(d);
+    printf("%lld %lld\n", x, y);
+
 
 }
 

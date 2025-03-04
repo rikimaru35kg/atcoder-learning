@@ -1635,11 +1635,8 @@
 - 基本 [E - Dist Max](https://atcoder.jp/contests/abc178/tasks/abc178_e)
 - 基本 （上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
-- !要復習 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
+- !復習価値中 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
 
 ## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
@@ -1647,6 +1644,9 @@
 ### 例題
 - 基本 [D - Preparing Boxes](https://atcoder.jp/contests/abc134/tasks/abc134_d)
 - 基本 floor(N/i)の総和 [E - Fraction Floor Sum](https://atcoder.jp/contests/abc230/tasks/abc230_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 - 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
