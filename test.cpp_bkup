@@ -227,33 +227,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    VL(A, N);
-    rep(i, N) A.push_back(A[i]);
-
-    vl cnt(M);
-    queue<ll> que;
-    auto add=[&](ll x) {
-        que.push(x);
-        cnt[x]++;
-        if(SIZE(que)==N) {
-            auto px = que.front(); que.pop();
-            cnt[px]--;
-        }
-    };
-    add(0);
-
-    ll sum = 0;
-    ll ans = 0;
-    rep(i, 2*N-2) {
-        sum = (sum+A[i])%M;
-        if(SIZE(que)==N-1) {
-            ans += cnt[sum];
-        }
-        add(sum);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m).first) ok = m;
+        else ng = m;
     }
-    Out(ans);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+void solve() {
+    LONG(N, K);
+    VL(A, N);
+    ll amax = accumulate(all(A), 0LL);
+
+    auto f=[&](ll x) -> pair<bool,ll> {
+        ll Z = 20;
+        vvl to(Z, vl(N)), sum(Z, vl(N));
+        ll r = 0;
+        ll s = 0;
+        rep(l, N) {
+            while(s<x) {
+                s += A[r++];
+                r %= N;
+            }
+            if(l==r) return {false,N};
+            to[0][l] = r;
+            sum[0][l] = (r-l+N)%N;
+            s -= A[l];
+        }
+        // de(to[0])
+        // de(sum[0])
+        rep(z, Z-1) rep(i, N) to[z+1][i] = to[z][to[z][i]];
+        rep(z, Z-1) rep(i, N) sum[z+1][i] = sum[z][i] + sum[z][to[z][i]];
+
+        ll cut = N;
+        rep(i, N) {
+            ll v = i;
+            ll s = 0;
+            rep(z, Z) if(K>>z&1) {
+                s += sum[z][v];
+                v = to[z][v];
+            }
+            if(s<=N) --cut;
+        }
+        return {cut!=N, cut};
+    };
+
+    // de(f(13).first)
+    ll x = binary_search(0, amax+1, f);
+    auto [b, cut] = f(x);
+    printf("%lld %lld\n", x, cut);
 
 }
 

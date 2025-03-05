@@ -46,6 +46,7 @@ struct RangeBIT {
     T sum0(int i) {  // [0,i] closed interval
         return sum_sub(0,i) + sum_sub(1,i)*i;
     }
+    T get(int i) { return sum(i, i+1); }
     void add_sub(int p, int i, T x) {
         ++i;  // 0-index -> 1_index
         assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
@@ -57,6 +58,12 @@ struct RangeBIT {
         T ret(0);
         for(; i>0; i-=i&-i) ret += bit[p][i];
         return ret;
+    }
+    void dump() {  // for debug
+        #ifdef __DEBUG
+        for(ll i=0; i<size-1; ++i) { cerr << get(i) << ' '; }
+        cerr << endl;
+        #endif
     }
 };
 

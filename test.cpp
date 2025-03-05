@@ -227,69 +227,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m).first) ok = m;
-        else ng = m;
+template<typename T>
+struct RangeBIT {
+    long long size;
+    vector<vector<T>> bit;
+    RangeBIT (int _n): size(_n+1), bit(2, vector<T>(_n+1)) {}
+    void add(int l, int r, T x) {  // [l,r) half-open interval
+        add_sub(0, l, -x*(l-1)); add_sub(0, r, x*(r-1));
+        add_sub(1, l, x); add_sub(1, r, -x);
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+    T sum(int l, int r) { // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
     }
-    return ok;
-}
+    T sum0(int i) {  // [0,i] closed interval
+        return sum_sub(0,i) + sum_sub(1,i)*i;
+    }
+    T get(int i) { return sum(i, i+1); }
+    void add_sub(int p, int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
+        for(; i<size; i+=i&-i) bit[p][i] += x;
+    }
+    T sum_sub(int p, int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[p][i];
+        return ret;
+    }
+    void dump() {  // for debug
+        #ifdef __DEBUG
+        for(ll i=0; i<size-1; ++i) { cerr << get(i) << ' '; }
+        cerr << endl;
+        #endif
+    }
+};
 
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    ll amax = accumulate(all(A), 0LL);
-
-    auto f=[&](ll x) -> pair<bool,ll> {
-        ll Z = 20;
-        vvl to(Z, vl(N)), sum(Z, vl(N));
-        ll r = 0;
-        ll s = 0;
-        rep(l, N) {
-            while(s<x) {
-                s += A[r++];
-                r %= N;
-            }
-            if(l==r) return {false,N};
-            to[0][l] = r;
-            sum[0][l] = (r-l+N)%N;
-            s -= A[l];
+    LONG(N, M, Q);
+    vt4 query;
+    vl last(N, -1);
+    vvp save(Q);
+    rep(qi, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(l, r, x); --l;
+            query.emplace_back(t,l,r,x);
+        } else if (t==2) {
+            LONG(i, x); --i;
+            query.emplace_back(t,i,x,-1);
+            last[i] = qi;
+        } else {
+            LONGM(i,j);
+            query.emplace_back(t,i,j,-1);
+            ll lqi = last[i];
+            if(lqi!=-1) save[lqi].emplace_back(qi, j);
         }
-        // de(to[0])
-        // de(sum[0])
-        rep(z, Z-1) rep(i, N) to[z+1][i] = to[z][to[z][i]];
-        rep(z, Z-1) rep(i, N) sum[z+1][i] = sum[z][i] + sum[z][to[z][i]];
+    }
 
-        ll cut = N;
-        rep(i, N) {
-            ll v = i;
-            ll s = 0;
-            rep(z, Z) if(K>>z&1) {
-                s += sum[z][v];
-                v = to[z][v];
+    vl base(Q);
+    RangeBIT<ll> tree(M);
+    rep(qi, Q) {
+        auto [t,a,b,c] = query[qi];
+        if(t==1) {
+            ll l = a, r = b, x = c;
+            tree.add(l, r, x);
+        } else if (t==2) {
+            ll i = a, x = b;
+            for(auto [nqi, j]: save[qi]) {
+                ll now = tree.get(j);
+                base[nqi] = x - now;
             }
-            if(s<=N) --cut;
+        } else {
+            ll i = a, j = b;
+            ll ans = tree.get(j) + base[qi];
+            Out(ans);
         }
-        return {cut!=N, cut};
-    };
-
-    // de(f(13).first)
-    ll x = binary_search(0, amax+1, f);
-    auto [b, cut] = f(x);
-    printf("%lld %lld\n", x, cut);
+        de(qi)
+        tree.dump();
+    }
 
 }
 

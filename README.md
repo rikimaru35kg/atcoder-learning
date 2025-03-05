@@ -1709,9 +1709,6 @@
 - 基本 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
 - 基本 [D - Menagerie](https://atcoder.jp/contests/abc055/tasks/arc069_b)
 - 基本 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [F - Cake Division](https://atcoder.jp/contests/abc370/tasks/abc370_f)
 
 ## 不変量を見つける
@@ -1734,6 +1731,9 @@
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - 基本 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [F - Operations on a Matrix](https://atcoder.jp/contests/abc253/tasks/abc253_f)
 - !復習価値低 （先読みしない方法も是非）[B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
 
