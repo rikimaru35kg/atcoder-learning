@@ -232,6 +232,11 @@ long long mersenne(long long mn, long long mx) {
     uniform_int_distribution<long long> get(mn, mx);
     return get(mt64);
 }
+vector<long long> make_rands(long long mn, long long mx, int n) {
+    unordered_set<long long> st;
+    while(int(st.size())<n) st.insert(mersenne(mn,mx));
+    return vector<long long>(st.begin(), st.end());
+}
 
 const long long base = 12345;
 const long long MX = 2;
@@ -316,20 +321,27 @@ istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return 
 ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
 
 void solve() {
-    LONG(N, K);
-    ll ok = 0, ng = 0;
-    rep(_, K) {
-        uset<ll> cand;
-        rep(i, N) {
-            cand.insert(mersenne(1,INF));
-        }
-        if(SIZE(cand)==N) ++ok;
-        else ++ng;
-        de(SIZE(cand))
+    LONG(N, Q);
+    VL(A, N);
+    VL(B, N);
+    umap<ll,ll> mp;
+    rep(i, N) mp[A[i]] = 0;
+    rep(i, N) mp[B[i]] = 0;
+    ll m = mp.size();
+    vl rands = make_rands(1,IINF,m);
+    for(auto [k,v]: mp) mp[k] = pop(rands);
+
+    vector<mints> sa(N+1), sb(N+1);
+    rep(i, N) sa[i+1] = sa[i] + mp[A[i]];
+    rep(i, N) sb[i+1] = sb[i] + mp[B[i]];
+
+    rep(i, Q) {
+        LONG(l,r,L,R); --l, --L;
+        if(sa[r]-sa[l]==sb[R]-sb[L]) puts("Yes");
+        else puts("No");
     }
-    de2(ok, ng)
-    printf("OK: %.2f\n", (db)ok/(ok+ng)*100.0);
-    printf("NG: %.2f\n", (db)ng/(ok+ng)*100.0);
+
+    
 
 }
 
