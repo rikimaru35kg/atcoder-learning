@@ -227,70 +227,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    vvl vs;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), vs(n) {
-        rep(i, n) vs[i] = {i};
-    }
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        for(auto v: vs[x]) vs[y].push_back(v);
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 void solve() {
-    LONG(N, Q);
-    WeightedUnionFind uf(N);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(u, v);
-            uf.merge(u, v);
-        } else {
-            LONGM(u);
-            u = uf.leader(u);
-            vl ans;
-            for(auto v: uf.vs[u]) {
-                ans.push_back(v+1);
-            }
-            sort(all(ans));
-            Out(ans);
+    LONG(K);
+    ll nine = 9;
+    string ans;
+    rep1(D, 100) {
+        if(K>nine) {
+            K -= nine;
+            nine *= 9;
+            continue;
         }
+        --K;
+        nine = 1;
+        rep(d, D-1) nine *= 9;
+        ll px = 0;
+        rep(d, D) {
+            ll num = K/nine;
+            ll x = num;
+            if(d==0) ++x;
+            if(d==0) ans += num+'1';
+            else ans += num+'0';
+            K -= num*nine;
+            nine /= 9;
+        }
+        Out(ans);
+        break;
     }
 
 }
@@ -298,7 +259,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

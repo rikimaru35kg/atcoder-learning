@@ -1680,12 +1680,9 @@
 - 基本 (snipett練習） [C - One Quadrillion and One Dalmatians](https://atcoder.jp/contests/abc171/tasks/abc171_c)
 - 基本 [D - K-th Nearest](https://atcoder.jp/contests/abc364/tasks/abc364_d)
 - 基本 [D - Palindromic Number](https://atcoder.jp/contests/abc363/tasks/abc363_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
+- !復習価値低 [L - K番目の絶対値](https://atcoder.jp/contests/past202109-open/tasks/past202109_l)
 - !復習価値低 [F - L番目のK番目の数 (LthKthNumber)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_f)
-- !復習価値高 [ A - Neq Number](https://atcoder.jp/contests/arc173/tasks/arc173_a)
+- !復習価値低 [ A - Neq Number](https://atcoder.jp/contests/arc173/tasks/arc173_a)
 - !復習価値低 （k番目は実装上だけの話なのでNote非掲載だが良問）[F - SSttrriinngg in StringString](https://atcoder.jp/contests/abc346/tasks/abc346_f)
 
 ## 偶奇に注目
@@ -1694,6 +1691,9 @@
 - 同様に隣り合う要素をswapできる場合、任意の2要素を反転できる事と等しい（バブルソートの仕組みに通じる）
 ### 例題
 - 基本 隣り合う要素の符号を反転 [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [A - Two Choices](https://atcoder.jp/contests/arc115/tasks/arc115_a)
 - !復習価値低 グラフの2彩色場合の数 [E - Red and Blue Graph](https://atcoder.jp/contests/abc262/tasks/abc262_e)
 

@@ -227,43 +227,126 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
 void solve() {
-    LONG(N);
-    VL(P, N);
-    vl Pinv(N);
-    rep(i, N) Pinv[P[i]] = i;
-    ll gain = 0;
-    vl event(N);
-    ll now = 0;
-    rep(i, N) {
-        ll p = Pinv[i];
-        p = Percent(p-i, N);
-        now += min(p, N-p);
-        ll pp = Percent(p-1, N);
-        if(N%2) {
-            if(pp<N/2) gain += 1;
-            else if(pp!=N/2) gain -= 1;
-        } else {
-            if(pp<N/2) gain += 1;
-            else gain -= 1;
-        }
-        if(N%2) {
-            event[Percent(N/2-p,N)]--;
-            event[Percent(N/2+1-p,N)]--;
-            event[Percent(N-p,N)] += 2;
-        } else {
-            event[Percent(N/2-p,N)] -= 2;
-            event[Percent(N-p,N)] += 2;
-        }
+    LONG(N); STRING(S, T);
+    ll ns = S.size(), nt = T.size();
+    ll Z = 26;
+    vvl ais(Z);
+    rep(i, ns) {
+        ais[S[i]-'a'].push_back(i);
     }
 
-    ll ans = INF;
-    rep(i, N) {
-        chmin(ans, now);
-        gain += event[i];
-        now += gain;
-    }
+    auto f=[&](ll k) -> bool {
+        --k;
+        ll idx = 0;
+        for(auto c: T) {
+            vl &is = ais[c-'a'];
+            ll sz = is.size();
+            if(sz==0) return false;
+            ll ri = idx%ns;
+            auto [n,x] = lowbou(is, ri);
+            n += k;
+            idx = idx/ns*ns + n/sz*ns + is[n%sz] + 1;
+            if(idx>N*ns) return false;
+        }
+        return idx <= N*ns;
+    };
+
+    ll ans = binary_search(0, ns*N/nt+1, f);
     Out(ans);
+
 
 }
 
