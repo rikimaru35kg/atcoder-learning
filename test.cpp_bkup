@@ -227,124 +227,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+//! count the # of t in s.  O(|S||T|)
+int count(string &s, string t) {
+    int ret = 0;
+    for(int i=0; i<int(s.size()); ) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
     }
-    return ok;
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+int count(string &s, char c) { return count(s, string(1,c)); }
+int count(vector<string> &s, string t) {
+    int ret = 0;
+    for(auto &cs: s) ret += count(cs, t);
+    return ret;
 }
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+int count(vector<string> &s, char c) { return count(s, string(1,c)); }
 
 void solve() {
-    LONG(N); STRING(S, T);
-    ll ns = S.size(), nt = T.size();
-    ll Z = 26;
-    vvl ais(Z);
-    rep(i, ns) {
-        ais[S[i]-'a'].push_back(i);
-    }
-
-    auto f=[&](ll k) -> bool {
-        --k;
-        ll idx = 0;
-        for(auto c: T) {
-            vl &is = ais[c-'a'];
-            ll sz = is.size();
-            if(sz==0) return false;
-            ll ri = idx%ns;
-            auto [n,x] = lowbou(is, ri);
-            n += k;
-            idx = idx/ns*ns + n/sz*ns + is[n%sz] + 1;
-            if(idx>N*ns) return false;
-        }
-        return idx <= N*ns;
-    };
-
-    ll ans = binary_search(0, ns*N/nt+1, f);
+    STRING(S);
+    ll ans = count(S, 'a');
     Out(ans);
 
 

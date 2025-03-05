@@ -227,28 +227,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! count the # of t in s.  O(|S||T|)
-int count(string &s, string t) {
-    int ret = 0;
-    for(int i=0; i<int(s.size()); ) {
-        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
-        else ++i;
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    return ret;
-}
-int count(string &s, char c) { return count(s, string(1,c)); }
-int count(vector<string> &s, string t) {
-    int ret = 0;
-    for(auto &cs: s) ret += count(cs, t);
-    return ret;
-}
-int count(vector<string> &s, char c) { return count(s, string(1,c)); }
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
+    }
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
 void solve() {
-    STRING(S);
-    ll ans = count(S, 'a');
-    Out(ans);
+    LONG(N, M, K);
+    vl deg(N);
+    rep(i, M) {
+        LONGM(a,b);
+        deg[a]++, deg[b]++;
+    }
+    ll zero=0, one=0;
+    rep(i, N) {
+        if(deg[i]%2) ++one;
+        else ++zero;
+    }
+    Combination comb(N, M998);
 
+    ll ans = 0;
+    for(ll k=0; k<=K; k+=2) {
+        ll now = comb(one, k) % M998;
+        now *= comb(zero, K-k) % M998;
+        now %= M998;
+        ans = (ans+now) % M998;
+    }
+    Out(ans);
 
 }
 

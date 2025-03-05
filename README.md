@@ -1691,10 +1691,7 @@
 - 同様に隣り合う要素をswapできる場合、任意の2要素を反転できる事と等しい（バブルソートの仕組みに通じる）
 ### 例題
 - 基本 隣り合う要素の符号を反転 [D - Flipping Signs](https://atcoder.jp/contests/abc125/tasks/abc125_d)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [A - Two Choices](https://atcoder.jp/contests/arc115/tasks/arc115_a)
+- !復習価値低 （パズル問として紹介できる問題）[A - Two Choices](https://atcoder.jp/contests/arc115/tasks/arc115_a)
 - !復習価値低 グラフの2彩色場合の数 [E - Red and Blue Graph](https://atcoder.jp/contests/abc262/tasks/abc262_e)
 
 ## MODで考えてみる
@@ -1707,6 +1704,9 @@
 - 貪欲時に円環のどこからスタートすべきか分からない時、スタート地点と着地地点のfunctional graphを作ってダブリングすると良い
 ### 例題
 - 基本 [C - Ideal Holidays](https://atcoder.jp/contests/abc347/tasks/abc347_c)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
 - !復習価値低 [A - 室温 (Room Temperature)](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_a)
 - 基本 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
