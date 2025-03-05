@@ -21,22 +21,21 @@ vector<string> split(string &s, char t) {
 }
 
 //! count the # of t in s.  O(|S||T|)
-long long count(string &s, string t) {
-    long long ret = 0;
-    long long i=0;
-    while(i<(long long)s.size()) {
+int count(string &s, string t) {
+    int ret = 0;
+    for(int i=0; i<int(s.size()); ) {
         if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
         else ++i;
     }
     return ret;
 }
-long long count(vector<string> &s, string t) {
-    long long ret = 0;
-    for(long long i=0; i<(long long)s.size(); ++i) {
-        ret += count(s[i], t);
-    }
+int count(string &s, char c) { return count(s, string(1,c)); }
+int count(vector<string> &s, string t) {
+    int ret = 0;
+    for(auto &cs: s) ret += count(cs, t);
     return ret;
 }
+int count(vector<string> &s, char c) { return count(s, string(1,c)); }
 
 //! Judge if t is subsequence of s.
 //! If ret==t.size(), then t is subsequence of s.

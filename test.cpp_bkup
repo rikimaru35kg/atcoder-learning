@@ -227,40 +227,133 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(K);
-    ll nine = 9;
-    string ans;
-    rep1(D, 100) {
-        if(K>nine) {
-            K -= nine;
-            nine *= 9;
-            continue;
-        }
-        --K;
-        nine = 1;
-        rep(d, D-1) nine *= 9;
-        ll px = 0;
-        rep(d, D) {
-            ll num = K/nine;
-            ll x = num;
-            if(d==0) ++x;
-            if(d==0) ans += num+'1';
-            else ans += num+'0';
-            K -= num*nine;
-            nine /= 9;
-        }
-        Out(ans);
-        break;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    LONG(N); STRING(S, T);
+    ll ns = S.size(), nt = T.size();
+    ll Z = 26;
+    vvl ais(Z);
+    rep(i, ns) {
+        ais[S[i]-'a'].push_back(i);
+    }
+
+    auto f=[&](ll k) -> bool {
+        --k;
+        ll idx = 0;
+        for(auto c: T) {
+            vl &is = ais[c-'a'];
+            ll sz = is.size();
+            if(sz==0) return false;
+            ll ri = idx%ns;
+            auto [n,x] = lowbou(is, ri);
+            n += k;
+            idx = idx/ns*ns + n/sz*ns + is[n%sz] + 1;
+            if(idx>N*ns) return false;
+        }
+        return idx <= N*ns;
+    };
+
+    ll ans = binary_search(0, ns*N/nt+1, f);
+    Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
