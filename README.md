@@ -1731,11 +1731,8 @@
 ### 例題
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - 基本 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値中 [F - Operations on a Matrix](https://atcoder.jp/contests/abc253/tasks/abc253_f)
-- !復習価値低 （先読みしない方法も是非）[B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
+- !復習価値低 [F - Operations on a Matrix](https://atcoder.jp/contests/abc253/tasks/abc253_f)
+- !復習価値高 （先読みしない方法も是非）[B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
 
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
@@ -1754,6 +1751,9 @@
 ### 例題
 - 基本 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
 - 基本 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
 
 ## NIMとgrundy数
