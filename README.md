@@ -1704,15 +1704,15 @@
 - 貪欲時に円環のどこからスタートすべきか分からない時、スタート地点と着地地点のfunctional graphを作ってダブリングすると良い
 ### 例題
 - 基本 [C - Ideal Holidays](https://atcoder.jp/contests/abc347/tasks/abc347_c)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
+- 基本 最適な橋の切断 [D - Island Tour](https://atcoder.jp/contests/abc338/tasks/abc338_d)
 - !復習価値低 [A - 室温 (Room Temperature)](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_a)
 - 基本 弦が交差するか [E - Chords](https://atcoder.jp/contests/abc338/tasks/abc338_e)
 - 基本 [D - Menagerie](https://atcoder.jp/contests/abc055/tasks/arc069_b)
-- !復習価値低 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)
-- !復習価値中 [F - Cake Division](https://atcoder.jp/contests/abc370/tasks/abc370_f)
+- 基本 円環休憩所 [D - Pedometer](https://atcoder.jp/contests/abc367/tasks/abc367_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
+- !復習価値低 [F - Cake Division](https://atcoder.jp/contests/abc370/tasks/abc370_f)
 
 ## 不変量を見つける
 - 不変量に着目すると解ける問題あり
