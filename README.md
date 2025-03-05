@@ -1751,9 +1751,6 @@
 ### 例題
 - 基本 [E - Prefix Equality](https://atcoder.jp/contests/abc250/tasks/abc250_e)
 - 基本 巨大数の積が一致する個数 [F - Product Equality](https://atcoder.jp/contests/abc339/tasks/abc339_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 多重集合の一致判定 [F - Rearrange Query](https://atcoder.jp/contests/abc367/tasks/abc367_f)
 
 ## NIMとgrundy数
@@ -1763,6 +1760,9 @@
 - NIMと同じ議論でxor=0からはxor!=0にしか遷移できないし、xor!=0なら～～
 ### 例題
 - 基本 L~R取り除けるNIM [G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [031 - VS AtCoder（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ae)
 - 基本 [C - 笑いをとれるかな？](https://atcoder.jp/contests/arc013/tasks/arc013_3)
 
