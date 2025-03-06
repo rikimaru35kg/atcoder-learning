@@ -227,86 +227,18 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
 void solve() {
-    LONG(N);
-    VL(A, N); VL(B, N);
-    auto same=[&](vl a, vl b) -> bool {
-        sort(all(a)); sort(all(b));
-        return a==b;
-    };
-    if(!same(A,B)) PNo
+    LONG(N, H);
+    LONG(A,B,C,D,E);
 
-    auto dup=[&](vl &a) -> bool {
-        uset<ll> st;
-        rep(i, N) {
-            if(!st.insert(a[i]).second) return true;
-        }
-        return false;
-    };
-    if(dup(A)) PYes
-
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]);
-    rep(i, N) A[i] = cc(A[i]);
-    rep(i, N) B[i] = cc(B[i]);
-
-    auto calswap=[&](vl &p) -> ll {
-        ll ret = 0;
-        vb visited(N);
-        rep(i, N) {
-            if(visited[i]) continue;
-            ll v = i;
-            ret ^= 1;
-            while(!visited[v]) {
-                visited[v] = true;
-                v = p[v];
-            }
-        }
-        return ret;
-    };
-
-    if(calswap(A)==calswap(B)) PYes PNo
-
-
+    ll ans = INF;
+    rep(x, N+1) {
+        ll y = Div(E*N-H-(B+E)*x, D+E) + 1;
+        chmax(y, 0LL);
+        if(y>N) continue;
+        chmin(ans, A*x + C*y);
+    }
+    Out(ans);
 
 }
 

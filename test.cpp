@@ -228,78 +228,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    ll M = 4;
-    vl cnt(M);
-    rep(i, N) cnt[A[i]]++;
-    ll a = 0;
-    vl P(N);
+    LONG(N, Q);
+    ll mx = INF, mn = -INF;
+    ll a = 1;
     rep(i, N) {
-        while(cnt[a]==0) ++a;
-        P[i] = a;
-        cnt[a]--;
-    }
-    de(P)
-    vvl g(M, vl(M));
-    rep(i, N) {
-        g[A[i]][P[i]]++;
-    }
-    ll ans = 0;
-    rep(i, M) {
-        g[i][i] = 0;
-    }
-    rep(i, M) rep(j, i) {
-        ll mn = min(g[i][j], g[j][i]);
-        ans += mn;
-        g[i][j] -= mn;
-        g[j][i] -= mn;
-    }
-    de(ans)
-    de(g)
-
-    auto calc=[&](vl &p, vvl g) -> pair<bool,ll> {
-        ll ret = 0;
-        ll &e1 = g[p[0]][p[1]];
-        ll &e2 = g[p[1]][p[2]];
-        ll &e3 = g[p[2]][p[3]];
-        ll &e4 = g[p[3]][p[0]];
-        ll &e5 = g[p[3]][p[1]];
-        ll &e6 = g[p[0]][p[2]];
-        {
-            ll mn = min({e1,e2,e3,e4});
-            ret += 3*mn;
-            e1 -= mn, e2 -= mn, e3 -= mn, e4 -= mn;
+        STRING(s); LONG(p);
+        if(s=="NEGATE") {
+            a *= -1;
+            swap(mn,mx);
+            mn = -mn, mx = -mx;
+        } else if(s=="CHMIN") {
+            chmin(mn, p); chmin(mx, p);
+        } else {
+            chmax(mn, p); chmax(mx, p);
         }
-        {
-            ll mn = min({e2,e3,e5});
-            ret += 2*mn;
-            e2 -= mn, e3 -= mn, e5 -= mn;
-        }
-        {
-            ll mn = min({e3,e4,e6});
-            ret += 2*mn;
-            e3 -= mn, e4 -= mn, e6 -= mn;
-        }
-        rep(i, M) rep(j, M) {
-            if(g[i][j]!=0) return {false,INF};
-        }
-        return {true, ret};
-    };
-
-    vl p(M);
-    iota(all(p), 0);
-    ll mn = INF;
-    do {
-        auto [b,now] = calc(p, g);
-        if(!b) continue;
-        mn = now;
-        break;
-        // chmin(mn, now);
-    } while(next_permutation(all(p)));
-
-    ans += mn;
-    Out(ans);
+        de3(a,mn,mx)
+    }
+    rep(i, Q) {
+        LONG(q);
+        q *= a;
+        chmin(q, mx);
+        chmax(q, mn);
+        Out(q);
+    }
 
 }
 

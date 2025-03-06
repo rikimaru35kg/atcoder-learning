@@ -1808,9 +1808,6 @@
 
 ## まとめ買いを個別買いに変換
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値中 [E - Square Price](https://atcoder.jp/contests/abc389/tasks/abc389_e)
 
 ## パスカルの三角形
@@ -1822,14 +1819,14 @@
 ## 操作列を考える
 - 各操作に名前を付け、その操作列を考えると、無駄な連続部分操作列が見つかり、意味のある操作列を考察できる事がある
 ### 例題
-- !復習価値低 [C - 節制](https://atcoder.jp/contests/abc013/tasks/abc013_3)
+- 基本 [C - 節制](https://atcoder.jp/contests/abc013/tasks/abc013_3)
 - 基本 [F - +1-1x2](https://atcoder.jp/contests/abc188/tasks/abc188_f)
 
 ## 関数の形のまま考える
 - 合成関数の問題は、f(x)のxに対する処理ではなく、f(x)のグラフ全体（つまり全xに対するf(x)の値）のまま考えると見通しが良くなるケースあり
 ### 例題
 - 基本 写像min or max or +を合成 [E - Filters](https://atcoder.jp/contests/abc196/tasks/abc196_e)
-- !復習価値中 [L - 書き換え](https://atcoder.jp/contests/past18-open/tasks/past18_l)
+- 基本 [L - 書き換え](https://atcoder.jp/contests/past18-open/tasks/past18_l)
 
 ## ヒストグラム最大長方形（スパン）
 - ヒストグラムの中で取りうる長方形の最大面積をO(N)で求める問題
@@ -1840,6 +1837,9 @@
 - 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 - 基本 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
 - 基本 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 想定解は非スタックなのでNote非掲載（どう解いても良い） [A - 碁石ならべ 2 (Stone Arranging 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_a)
 - !復習価値中 [F - Buildings 2](https://atcoder.jp/contests/abc379/tasks/abc379_f)
 
