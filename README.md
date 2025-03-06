@@ -1837,16 +1837,16 @@
 - 基本（O(N^2)でも解けるが…） [C - Mandarin Orange](https://atcoder.jp/contests/abc189/tasks/abc189_c)
 - 基本 [D - Buildings](https://atcoder.jp/contests/abc372/tasks/abc372_d)
 - 基本 水があふれるタイミング [E - Water Tank](https://atcoder.jp/contests/abc359/tasks/abc359_e)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 想定解は非スタックなのでNote非掲載（どう解いても良い） [A - 碁石ならべ 2 (Stone Arranging 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_a)
-- !復習価値中 [F - Buildings 2](https://atcoder.jp/contests/abc379/tasks/abc379_f)
+- 基本 想定解は非スタックなのでNote非掲載（どう解いても良い） [A - 碁石ならべ 2 (Stone Arranging 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_a)
+- !復習価値低 [F - Buildings 2](https://atcoder.jp/contests/abc379/tasks/abc379_f)
 
 ## 階段状にかさ増しする
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値中 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)

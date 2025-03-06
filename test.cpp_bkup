@@ -228,17 +228,24 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, H);
-    LONG(A,B,C,D,E);
+    LONG(N);
+    VL(A, N);
+    umap<ll,ll> li;
+    rep(i, N) li[A[i]] = i;
 
-    ll ans = INF;
-    rep(x, N+1) {
-        ll y = Div(E*N-H-(B+E)*x, D+E) + 1;
-        chmax(y, 0LL);
-        if(y>N) continue;
-        chmin(ans, A*x + C*y);
+    vl ans(N);
+    for(ll i=0; i<N;) {
+        if(li[A[i]]!=i) {
+            repk(j, i, li[A[i]]+1) {
+                ans[j] = A[i];
+            }
+            i = li[A[i]]+1;
+        } else {
+            ans[i] = A[i];
+            ++i;
+        }
     }
-    Out(ans);
+    for(auto x: ans) Out(x);
 
 }
 
