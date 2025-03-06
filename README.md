@@ -1768,10 +1768,7 @@
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !要復習 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
+- !復習価値高 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
 
 ## N以下の数字の何かを求める
 - 以下、桁和の総和を求め方
@@ -1781,6 +1778,9 @@
 - 5-9の場合、上側が0-30の31通り、下側が1000通り
 - 混乱しがちなのでコードも貼付 [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値中 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
 - !復習価値低 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)

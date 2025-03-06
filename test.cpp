@@ -227,48 +227,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long calmex(vector<long long> &x) {
-    long long N = SIZE(x);
-    vector<bool> used(N);
-    for(long long i=0; i<N; ++i) if(x[i]<N) used[x[i]] = true;
-    long long ret = 0;
-    while(ret<N && used[ret]) ++ret;
-    return ret;
-};
-
-void solve() {
-    LONG(N);
-    ll P = 51, Q = 1500;
-    vl mx(P);
-    ll now = 50;
-    repr(i, P) {
-        mx[i] = now;
-        now += i;
-    }
-    vvl grundy(P, vl(Q));
-    rep(w, P) repk(b, 0, mx[w]+1) {
-        vl x;
-        if(w && b+w<Q) x.push_back(grundy[w-1][b+w]);
-        if(b>=2) {
-            rep1(k, b/2) x.push_back(grundy[w][b-k]);
+//! [Danger] might lead to RE because of too large return size.
+//! Caululate size of nCk * k beforehand.
+vector<vector<int>> listup_combinations(int n, int k) {
+    vector<vector<int>> ret;
+    auto f=[&](auto f, int i=0, vector<int> &v) -> void {
+        if((int)v.size()==k) {
+            ret.push_back(v);
+            return;
         }
-        grundy[w][b] = calmex(x);
-    }
-    VL(W, N);
-    VL(B, N);
-    ll XOR = 0;
-    rep(i, N) {
-        XOR ^= grundy[W[i]][B[i]];
-    }
-    if(XOR) puts("First");
-    else puts("Second");
+        if(i>=n) return;
+        f(f, i+1, v);
+        v.push_back(i);
+        f(f, i+1, v);
+        v.pop_back();
+    };
+    vector<int> v={};
+    f(f, 0, v);
+    return ret;
+}
 
+ll solve(ll N, vl A) {
+    ll M = 10;
+    ll ans = 0;
+    ll W = 20;
+    rep(l, N) {
+        vl able(M);
+        deque<ll> que;
+        auto add=[&](ll x) {
+            ll m = que.size();
+            rep(j, m) {
+                ll c = 2*x - que[j];
+                if(c>=0 && c<M) able[c]++;
+            }
+            que.push_back(x);
+        };
+        bool ok = false;
+        for(ll r=l; r<l+W && r<N; ++r) {
+            if(able[A[r]] || ok) {
+                ++ans;
+                ok = true;
+            }
+            add(A[r]);
+        }
+    }
+    for(ll w=21; w<=N; ++w) {
+        ans += N+1-w;
+    }
+    return ans;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    VLM(A, N);
+    ll ans = solve(N,A);
+    Out(ans);
 }
 
 // ### test.cpp ###
