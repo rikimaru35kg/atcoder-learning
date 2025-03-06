@@ -227,63 +227,110 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! [Danger] might lead to RE because of too large return size.
-//! Caululate size of nCk * k beforehand.
-vector<vector<int>> listup_combinations(int n, int k) {
-    vector<vector<int>> ret;
-    auto f=[&](auto f, int i=0, vector<int> &v) -> void {
-        if((int)v.size()==k) {
-            ret.push_back(v);
-            return;
-        }
-        if(i>=n) return;
-        f(f, i+1, v);
-        v.push_back(i);
-        f(f, i+1, v);
-        v.pop_back();
-    };
-    vector<int> v={};
-    f(f, 0, v);
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
     return ret;
 }
 
-ll solve(ll N, vl A) {
-    ll M = 10;
-    ll ans = 0;
-    ll W = 20;
-    rep(l, N) {
-        vl able(M);
-        deque<ll> que;
-        auto add=[&](ll x) {
-            ll m = que.size();
-            rep(j, m) {
-                ll c = 2*x - que[j];
-                if(c>=0 && c<M) able[c]++;
-            }
-            que.push_back(x);
-        };
-        bool ok = false;
-        for(ll r=l; r<l+W && r<N; ++r) {
-            if(able[A[r]] || ok) {
-                ++ans;
-                ok = true;
-            }
-            add(A[r]);
-        }
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
-    for(ll w=21; w<=N; ++w) {
-        ans += N+1-w;
+    return ret;
+}
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+    long long ans = 1;
+    a %= mod;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a % mod;
+        }
+        a = a * a % mod;
+        b = (b >> 1);
     }
     return ans;
+}
+
+//! Calculate a^b
+//! a >= 0, b >= 0
+long long spow(long long a, long long b) {
+    long long ans = 1;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a;
+        }
+        a = a * a;
+        b = (b >> 1);
+    }
+    return ans;
+}
+
+void solve() {
+    LONG(L, R);
+    auto judge=[&](ll x) -> bool {
+        auto v = separate_digit(x);
+        ll m = v.size();
+        repk(i, 1, m) if(v[i]>=v[0]) return false;
+        return true;
+    };
+    auto snake=[&](ll y) -> ll {
+        if(y<10) return 0;
+        auto v = separate_digit(y);
+        ll D = v.size();
+        ll ret = 0;
+
+        ll up = 0;
+        rep(i, D) {
+            if(i==0) {
+                for(ll x=1; x<v[i]; ++x) {
+                    ll nup = up*10 + x;
+                    if(!judge(nup)) break;
+                    ret += spow(x, D-1-i);
+                }
+            } else {
+                for(ll x=0; x<v[i]; ++x) {
+                    ll nup = up*10 + x;
+                    if(!judge(nup)) break;;
+                    ret += spow(v[0], D-1-i);
+                }
+            }
+            up = up*10 + v[i];
+        }
+
+        rep1(w, D-1) {
+            if(w==1) continue;
+            for(ll x=1; x<=9; ++x) {
+                ret += spow(x, w-1);
+            }
+        }
+
+        if(judge(y)) ++ret;
+        return ret;
+    };
+
+    ll ans = snake(R) - snake(L-1);
+    Out(ans);
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-    ll ans = solve(N,A);
-    Out(ans);
+    solve();
 }
 
 // ### test.cpp ###

@@ -1778,12 +1778,12 @@
 - 5-9の場合、上側が0-30の31通り、下側が1000通り
 - 混乱しがちなのでコードも貼付 [提出コード](https://atcoder.jp/contests/tessoku-book/submissions/60197662)
 ### 例題
+- !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
+- !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
+- !要復習 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- !復習価値高 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
-- !復習価値中 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
-- !復習価値低 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
 - !復習価値高 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
