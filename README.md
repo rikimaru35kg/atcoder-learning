@@ -1781,14 +1781,11 @@
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
 - !要復習 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値高 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
 ### 例題
-- !復習価値低 [D - An Ordinary Game](https://atcoder.jp/contests/abc048/tasks/arc064_b)
+- 基本 [D - An Ordinary Game](https://atcoder.jp/contests/abc048/tasks/arc064_b)
 
 ## max(max())の形に帰着させる
 - maxの中にmaxがある形にできれば、簡単に解ける
@@ -1804,14 +1801,17 @@
 - 例えばN=8で7が二つある場合、7に7,8を割り当てれば置換が定義できるが、7に8,7と割り当てても良い事を考えれば、偶置換と奇置換のどちらにもなりえる
 ### 例題
 - 基本 [E - Permute K times](https://atcoder.jp/contests/abc367/tasks/abc367_e)
-- !復習価値中 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
+- !復習価値低 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
 - 基本 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
-- !復習価値中 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
-- !要復習 [G - Sort from 1 to 4](https://atcoder.jp/contests/abc302/tasks/abc302_g)
+- !復習価値低 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+- !復習価値中 [G - Sort from 1 to 4](https://atcoder.jp/contests/abc302/tasks/abc302_g)
 
 ## まとめ買いを個別買いに変換
 ### 例題
-- [E - Square Price](https://atcoder.jp/contests/abc389/tasks/abc389_e)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
+- !復習価値中 [E - Square Price](https://atcoder.jp/contests/abc389/tasks/abc389_e)
 
 ## パスカルの三角形
 - 各行の総和は2^行番号となる

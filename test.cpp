@@ -227,103 +227,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
-        }
-        a = a * a % mod;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
-        }
-        a = a * a;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
 void solve() {
-    LONG(L, R);
-    auto judge=[&](ll x) -> bool {
-        auto v = separate_digit(x);
-        ll m = v.size();
-        repk(i, 1, m) if(v[i]>=v[0]) return false;
-        return true;
-    };
-    auto snake=[&](ll y) -> ll {
-        if(y<10) return 0;
-        auto v = separate_digit(y);
-        ll D = v.size();
+    LONG(N);
+    VLM(A, N);
+    ll M = 4;
+    vl cnt(M);
+    rep(i, N) cnt[A[i]]++;
+    ll a = 0;
+    vl P(N);
+    rep(i, N) {
+        while(cnt[a]==0) ++a;
+        P[i] = a;
+        cnt[a]--;
+    }
+    de(P)
+    vvl g(M, vl(M));
+    rep(i, N) {
+        g[A[i]][P[i]]++;
+    }
+    ll ans = 0;
+    rep(i, M) {
+        g[i][i] = 0;
+    }
+    rep(i, M) rep(j, i) {
+        ll mn = min(g[i][j], g[j][i]);
+        ans += mn;
+        g[i][j] -= mn;
+        g[j][i] -= mn;
+    }
+    de(ans)
+    de(g)
+
+    auto calc=[&](vl &p, vvl g) -> pair<bool,ll> {
         ll ret = 0;
-
-        ll up = 0;
-        rep(i, D) {
-            if(i==0) {
-                for(ll x=1; x<v[i]; ++x) {
-                    ll nup = up*10 + x;
-                    if(!judge(nup)) break;
-                    ret += spow(x, D-1-i);
-                }
-            } else {
-                for(ll x=0; x<v[i]; ++x) {
-                    ll nup = up*10 + x;
-                    if(!judge(nup)) break;;
-                    ret += spow(v[0], D-1-i);
-                }
-            }
-            up = up*10 + v[i];
+        ll &e1 = g[p[0]][p[1]];
+        ll &e2 = g[p[1]][p[2]];
+        ll &e3 = g[p[2]][p[3]];
+        ll &e4 = g[p[3]][p[0]];
+        ll &e5 = g[p[3]][p[1]];
+        ll &e6 = g[p[0]][p[2]];
+        {
+            ll mn = min({e1,e2,e3,e4});
+            ret += 3*mn;
+            e1 -= mn, e2 -= mn, e3 -= mn, e4 -= mn;
         }
-
-        rep1(w, D-1) {
-            if(w==1) continue;
-            for(ll x=1; x<=9; ++x) {
-                ret += spow(x, w-1);
-            }
+        {
+            ll mn = min({e2,e3,e5});
+            ret += 2*mn;
+            e2 -= mn, e3 -= mn, e5 -= mn;
         }
-
-        if(judge(y)) ++ret;
-        return ret;
+        {
+            ll mn = min({e3,e4,e6});
+            ret += 2*mn;
+            e3 -= mn, e4 -= mn, e6 -= mn;
+        }
+        rep(i, M) rep(j, M) {
+            if(g[i][j]!=0) return {false,INF};
+        }
+        return {true, ret};
     };
 
-    ll ans = snake(R) - snake(L-1);
-    Out(ans);
+    vl p(M);
+    iota(all(p), 0);
+    ll mn = INF;
+    do {
+        auto [b,now] = calc(p, g);
+        if(!b) continue;
+        mn = now;
+        break;
+        // chmin(mn, now);
+    } while(next_permutation(all(p)));
 
+    ans += mn;
+    Out(ans);
 
 }
 

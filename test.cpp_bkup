@@ -227,51 +227,86 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
     }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
     }
-    return ret;
-}
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+    void print() {
+        #ifdef __DEBUG
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+        #endif
+    }
+};
 
 void solve() {
     LONG(N);
-    auto v = separate_digit(N);
-    ll D = v.size();
-    ll up = 0, low = N;
-    ll ten = 1;
-    rep(i, D-1) ten *= 10;
-    ll one = 0;
+    VL(A, N); VL(B, N);
+    auto same=[&](vl a, vl b) -> bool {
+        sort(all(a)); sort(all(b));
+        return a==b;
+    };
+    if(!same(A,B)) PNo
 
-    ll ans = 0;
-    rep(i, D) {
-        up = up*10 + v[i];
-        low -= v[i]*ten;
-        one = one*10 + 1;
+    auto dup=[&](vl &a) -> bool {
+        uset<ll> st;
+        rep(i, N) {
+            if(!st.insert(a[i]).second) return true;
+        }
+        return false;
+    };
+    if(dup(A)) PYes
 
-        ans += i*ten;
-        if(up==one) ans += low+1;
-        if(up>one) ans += ten;
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) A[i] = cc(A[i]);
+    rep(i, N) B[i] = cc(B[i]);
 
-        ten /= 10;
-    }
-    Out(ans);
+    auto calswap=[&](vl &p) -> ll {
+        ll ret = 0;
+        vb visited(N);
+        rep(i, N) {
+            if(visited[i]) continue;
+            ll v = i;
+            ret ^= 1;
+            while(!visited[v]) {
+                visited[v] = true;
+                v = p[v];
+            }
+        }
+        return ret;
+    };
+
+    if(calswap(A)==calswap(B)) PYes PNo
+
+
 
 }
 
