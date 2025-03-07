@@ -1889,10 +1889,7 @@
 - 任意のトランプを取り出して好きな位置に挿入できる場合、LISとの関連が深い
 ### 例題
 - 基本 [D - トランプ挿入ソート](https://atcoder.jp/contests/abc006/tasks/abc006_4)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [bookshelf - 本棚 (Bookshelf)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_bookshelf)
+- 基本 [bookshelf - 本棚 (Bookshelf)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_bookshelf)
 
 ## 牛ゲー
 - 2変数間の制約(xj-xi<=ci)が与えられる時、xN-x0を最大化したいという問題
@@ -1907,6 +1904,9 @@
 - 計算量はcapacityが全て1のときO(min(n^(2/3)*m, m^(3/2)))、それ以外O(n^2 * m)
 ### 例題
 - 基本 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - !要復習 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
