@@ -227,46 +227,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
+#include <atcoder/maxflow>
 using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 void solve() {
     LONG(N, M);
-    VS(S, N);
-
-    rep(i, N) rep(j, M) {
-        if(S[i][j]=='#') {
-            if(i<N-1) S[i+1][j] = '#';
-            if(i<N-1 && j<M-1) S[i+1][j+1] = '#';
+    VL(P, N);
+    mf_graph<ll> flow(N+2);
+    rep(i, M) {
+        LONG(a,b);
+        flow.add_edge(a,b,INF);
+    }
+    ll ans = 0;
+    rep(i, N) {
+        if(P[i]>=0) {
+            flow.add_edge(0,i+1,P[i]);
+            // flow.add_edge(i+1,N+1,0);
+            ans += P[i];
+        } else {
+            // flow.add_edge(0,i+1,0);
+            flow.add_edge(i+1,N+1,-P[i]);
         }
     }
 
-    vm dp(N+2, 1);
-    dp.back() = 0;
-    repr(j, M) {
-        vm pdp(N+2);  swap(dp, pdp);
-        rep(i, N+1) {
-            if(i && S[i-1][j]=='#') continue;
-            dp[i] += pdp[i];
-        }
-        rep(i, N+1) {
-            dp[i+1] += dp[i];
-        }
-        rep(i, N+1) dp[i] = dp[i+1];
-    }
-    Out(dp.back());
-
+    ans -= flow.flow(0,N+1);
+    Out(ans);
 
 }
 

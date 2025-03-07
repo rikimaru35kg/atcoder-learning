@@ -1904,17 +1904,18 @@
 - 計算量はcapacityが全て1のときO(min(n^(2/3)*m, m^(3/2)))、それ以外O(n^2 * m)
 ### 例題
 - 基本 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値低 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
-- !要復習 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
+- 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
+- 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
+- !復習価値高 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 畳み込み（FFT/NTT）
 - ACLで求める
 - 分布同士の掛け算的なものが高速に求まる（多項式の積）
 - c_{i+j} += ai * bjとなる
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
 - !要復習 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 
