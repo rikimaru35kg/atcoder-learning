@@ -1846,10 +1846,7 @@
 ### 例題
 - !復習価値中 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
+- !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
 ## ホール（Hall）の結婚定理（難しすぎるのでNote非掲載）
 - 完全マッチングできる必要十分条件に関する定理（参考：[グラフ理論⑥(ホールの結婚定理)](https://www.youtube.com/watch?v=-W7QTRk0Yic)）
@@ -1870,6 +1867,9 @@
 
 ## 平方分割
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
 - !復習価値低 [O - 通知](https://atcoder.jp/contests/past202012-open/tasks/past202012_o)
 - !復習価値中 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
