@@ -1540,7 +1540,7 @@
 - 基本 [E - カードゲーム 3 (Card Game 3)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_e)
 - 基本 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - 基本 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
-- !要復習 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
+- !復習価値中 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
 
@@ -1867,16 +1867,13 @@
 
 ## 平方分割
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [F - Hop Sugoroku](https://atcoder.jp/contests/abc335/tasks/abc335_f)
-- !復習価値低 [O - 通知](https://atcoder.jp/contests/past202012-open/tasks/past202012_o)
-- !復習価値中 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
+- 基本 [O - 通知](https://atcoder.jp/contests/past202012-open/tasks/past202012_o)
+- !復習価値低 [083 - Colorful Graph（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_ce)
 
 ## 階差を考える
 ### 例題
-- [B - ARC Wrecker](https://atcoder.jp/contests/arc117/tasks/arc117_b)
+- !復習価値低 [B - ARC Wrecker](https://atcoder.jp/contests/arc117/tasks/arc117_b)
 
 ## 最大と最小の差の最小化
 - 最小値を固定すると貪欲に選択できる事が多い
@@ -1886,12 +1883,15 @@
 ## 斜め45度を水平垂直に直す
 ### 例題
 - 基本 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
-- !要復習 [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
+- !復習価値高 [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
 
 ## 挿入ソート
 - 任意のトランプを取り出して好きな位置に挿入できる場合、LISとの関連が深い
 ### 例題
 - 基本 [D - トランプ挿入ソート](https://atcoder.jp/contests/abc006/tasks/abc006_4)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [bookshelf - 本棚 (Bookshelf)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_bookshelf)
 
 ## 牛ゲー

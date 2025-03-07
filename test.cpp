@@ -227,94 +227,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-struct S {
-    ll s, x, w;
-    S(ll s=0, ll x=-INF, ll w=0): s(s),x(x),w(w) {}
-};
-S op(S a, S b) {return S(a.s+b.s, max(a.x,b.x), a.w+b.w);}
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==INF) return x;
-    return S(f*x.w, f, x.w);
-}
-F composition(F f, F g) {
-    if(f==INF) return g;
-    return f;
-}
-F id(){return INF;}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N);
-    VL(X, N);
-    rep(i, N) X[i] -= i;
-    vector<S> init(N);
-    rep(i, N) init[i] = S(X[i], X[i], 1);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    LONG(N, M);
+    VS(S, N);
 
-    auto segprint=[&](){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).x);
-        cerr<<endl;
-    #endif
-    };
-
-    ll ans = 0;
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t, g); --t;
-        g -= t;
-        segprint();
-
-        ll cx = seg.get(t).x;
-        de(i)
-        if(g>cx) {
-            auto f=[&](S x) -> bool {
-                return x.x<g;
-            };
-            ll r = seg.max_right(t, f);
-            ll num = r-t;
-            ll sum = seg.prod(t, r).s;
-            ans += g*num - sum;
-            seg.apply(t,r,g);
-        } else {
-            auto f=[&](S x) -> bool {
-                return x.x<g;
-            };
-            ll l = seg.max_right(0, f);
-            ll num = t-l+1;
-            ll sum = seg.prod(l,t+1).s;
-            ans += sum - g*num;
-            seg.apply(l,t+1,g);
+    rep(i, N) rep(j, M) {
+        if(S[i][j]=='#') {
+            if(i<N-1) S[i+1][j] = '#';
+            if(i<N-1 && j<M-1) S[i+1][j+1] = '#';
         }
     }
-    Out(ans);
+
+    vm dp(N+2, 1);
+    dp.back() = 0;
+    repr(j, M) {
+        vm pdp(N+2);  swap(dp, pdp);
+        rep(i, N+1) {
+            if(i && S[i-1][j]=='#') continue;
+            dp[i] += pdp[i];
+        }
+        rep(i, N+1) {
+            dp[i+1] += dp[i];
+        }
+        rep(i, N+1) dp[i] = dp[i+1];
+    }
+    Out(dp.back());
+
 
 }
 
