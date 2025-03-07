@@ -227,206 +227,92 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+#include <atcoder/lazysegtree>
+using namespace atcoder;
 
-template <class S, S(*op)(S, S), S(*e)()>
-struct SegTree {
-    int n, mx;
-    vector<S> a;
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x, bool do_op=true) {
-        assert(i>=0 && i<n);
-        set_only(i, x, do_op);
-        i += n; i>>=1;  // i is node id
-        while(i) {
-            update(i);
-            i>>=1;
-        }
-    }
-    void update(int i) {  // i is node id
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;  // l,r are children
-        a[i] = op(a[l], a[r]);
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    S get(int i) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        return a[i];
-    }
-    S prod(int ql, int qr) {
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, int i) -> S {
-            if(r<=ql || l>=qr) return e();
-            if(l>=ql && r<=qr) return get(i-n);
-            int m = (l+r)/2;
-            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
-            return ret;
-        };
-        S ret = f(f, 0, n, 1);
-        return ret;
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
-        cerr<<endl;
-        #endif
-    }
+struct S {
+    ll s, x, w;
+    S(ll s=0, ll x=-INF, ll w=0): s(s),x(x),w(w) {}
 };
+S op(S a, S b) {return S(a.s+b.s, max(a.x,b.x), a.w+b.w);}
+S e() {return S();}
+using F = ll;
+S mapping(F f, S x) {
+    if(f==INF) return x;
+    return S(f*x.w, f, x.w);
+}
+F composition(F f, F g) {
+    if(f==INF) return g;
+    return f;
+}
+F id(){return INF;}
 
-using S = ll;
-S op(S a, S b) { return max(a,b);}
-S e() {return 0;}
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 void solve() {
-    LONG(N, Q);
-    VL(H, N);
-    vvp query(N);
-    rep(i, Q) {
-        LONGM(l, r);
-        query[r].emplace_back(l, i);
-    }
-    SegTree<S,op,e> seg(N);
-    rep(i, N) seg.set_only(i, H[i], false);
-    seg.build();
+    LONG(N);
+    VL(X, N);
+    rep(i, N) X[i] -= i;
+    vector<S> init(N);
+    rep(i, N) init[i] = S(X[i], X[i], 1);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
 
-    vl stck;
-    vl ans(Q);
-    repr(r, N) {
-        for(auto [l,qi]: query[r]) {
-            ll mx = seg.prod(l+1, r+1);
-            auto [n,x] = lowbou(stck, mx, false);
-            ans[qi] = n;
+    auto segprint=[&](){
+    #ifdef __DEBUG
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).x);
+        cerr<<endl;
+    #endif
+    };
+
+    ll ans = 0;
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t, g); --t;
+        g -= t;
+        segprint();
+
+        ll cx = seg.get(t).x;
+        de(i)
+        if(g>cx) {
+            auto f=[&](S x) -> bool {
+                return x.x<g;
+            };
+            ll r = seg.max_right(t, f);
+            ll num = r-t;
+            ll sum = seg.prod(t, r).s;
+            ans += g*num - sum;
+            seg.apply(t,r,g);
+        } else {
+            auto f=[&](S x) -> bool {
+                return x.x<g;
+            };
+            ll l = seg.max_right(0, f);
+            ll num = t-l+1;
+            ll sum = seg.prod(l,t+1).s;
+            ans += sum - g*num;
+            seg.apply(l,t+1,g);
         }
-        while(stck.size() && stck.back()<=H[r]) stck.pop_back();
-        stck.push_back(H[r]);
     }
     Out(ans);
 
