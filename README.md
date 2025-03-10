@@ -1919,10 +1919,7 @@
 ## 凸包
 - 凸な多角形を作る事で上手くいく問題
 ### 
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !要復習 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
+- !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）
@@ -1940,6 +1937,9 @@
 
 ## 周期に着目する
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
 ## 線分交差判定（ニッチすぎてNote非掲載）
