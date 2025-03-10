@@ -1913,15 +1913,15 @@
 - 分布同士の掛け算的なものが高速に求まる（多項式の積）
 - c_{i+j} += ai * bjとなる
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !要復習 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
-- !要復習 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
+- 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
+- !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 
 ## 凸包
 - 凸な多角形を作る事で上手くいく問題
 ### 
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !要復習 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
