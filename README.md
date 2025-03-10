@@ -2175,6 +2175,7 @@
 - [B. Monsters Attack!](https://codeforces.com/contest/1923/problem/B)
 - [D - Pigeon Swap](https://atcoder.jp/contests/abc395/tasks/abc395_d)
 - [F - Smooth Occlusion](https://atcoder.jp/contests/abc395/tasks/abc395_f)
+- [E - Min of Restricted Sum](https://atcoder.jp/contests/abc396/tasks/abc396_e)
 
 ## ACできなかった問題
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
