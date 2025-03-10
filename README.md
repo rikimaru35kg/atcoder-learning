@@ -1937,9 +1937,6 @@
 
 ## 周期に着目する
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
 ## 線分交差判定（ニッチすぎてNote非掲載）
@@ -1952,6 +1949,9 @@
 - ファレイ数列の重要な性質として、xi/yi->xi+1/yi+1と並んでいるとすると、yi*(xi+1)-xi*(yi+1)==1がある
 - これを用いれば順次次の項を求めていく事ができる
 ### 例題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値高 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
 ## 構築系問題
