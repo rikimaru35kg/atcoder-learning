@@ -227,54 +227,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+
 
 void solve() {
-    LONG(N, Q);
-    VL(D, N);
-    D.insert(D.begin(), 1);
-    ++N;
-    de(D)
-    vl C(N); C[0] = 1;
-    repk(i, 1, N) {
-        C[i] = Divceil(D[i],C[i-1]) * C[i-1];
-    }
-    de(C)
-    rep(i, Q) {
-        LONG(t,l,r);
+    LONG(M, K);
+    if(M<=1) Pm1
 
-        auto f=[&](ll i) -> bool {
-            ll now = -i + Div(t, C[i]) * C[i];
-            return now<=r;
-        };
-        auto g=[&](ll i) -> bool {
-            ll now = -i + Div(t, C[i]) * C[i];
-            return now<=l-1;
-        };
-        ll i1 = binary_search(N, -1, f);
-        ll i2 = binary_search(N, -1, g);
-        Out(i2-i1);
-    }
+    ll p=1, q=M;
+    rep(i, K-1) {
+        auto [g,x0,y0] = extgcd(q,-p);
+        if(g<0) x0 *= -1, y0 *= -1;
 
+        ll k = Div(M-y0, q);
+        ll y = y0 + k*q;
+        ll x = (1+p*y)/q;
+
+        p = x, q = y;
+        de2(p,q)
+        if(q==1) Pm1
+    }
+    printf("%lld %lld\n", p, q);
 
 }
 

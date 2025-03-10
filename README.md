@@ -1949,10 +1949,7 @@
 - ファレイ数列の重要な性質として、xi/yi->xi+1/yi+1と並んでいるとすると、yi*(xi+1)-xi*(yi+1)==1がある
 - これを用いれば順次次の項を求めていく事ができる
 ### 例題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- !復習価値高 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
+- !要復習 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
 ## 構築系問題
 - 構築させる問題
@@ -1971,6 +1968,9 @@
 - 基本 タイル置き [D - Tiling](https://atcoder.jp/contests/abc345/tasks/abc345_d)
 - 基本 チョコレート分割 [E - Dividing Chocolate](https://atcoder.jp/contests/abc159/tasks/abc159_e)
 - 基本 クッキー消し [D - Magical Cookies](https://atcoder.jp/contests/abc315/tasks/abc315_d)
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - !復習価値低 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - 基本 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
 - 基本 [aplusb - 足し算 (a + b problem)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_aplusb)
