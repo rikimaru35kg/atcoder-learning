@@ -51,14 +51,21 @@ vector<string> crop_out(vector<string> &field, char c='.') {
 
 //! Rotate field by +/-90deg
 vector<string> rot90(vector<string> &field, bool clockwise=true) {
-    long long h = field.size();
-    long long w = field[0].size();
-    vector<string> ret(w, string(h, ' '));
-    for (long long i=0; i<h; ++i) {
-        for (long long j=0; j<w; ++j) {
-            if (clockwise) ret[j][h-1-i] = field[i][j];
-            else ret[w-1-j][i] = field[i][j];
-        }
+    int h = field.size(), w = field[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for (int i=0; i<h; ++i) for (int j=0; j<w; ++j) {
+        if (clockwise) ret[j][h-1-i] = field[i][j];
+        else ret[w-1-j][i] = field[i][j];
+    }
+    return ret;
+}
+template<typename T>
+vector<vector<T>> rot90(vector<vector<T>> &field, bool clockwise=true) {
+    int h = field.size(), w = field[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for (int i=0; i<h; ++i) for (int j=0; j<w; ++j) {
+        if (clockwise) ret[j][h-1-i] = field[i][j];
+        else ret[w-1-j][i] = field[i][j];
     }
     return ret;
 }

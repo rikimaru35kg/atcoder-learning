@@ -227,33 +227,83 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+
+//! Rotate field by +/-90deg
+vector<string> rot90(vector<string> &field, bool clockwise=true) {
+    int h = field.size(), w = field[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for (int i=0; i<h; ++i) for (int j=0; j<w; ++j) {
+        if (clockwise) ret[j][h-1-i] = field[i][j];
+        else ret[w-1-j][i] = field[i][j];
+    }
+    return ret;
+}
+template<typename T>
+vector<vector<T>> rot90(vector<vector<T>> &field, bool clockwise=true) {
+    int h = field.size(), w = field[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for (int i=0; i<h; ++i) for (int j=0; j<w; ++j) {
+        if (clockwise) ret[j][h-1-i] = field[i][j];
+        else ret[w-1-j][i] = field[i][j];
+    }
+    return ret;
 }
 
 
 void solve() {
-    LONG(M, K);
-    if(M<=1) Pm1
-
-    ll p=1, q=M;
-    rep(i, K-1) {
-        auto [g,x0,y0] = extgcd(q,-p);
-        if(g<0) x0 *= -1, y0 *= -1;
-
-        ll k = Div(M-y0, q);
-        ll y = y0 + k*q;
-        ll x = (1+p*y)/q;
-
-        p = x, q = y;
-        de2(p,q)
-        if(q==1) Pm1
+    LONG(H, W);
+    VVL(A, H, W);
+    ll mn = INF, mx = -INF;
+    rep(i, H) rep(j, W) {
+        chmax(mx, A[i][j]);
+        chmin(mn, A[i][j]);
     }
-    printf("%lld %lld\n", p, q);
+    de2(mn, mx)
+
+    auto f=[&](ll x) -> bool {
+        ll l = 0;
+        rep(i, H) {
+            ll cl = 0, cr = W;
+            rep(j, W) {
+                if(A[i][j]>mn+x) chmin(cr, j);
+                if(A[i][j]<mx-x) chmax(cl, j+1);
+            }
+            if(cl>cr) return false;
+            if(cr<l) return false;
+            chmax(l, cl);
+        }
+        return true;
+    };
+
+    ll ans = mx-mn;
+    rep(ri, 4) {
+        ll now = binary_search(mx-mn, -1, f);
+        chmin(ans, now);
+        A = rot90(A);
+        swap(H,W);
+    }
+    Out(ans);
 
 }
 
