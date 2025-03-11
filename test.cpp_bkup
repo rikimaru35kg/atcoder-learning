@@ -227,58 +227,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! Calculate Euclid distance^2
+//! input type = long long
+//! output type = long long
+long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
+    long long ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    return ret;
+}
+
 void solve() {
-    LONG(N, Q);
-    char lh = 'L';
-    ll lt = 0;
-    vl dp(N, INF);
-    dp[1] = 0;
-
-    auto of=[&](ll i, ll d) -> ll {
-        i += d;
-        return Percent(i, N);
-    };
-
-    rep(i, Q) {
-        vl pdp(N, INF); swap(pdp, dp);
-        CHAR(h); LONGM(t);
-        rep(j, N) {
-            ll now = pdp[j];
-            if(now==INF) continue;
-            ll ofs = lt;
-            ll l = lt, r = j;
-            if(lh!=h) {
-                l = j, r = lt;
-                ofs = j;
-            }
-
-            l = of(l,-ofs), r = of(r,-ofs);
-            ll ct = of(t, -ofs);
-
-            { // clockwise
-                if(r>ct) {
-                    ll cost = ct-l;
-                    chmin(dp[of(r,ofs)], now+cost);
-                } else {
-                    ll cost = ct-l + ct+1-r;
-                    chmin(dp[of(ct+1,ofs)], now+cost);
-                }
-            }
-            { // counter-clockwise
-                if(r<ct) {
-                    ll cost = N-ct;
-                    chmin(dp[of(r,ofs)], now+cost);
-                } else {
-                    ll cost = N-ct + r-ct+1;
-                    chmin(dp[of(ct-1,ofs)], now+cost);
-                }
-            }
-        }
-        lh = h, lt = t;
-        de(dp)
+    LONG(N, K);
+    VL(H, N);
+    VP(P, N);
+    vl deg(N);
+    rep(i, N) rep(j, N) {
+        if(H[i]>=H[j]) continue;
+        ll d2 = euclid_dist2(P[i],P[j]);
+        if(d2>K*K) continue;
+        deg[i]++;
     }
-    ll ans = INF;
-    rep(i, N) chmin(ans, dp[i]);
+    ll ans = 0;
+    rep(i, N) {
+        if(deg[i]==0) ++ans;
+    }
     Out(ans);
 
 }
