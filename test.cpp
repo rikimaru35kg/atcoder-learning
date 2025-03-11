@@ -227,214 +227,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()>
-struct SegTree {
-    int n, mx;
-    vector<S> a;
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
+struct Complex {
+    long long a, b;
+    Complex(long long a, long long b): a(a), b(b) {}
+    Complex operator+(const Complex &o) const { return Complex(a+o.a, b+o.b); }
+    Complex& operator+=(const Complex &o) { *this = *this + o; return *this; }
+    Complex operator-(const Complex &o) const { return Complex(a-o.a, b-o.b); }
+    Complex& operator-=(const Complex &o) { *this = *this - o; return *this; }
+    Complex operator*(const Complex &o) const { return Complex(a*o.a-b*o.b, a*o.b+b*o.a); }
+    Complex& operator*=(const Complex &o) { *this = *this * o; return *this; }
+    bool operator<(const Complex &o) const {
+        if(a==o.a) return b<o.b;
+        return a<o.a;
     }
-    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x, bool do_op=true) {
-        assert(i>=0 && i<n);
-        set_only(i, x, do_op);
-        i += n; i>>=1;  // i is node id
-        while(i) {
-            update(i);
-            i>>=1;
-        }
-    }
-    void update(int i) {  // i is node id
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;  // l,r are children
-        a[i] = op(a[l], a[r]);
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    S get(int i) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        return a[i];
-    }
-    S prod(int ql, int qr) {
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, int i) -> S {
-            if(r<=ql || l>=qr) return e();
-            if(l>=ql && r<=qr) return get(i-n);
-            int m = (l+r)/2;
-            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
-            return ret;
-        };
-        S ret = f(f, 0, n, 1);
-        return ret;
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
-        cerr<<endl;
-        #endif
-    }
+    bool operator==(const Complex &o) const { return a==o.a && b==o.b; }
+    long long norm2() { return a*a + b*b; }
 };
-using S = ll;
-S op(S a, S b) { return max(a,b); }
-S e() {return -1;}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-template<class S, S(*op)(S, S), S(*e)()>
-struct SparceTable {
-    int n, len=0;
-    vector<vector<S>> a;
-    vector<int> row; // width -> row of a
-    SparceTable(int n): n(n), row(n+1) {
-        for(int w=1; w<=n; w<<=1) {
-            a.push_back(vector<S>());
-            for(int l=0; l<n+1-w; ++l) {
-                a.back().push_back(e());
-            }
-        }
-        int i=0, rw=0;
-        for(int w=1; w<=n; w<<=1) {
-            while(i<=n && i<(w<<1)) row[i++] = rw;
-            ++rw;
-        }
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<n);
-        a[0][i] = x;
-    }
-    void build() {
-        int rw=0;
-        for(int w=2; w<=n; w<<=1) {
-            for(int l=0; l<n+1-w; ++l) {
-                a[rw+1][l] = op(a[rw][l], a[rw][l+w/2]);
-            }
-            ++rw;
-        }
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=n && l<=r);
-        if(l==r) return e();
-        int rw = row[r-l];
-        int w = 1<<rw;
-        return op(a[rw][l], a[rw][r-w]);
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<n; ++i) cerr<<a[0][i]<<' ';
-        cerr<<endl;
-        #endif
-    }
-};
-
 
 void solve() {
     LONG(N);
-    VL(A, N);
-    // SegTree<S,op,e> right0(N);
-    SparceTable<S,op,e> right(N);
-    ll r = 0;
-    rep(l, N) {
-        while(r<N && 2*A[l]>A[r]) {
-            ++r;
-        }
-        right.set(l, r-l);
-        // right0.set(l, r-l);
+    vector<Complex> P, Q;
+    rep(i, N) {
+        LONG(a,b);
+        P.emplace_back(a,b);
     }
-    right.build();
-    right.dump();
-    // rep(l, N) repk(r, l+1, N+1) {
-    //     ll x = right.prod(l,r), y = right0.prod(l,r);
-    //     if(x!=y) {
-    //         de2(l,r)
-    //         assert(0);
-    //     }
-    // }
-    // de(1)
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-
-        auto f=[&](ll k) -> bool {
-            ll mx = right.prod(l, l+k);
-            return mx<=r-k-l;
+    rep(i, N) {
+        LONG(a,b);
+        Q.emplace_back(a,b);
+    }
+    if(N==1) PYes
+    if(N==2) {
+        if((P[1]-P[0]).norm2()==(Q[1]-Q[0]).norm2()) PYes PNo
+    }
+    auto a1 = P[0], b1 = P[1];
+    rep(i, N) rep(j, N) {
+        if(i==j) continue;
+        auto a2 = Q[i], b2 = Q[j];
+        if((a1-b1).norm2()!=(a2-b2).norm2()) continue;
+        auto judge=[&](Complex c1) -> bool {
+            rep(i, N) {
+                auto c2 = Q[i];
+                if((c1-a1)*(b2-a2)==(b1-a1)*(c2-a2)) return true;
+            }
+            return false;
         };
-        ll ans = binary_search(0, (r-l)/2+1, f);
-        Out(ans);
+        bool ok = true;
+        repk(k, 2, N) {
+            auto c1 = P[k];
+            if(!judge(c1)) ok = false;
+        }
+        if(ok) PYes
     }
+    PNo
 
 }
 

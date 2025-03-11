@@ -227,32 +227,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Calculate Euclid distance^2
-//! input type = long long
-//! output type = long long
-long long euclid_dist2(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    return ret;
-}
-
 void solve() {
-    LONG(N, K);
-    VL(H, N);
-    VP(P, N);
-    vl deg(N);
+    LONG(N);
+    VS(S, N);
+    vvl Sc(N+1, vl(N+1));
     rep(i, N) rep(j, N) {
-        if(H[i]>=H[j]) continue;
-        ll d2 = euclid_dist2(P[i],P[j]);
-        if(d2>K*K) continue;
-        deg[i]++;
+        if(S[i][j]=='#') Sc[i+1][j+1]++;
     }
-    ll ans = 0;
-    rep(i, N) {
-        if(deg[i]==0) ++ans;
+    rep(i, N) rep(j, N+1) Sc[i+1][j] += Sc[i][j];
+    rep(i, N+1) rep(j, N) Sc[i][j+1] += Sc[i][j];
+
+    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
+        ll ret = 0;
+        ret += Sc[i2][j2];
+        ret -= Sc[i1][j2];
+        ret -= Sc[i2][j1];
+        ret += Sc[i1][j1];
+        return ret;
+    };
+
+    for(ll w=N; w>=3; --w) {
+        rep(i, N+1-w) rep(j, N+1-w) {
+            if(sum(i+1,i+w-1,j+1,j+w)!=0) continue;
+            if(sum(i,i+w,j,j+w)==3*w-2) {
+                Outend(w-2);
+            }
+
+        }
     }
-    Out(ans);
+    Out(0);
+
 
 }
 

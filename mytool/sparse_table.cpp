@@ -2,11 +2,11 @@
 using namespace std;
 
 template<class S, S(*op)(S, S), S(*e)()>
-struct SparceTable {
+struct SparseTable {
     int n, len=0;
     vector<vector<S>> a;
     vector<int> row; // width -> row of a
-    SparceTable(int n): n(n), row(n+1) {
+    SparseTable(int n): n(n), row(n+1) {
         for(int w=1; w<=n; w<<=1) {
             a.push_back(vector<S>());
             for(int l=0; l<n+1-w; ++l) {

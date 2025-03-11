@@ -2092,10 +2092,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
-- [B21 - Longest Subpalindrome](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ct)
-- [H - Cを探せ！](https://atcoder.jp/contests/past18-open/tasks/past18_h)
-- [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
 - [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
 - [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
@@ -2213,3 +2209,5 @@
 - [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
+- [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
+- [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
