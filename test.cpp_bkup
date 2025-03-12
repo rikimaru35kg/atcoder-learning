@@ -229,34 +229,15 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VS(S, N);
-    vvl Sc(N+1, vl(N+1));
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='#') Sc[i+1][j+1]++;
+    VL(A, N);
+    ll tot = 0;
+    rep(i, N) tot^=A[i];
+    rep(i, N) {
+        if((tot^A[i])==0) Outend("Win");
     }
-    rep(i, N) rep(j, N+1) Sc[i+1][j] += Sc[i][j];
-    rep(i, N+1) rep(j, N) Sc[i][j+1] += Sc[i][j];
 
-    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
-        ll ret = 0;
-        ret += Sc[i2][j2];
-        ret -= Sc[i1][j2];
-        ret -= Sc[i2][j1];
-        ret += Sc[i1][j1];
-        return ret;
-    };
-
-    for(ll w=N; w>=3; --w) {
-        rep(i, N+1-w) rep(j, N+1-w) {
-            if(sum(i+1,i+w-1,j+1,j+w)!=0) continue;
-            if(sum(i,i+w,j,j+w)==3*w-2) {
-                Outend(w-2);
-            }
-
-        }
-    }
-    Out(0);
-
+    if(N%2) Out("Win");
+    else Out("Lose");
 
 }
 

@@ -2092,10 +2092,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
-- [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
-- [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
-- [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
 - [A - Max Mod Min](https://atcoder.jp/contests/arc147/tasks/arc147_a)
@@ -2117,6 +2113,8 @@
 - [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
+- [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
+- [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
 
 ## ACできたがグダった問題
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
@@ -2211,3 +2209,5 @@
 - [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
 - [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
+- [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
+- [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)

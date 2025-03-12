@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 template <class S, S(*op)(S, S), S(*e)()>
 struct SegTree {
     int n, mx;
@@ -9,7 +10,7 @@ struct SegTree {
         while(n<mx) n<<=1;
         a.resize(n*2, e());
     }
-    void set_only(int i, S x, bool do_op=true) { // build() is needed afterwards
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
         assert(i>=0 && i<n);
         i += n;  // i is node id
         if(do_op) a[i] = op(a[i], x);

@@ -11,6 +11,11 @@ struct BIT {
         assert(i>=1 && i<size);
         for(; i<size; i+=i&-i) bit[i] += x;
     }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
     T sum(int l, int r) {  // [l,r) half-open interval
         return sum0(r-1) - sum0(l-1);
     }
@@ -28,6 +33,11 @@ struct BIT {
             if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
         return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
     }
 };
 
