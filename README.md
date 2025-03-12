@@ -2092,10 +2092,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
-- [No.3013 ハチマキ買い星人](https://yukicoder.me/problems/no/3013)
-- [A - Max Mod Min](https://atcoder.jp/contests/arc147/tasks/arc147_a)
-- [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
 - [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
 - [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
@@ -2211,3 +2207,5 @@
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
 - [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
+- [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
+- [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)

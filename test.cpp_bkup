@@ -230,14 +230,18 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 void solve() {
     LONG(N);
     VL(A, N);
-    ll tot = 0;
-    rep(i, N) tot^=A[i];
-    rep(i, N) {
-        if((tot^A[i])==0) Outend("Win");
-    }
+    sort(all(A));
+    deque<ll> deq;
+    rep(i, N) deq.push_back(A[i]);
 
-    if(N%2) Out("Win");
-    else Out("Lose");
+    ll ans = 0;
+    while(SIZE(deq)>=2) {
+        ++ans;
+        ll mn = deq[0], mx = deq.back();
+        deq.pop_back();
+        if(mx%mn!=0) deq.push_front(mx%mn);
+    }
+    Out(ans);
 
 }
 
