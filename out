@@ -1,19 +1,37 @@
-test.cpp: In member function ‘void SparceTable<S, op, e>::set(int, S)’:
-test.cpp:373:21: error: no match for ‘operator[]’ (operand types are ‘std::__debug::unordered_map<long long int, int>’ and ‘<brace-enclosed initializer list>’)
-  373 |         int ai= span[{i,i+1}];
-      |                     ^
-In file included from /usr/include/c++/12/unordered_map:47,
-                 from /usr/include/c++/12/functional:61,
+test.cpp: In lambda function:
+test.cpp:286:17: error: no matching function for call to ‘std::__debug::vector<long long int>::insert(__gnu_debug::_Safe_iterator<__gnu_cxx::__normal_iterator<long long int*, std::__cxx1998::vector<long long int, std::allocator<long long int> > >, std::__debug::vector<long long int>, std::random_access_iterator_tag>::_Self, vl&)’
+  286 |         P.insert(P.begin()+j, cut);
+      |         ~~~~~~~~^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/12/vector:74,
+                 from /usr/include/c++/12/functional:62,
                  from stdc++.h:71:
-/usr/include/c++/12/bits/unordered_map.h:983:7: note: candidate: ‘std::__cxx1998::unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>::mapped_type& std::__cxx1998::unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>::operator[](key_type&&) [with _Key = long long int; _Tp = int; _Hash = std::hash<long long int>; _Pred = std::equal_to<long long int>; _Alloc = std::allocator<std::pair<const long long int, int> >; mapped_type = int; key_type = long long int]’
-  983 |       operator[](key_type&& __k)
-      |       ^~~~~~~~
-/usr/include/c++/12/bits/unordered_map.h:983:29: note:   no known conversion for argument 1 from ‘<brace-enclosed initializer list>’ to ‘std::__cxx1998::unordered_map<long long int, int, std::hash<long long int>, std::equal_to<long long int>, std::allocator<std::pair<const long long int, int> > >::key_type&&’ {aka ‘long long int&&’}
-  983 |       operator[](key_type&& __k)
-      |                  ~~~~~~~~~~~^~~
-/usr/include/c++/12/bits/unordered_map.h:979:7: note: candidate: ‘std::__cxx1998::unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>::mapped_type& std::__cxx1998::unordered_map<_Key, _Tp, _Hash, _Pred, _Alloc>::operator[](const key_type&) [with _Key = long long int; _Tp = int; _Hash = std::hash<long long int>; _Pred = std::equal_to<long long int>; _Alloc = std::allocator<std::pair<const long long int, int> >; mapped_type = int; key_type = long long int]’
-  979 |       operator[](const key_type& __k)
-      |       ^~~~~~~~
-/usr/include/c++/12/bits/unordered_map.h:979:34: note:   no known conversion for argument 1 from ‘<brace-enclosed initializer list>’ to ‘const std::__cxx1998::unordered_map<long long int, int, std::hash<long long int>, std::equal_to<long long int>, std::allocator<std::pair<const long long int, int> > >::key_type&’ {aka ‘const long long int&’}
-  979 |       operator[](const key_type& __k)
-      |                  ~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:579:9: note: candidate: ‘template<class _Up> typename __gnu_cxx::__enable_if<(! std::__are_same<_Up, bool>::__value), __gnu_debug::_Safe_iterator<typename std::__cxx1998::vector<_Tp, _Alloc>::iterator, std::__debug::vector<_Tp, _Allocator> > >::__type std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, _Tp&&) [with _Tp = long long int; _Allocator = std::allocator<long long int>]’
+  579 |         insert(const_iterator __position, _Tp&& __x)
+      |         ^~~~~~
+/usr/include/c++/12/debug/vector:579:9: note:   template argument deduction/substitution failed:
+test.cpp:286:31: note:   cannot convert ‘cut’ (type ‘vl’ {aka ‘std::__debug::vector<long long int>’}) to type ‘long long int&&’
+  286 |         P.insert(P.begin()+j, cut);
+      |                               ^~~
+/usr/include/c++/12/debug/vector:622:9: note: candidate: ‘template<class _InputIterator, class> std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, _InputIterator, _InputIterator) [with <template-parameter-2-2> = _InputIterator; _Tp = long long int; _Allocator = std::allocator<long long int>]’
+  622 |         insert(const_iterator __position,
+      |         ^~~~~~
+/usr/include/c++/12/debug/vector:622:9: note:   template argument deduction/substitution failed:
+test.cpp:286:17: note:   candidate expects 3 arguments, 2 provided
+  286 |         P.insert(P.begin()+j, cut);
+      |         ~~~~~~~~^~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/debug/vector:558:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, const _Tp&) [with _Tp = long long int; _Allocator = std::allocator<long long int>; iterator = std::__debug::vector<long long int>::iterator; const_iterator = std::__debug::vector<long long int>::const_iterator]’
+  558 |       insert(const_iterator __position, const _Tp& __x)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:558:52: note:   no known conversion for argument 2 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘const long long int&’
+  558 |       insert(const_iterator __position, const _Tp& __x)
+      |                                         ~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:583:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, std::initializer_list<_Tp>) [with _Tp = long long int; _Allocator = std::allocator<long long int>; iterator = std::__debug::vector<long long int>::iterator; const_iterator = std::__debug::vector<long long int>::const_iterator]’
+  583 |       insert(const_iterator __position, initializer_list<value_type> __l)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:583:70: note:   no known conversion for argument 2 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘std::initializer_list<long long int>’
+  583 |       insert(const_iterator __position, initializer_list<value_type> __l)
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+/usr/include/c++/12/debug/vector:589:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, size_type, const _Tp&) [with _Tp = long long int; _Allocator = std::allocator<long long int>; iterator = std::__debug::vector<long long int>::iterator; const_iterator = std::__debug::vector<long long int>::const_iterator; size_type = long unsigned int]’
+  589 |       insert(const_iterator __position, size_type __n, const _Tp& __x)
+      |       ^~~~~~
+/usr/include/c++/12/debug/vector:589:7: note:   candidate expects 3 arguments, 2 provided

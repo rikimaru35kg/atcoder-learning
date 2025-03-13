@@ -1,7 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const long long base = 12345;
 const long long MX = 2;
 const long long ps[12] = {1000000007, 1000000009, 1000000021,
                           1000000033, 1000000087, 1000000093,
@@ -16,18 +15,21 @@ struct mints {
     }
     mints &operator+=(mints x) { *this = *this + x; return *this; }
     mints operator+(long long x) const { return *this + mints(x); }
+    friend mints operator+(long long a, mints b) { return mints(a)+b; }
     mints operator-(mints x) const {
         for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
         return x;
     }
     mints &operator-=(mints x) { *this = *this - x; return *this; }
     mints operator-(long long x) const { return *this - mints(x); }
+    friend mints operator-(long long a, mints b) { return mints(a)-b; }
     mints operator*(mints x) const {
         for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
         return x;
     }
     mints &operator*=(mints x) { *this = *this * x; return *this; }
     mints operator*(long long x) const { return *this * mints(x); }
+    friend mints operator*(long long a, mints b) { return mints(a)*b; }
     mints pow(long long x) const {
         if (x==0) return mints(1);
         mints ret = pow(x/2);
@@ -82,3 +84,5 @@ struct hash<mints> {
 }
 istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
 ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
+using vm = vector<mints>;
+using vvm = vector<vector<mints>>;

@@ -74,6 +74,7 @@
 - 基本 道路コストP以下が丁度K本の数 [087 - Chokudai's Demand（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ci)
 - 基本 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - 基本 [B - 自習 (Self Study)](https://atcoder.jp/contests/joi2022ho/tasks/joi2022ho_b)
+- [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
 - !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - 基本 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - 基本 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
@@ -964,7 +965,7 @@
 ### 例題
 - !復習価値中 [V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
 - !復習価値中（想定解も覚えておきたい。想定解が違うのでNote非掲載） [G - Avoid Straight Line](https://atcoder.jp/contests/abc312/tasks/abc312_g)
-<!-- - !下に同じ問題あり。要復習 距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f) -->
+<!-- - !下に同じ問題あり。距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f) -->
 
 ## 区間DP
 - 列の中で隣り合うものを順に処理していく問題に活用可能で、計算量はO(N^3)（ケーキの切り分けのように、遷移がO(1)の場合はO(N^2)）
@@ -2089,30 +2090,16 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
-- [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
-- [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
-- [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
-- [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
-- [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)
-- [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
-- [C - 暗闇帰り道](https://atcoder.jp/contests/arc003/tasks/arc003_3)
-- [B - 2点間距離の最大と最小 ( Maximum and Minimum )](https://atcoder.jp/contests/arc004/tasks/arc004_2)
-- [C - THE☆たこ焼き祭り2012](https://atcoder.jp/contests/arc008/tasks/arc008_3)
-- [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
-- [B - 大事な数なのでZ回書きまLた。](https://atcoder.jp/contests/arc027/tasks/arc027_2)
-- [C - Z塗り](https://atcoder.jp/contests/arc040/tasks/arc040_c)
-- [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
-- [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
-- [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
-- [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
 - [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
+- [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
+- [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 
 ## ACできたがグダった問題
+<!-- #############################
+# current review point (where i am now)
+############################# -->
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 - [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
@@ -2209,3 +2196,10 @@
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
+- [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
+- [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
+- [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)
+- パズル問として紹介できるかも [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
+- [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
+- [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
+- [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
