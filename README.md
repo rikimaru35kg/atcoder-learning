@@ -2100,8 +2100,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
-- [C - Sequence](https://atcoder.jp/contests/abc059/tasks/arc072_a)
 - [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
 - [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
@@ -2203,3 +2201,4 @@
 - [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
 - [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
+- [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
