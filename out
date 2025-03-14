@@ -1,37 +1,84 @@
+test.cpp: In function ‘void solve()’:
+test.cpp:334:45: error: a function-definition is not allowed here before ‘{’ token
+  334 |         auto move(vl &is, ll p, ll k) -> ll {
+      |                                             ^
 test.cpp: In lambda function:
-test.cpp:286:17: error: no matching function for call to ‘std::__debug::vector<long long int>::insert(__gnu_debug::_Safe_iterator<__gnu_cxx::__normal_iterator<long long int*, std::__cxx1998::vector<long long int, std::allocator<long long int> > >, std::__debug::vector<long long int>, std::random_access_iterator_tag>::_Self, vl&)’
-  286 |         P.insert(P.begin()+j, cut);
-      |         ~~~~~~~~^~~~~~~~~~~~~~~~~~
-In file included from /usr/include/c++/12/vector:74,
-                 from /usr/include/c++/12/functional:62,
-                 from stdc++.h:71:
-/usr/include/c++/12/debug/vector:579:9: note: candidate: ‘template<class _Up> typename __gnu_cxx::__enable_if<(! std::__are_same<_Up, bool>::__value), __gnu_debug::_Safe_iterator<typename std::__cxx1998::vector<_Tp, _Alloc>::iterator, std::__debug::vector<_Tp, _Allocator> > >::__type std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, _Tp&&) [with _Tp = long long int; _Allocator = std::allocator<long long int>]’
-  579 |         insert(const_iterator __position, _Tp&& __x)
-      |         ^~~~~~
-/usr/include/c++/12/debug/vector:579:9: note:   template argument deduction/substitution failed:
-test.cpp:286:31: note:   cannot convert ‘cut’ (type ‘vl’ {aka ‘std::__debug::vector<long long int>’}) to type ‘long long int&&’
-  286 |         P.insert(P.begin()+j, cut);
-      |                               ^~~
-/usr/include/c++/12/debug/vector:622:9: note: candidate: ‘template<class _InputIterator, class> std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, _InputIterator, _InputIterator) [with <template-parameter-2-2> = _InputIterator; _Tp = long long int; _Allocator = std::allocator<long long int>]’
-  622 |         insert(const_iterator __position,
-      |         ^~~~~~
-/usr/include/c++/12/debug/vector:622:9: note:   template argument deduction/substitution failed:
-test.cpp:286:17: note:   candidate expects 3 arguments, 2 provided
-  286 |         P.insert(P.begin()+j, cut);
-      |         ~~~~~~~~^~~~~~~~~~~~~~~~~~
-/usr/include/c++/12/debug/vector:558:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, const _Tp&) [with _Tp = long long int; _Allocator = std::allocator<long long int>; iterator = std::__debug::vector<long long int>::iterator; const_iterator = std::__debug::vector<long long int>::const_iterator]’
-  558 |       insert(const_iterator __position, const _Tp& __x)
-      |       ^~~~~~
-/usr/include/c++/12/debug/vector:558:52: note:   no known conversion for argument 2 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘const long long int&’
-  558 |       insert(const_iterator __position, const _Tp& __x)
-      |                                         ~~~~~~~~~~~^~~
-/usr/include/c++/12/debug/vector:583:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, std::initializer_list<_Tp>) [with _Tp = long long int; _Allocator = std::allocator<long long int>; iterator = std::__debug::vector<long long int>::iterator; const_iterator = std::__debug::vector<long long int>::const_iterator]’
-  583 |       insert(const_iterator __position, initializer_list<value_type> __l)
-      |       ^~~~~~
-/usr/include/c++/12/debug/vector:583:70: note:   no known conversion for argument 2 from ‘vl’ {aka ‘std::__debug::vector<long long int>’} to ‘std::initializer_list<long long int>’
-  583 |       insert(const_iterator __position, initializer_list<value_type> __l)
-      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-/usr/include/c++/12/debug/vector:589:7: note: candidate: ‘std::__debug::vector<_Tp, _Allocator>::iterator std::__debug::vector<_Tp, _Allocator>::insert(const_iterator, size_type, const _Tp&) [with _Tp = long long int; _Allocator = std::allocator<long long int>; iterator = std::__debug::vector<long long int>::iterator; const_iterator = std::__debug::vector<long long int>::const_iterator; size_type = long unsigned int]’
-  589 |       insert(const_iterator __position, size_type __n, const _Tp& __x)
-      |       ^~~~~~
-/usr/include/c++/12/debug/vector:589:7: note:   candidate expects 3 arguments, 2 provided
+test.cpp:344:21: error: no matching function for call to ‘move(__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type&, ll&, ll&)’
+  344 |             p = move(is[0], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+In file included from /usr/include/c++/12/bits/stl_pair.h:61,
+                 from /usr/include/c++/12/bits/stl_algobase.h:64,
+                 from /usr/include/c++/12/bits/specfun.h:45,
+                 from /usr/include/c++/12/cmath:1935,
+                 from stdc++.h:41:
+/usr/include/c++/12/bits/move.h:104:5: note: candidate: ‘template<class _Tp> constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&)’
+  104 |     move(_Tp&& __t) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:104:5: note:   template argument deduction/substitution failed:
+test.cpp:344:21: note:   candidate expects 1 argument, 3 provided
+  344 |             p = move(is[0], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_algobase.h:644:5: note: candidate: ‘template<class _II, class _OI> constexpr _OI std::move(_II, _II, _OI)’
+  644 |     move(_II __first, _II __last, _OI __result)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_algobase.h:644:5: note:   template argument deduction/substitution failed:
+test.cpp:344:21: note:   deduced conflicting types for parameter ‘_II’ (‘std::__debug::vector<long long int>’ and ‘long long int’)
+  344 |             p = move(is[0], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+In file included from /usr/include/c++/12/algorithm:73,
+                 from stdc++.h:65:
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note: candidate: ‘template<class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2> __pstl::__internal::__enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2> std::move(_ExecutionPolicy&&, _ForwardIterator1, _ForwardIterator1, _ForwardIterator2)’
+  353 | move(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __d_first);
+      | ^~~~
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note:   template argument deduction/substitution failed:
+test.cpp:344:21: note:   candidate expects 4 arguments, 3 provided
+  344 |             p = move(is[0], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+test.cpp:346:21: error: no matching function for call to ‘move(__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type&, ll&, int)’
+  346 |             p = move(is[1], p, 1);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/bits/move.h:104:5: note: candidate: ‘template<class _Tp> constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&)’
+  104 |     move(_Tp&& __t) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:104:5: note:   template argument deduction/substitution failed:
+test.cpp:346:21: note:   candidate expects 1 argument, 3 provided
+  346 |             p = move(is[1], p, 1);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_algobase.h:644:5: note: candidate: ‘template<class _II, class _OI> constexpr _OI std::move(_II, _II, _OI)’
+  644 |     move(_II __first, _II __last, _OI __result)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_algobase.h:644:5: note:   template argument deduction/substitution failed:
+test.cpp:346:21: note:   deduced conflicting types for parameter ‘_II’ (‘std::__debug::vector<long long int>’ and ‘long long int’)
+  346 |             p = move(is[1], p, 1);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note: candidate: ‘template<class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2> __pstl::__internal::__enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2> std::move(_ExecutionPolicy&&, _ForwardIterator1, _ForwardIterator1, _ForwardIterator2)’
+  353 | move(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __d_first);
+      | ^~~~
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note:   template argument deduction/substitution failed:
+test.cpp:346:21: note:   deduced conflicting types for parameter ‘_ForwardIterator1’ (‘long long int’ and ‘int’)
+  346 |             p = move(is[1], p, 1);
+      |                 ~~~~^~~~~~~~~~~~~
+test.cpp:348:21: error: no matching function for call to ‘move(__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type&, ll&, ll&)’
+  348 |             p = move(is[2], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/bits/move.h:104:5: note: candidate: ‘template<class _Tp> constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&)’
+  104 |     move(_Tp&& __t) noexcept
+      |     ^~~~
+/usr/include/c++/12/bits/move.h:104:5: note:   template argument deduction/substitution failed:
+test.cpp:348:21: note:   candidate expects 1 argument, 3 provided
+  348 |             p = move(is[2], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/bits/stl_algobase.h:644:5: note: candidate: ‘template<class _II, class _OI> constexpr _OI std::move(_II, _II, _OI)’
+  644 |     move(_II __first, _II __last, _OI __result)
+      |     ^~~~
+/usr/include/c++/12/bits/stl_algobase.h:644:5: note:   template argument deduction/substitution failed:
+test.cpp:348:21: note:   deduced conflicting types for parameter ‘_II’ (‘std::__debug::vector<long long int>’ and ‘long long int’)
+  348 |             p = move(is[2], p, k);
+      |                 ~~~~^~~~~~~~~~~~~
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note: candidate: ‘template<class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2> __pstl::__internal::__enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2> std::move(_ExecutionPolicy&&, _ForwardIterator1, _ForwardIterator1, _ForwardIterator2)’
+  353 | move(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __d_first);
+      | ^~~~
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note:   template argument deduction/substitution failed:
+test.cpp:348:21: note:   candidate expects 4 arguments, 3 provided
+  348 |             p = move(is[2], p, k);
+      |                 ~~~~^~~~~~~~~~~~~

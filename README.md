@@ -2100,10 +2100,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
-- [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
-- [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
-- [E - 11/22 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_e)
 - [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
 - [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
@@ -2201,3 +2197,5 @@
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
 - [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
+- [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
+- [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)

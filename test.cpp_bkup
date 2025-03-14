@@ -227,33 +227,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Dijkstra {
-    using LI = pair<long long,int>;
-    using IL = pair<int,long long>;
-    int n;
-    vector<vector<IL>> from;
-    Dijkstra(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c, bool both=false) {
-        from[a].emplace_back(b, c);
-        if(both) from[b].emplace_back(a, c);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    vector<long long> cal_dist(int sv) {
-        vector<long long> dist(n, 3e18);
-        priority_queue<LI,vector<LI>,greater<LI>> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.emplace(d, v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto [d, v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv, c]: from[v]) push(nv, d+c);
-        }
-        return dist;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-};
+    return ok;
+}
 
 // return minimum index i where a[i] >= x, and its value a[i]
 template<typename T>
@@ -327,27 +320,38 @@ pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
 }
 
 void solve() {
-    LONG(N, M);
-    LONG(S,T,L,K); --S, --T;
-    Dijkstra dijk(N);
-    rep(i, M) {
-        LONGM(a, b); LONG(c);
-        dijk.add_edge(a,b,c,true);
+    LONG(N, Q);
+    STRING(S);
+    vvl is(3);
+    rep(i, N) {
+        if(S[i]=='1') is[0].push_back(i);
+        if(S[i]=='/') is[1].push_back(i);
+        if(S[i]=='2') is[2].push_back(i);
     }
+    rep(i, Q) {
+        LONG(l, r); --l;
 
-    vl distS = dijk.cal_dist(S);
-    vl distT = dijk.cal_dist(T);
-    if(distS[T]<=K) {
-        Outend(N*(N-1)/2);
-    }
+        auto move=[&](vl &is, ll p, ll k) -> ll {
+            ll sz = is.size();
+            if(k==0) return p;
+            auto [n,x] = lowbou(is, p);
+            if(n+k-1>=sz) return INF;
+            return is[n+k-1]+1;
+        };
 
-    sort(all(distT));
-    ll ans = 0;
-    for(auto d: distS) {
-        auto [n,x] = uppbou(distT, K-L-d);
-        ans += n;
+        auto f=[&](ll k) -> bool {
+            ll p = l;
+            p = move(is[0], p, k);
+            if(p>r) return false;
+            p = move(is[1], p, 1);
+            if(p>r) return false;
+            p = move(is[2], p, k);
+            return p <= r;
+        };
+        ll ans = binary_search(-1, r-l, f);
+        if(ans==-1) Out(0);
+        else Out(2*ans+1);
     }
-    Out(ans);
 
 }
 

@@ -227,36 +227,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Judge if t is subsequence of s.
-//! If ret==t.size(), then t is subsequence of s.
-int subsequence(string &s, string &t) {
-    int sn = s.size(), tn = t.size();
-    int ti = 0;
-    // s can be skipping, t must be contiguous.
-    for(int si=0; si<sn && ti<tn; ++si) {
-        if(s[si]==t[ti]) ++ti;
+vector<vector<int>> make_next(string &s, char base='a') {
+    int n = s.size(), Z = 26;
+    vector<vector<int>> next(Z, vector<int>(n, n));
+    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
+    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
+        next[z][i] = min(next[z][i], next[z][i+1]);
     }
-    return ti;
+    return next;
 }
-template<typename T>
-int subsequence(vector<T> &s, vector<T> &t) {
-    int sn = s.size(), tn = t.size();
-    int ti = 0;
-    for(int si=0; si<sn && ti<tn; ++si) {
-        if(s[si]==t[ti]) ++ti;
+template <typename T>
+vector<vector<int>> make_next(vector<T> a, int mx) {
+    int n = a.size();
+    vector<vector<int>> next(mx, vector<int>(n, n));
+    for(int i=0; i<n; ++i) next[a[i]][i] = i;
+    for(int z=0; z<mx; ++z) for(int i=n-2; i>=0; --i) {
+        next[z][i] = min(next[z][i], next[z][i+1]);
     }
-    return ti;
+    return next;
+}
+// return next position + 1
+// if ret>n, then no valid position
+int find_next(vector<int> &nxt, int i) {
+    int n = nxt.size();
+    if(i>=n) return n+1;
+    return nxt[i]+1;  // return next position
 }
 
 void solve() {
-    LONG(N, M);
-    VL(A, N); VL(B, M);
+    LONG(N);
+    VLM(A, N);
+    ll M = 20;
+    auto next = make_next(A, M);
+
+    vl dp(1<<M, INF);
+    dp[0] = 0;
+    rep(s, 1<<M) {
+        ll p = dp[s];
+        if(p==INF) continue;
+        rep(i, M) if(~s>>i&1) {
+            ll x = p;
+            x = find_next(next[i], x);
+            x = find_next(next[i], x);
+            if(x>N) continue;
+            ll ns = s|1<<i;
+            chmin(dp[ns], x);
+        }
+    }
+
     ll ans = 0;
-    rep(bi, M) {
-        ll now = subsequence(A, vl(B.begin()+bi,B.end()));
-        chmax(ans, now);
+    rep(s, 1<<M) {
+        if(dp[s]==INF) continue;
+        chmax(ans, pcnt(s)*2LL);
     }
     Out(ans);
+
+
 
 
 }
