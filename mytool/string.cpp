@@ -39,10 +39,20 @@ int count(vector<string> &s, char c) { return count(s, string(1,c)); }
 
 //! Judge if t is subsequence of s.
 //! If ret==t.size(), then t is subsequence of s.
-long long subsequence(string &s, string &t) {
-    long long sn = s.size(), tn = t.size();
-    long long ti = 0;
-    for(long long si=0; si<sn && ti<tn; ++si) {
+int subsequence(string &s, string &t) {
+    int sn = s.size(), tn = t.size();
+    int ti = 0;
+    // s can be skipping, t must be contiguous.
+    for(int si=0; si<sn && ti<tn; ++si) {
+        if(s[si]==t[ti]) ++ti;
+    }
+    return ti;
+}
+template<typename T>
+int subsequence(vector<T> &s, vector<T> &t) {
+    int sn = s.size(), tn = t.size();
+    int ti = 0;
+    for(int si=0; si<sn && ti<tn; ++si) {
         if(s[si]==t[ti]) ++ti;
     }
     return ti;

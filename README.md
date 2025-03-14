@@ -2100,7 +2100,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [B - 建設事業 2 (Construction Project 2) ](https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_b)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
 - [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
 - [D - 散歩](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_d)
