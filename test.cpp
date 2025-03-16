@@ -227,63 +227,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<vector<int>> make_next(string &s, char base='a') {
-    int n = s.size(), Z = 26;
-    vector<vector<int>> next(Z, vector<int>(n, n));
-    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
-    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
-        next[z][i] = min(next[z][i], next[z][i+1]);
-    }
-    return next;
-}
-template <typename T>
-vector<vector<int>> make_next(vector<T> a, int mx) {
-    int n = a.size();
-    vector<vector<int>> next(mx, vector<int>(n, n));
-    for(int i=0; i<n; ++i) next[a[i]][i] = i;
-    for(int z=0; z<mx; ++z) for(int i=n-2; i>=0; --i) {
-        next[z][i] = min(next[z][i], next[z][i+1]);
-    }
-    return next;
-}
-// return next position + 1
-// if ret>n, then no valid position
-int find_next(vector<int> &nxt, int i) {
-    int n = nxt.size();
-    if(i>=n) return n+1;
-    return nxt[i]+1;  // return next position
-}
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e(){return 0;}
+using F = ll;
+S mapping(F f, S x) {return f+x;}
+F composition(F f, F g) {return f+g;}
+F id(){return 0;}
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    ll M = 20;
-    auto next = make_next(A, M);
-
-    vl dp(1<<M, INF);
-    dp[0] = 0;
-    rep(s, 1<<M) {
-        ll p = dp[s];
-        if(p==INF) continue;
-        rep(i, M) if(~s>>i&1) {
-            ll x = p;
-            x = find_next(next[i], x);
-            x = find_next(next[i], x);
-            if(x>N) continue;
-            ll ns = s|1<<i;
-            chmin(dp[ns], x);
+    LONG(N); VLM(A, N);
+    auto calc=[&](vl &A) -> vl {
+        vl ret(N+1);
+        uset<ll> st;
+        rep(i, N) {
+            st.insert(A[i]);
+            ret[i+1] = SIZE(st);
         }
-    }
+        return ret;
+    };
+    auto fr = calc(A);
+    reverse(all(A));
+    auto rr = calc(A);
+    reverse(all(A));
+    reverse(all(rr));
+
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N+1);
+
+    vl idx(N, -1);
 
     ll ans = 0;
-    rep(s, 1<<M) {
-        if(dp[s]==INF) continue;
-        chmax(ans, pcnt(s)*2LL);
+    repk(i, 1, N) {
+        if(idx[A[i-1]]==-1) idx[A[i-1]] = i;
+        else {
+            ll l = idx[A[i-1]];
+            ll r = i;
+            seg.apply(l+1, r+1, 1);
+            idx[A[i-1]] = i;
+        }
+        ll mx = seg.all_prod();
+        ll now = mx + fr[i] + rr[i];
+        de3(i, mx, now)
+        chmax(ans, now);
     }
     Out(ans);
 
-
-
+    
 
 }
 

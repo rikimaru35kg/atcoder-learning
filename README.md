@@ -947,7 +947,8 @@
 ### 例題
 - 基本 [D - 塗り絵](https://atcoder.jp/contests/abc036/tasks/abc036_d)
 - 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
-- 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/editorial)
+- 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_committee)
+- !復習価値低 [E - Path Decomposition of a Tree](https://atcoder.jp/contests/abc397/tasks/abc397_e)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
 - !要復習 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
@@ -1228,12 +1229,16 @@
 - 基本 等比級数の和を求める [E - Geometric Progression](https://atcoder.jp/contests/abc293/tasks/abc293_e)
 - 基本 [E - Max GCD](https://atcoder.jp/contests/abc136/tasks/abc136_e)
 
-## 積分解
+## 整数方程式・不等式
+- 2変数以上の方程式・不等式を解くには、制約からx,yの範囲を絞る事を考える
+- 積の形の場合は、小さい方の最大値を評価する事を考える
+- 差の形の場合は、最大係数が同じオーダーなら実はオーダーが1つ減る（差=dとおいて式変形すると良い）
+- 差の範囲が小さければ、差を全探索できるかもしれない
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
-- 基本 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
-
+- !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+- !要復習 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
 
 ## 約数
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -2100,20 +2105,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
-- [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
-- [C - Solutions](https://atcoder.jp/contests/arc106/tasks/arc106_c)
-- [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
-- [D - Derangement](https://atcoder.jp/contests/abc072/tasks/arc082_b)
-- [D - AtCoDeerくんと変なじゃんけん](https://atcoder.jp/contests/abc046/tasks/arc062_b)
-- [B - JJOOII 2 (JJOOII 2)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_b)
-- [B - IOI 饅頭 (IOI Manju)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho2)
-- [C - Sowing Stones](https://atcoder.jp/contests/abc379/tasks/abc379_c)
-- [E - イルミネーション (Illumination)](https://atcoder.jp/contests/joi2012yo/tasks/joi2012yo_e)
-- [A - ストーブ (Stove)](https://atcoder.jp/contests/joi2018ho/tasks/joi2018ho_a)
-- [F - チョコレートを増やせ (Increase Chocolates)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_f)
-- [3 - 現代的な屋敷 (Modern Mansion)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho3)
-- [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
@@ -2199,3 +2190,12 @@
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
 - [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
+- [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
+- [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
+- [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
+- [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
+- [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
+
+### 後で解きたい
+JOI2025
+- [](https://atcoder.jp/contests/abc213/tasks/abc213_f?lang=ja)
