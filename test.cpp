@@ -227,45 +227,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Dijkstra {
+    using LI = pair<long long,int>;
+    using IL = pair<int,long long>;
+    int n;
+    vector<vector<IL>> from;
+    Dijkstra(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1, bool both=false) {
+        from[a].emplace_back(b, c);
+        if(both) from[b].emplace_back(a, c);
+    }
+    vector<long long> dijkstra(int sv) {
+        vector<long long> dist(n, 3e18);
+        priority_queue<LI,vector<LI>,greater<LI>> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d, v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv, c]: from[v]) push(nv, d+c);
+        }
+        return dist;
+    }
+    vector<long long> bfs(int sv) {
+        vector<long long> dist(n, 3e18);
+        queue<int> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
+        }
+        return dist;
+    }
+};
+
 void solve() {
     LONG(N, M);
-    vvl from(N);
-    vl A(N);
-    rep(i, N) {
-        LONGM(s, a); ++a;
-        A[i] = a;
-        if(s!=-1) from[s].push_back(i);
+    Dijkstra graph(N);
+    rep(i, M) {
+        LONGM(a,b);
+        graph.add_edge(a,b,1,true);
     }
-    if(N==1) Outend(A[0]);
-
-    auto merge=[&](vl &dp1, vl &dp2) -> vl {
-        ll n1 = dp1.size(), n2 = dp2.size();
-        vl ret(min(n1+n2-1,M+1));
-        rep(i, n1) rep(j, n2) {
-            if(i+j>M) continue;
-            chmax(ret[i+j], dp1[i]+dp2[j]);
+    if(N==1) Outend(0);
+    vl dist = graph.bfs(0);
+    vl cnt(N);
+    rep(i, N) {
+        if(dist[i]==INF) continue;
+        cnt[dist[i]]++;
+    }
+    if(cnt[1]==0) {
+        rep(i, N) { Out(0); }
+        return;
+    }
+    de(cnt)
+    ll sum0 = 0, sum1 = 0;
+    ll idx = 0;
+    rep1(d, N) {
+        while(idx<N && idx<=d) {
+            if(idx%2==0) sum0 += cnt[idx];
+            else sum1 += cnt[idx];
+            ++idx;
         }
-        return ret;
-    };
-
-    auto dfs=[&](auto f, ll v) -> vl {
-        vl dp(1,0);
-        for(auto nv: from[v]) {
-            vl ndp = f(f, nv);
-            dp = merge(dp, ndp);
-        }
-        if(dp.size()==1) {
-            return {0,A[v]};
-        }
-        repk(i, 1, SIZE(dp)) {
-            dp[i] += A[v];
-        }
-        return dp;
-    };
-    auto dp = dfs(dfs, 0);
-    chmin(M, SIZE(dp)-1);
-    ll ans = dp[M];
-    Out(ans);
+        if(d%2) Out(sum1);
+        else Out(sum0);
+    }
 
 }
 
