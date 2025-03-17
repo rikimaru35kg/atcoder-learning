@@ -950,6 +950,7 @@
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_committee)
 - !復習価値低 [E - Path Decomposition of a Tree](https://atcoder.jp/contests/abc397/tasks/abc397_e)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
+- !復習価値中 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - !要復習 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 - !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
@@ -2105,7 +2106,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [D - Coming of Age Celebration](https://atcoder.jp/contests/abc388/tasks/abc388_d)

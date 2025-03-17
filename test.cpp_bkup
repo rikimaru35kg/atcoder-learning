@@ -227,45 +227,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vvl from(N);
-    vl A(N);
-    rep(i, N) {
-        LONGM(s, a); ++a;
-        A[i] = a;
-        if(s!=-1) from[s].push_back(i);
-    }
-    if(N==1) Outend(A[0]);
+#include <atcoder/lazysegtree>
+using namespace atcoder;
 
-    auto merge=[&](vl &dp1, vl &dp2) -> vl {
-        ll n1 = dp1.size(), n2 = dp2.size();
-        vl ret(min(n1+n2-1,M+1));
-        rep(i, n1) rep(j, n2) {
-            if(i+j>M) continue;
-            chmax(ret[i+j], dp1[i]+dp2[j]);
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e(){return 0;}
+using F = ll;
+S mapping(F f, S x) {return f+x;}
+F composition(F f, F g) {return f+g;}
+F id(){return 0;}
+
+void solve() {
+    LONG(N); VLM(A, N);
+    auto calc=[&](vl &A) -> vl {
+        vl ret(N+1);
+        uset<ll> st;
+        rep(i, N) {
+            st.insert(A[i]);
+            ret[i+1] = SIZE(st);
         }
         return ret;
     };
+    auto fr = calc(A);
+    reverse(all(A));
+    auto rr = calc(A);
+    reverse(all(A));
+    reverse(all(rr));
 
-    auto dfs=[&](auto f, ll v) -> vl {
-        vl dp(1,0);
-        for(auto nv: from[v]) {
-            vl ndp = f(f, nv);
-            dp = merge(dp, ndp);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N+1);
+
+    vl idx(N, -1);
+
+    ll ans = 0;
+    repk(i, 1, N) {
+        if(idx[A[i-1]]==-1) idx[A[i-1]] = i;
+        else {
+            ll l = idx[A[i-1]];
+            ll r = i;
+            seg.apply(l+1, r+1, 1);
+            idx[A[i-1]] = i;
         }
-        if(dp.size()==1) {
-            return {0,A[v]};
-        }
-        repk(i, 1, SIZE(dp)) {
-            dp[i] += A[v];
-        }
-        return dp;
-    };
-    auto dp = dfs(dfs, 0);
-    chmin(M, SIZE(dp)-1);
-    ll ans = dp[M];
+        ll mx = seg.all_prod();
+        ll now = mx + fr[i] + rr[i];
+        de3(i, mx, now)
+        chmax(ans, now);
+    }
     Out(ans);
+
+    
 
 }
 
