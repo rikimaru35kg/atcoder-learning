@@ -227,94 +227,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> class RangeBIT {
-    long long size;
-    vector<vector<T>> bit;
-    T sum0(int i) {  // [0,i] closed interval
-        return sum_sub(0,i) + sum_sub(1,i)*i;
+struct Dijkstra {
+    using LI = pair<long long,int>;
+    using IL = pair<int,long long>;
+    int n;
+    vector<vector<IL>> from;
+    Dijkstra(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1, bool both=false) {
+        from[a].emplace_back(b, c);
+        if(both) from[b].emplace_back(a, c);
     }
-    void add_sub(int p, int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
-        for(; i<size; i+=i&-i) bit[p][i] += x;
-    }
-    T sum_sub(int p, int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[p][i];
-        return ret;
-    }
-public:
-    RangeBIT (int _n): size(_n+1), bit(2, vector<T>(_n+1)) {}
-    void add(int l, int r, T x) {  // [l,r) half-open interval
-        add_sub(0, l, -x*(l-1)); add_sub(0, r, x*(r-1));
-        add_sub(1, l, x); add_sub(1, r, -x);
-    }
-    T sum(int l, int r) { // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T get(int i) { return sum(i, i+1); }
-    void dump() {  // for debug
-        #ifdef __DEBUG
-        for(ll i=0; i<size-1; ++i) { cerr << get(i) << ' '; }
-        cerr << endl;
-        #endif
-    }
-};
-
-template<typename T> class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        assert(i>=0 && i<size-1);
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    T _sum (long long i) {
-        assert(i>=0 && i<size-1);
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    // ![CAUTION]   0 <= l,r <= _n
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
+    vector<long long> dijkstra(int sv) {
+        vector<long long> dist(n, 3e18);
+        priority_queue<LI,vector<LI>,greater<LI>> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d, v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv, c]: from[v]) push(nv, d+c);
         }
+        return dist;
     }
-    T get (long long i) {
-        return _sum(i);
+    vector<long long> bfs(int sv) {
+        vector<long long> dist(n, 3e18);
+        queue<int> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
+        }
+        return dist;
     }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-2; ++i) { cerr<<get(i)<<' '; }
-        cerr<<endl;
-        #endif
+    vector<bool> is_connected(int sv) {
+        vector<bool> ret(n);
+        queue<int> que;
+        auto push=[&](int v) {
+            if(ret[v]) return;
+            ret[v] = true;
+            que.push(v);
+        };
+        push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,c]: from[v]) push(nv);
+        }
+        return ret;
     }
 };
 
 void solve() {
-    LONG(N);
-    VL(A, N);
-    RangeBIT<ll> bit(N);
-    rep(i, N) bit.add(i,i+1,A[i]);
-    rep(i, N-1) {
-        ll now = bit.get(i);
-        ll len = min(now, N-1-i);
-        bit.add(i,i+1,-len);
-        bit.add(i+1, i+1+len, 1);
-        bit.dump();
+    LONG(N, M);
+    VL(P, N);
+    Dijkstra graph(N);
+    using PR = pair<ll,db>;
+    using vPR = vector<PR>;
+    using vvPR = vector<vPR>;
+    vvPR from(N);
+    rep(i, M) {
+        LONGM(a, b); DOUBLE(c);
+        from[a].emplace_back(b, c);
+        graph.add_edge(b,a);
     }
-    vl ans(N);
-    rep(i, N) {
-        ans[i] = bit.get(i);
-    }
+    vb valid = graph.is_connected(N-1);
+    if(!valid[0]) Pm1
+
+    vd dp(N, -INF);
+    auto dfs=[&](auto f, ll v) -> void {
+        if(!valid[v]) return;
+        if(dp[v]!=-INF) return;
+        dp[v] = 0;
+        for(auto [nv,c]: from[v]) {
+            f(f, nv);
+            chmax(dp[v], dp[nv]*c);
+        }
+        dp[v] += P[v];
+    };
+    dfs(dfs, 0);
+    db ans = dp[0];
     Out(ans);
 
 }

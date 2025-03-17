@@ -227,54 +227,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
 void solve() {
     LONG(N);
-    vs one, two, three;
-    rep(i, N) {
-        STRING(s); LONG(t);
-        if(t==1) one.push_back(s);
-        if(t==2) two.push_back(s);
-        if(t==3) three.push_back(s);
-    }
+    VVLM(A, N, N);
+    // vvl A(N, vl(N));
+    // rep(i, N) rep(j, N) {
+    //     A[i][j] = rand()%N;
+    // }
+    // A[N/2][N/2] = -1;
 
-    uset<string> cand;
-    rep(i, 10000) {
-        string s = to_string(i);
-        while(SIZE(s)<4) s = '0' + s;
-        cand.insert(s);
+    ll si=-1, sj=-1;
+    rep(i, N) rep(j, N) {
+        if(A[i][j]==-1) si=i, sj=j;
     }
-    auto count=[&](string &s, string &t) -> ll {
-        ll ret = 0;
-        rep(i, 4) { if(s[i]!=t[i]) ++ret; }
-        return ret;
+    auto check=[&](ll i, ll j, ll k) -> bool {
+        return A[A[i][j]][k] == A[i][A[j][k]];
     };
-    auto operate=[&](vs &vs, vl oks) {
-        for(auto s: vs) {
-            for(auto it=cand.begin(); it!=cand.end();) {
-                string c = *it;
-                ll cnt = count(c, s);
-                bool ok = false;
-                for(auto x: oks) if(x==cnt) ok = true;
-                if(ok) ++it;
-                else {
-                    it = cand.erase(it);
-                }
-            }
+
+    vt3 checks;
+    rep(i, N) rep(j, N) rep(k, N) {
+        if(i==si && j==sj) {
+            checks.emplace_back(i,j,k);
+        } else if(j==si && k==sj) {
+            checks.emplace_back(i,j,k);
+        } else if(A[i][j]==si && k==sj) {
+            checks.emplace_back(i,j,k);
+        } else if(i==si && A[j][k]==sj) {
+            checks.emplace_back(i,j,k);
+        } else {
+            if(!check(i,j,k)) Pm0
         }
-    };
-    operate(one, {0});
-    operate(two, {1});
-    operate(three, {2,3,4});
+    }
+    // de(checks.size());
 
-    if(SIZE(cand)!=1) Outend("Can't Solve");
-    auto ans = *cand.begin();
+    ll ans = 0;
+    rep(x, N) {
+        A[si][sj] = x;
+        bool ok = true;
+        for(auto [i,j,k]: checks) {
+            if(!check(i,j,k)) ok = false;
+        }
+        if(ok) ++ans;
+    }
     Out(ans);
-
 
 
 }

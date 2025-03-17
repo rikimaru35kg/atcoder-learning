@@ -2106,11 +2106,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [D - Coming of Age Celebration](https://atcoder.jp/contests/abc388/tasks/abc388_d)
-- [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
-- [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
-- [E - Snowflake Tree](https://atcoder.jp/contests/abc385/tasks/abc385_e)
-- [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
 - [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 - [B - ビリヤード (Billiards)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b)
@@ -2194,6 +2189,8 @@
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
+- [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
+- [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
 
 ### 後で解きたい
 JOI2025
