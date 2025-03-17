@@ -227,94 +227,21 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Dijkstra {
-    using LI = pair<long long,int>;
-    using IL = pair<int,long long>;
-    int n;
-    vector<vector<IL>> from;
-    Dijkstra(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c=1, bool both=false) {
-        from[a].emplace_back(b, c);
-        if(both) from[b].emplace_back(a, c);
-    }
-    vector<long long> dijkstra(int sv) {
-        vector<long long> dist(n, 3e18);
-        priority_queue<LI,vector<LI>,greater<LI>> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.emplace(d, v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto [d, v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv, c]: from[v]) push(nv, d+c);
-        }
-        return dist;
-    }
-    vector<long long> bfs(int sv) {
-        vector<long long> dist(n, 3e18);
-        queue<int> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
-        }
-        return dist;
-    }
-    vector<bool> is_connected(int sv) {
-        vector<bool> ret(n);
-        queue<int> que;
-        auto push=[&](int v) {
-            if(ret[v]) return;
-            ret[v] = true;
-            que.push(v);
-        };
-        push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,c]: from[v]) push(nv);
-        }
-        return ret;
-    }
-};
-
 void solve() {
-    LONG(N, M);
-    VL(P, N);
-    Dijkstra graph(N);
-    using PR = pair<ll,db>;
-    using vPR = vector<PR>;
-    using vvPR = vector<vPR>;
-    vvPR from(N);
-    rep(i, M) {
-        LONGM(a, b); DOUBLE(c);
-        from[a].emplace_back(b, c);
-        graph.add_edge(b,a);
-    }
-    vb valid = graph.is_connected(N-1);
-    if(!valid[0]) Pm1
-
-    vd dp(N, -INF);
-    auto dfs=[&](auto f, ll v) -> void {
-        if(!valid[v]) return;
-        if(dp[v]!=-INF) return;
-        dp[v] = 0;
-        for(auto [nv,c]: from[v]) {
-            f(f, nv);
-            chmax(dp[v], dp[nv]*c);
+    LONG(N); VL(A, N);
+    ll x = -1;
+    rep(i, N-1) {
+        if(A[i]>A[i+1]) {
+            x = A[i]; break;
         }
-        dp[v] += P[v];
-    };
-    dfs(dfs, 0);
-    db ans = dp[0];
-    Out(ans);
+    }
+    de(x)
+    if(x==-1) x = A.back();
+    vl ans;
+    rep(i, N) {
+        if(A[i]!=x) ans.push_back(A[i]);
+    }
+    Outend(ans);
 
 }
 

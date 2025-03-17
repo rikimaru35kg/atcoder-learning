@@ -228,49 +228,21 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VVLM(A, N, N);
-    // vvl A(N, vl(N));
-    // rep(i, N) rep(j, N) {
-    //     A[i][j] = rand()%N;
-    // }
-    // A[N/2][N/2] = -1;
-
-    ll si=-1, sj=-1;
-    rep(i, N) rep(j, N) {
-        if(A[i][j]==-1) si=i, sj=j;
-    }
-    auto check=[&](ll i, ll j, ll k) -> bool {
-        return A[A[i][j]][k] == A[i][A[j][k]];
-    };
-
-    vt3 checks;
-    rep(i, N) rep(j, N) rep(k, N) {
-        if(i==si && j==sj) {
-            checks.emplace_back(i,j,k);
-        } else if(j==si && k==sj) {
-            checks.emplace_back(i,j,k);
-        } else if(A[i][j]==si && k==sj) {
-            checks.emplace_back(i,j,k);
-        } else if(i==si && A[j][k]==sj) {
-            checks.emplace_back(i,j,k);
+    LONG(N); VL(A, N);
+    vl ans(N);
+    ll now = 0;
+    rep(i, N-1) {
+        ll tgt = 0;
+        if(A[i]>A[i+1]) tgt = 1;
+        if(now!=tgt) {
+            ans[i] = 1;
+            now ^= 1;
         } else {
-            if(!check(i,j,k)) Pm0
+            ans[i] = 0;
         }
     }
-    // de(checks.size());
-
-    ll ans = 0;
-    rep(x, N) {
-        A[si][sj] = x;
-        bool ok = true;
-        for(auto [i,j,k]: checks) {
-            if(!check(i,j,k)) ok = false;
-        }
-        if(ok) ++ans;
-    }
+    if(now) ans[N-1] = 1;
     Out(ans);
-
 
 }
 

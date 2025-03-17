@@ -2106,16 +2106,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)
-- [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
-- [B - ビリヤード (Billiards)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b)
-- [A - Max Add](https://atcoder.jp/contests/arc120/tasks/arc120_a)
-- [F - Rated Range](https://atcoder.jp/contests/abc389/tasks/abc389_f)
-- [D - Squares in Circle](https://atcoder.jp/contests/abc389/tasks/abc389_d)
-- [B - RGB Matching](https://atcoder.jp/contests/arc121/tasks/arc121_b)
-- [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
-- [A - Gold and Silver](https://atcoder.jp/contests/arc128/tasks/arc128_a)
-- [A - Erase by Value](https://atcoder.jp/contests/arc133/tasks/arc133_a)
 - [B - Reserve or Reverse](https://atcoder.jp/contests/arc134/tasks/arc134_b)
 - [A - Trailing Zeros](https://atcoder.jp/contests/arc139/tasks/arc139_a)
 - [B - Shorten ARC](https://atcoder.jp/contests/arc140/tasks/arc140_b)
@@ -2191,6 +2181,12 @@
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 - [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
+- [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)
+- [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
+- [B - ビリヤード (Billiards)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b)
+- [A - Max Add](https://atcoder.jp/contests/arc120/tasks/arc120_a)
+- [B - RGB Matching](https://atcoder.jp/contests/arc121/tasks/arc121_b)
+- [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 
 ### 後で解きたい
 JOI2025
