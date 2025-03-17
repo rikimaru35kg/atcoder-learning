@@ -2106,8 +2106,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [No.2888 Mamehinata](https://yukicoder.me/problems/no/2888)
-- [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [D - Coming of Age Celebration](https://atcoder.jp/contests/abc388/tasks/abc388_d)
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 - [B - -- - B](https://atcoder.jp/contests/arc112/tasks/arc112_b)
@@ -2195,6 +2193,7 @@
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
+- [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 
 ### 後で解きたい
 JOI2025
