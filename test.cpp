@@ -165,6 +165,7 @@ template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPe
 template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
+template<typename T> inline void sort3(T &a,T &b,T &c) {if(a>b)swap(a,b);if(b>c)swap(b,c);if(a>b)swap(a,b);}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -228,20 +229,14 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(A, N);
-    ll x = -1;
-    rep(i, N-1) {
-        if(A[i]>A[i+1]) {
-            x = A[i]; break;
-        }
-    }
-    de(x)
-    if(x==-1) x = A.back();
-    vl ans;
-    rep(i, N) {
-        if(A[i]!=x) ans.push_back(A[i]);
-    }
-    Outend(ans);
+    LONG(A,B,C);
+    sort3(A,B,C);
+    ll ans = C-A + C-B;
+    if(ans>C) Pm1
+    C -= ans;
+    ans += C;
+    Out(ans);
+
 
 }
 

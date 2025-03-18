@@ -2106,14 +2106,6 @@
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [B - Reserve or Reverse](https://atcoder.jp/contests/arc134/tasks/arc134_b)
-- [A - Trailing Zeros](https://atcoder.jp/contests/arc139/tasks/arc139_a)
-- [B - Shorten ARC](https://atcoder.jp/contests/arc140/tasks/arc140_b)
-- [A - Periodic Number](https://atcoder.jp/contests/arc141/tasks/arc141_a)
-- [E - Duplicate](https://atcoder.jp/contests/abc313/tasks/abc313_e)
-- [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
-- [No.3015 右に寄せろ！](https://yukicoder.me/problems/no/3015)
-- [A - Three Integers](https://atcoder.jp/contests/arc143/tasks/arc143_a)
 - [A - AB Palindrome](https://atcoder.jp/contests/arc145/tasks/arc145_a)
 - [B - AB Game](https://atcoder.jp/contests/arc145/tasks/arc145_b)
 - [A - Three Cards](https://atcoder.jp/contests/arc146/tasks/arc146_a)
@@ -2187,6 +2179,8 @@
 - [A - Max Add](https://atcoder.jp/contests/arc120/tasks/arc120_a)
 - [B - RGB Matching](https://atcoder.jp/contests/arc121/tasks/arc121_b)
 - [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
+- [E - Duplicate](https://atcoder.jp/contests/abc313/tasks/abc313_e)
+- [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
 
 ### 後で解きたい
 JOI2025

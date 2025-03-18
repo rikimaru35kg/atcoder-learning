@@ -1,84 +1,65 @@
 test.cpp: In function ‘void solve()’:
-test.cpp:334:45: error: a function-definition is not allowed here before ‘{’ token
-  334 |         auto move(vl &is, ll p, ll k) -> ll {
-      |                                             ^
-test.cpp: In lambda function:
-test.cpp:344:21: error: no matching function for call to ‘move(__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type&, ll&, ll&)’
-  344 |             p = move(is[0], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-In file included from /usr/include/c++/12/bits/stl_pair.h:61,
-                 from /usr/include/c++/12/bits/stl_algobase.h:64,
-                 from /usr/include/c++/12/bits/specfun.h:45,
-                 from /usr/include/c++/12/cmath:1935,
-                 from stdc++.h:41:
-/usr/include/c++/12/bits/move.h:104:5: note: candidate: ‘template<class _Tp> constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&)’
-  104 |     move(_Tp&& __t) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/move.h:104:5: note:   template argument deduction/substitution failed:
-test.cpp:344:21: note:   candidate expects 1 argument, 3 provided
-  344 |             p = move(is[0], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_algobase.h:644:5: note: candidate: ‘template<class _II, class _OI> constexpr _OI std::move(_II, _II, _OI)’
-  644 |     move(_II __first, _II __last, _OI __result)
-      |     ^~~~
-/usr/include/c++/12/bits/stl_algobase.h:644:5: note:   template argument deduction/substitution failed:
-test.cpp:344:21: note:   deduced conflicting types for parameter ‘_II’ (‘std::__debug::vector<long long int>’ and ‘long long int’)
-  344 |             p = move(is[0], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-In file included from /usr/include/c++/12/algorithm:73,
-                 from stdc++.h:65:
-/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note: candidate: ‘template<class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2> __pstl::__internal::__enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2> std::move(_ExecutionPolicy&&, _ForwardIterator1, _ForwardIterator1, _ForwardIterator2)’
-  353 | move(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __d_first);
-      | ^~~~
-/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note:   template argument deduction/substitution failed:
-test.cpp:344:21: note:   candidate expects 4 arguments, 3 provided
-  344 |             p = move(is[0], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-test.cpp:346:21: error: no matching function for call to ‘move(__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type&, ll&, int)’
-  346 |             p = move(is[1], p, 1);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/bits/move.h:104:5: note: candidate: ‘template<class _Tp> constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&)’
-  104 |     move(_Tp&& __t) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/move.h:104:5: note:   template argument deduction/substitution failed:
-test.cpp:346:21: note:   candidate expects 1 argument, 3 provided
-  346 |             p = move(is[1], p, 1);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_algobase.h:644:5: note: candidate: ‘template<class _II, class _OI> constexpr _OI std::move(_II, _II, _OI)’
-  644 |     move(_II __first, _II __last, _OI __result)
-      |     ^~~~
-/usr/include/c++/12/bits/stl_algobase.h:644:5: note:   template argument deduction/substitution failed:
-test.cpp:346:21: note:   deduced conflicting types for parameter ‘_II’ (‘std::__debug::vector<long long int>’ and ‘long long int’)
-  346 |             p = move(is[1], p, 1);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note: candidate: ‘template<class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2> __pstl::__internal::__enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2> std::move(_ExecutionPolicy&&, _ForwardIterator1, _ForwardIterator1, _ForwardIterator2)’
-  353 | move(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __d_first);
-      | ^~~~
-/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note:   template argument deduction/substitution failed:
-test.cpp:346:21: note:   deduced conflicting types for parameter ‘_ForwardIterator1’ (‘long long int’ and ‘int’)
-  346 |             p = move(is[1], p, 1);
-      |                 ~~~~^~~~~~~~~~~~~
-test.cpp:348:21: error: no matching function for call to ‘move(__gnu_cxx::__alloc_traits<std::allocator<std::__debug::vector<long long int> >, std::__debug::vector<long long int> >::value_type&, ll&, ll&)’
-  348 |             p = move(is[2], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/bits/move.h:104:5: note: candidate: ‘template<class _Tp> constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&)’
-  104 |     move(_Tp&& __t) noexcept
-      |     ^~~~
-/usr/include/c++/12/bits/move.h:104:5: note:   template argument deduction/substitution failed:
-test.cpp:348:21: note:   candidate expects 1 argument, 3 provided
-  348 |             p = move(is[2], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/bits/stl_algobase.h:644:5: note: candidate: ‘template<class _II, class _OI> constexpr _OI std::move(_II, _II, _OI)’
-  644 |     move(_II __first, _II __last, _OI __result)
-      |     ^~~~
-/usr/include/c++/12/bits/stl_algobase.h:644:5: note:   template argument deduction/substitution failed:
-test.cpp:348:21: note:   deduced conflicting types for parameter ‘_II’ (‘std::__debug::vector<long long int>’ and ‘long long int’)
-  348 |             p = move(is[2], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
-/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note: candidate: ‘template<class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2> __pstl::__internal::__enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2> std::move(_ExecutionPolicy&&, _ForwardIterator1, _ForwardIterator1, _ForwardIterator2)’
-  353 | move(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __d_first);
-      | ^~~~
-/usr/include/c++/12/pstl/glue_algorithm_defs.h:353:1: note:   template argument deduction/substitution failed:
-test.cpp:348:21: note:   candidate expects 4 arguments, 3 provided
-  348 |             p = move(is[2], p, k);
-      |                 ~~~~^~~~~~~~~~~~~
+test.cpp:240:13: error: no match for ‘operator%’ (operand types are ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} and ‘ll’ {aka ‘long long int’})
+  240 |         if(N%d!=0) continue;
+      |            ~^~
+      |            | |
+      |            | ll {aka long long int}
+      |            std::string {aka std::__cxx11::basic_string<char>}
+In file included from /usr/include/c++/12/valarray:603,
+                 from stdc++.h:95:
+/usr/include/c++/12/bits/valarray_after.h:409:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__modulus, typename _Dom1::value_type>::result_type> std::operator%(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  409 |     _DEFINE_EXPR_BINARY_OPERATOR(%, struct std::__modulus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:409:5: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/bits/valarray_after.h:409:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__modulus, typename _Dom1::value_type>::result_type> std::operator%(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  409 |     _DEFINE_EXPR_BINARY_OPERATOR(%, struct std::__modulus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:409:5: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/bits/valarray_after.h:409:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__modulus, typename _Dom1::value_type>::result_type> std::operator%(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  409 |     _DEFINE_EXPR_BINARY_OPERATOR(%, struct std::__modulus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:409:5: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘ll’ {aka ‘long long int’}
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/bits/valarray_after.h:409:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__modulus, typename _Dom1::value_type>::result_type> std::operator%(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  409 |     _DEFINE_EXPR_BINARY_OPERATOR(%, struct std::__modulus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:409:5: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/bits/valarray_after.h:409:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__modulus, typename _Dom1::value_type>::result_type> std::operator%(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  409 |     _DEFINE_EXPR_BINARY_OPERATOR(%, struct std::__modulus)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/bits/valarray_after.h:409:5: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘ll’ {aka ‘long long int’}
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/valarray:1190:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__modulus, _Tp>::result_type> std::operator%(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1190 | _DEFINE_BINARY_OPERATOR(%, __modulus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1190:1: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::valarray<_Tp>’
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/valarray:1190:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__modulus, _Tp>::result_type> std::operator%(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1190 | _DEFINE_BINARY_OPERATOR(%, __modulus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1190:1: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::valarray<_Tp>’
+  240 |         if(N%d!=0) continue;
+      |              ^
+/usr/include/c++/12/valarray:1190:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__modulus, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__modulus, _Tp>::result_type> std::operator%(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1190 | _DEFINE_BINARY_OPERATOR(%, __modulus)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/12/valarray:1190:1: note:   template argument deduction/substitution failed:
+test.cpp:240:14: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘ll’ {aka ‘long long int’}
+  240 |         if(N%d!=0) continue;
+      |              ^

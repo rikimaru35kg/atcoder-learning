@@ -228,20 +228,17 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); VL(A, N);
-    vl ans(N);
-    ll now = 0;
-    rep(i, N-1) {
-        ll tgt = 0;
-        if(A[i]>A[i+1]) tgt = 1;
-        if(now!=tgt) {
-            ans[i] = 1;
-            now ^= 1;
+    STRING(S);
+    ll cnt = 0;
+    ll ans = 0;
+    for(auto c: S) {
+        if(c=='0') {
+            cnt = cnt/2*2;
+            ans += cnt/2;
         } else {
-            ans[i] = 0;
+            ++cnt;
         }
     }
-    if(now) ans[N-1] = 1;
     Out(ans);
 
 }
