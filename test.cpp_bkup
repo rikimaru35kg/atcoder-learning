@@ -165,6 +165,7 @@ template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPe
 template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
+template<typename T> inline void sort3(T &a,T &b,T &c) {if(a>b)swap(a,b);if(b>c)swap(b,c);if(a>b)swap(a,b);}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -227,26 +228,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
 void solve() {
-    STRING(S);
-    ll cnt = 0;
-    ll ans = 0;
-    for(auto c: S) {
-        if(c=='0') {
-            cnt = cnt/2*2;
-            ans += cnt/2;
+    LONG(N);
+    VL(A, N);
+    vl ans;
+    auto insert=[&](ll mn, ll mx) {
+        for(ll x=mn; x<=mx; ++x) ans.push_back(x);
+    };
+    auto calc=[&](vl &v) -> t3 {
+        ll now = 0, mn = 0, mx = 0;
+        ll low = 0, up = 0;
+        ll n = v.size();
+        rep(i, n) {
+            now += v[i];
+            chmax(mx, now-low);
+            chmin(mn, now-up);
+            chmin(low, now);
+            chmax(up, now);
+        }
+        insert(mn,mx);
+        return {low, up, now};
+    };
+    vl v;
+    ll jump = INF;
+    ll l1=0,u1=0;
+    rep(i, N) {
+        if(A[i]!=-1 && A[i]!=1) {
+            auto [l,u,last] = calc(v);
+            l1 = l, u1 = u;
+            jump = A[i]+last;
+            v = vl();
         } else {
-            ++cnt;
+            v.push_back(A[i]);
         }
     }
+    auto [l2,u2,_] = calc(v);
+    if(jump!=INF) {
+        ll mn3 = l2-u1+jump;
+        ll mx3 = u2-l1+jump;
+        insert(mn3, mx3);
+    }
+    unique(ans);
+    Out(ans.size());
     Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

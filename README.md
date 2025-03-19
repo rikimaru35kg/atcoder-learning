@@ -1,8 +1,8 @@
 # はじめに
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
-## 最後の一斉復習日
-2024/12/2 - 2025/1/14
+## 最終復習日
+2025/3/19
 
 # 全探索
 
@@ -1982,6 +1982,11 @@
 - !復習価値低 実際は考察も必要なのでNote非掲載 [F - Hands on Ring (Hard)](https://atcoder.jp/contests/abc376/tasks/abc376_f)
 - !復習価値中 実際は考察も必要なのでNote非掲載 [C - JOIOI 王国 (Kingdom of JOIOI)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_c)
 
+# パズル問
+- 競プロ知らない人にこういう問題もあると教えられそうな問題
+### 例題
+- [C. Competitive Fishing](https://codeforces.com/contest/2042/problem/C)
+
 # 実装テクニック
 
 ## set,map
@@ -2101,37 +2106,12 @@
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
+- [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 
 ## ACできたがグダった問題
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [A - AB Palindrome](https://atcoder.jp/contests/arc145/tasks/arc145_a)
-- [B - AB Game](https://atcoder.jp/contests/arc145/tasks/arc145_b)
-- [A - Three Cards](https://atcoder.jp/contests/arc146/tasks/arc146_a)
-- [A - mod M](https://atcoder.jp/contests/arc148/tasks/arc148_a)
-- [B - Two LIS Sum](https://atcoder.jp/contests/arc149/tasks/arc149_b)
-- [A - Continuous 1](https://atcoder.jp/contests/arc150/tasks/arc150_a)
-- [A - XXYYX](https://atcoder.jp/contests/arc157/tasks/arc157_a)
-- [A - Copy and Paste Graph](https://atcoder.jp/contests/arc159/tasks/arc159_a)
-- [A - Make M](https://atcoder.jp/contests/arc161/tasks/arc161_a)
-- [B - Switching Travel](https://atcoder.jp/contests/arc164/tasks/arc164_b)
-- 競プロ知らない人にパズル問として紹介する際に使えそう [A - Replace C or Swap AB](https://atcoder.jp/contests/arc166/tasks/arc166_a)
-- [A - Chocolate](https://atcoder.jp/contests/arc172/tasks/arc172_a)
-- [C - Routing](https://atcoder.jp/contests/arc177/tasks/arc177_c)
-- [D - Gravity](https://atcoder.jp/contests/abc391/tasks/abc391_d)
-- [E - Hierarchical Majority Vote](https://atcoder.jp/contests/abc391/tasks/abc391_e)
-- [C - 積み重ね](https://atcoder.jp/contests/arc006/tasks/arc006_3)
-- [A - 鉛筆リサイクルの新技術](https://atcoder.jp/contests/arc011/tasks/arc011_1)
-- [C - 蛍光灯](https://atcoder.jp/contests/arc026/tasks/arc026_3)
-- [C - 最高のトッピングにしような](https://atcoder.jp/contests/arc027/tasks/arc027_3)
-- [C - 約数かつ倍数](https://atcoder.jp/contests/arc034/tasks/arc034_3)
-- [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
-- [E - Cables and Servers](https://atcoder.jp/contests/abc392/tasks/abc392_e)
-- [E. Best Price](https://codeforces.com/contest/2051/problem/E)
-- [E. Reverse the Rivers](https://codeforces.com/contest/2036/problem/E)
-- [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
-- 競プロ知らない人にパズル問として紹介する際に使えそう [C. Competitive Fishing](https://codeforces.com/contest/2042/problem/C)
 - [D. Attribute Checks](https://codeforces.com/contest/2025/problem/D)
 - [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
 - [C. Even Positions](https://codeforces.com/contest/1997/problem/C)
@@ -2181,6 +2161,19 @@
 - [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 - [E - Duplicate](https://atcoder.jp/contests/abc313/tasks/abc313_e)
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
+- [B - AB Game](https://atcoder.jp/contests/arc145/tasks/arc145_b)
+- [A - Three Cards](https://atcoder.jp/contests/arc146/tasks/arc146_a)
+- [B - Two LIS Sum](https://atcoder.jp/contests/arc149/tasks/arc149_b)
+- [A - Continuous 1](https://atcoder.jp/contests/arc150/tasks/arc150_a)
+- [A - XXYYX](https://atcoder.jp/contests/arc157/tasks/arc157_a)
+- 競プロ知らない人にパズル問として紹介する際に使えそう [A - Replace C or Swap AB](https://atcoder.jp/contests/arc166/tasks/arc166_a)
+- [D - Gravity](https://atcoder.jp/contests/abc391/tasks/abc391_d)
+- [E - Hierarchical Majority Vote](https://atcoder.jp/contests/abc391/tasks/abc391_e)
+- [C - 積み重ね](https://atcoder.jp/contests/arc006/tasks/arc006_3)
+- [A - 鉛筆リサイクルの新技術](https://atcoder.jp/contests/arc011/tasks/arc011_1)
+- [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
+- [E - Cables and Servers](https://atcoder.jp/contests/abc392/tasks/abc392_e)
+- [E. Best Price](https://codeforces.com/contest/2051/problem/E)
 
 ### 後で解きたい
 JOI2025
