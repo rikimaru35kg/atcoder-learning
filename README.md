@@ -2,7 +2,7 @@
 このページでは、競プロでこれまでに学んだ内容（教訓）を端的に箇条書きします。
 
 ## 最終復習日
-2025/3/19
+2025/3/20
 
 # 全探索
 
@@ -285,7 +285,7 @@
 ### 例題
 - 基本 [D - テンキー (Tenkey)](https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_d)
 - 基本 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
-- !要復習 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
+- !復習価値低 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
 - !復習価値中 [C - 鉄道運賃 (Train Fare)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_c)
 
 ## 01-BFS
@@ -496,7 +496,7 @@
 - 任意の2頂点間の距離が2以下である
 ### 例題
 - 基本 スターグラフの性質 [E - Friendships](https://atcoder.jp/contests/abc131/tasks/abc131_e)
-- !要復習 [joitter - ジョイッター (Joitter)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_joitter)
+- 基本 [joitter - ジョイッター (Joitter)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_joitter)
 
 ## DAG（Directed Acyclic Graph）とトポロジカルソート
 - DAGは閉路のない有向グラフであり、トポロジカルソートができる事と同値
@@ -2173,7 +2173,3 @@
 - [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
 - [B - ポスター 2 (Poster 2)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_b)
 - [C - 修学旅行 (School Trip)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_c)
-
-### 後で解きたい
-- JOI2025
-- [](https://atcoder.jp/contests/abc213/tasks/abc213_f?lang=ja)

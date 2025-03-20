@@ -228,48 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
 void solve() {
-    LONG(N, K);
-    VVL(A, N, N);
-    ll base = 0;
-    auto coljudge=[&](ll i, ll j) -> bool {
-        vl as;
-        rep(di, 2) rep(dj, 2) {
-            ll ni = i+di, nj = j+dj;
-            if(!isin(ni,nj,N,N)) return false;
-            as.push_back(A[ni][nj]);
-        }
-        unique(as);
-        return SIZE(as)>=3;
+    LONG(N, Q);
+    ll M = 1;
+    rep(i, N) M *= 3;
+
+    VS(S, Q);
+    auto gid=[&](string &s) -> ll {
+        ll ret = 0;
+        for(auto c: s) ret = ret*3 + c-'A';
+        return ret;
     };
-    rep(i, N-1) rep(j, N-1) {
-        if(coljudge(i,j)) ++base;
-    }
-    ll ans = base;
-    rep(i, N) rep(j, N) {
-        ll now = base;
-        repk(di, -1, 1) repk(dj, -1, 1) {
-            ll ni = i+di, nj = j+dj;
-            if(coljudge(ni,nj)) --now;
+    auto rid=[&](ll id) -> string {
+        string ret;
+        while(id) {
+            ret += id%3 + 'A';
+            id /= 3;
         }
-        ll pc = A[i][j];
-        rep1(k, min(K,9LL)) {
-            ll n = now;
-            A[i][j] = k;
-            repk(di, -1, 1) repk(dj, -1, 1) {
-                ll ni = i+di, nj = j+dj;
-                if(coljudge(ni,nj)) ++n;
-            }
-            chmax(ans, n);
-        }
-        A[i][j] = pc;
+        while(SIZE(ret)<N) ret += 'A';
+        reverse(all(ret));
+        return ret;
+    };
+    vl dist(M, INF);
+    queue<ll> que;
+    auto push=[&](string &s, ll d) {
+        ll id = gid(s);
+        if(dist[id]<=d) return;
+        dist[id] = d;
+        que.push(id);
+    };
+    for(ll a=0; a<=N; ++a) for(ll b=0; a+b<=N; ++b) {
+        ll c = N-(a+b);
+        string tmp = string(a,'A') + string(b,'B') + string(c,'C');
+        ll id = gid(tmp);
+        push(tmp, 0);
     }
-    Out(ans);
+    while(que.size()) {
+        auto id = que.front(); que.pop();
+        string s = rid(id);
+        repk(k, 2, N+1) {
+            string top = s.substr(0,k);
+            reverse(all(top));
+            string ns = top + s.substr(k);
+            push(ns, dist[id]+1);
+        }
+    }
+    rep(i, Q) {
+        ll id = gid(S[i]);
+        Out(dist[id]);
+    }
+
 
 }
 
