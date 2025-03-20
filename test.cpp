@@ -228,48 +228,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
 void solve() {
-    LONG(N, K);
-    VVL(A, N, N);
-    ll base = 0;
-    auto coljudge=[&](ll i, ll j) -> bool {
-        vl as;
-        rep(di, 2) rep(dj, 2) {
-            ll ni = i+di, nj = j+dj;
-            if(!isin(ni,nj,N,N)) return false;
-            as.push_back(A[ni][nj]);
-        }
-        unique(as);
-        return SIZE(as)>=3;
-    };
-    rep(i, N-1) rep(j, N-1) {
-        if(coljudge(i,j)) ++base;
+    LONG(N, Q);
+    STRING(T);
+    ll M = 1;
+    rep(i, N) M *= 3;
+
+    vvl v(1);
+    rep(i, M) {
+        if(T[i]=='A') v[0].push_back(0);
+        else v[0].push_back(1);
     }
-    ll ans = base;
-    rep(i, N) rep(j, N) {
-        ll now = base;
-        repk(di, -1, 1) repk(dj, -1, 1) {
-            ll ni = i+di, nj = j+dj;
-            if(coljudge(ni,nj)) --now;
+    rep(i, N) {
+        ll sz = v.back().size();
+        v.push_back(vl(sz/3));
+        for(ll j=0; j<sz; j+=3) {
+            ll cnt = 0;
+            rep(k, 3) cnt += v[i][j+k];
+            if(cnt<=1) v[i+1][j/3] = 0;
+            else v[i+1][j/3] = 1;
         }
-        ll pc = A[i][j];
-        rep1(k, min(K,9LL)) {
-            ll n = now;
-            A[i][j] = k;
-            repk(di, -1, 1) repk(dj, -1, 1) {
-                ll ni = i+di, nj = j+dj;
-                if(coljudge(ni,nj)) ++n;
-            }
-            chmax(ans, n);
-        }
-        A[i][j] = pc;
     }
-    Out(ans);
+    rep(i, Q) {
+        LONGM(p);
+        v[0][p] ^= 1;
+        rep(i, N) {
+            ll np = p/3;
+            ll cnt = 0;
+            rep(k, 3) cnt += v[i][np*3+k];
+            if(cnt<=1) v[i+1][np] = 0;
+            else v[i+1][np] = 1;
+            p = np;
+        }
+        if(v.back()[0]==0) Out('A');
+        else Out('B');
+    }
+
 
 }
 
