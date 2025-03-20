@@ -2171,6 +2171,7 @@
 - [E. Best Price](https://codeforces.com/contest/2051/problem/E)
 - [D. Attribute Checks](https://codeforces.com/contest/2025/problem/D)
 - [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
+- [B - ポスター 2 (Poster 2)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_b)
 
 ### 後で解きたい
 - JOI2025

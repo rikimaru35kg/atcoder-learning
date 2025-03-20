@@ -228,37 +228,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 void solve() {
     LONG(N);
     VL(A, N); VL(B, N);
-    umap<ll,ll> cnt;
-    rep(i, N) cnt[A[i]]++;
-    repk(i, 1, N) cnt[B[i]]++;
-    vt3 v;
-    repk(i, 1, N) {
-        v.emplace_back(A[i],i,0);
-        v.emplace_back(B[i],i,1);
+    auto Sc = cumsum(B);
+
+    vl mx1(N+1, -INF), mx2(N+1, -INF);
+    repr(i, N) {
+        mx1[i] = A[i] - Sc[i];
+        chmax(mx1[i], mx1[i+1]);
     }
-    sort(allr(v));
-    ll H = N, W = N;
-    for(auto [x,i,t]: v) {
-        if(t==0) {
-            if(i>=H) continue;
-            ll num = (W-1) * (H-i);
-            cnt[x] += num;
-            H = i;
-        } else {
-            if(i>=W) continue;
-            ll num = (H-1) * (W-i);
-            cnt[x] += num;
-            W = i;
-        }
+    rep(i, N) {
+        mx2[i+1] = A[i]-Sc[i]-Sc[N];
+        chmax(mx2[i+1], mx2[i]);
     }
-    Pr ans(0, 0);
-    for(auto [x,n]: cnt) {
-        chmax(ans, {n, x});
+
+    ll ans = INF;
+    rep(i, N) {
+        ll now = -INF;
+        chmax(now, mx1[i] + Sc[i]);
+        // if(i) chmax(now, mx2[i-1] + Sc[i]);
+        chmax(now, mx2[i] + Sc[i]);
+        chmin(ans, now);
     }
-    printf("%lld %lld\n", ans.second, ans.first);
+    Out(ans);
+    
 
 }
 
