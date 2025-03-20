@@ -228,116 +228,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    VVL(C, N, N);
-    vl cnt(3);
-    rep(i, N) cnt[A[i]]++;
-    if(cnt[0]) {
-        ll ans = 0;
-        ll cnt = 0;
-        set<Pr> st;
-        rep(i, N) if(A[i]==0) {
-            rep(j, N) {
-                if(i==j) continue;
-                ll a = i, b = j;
-                if(a>b) swap(a,b);
-                if(st.count({a,b})) continue;
-                st.emplace(a,b);
-                ++cnt;
-                ans += C[a][b];
-            }
-        }
-        printf("%lld %lld\n", cnt, ans);
-        return;
-    }
-    if(cnt[1]==0) {
-        vt3 edge;
-        rep(i, N) rep(j, i) {
-            edge.emplace_back(C[i][j], i, j);
-        }
-        sort(all(edge));
-        WeightedUnionFind uf(N);
-        ll ans = 0;
-        for(auto [c,a,b]: edge) {
-            if(uf.same(a,b)) continue;
-            uf.merge(a,b);
-            ans += c;
-        }
-        printf("%lld %lld\n", N-1, ans);
-        return;
+    LONG(K);
+    STRING(S, T);
+    ll N = S.size(), M = T.size();
+
+    vvl dp(N+1, vl(2*K+1, INF));
+    dp[0][K] = 0;
+    rep(i, N+1) rep(k, 2*K+1) {
+        ll now = dp[i][k];
+        if(now==INF) continue;
+        ll dj = k-K;
+        ll j = i+dj;
+        if(j<0 || j>M) continue;
+        if(j<M && k<2*K) chmin(dp[i][k+1], now+1);
+        if(i<N && k) chmin(dp[i+1][k-1], now+1);
+        if(i<N && j<M) chmin(dp[i+1][k], now+1);
+        if(i<N && j<M && S[i]==T[j]) chmin(dp[i+1][k], now);
     }
 
-    ll ans = INF;
-    rep(i, N) {
-        ll now = 0;
-        rep(j, N) {
-            if(i==j) continue;
-            now += C[i][j];
-        }
-        chmin(ans, now);
-    }
-    if(cnt[1]!=2) {
-        printf("%lld %lld\n", N-1, ans);
-        return;
-    }
-    ll a = -1, b = -1;
-    rep(i, N) {
-        if(A[i]==1) {
-            a = i; swap(a,b);
-        }
-    }
-    ll now = C[a][b];
-    rep(i, N) {
-        if(i==a || i==b) continue;
-        now += min(C[i][a], C[i][b]);
-    }
-    chmin(ans, now);
-    printf("%lld %lld\n", N-1, ans);
-    
+    if(abs(M-N)>K) PNo
+    ll num = dp[N][M-N+K];
+    if(num<=K) PYes PNo
+
 
 }
 
