@@ -2107,19 +2107,14 @@
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
+- [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
+- [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
+- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
 
 ## ACできたがグダった問題
 <!-- #############################
 # current review point (where i am now)
 ############################# -->
-- [D. Attribute Checks](https://codeforces.com/contest/2025/problem/D)
-- [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
-- [C. Even Positions](https://codeforces.com/contest/1997/problem/C)
-- [B. Substring and Subsequence](https://codeforces.com/contest/1989/problem/B)
-- [C. Two Movies](https://codeforces.com/contest/1989/problem/C)
-- [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
-- [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
-- [B. Monsters Attack!](https://codeforces.com/contest/1923/problem/B)
 - [D - Pigeon Swap](https://atcoder.jp/contests/abc395/tasks/abc395_d)
 - [F - Smooth Occlusion](https://atcoder.jp/contests/abc395/tasks/abc395_f)
 - [E - Min of Restricted Sum](https://atcoder.jp/contests/abc396/tasks/abc396_e)
@@ -2174,7 +2169,9 @@
 - [B - 石取り大作戦](https://atcoder.jp/contests/arc046/tasks/arc046_b)
 - [E - Cables and Servers](https://atcoder.jp/contests/abc392/tasks/abc392_e)
 - [E. Best Price](https://codeforces.com/contest/2051/problem/E)
+- [D. Attribute Checks](https://codeforces.com/contest/2025/problem/D)
+- [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
 
 ### 後で解きたい
-JOI2025
+- JOI2025
 - [](https://atcoder.jp/contests/abc213/tasks/abc213_f?lang=ja)

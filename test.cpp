@@ -228,34 +228,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 void solve() {
-    LONG(N, K);
-    STRING(S);
-    ll now = 0;
-    vl cand;
+    LONG(N);
+    VL(A, N); VL(B, N);
+    auto Sc = cumsum(B);
+
+    vl mx1(N+1, -INF), mx2(N+1, -INF);
     repr(i, N) {
-        if(i==0) break;
-        if(S[i]=='0') --now;
-        else ++now;
-        cand.push_back(now);
+        mx1[i] = A[i] - Sc[i];
+        chmax(mx1[i], mx1[i+1]);
     }
-    sort(allr(cand));
-    ll pt = 0;
-    rep(i, N-1) {
-        pt += cand[i];
-        if(pt>=K) {
-            Out(i+2); return;
-        }
+    rep(i, N) {
+        mx2[i+1] = A[i]-Sc[i]-Sc[N];
+        chmax(mx2[i+1], mx2[i]);
     }
-    Out(-1);
+
+    ll ans = INF;
+    rep(i, N) {
+        ll now = -INF;
+        chmax(now, mx1[i] + Sc[i]);
+        // if(i) chmax(now, mx2[i-1] + Sc[i]);
+        chmax(now, mx2[i] + Sc[i]);
+        chmin(ans, now);
+    }
+    Out(ans);
+    
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

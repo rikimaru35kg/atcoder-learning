@@ -228,63 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
 void solve() {
     LONG(N);
-    VL(A, N);
-    vl ans;
-    auto insert=[&](ll mn, ll mx) {
-        for(ll x=mn; x<=mx; ++x) ans.push_back(x);
-    };
-    auto calc=[&](vl &v) -> t3 {
-        ll now = 0, mn = 0, mx = 0;
-        ll low = 0, up = 0;
-        ll n = v.size();
-        rep(i, n) {
-            now += v[i];
-            chmax(mx, now-low);
-            chmin(mn, now-up);
-            chmin(low, now);
-            chmax(up, now);
-        }
-        insert(mn,mx);
-        return {low, up, now};
-    };
-    vl v;
-    ll jump = INF;
-    ll l1=0,u1=0;
-    rep(i, N) {
-        if(A[i]!=-1 && A[i]!=1) {
-            auto [l,u,last] = calc(v);
-            l1 = l, u1 = u;
-            jump = A[i]+last;
-            v = vl();
+    VL(A, N); VL(B, N);
+    umap<ll,ll> cnt;
+    rep(i, N) cnt[A[i]]++;
+    repk(i, 1, N) cnt[B[i]]++;
+    vt3 v;
+    repk(i, 1, N) {
+        v.emplace_back(A[i],i,0);
+        v.emplace_back(B[i],i,1);
+    }
+    sort(allr(v));
+    ll H = N, W = N;
+    for(auto [x,i,t]: v) {
+        if(t==0) {
+            if(i>=H) continue;
+            ll num = (W-1) * (H-i);
+            cnt[x] += num;
+            H = i;
         } else {
-            v.push_back(A[i]);
+            if(i>=W) continue;
+            ll num = (H-1) * (W-i);
+            cnt[x] += num;
+            W = i;
         }
     }
-    auto [l2,u2,_] = calc(v);
-    if(jump!=INF) {
-        ll mn3 = l2-u1+jump;
-        ll mx3 = u2-l1+jump;
-        insert(mn3, mx3);
+    Pr ans(0, 0);
+    for(auto [x,n]: cnt) {
+        chmax(ans, {n, x});
     }
-    unique(ans);
-    Out(ans.size());
-    Out(ans);
-
+    printf("%lld %lld\n", ans.second, ans.first);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
