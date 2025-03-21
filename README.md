@@ -894,8 +894,6 @@
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !復習価値低 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
-<!-- where i am now -->
-<!-- last submission 2025/2/21 -->
 - !要復習 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
 - !復習価値中 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
@@ -957,7 +955,7 @@
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 - !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値中 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
-- !要復習 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
+- !復習価値中 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
 
 ## 全方位木DP
 - まず木DPで下向き部分木の求めたい値を求める
@@ -1032,6 +1030,8 @@
 - 基本 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
+<!-- where i am now -->
+<!-- last submission 2025/2/25 -->
 - !要復習 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP

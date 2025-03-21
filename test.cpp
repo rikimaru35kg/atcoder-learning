@@ -228,49 +228,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N, K);
-    STRING(S);
-    VL(A, N);
+    LONG(N);
+    VL(D, N);
+    vvp from(N);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
 
-    auto f=[&](ll x) -> bool {
-        ll b=0;
-        ll cnt=0;
-        rep(i, N) {
-            if(A[i]<=x) continue;
-            if(S[i]=='B') ++b;
-            else {
-                if(b) ++cnt;
-                b = 0;
-            }
+    auto dfs=[&](auto f, ll v, ll p=-1) -> vl {
+        vl dp(2);
+        ll base = 0;
+        vl gain;
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            vl ndp = f(f, nv, v);
+            base += ndp[0];
+            ll g = max(ndp[1]+c-ndp[0], 0LL);
+            gain.push_back(g);
         }
-        if(b) ++cnt;
-
-        return cnt <= K;
+        sort(allr(gain));
+        if(D[v]==0) return {base, -INF};
+        dp[0] = base, dp[1] = base;
+        ll sz = gain.size();
+        rep(i, min(D[v],sz)) {
+            dp[0] += gain[i];
+        }
+        rep(i, min(D[v]-1,sz)) {
+            dp[1] += gain[i];
+        }
+        return dp;
     };
-
-    ll ans = binary_search(INF, -1, f);
+    vl dp = dfs(dfs, 0);
+    ll ans = max(dp[0], dp[1]);
     Out(ans);
 
 }
@@ -278,8 +269,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
