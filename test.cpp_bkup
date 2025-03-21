@@ -271,24 +271,31 @@ struct WeightedUnionFind {
 };
 
 void solve() {
-    LONG(N);
-    WeightedUnionFind uf(N);
-    VL(B, N-2);
-    rep(i, N-2) {
-        if(B[i]==1) {
-            uf.merge(i, i+1);
-            uf.merge(i+1, i+2);
+    LONG(N, M);
+    VVLM(A, N, M);
+    vl oe(N*M);
+
+    rep(i, N) rep(j, M) {
+        chmax(oe[A[i][j]], 1LL);
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,N,M)) continue;
+            if(A[i][j]==A[ni][nj]) chmax(oe[A[i][j]], 2LL);
         }
     }
-    rep(i, N-2) {
-        if(B[i]==0) {
-            if(uf.same(i, i+2)) {
-                puts("NO");
-                return;
-            }
-        }
+
+    vl nums;
+    rep(i, N*M) {
+        if(oe[i]==0) continue;
+        nums.push_back(oe[i]);
     }
-    puts("YES");
+    de(nums)
+
+    ll tot = accumulate(all(nums), 0LL);
+    ll mx = *max_element(all(nums));
+    ll ans = tot - mx;
+    Out(ans);
+
 
 }
 
