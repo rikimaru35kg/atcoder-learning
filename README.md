@@ -894,6 +894,8 @@
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !復習価値低 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
+<!-- where i am now -->
+<!-- last submission 2025/2/21 -->
 - !要復習 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
 - !復習価値中 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
@@ -2173,3 +2175,4 @@
 - [D. Tandem Repeats?](https://codeforces.com/contest/1948/problem/D)
 - [B - ポスター 2 (Poster 2)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_b)
 - [C - 修学旅行 (School Trip)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_c)
+- [C. Limited Repainting](https://codeforces.com/contest/2070/problem/C)

@@ -228,36 +228,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(K);
-    STRING(S, T);
-    ll N = S.size(), M = T.size();
-
-    vvl dp(N+1, vl(2*K+1, INF));
-    dp[0][K] = 0;
-    rep(i, N+1) rep(k, 2*K+1) {
-        ll now = dp[i][k];
-        if(now==INF) continue;
-        ll dj = k-K;
-        ll j = i+dj;
-        if(j<0 || j>M) continue;
-        if(j<M && k<2*K) chmin(dp[i][k+1], now+1);
-        if(i<N && k) chmin(dp[i+1][k-1], now+1);
-        if(i<N && j<M) chmin(dp[i+1][k], now+1);
-        if(i<N && j<M && S[i]==T[j]) chmin(dp[i+1][k], now);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
-    if(abs(M-N)>K) PNo
-    ll num = dp[N][M-N+K];
-    if(num<=K) PYes PNo
+void solve() {
+    LONG(N, K);
+    STRING(S);
+    VL(A, N);
 
+    auto f=[&](ll x) -> bool {
+        ll b=0;
+        ll cnt=0;
+        rep(i, N) {
+            if(A[i]<=x) continue;
+            if(S[i]=='B') ++b;
+            else {
+                if(b) ++cnt;
+                b = 0;
+            }
+        }
+        if(b) ++cnt;
+
+        return cnt <= K;
+    };
+
+    ll ans = binary_search(INF, -1, f);
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
