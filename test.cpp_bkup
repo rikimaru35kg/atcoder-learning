@@ -228,47 +228,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
 void solve() {
     LONG(N);
-    VL(A, N-1);
-    ll mx = 0;
-    ll jump = 0;
-    ll ji = -1;
-    rep(i, N-1) {
-        if(A[i]>=mx+3) Pm0
-        if(A[i]==mx+2) {
-            if(jump==0) ji = i;
-            ++jump;
+    WeightedUnionFind uf(N);
+    VL(B, N-2);
+    rep(i, N-2) {
+        if(B[i]==1) {
+            uf.merge(i, i+1);
+            uf.merge(i+1, i+2);
         }
-        chmax(mx, A[i]);
     }
-    if(jump==1) {
-        ll a = A[ji];
-        rep(i, N-1) {
-            if(A[i]==a-2) {
-                Outend(ji-i);
+    rep(i, N-2) {
+        if(B[i]==0) {
+            if(uf.same(i, i+2)) {
+                puts("NO");
+                return;
             }
         }
-        Outend(1);
     }
-    if(jump>=2) Outend(0);
-
-    ll ans = 0;
-    mx = 0;
-    rep(i, N) {
-        ans += mx+1;
-        if(i) ans--;
-        if(i==N-1) break;
-        chmax(mx, A[i]);
-    }
-    Out(ans);
+    puts("YES");
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

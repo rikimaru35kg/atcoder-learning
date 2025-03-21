@@ -228,48 +228,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
 void solve() {
-    LONG(N);
-    VL(D, N);
-    vvp from(N);
-    rep(i, N-1) {
-        LONGM(a, b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+    LONG(N, M);
+    VVLM(A, N, M);
+    vl oe(N*M);
+
+    rep(i, N) rep(j, M) {
+        chmax(oe[A[i][j]], 1LL);
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,N,M)) continue;
+            if(A[i][j]==A[ni][nj]) chmax(oe[A[i][j]], 2LL);
+        }
     }
 
-    auto dfs=[&](auto f, ll v, ll p=-1) -> vl {
-        vl dp(2);
-        ll base = 0;
-        vl gain;
-        for(auto [nv, c]: from[v]) if(nv!=p) {
-            vl ndp = f(f, nv, v);
-            base += ndp[0];
-            ll g = max(ndp[1]+c-ndp[0], 0LL);
-            gain.push_back(g);
-        }
-        sort(allr(gain));
-        if(D[v]==0) return {base, -INF};
-        dp[0] = base, dp[1] = base;
-        ll sz = gain.size();
-        rep(i, min(D[v],sz)) {
-            dp[0] += gain[i];
-        }
-        rep(i, min(D[v]-1,sz)) {
-            dp[1] += gain[i];
-        }
-        return dp;
-    };
-    vl dp = dfs(dfs, 0);
-    ll ans = max(dp[0], dp[1]);
+    vl nums;
+    rep(i, N*M) {
+        if(oe[i]==0) continue;
+        nums.push_back(oe[i]);
+    }
+    de(nums)
+
+    ll tot = accumulate(all(nums), 0LL);
+    ll mx = *max_element(all(nums));
+    ll ans = tot - mx;
     Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

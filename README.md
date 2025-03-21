@@ -2176,3 +2176,4 @@
 - [B - ポスター 2 (Poster 2)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_b)
 - [C - 修学旅行 (School Trip)](https://atcoder.jp/contests/joig2025-open/tasks/joig2025_c)
 - [C. Limited Repainting](https://codeforces.com/contest/2070/problem/C)
+- [B. Set of Strangers](https://codeforces.com/contest/2069/problem/B)
