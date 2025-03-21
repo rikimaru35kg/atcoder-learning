@@ -2179,3 +2179,4 @@
 - [B. Set of Strangers](https://codeforces.com/contest/2069/problem/B)
 - [C. Beautiful Sequencel](https://codeforces.com/contest/2069/problem/C)
 - [D. Palindrome Shuffle](https://codeforces.com/contest/2069/problem/D)
+- [C. Find B](https://codeforces.com/contest/1923/problem/C)

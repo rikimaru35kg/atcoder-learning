@@ -228,110 +228,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long MX = 1;
-const long long ps[12] = {998244353, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    friend mints operator+(long long a, mints b) { return mints(a)+b; }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    friend mints operator-(long long a, mints b) { return mints(a)-b; }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    friend mints operator*(long long a, mints b) { return mints(a)*b; }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
-        }
-        return ret;
-    }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-}
-istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
-ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
-using vm = vector<mints>;
-using vvm = vector<vector<mints>>;
-
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    ll L = 3;
-    vm dp(L+1);
-    dp[0] = 1;
-    rep(i, N) {
-        ll a = A[i];
-        vm pdp(L+1); swap(pdp, dp);
-        rep(j, L+1) {
-            if(pdp[j]==0) continue;
-            dp[j] += pdp[j];
-        }
-        dp[a+1] += pdp[a];
-        if(a==1) dp[a] += pdp[a];
-        de(dp)
+    STRING(S);
+    using DQ = deque<ll>;
+    DQ deq;
+    for(auto c: S) deq.push_back(c-'a');
+    while(deq.size()) {
+        if(deq[0]==deq.back()) {
+            deq.pop_front(); deq.pop_back();
+        } else break;
     }
-    Out(dp[L]);
+    if(deq.empty()) {
+        Out(0); return;
+    }
+    ll N = deq.size();
+    ll M = 26;
+    auto edis=[&](DQ &deq) -> bool {
+        vl fr(M), rr(M);
+        rep(i, N/2) fr[deq[i]]++;
+        repk(i, N/2, N) rr[deq[i]]++;
+        return fr==rr;
+    };
+    if(edis(deq)) {
+        ll mxi = 0;
+        rep(i, N/2) {
+            if(deq[i]!=deq[N-1-i]) mxi = i;
+        }
+        Out(mxi+1);
+        return;
+    }
+
+    auto calc=[&](DQ &deq) -> ll {
+        vl fr(M), rr(M);
+        rep(i, N/2) fr[deq[i]]++;
+        repk(i, N/2, N) rr[deq[i]]++;
+        auto lack=[&]() -> bool {
+            rep(i, M) { if(fr[i]<rr[i]) return true; }
+            return false;
+        };
+        ll r = N/2;
+        while(r<N && lack()) {
+            fr[deq[r]]++;
+            rr[deq[r]]--;
+            ++r;
+        }
+        return r;
+    };
+    ll ans = calc(deq);
+    reverse(all(deq));
+    chmin(ans, calc(deq));
+    reverse(all(deq));
+    Out(ans);
+
+    
+
 
 
 }

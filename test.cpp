@@ -228,69 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 void solve() {
-    STRING(S);
-    using DQ = deque<ll>;
-    DQ deq;
-    for(auto c: S) deq.push_back(c-'a');
-    while(deq.size()) {
-        if(deq[0]==deq.back()) {
-            deq.pop_front(); deq.pop_back();
-        } else break;
-    }
-    if(deq.empty()) {
-        Out(0); return;
-    }
-    ll N = deq.size();
-    ll M = 26;
-    auto edis=[&](DQ &deq) -> bool {
-        vl fr(M), rr(M);
-        rep(i, N/2) fr[deq[i]]++;
-        repk(i, N/2, N) rr[deq[i]]++;
-        return fr==rr;
+    LONG(N, Q);
+    VLM(A, N);
+    auto Sc = cumsum(A);
+    vl cnt0(N+1);
+    rep(i, N) if(A[i]==0) cnt0[i+1] = 1;
+    rep(i, N) cnt0[i+1] += cnt0[i];
+    auto ans=[&](ll l, ll r) -> bool {
+        if(r-l==1) return false;
+        ll zero = cnt0[r] - cnt0[l];
+        ll ext = Sc[r] - Sc[l];
+        if(zero==0) return true;
+        if(ext<zero) return false;
+        return true;
     };
-    if(edis(deq)) {
-        ll mxi = 0;
-        rep(i, N/2) {
-            if(deq[i]!=deq[N-1-i]) mxi = i;
-        }
-        Out(mxi+1);
-        return;
+    rep(i, Q) {
+        LONG(l, r); --l;
+        if(ans(l,r)) puts("YES");
+        else puts("NO");
     }
-
-    auto calc=[&](DQ &deq) -> ll {
-        vl fr(M), rr(M);
-        rep(i, N/2) fr[deq[i]]++;
-        repk(i, N/2, N) rr[deq[i]]++;
-        auto lack=[&]() -> bool {
-            rep(i, M) { if(fr[i]<rr[i]) return true; }
-            return false;
-        };
-        ll r = N/2;
-        while(r<N && lack()) {
-            fr[deq[r]]++;
-            rr[deq[r]]--;
-            ++r;
-        }
-        return r;
-    };
-    ll ans = calc(deq);
-    reverse(all(deq));
-    chmin(ans, calc(deq));
-    reverse(all(deq));
-    Out(ans);
-
-    
-
-
-
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
     LONG(T);
-    rep(i, T) solve();
+    rep(i, T) {
+        solve();
+    }
 }
 
 // ### test.cpp ###
