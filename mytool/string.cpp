@@ -107,6 +107,48 @@ vector<long long> z_algo(vector<long long> s) {
     return a;
 }
 
+class Manacher {
+    vector<int> p; // palindrome radii
+    void calc(string &s) {
+        int n = s.size(); p.assign(n, 1);
+        int l = -1, r = 0;
+        for(int i=0; i<n; i++) {
+            p[i] = i>=r ? 1: min(r-i, p[l+r-i]);
+            while(i+p[i]<n && i-p[i]>=0 && s[i+p[i]]==s[i-p[i]]) {
+                p[i]++;
+            }
+            if(i+p[i]>r) l=i-p[i], r=i+p[i];
+        }
+    }
+public:
+    Manacher(string &s) {
+        string t = "#";
+        for(auto c: s) t += c, t += '#';
+        calc(t);
+    }
+    bool is_palindrome(int l, int r) {  // [l,r)
+        if(l==r) return true;
+        --r; l = 2*l+1, r = 2*r+1;
+        int m = (l+r)/2;
+        return p[m] >= r-m+1;
+    }
+    // return the longest palindrome from center of [l,r)
+    int get_length(int l, int r) {
+        assert(r-l<=1);
+        int m = l==r ? 2*l : 2*l+1;
+        return p[m]-1;
+    }
+    // return one of the longest palindrome among all substrings
+    pair<int,int> longest_palindrome() {  // [l,r)
+        int n = p.size();
+        pair<int,int> mx;
+        for(int i=0; i<n; ++i) mx = max(mx, {p[i],i});
+        int m = mx.second;
+        int l = (m-(p[m]-2)-1)/2, r = (m+(p[m]-2)-1)/2+1;
+        return {l,r};
+    }
+};
+
 //! Change 26 to an appropriate number
 string excel_string(long long n, char base='A') {
     const long long m = 26;

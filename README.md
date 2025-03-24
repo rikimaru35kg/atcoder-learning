@@ -1138,6 +1138,7 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+- !復習価値中 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
 
 ## 区間操作
 - 区間に操作させても内部に影響がない場合、区間の端だけ考えて考察すると良い
@@ -1947,6 +1948,11 @@
 ## 周期に着目する
 ### 例題
 - !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
+
+## 単対多は単を動かす
+### 例題
+- !復習価値低 [D - Bonfire](https://atcoder.jp/contests/abc398/tasks/abc398_d)
+- 基本 [B. Monsters Attack!](https://codeforces.com/contest/1923/problem/B)
 
 ## 線分交差判定（ニッチすぎてNote非掲載）
 - 外積を4回使うと良い

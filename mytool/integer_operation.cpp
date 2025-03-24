@@ -200,6 +200,17 @@ vector<vector<int>> listup_combinations(int n, int k) {
     return ret;
 }
 
+//! n<=62 && r<=62 && nCr<=1e6
+auto try_combinations=[&](int n, int r) {
+    long long comb = (1LL<<r)-1;
+    while(comb<(1LL<<n)) {
+
+        // next combination
+        long long x = comb&-comb, y = comb+x;
+        comb = ((~y&comb)/x>>1)|y;
+    }
+};
+
 //! Legendre's Formura
 //! ret = Σ{i=1-∞}floor(n/x^i)
 long long legendre_formula(long long n, long long x) {
