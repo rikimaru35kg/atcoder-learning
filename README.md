@@ -1123,6 +1123,7 @@
 ### 例題
 - 基本 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
 - 基本 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
+- !復習価値低 [047 - Monochromatic Diagonal（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_au)
 
 ## LCP（Longest Common Prefix）最長共通接頭辞
 - Trie木はLCP（Longest Common Prefix）との相性が良いデータ構造

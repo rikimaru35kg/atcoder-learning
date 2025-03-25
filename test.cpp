@@ -228,119 +228,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long MX = 2;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
-    }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    friend mints operator+(long long a, mints b) { return mints(a)+b; }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
-    }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    friend mints operator-(long long a, mints b) { return mints(a)-b; }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    friend mints operator*(long long a, mints b) { return mints(a)*b; }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
+vector<long long> z_algo(string s) {
+    long long n = s.size();
+    vector<long long> a(n);
+    long long from = -1, last = -1;
+    for (long long i = 1; i < n; ++i) {
+        long long same = 0;  // length of same substring
+        // skip duplicated search
+        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        // move forward while possible
+        while (i + same < n && s[same] == s[i+same]) ++same;
+        a[i] = same;
+        if(last < i + same) {  // update from & last
+            from = i;
+            last = i+same;
         }
-        return ret;
     }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
-        }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
-    }
-};
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
+    a[0] = n;  // substitute ovious value at last
+    return a;
 }
-istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
-ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
-using vm = vector<mints>;
-using vvm = vector<vector<mints>>;
-
-template <class mints> struct RollingHash {
-    int n;
-    long long base;
-    vector<mints> rh, bpow;
-    RollingHash(string s="", long long base=1234567): base(base) {
-        if(s!="") set(s, base);
-    };
-    void set(string &s, long long _base=1234567) {
-        n = s.size(); rh.resize(n+1,0); bpow.resize(n+1, 1);
-        base = _base;
-        for(int i=0; i<n; ++i) {
-            rh[i+1] = rh[i]*base + s[i];
-            bpow[i+1] = bpow[i] * base;
+vector<long long> z_algo(vector<long long> s) {
+    long long n = s.size();
+    vector<long long> a(n);
+    long long from = -1, last = -1;
+    for (long long i = 1; i < n; ++i) {
+        long long same = 0;  // length of same substring
+        // skip duplicated search
+        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        // move forward while possible
+        while (i + same < n && s[same] == s[i+same]) ++same;
+        a[i] = same;
+        if(last < i + same) {  // update from & last
+            from = i;
+            last = i+same;
         }
     }
-    mints get(int l, int r) { // [l,r)
-        assert(l<=r);
-        return rh[r] - rh[l]*bpow[r-l];
-    }
-};
+    a[0] = n;  // substitute ovious value at last
+    return a;
+}
 
 void solve() {
     LONG(N);
     STRING(S, T);
-    RollingHash<mints> hs(S);
     vc cs = {'R', 'G', 'B'};
-    vector<RollingHash<mints>> ts(3);
+    vs Ss, Ts;
     rep(j, 3) {
         char c = cs[j];
         string tmp;
@@ -348,20 +279,30 @@ void solve() {
             if(T[i]==c) tmp += c;
             else tmp += T[i]^c^'R'^'G'^'B';
         }
-        ts[j].set(tmp);
+        string tmp1 = tmp+S;
+        string tmp2 = S+tmp;
+        Ss.push_back(tmp1);
+        Ts.push_back(tmp2);
+    }
+    vvl vs1, vs2;
+    rep(i, 3) {
+        auto v1 = z_algo(Ss[i]);
+        auto v2 = z_algo(Ts[i]);
+        vs1.push_back(v1);
+        vs2.push_back(v2);
     }
     ll ans = 0;
-    rep(i, N) {
+    repk(j, N, 2*N) {
         bool ok = false;
-        rep(j, 3) {
-            if(hs.get(i,N)==ts[j].get(0,N-i)) ok = true;
+        rep(i, 3) {
+            if(vs1[i][j]==2*N-j) ok = true;
         }
         if(ok) ++ans;
     }
-    rep1(i, N-1) {
+    repk(j, N+1, 2*N) {
         bool ok = false;
-        rep(j, 3) {
-            if(hs.get(0,i)==ts[j].get(N-i,N)) ok = true;
+        rep(i, 3) {
+            if(vs2[i][j]==2*N-j) ok = true;
         }
         if(ok) ++ans;
     }
