@@ -422,10 +422,10 @@
 - !復習価値中 [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
 
 ## LCA（Lowest Common Ancester）
-- 色々やり方はあるらしいが、Euler Tourを用いる方法を学習した
-- オイラーツアーの順に区間用のセグツリーやBIT木を適用すると色々対応可能
+- オイラーツアーの順に区間用のセグツリーやBIT木を適用するとオンライン更新対応可能
 ### 
 - 基本 [D - 閉路](https://atcoder.jp/contests/abc014/tasks/abc014_4)
+- 基本 [035 - Preserve Connectivity（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ai)
 - !復習価値低（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
 
 ## 完全二分木
