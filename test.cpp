@@ -228,188 +228,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N, M);
-    VP(span, M);
-    CoordinateCompression<ll> cc;
-    for(auto [l,r]: span) {
-        cc.add(l), cc.add(r);
-    }
-    for(auto &[l,r]: span) {
-        l = cc(l), r = cc(r);
-    }
-    sort(allr(span));
-    de(span)
-    BIT<ll> bit(N+10);
-
-    ll sum = 0;
-    queue<Pr> que;
-    for(auto [l,r]: span) {
-        while(que.size() && que.front().first>l) {
-            auto [pl,pr] = que.front(); que.pop();
-            bit.add(pr, 1);
+    LONG(H, W);
+    VS(C, H);
+    umap<ll,mint> dp;
+    dp[0] = 1;
+    rep(i, H) rep(j, W) {
+        umap<ll,mint> pdp; swap(pdp, dp);
+        for(auto [s,n]: pdp) {
+            // no place
+            dp[s>>1] += n;
+            // place
+            if(C[i][j]=='#') continue;
+            if(s&1) continue;
+            ll ns = s;
+            if(j<W-1) ns |= 2, ns |= 1LL<<(W+1); // right,rightdown
+            ns |= 1LL<<W; // down
+            if(j) ns |= 1LL<<(W-1); // leftdown
+            ns>>=1;
+            dp[ns] += n;
         }
-        sum += bit.sum(r+1, N+10);
-        que.emplace(l,r);
     }
-    ll dec = 0;
-    sort(all(span));
-    for(auto [l,r]: span) {
-        auto [n,x] = lowbou(span, {r,r});
-        dec += M-n;
-    }
-    ll ans = sum-dec;
+    mint ans = 0;
+    for(auto [s,n]: dp) ans += n;
     Out(ans);
 
 }

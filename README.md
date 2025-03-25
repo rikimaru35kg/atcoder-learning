@@ -836,6 +836,7 @@
 - 基本 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 - 基本 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 - 基本 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)
+- !復習価値高 [023 - Avoid War（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_w)
 
 ## 部分集合の部分集合DP
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
