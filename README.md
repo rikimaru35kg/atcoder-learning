@@ -1047,10 +1047,6 @@
 - !復習価値低 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
 - 基本 アフィン変換最大化 [F - Maximum Composition](https://atcoder.jp/contests/abc366/tasks/abc366_f)
 
-## インラインDP
-### 例題
-- !復習価値低 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
-
 ## DP in DP
 - DPの結果をDPの状態として持つようなDPがある
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
@@ -1058,6 +1054,14 @@
 ### 例題
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 - !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
+
+## インラインDP
+### 例題
+- !復習価値低 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
+
+## DP配列のマージ
+### 例題
+- !復習価値高 [005 - Restricted Digits（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_e)
 
 ## 戻すDP
 - 可換な操作であればDPテーブルを戻すことが可能
