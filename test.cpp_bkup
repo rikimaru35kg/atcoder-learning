@@ -228,189 +228,94 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+// LCA using doubling
+class LCA_DBL {
+    using IL = pair<int,long long>;
+    int n, k=0;
+    vector<vector<int>> p;
+    vector<vector<IL>> from;
+    vector<int> depth;
+    vector<long long> dist;
+    int climb(int v, int x) {
+        for(int i=0; i<=k; ++i) if(x>>i&1) v = p[i][v];
+        return v;
     }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
 public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+    LCA_DBL(int n): n(n), from(n), depth(n), dist(n) {
+        while((1LL<<k)<n) ++k;
+        p.resize(k+1, vector<int>(n));
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w);
+        from[b].emplace_back(a, w);
     }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
+    void build(int rv=0) {
+        auto dfs=[&](auto f, int v, int dep=0, long long d=0, int pv=-1) -> void {
+            if(pv==-1) p[0][v] = v;
+            else p[0][v] = pv;
+            dist[v] = d;
+            depth[v] = dep;
+            for(auto [nv,w]: from[v]) if(nv!=pv) f(f, nv, dep+1, d+w, v);
+        };
+        dfs(dfs, rv);
+        for(int j=0; j<k; ++j) for(int i=0; i<n; ++i) p[j+1][i] = p[j][p[j][i]];
     }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
+    int lca(int a, int b) {
+        if(depth[a]>depth[b]) swap(a,b);
+        b = climb(b, depth[b]-depth[a]);
+        if(a==b) return a;
+        for(int i=k; i>=0; --i) {
+            if(p[i][a]==p[i][b]) continue;
+            a = p[i][a], b = p[i][b];
+        }
+        return p[0][a];
     }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
+    long long get_dist(int a, int b) {
+        int c = lca(a, b);
+        return dist[a]+dist[b]-2*dist[c];
     }
 };
-
 
 void solve() {
-    LONG(N, M);
-    VP(span, M);
-    CoordinateCompression<ll> cc;
-    for(auto [l,r]: span) {
-        cc.add(l), cc.add(r);
+    LONG(N);
+    LCA_DBL tree(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        tree.add_edge(a,b);
     }
-    for(auto &[l,r]: span) {
-        l = cc(l), r = cc(r);
-    }
-    sort(allr(span));
-    de(span)
-    BIT<ll> bit(N+10);
-
-    ll sum = 0;
-    queue<Pr> que;
-    for(auto [l,r]: span) {
-        while(que.size() && que.front().first>l) {
-            auto [pl,pr] = que.front(); que.pop();
-            bit.add(pr, 1);
+    tree.build();
+    ll idx = 0;
+    vl ord(N);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        ord[v] = idx++;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
         }
-        sum += bit.sum(r+1, N+10);
-        que.emplace(l,r);
+    };
+    dfs(dfs, 0);
+
+    LONG(Q);
+    rep(i, Q) {
+        LONG(K);
+        vp vs;
+        rep(j, K) {
+            LONGM(v);
+            vs.emplace_back(ord[v], v);
+        }
+        sort(all(vs));
+        ll dist = 0;
+        rep(j, K) {
+            auto [o1,v1] = vs[j];
+            auto [o2,v2] = vs[(j+1)%K];
+            ll tmp = tree.get_dist(v1,v2);
+            dist += tmp;
+        }
+        dist /= 2;
+        Out(dist);
     }
-    ll dec = 0;
-    sort(all(span));
-    for(auto [l,r]: span) {
-        auto [n,x] = lowbou(span, {r,r});
-        dec += M-n;
-    }
-    ll ans = sum-dec;
-    Out(ans);
 
 }
 

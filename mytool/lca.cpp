@@ -3,6 +3,58 @@
 using namespace std;
 using namespace atcoder;
 
+// LCA using doubling
+class LCA_DBL {
+    using IL = pair<int,long long>;
+    bool done = false;
+    int n, k = 0;
+    vector<vector<int>> p;
+    vector<vector<IL>> from;
+    vector<int> depth;
+    vector<long long> dist;
+    int climb(int v, int x) {
+        for(int i=0; i<=k; ++i) if(x>>i&1) v = p[i][v];
+        return v;
+    }
+public:
+    LCA_DBL(int n): n(n), from(n), depth(n), dist(n) {
+        while((1LL<<k)<n) ++k;
+        p.resize(k+1, vector<int>(n));
+    }
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w);
+        from[b].emplace_back(a, w);
+    }
+    void build(int rv=0) {
+        if(done) return;
+        done = true;
+        auto dfs=[&](auto f, int v, int dep=0, long long d=0, int pv=-1) -> void {
+            if(pv==-1) p[0][v] = v;
+            else p[0][v] = pv;
+            dist[v] = d;
+            depth[v] = dep;
+            for(auto [nv,w]: from[v]) if(nv!=pv) f(f, nv, dep+1, d+w, v);
+        };
+        dfs(dfs, rv);
+        for(int j=0; j<k; ++j) for(int i=0; i<n; ++i) p[j+1][i] = p[j][p[j][i]];
+    }
+    int lca(int a, int b) {
+        build();
+        if(depth[a]>depth[b]) swap(a,b);
+        b = climb(b, depth[b]-depth[a]);
+        if(a==b) return a;
+        for(int i=k; i>=0; --i) {
+            if(p[i][a]==p[i][b]) continue;
+            a = p[i][a], b = p[i][b];
+        }
+        return p[0][a];
+    }
+    long long get_dist(int a, int b) {
+        int c = lca(a, b);
+        return dist[a]+dist[b]-2*dist[c];
+    }
+};
+
 using S = int;
 S op(S a, S b) {return min(a, b);}
 S e() {return 1001001001;}

@@ -228,44 +228,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// LCA using doubling
+class LCA_DBL {
+    using IL = pair<int,long long>;
+    bool done = false;
+    int n, k = 0;
+    vector<vector<int>> p;
+    vector<vector<IL>> from;
+    vector<int> depth;
+    vector<long long> dist;
+    int climb(int v, int x) {
+        for(int i=0; i<=k; ++i) if(x>>i&1) v = p[i][v];
+        return v;
+    }
+public:
+    LCA_DBL(int n): n(n), from(n), depth(n), dist(n) {
+        while((1LL<<k)<n) ++k;
+        p.resize(k+1, vector<int>(n));
+    }
+    void add_edge(int a, int b, long long w=1) {
+        from[a].emplace_back(b, w);
+        from[b].emplace_back(a, w);
+    }
+    void build(int rv=0) {
+        if(done) return;
+        done = true;
+        auto dfs=[&](auto f, int v, int dep=0, long long d=0, int pv=-1) -> void {
+            if(pv==-1) p[0][v] = v;
+            else p[0][v] = pv;
+            dist[v] = d;
+            depth[v] = dep;
+            for(auto [nv,w]: from[v]) if(nv!=pv) f(f, nv, dep+1, d+w, v);
+        };
+        dfs(dfs, rv);
+        for(int j=0; j<k; ++j) for(int i=0; i<n; ++i) p[j+1][i] = p[j][p[j][i]];
+    }
+    int lca(int a, int b) {
+        build();
+        if(depth[a]>depth[b]) swap(a,b);
+        b = climb(b, depth[b]-depth[a]);
+        if(a==b) return a;
+        for(int i=k; i>=0; --i) {
+            if(p[i][a]==p[i][b]) continue;
+            a = p[i][a], b = p[i][b];
+        }
+        return p[0][a];
+    }
+    long long get_dist(int a, int b) {
+        int c = lca(a, b);
+        return dist[a]+dist[b]-2*dist[c];
+    }
+};
 
 void solve() {
-    LONG(H, W);
-    VS(C, H);
-    umap<ll,mint> dp;
-    dp[0] = 1;
-    rep(i, H) rep(j, W) {
-        umap<ll,mint> pdp; swap(pdp, dp);
-        for(auto [s,n]: pdp) {
-            // no place
-            dp[s>>1] += n;
-            // place
-            if(C[i][j]=='#') continue;
-            if(s&1) continue;
-            ll ns = s;
-            if(j<W-1) ns |= 2, ns |= 1LL<<(W+1); // right,rightdown
-            ns |= 1LL<<W; // down
-            if(j) ns |= 1LL<<(W-1); // leftdown
-            ns>>=1;
-            dp[ns] += n;
+    LONG(N);
+    LCA_DBL tree(N);
+    rep(i, N) {
+        LONG(K);
+        rep(j, K) {
+            LONG(c);
+            tree.add_edge(i,c);
         }
     }
-    mint ans = 0;
-    for(auto [s,n]: dp) ans += n;
-    Out(ans);
+    LONG(Q);
+    rep(_, Q) {
+        LONG(a,b);
+        ll ans = tree.lca(a,b);
+        Out(ans);
+    }
 
 }
 
