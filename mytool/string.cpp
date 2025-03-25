@@ -107,6 +107,27 @@ vector<long long> z_algo(vector<long long> s) {
     return a;
 }
 
+template <class mints> struct RollingHash {
+    int n;
+    long long base;
+    vector<mints> rh, bpow;
+    RollingHash(string s="", long long base=1234567): base(base) {
+        if(s!="") set(s, base);
+    };
+    void set(string &s, long long _base=1234567) {
+        n = s.size(); rh.resize(n+1,0); bpow.resize(n+1, 1);
+        base = _base;
+        for(int i=0; i<n; ++i) {
+            rh[i+1] = rh[i]*base + s[i];
+            bpow[i+1] = bpow[i] * base;
+        }
+    }
+    mints get(int l, int r) { // [l,r)
+        assert(l<=r);
+        return rh[r] - rh[l]*bpow[r-l];
+    }
+};
+
 class Manacher {
     vector<int> p; // palindrome radii
     void calc(string &s) {

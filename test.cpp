@@ -228,129 +228,143 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    // cross>0 means *this->v is counterclockwise.
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    Vecll rot90(bool counterclockwise=true) { 
-        if(counterclockwise) return Vecll(-y, x);
-        else return Vecll(y, -x);
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
     }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    friend mints operator+(long long a, mints b) { return mints(a)+b; }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
     }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    friend mints operator-(long long a, mints b) { return mints(a)-b; }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    friend mints operator*(long long a, mints b) { return mints(a)*b; }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
     }
 };
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-bool overlapping(long long l1, long long r1, long long l2, long long r2) {
-    if(l1>r1) swap(l1, r1);
-    if(l2>r2) swap(l2, r2);
-    long long lmax = max(l1, l2);
-    long long rmin = min(r1, r2);
-    return lmax <= rmin;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
-    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
-    if(c12_13 * c12_14 > 0) return false;
-    if(c34_31 * c34_32 > 0) return false;
-    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
-        // both x & y conditions necessary considering vertical cases
-        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
-           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
-        else return false;
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
     }
-    return true;
+};
 }
+istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
+ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
+using vm = vector<mints>;
+using vvm = vector<vector<mints>>;
+
+template <class mints> struct RollingHash {
+    int n;
+    long long base;
+    vector<mints> rh, bpow;
+    RollingHash(string s="", long long base=1234567): base(base) {
+        if(s!="") set(s, base);
+    };
+    void set(string &s, long long _base=1234567) {
+        n = s.size(); rh.resize(n+1,0); bpow.resize(n+1, 1);
+        base = _base;
+        for(int i=0; i<n; ++i) {
+            rh[i+1] = rh[i]*base + s[i];
+            bpow[i+1] = bpow[i] * base;
+        }
+    }
+    mints get(int l, int r) { // [l,r)
+        assert(l<=r);
+        return rh[r] - rh[l]*bpow[r-l];
+    }
+};
 
 void solve() {
     LONG(N);
-    VP(P, N);
-    sort(all(P));
-    vp mins, maxs;
-    for(auto [x,y]: P) {
-        if(maxs.size() && maxs.back().first==x) {
-            maxs.pop_back();
+    STRING(S, T);
+    RollingHash<mints> hs(S);
+    vc cs = {'R', 'G', 'B'};
+    vector<RollingHash<mints>> ts(3);
+    rep(j, 3) {
+        char c = cs[j];
+        string tmp;
+        rep(i, N) {
+            if(T[i]==c) tmp += c;
+            else tmp += T[i]^c^'R'^'G'^'B';
         }
-        maxs.emplace_back(x,y);
-        if(mins.size() && mins.back().first==x) continue;
-        mins.emplace_back(x,y);
+        ts[j].set(tmp);
     }
-    vector<Vecll> upper;
-    for(auto [x,y]: maxs) {
-        while(upper.size()>=2) {
-            auto [x1,y1] = upper.end()[-2];
-            auto [x2,y2] = upper.end()[-1];
-            Vecll v1 = Vecll(x2-x1, y2-y1);
-            Vecll v2 = Vecll(x-x2, y-y2);
-            if(v1.cross(v2)<=0) break;
-            upper.pop_back();
+    ll ans = 0;
+    rep(i, N) {
+        bool ok = false;
+        rep(j, 3) {
+            if(hs.get(i,N)==ts[j].get(0,N-i)) ok = true;
         }
-        upper.emplace_back(x,y);
+        if(ok) ++ans;
     }
-    vector<Vecll> lower;
-    for(auto [x,y]: mins) {
-        while(lower.size()>=2) {
-            auto [x1,y1] = lower.end()[-2];
-            auto [x2,y2] = lower.end()[-1];
-            Vecll v1 = Vecll(x2-x1, y2-y1);
-            Vecll v2 = Vecll(x-x2, y-y2);
-            if(v1.cross(v2)>=0) break;
-            lower.pop_back();
+    rep1(i, N-1) {
+        bool ok = false;
+        rep(j, 3) {
+            if(hs.get(0,i)==ts[j].get(N-i,N)) ok = true;
         }
-        lower.emplace_back(x,y);
+        if(ok) ++ans;
     }
-    ll S2 = 0;
-    ll M1 = upper.size();
-    ll M2 = lower.size();
-    auto area=[&](Vecll v1, Vecll v2) -> ll {
-        Vecll v0 = upper[0];
-        return abs((v1-v0).cross(v2-v0));
-    };
-    rep(i, M1-1) {
-        S2 += area(upper[i], upper[i+1]);
-    }
-    rep(i, M2-1) {
-        S2 += area(lower[i], lower[i+1]);
-    }
-    S2 += area(upper.back(), lower.back());
-
-    auto count=[&](Vecll v1, Vecll v2) -> ll {
-        auto [x1,y1] = v1;
-        auto [x2,y2] = v2;
-        ll g = abs(gcd(x2-x1,y2-y1));
-        return g;
-    };
-    ll b = 0;
-    rep(i, M1-1) b += count(upper[i], upper[i+1]);
-    rep(i, M2-1) b += count(lower[i], lower[i+1]);
-    b += count(upper[0], lower[0]);
-    b += count(upper.back(), lower.back());
-
-    ll inner = (S2-b+2)/2;
-
-    ll ans = b + inner - N;
     Out(ans);
 
 
