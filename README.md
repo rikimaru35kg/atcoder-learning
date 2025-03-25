@@ -2190,3 +2190,4 @@
 - [C. Beautiful Sequencel](https://codeforces.com/contest/2069/problem/C)
 - [D. Palindrome Shuffle](https://codeforces.com/contest/2069/problem/D)
 - [C. Find B](https://codeforces.com/contest/1923/problem/C)
+- [017 - Crossing Segments（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_q)
