@@ -228,74 +228,131 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// LCA using doubling
-class LCA_DBL {
-    using IL = pair<int,long long>;
-    bool done = false;
-    int n, k = 0;
-    vector<vector<int>> p;
-    vector<vector<IL>> from;
-    vector<int> depth;
-    vector<long long> dist;
-    int climb(int v, int x) {
-        for(int i=0; i<=k; ++i) if(x>>i&1) v = p[i][v];
-        return v;
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    // cross>0 means *this->v is counterclockwise.
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
     }
-public:
-    LCA_DBL(int n): n(n), from(n), depth(n), dist(n) {
-        while((1LL<<k)<n) ++k;
-        p.resize(k+1, vector<int>(n));
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
     }
-    void add_edge(int a, int b, long long w=1) {
-        from[a].emplace_back(b, w);
-        from[b].emplace_back(a, w);
-    }
-    void build(int rv=0) {
-        if(done) return;
-        done = true;
-        auto dfs=[&](auto f, int v, int dep=0, long long d=0, int pv=-1) -> void {
-            if(pv==-1) p[0][v] = v;
-            else p[0][v] = pv;
-            dist[v] = d;
-            depth[v] = dep;
-            for(auto [nv,w]: from[v]) if(nv!=pv) f(f, nv, dep+1, d+w, v);
-        };
-        dfs(dfs, rv);
-        for(int j=0; j<k; ++j) for(int i=0; i<n; ++i) p[j+1][i] = p[j][p[j][i]];
-    }
-    int lca(int a, int b) {
-        build();
-        if(depth[a]>depth[b]) swap(a,b);
-        b = climb(b, depth[b]-depth[a]);
-        if(a==b) return a;
-        for(int i=k; i>=0; --i) {
-            if(p[i][a]==p[i][b]) continue;
-            a = p[i][a], b = p[i][b];
-        }
-        return p[0][a];
-    }
-    long long get_dist(int a, int b) {
-        int c = lca(a, b);
-        return dist[a]+dist[b]-2*dist[c];
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
     }
 };
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+bool overlapping(long long l1, long long r1, long long l2, long long r2) {
+    if(l1>r1) swap(l1, r1);
+    if(l2>r2) swap(l2, r2);
+    long long lmax = max(l1, l2);
+    long long rmin = min(r1, r2);
+    return lmax <= rmin;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
+    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
+    if(c12_13 * c12_14 > 0) return false;
+    if(c34_31 * c34_32 > 0) return false;
+    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
+        // both x & y conditions necessary considering vertical cases
+        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
+           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
+        else return false;
+    }
+    return true;
+}
 
 void solve() {
     LONG(N);
-    LCA_DBL tree(N);
-    rep(i, N) {
-        LONG(K);
-        rep(j, K) {
-            LONG(c);
-            tree.add_edge(i,c);
+    VP(P, N);
+    sort(all(P));
+    vp mins, maxs;
+    for(auto [x,y]: P) {
+        if(maxs.size() && maxs.back().first==x) {
+            maxs.pop_back();
         }
+        maxs.emplace_back(x,y);
+        if(mins.size() && mins.back().first==x) continue;
+        mins.emplace_back(x,y);
     }
-    LONG(Q);
-    rep(_, Q) {
-        LONG(a,b);
-        ll ans = tree.lca(a,b);
-        Out(ans);
+    vector<Vecll> upper;
+    for(auto [x,y]: maxs) {
+        while(upper.size()>=2) {
+            auto [x1,y1] = upper.end()[-2];
+            auto [x2,y2] = upper.end()[-1];
+            Vecll v1 = Vecll(x2-x1, y2-y1);
+            Vecll v2 = Vecll(x-x2, y-y2);
+            if(v1.cross(v2)<=0) break;
+            upper.pop_back();
+        }
+        upper.emplace_back(x,y);
     }
+    vector<Vecll> lower;
+    for(auto [x,y]: mins) {
+        while(lower.size()>=2) {
+            auto [x1,y1] = lower.end()[-2];
+            auto [x2,y2] = lower.end()[-1];
+            Vecll v1 = Vecll(x2-x1, y2-y1);
+            Vecll v2 = Vecll(x-x2, y-y2);
+            if(v1.cross(v2)>=0) break;
+            lower.pop_back();
+        }
+        lower.emplace_back(x,y);
+    }
+    ll S2 = 0;
+    ll M1 = upper.size();
+    ll M2 = lower.size();
+    auto area=[&](Vecll v1, Vecll v2) -> ll {
+        Vecll v0 = upper[0];
+        return abs((v1-v0).cross(v2-v0));
+    };
+    rep(i, M1-1) {
+        S2 += area(upper[i], upper[i+1]);
+    }
+    rep(i, M2-1) {
+        S2 += area(lower[i], lower[i+1]);
+    }
+    S2 += area(upper.back(), lower.back());
+
+    auto count=[&](Vecll v1, Vecll v2) -> ll {
+        auto [x1,y1] = v1;
+        auto [x2,y2] = v2;
+        ll g = abs(gcd(x2-x1,y2-y1));
+        return g;
+    };
+    ll b = 0;
+    rep(i, M1-1) b += count(upper[i], upper[i+1]);
+    rep(i, M2-1) b += count(lower[i], lower[i+1]);
+    b += count(upper[0], lower[0]);
+    b += count(upper.back(), lower.back());
+
+    ll inner = (S2-b+2)/2;
+
+    ll ans = b + inner - N;
+    Out(ans);
+
 
 }
 

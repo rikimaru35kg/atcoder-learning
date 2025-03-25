@@ -231,7 +231,8 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 // LCA using doubling
 class LCA_DBL {
     using IL = pair<int,long long>;
-    int n, k=0;
+    bool done = false;
+    int n, k = 0;
     vector<vector<int>> p;
     vector<vector<IL>> from;
     vector<int> depth;
@@ -250,6 +251,8 @@ public:
         from[b].emplace_back(a, w);
     }
     void build(int rv=0) {
+        if(done) return;
+        done = true;
         auto dfs=[&](auto f, int v, int dep=0, long long d=0, int pv=-1) -> void {
             if(pv==-1) p[0][v] = v;
             else p[0][v] = pv;
@@ -261,6 +264,7 @@ public:
         for(int j=0; j<k; ++j) for(int i=0; i<n; ++i) p[j+1][i] = p[j][p[j][i]];
     }
     int lca(int a, int b) {
+        build();
         if(depth[a]>depth[b]) swap(a,b);
         b = climb(b, depth[b]-depth[a]);
         if(a==b) return a;
@@ -279,42 +283,18 @@ public:
 void solve() {
     LONG(N);
     LCA_DBL tree(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-        tree.add_edge(a,b);
-    }
-    tree.build();
-    ll idx = 0;
-    vl ord(N);
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        ord[v] = idx++;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-        }
-    };
-    dfs(dfs, 0);
-
-    LONG(Q);
-    rep(i, Q) {
+    rep(i, N) {
         LONG(K);
-        vp vs;
         rep(j, K) {
-            LONGM(v);
-            vs.emplace_back(ord[v], v);
+            LONG(c);
+            tree.add_edge(i,c);
         }
-        sort(all(vs));
-        ll dist = 0;
-        rep(j, K) {
-            auto [o1,v1] = vs[j];
-            auto [o2,v2] = vs[(j+1)%K];
-            ll tmp = tree.get_dist(v1,v2);
-            dist += tmp;
-        }
-        dist /= 2;
-        Out(dist);
+    }
+    LONG(Q);
+    rep(_, Q) {
+        LONG(a,b);
+        ll ans = tree.lca(a,b);
+        Out(ans);
     }
 
 }
