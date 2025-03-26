@@ -228,45 +228,100 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct SCC {
+    SCC (int n): n(n), from(n), ifrom(n) {}
+    void add_edge (int a, int b) {
+        from[a].push_back(b); ifrom[b].push_back(a);
+    }
+    vector<vector<int>> scc () {
+        vector<vector<int>> groups;
+        postorder = vector<int>();
+        visited.assign(n, false);
+        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
+        visited.assign(n, false);
+        reverse(all(postorder));
+        for(auto v: postorder) if(!visited[v]) {
+            vector<int> group;
+            dfs2(v, group);
+            groups.push_back(group);
+        }
+        return groups;
+    }
+private:
+    int n;
+    vector<vector<int>> from, ifrom;
+    vector<int> postorder;
+    vector<bool> visited;
+    void dfs1 (int v) {
+        visited[v] = true;
+        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
+        postorder.push_back(v);
+    }
+    void dfs2 (int v, vector<int> &group) {
+        visited[v] = true;
+        group.push_back(v);
+        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
+    }
+};
 
 void solve() {
-    LONG(N, M);
-    STRING(S);
-    map<vl,mint> dp;
-    vl v0(N+1, 0);
-    dp[v0] = 1;
-    rep(j, M) {
-        map<vl,mint> pdp; swap(dp, pdp);
-        for(auto [v,n]: pdp) {
-            for(char c='a'; c<='z'; ++c) {
-                vl nv(N+1);
-                rep(i, N) {
-                    chmax(nv[i+1], v[i+1]);
-                    chmax(nv[i+1], nv[i]);
-                    if(c==S[i]) chmax(nv[i+1], v[i]+1);
-                }
-                dp[nv] += n;
-            }
+    LONG(N, M, K);
+    vvl from(N);
+    vl deg(N);
+    SCC scc(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        deg[b]++;
+        scc.add_edge(a,b);
+    }
+    auto grs = scc.scc();
+    for(auto gr: grs) {
+        if(SIZE(gr)>1) Pm1
+    }
+    vl que;
+    rep(i, N) if(deg[i]==0) que.push_back(i);
+
+    auto del=[&](ll i) {
+        swap(que[i], que.back());
+        que.pop_back();
+    };
+    auto add=[&](ll i, ll v) {
+        que.push_back(v);
+        swap(que[i], que.back());
+    };
+
+    vl p;
+    vvl ans;
+    auto dfs=[&](auto f) -> bool {
+        if(SIZE(p)==N) {
+            ans.push_back(p);
+            if(SIZE(ans)==K) return true;
+            return false;
         }
-    }
-    vm ans(N+1);
-    for(auto [v,n]: dp) {
-        ll lcs = v.back();
-        ans[lcs] += n;
-    }
+        ll Z = que.size();
+        rep(i, Z) {
+            ll v = que[i];
+            p.push_back(v);
+            que.erase(que.begin()+i);
+            // del(i);
+            for(auto nv: from[v]) {
+                deg[nv]--;
+                if(deg[nv]==0) que.push_back(nv);
+            }
+            if(f(f)) return true;
+            for(auto nv: from[v]) {
+                if(deg[nv]==0) que.pop_back();
+                deg[nv]++;
+            }
+            p.pop_back();
+            que.insert(que.begin()+i, v);
+            // add(i, v);
+        }
+        return false;
+    };
+    if(!dfs(dfs)) Pm1
+    rep(i, K) { rep(j, N) ans[i][j]++; }
     Out(ans);
 
 }

@@ -228,49 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, L);
-    VL(X, N);
-    X.insert(X.begin(), 0); X.push_back(L);
-    VL(T, N);
-    T.insert(T.begin(), INF); T.push_back(INF);
-    N+=2;
-
-    auto dist=[&](ll a, ll b, ll k) -> ll {
-        if(a>b) swap(a,b);
-        ll ret = X[b]-X[a];
-        if(k) ret = L-ret;
-        return ret;
-    };
-    using vvvvl = vector<vvvl>;
-    vvvvl dp(2, vvvl(N, vvl(N, vl(N, INF))));
-    dp[0][0][N-1][0] = dp[1][0][N-1][0] = 0;
-
-    rep(l, N) {
-        for(ll r=N-1; r>=l+2; --r) rep(p, 2) rep(n, N) {
-            ll now = dp[p][l][r][n];
-            if(now==INF) continue;
-            auto update=[&](ll p, ll l, ll r, ll t, ll n, ll d) {
-                if(d<=T[t]) chmin(dp[p][l][r][n+1], d);
-                else chmin(dp[p][l][r][n], d);
-            };
-            if(p==0) {
-                update(0,l+1,r,l+1,n,now+dist(l,l+1,0));
-                update(1,l,r-1,r-1,n,now+dist(l,r-1,1));
-            } else {
-                update(0,l+1,r,l+1,n,now+dist(r,l+1,1));
-                update(1,l,r-1,r-1,n,now+dist(r,r-1,0));
+    LONG(N, M);
+    STRING(S);
+    map<vl,mint> dp;
+    vl v0(N+1, 0);
+    dp[v0] = 1;
+    rep(j, M) {
+        map<vl,mint> pdp; swap(dp, pdp);
+        for(auto [v,n]: pdp) {
+            for(char c='a'; c<='z'; ++c) {
+                vl nv(N+1);
+                rep(i, N) {
+                    chmax(nv[i+1], v[i+1]);
+                    chmax(nv[i+1], nv[i]);
+                    if(c==S[i]) chmax(nv[i+1], v[i]+1);
+                }
+                dp[nv] += n;
             }
         }
     }
-    ll ans = 0;
-    rep(p, 2) rep(l, N) rep(r, N) rep(n, N) {
-        if(dp[p][l][r][n]==INF) continue;
-        chmax(ans, n);
+    vm ans(N+1);
+    for(auto [v,n]: dp) {
+        ll lcs = v.back();
+        ans[lcs] += n;
     }
     Out(ans);
-
-
 
 }
 

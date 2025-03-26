@@ -515,6 +515,7 @@
 - 基本 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 - !復習価値低 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
 - !復習価値低 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
+- !要復習 [071 - Fuzzy Priority（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bs)
 
 ## サイクル検出
 - 無向グラフ：検出するだけならunion findを使うべし（**DFSは難しい。**直前の頂点に戻らないようにしないといけないし、更に言うとけんちょんページのやり方も単純でないグラフでは適用不可。どうしてもやりたいなら使った辺も管理が必要）
@@ -1192,7 +1193,7 @@
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
-<!-- where i am now -->
+<!-- where i am now for rank S-->
 <!-- last submission 2025/3/3 -->
 - !要復習 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
