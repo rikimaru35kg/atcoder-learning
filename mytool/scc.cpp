@@ -2,52 +2,40 @@
 using namespace std;
 
 struct SCC {
-    SCC (long long _n): n(_n), from(_n), ifrom(_n) {}
-    void add_edge (long long a, long long b) {
-        from[a].push_back(b);
-        ifrom[b].push_back(a);
+    SCC (int n): n(n), from(n), ifrom(n) {}
+    void add_edge (int a, int b) {
+        from[a].push_back(b); ifrom[b].push_back(a);
     }
-    vector<vector<long long>> scc () {
-        vector<vector<long long>> group;
-        back_num.clear();
-        selected.assign(n, false);
-        for (long long i=0; i < n; ++i) {
-            if (!selected[i]) dfs1(i);
+    vector<vector<int>> scc () {
+        vector<vector<int>> groups;
+        postorder = vector<int>();
+        visited.assign(n, false);
+        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
+        visited.assign(n, false);
+        reverse(all(postorder));
+        for(auto v: postorder) if(!visited[v]) {
+            vector<int> group;
+            dfs2(v, group);
+            groups.push_back(group);
         }
-        selected.assign(n, false);
-        for (long long i=n-1; i >= 0; --i) {
-            long long x = back_num[i];
-            if (selected[x]) continue;
-            vector<long long> emp;
-            dfs2(x, emp);
-            group.push_back(emp);
-        }
-        return group;
+        return groups;
     }
 private:
-    long long n;
-    vector<vector<long long>> from, ifrom;
-    vector<long long> back_num;
-    vector<bool> selected;
-    void dfs1 (long long x) {
-        selected[x] = true;
-        for (auto y: from[x]) {
-            if (selected[y]) continue;
-            dfs1(y);
-        }
-        back_num.push_back(x);
+    int n;
+    vector<vector<int>> from, ifrom;
+    vector<int> postorder;
+    vector<bool> visited;
+    void dfs1 (int v) {
+        visited[v] = true;
+        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
+        postorder.push_back(v);
     }
-    void dfs2 (long long x, vector<long long> &vec) {
-        selected[x] = true;
-        vec.push_back(x);
-        for (auto y: ifrom[x]) {
-            if (selected[y]) continue;
-            dfs2(y, vec);
-        }
+    void dfs2 (int v, vector<int> &group) {
+        visited[v] = true;
+        group.push_back(v);
+        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
     }
 };
-
-
 
 int main () {
     int n, m; cin >> n >> m;
