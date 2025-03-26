@@ -228,82 +228,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-#include<atcoder/convolution>
-using namespace atcoder;
-
 void solve() {
-    LONG(R,G,B,K);
-    LONG(X,Y,Z);
-    Combination comb(200000, M998);
-    auto get_vec=[&](ll R, ll t) -> vl {
-        vl A(R+1);
-        rep(i, R+1) {
-            if(i<t) continue;
-            A[i] = comb(R,i);
-        }
-        return A;
-    };
-    auto va = get_vec(R, K-Y);
-    auto vb = get_vec(G, K-Z);
-    auto vc = get_vec(B, K-X);
+    LONG(N, L);
+    VL(X, N);
+    X.insert(X.begin(), 0); X.push_back(L);
+    VL(T, N);
+    T.insert(T.begin(), INF); T.push_back(INF);
+    N+=2;
 
-    auto vab = convolution(va, vb);
+    auto dist=[&](ll a, ll b, ll k) -> ll {
+        if(a>b) swap(a,b);
+        ll ret = X[b]-X[a];
+        if(k) ret = L-ret;
+        return ret;
+    };
+    using vvvvl = vector<vvvl>;
+    vvvvl dp(2, vvvl(N, vvl(N, vl(N, INF))));
+    dp[0][0][N-1][0] = dp[1][0][N-1][0] = 0;
+
+    rep(l, N) {
+        for(ll r=N-1; r>=l+2; --r) rep(p, 2) rep(n, N) {
+            ll now = dp[p][l][r][n];
+            if(now==INF) continue;
+            auto update=[&](ll p, ll l, ll r, ll t, ll n, ll d) {
+                if(d<=T[t]) chmin(dp[p][l][r][n+1], d);
+                else chmin(dp[p][l][r][n], d);
+            };
+            if(p==0) {
+                update(0,l+1,r,l+1,n,now+dist(l,l+1,0));
+                update(1,l,r-1,r-1,n,now+dist(l,r-1,1));
+            } else {
+                update(0,l+1,r,l+1,n,now+dist(r,l+1,1));
+                update(1,l,r-1,r-1,n,now+dist(r,r-1,0));
+            }
+        }
+    }
     ll ans = 0;
-    rep(i, K+1) {
-        if(i>R+G) continue;
-        if(K-i<0) continue;
-        if(K-i>B) continue;
-        ll now = vab[i]*vc[K-i]%M998;
-        ans = (ans+now)%M998;
+    rep(p, 2) rep(l, N) rep(r, N) rep(n, N) {
+        if(dp[p][l][r][n]==INF) continue;
+        chmax(ans, n);
     }
     Out(ans);
+
 
 
 }

@@ -228,87 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct SCC {
-    SCC (int n): n(n), from(n), ifrom(n) {}
-    void add_edge (int a, int b) {
-        from[a].push_back(b); ifrom[b].push_back(a);
+//! Only when <= 1e6
+//! If not, use Combination2 class below.
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    vector<vector<int>> scc () {
-        vector<vector<int>> groups;
-        postorder = vector<int>();
-        visited.assign(n, false);
-        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
-        visited.assign(n, false);
-        reverse(all(postorder));
-        for(auto v: postorder) if(!visited[v]) {
-            vector<int> group;
-            dfs2(v, group);
-            groups.push_back(group);
-        }
-        return groups;
+    long long operator()(long long n, long long r) {
+        return nCr(n, r);
     }
-private:
-    int n;
-    vector<vector<int>> from, ifrom;
-    vector<int> postorder;
-    vector<bool> visited;
-    void dfs1 (int v) {
-        visited[v] = true;
-        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
-        postorder.push_back(v);
+    long long nCr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
-    void dfs2 (int v, vector<int> &group) {
-        visited[v] = true;
-        group.push_back(v);
-        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
+    long long nPr(long long n, long long r) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(long long n, long long r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return facts[n];
+    }
+    long long get_factinv(long long n) {
+        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
     }
 };
 
+#include<atcoder/convolution>
+using namespace atcoder;
+
 void solve() {
-    LONG(N, M, Q);
-    vp edge;
-    SCC scc(N);
-    rep(i, M) {
-        LONGM(x,y);
-        edge.emplace_back(x,y);
-        scc.add_edge(x,y);
-    }
-    auto grs = scc.scc();
-    de(grs)
-    vl id(N);
-    vl tpl;
-    for(auto gr: grs) {
-        for(auto v: gr) id[v] = gr[0];
-        tpl.push_back(gr[0]);
-    }
-    vvl from(N);
-    for(auto [a,b]: edge) {
-        a = id[a], b = id[b];
-        if(a==b) continue;
-        from[a].push_back(b);
-    }
-    VPM(query, Q);
-    const ll K = 64;
-    using BS = bitset<K>;
-    using vBS = vector<BS>;
-    using vul = vector<unsigned long long>;
-    rep(i, Divceil(Q,K)) {
-        vul dp(N);
-        for(ll j=0; j<K; ++j) {
-            if(i*K+j>=Q) break;
-            auto [a,b] = query[i*K+j];
-            dp[a] |= 1LL<<j;
+    LONG(R,G,B,K);
+    LONG(X,Y,Z);
+    Combination comb(200000, M998);
+    auto get_vec=[&](ll R, ll t) -> vl {
+        vl A(R+1);
+        rep(i, R+1) {
+            if(i<t) continue;
+            A[i] = comb(R,i);
         }
-        for(auto v: tpl) {
-            for(auto nv: from[v]) dp[nv] |= dp[v];
-        }
-        for(ll j=0; j<K; ++j) {
-            if(i*K+j>=Q) break;
-            auto [a,b] = query[i*K+j];
-            if(dp[b]>>j&1) puts("Yes");
-            else puts("No");
-        }
+        return A;
+    };
+    auto va = get_vec(R, K-Y);
+    auto vb = get_vec(G, K-Z);
+    auto vc = get_vec(B, K-X);
+
+    auto vab = convolution(va, vb);
+    ll ans = 0;
+    rep(i, K+1) {
+        if(i>R+G) continue;
+        if(K-i<0) continue;
+        if(K-i>B) continue;
+        ll now = vab[i]*vc[K-i]%M998;
+        ans = (ans+now)%M998;
     }
+    Out(ans);
+
+
 }
 
 int main () {

@@ -1032,9 +1032,7 @@
 - 基本 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
-<!-- where i am now -->
-<!-- last submission 2025/2/25 -->
-- !要復習 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
+- !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
@@ -1055,6 +1053,8 @@
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
+<!-- where i am now -->
+<!-- last submission 2025/2/26 -->
 - !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
 ## インラインDP
