@@ -1053,9 +1053,7 @@
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
-<!-- where i am now -->
-<!-- last submission 2025/2/26 -->
-- !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
+- !復習価値低 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
 ## インラインDP
 ### 例題
@@ -1194,6 +1192,8 @@
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
+<!-- where i am now -->
+<!-- last submission 2025/3/3 -->
 - !要復習 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
 ## OR
