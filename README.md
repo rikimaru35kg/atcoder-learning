@@ -1932,6 +1932,7 @@
 ### 例題
 - 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
 - !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
+- !要復習 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 
 ## 凸包
 - 凸な多角形を作る事で上手くいく問題

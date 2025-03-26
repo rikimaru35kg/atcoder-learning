@@ -228,87 +228,87 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> z_algo(string s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
-        // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
-        // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {  // update from & last
-            from = i;
-            last = i+same;
-        }
+struct SCC {
+    SCC (int n): n(n), from(n), ifrom(n) {}
+    void add_edge (int a, int b) {
+        from[a].push_back(b); ifrom[b].push_back(a);
     }
-    a[0] = n;  // substitute ovious value at last
-    return a;
-}
-vector<long long> z_algo(vector<long long> s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
-        // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
-        // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
-        a[i] = same;
-        if(last < i + same) {  // update from & last
-            from = i;
-            last = i+same;
+    vector<vector<int>> scc () {
+        vector<vector<int>> groups;
+        postorder = vector<int>();
+        visited.assign(n, false);
+        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
+        visited.assign(n, false);
+        reverse(all(postorder));
+        for(auto v: postorder) if(!visited[v]) {
+            vector<int> group;
+            dfs2(v, group);
+            groups.push_back(group);
         }
+        return groups;
     }
-    a[0] = n;  // substitute ovious value at last
-    return a;
-}
+private:
+    int n;
+    vector<vector<int>> from, ifrom;
+    vector<int> postorder;
+    vector<bool> visited;
+    void dfs1 (int v) {
+        visited[v] = true;
+        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
+        postorder.push_back(v);
+    }
+    void dfs2 (int v, vector<int> &group) {
+        visited[v] = true;
+        group.push_back(v);
+        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
+    }
+};
 
 void solve() {
-    LONG(N);
-    STRING(S, T);
-    vc cs = {'R', 'G', 'B'};
-    vs Ss, Ts;
-    rep(j, 3) {
-        char c = cs[j];
-        string tmp;
-        rep(i, N) {
-            if(T[i]==c) tmp += c;
-            else tmp += T[i]^c^'R'^'G'^'B';
+    LONG(N, M, Q);
+    vp edge;
+    SCC scc(N);
+    rep(i, M) {
+        LONGM(x,y);
+        edge.emplace_back(x,y);
+        scc.add_edge(x,y);
+    }
+    auto grs = scc.scc();
+    de(grs)
+    vl id(N);
+    vl tpl;
+    for(auto gr: grs) {
+        for(auto v: gr) id[v] = gr[0];
+        tpl.push_back(gr[0]);
+    }
+    vvl from(N);
+    for(auto [a,b]: edge) {
+        a = id[a], b = id[b];
+        if(a==b) continue;
+        from[a].push_back(b);
+    }
+    VPM(query, Q);
+    const ll K = 64;
+    using BS = bitset<K>;
+    using vBS = vector<BS>;
+    using vul = vector<unsigned long long>;
+    rep(i, Divceil(Q,K)) {
+        vul dp(N);
+        for(ll j=0; j<K; ++j) {
+            if(i*K+j>=Q) break;
+            auto [a,b] = query[i*K+j];
+            dp[a] |= 1LL<<j;
         }
-        string tmp1 = tmp+S;
-        string tmp2 = S+tmp;
-        Ss.push_back(tmp1);
-        Ts.push_back(tmp2);
-    }
-    vvl vs1, vs2;
-    rep(i, 3) {
-        auto v1 = z_algo(Ss[i]);
-        auto v2 = z_algo(Ts[i]);
-        vs1.push_back(v1);
-        vs2.push_back(v2);
-    }
-    ll ans = 0;
-    repk(j, N, 2*N) {
-        bool ok = false;
-        rep(i, 3) {
-            if(vs1[i][j]==2*N-j) ok = true;
+        for(auto v: tpl) {
+            for(auto nv: from[v]) dp[nv] |= dp[v];
         }
-        if(ok) ++ans;
-    }
-    repk(j, N+1, 2*N) {
-        bool ok = false;
-        rep(i, 3) {
-            if(vs2[i][j]==2*N-j) ok = true;
+        for(ll j=0; j<K; ++j) {
+            if(i*K+j>=Q) break;
+            auto [a,b] = query[i*K+j];
+            if(dp[b]>>j&1) puts("Yes");
+            else puts("No");
         }
-        if(ok) ++ans;
     }
-    Out(ans);
-
-
 }
 
 int main () {
