@@ -676,6 +676,7 @@
 
 ## bitset
 ### 例題
+- !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
 - !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
 - !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
