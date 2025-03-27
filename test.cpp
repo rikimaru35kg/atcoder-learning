@@ -222,112 +222,168 @@ const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
-const vp dij8 = {{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};
+const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// #include <atcoder/maxflow>
-// using namespace atcoder;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-class MaxFlow {
-    int n;
-    vector<int> dist, iter;
-    long long inf = numeric_limits<long long>::max();
-    struct Edge {
-        int to; long long cap; int rev;
-        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
-    };
-    void bfs(int sv) {
-        dist.assign(n, -1);
-        queue<int> que;
-        dist[sv] = 0; que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,cap,rev]: from[v]) {
-                if(cap==0 || dist[nv]!=-1) continue;
-                dist[nv] = dist[v]+1, que.push(nv); 
-            }
-        }
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    long long dfs(int v, int t, long long f) {
-        if(v==t) return f;
-        for(int &i=iter[v]; i<int(from[v].size()); i++) {
-            auto [nv,cap,rev] = from[v][i];
-            if(dist[nv]<=dist[v] || cap==0) continue;
-            long long res = dfs(nv, t, min(f,cap));
-            if(res) {
-                from[v][i].cap -= res;
-                from[nv][rev].cap += res;
-                return res;
-            }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
-        return 0;
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+template<typename T> class SpanBIT {
+    long long size;
+    vector<T> bit;
+    void _add (long long i, T x) {
+        assert(i>=0 && i<size-1);
+        ++i;
+        for (; i<size; i+=i&-i) bit[i] += x;
+    }
+    T _sum (long long i) {
+        assert(i>=0 && i<size-1);
+        ++i;
+        T ret = 0;
+        for (; i>0; i-=i&-i) ret += bit[i];
+        return ret;
     }
 public:
-    vector<vector<Edge>> from;
-    MaxFlow(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c) {
-        from[a].emplace_back(Edge(b,c,from[b].size()));
-        from[b].emplace_back(Edge(a,0,from[a].size()-1));
-    }
-    long long flow(int s, int t) {
-        long long ret = 0;
-        while(true) {
-            bfs(s);
-            if(dist[t]==-1) return ret;
-            iter.assign(n, 0);
-            long long now=0;
-            while((now=dfs(s,t,inf))>0) {
-                ret += now;
-            }
+    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
+    // ![CAUTION]   0 <= l,r <= _n
+    void add (long long l, long long r, T x) { // [l,r)
+        if(l<=r) {_add(l, x); _add(r, -x);}
+        else {
+            _add(l, x); _add(size-2, -x);
+            _add(0, x); _add(r, -x);
         }
-        return 0;
+    }
+    T get (long long i) {
+        return _sum(i);
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-2; ++i) { cerr<<get(i)<<' '; }
+        cerr<<endl;
+        #endif
+    }
+};
+
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+    void print() {
+        #ifdef __DEBUG
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+        #endif
     }
 };
 
 void solve() {
-    LONG(N, T);
-    VP(A, N);
-    VP(B, N);
-    map<Pr,ll> bi;
-    rep(i, N) {
-        bi[B[i]] = N+i+1;
-    }
-    MaxFlow graph(2*N+2);
-    rep(i, N) {
-        auto [x,y] = A[i];
-        graph.add_edge(0,i+1,1);
-        graph.add_edge(N+i+1,2*N+1,1);
-        for(auto [dx,dy]: dij8) {
-            ll nx = x + T*dx, ny = y + T*dy;
-            if(!bi.count({nx,ny})) continue;
-            graph.add_edge(i+1, bi[{nx,ny}], 1);
+    LONG(N, K);
+    VL(A, N);
+    CoordinateCompression<ll> cc;
+    rep(i, N) cc.add(A[i]);
+    rep(i, N) A[i] = cc(A[i]);
+
+    SpanBIT<mint> dp(N+1);
+    dp.add(0,1,1);
+    ll now = 0;
+    BIT<ll> cnt(N);
+    ll r = 0;
+    rep(l, N) {
+        auto judge=[&](ll i) -> bool {
+            ll nxt = cnt.sum(A[i]+1,N);
+            return now+nxt<=K;
+        };
+        while(r<N && judge(r)) {
+            now += cnt.sum(A[r]+1,N);
+            cnt.add(A[r++], 1);
         }
+        dp.add(l+1,r+1,dp.get(l));
+        ll dec = cnt.sum(0,A[l]);
+        now -= dec;
+        cnt.add(A[l],-1);
     }
-    auto getdir=[&](ll dx, ll dy) -> ll {
-        rep(i, 8) {
-            if(dx==dij8[i].first && dy==dij8[i].second) {
-                return i+1;
-            }
-        }
-        assert(0);
-        return 0;
-    };
-    ll mx = graph.flow(0,2*N+1);
-    if(mx!=N) PNo
-    puts("Yes");
-    vl ans(N);
-    rep1(v, N) {
-        for(auto [nv,cap,rev]: graph.from[v]) {
-            if(cap) continue;
-            auto [x1,y1] = A[v-1];
-            auto [x2,y2] = B[nv-N-1];
-            ll dx = (x2-x1)/T, dy = (y2-y1)/T;
-            ans[v-1] = getdir(dx,dy);
-        }
-    }
+    mint ans = dp.get(N);
     Out(ans);
 
 }

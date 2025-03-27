@@ -2131,9 +2131,6 @@
 - [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
 
 ## ACできたがグダった問題
-<!-- #############################
-# current review point (where i am now)
-############################# -->
 - [D - Pigeon Swap](https://atcoder.jp/contests/abc395/tasks/abc395_d)
 - [F - Smooth Occlusion](https://atcoder.jp/contests/abc395/tasks/abc395_f)
 - [E - Min of Restricted Sum](https://atcoder.jp/contests/abc396/tasks/abc396_e)
@@ -2198,3 +2195,4 @@
 - [D. Palindrome Shuffle](https://codeforces.com/contest/2069/problem/D)
 - [C. Find B](https://codeforces.com/contest/1923/problem/C)
 - [017 - Crossing Segments（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_q)
+- [089 - Partitions and Inversions（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ck)
