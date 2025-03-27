@@ -228,8 +228,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/maxflow>
-using namespace atcoder;
+// #include <atcoder/maxflow>
+// using namespace atcoder;
+
+class MaxFlow {
+    int n;
+    vector<int> dist, iter;
+    long long inf = numeric_limits<long long>::max();
+    struct Edge {
+        int to; long long cap; int rev;
+        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
+    };
+    void bfs(int sv) {
+        dist.assign(n, -1);
+        queue<int> que;
+        dist[sv] = 0; que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,cap,rev]: from[v]) {
+                if(cap==0 || dist[nv]!=-1) continue;
+                dist[nv] = dist[v]+1, que.push(nv); 
+            }
+        }
+    }
+    long long dfs(int v, int t, long long f) {
+        if(v==t) return f;
+        for(int &i=iter[v]; i<int(from[v].size()); i++) {
+            auto [nv,cap,rev] = from[v][i];
+            if(dist[nv]<=dist[v] || cap==0) continue;
+            long long res = dfs(nv, t, min(f,cap));
+            if(res) {
+                from[v][i].cap -= res;
+                from[nv][rev].cap += res;
+                return res;
+            }
+        }
+        return 0;
+    }
+public:
+    vector<vector<Edge>> from;
+    MaxFlow(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c) {
+        from[a].emplace_back(Edge(b,c,from[b].size()));
+        from[b].emplace_back(Edge(a,0,from[a].size()-1));
+    }
+    long long flow(int s, int t) {
+        long long ret = 0;
+        while(true) {
+            bfs(s);
+            if(dist[t]==-1) return ret;
+            iter.assign(n, 0);
+            long long now=0;
+            while((now=dfs(s,t,inf))>0) {
+                ret += now;
+            }
+        }
+        return 0;
+    }
+};
 
 void solve() {
     LONG(N, T);
@@ -239,7 +295,7 @@ void solve() {
     rep(i, N) {
         bi[B[i]] = N+i+1;
     }
-    mf_graph<ll> graph(2*N+2);
+    MaxFlow graph(2*N+2);
     rep(i, N) {
         auto [x,y] = A[i];
         graph.add_edge(0,i+1,1);
@@ -262,15 +318,14 @@ void solve() {
     ll mx = graph.flow(0,2*N+1);
     if(mx!=N) PNo
     puts("Yes");
-    auto edges = graph.edges();
     vl ans(N);
-    for(auto e: edges) {
-        if(e.flow==0) continue;
-        if(e.from>=1 && e.from<=N) {
-            auto [x1,y1] = A[e.from-1];
-            auto [x2,y2] = B[e.to-N-1];
+    rep1(v, N) {
+        for(auto [nv,cap,rev]: graph.from[v]) {
+            if(cap) continue;
+            auto [x1,y1] = A[v-1];
+            auto [x2,y2] = B[nv-N-1];
             ll dx = (x2-x1)/T, dy = (y2-y1)/T;
-            ans[e.from-1] = getdir(dx,dy);
+            ans[v-1] = getdir(dx,dy);
         }
     }
     Out(ans);
