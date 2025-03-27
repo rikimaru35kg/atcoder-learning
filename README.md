@@ -679,9 +679,7 @@
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
 - !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
-<!-- where i am now for rank A -->
-<!-- last submission 2025/2/20 -->
-- !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
+- !復習価値中 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
@@ -754,7 +752,7 @@
 - 基本 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
 - !復習価値中 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
 - !復習価値低 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
-- !復習価値高 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
+- !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
@@ -840,6 +838,8 @@
 - 基本 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 - 基本 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 - 基本 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)
+<!-- where i am now for rank A -->
+<!-- last submission 2025/3/27 -->
 - !復習価値高 [023 - Avoid War（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_w)
 
 ## 部分集合の部分集合DP
