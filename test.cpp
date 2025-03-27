@@ -228,170 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-template<typename T> class SpanBIT {
-    long long size;
-    vector<T> bit;
-    void _add (long long i, T x) {
-        assert(i>=0 && i<size-1);
-        ++i;
-        for (; i<size; i+=i&-i) bit[i] += x;
-    }
-    T _sum (long long i) {
-        assert(i>=0 && i<size-1);
-        ++i;
-        T ret = 0;
-        for (; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-public:
-    SpanBIT (long long _n): size(_n+2), bit(_n+2, 0) {}
-    // ![CAUTION]   0 <= l,r <= _n
-    void add (long long l, long long r, T x) { // [l,r)
-        if(l<=r) {_add(l, x); _add(r, -x);}
-        else {
-            _add(l, x); _add(size-2, -x);
-            _add(0, x); _add(r, -x);
-        }
-    }
-    T get (long long i) {
-        return _sum(i);
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-2; ++i) { cerr<<get(i)<<' '; }
-        cerr<<endl;
-        #endif
-    }
-};
-
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
+    return ok;
+}
 
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]);
-    rep(i, N) A[i] = cc(A[i]);
-
-    SpanBIT<mint> dp(N+1);
-    dp.add(0,1,1);
-    ll now = 0;
-    BIT<ll> cnt(N);
-    ll r = 0;
-    rep(l, N) {
-        auto judge=[&](ll i) -> bool {
-            ll nxt = cnt.sum(A[i]+1,N);
-            return now+nxt<=K;
-        };
-        while(r<N && judge(r)) {
-            now += cnt.sum(A[r]+1,N);
-            cnt.add(A[r++], 1);
-        }
-        dp.add(l+1,r+1,dp.get(l));
-        ll dec = cnt.sum(0,A[l]);
-        now -= dec;
-        cnt.add(A[l],-1);
+    LONG(A,B);
+    auto p2=[&](ll x) {return x*x;};
+    if(A==B) {
+        ll ans = 2*(A-1);
+        Out(ans); return;
     }
-    mint ans = dp.get(N);
-    Out(ans);
+
+    auto f=[&](ll x) {
+        if(x&1) {
+            return p2((x+1)/2) < A*B;
+        } else {
+            // de2(x/2, (x+1)/2)
+            return x/2 * (x/2+1) < A*B;
+        }
+        return false;
+    };
+
+    // de(f(16))
+    ll ans = binary_search(0, ll(2e9+1), f);
+    Out(ans-1);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(Q);
+    rep(i, Q) solve();
 }
 
 // ### test.cpp ###

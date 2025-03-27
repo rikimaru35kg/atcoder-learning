@@ -170,7 +170,7 @@
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
-- !復習価値高 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/62866492)
+- !復習価値中 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/62866492)
 
 ## ペアつなぎ
 - 個別の区間に注目すると、最低何本は線があるかどうか分かる（下界）
@@ -679,6 +679,8 @@
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
 - !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
+<!-- where i am now for rank A -->
+<!-- last submission 2025/2/20 -->
 - !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
