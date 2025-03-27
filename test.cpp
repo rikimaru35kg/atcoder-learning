@@ -222,106 +222,57 @@ const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
 const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
-const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
+const vp dij8 = {{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct SCC {
-    SCC (int n): n(n), from(n), ifrom(n) {}
-    void add_edge (int a, int b) {
-        from[a].push_back(b); ifrom[b].push_back(a);
-    }
-    vector<vector<int>> scc () {
-        vector<vector<int>> groups;
-        postorder = vector<int>();
-        visited.assign(n, false);
-        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
-        visited.assign(n, false);
-        reverse(all(postorder));
-        for(auto v: postorder) if(!visited[v]) {
-            vector<int> group;
-            dfs2(v, group);
-            groups.push_back(group);
-        }
-        return groups;
-    }
-private:
-    int n;
-    vector<vector<int>> from, ifrom;
-    vector<int> postorder;
-    vector<bool> visited;
-    void dfs1 (int v) {
-        visited[v] = true;
-        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
-        postorder.push_back(v);
-    }
-    void dfs2 (int v, vector<int> &group) {
-        visited[v] = true;
-        group.push_back(v);
-        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
-    }
-};
+#include <atcoder/maxflow>
+using namespace atcoder;
 
 void solve() {
-    LONG(N, M, K);
-    vvl from(N);
-    vl deg(N);
-    SCC scc(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        deg[b]++;
-        scc.add_edge(a,b);
+    LONG(N, T);
+    VP(A, N);
+    VP(B, N);
+    map<Pr,ll> bi;
+    rep(i, N) {
+        bi[B[i]] = N+i+1;
     }
-    auto grs = scc.scc();
-    for(auto gr: grs) {
-        if(SIZE(gr)>1) Pm1
+    mf_graph<ll> graph(2*N+2);
+    rep(i, N) {
+        auto [x,y] = A[i];
+        graph.add_edge(0,i+1,1);
+        graph.add_edge(N+i+1,2*N+1,1);
+        for(auto [dx,dy]: dij8) {
+            ll nx = x + T*dx, ny = y + T*dy;
+            if(!bi.count({nx,ny})) continue;
+            graph.add_edge(i+1, bi[{nx,ny}], 1);
+        }
     }
-    vl que;
-    rep(i, N) if(deg[i]==0) que.push_back(i);
-
-    auto del=[&](ll i) {
-        swap(que[i], que.back());
-        que.pop_back();
-    };
-    auto add=[&](ll i, ll v) {
-        que.push_back(v);
-        swap(que[i], que.back());
-    };
-
-    vl p;
-    vvl ans;
-    auto dfs=[&](auto f) -> bool {
-        if(SIZE(p)==N) {
-            ans.push_back(p);
-            if(SIZE(ans)==K) return true;
-            return false;
-        }
-        ll Z = que.size();
-        rep(i, Z) {
-            ll v = que[i];
-            p.push_back(v);
-            que.erase(que.begin()+i);
-            // del(i);
-            for(auto nv: from[v]) {
-                deg[nv]--;
-                if(deg[nv]==0) que.push_back(nv);
+    auto getdir=[&](ll dx, ll dy) -> ll {
+        rep(i, 8) {
+            if(dx==dij8[i].first && dy==dij8[i].second) {
+                return i+1;
             }
-            if(f(f)) return true;
-            for(auto nv: from[v]) {
-                if(deg[nv]==0) que.pop_back();
-                deg[nv]++;
-            }
-            p.pop_back();
-            que.insert(que.begin()+i, v);
-            // add(i, v);
         }
-        return false;
+        assert(0);
+        return 0;
     };
-    if(!dfs(dfs)) Pm1
-    rep(i, K) { rep(j, N) ans[i][j]++; }
+    ll mx = graph.flow(0,2*N+1);
+    if(mx!=N) PNo
+    puts("Yes");
+    auto edges = graph.edges();
+    vl ans(N);
+    for(auto e: edges) {
+        if(e.flow==0) continue;
+        if(e.from>=1 && e.from<=N) {
+            auto [x1,y1] = A[e.from-1];
+            auto [x2,y2] = B[e.to-N-1];
+            ll dx = (x2-x1)/T, dy = (y2-y1)/T;
+            ans[e.from-1] = getdir(dx,dy);
+        }
+    }
     Out(ans);
 
 }

@@ -1917,13 +1917,14 @@
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
 
 ## 最大フロー・最小カット
-- ACLで求める（自前実装は難しそう）
+- ACLで求める
 - mf_graph<ll> flow(N), flow.add_edge(a, b, capacity), auto ans = flow.flow(s, t)のような形で求める
 - 計算量はcapacityが全て1のときO(min(n^(2/3)*m, m^(3/2)))、それ以外O(n^2 * m)
 ### 例題
 - 基本 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
+- !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
 - !復習価値高 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 畳み込み（FFT/NTT）
