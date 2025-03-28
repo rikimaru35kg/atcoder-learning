@@ -229,49 +229,26 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    vvl froma(N), fromb(N);
-    ll ra = -1, rb = -1;
-    rep(i, N) {
-        LONGM(p,q);
-        if(p==-1) ra = i;
-        else froma[p].push_back(i);
-        if(q==-1) rb = i;
-        else fromb[q].push_back(i);
-    }
+    LONG(N);
+    VLM(P, N); VLM(I, N);
+    vl invI(N);
+    rep(i, N) invI[I[i]] = i;
+    vp ans(N);
+    if(P[0]!=0) Pm1
 
-    auto euler_tour=[&](ll sv, vvl &from) -> vp {
-        ll idx = 0;
-        vp span(N);
-        auto euler=[&](auto f, ll v) -> void {
-            span[v].first = idx++;
-            for(auto nv: from[v]) f(f, nv);
-            span[v].second = idx;
-        };
-        euler(euler, sv);
-        return span;
+    auto dfs=[&](auto f, ll i1, ll i2, ll w) -> ll {
+        if(w==0) return -1;
+        ll r = P[i1];
+        ll rpos = invI[r];
+        if(rpos<i2 || rpos>=i2+w) Pm1
+        ll w1 = rpos-i2, w2 = w-(w1+1);
+        ans[r].first = f(f, i1+1, i2, w1);
+        ans[r].second = f(f, i1+1+w1, rpos+1, w2);
+        return r;
     };
-    vp spana = euler_tour(ra, froma);
-    vp spanb = euler_tour(rb, fromb);
-    de(spana)de(spanb)
-    vvl imos(N+1, vl(N+1));
-    auto add=[&](ll l1, ll r1, ll l2 ,ll r2) {
-        imos[l1][l2]++; imos[r1][r2]++;
-        imos[l1][r2]--; imos[r1][l2]--;
-    };
-    rep(i, M) {
-        LONGM(a,b);
-        auto [l1,r1] = spana[a];
-        auto [l2,r2] = spanb[b];
-        add(l1,r1,l2,r2);
-    }
-    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
-    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
-    rep(i, N) {
-        ll a = spana[i].first;
-        ll b = spanb[i].first;
-        ll ans = imos[a][b];
-        Out(ans);
+    dfs(dfs, 0, 0, N);
+    for(auto [x,y]: ans) {
+        printf("%lld %lld\n", x+1, y+1);
     }
 
 }

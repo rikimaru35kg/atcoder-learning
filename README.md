@@ -463,9 +463,7 @@
 - 基本 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 - 基本 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
 - 基本 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/19 -->
-- !復習価値中 [E - Sum of Max Matching](https://atcoder.jp/contests/abc383/tasks/abc383_e)
+- 基本 [E - Sum of Max Matching](https://atcoder.jp/contests/abc383/tasks/abc383_e)
 - 基本 [K - 遺産相続](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_k)
 
 ## 全域木の構成
@@ -540,6 +538,8 @@
 - 基本 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 - 基本 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
 - 基本 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/19 -->
 - !復習価値中（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 
 ## ダブリング
