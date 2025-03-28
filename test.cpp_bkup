@@ -228,56 +228,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+ll D = 9;
+struct S {
+    ll d[10];
+    S(ll x=0) {
+        rep(i, 10) d[i] = 0;
+        string s = to_string(x);
+        rep(i, D) {
+            d[i] = stoll(s);
+            rotate(s.begin(), s.begin()+1, s.end());
+        }
+    };
+};
+S op(S a, S b) {
+    rep(i, D) a.d[i] ^= b.d[i];
+    return a;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+S e() { return S(0); }
+using F = ll;
+S mapping(F f, S x) {
+    f %= D;
+    rotate(x.d, x.d+f, x.d+D);
+    return x;
 }
+F composition(F f, F g) {return (f+g)%D;}
+F id() {return 0;}
+
+#include <atcoder/lazysegtree>
+using namespace atcoder;
 
 void solve() {
-    LONG(A,B);
-    auto p2=[&](ll x) {return x*x;};
-    if(A==B) {
-        ll ans = 2*(A-1);
-        Out(ans); return;
+    LONG(N); cin>>D;
+    VL(A, N);
+    vector<S> init(N);
+    rep(i, N) { init[i] = S(A[i]); }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+
+    LONG(Q);
+    ll si = 0;
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            (si += x) %= N;
+        } else if(t==2) {
+            LONG(l,r,y); --l, --r;
+            l += si, r += si;
+            l %= N, r %= N;
+            if(l<=r) {
+                ++r;
+                seg.apply(l,r,y);
+            } else {
+                ++r;
+                seg.apply(l,N,y);
+                seg.apply(0,r,y);
+            }
+        } else {
+            LONG(l,r); --l, --r;
+            l += si, r += si;
+            l %= N, r %= N;
+            ll ans = 0;
+            if(l<=r) {
+                ++r;
+                ans ^= seg.prod(l,r).d[0];
+            } else {
+                ++r;
+                ans ^= seg.prod(l,N).d[0];
+                ans ^= seg.prod(0,r).d[0];
+            }
+            Out(ans);
+        }
     }
 
-    auto f=[&](ll x) {
-        if(x&1) {
-            return p2((x+1)/2) < A*B;
-        } else {
-            // de2(x/2, (x+1)/2)
-            return x/2 * (x/2+1) < A*B;
-        }
-        return false;
-    };
-
-    // de(f(16))
-    ll ans = binary_search(0, ll(2e9+1), f);
-    Out(ans-1);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
+    solve();
 }
 
 // ### test.cpp ###

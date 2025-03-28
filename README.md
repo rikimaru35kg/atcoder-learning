@@ -78,7 +78,7 @@
 - !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - 基本 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - 基本 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
-- !復習価値中 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
+- !復習価値低 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
 
 ## 二分探索による中央値探索
 ### 例題
@@ -97,6 +97,8 @@
 ## 二分探索による最大ペアリング探索
 ### 例題
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/12 -->
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 三分探索法
