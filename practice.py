@@ -28,10 +28,7 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 def main():
-    from datetime import datetime
-    dt = datetime.now()
-    tmp = dt.strftime("%Y/%m/%d-%H:%M:%S")
-    print(tmp)
+    print("two")
 
 
 
