@@ -795,9 +795,7 @@
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
 - 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/25 -->
-- !復習価値中 [F - ビンゴ](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_f)
+- 基本 [F - ビンゴ](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_f)
 - 基本 グリッド上AB差の最小値 [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - 基本 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
 - 基本 全部分列での部分和個数総和 [F - Knapsack for All Subsets](https://atcoder.jp/contests/abc169/tasks/abc169_f)
@@ -902,6 +900,8 @@
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !復習価値低 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
 - !要復習 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/21 -->
 - !復習価値中 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 桁DP（Digit DP）
