@@ -538,9 +538,7 @@
 - 基本 不満度最小化 [E - Takahashi's Anguish](https://atcoder.jp/contests/abc256/tasks/abc256_e)
 - 基本 純サイクルとなる誘導グラフを見つける [F - Pure](https://atcoder.jp/contests/abc142/tasks/abc142_f)
 - 基本 [D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/19 -->
-- !復習価値中（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
+- 基本（サイクル検出そのものではないが実装面で勉強になる載せたがNote非掲載） [D - Moving Piece](https://atcoder.jp/contests/abc175/tasks/abc175_d)
 
 ## ダブリング
 - n個先の頂点に進むとき、nが大きい場合、nを2進数で表すと上手くいく
@@ -624,6 +622,8 @@
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - 基本 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
 - !復習価値低 解法チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/19 -->
 - !復習価値中 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
 
 ## グラフに関する問題の計算量見積り（個人的な苦手問題なのでNote非掲載）

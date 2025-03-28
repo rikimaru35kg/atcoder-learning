@@ -228,28 +228,81 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VLM(P, N); VLM(I, N);
-    vl invI(N);
-    rep(i, N) invI[I[i]] = i;
-    vp ans(N);
-    if(P[0]!=0) Pm1
-
-    auto dfs=[&](auto f, ll i1, ll i2, ll w) -> ll {
-        if(w==0) return -1;
-        ll r = P[i1];
-        ll rpos = invI[r];
-        if(rpos<i2 || rpos>=i2+w) Pm1
-        ll w1 = rpos-i2, w2 = w-(w1+1);
-        ans[r].first = f(f, i1+1, i2, w1);
-        ans[r].second = f(f, i1+1+w1, rpos+1, w2);
-        return r;
-    };
-    dfs(dfs, 0, 0, N);
-    for(auto [x,y]: ans) {
-        printf("%lld %lld\n", x+1, y+1);
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vl a, b;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n),a(n),b(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
+    void add(int x, bool fa) {
+        if(fa) a[x]++;
+        else b[x]++;
+    }
+    ll consume(int x, ll w) {
+        x = leader(x);
+        ll ret = min(a[x], b[x]);
+        a[x] -= ret, b[x] -= ret;
+        return ret*w;
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        a[y] += a[x]; b[y] += b[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
+
+void solve() {
+    LONG(N, M, K);
+    vt3 edge;
+    rep(i, M) {
+        LONGM(a,b); LONG(c);
+        edge.emplace_back(c,a,b);
+    }
+    sort(all(edge));
+    VLM(A, K); VLM(B, K);
+    WeightedUnionFind uf(N);
+    rep(i, K) {
+        uf.add(A[i], true);
+        uf.add(B[i], false);
+    }
+    ll ans = 0;
+    for(auto [c,a,b]: edge) {
+        uf.merge(a,b);
+        ans += uf.consume(a, c);
+    }
+    Out(ans);
 
 }
 
