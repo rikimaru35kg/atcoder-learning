@@ -228,14 +228,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
+    LONG(N);
+    STRING(S);
+
+    auto f=[&](ll x) -> bool {
+        vb dis(N);
+        ll _x = x;
+        repr(i, N) {
+            if(_x==0) break;
+            if(S[i]=='1') dis[i] = true, --_x;
+        }
+        ll ext = 0;
+        rep(i, N) {
+            if(!dis[i]) ++ext;
+            else {
+                if(ext==0) return false;
+                --ext;
+            }
+        }
+        return true;
+    };
+
+    ll mx = binary_search(0, N, f);
+    de(mx)
+    ll ans = N*(N+1)/2;
+    repr(i, N) {
+        if(mx==0) break;
+        if(S[i]=='0') continue;
+        ans -= i+1;
+        --mx;
+    }
+    Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

@@ -228,53 +228,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
     LONG(N, K);
-    VL(A, N); VL(B, N);
-
-    auto f=[&](ll x) -> bool {
-        if(x<=A.back()) return false;
-        ll r = 0;
-        ll psum = 0;
-        repr(i, N) {
-            ll b = B[i];
-            ll mn = min(r, b);
-            b -= mn; r -= mn;
-            if(b==0) continue;
-            ll pnum = Divceil(b, x-A[i]);
-            psum += pnum;
-            r += pnum*(x-A[i]) - b;
-            if(psum > K) return false;
+    VL(A, N);
+    sort(all(A));
+    A.erase(unique(all(A)), A.end());
+    ll cnt = 1;
+    ll px = -100;
+    for(auto x: A) {
+        if(x==px+1) {
+            ++cnt;
+            if(cnt==K) PYes
+        } else {
+            cnt = 1;
         }
-        return true;
-    };
-
-    // rep(i, 20) {
-    //     de2(i, f(i))
-    // }
-    ll ans = binary_search(INF, 0, f);
-    Out(ans);
+        px = x;
+    }
+    PNo
 
 }
 

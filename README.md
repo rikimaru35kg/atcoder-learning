@@ -97,8 +97,6 @@
 ## 二分探索による最大ペアリング探索
 ### 例題
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/12 -->
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 三分探索法
@@ -163,6 +161,8 @@
 - 基本 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
 - 基本 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 - 基本 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/12 -->
 - !復習価値中 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
 
 ## ペア積（要素積）のmaxを最小化
