@@ -228,106 +228,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Dijkstra {
-    using LI = pair<long long,int>;
-    using IL = pair<int,long long>;
-    int n;
-    vector<vector<IL>> from;
-    Dijkstra(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c=1, bool both=false) {
-        from[a].emplace_back(b, c);
-        if(both) from[b].emplace_back(a, c);
-    }
-    vector<long long> dijkstra(int sv) {
-        vector<long long> dist(n, 3e18);
-        priority_queue<LI,vector<LI>,greater<LI>> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.emplace(d, v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto [d, v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv, c]: from[v]) push(nv, d+c);
-        }
-        return dist;
-    }
-    vector<long long> bfs(int sv) {
-        vector<long long> dist(n, 3e18);
-        queue<int> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
-        }
-        return dist;
-    }
-    vector<bool> is_connected(int sv) {
-        vector<bool> ret(n);
-        queue<int> que;
-        auto push=[&](int v) {
-            if(ret[v]) return;
-            ret[v] = true;
-            que.push(v);
-        };
-        push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,c]: from[v]) push(nv);
-        }
-        return ret;
-    }
-};
-
 void solve() {
-    LONG(N,M,Q);
-    Dijkstra graph(N);
-    vp edge;
+    LONG(N, M);
+    vvl froma(N), fromb(N);
+    ll ra = -1, rb = -1;
+    rep(i, N) {
+        LONGM(p,q);
+        if(p==-1) ra = i;
+        else froma[p].push_back(i);
+        if(q==-1) rb = i;
+        else fromb[q].push_back(i);
+    }
+
+    auto euler_tour=[&](ll sv, vvl &from) -> vp {
+        ll idx = 0;
+        vp span(N);
+        auto euler=[&](auto f, ll v) -> void {
+            span[v].first = idx++;
+            for(auto nv: from[v]) f(f, nv);
+            span[v].second = idx;
+        };
+        euler(euler, sv);
+        return span;
+    };
+    vp spana = euler_tour(ra, froma);
+    vp spanb = euler_tour(rb, fromb);
+    de(spana)de(spanb)
+    vvl imos(N+1, vl(N+1));
+    auto add=[&](ll l1, ll r1, ll l2 ,ll r2) {
+        imos[l1][l2]++; imos[r1][r2]++;
+        imos[l1][r2]--; imos[r1][l2]--;
+    };
     rep(i, M) {
         LONGM(a,b);
-        graph.add_edge(a,b,1,true);
-        edge.emplace_back(a,b);
+        auto [l1,r1] = spana[a];
+        auto [l2,r2] = spanb[b];
+        add(l1,r1,l2,r2);
     }
-    vl dist = graph.bfs(0);
-    vvp from(N);
-    vl deg(N);
-    vb del(M);
-    rep(i, M) {
-        auto [a,b] = edge[i];
-        if(dist[a]==dist[b]) {
-            del[i] = true; continue;
-        }
-        if(dist[a]<dist[b]) from[a].emplace_back(b,i), deg[b]++;
-        else from[b].emplace_back(a,i), deg[a]++;
-    }
-    ll ans = 0;
-    rep(_, Q) {
-        LONGM(r);
-        if(del[r]) { Out(ans); continue; }
-        del[r] = true;
-
-        auto [a,b] = edge[r];
-        if(dist[a]>dist[b]) swap(a,b);
-        deg[b]--;
-        queue<ll> que;
-        if(deg[b]==0) que.push(b);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            ++ans;
-            for(auto [nv,ei]: from[v]) {
-                if(del[ei]) continue;
-                del[ei] = true;
-                deg[nv]--;
-                if(deg[nv]==0) que.push(nv);
-            }
-        }
+    rep(i, N) rep(j, N+1) imos[i+1][j] += imos[i][j];
+    rep(i, N+1) rep(j, N) imos[i][j+1] += imos[i][j];
+    rep(i, N) {
+        ll a = spana[i].first;
+        ll b = spanb[i].first;
+        ll ans = imos[a][b];
         Out(ans);
     }
 

@@ -419,9 +419,7 @@
 ### 例題
 - 基本 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
 - 基本 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/19 -->
-- !復習価値中 [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
+- !復習価値低 [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
 
 ## LCA（Lowest Common Ancester）
 - オイラーツアーの順に区間用のセグツリーやBIT木を適用するとオンライン更新対応可能
@@ -446,6 +444,8 @@
 - 二分木の場合に定義される（下側を通る順番の事）
 - 通りがけ順を適当な（上手い）範囲で取り出すと部分木になっており、根より早く登場する頂点は左側子孫、遅く出現する頂点は根の右側子孫となる
 ### 例題
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/25 -->
 - !復習価値中 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
 
 ## 木の次数列
