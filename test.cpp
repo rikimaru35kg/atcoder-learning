@@ -228,68 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N);
-    STRING(S);
-
-    auto f=[&](ll x) -> bool {
-        vb dis(N);
-        ll _x = x;
-        repr(i, N) {
-            if(_x==0) break;
-            if(S[i]=='1') dis[i] = true, --_x;
-        }
-        ll ext = 0;
-        rep(i, N) {
-            if(!dis[i]) ++ext;
-            else {
-                if(ext==0) return false;
-                --ext;
+    LONG(N, Q);
+    vl A(N);
+    iota(all(A), 1);
+    set<ll> inv;
+    auto update=[&](ll i) {
+        if(i<0 || i>=N-1) return;
+        if(A[i]>A[i+1]) inv.insert(i);
+        else inv.erase(i);
+    };
+    auto swp=[&](ll i) {
+        assert(i>=0 && i<=N-2);
+        swap(A[i], A[i+1]);
+        update(i-1);
+        update(i);
+        update(i+1);
+    };
+    rep(i, Q) {
+        LONG(t,x,y);
+        --x;
+        if(t==1) {
+            swp(x);
+        } else {
+            auto it = inv.lower_bound(x);
+            while(it!=inv.end() && *it<y-1) {
+                swp(*it);
+                it = inv.lower_bound(x);
             }
         }
-        return true;
-    };
-
-    ll mx = binary_search(0, N, f);
-    de(mx)
-    ll ans = N*(N+1)/2;
-    repr(i, N) {
-        if(mx==0) break;
-        if(S[i]=='0') continue;
-        ans -= i+1;
-        --mx;
     }
-    Out(ans);
-
+    Out(A);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

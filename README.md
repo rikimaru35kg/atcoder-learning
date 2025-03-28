@@ -161,9 +161,7 @@
 - 基本 [K - 転倒数](https://atcoder.jp/contests/past202010-open/tasks/past202010_k)
 - 基本 全組み合わせでのf(Si,Sj)の和 [F - Merge Sets](https://atcoder.jp/contests/abc306/tasks/abc306_f)
 - 基本 [C - Swaps 2](https://atcoder.jp/contests/arc120/tasks/arc120_c)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/12 -->
-- !復習価値中 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
+- 基本 [N - 入れ替えと並び替え](https://atcoder.jp/contests/past202005-open/tasks/past202005_n)
 
 ## ペア積（要素積）のmaxを最小化
 - 集合Aと集合B（サイズは同じ）の要素積のmaxを最小化したい場合、Aの降順、Bの昇順を組み合わせると良い
@@ -204,6 +202,8 @@
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 - 基本 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/12 -->
 - !復習価値中 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
 
 ## 2次元累積和
