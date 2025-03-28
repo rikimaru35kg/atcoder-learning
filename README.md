@@ -761,9 +761,7 @@
 - オンラインで葉を更新するのは計算量が大きすぎるので注意！
 - オンラインで範囲クエリに答えるのは得意 O(Q*log^2(N))
 ### 例題
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/25 -->
-- !復習価値中 [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
+- 基本 [G - Smaller Sum](https://atcoder.jp/contests/abc339/tasks/abc339_g)
 
 ## 永続データ構造
 - push_back()とpop_back()は木構造で書ける
@@ -797,6 +795,8 @@
 - M個選んだ時の部分和の最大値を求める問題は、O(NM)必要（dp[i][j]でj個選んだ時の最大値とかするので）。工夫してjを減らす問題もある
 ### 例題
 - 基本 [D - Cooking](https://atcoder.jp/contests/abc204/tasks/abc204_d)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/25 -->
 - !復習価値中 [F - ビンゴ](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_f)
 - 基本 グリッド上AB差の最小値 [E - Balanced Path](https://atcoder.jp/contests/abc147/tasks/abc147_e)
 - 基本 全連続部分列での部分和個数総和 [F - Knapsack for All Segments](https://atcoder.jp/contests/abc159/tasks/abc159_f)
