@@ -2,6 +2,7 @@
 using namespace std;
 
 struct Bridge {
+    bool done = false;
     using PII = pair<int,int>;
     int n, m, idx;
     vector<vector<PII>> from;
@@ -15,7 +16,11 @@ struct Bridge {
             from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
         }
     }
-    void start_calc() { rep(i, n) if(ord[i]==-1) dfs(i); }
+    void start_calc() {
+        if(done) return;
+        done = true;
+        rep(i, n) if(ord[i]==-1) dfs(i);
+    }
     void dfs(int v, int p=-1) {
         ord[v] = idx++; low[v] = ord[v];
         int c = 0;
@@ -33,6 +38,6 @@ struct Bridge {
         if(p!=-1 && art) artcl.push_back(v);
         if(p==-1 && c>1) artcl.push_back(v);
     }
-    vector<int> get_bridge() { return bridge;}
-    vector<int> get_articulation() { return artcl;}
+    vector<int> get_bridge() { start_calc(); return bridge;}
+    vector<int> get_articulation() { start_calc(); return artcl;}
 };
