@@ -228,37 +228,108 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Dijkstra {
+    using LI = pair<long long,int>;
+    using IL = pair<int,long long>;
+    int n;
+    vector<vector<IL>> from;
+    Dijkstra(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1, bool both=false) {
+        from[a].emplace_back(b, c);
+        if(both) from[b].emplace_back(a, c);
+    }
+    vector<long long> dijkstra(int sv) {
+        vector<long long> dist(n, 3e18);
+        priority_queue<LI,vector<LI>,greater<LI>> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d, v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv, c]: from[v]) push(nv, d+c);
+        }
+        return dist;
+    }
+    vector<long long> bfs(int sv) {
+        vector<long long> dist(n, 3e18);
+        queue<int> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
+        }
+        return dist;
+    }
+    vector<bool> is_connected(int sv) {
+        vector<bool> ret(n);
+        queue<int> que;
+        auto push=[&](int v) {
+            if(ret[v]) return;
+            ret[v] = true;
+            que.push(v);
+        };
+        push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,c]: from[v]) push(nv);
+        }
+        return ret;
+    }
+};
+
 void solve() {
-    LONG(N, Q);
-    vl A(N);
-    iota(all(A), 1);
-    set<ll> inv;
-    auto update=[&](ll i) {
-        if(i<0 || i>=N-1) return;
-        if(A[i]>A[i+1]) inv.insert(i);
-        else inv.erase(i);
-    };
-    auto swp=[&](ll i) {
-        assert(i>=0 && i<=N-2);
-        swap(A[i], A[i+1]);
-        update(i-1);
-        update(i);
-        update(i+1);
-    };
-    rep(i, Q) {
-        LONG(t,x,y);
-        --x;
-        if(t==1) {
-            swp(x);
-        } else {
-            auto it = inv.lower_bound(x);
-            while(it!=inv.end() && *it<y-1) {
-                swp(*it);
-                it = inv.lower_bound(x);
+    LONG(N,M,Q);
+    Dijkstra graph(N);
+    vp edge;
+    rep(i, M) {
+        LONGM(a,b);
+        graph.add_edge(a,b,1,true);
+        edge.emplace_back(a,b);
+    }
+    vl dist = graph.bfs(0);
+    vvp from(N);
+    vl deg(N);
+    vb del(M);
+    rep(i, M) {
+        auto [a,b] = edge[i];
+        if(dist[a]==dist[b]) {
+            del[i] = true; continue;
+        }
+        if(dist[a]<dist[b]) from[a].emplace_back(b,i), deg[b]++;
+        else from[b].emplace_back(a,i), deg[a]++;
+    }
+    ll ans = 0;
+    rep(_, Q) {
+        LONGM(r);
+        if(del[r]) { Out(ans); continue; }
+        del[r] = true;
+
+        auto [a,b] = edge[r];
+        if(dist[a]>dist[b]) swap(a,b);
+        deg[b]--;
+        queue<ll> que;
+        if(deg[b]==0) que.push(b);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            ++ans;
+            for(auto [nv,ei]: from[v]) {
+                if(del[ei]) continue;
+                del[ei] = true;
+                deg[nv]--;
+                if(deg[nv]==0) que.push(nv);
             }
         }
+        Out(ans);
     }
-    Out(A);
 
 }
 

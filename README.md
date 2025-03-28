@@ -202,8 +202,6 @@
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 - 基本 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/12 -->
 - !復習価値中 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
 
 ## 2次元累積和
@@ -288,7 +286,7 @@
 - 基本 [D - テンキー (Tenkey)](https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_d)
 - 基本 [C - 菱型カウント](https://atcoder.jp/contests/abc018/tasks/abc018_3)
 - !復習価値低 [B - パンケーキ (Pancake)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_b)
-- !復習価値中 [C - 鉄道運賃 (Train Fare)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_c)
+- !復習価値低 [C - 鉄道運賃 (Train Fare)](https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_c)
 
 ## 01-BFS
 - 辺のコストが0か1しかない最短経路問題に使用可能
@@ -421,6 +419,8 @@
 ### 例題
 - 基本 部分木を区間で表現 [E - Ranges on Tree](https://atcoder.jp/contests/abc240/tasks/abc240_e)
 - 基本 オイラーツアーの性質 [E - Count Descendants](https://atcoder.jp/contests/abc202/tasks/abc202_e)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/19 -->
 - !復習価値中 [3 - スパイ (Spy)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_spy)
 
 ## LCA（Lowest Common Ancester）

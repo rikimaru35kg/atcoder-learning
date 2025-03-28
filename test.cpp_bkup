@@ -249,47 +249,141 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
 void solve() {
-    LONG(N);
-    STRING(S);
+    LONG(N, M, K);
+    VL(A, N);
+    K -= accumulate(all(A), 0LL);
+    vp P(N);
+    rep(i, N) {
+        P[i] = {A[i], i};
+    }
+    sort(allr(A));
+    sort(allr(P));
+    auto Sc = cumsum(A);
 
-    auto f=[&](ll x) -> bool {
-        vb dis(N);
-        ll _x = x;
-        repr(i, N) {
-            if(_x==0) break;
-            if(S[i]=='1') dis[i] = true, --_x;
-        }
-        ll ext = 0;
-        rep(i, N) {
-            if(!dis[i]) ++ext;
-            else {
-                if(ext==0) return false;
-                --ext;
+    auto sum=[&](ll l, ll r) -> ll { return Sc[r] - Sc[l]; };
+    de(K)
+
+    vl ans(N, -1);
+    rep(i, N) {
+        auto f=[&](ll x) -> bool {
+            ll cnt = 0;
+            ll t = A[i]+x+1;
+            if(i<M) {
+                auto [n,y] = lowbou(A, t, false);
+                if(n>=M+1) return false;
+                cnt = t*(M+1-n) - sum(n, M+1);
+                cnt -= t-A[i];
+            } else {
+                auto [n,y] = lowbou(A, t, false);
+                if(n>=M) return false;
+                cnt = t*(M-n) - sum(n,M);
             }
-        }
-        return true;
-    };
-
-    ll mx = binary_search(0, N, f);
-    de(mx)
-    ll ans = N*(N+1)/2;
-    repr(i, N) {
-        if(mx==0) break;
-        if(S[i]=='0') continue;
-        ans -= i+1;
-        --mx;
+            return cnt > K-x;
+        };
+        ll x = binary_search(K+1, -1, f);
+        if(x==K+1) continue;
+        ans[P[i].second] = x;
     }
     Out(ans);
-
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
