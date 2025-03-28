@@ -228,43 +228,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e(){return 0;}
+using F = ll;
+S mapping(F f, S x) {return f+x;}
+F composition(F f, F g) {return f+g;}
+F id() {return 0;}
+
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
 void solve() {
-    LONG(N, M, Q);
-    vvp from(N);
+    LONG(N, M);
+    vt3 obs;
+    rep(i, N) {
+        LONG(x,y,w);
+        obs.emplace_back(y,x,w);
+    }
+    sort(all(obs));
+    vp weapon;
     rep(i, M) {
-        LONGM(a,b); LONG(c);
-        from[a].emplace_back(b, c);
-        from[b].emplace_back(a, c);
+        LONG(a);
+        weapon.emplace_back(a,i);
     }
-    VL(X, Q);
-    pq que;
-    vb visited(N);
-    ll ans = 0;
-    vp stck;
-    auto push=[&](ll v) {
-        if(visited[v]) return;
-        visited[v] = true;
-        ++ans;
-        for(auto [nv,c]: from[v]) {
-            stck.emplace_back(c,nv);
+    sort(allr(weapon));
+
+    ll Z = 100010;
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(Z);
+
+    vp ans(M, {-1,-1});
+    for(auto [y,x,w]: obs) {
+        seg.apply(x,x+w,1);
+        ll mx = seg.all_prod();
+        auto f=[&](S x) -> bool { return x<mx; };
+        ll r = seg.max_right(0, f);
+        while(weapon.size() && weapon.back().first+1==mx) {
+            auto [a,mi] = pop(weapon);
+            ans[mi] = {r,y};
         }
-    };
-    auto flush=[&]() {
-        for(auto p: stck) que.push(p);
-        stck = vp();
-    };
-    push(0);
-    flush();
-    for(auto x: X) {
-        while(que.size()) {
-            auto [c,b] = que.top();
-            if(c>x) break;
-            que.pop();
-            push(b);
-        }
-        Out(ans);
-        flush();
     }
+    Out(ans);
 
 }
 

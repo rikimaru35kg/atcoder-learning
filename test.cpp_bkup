@@ -228,131 +228,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Bridge {
-    bool done = false;
-    using PII = pair<int,int>;
-    int n, m, idx;
-    vector<vector<PII>> from;
-    vector<int> ord, low, bridge, artcl;
-    Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
-    void add_edge(int a, int b, int ei=-1) {
-        if(ei==-1) {
-            from[a].emplace_back(b, m); from[b].emplace_back(a, m);
-            ++m;
-        } else {
-            from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
-        }
-    }
-    void start_calc() {
-        if(done) return;
-        done = true;
-        rep(i, n) if(ord[i]==-1) dfs(i);
-    }
-    void dfs(int v, int p=-1) {
-        ord[v] = idx++; low[v] = ord[v];
-        int c = 0;
-        bool art = false;
-        for(auto [nv,ei]: from[v]) if(nv!=p) {
-            if(ord[nv]!=-1) {
-                low[v] = min(low[v], ord[nv]); continue;
-            }
-            ++c;
-            dfs(nv, v);
-            low[v] = min(low[v], low[nv]);
-            if(low[nv]>ord[v]) bridge.push_back(ei);
-            if(low[nv]>=ord[v]) art = true;
-        }
-        if(p!=-1 && art) artcl.push_back(v);
-        if(p==-1 && c>1) artcl.push_back(v);
-    }
-    vector<int> get_bridge() { start_calc(); return bridge;}
-    vector<int> get_articulation() { start_calc(); return artcl;}
-};
-
-struct Dijkstra {
-    using LI = pair<long long,int>;
-    using IL = pair<int,long long>;
-    int n;
-    vector<vector<IL>> from;
-    Dijkstra(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c=1, bool both=false) {
-        from[a].emplace_back(b, c);
-        if(both) from[b].emplace_back(a, c);
-    }
-    vector<long long> dijkstra(int sv) {
-        vector<long long> dist(n, 3e18);
-        priority_queue<LI,vector<LI>,greater<LI>> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.emplace(d, v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto [d, v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv, c]: from[v]) push(nv, d+c);
-        }
-        return dist;
-    }
-    vector<long long> bfs(int sv) {
-        vector<long long> dist(n, 3e18);
-        queue<int> que;
-        auto push=[&](int v, long long d) {
-            if(dist[v]<=d) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(sv, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
-        }
-        return dist;
-    }
-    vector<bool> is_connected(int sv) {
-        vector<bool> ret(n);
-        queue<int> que;
-        auto push=[&](int v) {
-            if(ret[v]) return;
-            ret[v] = true;
-            que.push(v);
-        };
-        push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,c]: from[v]) push(nv);
-        }
-        return ret;
-    }
-};
-
 void solve() {
-    LONG(N, M);
-    vt3 edge;
-    Dijkstra dijk(N);
+    LONG(N, M, Q);
+    vvp from(N);
     rep(i, M) {
         LONGM(a,b); LONG(c);
-        edge.emplace_back(a,b,c);
-        dijk.add_edge(a,b,c,true);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    vl dist1 = dijk.dijkstra(0);
-    vl distN = dijk.dijkstra(N-1);
-    ll shortest = dist1[N-1];
-    Bridge bridge(N);
-    rep(i, M) {
-        auto [a,b,c] = edge[i];
-        if(dist1[a]+distN[b]+c==shortest) bridge.add_edge(a,b,i);
-        else if(dist1[b]+distN[a]+c==shortest) bridge.add_edge(a,b,i);
+    VL(X, Q);
+    pq que;
+    vb visited(N);
+    ll ans = 0;
+    vp stck;
+    auto push=[&](ll v) {
+        if(visited[v]) return;
+        visited[v] = true;
+        ++ans;
+        for(auto [nv,c]: from[v]) {
+            stck.emplace_back(c,nv);
+        }
+    };
+    auto flush=[&]() {
+        for(auto p: stck) que.push(p);
+        stck = vp();
+    };
+    push(0);
+    flush();
+    for(auto x: X) {
+        while(que.size()) {
+            auto [c,b] = que.top();
+            if(c>x) break;
+            que.pop();
+            push(b);
+        }
+        Out(ans);
+        flush();
     }
-    vb is_bridge(M);
-    auto bs = bridge.get_bridge();
-    for(auto b: bs) is_bridge[b] = true;
-    rep(i, M) {
-        if(is_bridge[i]) puts("Yes");
-        else puts("No");
-    }
-
 
 }
 
