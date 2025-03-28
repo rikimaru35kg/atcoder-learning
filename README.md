@@ -672,9 +672,7 @@
 - 基本 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - 基本 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 - !復習価値低 [L - 平均クエリ](https://atcoder.jp/contests/past16-open/tasks/past202309_l)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/19 -->
-- !復習価値中 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
+- !復習価値低 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
 - 基本 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
 ## bitset
@@ -752,6 +750,8 @@
 - 基本 数列区間操作期待値 [F - Random Update Query](https://atcoder.jp/contests/abc332/tasks/abc332_f)
 - 基本 2数列区間加算区間内積クエリ [F - Two Sequence Queries](https://atcoder.jp/contests/abc357/tasks/abc357_f)
 - 基本 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/19 -->
 - !復習価値中 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
 - !復習価値低 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)

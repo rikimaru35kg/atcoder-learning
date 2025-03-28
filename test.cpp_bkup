@@ -228,49 +228,131 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    VLM(P, N);
-    VL(C, N);
-
-    auto calc=[&](vl x) -> ll {
-        ll ret = -INF;
-        ll n = x.size();
-        ll tot = accumulate(all(x), 0LL);
-        ll k = K;
-        ll sum = 0;
-        rep(i, n) {
-            --k;
-            if(k<0) break;
-            sum += x[i];
-            ll now = sum;
-            if(tot>0) {
-                ll cycle = k/n;
-                now += cycle * tot;
-            }
-            chmax(ret, now);
-        }
-        return ret;
-    };
-
-    vl ord(N, -1);
-    ll ans = -INF;
-    rep(i, N) {
-        if(ord[i]!=-1) continue;
-        vl x;
-        ll v = i;
-        ll len = 0;
-        while(ord[v]==-1) {
-            ord[v] = len++;
-            x.push_back(C[v]);
-            v = P[v];
-        }
-        rep(i, len) {
-            chmax(ans, calc(x));
-            rotate(x.begin(), x.begin()+1, x.end());
+struct Bridge {
+    bool done = false;
+    using PII = pair<int,int>;
+    int n, m, idx;
+    vector<vector<PII>> from;
+    vector<int> ord, low, bridge, artcl;
+    Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
+    void add_edge(int a, int b, int ei=-1) {
+        if(ei==-1) {
+            from[a].emplace_back(b, m); from[b].emplace_back(a, m);
+            ++m;
+        } else {
+            from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
         }
     }
-    Out(ans);
+    void start_calc() {
+        if(done) return;
+        done = true;
+        rep(i, n) if(ord[i]==-1) dfs(i);
+    }
+    void dfs(int v, int p=-1) {
+        ord[v] = idx++; low[v] = ord[v];
+        int c = 0;
+        bool art = false;
+        for(auto [nv,ei]: from[v]) if(nv!=p) {
+            if(ord[nv]!=-1) {
+                low[v] = min(low[v], ord[nv]); continue;
+            }
+            ++c;
+            dfs(nv, v);
+            low[v] = min(low[v], low[nv]);
+            if(low[nv]>ord[v]) bridge.push_back(ei);
+            if(low[nv]>=ord[v]) art = true;
+        }
+        if(p!=-1 && art) artcl.push_back(v);
+        if(p==-1 && c>1) artcl.push_back(v);
+    }
+    vector<int> get_bridge() { start_calc(); return bridge;}
+    vector<int> get_articulation() { start_calc(); return artcl;}
+};
+
+struct Dijkstra {
+    using LI = pair<long long,int>;
+    using IL = pair<int,long long>;
+    int n;
+    vector<vector<IL>> from;
+    Dijkstra(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1, bool both=false) {
+        from[a].emplace_back(b, c);
+        if(both) from[b].emplace_back(a, c);
+    }
+    vector<long long> dijkstra(int sv) {
+        vector<long long> dist(n, 3e18);
+        priority_queue<LI,vector<LI>,greater<LI>> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.emplace(d, v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto [d, v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv, c]: from[v]) push(nv, d+c);
+        }
+        return dist;
+    }
+    vector<long long> bfs(int sv) {
+        vector<long long> dist(n, 3e18);
+        queue<int> que;
+        auto push=[&](int v, long long d) {
+            if(dist[v]<=d) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(sv, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv, c]: from[v]) push(nv, dist[v]+c);
+        }
+        return dist;
+    }
+    vector<bool> is_connected(int sv) {
+        vector<bool> ret(n);
+        queue<int> que;
+        auto push=[&](int v) {
+            if(ret[v]) return;
+            ret[v] = true;
+            que.push(v);
+        };
+        push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,c]: from[v]) push(nv);
+        }
+        return ret;
+    }
+};
+
+void solve() {
+    LONG(N, M);
+    vt3 edge;
+    Dijkstra dijk(N);
+    rep(i, M) {
+        LONGM(a,b); LONG(c);
+        edge.emplace_back(a,b,c);
+        dijk.add_edge(a,b,c,true);
+    }
+    vl dist1 = dijk.dijkstra(0);
+    vl distN = dijk.dijkstra(N-1);
+    ll shortest = dist1[N-1];
+    Bridge bridge(N);
+    rep(i, M) {
+        auto [a,b,c] = edge[i];
+        if(dist1[a]+distN[b]+c==shortest) bridge.add_edge(a,b,i);
+        else if(dist1[b]+distN[a]+c==shortest) bridge.add_edge(a,b,i);
+    }
+    vb is_bridge(M);
+    auto bs = bridge.get_bridge();
+    for(auto b: bs) is_bridge[b] = true;
+    rep(i, M) {
+        if(is_bridge[i]) puts("Yes");
+        else puts("No");
+    }
+
 
 }
 
