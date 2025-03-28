@@ -444,9 +444,7 @@
 - 二分木の場合に定義される（下側を通る順番の事）
 - 通りがけ順を適当な（上手い）範囲で取り出すと部分木になっており、根より早く登場する頂点は左側子孫、遅く出現する頂点は根の右側子孫となる
 ### 例題
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/25 -->
-- !復習価値中 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
+- !復習価値低 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
 
 ## 木の次数列
 - 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる
@@ -465,6 +463,8 @@
 - 基本 後から辺追加（MSTの本質を理解しているかどうか問われる良問） [F - MST Query](https://atcoder.jp/contests/abc355/tasks/abc355_f)
 - 基本 [049 - Flip Digits 2（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_aw)
 - 基本 区間MST [F - Range Connect MST](https://atcoder.jp/contests/abc364/tasks/abc364_f)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/19 -->
 - !復習価値中 [E - Sum of Max Matching](https://atcoder.jp/contests/abc383/tasks/abc383_e)
 - 基本 [K - 遺産相続](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_k)
 
