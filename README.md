@@ -622,9 +622,7 @@
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - 基本 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
 - !復習価値低 解法チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/19 -->
-- !復習価値中 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
+- 基本 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
 
 ## グラフに関する問題の計算量見積り（個人的な苦手問題なのでNote非掲載）
 - ダイクストラ法やBFSの計算量は、辺の数で抑えられる（O(N+M)、O((N+M)log(M)など）
@@ -674,6 +672,8 @@
 - 基本 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - 基本 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
 - !復習価値低 [L - 平均クエリ](https://atcoder.jp/contests/past16-open/tasks/past202309_l)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/19 -->
 - !復習価値中 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
 - 基本 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
