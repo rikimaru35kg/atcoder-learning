@@ -486,6 +486,7 @@
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
 - 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
+- !要復習 [E - Replace](https://atcoder.jp/contests/abc399/tasks/abc399_e)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
