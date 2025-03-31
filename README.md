@@ -901,9 +901,7 @@
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - !復習価値低 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
 - !要復習 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/21 -->
-- !復習価値中 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
+- 基本 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 桁DP（Digit DP）
 - 上位桁から見て、上限をなめているかなめていないかの2通りでDPしていく
@@ -933,6 +931,8 @@
 - 基本 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - 基本 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 - 基本 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/2/21 -->
 - !復習価値中 [F - Exchange Game](https://atcoder.jp/contests/abc380/tasks/abc380_f)
 
 ## 円環DP
