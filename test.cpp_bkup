@@ -229,42 +229,48 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    ll N3 = N*3;
-    VL(A, N3);
+    LONG(K, N);
+    vt3 chars;
+    map<char,ll> mp;
+    mp['J'] = 0, mp['O'] = 1, mp['I'] = 2;
+    rep(i, N) {
+        LONGM(x,y); CHAR(c);
+        chars.emplace_back(x,y,mp[c]);
+    }
 
-    ll ans = INF;
-    auto update=[&](vvl &v) {
-        assert(SIZE(v)==N);
-        ll mx = -INF, mn = INF;
-        rep(i, N) {
-            ll now = accumulate(all(v[i]), 0LL);
-            chmin(mn, now);
-            chmax(mx, now);
+    map<t4,ll> mem;
+    auto dfs=[&](auto f, ll x0, ll y0, ll k, ll t) -> ll {
+        if(mem.count({x0,y0,k,t})) return mem[{x0,y0,k,t}];
+        ll &ret = mem[{x0,y0,k,t}];
+        ret = INF;
+        vl cnt(3);
+        bool nothing = true;
+        for(auto [x,y,c]: chars) {
+            if(x<x0 || x>=x0+k || y<y0 || y>=y0+k) continue;
+            cnt[c]++;
+            nothing = false;
         }
-        chmin(ans, mx-mn);
+        ll tot = accumulate(all(cnt), 0LL);
+        if(t>=0 && t<=2) return ret = tot - cnt[t];
+        if(k==1) return ret = 0;
+        if(nothing) return ret = 0;
+
+        vl p(4);
+        iota(all(p), 0);
+        ll nk = k>>1;
+        do {
+            ll now = 0;
+            now += f(f, x0, y0, nk, p[0]);
+            now += f(f, x0+nk, y0, nk, p[1]);
+            now += f(f, x0, y0+nk, nk, p[2]);
+            now += f(f, x0+nk, y0+nk, nk, p[3]);
+            chmin(ret, now);
+        } while(next_permutation(all(p)));
+        return ret;
     };
-    vvl v;
-    auto f=[&](auto f, ll i) -> void {
-        if(i==N3) {
-            update(v);
-            return;
-        }
-        ll sz = v.size();
-        rep(j, sz) {
-            if(SIZE(v[j])==3) continue;
-            v[j].push_back(A[i]);
-            f(f, i+1);
-            v[j].pop_back();
-        }
-        if(sz<N) {
-            v.push_back(vl({A[i]}));
-            f(f, i+1);
-            v.pop_back();
-        }
-    };
-    f(f, 0);
+    ll ans = dfs(dfs, 0, 0, 1LL<<K, 3);
     Out(ans);
+
 
 }
 

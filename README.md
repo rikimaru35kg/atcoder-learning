@@ -75,9 +75,7 @@
 - 基本 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - 基本 [B - 自習 (Self Study)](https://atcoder.jp/contests/joi2022ho/tasks/joi2022ho_b)
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/17 -->
-- !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
+- 基本 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - 基本 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - 基本 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
 - !復習価値低 [D - 安全点検 (Safety Inspection)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_d)
@@ -85,6 +83,8 @@
 ## 二分探索による中央値探索
 ### 例題
 - 基本 中央値の最小値 良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/17 -->
 - !復習価値低 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
 
 ## 二分探索による平均最大化
