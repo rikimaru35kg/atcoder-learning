@@ -1428,6 +1428,7 @@
 - !復習価値低 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
+- !復習価値高 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
 
 ## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる

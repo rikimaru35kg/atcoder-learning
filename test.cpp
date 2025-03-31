@@ -228,118 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+        ret *= n-k+1;
+        ret /= k;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
 
-struct SCC {
-    SCC (int n): n(n), from(n), ifrom(n) {}
-    void add_edge (int a, int b) {
-        from[a].push_back(b); ifrom[b].push_back(a);
-    }
-    vector<vector<int>> scc () {
-        vector<vector<int>> groups;
-        postorder = vector<int>();
-        visited.assign(n, false);
-        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
-        visited.assign(n, false);
-        reverse(all(postorder));
-        for(auto v: postorder) if(!visited[v]) {
-            vector<int> group;
-            dfs2(v, group);
-            groups.push_back(group);
-        }
-        return groups;
-    }
-private:
-    int n;
-    vector<vector<int>> from, ifrom;
-    vector<int> postorder;
-    vector<bool> visited;
-    void dfs1 (int v) {
-        visited[v] = true;
-        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
-        postorder.push_back(v);
-    }
-    void dfs2 (int v, vector<int> &group) {
-        visited[v] = true;
-        group.push_back(v);
-        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
-    }
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N);
-    STRING(S, T);
-    if(S==T) Pm0
-    ll M = 26;
-    vl indeg(M), outdeg(M);
-    SCC scc(M);
-    ll ans = 0;
-    set<Pr> edges;
+    LONG(N, K);
+    VL(A, N);
+    vm dp(K+1);
+    mint ans = 0;
     rep(i, N) {
-        ll s = S[i]-'a', t = T[i]-'a';
-        edges.emplace(s,t);
-    }
-    for(auto [a,b]: edges) {
-        outdeg[a]++, indeg[b]++;
-        if(a!=b) scc.add_edge(a,b), ++ans;
-    }
-    bool allcycle=true;
-    rep(i, M) {
-        if(indeg[i]==0) allcycle = false;
-        if(outdeg[i]>1) Pm1
-    }
-    if(allcycle) Pm1
-
-    for(auto gr: scc.scc()) {
-        if(SIZE(gr)==1) continue;
-        bool branch = false;
-        for(auto v: gr) {
-            if(indeg[v]>1) branch = true;
+        vm pdp(K+1); swap(pdp, dp);
+        pdp[0]++;
+        rep(j, K+1) {
+            rep(k, K-j+1) {
+                dp[j+k] += pdp[j] * mint(A[i]).pow(k) * nCr(K-j, k);
+            }
         }
-        if(!branch) ++ans;
+        ans += dp[K];
     }
     Out(ans);
-
 }
 
 int main () {
