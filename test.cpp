@@ -228,174 +228,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
-template <class S, S(*op)(S, S), S(*e)()>
-struct SegTree {
-    int n, mx;
-    vector<S> a;
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<n);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x, bool do_op=true) {
-        assert(i>=0 && i<n);
-        set_only(i, x, do_op);
-        i += n; i>>=1;  // i is node id
-        while(i) {
-            update(i);
-            i>>=1;
-        }
-    }
-    void update(int i) {  // i is node id
-        assert(i>=1 && i<2*n);
-        int l = i<<1, r = l|1;  // l,r are children
-        a[i] = op(a[l], a[r]);
-    }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
-    S get(int i) { // i = nodeid - n
-        i += n;
-        assert(i>=1 && i<2*n);
-        return a[i];
-    }
-    S prod(int ql, int qr) {
-        assert(ql>=0 && qr<=n);
-        auto f=[&](auto f, int l, int r, int i) -> S {
-            if(r<=ql || l>=qr) return e();
-            if(l>=ql && r<=qr) return get(i-n);
-            int m = (l+r)/2;
-            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
-            return ret;
-        };
-        S ret = f(f, 0, n, 1);
-        return ret;
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
-        cerr<<endl;
-        #endif
-    }
-};
-
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
-
 void solve() {
-    LONG(N); VL(A, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) cc.add(A[i]), cc.add(A[i]+1);
-    cc.add(0);
-    ll M = cc.size();
-    rep(i, N) A[i] = cc(A[i]);
-    SegTree<S,op,e> seg1(M), seg2(M);
-
-    Pr save(0,1);
+    LONG(K, N);
+    vt3 chars;
+    map<char,ll> mp;
+    mp['J'] = 0, mp['O'] = 1, mp['I'] = 2;
     rep(i, N) {
-        ll a = A[i];
-        ll mx1 = seg1.prod(0,a);
-        ll mx2 = seg2.prod(0,a);
-        seg1.set(a, mx1+1);
-        seg2.set(a, mx2+1);
-
-        seg2.set(save.first, save.second);
-        save = {a+1, mx1+2};
+        LONGM(x,y); CHAR(c);
+        chars.emplace_back(x,y,mp[c]);
     }
-    ll ans = seg2.all_prod();
+
+    map<t4,ll> mem;
+    auto dfs=[&](auto f, ll x0, ll y0, ll k, ll t) -> ll {
+        if(mem.count({x0,y0,k,t})) return mem[{x0,y0,k,t}];
+        ll &ret = mem[{x0,y0,k,t}];
+        ret = INF;
+        vl cnt(3);
+        bool nothing = true;
+        for(auto [x,y,c]: chars) {
+            if(x<x0 || x>=x0+k || y<y0 || y>=y0+k) continue;
+            cnt[c]++;
+            nothing = false;
+        }
+        ll tot = accumulate(all(cnt), 0LL);
+        if(t>=0 && t<=2) return ret = tot - cnt[t];
+        if(k==1) return ret = 0;
+        if(nothing) return ret = 0;
+
+        vl p(4);
+        iota(all(p), 0);
+        ll nk = k>>1;
+        do {
+            ll now = 0;
+            now += f(f, x0, y0, nk, p[0]);
+            now += f(f, x0+nk, y0, nk, p[1]);
+            now += f(f, x0, y0+nk, nk, p[2]);
+            now += f(f, x0+nk, y0+nk, nk, p[3]);
+            chmin(ret, now);
+        } while(next_permutation(all(p)));
+        return ret;
+    };
+    ll ans = dfs(dfs, 0, 0, 1LL<<K, 3);
     Out(ans);
+
 
 }
 

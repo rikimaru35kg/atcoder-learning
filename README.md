@@ -75,6 +75,8 @@
 - 基本 グラフ辺削除コストの最小値 [E - Erasing Vertices 2](https://atcoder.jp/contests/abc267/tasks/abc267_e)
 - 基本 [B - 自習 (Self Study)](https://atcoder.jp/contests/joi2022ho/tasks/joi2022ho_b)
 - [B - 花束](https://atcoder.jp/contests/arc050/tasks/arc050_b)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/17 -->
 - !復習価値低 プロジェクト選出 [D - Project Planning](https://atcoder.jp/contests/abc227/tasks/abc227_d)
 - 基本 最強チーム編成 [C - MAD TEAM](https://atcoder.jp/contests/zone2021/tasks/zone2021_c)
 - 基本 oの最大連続部分列長 [F - More Holidays](https://atcoder.jp/contests/abc300/tasks/abc300_f)
@@ -931,9 +933,7 @@
 - 基本 [B - ケーキの切り分け２ (Cake 2)](https://atcoder.jp/contests/joi2015ho/tasks/joi2015ho_b)
 - 基本 7の倍数 [E - Lucky 7 Battle](https://atcoder.jp/contests/abc195/tasks/abc195_e)
 - 基本 bitDPの練習N増しに [F - Shiritori](https://atcoder.jp/contests/abc278/tasks/abc278_f)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/2/21 -->
-- !復習価値中 [F - Exchange Game](https://atcoder.jp/contests/abc380/tasks/abc380_f)
+- 基本 [F - Exchange Game](https://atcoder.jp/contests/abc380/tasks/abc380_f)
 
 ## 円環DP
 - 円環問題は最初の選択を固定する事で問題が簡易化する場合あり（不確定要素がなくなるので考えやすくなる）
@@ -958,6 +958,8 @@
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_committee)
 - !復習価値低 [E - Path Decomposition of a Tree](https://atcoder.jp/contests/abc397/tasks/abc397_e)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
+<!-- where i am now for rank B -->
+<!-- last submission 2025/3/17 -->
 - !復習価値中 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - !要復習 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい

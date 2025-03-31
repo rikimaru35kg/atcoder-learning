@@ -228,56 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
-    }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    vm dp(K+1);
-    mint ans = 0;
-    rep(i, N) {
-        vm pdp(K+1); swap(pdp, dp);
-        pdp[0]++;
-        rep(j, K+1) {
-            rep(k, K-j+1) {
-                dp[j+k] += pdp[j] * mint(A[i]).pow(k) * nCr(K-j, k);
-            }
+    LONG(N);
+    ll N3 = N*3;
+    VL(A, N3);
+
+    ll ans = INF;
+    auto update=[&](vvl &v) {
+        assert(SIZE(v)==N);
+        ll mx = -INF, mn = INF;
+        rep(i, N) {
+            ll now = accumulate(all(v[i]), 0LL);
+            chmin(mn, now);
+            chmax(mx, now);
         }
-        ans += dp[K];
-    }
+        chmin(ans, mx-mn);
+    };
+    vvl v;
+    auto f=[&](auto f, ll i) -> void {
+        if(i==N3) {
+            update(v);
+            return;
+        }
+        ll sz = v.size();
+        rep(j, sz) {
+            if(SIZE(v[j])==3) continue;
+            v[j].push_back(A[i]);
+            f(f, i+1);
+            v[j].pop_back();
+        }
+        if(sz<N) {
+            v.push_back(vl({A[i]}));
+            f(f, i+1);
+            v.pop_back();
+        }
+    };
+    f(f, 0);
     Out(ans);
+
 }
 
 int main () {
