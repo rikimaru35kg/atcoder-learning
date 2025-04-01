@@ -228,49 +228,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(K, N);
-    vt3 chars;
-    map<char,ll> mp;
-    mp['J'] = 0, mp['O'] = 1, mp['I'] = 2;
-    rep(i, N) {
-        LONGM(x,y); CHAR(c);
-        chars.emplace_back(x,y,mp[c]);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
-    map<t4,ll> mem;
-    auto dfs=[&](auto f, ll x0, ll y0, ll k, ll t) -> ll {
-        if(mem.count({x0,y0,k,t})) return mem[{x0,y0,k,t}];
-        ll &ret = mem[{x0,y0,k,t}];
-        ret = INF;
-        vl cnt(3);
-        bool nothing = true;
-        for(auto [x,y,c]: chars) {
-            if(x<x0 || x>=x0+k || y<y0 || y>=y0+k) continue;
-            cnt[c]++;
-            nothing = false;
+void solve() {
+    LONG(N, K);
+    VL(A, N);
+
+    auto f=[&](ll x) -> bool {
+        ll cnt = 0;
+        rep(i, N) {
+            cnt += min(A[i], x);
         }
-        ll tot = accumulate(all(cnt), 0LL);
-        if(t>=0 && t<=2) return ret = tot - cnt[t];
-        if(k==1) return ret = 0;
-        if(nothing) return ret = 0;
-
-        vl p(4);
-        iota(all(p), 0);
-        ll nk = k>>1;
-        do {
-            ll now = 0;
-            now += f(f, x0, y0, nk, p[0]);
-            now += f(f, x0+nk, y0, nk, p[1]);
-            now += f(f, x0, y0+nk, nk, p[2]);
-            now += f(f, x0+nk, y0+nk, nk, p[3]);
-            chmin(ret, now);
-        } while(next_permutation(all(p)));
-        return ret;
+        return cnt >= K*x;
     };
-    ll ans = dfs(dfs, 0, 0, 1LL<<K, 3);
-    Out(ans);
 
+
+    ll ans = binary_search(0, INF/K, f);
+    Out(ans);
 
 }
 

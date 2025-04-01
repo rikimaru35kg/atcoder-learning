@@ -228,6 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
@@ -250,20 +290,30 @@ double binary_search (double ok, double ng, auto f) {
 }
 
 void solve() {
-    LONG(N, K);
-    VL(A, N);
+    LONG(N);VL(A, N);
 
     auto f=[&](ll x) -> bool {
-        ll cnt = 0;
+        vl B = A;
         rep(i, N) {
-            cnt += min(A[i], x);
+            if(B[i]>=x) B[i] = 1;
+            else B[i] = -1;
         }
-        return cnt >= K*x;
+        ll sum = 0;
+        BIT<ll> cnt(2*N+1);
+        cnt.add(N, 1);
+        ll num = 0;
+        rep(i, N) {
+            sum += B[i];
+            num += cnt.sum(0, sum+1+N);
+            cnt.add(sum+N, 1);
+        }
+        return num >= Divceil(N*(N+1)/2, 2LL);
     };
 
-
-    ll ans = binary_search(0, INF/K, f);
+    ll ans = binary_search(1, (ll)1e9+1, f);
     Out(ans);
+
+
 
 }
 

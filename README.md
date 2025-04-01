@@ -83,9 +83,7 @@
 ## 二分探索による中央値探索
 ### 例題
 - 基本 中央値の最小値 良問 [D - Pond](https://atcoder.jp/contests/abc203/tasks/abc203_d)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/17 -->
-- !復習価値低 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
+- 基本 全連続部分列の中央値 [D - Median of Medians](https://atcoder.jp/contests/abc107/tasks/arc101_b)
 
 ## 二分探索による平均最大化
 - 分母と分子に変数がある場合の最大値を求めたい場合、答えを決め打つと二分探索に持ち込める場合あり
@@ -146,6 +144,8 @@
 - 条件を満たした地点から全探索を始める
 ### 例題
 - 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/17 -->
 - !復習価値低 [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
 
 # ソート
