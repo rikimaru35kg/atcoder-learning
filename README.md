@@ -256,8 +256,6 @@
 - 基本 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 - 基本 [G - Triple Index](https://atcoder.jp/contests/abc293/tasks/abc293_g)
 - 基本 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/17 -->
 - !復習価値低 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
 
 ## ある順列P{1,2,...,N}の区間max値の総和
@@ -316,6 +314,8 @@
 - 基本 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 - 基本 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
 - 基本 [D - フクロモモンガ (Sugar Glider)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho4)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
 
 ## 拡張ダイクストラ法（or 拡張BFS）

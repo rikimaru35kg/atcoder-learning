@@ -268,94 +268,97 @@ struct BIT {
     }
 };
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+template <typename T> class CoordinateCompression {
+    bool init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression() {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+    int operator() (T x) {
+        if (!init) compress();
+        int ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        assert(ret<int(vec.size()));
+        return ret;
     }
-    return ok;
-}
+    T operator[] (int i) {
+        assert(i>=0 && i<int(vec.size()));
+        if (!init) compress();
+        return vec[i];
+    }
+    int size () {
+        if (!init) compress();
+        return (int)vec.size();
+    }
+    void print() {
+        #ifdef __DEBUG
+        printf("---- cc print ----\ni: ");
+        for (int i=0; i<(int)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (int i=0; i<(int)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+        #endif
+    }
+};
+
 
 void solve() {
-    LONG(R);
-    LONG(W1,H1,c1,r1); --c1, --r1;
-    VVL(A1, H1, W1);
-    LONG(W2,H2,c2,r2); --c2, --r2;
-    VVL(A2, H2, W2);
-
-    auto calc=[&](vvl &A, ll r0, ll c0) -> vp {
-        ll H = A.size(), W = A[0].size();
-        vt3 info;
-        rep(i, H) rep(j, W) {
-            if(i==r0 && j==c0) continue;
-            info.emplace_back(A[i][j], i, j);
+    LONG(N);
+    VVL(A, 2, N);
+    CoordinateCompression<ll> cc;
+    rep(t, 2) rep(i, N) { cc.add(A[t][i]); }
+    rep(t, 2) rep(i, N) A[t][i] = cc(A[t][i]);
+    ll M = cc.size();
+    LONG(K);
+    VL2(X, Y, K);
+    ll h = max(N/sqrt(K),1.0);
+    vl p(K);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = Y[i]/h, hj = Y[j]/h;
+        if(hi==hj) {
+            if(hi&1) return X[i]<X[j];
+            else return X[i]>X[j];
         }
-        sort(all(info));
+        return hi<hj;
+    });
 
-        vp ret;
-        ret.emplace_back(0, 0);
-        vvb open(H, vb(W));
-        open[r0][c0] = true;
-        ll cnt = 1;
-        ret.emplace_back(1, cnt);
+    vector<BIT<ll>> sum(2, BIT<ll>(M));
+    vector<BIT<ll>> cnt(2, BIT<ll>(M));
 
-        for(auto [a,i,j]: info) {
-            if(open[i][j]) continue;
-            bool sur=false;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(open[ni][nj]) sur=true;
-            }
-            if(!sur) continue;
-            queue<Pr> que;
-            auto push=[&](ll i, ll j) {
-                if(open[i][j]) return;
-                open[i][j] = true;
-                ++cnt;
-                que.emplace(i, j);
-            };
-            push(i,j);
-            while(que.size()) {
-                auto [ci,cj] = que.front(); que.pop();
-                for(auto [di,dj]: dij) {
-                    ll ni = ci + di, nj = cj + dj;
-                    if(!isin(ni,nj,H,W)) continue;
-                    if(A[ni][nj]>a) continue;
-                    push(ni,nj);
-                }
-            }
-            // while(ret.size() && ret.back().first==a) ret.pop_back();
-            ret.emplace_back(a,cnt);
+    ll ans = 0;
+    auto add=[&](ll t, ll i, ll c=1) {
+        ll x = A[t][i];
+        { // smaller
+            ll num = cnt[t^1].sum(0,x);
+            ll tot = sum[t^1].sum(0,x);
+            ans += c*(cc[x]*num - tot);
         }
-        return ret;
+        { // larger
+            ll num = cnt[t^1].sum(x,M);
+            ll tot = sum[t^1].sum(x,M);
+            ans += c*(tot - cc[x]*num);
+        }
+        cnt[t].add(x,c);
+        sum[t].add(x,c*cc[x]);
     };
-    auto d1 = calc(A1,r1,c1);
-    auto d2 = calc(A2,r2,c2);
-    de(d1)de(d2)
-    ll ans = INF;
-    ll idx = d2.size()-1;
-    for(auto [a,cnt]: d1) {
-        while(idx && d2[idx-1].second+cnt>=R) {
-            --idx;
-        }
-        if(cnt+d2[idx].second<R) continue;
-        chmin(ans, a+d2[idx].first);
+    auto del=[&](ll t, ll i) { add(t, i, -1); };
+
+    ll x = 0, y = 0;
+    vl av(K);
+    for(auto i: p) {
+        ll xt = X[i], yt = Y[i];
+        while(x<xt) add(0,x), ++x;
+        while(x>xt) --x, del(0,x);
+        while(y<yt) add(1,y), ++y;
+        while(y>yt) --y, del(1,y);
+        av[i] = ans;
     }
-    Out(ans);
+    Out(av);
 
 }
 
