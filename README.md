@@ -144,8 +144,6 @@
 - 条件を満たした地点から全探索を始める
 ### 例題
 - 基本 [E - Sinking Land](https://atcoder.jp/contests/abc363/tasks/abc363_e)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/17 -->
 - !復習価値低 [E - 認証レベル](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_e)
 
 # ソート
@@ -258,6 +256,8 @@
 - 基本 指定区間で同色ペアを何組作れるか[G - Range Pairing Query](https://atcoder.jp/contests/abc242/tasks/abc242_g)
 - 基本 [G - Triple Index](https://atcoder.jp/contests/abc293/tasks/abc293_g)
 - 基本 [N - 数列と関数](https://atcoder.jp/contests/past202212-open/tasks/past202212_n)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/17 -->
 - !復習価値低 [G - Abs Sum](https://atcoder.jp/contests/abc384/tasks/abc384_g)
 
 ## ある順列P{1,2,...,N}の区間max値の総和

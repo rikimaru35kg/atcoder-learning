@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### test.cpp.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,134 +228,7 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(R);
-    LONG(W1,H1,c1,r1); --c1, --r1;
-    VVL(A1, H1, W1);
-    LONG(W2,H2,c2,r2); --c2, --r2;
-    VVL(A2, H2, W2);
-
-    auto calc=[&](vvl &A, ll r0, ll c0) -> vp {
-        ll H = A.size(), W = A[0].size();
-        vt3 info;
-        rep(i, H) rep(j, W) {
-            if(i==r0 && j==c0) continue;
-            info.emplace_back(A[i][j], i, j);
-        }
-        sort(all(info));
-
-        vp ret;
-        ret.emplace_back(0, 0);
-        vvb open(H, vb(W));
-        open[r0][c0] = true;
-        ll cnt = 1;
-        ret.emplace_back(1, cnt);
-
-        for(auto [a,i,j]: info) {
-            if(open[i][j]) continue;
-            bool sur=false;
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(open[ni][nj]) sur=true;
-            }
-            if(!sur) continue;
-            queue<Pr> que;
-            auto push=[&](ll i, ll j) {
-                if(open[i][j]) return;
-                open[i][j] = true;
-                ++cnt;
-                que.emplace(i, j);
-            };
-            push(i,j);
-            while(que.size()) {
-                auto [ci,cj] = que.front(); que.pop();
-                for(auto [di,dj]: dij) {
-                    ll ni = ci + di, nj = cj + dj;
-                    if(!isin(ni,nj,H,W)) continue;
-                    if(A[ni][nj]>a) continue;
-                    push(ni,nj);
-                }
-            }
-            // while(ret.size() && ret.back().first==a) ret.pop_back();
-            ret.emplace_back(a,cnt);
-        }
-        return ret;
-    };
-    auto d1 = calc(A1,r1,c1);
-    auto d2 = calc(A2,r2,c2);
-    de(d1)de(d2)
-    ll ans = INF;
-    ll idx = d2.size()-1;
-    for(auto [a,cnt]: d1) {
-        while(idx && d2[idx-1].second+cnt>=R) {
-            --idx;
-        }
-        if(cnt+d2[idx].second<R) continue;
-        chmin(ans, a+d2[idx].first);
-    }
-    Out(ans);
 
 }
 
@@ -365,4 +238,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### test.cpp.cpp ###
