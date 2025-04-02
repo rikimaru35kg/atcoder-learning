@@ -228,137 +228,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-template <typename T> class CoordinateCompression {
-    bool init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression() {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    int operator() (T x) {
-        if (!init) compress();
-        int ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        assert(ret<int(vec.size()));
-        return ret;
-    }
-    T operator[] (int i) {
-        assert(i>=0 && i<int(vec.size()));
-        if (!init) compress();
-        return vec[i];
-    }
-    int size () {
-        if (!init) compress();
-        return (int)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (int i=0; i<(int)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (int i=0; i<(int)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
-
 void solve() {
-    LONG(N);
-    VVL(A, 2, N);
-    CoordinateCompression<ll> cc;
-    rep(t, 2) rep(i, N) { cc.add(A[t][i]); }
-    rep(t, 2) rep(i, N) A[t][i] = cc(A[t][i]);
-    ll M = cc.size();
-    LONG(K);
-    VL2(X, Y, K);
-    ll h = max(N/sqrt(K),1.0);
-    vl p(K);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        ll hi = Y[i]/h, hj = Y[j]/h;
-        if(hi==hj) {
-            if(hi&1) return X[i]<X[j];
-            else return X[i]>X[j];
-        }
-        return hi<hj;
-    });
+    LONG(N, Q);
+    VLM(P, N-1);
+    P.insert(P.begin(), -1);
+    vl sz(N, 1);
+    repk(i, 1, N) { sz[P[i]]++; }
 
-    vector<BIT<ll>> sum(2, BIT<ll>(M));
-    vector<BIT<ll>> cnt(2, BIT<ll>(M));
-
-    ll ans = 0;
-    auto add=[&](ll t, ll i, ll c=1) {
-        ll x = A[t][i];
-        { // smaller
-            ll num = cnt[t^1].sum(0,x);
-            ll tot = sum[t^1].sum(0,x);
-            ans += c*(cc[x]*num - tot);
+    rep(_, Q) {
+        LONG(M);
+        uset<ll> st;
+        ll ans = 0;
+        VLM(V, M);
+        rep(i, M) {
+            st.insert(V[i]);
+            ans += sz[V[i]];
         }
-        { // larger
-            ll num = cnt[t^1].sum(x,M);
-            ll tot = sum[t^1].sum(x,M);
-            ans += c*(tot - cc[x]*num);
+        rep(i, M) {
+            if(st.count(P[V[i]])) ans -= 2;
         }
-        cnt[t].add(x,c);
-        sum[t].add(x,c*cc[x]);
-    };
-    auto del=[&](ll t, ll i) { add(t, i, -1); };
-
-    ll x = 0, y = 0;
-    vl av(K);
-    for(auto i: p) {
-        ll xt = X[i], yt = Y[i];
-        while(x<xt) add(0,x), ++x;
-        while(x>xt) --x, del(0,x);
-        while(y<yt) add(1,y), ++y;
-        while(y>yt) --y, del(1,y);
-        av[i] = ans;
+        Out(ans);
     }
-    Out(av);
 
 }
 

@@ -314,9 +314,7 @@
 - 基本 終電 [E - Last Train](https://atcoder.jp/contests/abc342/tasks/abc342_e)
 - 基本 [N - 壁の建設計画](https://atcoder.jp/contests/past202206-open/tasks/past202206_n)
 - 基本 [D - フクロモモンガ (Sugar Glider)](https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho4)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
+- 基本 [O - 宝箱](https://atcoder.jp/contests/past202010-open/tasks/past202010_o)
 
 ## 拡張ダイクストラ法（or 拡張BFS）
 - 頂点に状態を持たせる事で拡張する手法。頂点と状態をqueに入れる
@@ -330,7 +328,7 @@
 - 基本 グラフで回文 [F - Construct a Palindrome](https://atcoder.jp/contests/abc197/tasks/abc197_f)
 - 基本 通貨払い最短経路 [E - Two Currencies](https://atcoder.jp/contests/abc164/tasks/abc164_e)
 - 基本 頂点使用回数偶奇ごとの最短パス長 [F - Shortest Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_f)
-- !復習価値低 [F - タクシー 2 (Taxis 2)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_f)
+- 基本 [F - タクシー 2 (Taxis 2)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_f)
 
 ## ポテンシャル法
 - ダイクストラは負辺があると使えないが、各頂点にポテンシャルを設定できれば全辺を非負に変換でき、ダイクストラが使えるようになる
@@ -395,9 +393,9 @@
 - 次数が2以下の木をパスという（パスは、次数2以下かつ閉路なしで判定可能）
 - 距離が2以下の場合〇〇系の問題は、ある頂点を中心に考えると親と子しかいない。子に対する処理（数え上げなど）をする事で解ける問題あり
 ### 例題
-- !復習価値低 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
-- !復習価値低 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
-- !復習価値低 部分木フリップ [C - Lights Out on Tree](https://atcoder.jp/contests/arc148/tasks/arc148_c)
+- 基本 森の連結成分数の性質 [F - Intervals on Tree](https://atcoder.jp/contests/abc173/tasks/abc173_f)
+- 基本 距離が2以下は異なる場合のK彩色 [E - Virus Tree 2](https://atcoder.jp/contests/abc133/tasks/abc133_e)
+- 基本 部分木フリップ [C - Lights Out on Tree](https://atcoder.jp/contests/arc148/tasks/arc148_c)
 
 ## 木の直径、重心
 - xの最遠点yの最遠点zとすると、yとzの距離が直径となる
@@ -409,6 +407,8 @@
 ### 例題
 - 木の直径基本 [003 - Longest Circular Road（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_c)
 - 基本 [E - Tree and Hamilton Path 2](https://atcoder.jp/contests/abc361/tasks/abc361_e)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
 - !復習価値低 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
 - 基本 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
