@@ -229,26 +229,41 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    VLM(P, N-1);
-    P.insert(P.begin(), -1);
-    vl sz(N, 1);
-    repk(i, 1, N) { sz[P[i]]++; }
-
-    rep(_, Q) {
-        LONG(M);
-        uset<ll> st;
-        ll ans = 0;
-        VLM(V, M);
-        rep(i, M) {
-            st.insert(V[i]);
-            ans += sz[V[i]];
-        }
-        rep(i, M) {
-            if(st.count(P[V[i]])) ans -= 2;
-        }
-        Out(ans);
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+    VL(C, N);
+    ll tot = accumulate(all(C), 0LL);
+
+    ll cog = -1;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = C[v];
+        bool small = true;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll sz = f(f, nv, v);
+            if(sz>tot/2) small = false;
+            ret += sz;
+        }
+        ll psz = tot - ret;
+        if(psz>tot/2) small = false;
+        if(small) cog = v;
+
+        return ret;
+    };
+    dfs(dfs, 0);
+
+    auto dfs2=[&](auto f, ll v, ll d, ll p=-1) -> ll {
+        ll ret = d*C[v];
+        for(auto nv: from[v]) if(nv!=p) {
+            ret += f(f, nv, d+1, v);
+        }
+        return ret;
+    };
+    Out(dfs2(dfs2, cog, 0));
 
 }
 
