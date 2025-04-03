@@ -228,45 +228,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N, K);
-    auto v = separate_digit(N, 2);
-    ll m = v.size();
-    ll z = pcnt(N, m);
-    if((1LL<<z)<K) {
-        Out(-1); return;
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    --K;
-    auto vk = separate_digit(K, 2, z);
-    ll idx = 0;
-    rep(i, m) {
-        if(v[i]) continue;
-        v[i] = vk[idx++];
-    }
-    ll ans = consolidate_digit(v,2);
+
+    ll ans = -1;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
+        vl sz;
+        for(auto nv: from[v]) if(nv!=p) {
+            sz.push_back(f(f, nv, v));
+        }
+        if(SIZE(sz)<3) return 1;
+        sort(allr(sz));
+        ll ret = sz[0]+sz[1]+sz[2]+1;
+        if(p!=-1) chmax(ans, ret+1);
+        if(SIZE(sz)>=4) {
+            chmax(ans, sz[0]+sz[1]+sz[2]+sz[3]+1);
+        }
+        return ret;
+    };
+
+    dfs(dfs, 0);
     Out(ans);
 
 }
@@ -274,8 +261,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

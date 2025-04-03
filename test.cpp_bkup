@@ -228,46 +228,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    return ok;
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
-    return ok;
+    return ret;
 }
 
 void solve() {
-    LONG(N, X);
-    VL2(U, D, N);
-
-    auto f=[&](ll h) -> bool {
-        ll l = -INF, r = INF;
-        rep(i, N) {
-            if(U[i]+D[i]<h) return false;
-            l -= X, r += X;
-            chmax(l, h-D[i]);
-            chmin(r, U[i]);
-            if(l>r) return false;
-        }
-        return true;
-    };
-
-    ll h = binary_search(0, (ll)2e9+1, f);
-    ll ans = 0;
-    rep(i, N) { ans += U[i]+D[i]-h; }
+    LONG(N, K);
+    auto v = separate_digit(N, 2);
+    ll m = v.size();
+    ll z = pcnt(N, m);
+    if((1LL<<z)<K) {
+        Out(-1); return;
+    }
+    --K;
+    auto vk = separate_digit(K, 2, z);
+    ll idx = 0;
+    rep(i, m) {
+        if(v[i]) continue;
+        v[i] = vk[idx++];
+    }
+    ll ans = consolidate_digit(v,2);
     Out(ans);
 
 }
@@ -275,7 +274,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

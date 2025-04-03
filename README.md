@@ -961,9 +961,7 @@
 <!-- where i am now for rank B -->
 <!-- last submission 2025/3/17 -->
 - !復習価値中 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
-<!-- where i am now for rank S-->
-<!-- last submission 2025/3/3 -->
-- !要復習 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
+- 基本 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 - !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値中 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
@@ -1257,6 +1255,8 @@
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
 - !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
+<!-- where i am now for rank S-->
+<!-- last submission 2025/3/16 -->
 - !要復習 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
 
 ## 約数
