@@ -426,9 +426,7 @@
 ### 
 - 基本 [D - 閉路](https://atcoder.jp/contests/abc014/tasks/abc014_4)
 - 基本 [035 - Preserve Connectivity（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ai)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低（実装重いのでライブラリAC+解説動画見るだけでOK） 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
+- 基本 木の頂点間距離 w/オンラインコスト変化 [G - Distance Queries on a Tree](https://atcoder.jp/contests/abc294/tasks/abc294_g)
 
 ## 完全二分木
 - 全ての葉が同じ深さを持ち、葉以外の全ての頂点が子を二つ持つ二分木を完全二分木と呼ぶ
@@ -437,15 +435,17 @@
 - 長さが二倍二倍と増えていく場合、操作後の先頭からの番号を二進数で表すと見通しが良くなる
 ### 例題
 - 基本 [D - Moves on Binary Tree](https://atcoder.jp/contests/abc243/tasks/abc243_d)
-- !復習価値低 [D - Strange Mirroring](https://atcoder.jp/contests/abc380/tasks/abc380_d)
+- 基本 [D - Strange Mirroring](https://atcoder.jp/contests/abc380/tasks/abc380_d)
 - 基本 [D - ABC Transform](https://atcoder.jp/contests/abc242/tasks/abc242_d)
 - 基本 距離Dとなる頂点組の個数 [E - Distance on Large Perfect Binary Tree](https://atcoder.jp/contests/abc220/tasks/abc220_e)
-- !復習価値低 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
+- 基本 距離Dとなる頂点の個数 [E - Complete Binary Tree](https://atcoder.jp/contests/abc321/tasks/abc321_e)
 
 ## 通りがけ順
 - 二分木の場合に定義される（下側を通る順番の事）
 - 通りがけ順を適当な（上手い）範囲で取り出すと部分木になっており、根より早く登場する頂点は左側子孫、遅く出現する頂点は根の右側子孫となる
 ### 例題
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
 
 ## 木の次数列

@@ -229,41 +229,18 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    STRING(S);
+    ll N = S.size();
+    LONG(Q);
+    rep(_, Q) {
+        LONGM(K);
+        ll blck = K/N;
+        ll r = K%N;
+        ll flip = parity(blck);
+        char ans = S[r];
+        if(flip) ans ^= 32;
+        Out(ans);
     }
-    VL(C, N);
-    ll tot = accumulate(all(C), 0LL);
-
-    ll cog = -1;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
-        ll ret = C[v];
-        bool small = true;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll sz = f(f, nv, v);
-            if(sz>tot/2) small = false;
-            ret += sz;
-        }
-        ll psz = tot - ret;
-        if(psz>tot/2) small = false;
-        if(small) cog = v;
-
-        return ret;
-    };
-    dfs(dfs, 0);
-
-    auto dfs2=[&](auto f, ll v, ll d, ll p=-1) -> ll {
-        ll ret = d*C[v];
-        for(auto nv: from[v]) if(nv!=p) {
-            ret += f(f, nv, d+1, v);
-        }
-        return ret;
-    };
-    Out(dfs2(dfs2, cog, 0));
 
 }
 
