@@ -848,9 +848,7 @@
 - N=15の時、4^N=1e9、3^N=1e7なので、N=15ぐらいのときはこのテクニックが効いてくる
 ### 例題
 - 基本 グループ分け [U - Grouping](https://atcoder.jp/contests/dp/tasks/dp_u)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
+- 基本 分散最小袋分け [E - Lucky bag](https://atcoder.jp/contests/abc332/tasks/abc332_e)
 
 ## 耳DP
 - 一つずつ進む状態をキーに持つDP
@@ -875,6 +873,8 @@
 - 基本 LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
 - 基本 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
 - 基本 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [2 - IOI 列車で行こう (Take the 'IOI' train) ](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho2)
 - !復習価値低 [F - Operate K](https://atcoder.jp/contests/abc386/tasks/abc386_f)
 
