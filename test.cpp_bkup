@@ -228,76 +228,137 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct HeadK {
-    long long K, sum = 0;
-    bool ascending;
-    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
-    multiset<long long> stK, stM;
-    void add(long long x) {
-        if(!ascending) x = -x;
-        stK.insert(x);
-        sum += x;
-        KtoM();
-    };
-    void del(long long x) {
-        if(!ascending) x = -x;
-        if (stM.contains(x)) {
-            stM.erase(stM.find(x));
-        } else {
-            if (!stK.contains(x)) return;
-            stK.erase(stK.find(x));
-            sum -= x;
-            while ((long long)stK.size()<K && stM.size()) {
-                auto it = stM.begin();
-                long long mn = *it;
-                stM.erase(it);
-                stK.insert(mn);
-                sum += mn;
-            }
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
+        return t;
     }
-    void decK(long long nk) { // decrease K size
-        K = nk;
-        KtoM();
-    }
-    void KtoM() {
-        while ((long long)stK.size()>K) {
-            auto it = stK.end(); --it;
-            long long mx = *it;
-            stK.erase(it);
-            sum -= mx;
-            stM.insert(mx);
-        }
-    }
-    long long get_sum() {
-        if(ascending) return sum;
-        else return -sum;
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
     }
 };
 
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+    void print() {
+        #ifdef __DEBUG
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+        #endif
+    }
+};
+
+
 void solve() {
-    LONG(N, K);
-    VP(op, N);
-    op.insert(op.begin(), {1,0});
-    HeadK h(K);
-    reverse(all(op));
-    ll sum = 0;
-    ll ans = -INF;
-    for(auto [t,y]: op) {
+    LONG(N, Q);
+    CoordinateCompression<ll> cc;
+    VL(P, N);
+    rep(i, N) cc.add(P[i]);
+    vt3 query;
+    rep(i, Q) {
+        LONG(t);
         if(t==1) {
-            ll now = y;
-            ll ign = h.get_sum();
-            now += sum - ign;
-            chmax(ans, now);
-            --K;
-            if(K<0) break;
-            h.decK(K);
+            LONG(a, x); --a;
+            query.emplace_back(t,a,x);
+            cc.add(x);
+        } else if(t==2) {
+            LONG(a); --a;
+            query.emplace_back(t,a,-1);
         } else {
-            sum += y;
-            if(y<0) h.add(y);
+            LONG(r);
+            query.emplace_back(t,r,-1);
         }
     }
-    Out(ans);
+    ll M = cc.size();
+    BIT<ll> cnt(M);
+
+    rep(i, N) P[i] = cc(P[i]);
+
+    vl mp(M,-1);
+    auto add=[&](ll i) {
+        cnt.set(P[i], 1);
+        mp[P[i]] = i;
+    };
+    auto del=[&](ll i) {
+        cnt.set(P[i], 0);
+        mp[P[i]] = -1;
+    };
+    rep(i, N) add(i);
+
+    for(auto [t,a,x]: query) {
+        if(t==1) {
+            del(a);
+            P[a] = cc(x);
+            add(a);
+        } else if(t==2) {
+            ll sum = cnt.sum(P[a], M);
+            Out(sum);
+        } else {
+            ll r = a;
+            ll pi = cnt.lower_bound(N-r+1);
+            ll ans = mp[pi] + 1;
+            Out(ans);
+        }
+    }
 
 }
 

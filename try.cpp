@@ -165,7 +165,6 @@ template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPe
 template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
-template<typename T> inline void sort3(T &a,T &b,T &c) {if(a>b)swap(a,b);if(b>c)swap(b,c);if(a>b)swap(a,b);}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -231,62 +230,59 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 #include <atcoder/lazysegtree>
 using namespace atcoder;
 
-constexpr int M = 10;
-
+const ll MX = 11;
 struct S {
-    int d[M+1];
-    int w;
-    S(int x=-1, int w=0): w(w) {
-        rep(i, M+1) d[i] = 0;
-        if(x!=-1) d[x] = w;
+    ll cnt[MX], w;
+    S(ll x=-1, ll w=0): w(w) {
+        rep(i, MX) cnt[i] = 0;
+        if(x!=-1) cnt[x]++;
     }
 };
 S op(S a, S b) {
-    rep(i, M+1) a.d[i] += b.d[i];
+    rep(i, MX) a.cnt[i] += b.cnt[i];
     a.w += b.w;
     return a;
 }
-S e() {return S();}
+S e() { return S(-1,0); }
 using F = ll;
 S mapping(F f, S x) {
-    if(f==-1) return x;
-    return S(f, x.w);
+    if(f==INF) return x;
+    S ret(-1, x.w);
+    ret.cnt[f] += x.w;
+    return ret;
 }
 F composition(F f, F g) {
-    if(f==-1) return g;
+    if(f==INF) return g;
     return f;
 }
-F id() {return -1;}
+F id() {return INF;}
 
 void solve() {
     LONG(N, Q);
     VL(A, N);
-    vector<S> init(N);
-    rep(i, N) { init[i] = S(A[i],1); }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-
+    vector<S> v(N);
+    rep(i, N) { v[i] = S(A[i],1); }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(v);
     rep(_, Q) {
-        LONG(t, l, r); --l;
+        LONG(t,l,r); --l;
         if(t==1) {
-            S tmp = seg.prod(l,r);
-            rep(a, M+1) {
-                ll n = tmp.d[a];
-                seg.apply(l, l+n, a);
-                l += n;
+            S tmp = seg.prod(l, r);
+            rep(i, MX) {
+                ll num = tmp.cnt[i];
+                seg.apply(l, l+num, i);
+                l += num;
             }
-        } else if(t==2) {
-            S tmp = seg.prod(l,r);
-            repr(a, M+1) {
-                ll n = tmp.d[a];
-                seg.apply(l, l+n, a);
-                l += n;
+        } else if (t==2) {
+            S tmp = seg.prod(l, r);
+            repr(i, MX) {
+                ll num = tmp.cnt[i];
+                seg.apply(l, l+num, i);
+                l += num;
             }
         } else {
-            S tmp = seg.prod(l,r);
+            S tmp = seg.prod(l, r);
             ll ans = 0;
-            rep(a, M+1) {
-                ans += a*tmp.d[a];
-            }
+            rep(i, MX) { ans += tmp.cnt[i]*i; }
             Out(ans);
         }
     }
