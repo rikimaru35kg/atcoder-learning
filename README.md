@@ -679,9 +679,7 @@
 ## bitset
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
+- 基本 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
 - !復習価値中 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
@@ -697,6 +695,8 @@
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
 - 基本 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 
 ## 括弧列

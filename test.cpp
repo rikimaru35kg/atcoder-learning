@@ -228,140 +228,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! BE CAREFUL ABOUT OVERFLOWING!
-//! repeated usage of +-*/ leads to overflowing
-//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
-//! BE CAREFUL ABOUT CALCULATION COST!
-//! O(logM) just for initializing
-struct Frac {
-    long long p, q;  // p/q: p over q (like y/x: y over x)
-    Frac(long long a=0, long long b=1) {
-        if (b==0) {
-            p = 1; q = 0;  // inf (no definition of -inf)
-            return;
-        }
-        long long g = gcd(a, b);
-        p = a/g; q = b/g;
-        if (q<0) {p=-p; q=-q;}
-    }
-    Frac operator+(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return *this + Frac(x);
-    }
-    Frac operator+(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
-    }
-    Frac operator-(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return *this - Frac(x);
-    }
-    Frac operator-(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
-    }
-    Frac operator*(const ll x) {
-        if (q==0) return Frac(1, 0);
-        return Frac(p*x, q);
-    }
-    Frac operator*(const Frac &rhs) {
-        if (q==0 || rhs.q==0) return Frac(1, 0);
-        return Frac(p*rhs.p, q*rhs.q);
-    }
-    Frac operator/(const ll x) {
-        if (q==0 || x==0) return Frac(1, 0);
-        return Frac(p, q*x);
-    }
-    Frac operator/(const Frac &rhs) {
-        if (q==0 || rhs.p==0) return Frac(1, 0);
-        return Frac(p*rhs.q, q*rhs.p);
-    }
-    bool operator<(const ll x) const { return *this < Frac(x); }
-    bool operator<(const Frac &rhs) const { return p*rhs.q - q*rhs.p < 0; }
-    bool operator<=(const ll x) const { return *this <= Frac(x); }
-    bool operator<=(const Frac &rhs) const { return p*rhs.q - q*rhs.p <= 0; }
-    bool operator>(const ll x) const { return *this > Frac(x); }
-    bool operator>(const Frac &rhs) const { return p*rhs.q - q*rhs.p > 0; }
-    bool operator>=(const ll x) const { return *this >= Frac(x); }
-    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }
-    bool operator==(const ll x) const { return (q==1 && p==x); }
-    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }
-};
-
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    auto Sc = cumsum(A);
-    multiset<Frac> st;
-    set<ll> xs;
-    auto avg=[&](ll l, ll r) -> Frac {
-        assert(l<r);
-        ll sum = Sc[r] - Sc[l];
-        return Frac(sum,r-l);
-    };
-    auto add=[&](ll x) {
-        xs.insert(x);
-        auto it = xs.find(x);
-        if(it!=xs.begin() && next(it)!=xs.end()) {
-            ll x1 = *prev(it), x2 = *next(it);
-            erase(st, avg(x1,x2));
-            st.insert(avg(x1,x)); st.insert(avg(x,x2));
-        } else if(it!=xs.begin()) {
-            ll x1 = *prev(it);
-            st.insert(avg(x1,x));
-        } else if(next(it)!=xs.end()) {
-            ll x2 = *next(it);
-            st.insert(avg(x,x2));
-        }
-    };
-    auto del=[&](ll x) {
-        auto it = xs.find(x);
-        if(it!=xs.begin() && next(it)!=xs.end()) {
-            ll x1 = *prev(it), x2 = *next(it);
-            st.insert(avg(x1,x2));
-            erase(st, avg(x1,x)); erase(st, avg(x,x2));
-        } else if(it!=xs.begin()) {
-            ll x1 = *prev(it);
-            erase(st, avg(x1,x));
-        } else if(next(it)!=xs.end()) {
-            ll x2 = *next(it);
-            erase(st, avg(x,x2));
-        }
-        xs.erase(x);
-    };
-    rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            if(xs.count(x)) del(x);
-            else add(x);
-        } else {
-            auto it = prev(st.end());
-            auto [a,b] = *it;
-            printf("%lld %lld\n", a, b);
+    LONG(N);
+    using BS = bitset<3000>;
+    vector<BS> g(N);
+    rep(i, N) {
+        STRING(A);
+        rep(j, N) {
+            g[i][j] = A[j]-'0';
         }
     }
+    ll ans = 0;
+    rep(i, N) rep(j, i) {
+        if(!g[i][j]) continue;
+        BS mul = g[i] & g[j];
+        ans += mul.count();
+    }
+    Out(ans/3);
+
 
 }
 
