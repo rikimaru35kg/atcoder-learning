@@ -229,25 +229,37 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    LONG(Q);
-    rep(_, Q) {
-        LONGM(K);
-        ll blck = K/N;
-        ll r = K%N;
-        ll flip = parity(blck);
-        char ans = S[r];
-        if(flip) ans ^= 32;
-        Out(ans);
+    LONG(N, X, K);
+    auto children=[&](ll x, ll k) -> ll {
+        ll l = x;
+        // rep(i, k) {
+        //     l<<=1;
+        //     if(l>N) return 0;
+        // }
+        if(k>60) return 0;
+        if((1LL<<k) > N/l) return 0;
+        l = l*(1LL<<k);
+        ll r = l + (1LL<<k) - 1;
+        chmin(r, N);
+        return r-l+1;
+    };
+    ll ans = children(X, K);
+    while(X>1 && K>=2) {
+        ll p = X^1;
+        ans += children(p, K-2);
+        --K;
+        X>>=1;
     }
+    if(X>1&&K==1) ++ans;
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

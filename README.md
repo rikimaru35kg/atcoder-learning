@@ -444,15 +444,13 @@
 - 二分木の場合に定義される（下側を通る順番の事）
 - 通りがけ順を適当な（上手い）範囲で取り出すと部分木になっており、根より早く登場する頂点は左側子孫、遅く出現する頂点は根の右側子孫となる
 ### 例題
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
 - !復習価値低 [F - Pre-order and In-order](https://atcoder.jp/contests/abc255/tasks/abc255_f)
 
 ## 木の次数列
 - 次数の合計が2(N-1)かつ全ての次数が1以上なら必ず木を構成できる
 ### 例題
 - 基本 木の次数列の和=2N-2 [F - Tree Degree Optimization](https://atcoder.jp/contests/abc359/tasks/abc359_f)
-- !復習価値低 [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
+- 基本 [F - Construct Highway](https://atcoder.jp/contests/abc239/tasks/abc239_f)
 
 ## 最小全域木（MST: Minimum Spanning Tree）
 - 全域木の中で辺の和が最小のものをいう
@@ -477,6 +475,8 @@
 - 基本 二つの全域木 [F - Two Spanning Trees](https://atcoder.jp/contests/abc251/tasks/abc251_f)
 - 基本 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
 - 基本 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
