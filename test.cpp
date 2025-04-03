@@ -228,72 +228,140 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
+//! BE CAREFUL ABOUT OVERFLOWING!
+//! repeated usage of +-*/ leads to overflowing
+//! Do not repeat +-*/ more than one time (suppose p,q<=|1e9|)
+//! BE CAREFUL ABOUT CALCULATION COST!
+//! O(logM) just for initializing
+struct Frac {
+    long long p, q;  // p/q: p over q (like y/x: y over x)
+    Frac(long long a=0, long long b=1) {
+        if (b==0) {
+            p = 1; q = 0;  // inf (no definition of -inf)
+            return;
         }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+        long long g = gcd(a, b);
+        p = a/g; q = b/g;
+        if (q<0) {p=-p; q=-q;}
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
+    Frac operator+(const ll x) {
+        if (q==0) return Frac(1, 0);
+        return *this + Frac(x);
     }
+    Frac operator+(const Frac &rhs) {
+        if (q==0 || rhs.q==0) return Frac(1, 0);
+        return Frac(p*rhs.q + q*rhs.p, q*rhs.q);
+    }
+    Frac operator-(const ll x) {
+        if (q==0) return Frac(1, 0);
+        return *this - Frac(x);
+    }
+    Frac operator-(const Frac &rhs) {
+        if (q==0 || rhs.q==0) return Frac(1, 0);
+        return Frac(p*rhs.q - q*rhs.p, q*rhs.q);
+    }
+    Frac operator*(const ll x) {
+        if (q==0) return Frac(1, 0);
+        return Frac(p*x, q);
+    }
+    Frac operator*(const Frac &rhs) {
+        if (q==0 || rhs.q==0) return Frac(1, 0);
+        return Frac(p*rhs.p, q*rhs.q);
+    }
+    Frac operator/(const ll x) {
+        if (q==0 || x==0) return Frac(1, 0);
+        return Frac(p, q*x);
+    }
+    Frac operator/(const Frac &rhs) {
+        if (q==0 || rhs.p==0) return Frac(1, 0);
+        return Frac(p*rhs.q, q*rhs.p);
+    }
+    bool operator<(const ll x) const { return *this < Frac(x); }
+    bool operator<(const Frac &rhs) const { return p*rhs.q - q*rhs.p < 0; }
+    bool operator<=(const ll x) const { return *this <= Frac(x); }
+    bool operator<=(const Frac &rhs) const { return p*rhs.q - q*rhs.p <= 0; }
+    bool operator>(const ll x) const { return *this > Frac(x); }
+    bool operator>(const Frac &rhs) const { return p*rhs.q - q*rhs.p > 0; }
+    bool operator>=(const ll x) const { return *this >= Frac(x); }
+    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }
+    bool operator==(const ll x) const { return (q==1 && p==x); }
+    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }
 };
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 void solve() {
-    LONG(N, K, L);
-    WeightedUnionFind uf1(N), uf2(N);
-    rep(i, K) {
-        LONGM(a,b);
-        uf1.merge(a,b);
+    LONG(N, Q);
+    VL(A, N);
+    auto Sc = cumsum(A);
+    multiset<Frac> st;
+    set<ll> xs;
+    auto avg=[&](ll l, ll r) -> Frac {
+        assert(l<r);
+        ll sum = Sc[r] - Sc[l];
+        return Frac(sum,r-l);
+    };
+    auto add=[&](ll x) {
+        xs.insert(x);
+        auto it = xs.find(x);
+        if(it!=xs.begin() && next(it)!=xs.end()) {
+            ll x1 = *prev(it), x2 = *next(it);
+            erase(st, avg(x1,x2));
+            st.insert(avg(x1,x)); st.insert(avg(x,x2));
+        } else if(it!=xs.begin()) {
+            ll x1 = *prev(it);
+            st.insert(avg(x1,x));
+        } else if(next(it)!=xs.end()) {
+            ll x2 = *next(it);
+            st.insert(avg(x,x2));
+        }
+    };
+    auto del=[&](ll x) {
+        auto it = xs.find(x);
+        if(it!=xs.begin() && next(it)!=xs.end()) {
+            ll x1 = *prev(it), x2 = *next(it);
+            st.insert(avg(x1,x2));
+            erase(st, avg(x1,x)); erase(st, avg(x,x2));
+        } else if(it!=xs.begin()) {
+            ll x1 = *prev(it);
+            erase(st, avg(x1,x));
+        } else if(next(it)!=xs.end()) {
+            ll x2 = *next(it);
+            erase(st, avg(x,x2));
+        }
+        xs.erase(x);
+    };
+    rep(_, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            if(xs.count(x)) del(x);
+            else add(x);
+        } else {
+            auto it = prev(st.end());
+            auto [a,b] = *it;
+            printf("%lld %lld\n", a, b);
+        }
     }
-    rep(i, L) {
-        LONGM(a,b);
-        uf2.merge(a,b);
-    }
-    map<Pr,ll> mp;
-    rep(i, N) {
-        ll l1 = uf1.leader(i);
-        ll l2 = uf2.leader(i);
-        mp[{l1,l2}]++;
-    }
-    vl ans;
-    rep(i, N) {
-        ll l1 = uf1.leader(i);
-        ll l2 = uf2.leader(i);
-        ans.push_back(mp[{l1,l2}]);
-    }
-    Out(ans);
 
 }
 

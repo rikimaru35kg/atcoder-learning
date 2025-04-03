@@ -668,19 +668,19 @@
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
 - 基本 [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 - 基本 [D - Santa Claus 2](https://atcoder.jp/contests/abc385/tasks/abc385_d)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 [L - マンションの改築](https://atcoder.jp/contests/past202010-open/tasks/past202010_l)
+- 基本 [L - マンションの改築](https://atcoder.jp/contests/past202010-open/tasks/past202010_l)
 - 基本 [E - Smart Infants](https://atcoder.jp/contests/abc170/tasks/abc170_e)
 - 基本 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)
 - 基本 ポーンの動き [E - White Pawn](https://atcoder.jp/contests/abc203/tasks/abc203_e)
-- !復習価値低 [L - 平均クエリ](https://atcoder.jp/contests/past16-open/tasks/past202309_l)
+- 基本 [L - 平均クエリ](https://atcoder.jp/contests/past16-open/tasks/past202309_l)
 - !復習価値低 [G - 一日一歩](https://atcoder.jp/contests/past202104-open/tasks/past202104_g)
 - 基本 Note非掲載 [M - 名前の変更](https://atcoder.jp/contests/past202112-open/tasks/past202112_m)
 
 ## bitset
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
 - !復習価値中 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
