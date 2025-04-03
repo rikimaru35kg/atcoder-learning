@@ -228,83 +228,155 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<vector<int>> make_next(string &s, char base='a') {
-    int n = s.size(), Z = 26;
-    vector<vector<int>> next(Z, vector<int>(n, n));
-    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
-    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
-        next[z][i] = min(next[z][i], next[z][i+1]);
+template <class S, S(*op)(S, S), S(*e)()>
+struct SegTree {
+    int n, mx;
+    vector<S> a;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    return next;
-}
-template <typename T>
-vector<vector<int>> make_next(vector<T> a, int mx) {
-    int n = a.size();
-    vector<vector<int>> next(mx, vector<int>(n, n));
-    for(int i=0; i<n; ++i) next[a[i]][i] = i;
-    for(int z=0; z<mx; ++z) for(int i=n-2; i>=0; --i) {
-        next[z][i] = min(next[z][i], next[z][i+1]);
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    return next;
-}
-// return next position + 1
-// if ret>n, then no valid position
-int find_next(vector<int> &nxt, int i) {
-    int n = nxt.size();
-    if(i>=n) return n+1;
-    return nxt[i]+1;  // return next position
-}
+    void set(int i, S x, bool do_op=true) {
+        assert(i>=0 && i<n);
+        set_only(i, x, do_op);
+        i += n; i>>=1;  // i is node id
+        while(i) {
+            update(i);
+            i>>=1;
+        }
+    }
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
+    }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
+    }
+    S get(int i) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        return a[i];
+    }
+    S prod(int ql, int qr) {
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, int i) -> S {
+            if(r<=ql || l>=qr) return e();
+            if(l>=ql && r<=qr) return get(i-n);
+            int m = (l+r)/2;
+            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
+            return ret;
+        };
+        S ret = f(f, 0, n, 1);
+        return ret;
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
+        cerr<<endl;
+        #endif
+    }
+};
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct S {
+    ll x;
+    Pr p;
+    S(ll x=-INF, Pr p={-1,-1}): x(x), p(p) {}
+};
+S op(S a, S b) {
+    if(a.x>=b.x) return a;
+    return b;
+}
+S e() {return S();}
 
 void solve() {
-    STRING(S, T);
-    ll Z = 26;
-    auto ns = make_next(S), nt = make_next(T);
-    auto calc=[&](string &s, vvi &next) -> mint {
-        ll n = s.size();
-        vm dp(n+1);
-        dp[0] = 1;
-        rep(i, n) {
-            rep(j, Z) {
-                ll ni = find_next(next[j], i);
-                if(ni>n) continue;
-                dp[ni] += dp[i];
-            }
-        }
-        mint ret;
-        rep1(i, n) ret += dp[i];
-        return ret;
-    };
-    mint ans = calc(S, ns) + calc(T, nt);
-    
-    ll N = S.size(), M = T.size();
-    vvm dp(N+1, vm(M+1));
-    dp[0][0] = 1;
-    rep(i, N) rep(j, M) {
-        mint now = dp[i][j];
-        if(now==0) continue;
-        rep(a, Z) {
-            ll ni = find_next(ns[a], i);
-            ll nj = find_next(nt[a], j);
-            if(ni>N || nj>M) continue;
-            dp[ni][nj] += now;
+    LONG(H, W, N);
+    vvl coins(H);
+    rep(i, N) {
+        LONGM(r,c);
+        coins[r].push_back(c);
+    }
+    coins[H-1].push_back(W-1);
+    rep(i, H) sort(all(coins[i]));
+
+    SegTree<S,op,e> seg(W);
+    seg.set(0, S(0,{0,0}));
+
+    map<Pr,Pr> pre;
+    rep(i, H) {
+        for(auto j: coins[i]) {
+            S p = seg.prod(0, j+1);
+            de5(i,j,p.x+1,p.p.first,p.p.second)
+            pre[{i,j}] = p.p;
+            seg.set(j, S(p.x+1, {i,j}));
         }
     }
-    rep1(i, N) rep1(j, M) ans -= dp[i][j];
+    S goal = seg.get(W-1);
+    ll i=H-1, j=W-1;
+    string ans;
+    while(i!=0 || j!=0) {
+        auto [pi,pj] = pre[{i,j}];
+        rep(k, i-pi) ans += 'D';
+        rep(k, j-pj) ans += 'R';
+        i = pi, j = pj;
+    }
+    reverse(all(ans));
+    Out(goal.x-1);
     Out(ans);
+
 
 }
 

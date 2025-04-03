@@ -2128,7 +2128,8 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-- [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
+<!-- where i am now for rank D -->
+<!-- last submission 2025/3/11 -->
 - [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
@@ -2139,6 +2140,8 @@
 - [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
 
 ## ACできたがグダった問題
+<!-- where i am now for rank E -->
+<!-- last submission 2025/3/01 -->
 - [D - Pigeon Swap](https://atcoder.jp/contests/abc395/tasks/abc395_d)
 - [F - Smooth Occlusion](https://atcoder.jp/contests/abc395/tasks/abc395_f)
 - [E - Min of Restricted Sum](https://atcoder.jp/contests/abc396/tasks/abc396_e)
@@ -2204,3 +2207,4 @@
 - [C. Find B](https://codeforces.com/contest/1923/problem/C)
 - [017 - Crossing Segments（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_q)
 - [089 - Partitions and Inversions（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ck)
+- [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
