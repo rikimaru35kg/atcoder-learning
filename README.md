@@ -873,8 +873,6 @@
 - 基本 LCSの復元 [F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
 - 基本 LCSではないが似たようなDP（LCS DPの本質が分かって良い） [E - Sequence Matching](https://atcoder.jp/contests/abc185/tasks/abc185_e)
 - 基本 LCSそのものではないが応用問題 [E - Common Subsequence](https://atcoder.jp/contests/abc130/tasks/abc130_e)  （解説は動画より[けんちょん氏のページ](https://drken1215.hatenablog.com/entry/2019/06/21/230200)推奨）
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
 - !復習価値低 [2 - IOI 列車で行こう (Take the 'IOI' train) ](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho2)
 - !復習価値低 [F - Operate K](https://atcoder.jp/contests/abc386/tasks/abc386_f)
 
@@ -884,6 +882,8 @@
 - idxが最後まで進んだら一致しなかったという事でアウト。
 - なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [I - 部分列ペア](https://atcoder.jp/contests/past17-open/tasks/past17_i)
 - 基本 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - 基本 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)

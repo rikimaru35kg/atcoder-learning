@@ -229,36 +229,27 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, D);
-    VL(W, N);
-    vd dp(1<<N, INF);
-    ll N2 = 1<<N;
-    dp[N2-1] = 0;
-    db avg = 0;
-    rep(i, N) avg += W[i];
-    avg /= D;
-
-    vd w(N2);
-    rep(s, N2) {
-        rep(i, N) if(s>>i&1) { w[s] += W[i]; }
-    }
-
-    auto p2=[&](db x) {return x*x;};
-
-    rep(_, D) {
-        vd pdp(1<<N, INF); swap(pdp, dp);
-        rep(s, N2) {
-            db now = pdp[s];
-            if(now==INF) continue;
-            for(ll t=s; t>=0; t=s&(t-1)) {
-                db weight = w[t];
-                ll u = s^t;
-                chmin(dp[u], now+p2(weight-avg)/D);
-                if(t==0) break;
-            }
+    LONG(N, M);
+    STRING(S, T);
+    vvvl dp(2, vvl(N+1, vl(M+1, -INF)));
+    rep(i, N+1) rep(j, M+1) dp[0][i][j] = 0;
+    rep(i, N+1) rep(j, M+1) rep(k, 2) {
+        ll now = dp[k][i][j];
+        if(now==-INF) continue;
+        if(i<N) {
+            if(k==0 && S[i]=='I') chmax(dp[k^1][i+1][j], now+1);
+            if(k==1 && S[i]=='O') chmax(dp[k^1][i+1][j], now+1);
+        }
+        if(j<M) {
+            if(k==0 && T[j]=='I') chmax(dp[k^1][i][j+1], now+1);
+            if(k==1 && T[j]=='O') chmax(dp[k^1][i][j+1], now+1);
         }
     }
-    db ans = dp[0];
+    ll ans = 0;
+    rep(i, N+1) rep(j, M+1) {
+        ll now = dp[1][i][j];
+        chmax(ans, now);
+    }
     Out(ans);
 
 }

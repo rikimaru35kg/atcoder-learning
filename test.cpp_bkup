@@ -228,68 +228,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-constexpr int M = 10;
-
-struct S {
-    int d[M+1];
-    int w;
-    S(int x=-1, int w=0): w(w) {
-        rep(i, M+1) d[i] = 0;
-        if(x!=-1) d[x] = w;
-    }
-};
-S op(S a, S b) {
-    rep(i, M+1) a.d[i] += b.d[i];
-    a.w += b.w;
-    return a;
-}
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==-1) return x;
-    return S(f, x.w);
-}
-F composition(F f, F g) {
-    if(f==-1) return g;
-    return f;
-}
-F id() {return -1;}
-
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    vector<S> init(N);
-    rep(i, N) { init[i] = S(A[i],1); }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    LONG(N, D);
+    VL(W, N);
+    vd dp(1<<N, INF);
+    ll N2 = 1<<N;
+    dp[N2-1] = 0;
+    db avg = 0;
+    rep(i, N) avg += W[i];
+    avg /= D;
 
-    rep(_, Q) {
-        LONG(t, l, r); --l;
-        if(t==1) {
-            S tmp = seg.prod(l,r);
-            rep(a, M+1) {
-                ll n = tmp.d[a];
-                seg.apply(l, l+n, a);
-                l += n;
+    vd w(N2);
+    rep(s, N2) {
+        rep(i, N) if(s>>i&1) { w[s] += W[i]; }
+    }
+
+    auto p2=[&](db x) {return x*x;};
+
+    rep(_, D) {
+        vd pdp(1<<N, INF); swap(pdp, dp);
+        rep(s, N2) {
+            db now = pdp[s];
+            if(now==INF) continue;
+            for(ll t=s; t>=0; t=s&(t-1)) {
+                db weight = w[t];
+                ll u = s^t;
+                chmin(dp[u], now+p2(weight-avg)/D);
+                if(t==0) break;
             }
-        } else if(t==2) {
-            S tmp = seg.prod(l,r);
-            repr(a, M+1) {
-                ll n = tmp.d[a];
-                seg.apply(l, l+n, a);
-                l += n;
-            }
-        } else {
-            S tmp = seg.prod(l,r);
-            ll ans = 0;
-            rep(a, M+1) {
-                ans += a*tmp.d[a];
-            }
-            Out(ans);
         }
     }
+    db ans = dp[0];
+    Out(ans);
 
 }
 
