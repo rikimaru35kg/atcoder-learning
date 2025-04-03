@@ -695,9 +695,7 @@
 - 要素追加、削除の関数を用意しておくと実装が楽になる
 ### 例題
 - 基本 小さい方からK個の和 [E - Least Elements](https://atcoder.jp/contests/abc281/tasks/abc281_e)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
+- 基本 置き換えor和の操作を最大K回無視して最大化 [F - Ignore Operations](https://atcoder.jp/contests/abc249/tasks/abc249_f)
 
 ## 括弧列
 - 正しい括弧列の条件(1)開きと閉じの数が同じ(2)ある地点で開きの数≧閉じの数
@@ -736,6 +734,8 @@
 ### 例題
 - 基本 正しい括弧列判定（区間の持ち方工夫） [F - Parenthesis Checking](https://atcoder.jp/contests/abc223/tasks/abc223_f)
 - 基本 区間[l,r)の2番目に大きい数の個数クエリ [F - Second Largest Query](https://atcoder.jp/contests/abc343/tasks/abc343_f)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [M - ランキング](https://atcoder.jp/contests/past202203-open/tasks/past202203_m)
 - 基本 [N - 旅行会社](https://atcoder.jp/contests/past202012-open/tasks/past202012_n)
 - 基本 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)

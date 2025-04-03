@@ -228,24 +228,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    using BS = bitset<3000>;
-    vector<BS> g(N);
-    rep(i, N) {
-        STRING(A);
-        rep(j, N) {
-            g[i][j] = A[j]-'0';
+struct HeadK {
+    long long K, sum = 0;
+    bool ascending;
+    HeadK (long long K, bool ascending=true): K(K), ascending(ascending) {}
+    multiset<long long> stK, stM;
+    void add(long long x) {
+        if(!ascending) x = -x;
+        stK.insert(x);
+        sum += x;
+        KtoM();
+    };
+    void del(long long x) {
+        if(!ascending) x = -x;
+        if (stM.contains(x)) {
+            stM.erase(stM.find(x));
+        } else {
+            if (!stK.contains(x)) return;
+            stK.erase(stK.find(x));
+            sum -= x;
+            while ((long long)stK.size()<K && stM.size()) {
+                auto it = stM.begin();
+                long long mn = *it;
+                stM.erase(it);
+                stK.insert(mn);
+                sum += mn;
+            }
         }
     }
-    ll ans = 0;
-    rep(i, N) rep(j, i) {
-        if(!g[i][j]) continue;
-        BS mul = g[i] & g[j];
-        ans += mul.count();
+    void decK(long long nk) { // decrease K size
+        K = nk;
+        KtoM();
     }
-    Out(ans/3);
+    void KtoM() {
+        while ((long long)stK.size()>K) {
+            auto it = stK.end(); --it;
+            long long mx = *it;
+            stK.erase(it);
+            sum -= mx;
+            stM.insert(mx);
+        }
+    }
+    long long get_sum() {
+        if(ascending) return sum;
+        else return -sum;
+    }
+};
 
+void solve() {
+    LONG(N, K);
+    VP(op, N);
+    op.insert(op.begin(), {1,0});
+    HeadK h(K);
+    reverse(all(op));
+    ll sum = 0;
+    ll ans = -INF;
+    for(auto [t,y]: op) {
+        if(t==1) {
+            ll now = y;
+            ll ign = h.get_sum();
+            now += sum - ign;
+            chmax(ans, now);
+            --K;
+            if(K<0) break;
+            h.decK(K);
+        } else {
+            sum += y;
+            if(y<0) h.add(y);
+        }
+    }
+    Out(ans);
 
 }
 
