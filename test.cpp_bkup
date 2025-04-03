@@ -229,36 +229,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, D);
-    VL(W, N);
-    vd dp(1<<N, INF);
-    ll N2 = 1<<N;
-    dp[N2-1] = 0;
-    db avg = 0;
-    rep(i, N) avg += W[i];
-    avg /= D;
-
-    vd w(N2);
-    rep(s, N2) {
-        rep(i, N) if(s>>i&1) { w[s] += W[i]; }
-    }
-
-    auto p2=[&](db x) {return x*x;};
-
-    rep(_, D) {
-        vd pdp(1<<N, INF); swap(pdp, dp);
-        rep(s, N2) {
-            db now = pdp[s];
-            if(now==INF) continue;
-            for(ll t=s; t>=0; t=s&(t-1)) {
-                db weight = w[t];
-                ll u = s^t;
-                chmin(dp[u], now+p2(weight-avg)/D);
-                if(t==0) break;
-            }
+    LONG(N);
+    VS(S, N);
+    umap<string,ll> mp;
+    for(auto s: S) {
+        ll m = s.size();
+        set<string> st;
+        rep(i, 1<<m) {
+            string t;
+            rep(j, m) if(i>>j&1) t += s[j];
+            st.insert(t);
         }
+        for(auto t: st) mp[t]++;
     }
-    db ans = dp[0];
+    ll ans = 0;
+    for(auto s: S) {
+        ans += mp[s];
+    }
     Out(ans);
 
 }

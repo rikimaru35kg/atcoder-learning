@@ -228,28 +228,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<vector<int>> make_next(string &s, char base='a') {
+    int n = s.size(), Z = 26;
+    vector<vector<int>> next(Z, vector<int>(n, n));
+    for(int i=0; i<n; ++i) next[s[i]-base][i] = i;
+    for(int z=0; z<Z; ++z) for(int i=n-2; i>=0; --i) {
+        next[z][i] = min(next[z][i], next[z][i+1]);
+    }
+    return next;
+}
+template <typename T>
+vector<vector<int>> make_next(vector<T> a, int mx) {
+    int n = a.size();
+    vector<vector<int>> next(mx, vector<int>(n, n));
+    for(int i=0; i<n; ++i) next[a[i]][i] = i;
+    for(int z=0; z<mx; ++z) for(int i=n-2; i>=0; --i) {
+        next[z][i] = min(next[z][i], next[z][i+1]);
+    }
+    return next;
+}
+// return next position + 1
+// if ret>n, then no valid position
+int find_next(vector<int> &nxt, int i) {
+    int n = nxt.size();
+    if(i>=n) return n+1;
+    return nxt[i]+1;  // return next position
+}
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, M);
     STRING(S, T);
-    vvvl dp(2, vvl(N+1, vl(M+1, -INF)));
-    rep(i, N+1) rep(j, M+1) dp[0][i][j] = 0;
-    rep(i, N+1) rep(j, M+1) rep(k, 2) {
-        ll now = dp[k][i][j];
-        if(now==-INF) continue;
-        if(i<N) {
-            if(k==0 && S[i]=='I') chmax(dp[k^1][i+1][j], now+1);
-            if(k==1 && S[i]=='O') chmax(dp[k^1][i+1][j], now+1);
+    ll Z = 26;
+    auto ns = make_next(S), nt = make_next(T);
+    auto calc=[&](string &s, vvi &next) -> mint {
+        ll n = s.size();
+        vm dp(n+1);
+        dp[0] = 1;
+        rep(i, n) {
+            rep(j, Z) {
+                ll ni = find_next(next[j], i);
+                if(ni>n) continue;
+                dp[ni] += dp[i];
+            }
         }
-        if(j<M) {
-            if(k==0 && T[j]=='I') chmax(dp[k^1][i][j+1], now+1);
-            if(k==1 && T[j]=='O') chmax(dp[k^1][i][j+1], now+1);
+        mint ret;
+        rep1(i, n) ret += dp[i];
+        return ret;
+    };
+    mint ans = calc(S, ns) + calc(T, nt);
+    
+    ll N = S.size(), M = T.size();
+    vvm dp(N+1, vm(M+1));
+    dp[0][0] = 1;
+    rep(i, N) rep(j, M) {
+        mint now = dp[i][j];
+        if(now==0) continue;
+        rep(a, Z) {
+            ll ni = find_next(ns[a], i);
+            ll nj = find_next(nt[a], j);
+            if(ni>N || nj>M) continue;
+            dp[ni][nj] += now;
         }
     }
-    ll ans = 0;
-    rep(i, N+1) rep(j, M+1) {
-        ll now = dp[1][i][j];
-        chmax(ans, now);
-    }
+    rep1(i, N) rep1(j, M) ans -= dp[i][j];
     Out(ans);
 
 }

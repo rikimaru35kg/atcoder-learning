@@ -882,12 +882,10 @@
 - idxが最後まで進んだら一致しなかったという事でアウト。
 - なお、部分列が要素番号を無視して等しいものを同じ種類と数えるタイプの問題の場合、貪欲判定法を採用すれば、同じ種類のものをダブルカウントする事はなくなる
 ### 例題
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 [I - 部分列ペア](https://atcoder.jp/contests/past17-open/tasks/past17_i)
+- 基本 [I - 部分列ペア](https://atcoder.jp/contests/past17-open/tasks/past17_i)
 - 基本 2つの文字列を連結してある文字列を構成できるか [E - Joint Two Strings](https://atcoder.jp/contests/abc324/tasks/abc324_e)
 - 基本 文字列に文字をK回挿入 [F - Strivore](https://atcoder.jp/contests/abc171/tasks/abc171_f)
-- !復習価値低 部分列DP [K - 部分列](https://atcoder.jp/contests/past202206-open/tasks/past202206_k)
+- 基本 部分列DP [K - 部分列](https://atcoder.jp/contests/past202206-open/tasks/past202206_k)
 - 基本 部分列DP [F - Substrings](https://atcoder.jp/contests/abc214/tasks/abc214_f)
 
 ## LIS 最長増加部分列
@@ -901,6 +899,8 @@
 ### 例題
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
 - !要復習 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
 - 基本 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
