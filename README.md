@@ -647,9 +647,7 @@
 ### 例題
 - 基本 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - 基本 [C - 塗りつぶし (Painting)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_c)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
+- 基本 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
 - 基本 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - 基本 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
@@ -670,6 +668,8 @@
 - 基本 [D - Querying Multiset](https://atcoder.jp/contests/abc212/tasks/abc212_d)
 - 基本 [D - All Assign Point Add](https://atcoder.jp/contests/abc278/tasks/abc278_d)
 - 基本 [D - Santa Claus 2](https://atcoder.jp/contests/abc385/tasks/abc385_d)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [L - マンションの改築](https://atcoder.jp/contests/past202010-open/tasks/past202010_l)
 - 基本 [E - Smart Infants](https://atcoder.jp/contests/abc170/tasks/abc170_e)
 - 基本 x以上でk番目に小さい数 [D - Sequence Query](https://atcoder.jp/contests/abc241/tasks/abc241_d)

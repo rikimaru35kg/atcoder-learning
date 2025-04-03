@@ -228,57 +228,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Bridge {
-    bool done = false;
-    using PII = pair<int,int>;
-    int n, m, idx;
-    vector<vector<PII>> from;
-    vector<int> ord, low, bridge, artcl;
-    Bridge(int n): n(n), m(0), idx(0), from(n), ord(n,-1), low(n) {}
-    void add_edge(int a, int b, int ei=-1) {
-        if(ei==-1) {
-            from[a].emplace_back(b, m); from[b].emplace_back(a, m);
-            ++m;
-        } else {
-            from[a].emplace_back(b, ei); from[b].emplace_back(a, ei);
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
         }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    void start_calc() {
-        if(done) return;
-        done = true;
-        rep(i, n) if(ord[i]==-1) dfs(i);
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
-    void dfs(int v, int p=-1) {
-        ord[v] = idx++; low[v] = ord[v];
-        int c = 0;
-        bool art = false;
-        for(auto [nv,ei]: from[v]) if(nv!=p) {
-            if(ord[nv]!=-1) {
-                low[v] = min(low[v], ord[nv]); continue;
-            }
-            ++c;
-            dfs(nv, v);
-            low[v] = min(low[v], low[nv]);
-            if(low[nv]>ord[v]) bridge.push_back(ei);
-            if(low[nv]>=ord[v]) art = true;
-        }
-        if(p!=-1 && art) artcl.push_back(v);
-        if(p==-1 && c>1) artcl.push_back(v);
-    }
-    vector<int> get_bridge() { start_calc(); return bridge;}
-    vector<int> get_articulation() { start_calc(); return artcl;}
 };
 
 void solve() {
-    LONG(N, M);
-    Bridge graph(N);
-    rep(i, M) {
-        LONG(a,b);
-        graph.add_edge(a,b);
+    LONG(N, K, L);
+    WeightedUnionFind uf1(N), uf2(N);
+    rep(i, K) {
+        LONGM(a,b);
+        uf1.merge(a,b);
     }
-    auto art = graph.get_articulation();
-    sort(all(art));
-    for(auto v: art) Out(v);
+    rep(i, L) {
+        LONGM(a,b);
+        uf2.merge(a,b);
+    }
+    map<Pr,ll> mp;
+    rep(i, N) {
+        ll l1 = uf1.leader(i);
+        ll l2 = uf2.leader(i);
+        mp[{l1,l2}]++;
+    }
+    vl ans;
+    rep(i, N) {
+        ll l1 = uf1.leader(i);
+        ll l2 = uf2.leader(i);
+        ans.push_back(mp[{l1,l2}]);
+    }
+    Out(ans);
 
 }
 
