@@ -228,38 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N);
-    VS(C, N);
-    vvl dist(N, vl(N, INF));
-    queue<Pr> que;
-    auto push=[&](ll i, ll j, ll d) {
-        if(dist[i][j]!=INF) return;
-        dist[i][j] = d;
-        que.emplace(i, j);
+    LONG(N, X);
+    VL2(U, D, N);
+
+    auto f=[&](ll h) -> bool {
+        ll l = -INF, r = INF;
+        rep(i, N) {
+            if(U[i]+D[i]<h) return false;
+            l -= X, r += X;
+            chmax(l, h-D[i]);
+            chmin(r, U[i]);
+            if(l>r) return false;
+        }
+        return true;
     };
-    rep(i, N) push(i,i,0);
-    rep(i, N) {
-        rep(j, N) {
-            if(C[i][j]=='-') continue;
-            push(i,j,1);
-        }
-    }
-    while(que.size()) {
-        auto [i1,j1] = que.front(); que.pop();
-        rep(i2, N) {
-            if(C[i2][i1]=='-') continue;
-            rep(j2, N) {
-                if(C[j1][j2]!=C[i2][i1]) continue;
-                push(i2,j2, dist[i1][j1]+2);
-            }
-        }
-    }
-    vvl ans(N, vl(N, INF));
-    rep(i, N) rep(j, N) {
-        ans[i][j] = dist[i][j];
-        ch1(ans[i][j]);
-    }
+
+    ll h = binary_search(0, (ll)2e9+1, f);
+    ll ans = 0;
+    rep(i, N) { ans += U[i]+D[i]-h; }
     Out(ans);
 
 }

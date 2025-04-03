@@ -2141,9 +2141,7 @@
 
 ## ACできたがグダった問題
 <!-- where i am now for rank E -->
-<!-- last submission 2025/3/01 -->
-- [D - Pigeon Swap](https://atcoder.jp/contests/abc395/tasks/abc395_d)
-- [F - Smooth Occlusion](https://atcoder.jp/contests/abc395/tasks/abc395_f)
+<!-- last submission 2025/3/08 -->
 - [E - Min of Restricted Sum](https://atcoder.jp/contests/abc396/tasks/abc396_e)
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
 - [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
