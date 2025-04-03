@@ -229,48 +229,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, K);
-    if(K&1) PNo
-    vvp from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b, i);
-        from[b].emplace_back(a, i);
+    LONG(H, W);
+    VVLM(A, H, W);
+    vp start(H*W, {-1,-1});
+    rep(i, H) rep(j, W) {
+        start[A[i][j]] = {i,j};
     }
 
-    vb visited(N);
-    vl ans;
-    auto dfs=[&](auto f, ll v, ll pei=-1) -> int {
-        if(visited[v]) return 0;
-        visited[v] = true;
-        int sw = 0;
-        for(auto [nv,ei]: from[v]) {
-            sw ^= f(f, nv, ei);
+    vvb one(H, vb(W));
+    vvp mem(H, vp(W,{-1,-1}));
+    auto dfs=[&](auto f, ll i, ll j) -> void {
+        if(one[i][j]) return;
+        if(mem[i][j].first!=-1) return;
+        set<Pr> dests;
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(A[i][j]<=A[ni][nj]) continue;
+            f(f, ni, nj);
+            if(one[ni][nj]) one[i][j] = true;
+            else dests.emplace(mem[ni][nj]);
         }
-        if(pei==-1) {
-            if(sw) K--;
-            return 0;
-        }
-        ll target = 0;
-        if(K) target = 1, --K;
-
-        ll ret = 0;
-        if(target!=sw) {
-            ret = 1;
-            ans.push_back(pei+1);
-        }
-
-        return ret;
+        if(SIZE(dests)>=2) one[i][j] = true;
+        else if(SIZE(dests)==1) mem[i][j] = *dests.begin();
+        else mem[i][j] = {i,j};
     };
 
-    rep(i, N) {
-        if(visited[i]) continue;
-        dfs(dfs, i);
+    rep(h, H*W) {
+        if(start[h].first==-1) continue;
+        dfs(dfs, start[h].first, start[h].second);
     }
-
-    if(K) PNo
-    puts("Yes");
-    Out(ans.size());
+    ll ans = 0;
+    rep(i, H) rep(j, W) if(one[i][j]) ++ans;
     Out(ans);
 
 }

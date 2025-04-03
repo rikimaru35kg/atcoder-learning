@@ -514,8 +514,6 @@
 - 基本 基本の復習に丁度良い 最長経路問題 [G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
 - 基本 [sheet - 色紙 (Sheet)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_sheet)
 - 基本 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
 - !復習価値低 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
 - !復習価値低 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
 - !要復習 [071 - Fuzzy Priority（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bs)
@@ -624,6 +622,8 @@
 ### 例題
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - 基本 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 解法チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
 - 基本 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
 
