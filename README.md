@@ -622,9 +622,7 @@
 ### 例題
 - 基本 lowlinkでなくても間に合う制約だが、解法確認にもってこい [C - Bridge](https://atcoder.jp/contests/abc075/tasks/abc075_c?lang=ja)
 - 基本 解法チェック用 [橋](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_B)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/18 -->
-- !復習価値低 解法チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
+- 基本 解法チェック用 [関節点](https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A)
 - 基本 [G - Road Blocked 2](https://atcoder.jp/contests/abc375/tasks/abc375_g)
 
 ## グラフに関する問題の計算量見積り（個人的な苦手問題なのでNote非掲載）
@@ -649,6 +647,8 @@
 ### 例題
 - 基本 発電所と繋がっている都市の数 [E - Blackout 2](https://atcoder.jp/contests/abc264/tasks/abc264_e)
 - 基本 [C - 塗りつぶし (Painting)](https://atcoder.jp/contests/joi2023yo2/tasks/joi2023_yo2_c)
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/18 -->
 - !復習価値低 [D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b)
 - 基本 生徒通学合流 [F - Confluence](https://atcoder.jp/contests/abc183/tasks/abc183_f)
 - 基本 重み付きUnion Find [F - Good Set Query](https://atcoder.jp/contests/abc328/tasks/abc328_f)
