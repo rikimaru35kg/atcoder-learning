@@ -480,6 +480,10 @@
 - 基本 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
 - 基本 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
 
+## 木の重心分解
+### 例題
+- !要復習 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
+
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
 - 閉ループがただ一つ存在する
