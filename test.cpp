@@ -228,98 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 void solve() {
-    LONG(H, W);
-    VVL(F, H, W);
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-    vt3 building;
-    rep(i, H) rep(j, W) {
-        building.emplace_back(F[i][j], i, j);
+    LONG(N);
+    vvp from(N);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    sort(allr(building));
+    vl mxlen(N);
+    auto dfs0=[&](auto f, ll v, ll pc=0, ll p=-1) -> void {
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            f(f, nv, c, v);
+            chmax(mxlen[v], mxlen[nv]);
+        }
+        mxlen[v] += pc;
+    };
+    dfs0(dfs0, 0);
 
-    using t6 = tuple<int,int,int,int,int,int>;
-    using vt6 = vector<t6>;
-    LONG(Q);
-    vt6 query;
-    rep(i, Q) {
-        LONG(a,b,y,c,d,z);
-        --a, --b, --c, --d;
-        query.emplace_back(a,b,y,c,d,z);
-    }
-    ll N = H*W;
-    vl ok(Q,N), ng(Q,-1);
-    rep(_, 20) {
-        vvl qis(N);
-        rep(qi, Q) {
-            ll m = (ok[qi]+ng[qi])/2;
-            qis[m].push_back(qi);
+    priority_queue<Pr> que;
+    que.emplace(mxlen[0],0);
+    vb finished(N);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        finished[v] = true;
+        Pr mx(-1,-1);
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            if(finished[nv]) continue;
+            chmax(mx, {mxlen[nv], nv});
         }
-        WeightedUnionFind uf(N);
-        rep(bi, N) {
-            auto [f,i,j] = building[bi];
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(F[ni][nj]<f) continue;
-                uf.merge(gid(i,j),gid(ni,nj));
-            }
-            for(auto qi: qis[bi]) {
-                auto [a,b,y,c,d,z] = query[qi];
-                if(uf.same(gid(a,b), gid(c,d))) ok[qi] = bi;
-                else ng[qi] = bi;
-            }
+        for(auto [nv, c]: from[v]) if(nv!=p) {
+            if(finished[nv]) continue;
+            if(nv==mx.second) continue;
+            que.emplace(mxlen[nv],nv);
         }
+        if(mx.second==-1) return;
+        f(f, mx.second, v);
+    };
+
+    vl ans;
+    ll pre = 0;
+    rep(_, N) {
+        if(que.empty()) {
+            ans.push_back(ans.back());
+            continue;
+        }
+        auto [d, v] = que.top(); que.pop();
+        ans.push_back(pre+2*d);
+        dfs(dfs, v);
+        pre = ans.back();
     }
-    rep(qi, Q) {
-        auto [a,b,y,c,d,z] = query[qi];
-        auto [x,xi,xj] = building[ok[qi]];
-        chmin(x, (ll)y); chmin(x, (ll)z);
-        ll ans = y-x + z-x;
-        Out(ans);
-    }
+    for(auto x: ans) Out(x);
 
 }
 

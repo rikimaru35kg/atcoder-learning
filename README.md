@@ -2210,3 +2210,4 @@
 - [089 - Partitions and Inversions（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ck)
 - [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
 - [D - ロボット](https://atcoder.jp/contests/abc027/tasks/abc027_d)
+- [G - As far as possible](https://atcoder.jp/contests/abc369/tasks/abc369_g)
