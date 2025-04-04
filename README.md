@@ -99,6 +99,9 @@
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
+## 並列二分探索
+- !要復習 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
+
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
 - 幅が2になるまでwhileループさせる
@@ -2206,3 +2209,4 @@
 - [017 - Crossing Segments（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_q)
 - [089 - Partitions and Inversions（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ck)
 - [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
+- [D - ロボット](https://atcoder.jp/contests/abc027/tasks/abc027_d)

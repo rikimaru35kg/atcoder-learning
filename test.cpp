@@ -228,33 +228,98 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-
-    ll ans = -1;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
-        vl sz;
-        for(auto nv: from[v]) if(nv!=p) {
-            sz.push_back(f(f, nv, v));
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
         }
-        if(SIZE(sz)<3) return 1;
-        sort(allr(sz));
-        ll ret = sz[0]+sz[1]+sz[2]+1;
-        if(p!=-1) chmax(ans, ret+1);
-        if(SIZE(sz)>=4) {
-            chmax(ans, sz[0]+sz[1]+sz[2]+sz[3]+1);
-        }
-        return ret;
-    };
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
 
-    dfs(dfs, 0);
-    Out(ans);
+void solve() {
+    LONG(H, W);
+    VVL(F, H, W);
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    vt3 building;
+    rep(i, H) rep(j, W) {
+        building.emplace_back(F[i][j], i, j);
+    }
+    sort(allr(building));
+
+    using t6 = tuple<int,int,int,int,int,int>;
+    using vt6 = vector<t6>;
+    LONG(Q);
+    vt6 query;
+    rep(i, Q) {
+        LONG(a,b,y,c,d,z);
+        --a, --b, --c, --d;
+        query.emplace_back(a,b,y,c,d,z);
+    }
+    ll N = H*W;
+    vl ok(Q,N), ng(Q,-1);
+    rep(_, 20) {
+        vvl qis(N);
+        rep(qi, Q) {
+            ll m = (ok[qi]+ng[qi])/2;
+            qis[m].push_back(qi);
+        }
+        WeightedUnionFind uf(N);
+        rep(bi, N) {
+            auto [f,i,j] = building[bi];
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                if(F[ni][nj]<f) continue;
+                uf.merge(gid(i,j),gid(ni,nj));
+            }
+            for(auto qi: qis[bi]) {
+                auto [a,b,y,c,d,z] = query[qi];
+                if(uf.same(gid(a,b), gid(c,d))) ok[qi] = bi;
+                else ng[qi] = bi;
+            }
+        }
+    }
+    rep(qi, Q) {
+        auto [a,b,y,c,d,z] = query[qi];
+        auto [x,xi,xj] = building[ok[qi]];
+        chmin(x, (ll)y); chmin(x, (ll)z);
+        ll ans = y-x + z-x;
+        Out(ans);
+    }
 
 }
 
