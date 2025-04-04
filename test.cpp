@@ -228,98 +228,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CentroidDecomposition {
-    int n;
-    using IL = pair<int,long long>;
-    vector<vector<IL>> from;
-    vector<int> sz;
-    vector<bool> cent;
-    void cal_size(int sv) {
-        auto dfs=[&](auto f, int v, int p=-1) -> void {
-            sz[v] = 1;
-            for(auto [nv,c]: from[v]) {
-                if(nv==p || cent[nv]) continue;
-                f(f, nv, v);
-                sz[v] += sz[nv];
-            }
-        };
-        dfs(dfs, sv);
-    }
-    int find_centroid(int sv) {
-        int tot = sz[sv], ret = -1;
-        auto dfs=[&](auto f, int v, int p=-1) -> void {
-            bool ok = 2*(tot-sz[v])<=tot;
-            for(auto [nv,c]: from[v]) {
-                if(nv==p || cent[nv]) continue;
-                f(f, nv, v);
-                ok &= 2*sz[nv]<=tot;
-            }
-            if(ok) ret = v;
-        };
-        dfs(dfs, sv);
-        assert(ret!=-1);
-        return ret;
-    }
-public:
-    CentroidDecomposition(int n): n(n), from(n), sz(n), cent(n) {}
-    void add_edge(int a, int b, long long c=1) {
-        from[a].emplace_back(b,c); from[b].emplace_back(a,c);
-    }
-
-    ////////// data here //////////
-    long long ans=0;
-    vector<long long> A;
-    void initialize(vector<long long> &a) {
-        for(auto x: a) A.push_back(x);
-    }
-    long long get_ans() {return ans;}
-    ////////// data here //////////
-
-    void decomposition(int sv) {
-        cal_size(sv);
-        int c = find_centroid(sv);
-        cent[c] = true;
-        //! DO NOT USE "sv" ANYMORE in this function
-
-        ////////// algorithm here //////////
-        unordered_map<long long,long long> cnt, sum;
-        cnt[A[c]] = 1, sum[A[c]] = 0;
-        for(auto [nv,d]: from[c]) if(!cent[nv]) {
-            vector<pair<long long,long long>> data;
-            auto dfs=[&](auto f, int v, int d, int p=-1) -> void {
-                data.emplace_back(A[v], d);
-                for(auto [nv,c]: from[v]) {
-                    if(nv==p || cent[nv]) continue;
-                    f(f, nv, d+1, v);
+void solve() {
+    LONG(N, Q);
+    ll x = 0;
+    vvl from(N);
+    vl root(N), sz(N,1);
+    vl p(N,-1);
+    rep(i, N) root[i] = i;
+    rep(_, Q) {
+        LONG(A,B,C);
+        ll t = 1+(((A*(1+x))%M998)%2);
+        ll a = (((B*(1+x))%M998)%N);
+        ll b = (((C*(1+x))%M998)%N);
+        if(t==1) {
+            if(sz[root[a]]>sz[root[b]]) swap(a,b);
+            auto dfs=[&](auto f, ll v, ll pa=-1) -> void {
+                p[v] = pa;
+                root[v] = root[b];
+                for(auto nv: from[v]) if(nv!=pa) {
+                    f(f, nv, v);
                 }
             };
-            dfs(dfs, nv, 1);
-            for(auto [a,d]: data) {
-                ans += d*cnt[a] + sum[a];
-            }
-            for(auto [a,d]: data) {
-                cnt[a]++;
-                sum[a] += d;
-            }
+            dfs(dfs, a, b);
+            from[a].push_back(b);
+            from[b].push_back(a);
+            sz[root[b]] += sz[root[a]];
+        } else {
+            ll ans = -1;
+            if(p[a]!=-1 && p[a]==p[b]) ans = p[a];
+            else if(p[a]!=-1 && p[p[a]]==b) ans = p[a];
+            else if(p[b]!=-1 && p[p[b]]==a) ans = p[b];
+            ++ans;
+            Out(ans);
+            x = ans;
         }
-        ////////// algorithm here //////////
-
-        for(auto [nv,d]: from[c]) if(!cent[nv]) decomposition(nv);
     }
-};
-
-void solve() {
-    LONG(N);
-    CentroidDecomposition cd(N);
-    rep(i, N-1) {
-        LONGM(a,b);
-        cd.add_edge(a,b);
-    }
-    VL(A, N);
-    cd.initialize(A);
-    cd.decomposition(0);
-    ll ans = cd.get_ans();
-    Out(ans);
 
 }
 

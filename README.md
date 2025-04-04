@@ -1687,6 +1687,7 @@
 ### 例題
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
+- !要復習 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
