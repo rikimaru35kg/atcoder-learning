@@ -1707,6 +1707,7 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 - !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
+- !要復習 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
 
 ## K番目の何かを答える
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる

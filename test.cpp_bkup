@@ -228,32 +228,149 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class HLD {
+    int n;
+    bool done = false;
+    vector<int> idx, top, p, sz, depth, pei, eidx;
+    vector<vector<pair<int,int>>> from;
+    void cal_size() {  // calculate subtree size for each vertex
+        auto dfs=[&](auto f, int v, int d=0, int par=-1) -> void {
+            depth[v] = d; // depth
+            sz[v] = 1;  // subtree size
+            p[v] = par;  // parent
+            for(auto [nv,ei]: from[v]) if(nv!=par) {
+                f(f, nv, d+1, v);
+                pei[nv] = ei;  // edge id for the parent
+                sz[v] += sz[nv];
+            }
+        };
+        dfs(dfs, 0);
+    }
+    void hld() {  // Heavy Light Decompsition
+        if(done) return;
+        done = true;
+        cal_size();
+        int ord = 0;
+        auto dfs=[&](auto f, int v, int t, int par=-1) -> void {
+            idx[v] = ord++;
+            top[v] = t;
+            tuple<int,int,int> maxsize(-1,-1,-1);
+            for(auto [nv,ei]: from[v]) if(nv!=par) {
+                maxsize = max(maxsize, {sz[nv],nv,ei});
+            }
+            auto [msz, mv, mei] = maxsize;
+            if(msz==-1) return;
+            // heavy edge
+            eidx[mei] = idx[v];
+            f(f, mv, t, v);
+            // light edges
+            for(auto [nv,ei]: from[v]) if(nv!=par && nv!=mv) {
+                f(f, nv, nv, v);
+            }
+        };
+        dfs(dfs, 0, 0);
+    }
+public:
+    HLD(int n): n(n), idx(n), top(n), p(n), sz(n), depth(n),
+                pei(n,-1), eidx(n-1,-1), from(n) {}
+    void add_edge(int a, int b, int ei) {
+        from[a].emplace_back(b,ei); from[b].emplace_back(a,ei);
+    }
+    pair<vector<pair<int,int>>,vector<int>> prod(int a, int b) {
+        vector<pair<int,int>> spans;  // heavy paths
+        vector<int> eis;  // light edges on a path a-b
+        while(top[a]!=top[b]) {
+            if(depth[top[a]]<depth[top[b]]) swap(a,b);
+            spans.emplace_back(idx[top[a]],idx[a]);
+            eis.push_back(pei[top[a]]);
+            a = p[top[a]];
+        }
+        if(idx[a]>idx[b]) swap(a,b);
+        spans.emplace_back(idx[a],idx[b]);
+        return {spans, eis};
+    }
+    // get the index of the HLD sequence for each v
+    vector<int> get_index()  { hld(); return idx; }
+    // get the index of the HLD sequence for each ei
+    // if ei==-1, then ei is a light edge (not on a path)
+    vector<int> get_eindex() { hld(); return eidx; }
+};
+
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+
 void solve() {
     LONG(N);
-    VLM(C, N); VL(X, N);
-    rep(i, N) C.push_back(C[i]);
-    ll N2 = N+N;
+    HLD tree(N);
+    vl W(N-1);
+    rep(i, N-1) {
+        LONGM(a,b); LONG(w);
+        tree.add_edge(a,b,i);
+        W[i] = w;
+    }
+    auto eidx = tree.get_eindex();
 
-    vvl dp(N2+1, vl(N2+1, INF));
-    vvl dp2(N2+1, vl(N2+1, INF));
-    rep(i, N2) dp2[i][i+1] = X[C[i]];
-
-    repk(w, 1, N+1) {
-        rep(l, N2+1-w) {
-            ll r = l+w;
-            if(C[r-1]==C[l]) chmin(dp2[l][r], dp2[l][r-1]);
-            for(ll m=l+1; m<r; ++m) {
-                chmin(dp2[l][r], dp2[l][m]+dp[m][r]);
+    BIT<ll> bit(N);
+    rep(i, N-1) {
+        if(eidx[i]==-1) continue;
+        bit.set(eidx[i], W[i]);
+    }
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(i,w); --i;
+            W[i] = w;
+            if(eidx[i]!=-1) bit.set(eidx[i], w);
+        } else {
+            LONGM(a,b);
+            auto [spans, eis] = tree.prod(a,b);
+            ll ans = 0;
+            for(auto [l,r]: spans) {
+                ans += bit.sum(l,r);
             }
-            for(ll m=l+1; m<r; ++m) {
-                chmin(dp[l][r], dp[l][m]+dp[m][r]);
-            }
-            chmin(dp[l][r], dp2[l][r]+w);
+            for(auto ei: eis) ans += W[ei];
+            Out(ans);
         }
     }
-    ll ans = INF;
-    rep(l, N) chmin(ans, dp[l][l+N]);
-    Out(ans);
 
 }
 
