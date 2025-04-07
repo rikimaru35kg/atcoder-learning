@@ -2217,3 +2217,5 @@
 - [E - Palindromic Shortest Path](https://atcoder.jp/contests/abc394/tasks/abc394_e)
 - [D - ロボット](https://atcoder.jp/contests/abc027/tasks/abc027_d)
 - [G - As far as possible](https://atcoder.jp/contests/abc369/tasks/abc369_g)
+- [C - 2^a b^2](https://atcoder.jp/contests/abc400/tasks/abc400_c)
+- [E - Ringo's Favorite Numbers 3](https://atcoder.jp/contests/abc400/tasks/abc400_e)
