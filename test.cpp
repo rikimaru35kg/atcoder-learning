@@ -229,40 +229,31 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    ll x = 0;
-    vvl from(N);
-    vl root(N), sz(N,1);
-    vl p(N,-1);
-    rep(i, N) root[i] = i;
-    rep(_, Q) {
-        LONG(A,B,C);
-        ll t = 1+(((A*(1+x))%M998)%2);
-        ll a = (((B*(1+x))%M998)%N);
-        ll b = (((C*(1+x))%M998)%N);
-        if(t==1) {
-            if(sz[root[a]]>sz[root[b]]) swap(a,b);
-            auto dfs=[&](auto f, ll v, ll pa=-1) -> void {
-                p[v] = pa;
-                root[v] = root[b];
-                for(auto nv: from[v]) if(nv!=pa) {
-                    f(f, nv, v);
-                }
-            };
-            dfs(dfs, a, b);
-            from[a].push_back(b);
-            from[b].push_back(a);
-            sz[root[b]] += sz[root[a]];
-        } else {
-            ll ans = -1;
-            if(p[a]!=-1 && p[a]==p[b]) ans = p[a];
-            else if(p[a]!=-1 && p[p[a]]==b) ans = p[a];
-            else if(p[b]!=-1 && p[p[b]]==a) ans = p[b];
-            ++ans;
-            Out(ans);
-            x = ans;
+    LONG(N);
+    VLM(C, N); VL(X, N);
+    rep(i, N) C.push_back(C[i]);
+    ll N2 = N+N;
+
+    vvl dp(N2+1, vl(N2+1, INF));
+    vvl dp2(N2+1, vl(N2+1, INF));
+    rep(i, N2) dp2[i][i+1] = X[C[i]];
+
+    repk(w, 1, N+1) {
+        rep(l, N2+1-w) {
+            ll r = l+w;
+            if(C[r-1]==C[l]) chmin(dp2[l][r], dp2[l][r-1]);
+            for(ll m=l+1; m<r; ++m) {
+                chmin(dp2[l][r], dp2[l][m]+dp[m][r]);
+            }
+            for(ll m=l+1; m<r; ++m) {
+                chmin(dp[l][r], dp[l][m]+dp[m][r]);
+            }
+            chmin(dp[l][r], dp2[l][r]+w);
         }
     }
+    ll ans = INF;
+    rep(l, N) chmin(ans, dp[l][l+N]);
+    Out(ans);
 
 }
 
