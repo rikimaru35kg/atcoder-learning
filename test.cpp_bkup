@@ -227,75 +227,6 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-
-class HLD {
-    int n;
-    bool done = false;
-    vector<int> idx, top, p, sz, depth, pei, eidx;
-    vector<vector<pair<int,int>>> from;
-    void cal_size() {  // calculate subtree size for each vertex
-        auto dfs=[&](auto f, int v, int d=0, int par=-1) -> void {
-            depth[v] = d; // depth
-            sz[v] = 1;  // subtree size
-            p[v] = par;  // parent
-            for(auto [nv,ei]: from[v]) if(nv!=par) {
-                f(f, nv, d+1, v);
-                pei[nv] = ei;  // edge id for the parent
-                sz[v] += sz[nv];
-            }
-        };
-        dfs(dfs, 0);
-    }
-    void hld() {  // Heavy Light Decompsition
-        if(done) return;
-        done = true;
-        cal_size();
-        int ord = 0;
-        auto dfs=[&](auto f, int v, int t, int par=-1) -> void {
-            idx[v] = ord++;
-            top[v] = t;
-            tuple<int,int,int> maxsize(-1,-1,-1);
-            for(auto [nv,ei]: from[v]) if(nv!=par) {
-                maxsize = max(maxsize, {sz[nv],nv,ei});
-            }
-            auto [msz, mv, mei] = maxsize;
-            if(msz==-1) return;
-            // heavy edge
-            eidx[mei] = idx[v];
-            f(f, mv, t, v);
-            // light edges
-            for(auto [nv,ei]: from[v]) if(nv!=par && nv!=mv) {
-                f(f, nv, nv, v);
-            }
-        };
-        dfs(dfs, 0, 0);
-    }
-public:
-    HLD(int n): n(n), idx(n), top(n), p(n), sz(n), depth(n),
-                pei(n,-1), eidx(n-1,-1), from(n) {}
-    void add_edge(int a, int b, int ei) {
-        from[a].emplace_back(b,ei); from[b].emplace_back(a,ei);
-    }
-    pair<vector<pair<int,int>>,vector<int>> prod(int a, int b) {
-        vector<pair<int,int>> spans;  // heavy paths
-        vector<int> eis;  // light edges on a path a-b
-        while(top[a]!=top[b]) {
-            if(depth[top[a]]<depth[top[b]]) swap(a,b);
-            spans.emplace_back(idx[top[a]],idx[a]);
-            eis.push_back(pei[top[a]]);
-            a = p[top[a]];
-        }
-        if(idx[a]>idx[b]) swap(a,b);
-        spans.emplace_back(idx[a],idx[b]);
-        return {spans, eis};
-    }
-    // get the index of the HLD sequence for each v
-    vector<int> get_index()  { hld(); return idx; }
-    // get the index of the HLD sequence for each ei
-    // if ei==-1, then ei is a light edge (not on a path)
-    vector<int> get_eindex() { hld(); return eidx; }
-};
-
 template<typename T>
 struct BIT {
     long long size;
@@ -339,38 +270,47 @@ struct BIT {
 
 void solve() {
     LONG(N);
-    HLD tree(N);
-    vl W(N-1);
+    vvl from(N);
     rep(i, N-1) {
-        LONGM(a,b); LONG(w);
-        tree.add_edge(a,b,i);
-        W[i] = w;
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    auto eidx = tree.get_eindex();
-
     BIT<ll> bit(N);
-    rep(i, N-1) {
-        if(eidx[i]==-1) continue;
-        bit.set(eidx[i], W[i]);
-    }
-    LONG(Q);
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(i,w); --i;
-            W[i] = w;
-            if(eidx[i]!=-1) bit.set(eidx[i], w);
-        } else {
-            LONGM(a,b);
-            auto [spans, eis] = tree.prod(a,b);
-            ll ans = 0;
-            for(auto [l,r]: spans) {
-                ans += bit.sum(l,r);
-            }
-            for(auto ei: eis) ans += W[ei];
-            Out(ans);
+    rep(i, N) bit.add(i, 1);
+    vl dp(N);
+    vvl cdp(N);
+    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
+        bit.add(v, 1);
+        dp[v] -= bit.sum(0, v);
+        for(auto nv: from[v]) if(nv!=p) {
+            ll now = 0;
+            now -= bit.sum(0, v);
+            f(f, nv, v);
+            now += bit.sum(0, v);
+            cdp[v].push_back(now);
         }
-    }
+        dp[v] += bit.sum(0, v);
+    };
+    dfs0(dfs0, 0);
+    ll base = 0;
+    rep(i, N) base += dp[i];
+
+    vl ans(N);
+    auto dfs=[&](auto f, ll v, ll x, ll p=-1) -> void {
+        ans[v] = x;
+        ll idx = 0;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll nx = x;
+            nx += nv-dp[nv];
+            nx -= cdp[v][idx++];
+            f(f, nv, nx, v);
+        }
+    };
+    dfs(dfs, 0, base);
+    Out(ans);
+
+
 
 }
 

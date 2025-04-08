@@ -227,90 +227,48 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, M);
+    vvp from(N);
+    rep(i, M) {
+        LONGM(x,y); LONG(z);
+        from[x].emplace_back(y,z);
+        from[y].emplace_back(x,z);
     }
-    BIT<ll> bit(N);
-    rep(i, N) bit.add(i, 1);
-    vl dp(N);
-    vvl cdp(N);
-    auto dfs0=[&](auto f, ll v, ll p=-1) -> void {
-        bit.add(v, 1);
-        dp[v] -= bit.sum(0, v);
-        for(auto nv: from[v]) if(nv!=p) {
-            ll now = 0;
-            now -= bit.sum(0, v);
-            f(f, nv, v);
-            now += bit.sum(0, v);
-            cdp[v].push_back(now);
+
+    vl A(N);
+    vvl cs(2);
+    vl color(N,-1);
+
+    ll D = 30;
+    rep(d, D) {
+        auto dfs=[&](auto f, ll v, ll c) -> bool {
+            if(color[v]!=-1) {
+                if(color[v]!=c) return false;
+                return true;
+            }
+            color[v] = c;
+            cs[c].push_back(v);
+            for(auto [nv,z]: from[v]) {
+                if(z>>d&1) {
+                    if(!f(f, nv, c^1)) return false;
+                } else {
+                    if(!f(f, nv, c)) return false;
+                }
+            }
+            return true;
+        };
+        color = vl(N,-1);
+        rep(i, N) {
+            if(color[i]!=-1) continue;
+            cs = vvl(2);
+            if(!dfs(dfs, i, 0)) Pm1
+            if(SIZE(cs[0])<SIZE(cs[1])) swap(cs[0],cs[1]);
+            for(auto v: cs[1]) A[v] |= 1LL<<d;
         }
-        dp[v] += bit.sum(0, v);
-    };
-    dfs0(dfs0, 0);
-    ll base = 0;
-    rep(i, N) base += dp[i];
-
-    vl ans(N);
-    auto dfs=[&](auto f, ll v, ll x, ll p=-1) -> void {
-        ans[v] = x;
-        ll idx = 0;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll nx = x;
-            nx += nv-dp[nv];
-            nx -= cdp[v][idx++];
-            f(f, nv, nx, v);
-        }
-    };
-    dfs(dfs, 0, base);
-    Out(ans);
-
-
+    }
+    Out(A);
 
 }
 
