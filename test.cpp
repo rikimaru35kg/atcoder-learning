@@ -228,47 +228,161 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(x,y); LONG(z);
-        from[x].emplace_back(y,z);
-        from[y].emplace_back(x,z);
+const long long MX = 2;
+const long long ps[12] = {1000000007, 1000000009, 1000000021,
+                          1000000033, 1000000087, 1000000093,
+                          1000000097, 1000000103, 1000000123,
+                          1000000181, 1000000207, 1000000223};
+struct mints {
+    long long data[MX];
+    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
+    mints operator+(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
+        return x;
     }
+    mints &operator+=(mints x) { *this = *this + x; return *this; }
+    mints operator+(long long x) const { return *this + mints(x); }
+    friend mints operator+(long long a, mints b) { return mints(a)+b; }
+    mints operator-(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
+        return x;
+    }
+    mints &operator-=(mints x) { *this = *this - x; return *this; }
+    mints operator-(long long x) const { return *this - mints(x); }
+    friend mints operator-(long long a, mints b) { return mints(a)-b; }
+    mints operator*(mints x) const {
+        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
+        return x;
+    }
+    mints &operator*=(mints x) { *this = *this * x; return *this; }
+    mints operator*(long long x) const { return *this * mints(x); }
+    friend mints operator*(long long a, mints b) { return mints(a)*b; }
+    mints pow(long long x) const {
+        if (x==0) return mints(1);
+        mints ret = pow(x/2);
+        ret = ret * ret;
+        if (x%2==1) ret = ret * *this;
+        return ret;
+    }
+    long long pow(long long a, long long b, long long p) const {
+        if(b==0) return 1;
+        a %= p;
+        long long ret = pow(a, b/2, p);
+        ret = ret * ret % p;
+        if (b%2==1) ret = ret * a % p;
+        return ret;
+    }
+    mints inv() const {
+        mints ret;
+        for(int i=0; i<MX; ++i) {
+            long long p = ps[i];
+            long long x = pow(data[i], p-2, p);
+            ret.data[i] = x;
+        }
+        return ret;
+    }
+    bool operator<(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
+            return data[i] < x.data[i];
+        }
+        return false;
+    }
+    bool operator==(mints x) const {
+        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
+        return true;
+    }
+    void print() const {
+        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
+        cerr << '\n';
+    }
+};
+namespace std {
+template<>
+struct hash<mints> {
+    size_t operator()(const mints &x) const {
+        size_t seed = 0;
+        for(int i=0; i<MX; ++i) {
+            hash<long long> phash;
+            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+}
+istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
+ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
+using vm = vector<mints>;
+using vvm = vector<vector<mints>>;
 
-    vl A(N);
-    vvl cs(2);
-    vl color(N,-1);
-
-    ll D = 30;
-    rep(d, D) {
-        auto dfs=[&](auto f, ll v, ll c) -> bool {
-            if(color[v]!=-1) {
-                if(color[v]!=c) return false;
-                return true;
-            }
-            color[v] = c;
-            cs[c].push_back(v);
-            for(auto [nv,z]: from[v]) {
-                if(z>>d&1) {
-                    if(!f(f, nv, c^1)) return false;
-                } else {
-                    if(!f(f, nv, c)) return false;
-                }
-            }
-            return true;
-        };
-        color = vl(N,-1);
-        rep(i, N) {
-            if(color[i]!=-1) continue;
-            cs = vvl(2);
-            if(!dfs(dfs, i, 0)) Pm1
-            if(SIZE(cs[0])<SIZE(cs[1])) swap(cs[0],cs[1]);
-            for(auto v: cs[1]) A[v] |= 1LL<<d;
+template <class mints> struct RollingHash {
+    int n;
+    long long base;
+    vector<mints> rh, bpow;
+    RollingHash(string s="", long long base=1234567): base(base) {
+        if(s!="") set(s, base);
+    };
+    void set(string &s, long long _base=1234567) {
+        n = s.size(); rh.resize(n+1,0); bpow.resize(n+1, 1);
+        base = _base;
+        for(int i=0; i<n; ++i) {
+            rh[i+1] = rh[i]*base + s[i];
+            bpow[i+1] = bpow[i] * base;
         }
     }
-    Out(A);
+    mints get(int l, int r) { // [l,r)
+        assert(l<=r);
+        return rh[r] - rh[l]*bpow[r-l];
+    }
+};
+
+void solve() {
+    LONG(N);
+    VS(S, N);
+    vector<RollingHash<mints>> rh(N);
+    rep(i, N) rh[i].set(S[i]);
+    vb inside(N);
+    rep(i, N) rep(j, N) {
+        if(i==j) continue;
+        if(SIZE(S[i])>=SIZE(S[j])) continue;
+        ll a = S[i].size(), b = S[j].size();
+        rep(k, b+1-a) {
+            if(rh[i].get(0,a)==rh[j].get(k,k+a)) {
+                inside[i] = true;
+            }
+        }
+    }
+    vvl common(N, vl(N));
+    rep(i, N) rep(j, N) {
+        if(inside[i] || inside[j]) continue;
+        ll a = S[i].size(), b = S[j].size();
+        ll m = min(a,b);
+        rep1(k, m) {
+            if(rh[i].get(a-k,a)==rh[j].get(0,k)) common[i][j] = k;
+        }
+    }
+    vvl dp(1<<N, vl(N,INF));
+    rep(i, N) {
+        if(inside[i]) continue;
+        dp[1<<i][i] = S[i].size();
+    }
+    rep(s, 1<<N) rep(i, N) {
+        ll now = dp[s][i];
+        if(now==INF) continue;
+        rep(j, N) if(~s>>j&1) {
+            if(inside[j]) continue;
+            chmin(dp[s|1<<j][j], now+SIZE(S[j])-common[i][j]);
+        }
+    }
+
+    ll ts = 0;
+    rep(i, N) if(!inside[i]) ts |= 1<<i;
+
+    ll ans = INF;
+    rep(i, N) {
+        if(inside[i]) continue;
+        chmin(ans, dp[ts][i]);
+    }
+    Out(ans);
 
 }
 

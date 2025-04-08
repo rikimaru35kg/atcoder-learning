@@ -2219,3 +2219,4 @@
 - [G - As far as possible](https://atcoder.jp/contests/abc369/tasks/abc369_g)
 - [C - 2^a b^2](https://atcoder.jp/contests/abc400/tasks/abc400_c)
 - [E - Ringo's Favorite Numbers 3](https://atcoder.jp/contests/abc400/tasks/abc400_e)
+- [G - Compress Strings](https://atcoder.jp/contests/abc343/tasks/abc343_g)
