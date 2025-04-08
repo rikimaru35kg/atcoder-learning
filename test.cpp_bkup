@@ -228,47 +228,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -INF;}
+using F = ll;
+S mapping(F f, S x) { return max(f,x); }
+F composition(F f, F g) {return max(f,g);}
+F id() {return -INF;}
+
 void solve() {
-    LONG(N, M);
-    vvp from(N);
-    rep(i, M) {
-        LONGM(x,y); LONG(z);
-        from[x].emplace_back(y,z);
-        from[y].emplace_back(x,z);
-    }
-
-    vl A(N);
-    vvl cs(2);
-    vl color(N,-1);
-
-    ll D = 30;
-    rep(d, D) {
-        auto dfs=[&](auto f, ll v, ll c) -> bool {
-            if(color[v]!=-1) {
-                if(color[v]!=c) return false;
-                return true;
-            }
-            color[v] = c;
-            cs[c].push_back(v);
-            for(auto [nv,z]: from[v]) {
-                if(z>>d&1) {
-                    if(!f(f, nv, c^1)) return false;
-                } else {
-                    if(!f(f, nv, c)) return false;
-                }
-            }
-            return true;
-        };
-        color = vl(N,-1);
-        rep(i, N) {
-            if(color[i]!=-1) continue;
-            cs = vvl(2);
-            if(!dfs(dfs, i, 0)) Pm1
-            if(SIZE(cs[0])<SIZE(cs[1])) swap(cs[0],cs[1]);
-            for(auto v: cs[1]) A[v] |= 1LL<<d;
+    LONG(N);
+    VL(A, N);
+    LONG(Q);
+    ll B = sqrt(Q);
+    ll M = Divceil(Q, B);
+    using SEG = lazy_segtree<S,op,e,F,mapping,composition,id>;
+    vector<SEG> seg(M, SEG(N));
+    vt4 query;
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(l,r,x); --l;
+            query.emplace_back(t,l,r,x);
+        } else {
+            LONGM(i);
+            query.emplace_back(t,i,-1,-1);
         }
     }
-    Out(A);
 
 }
 

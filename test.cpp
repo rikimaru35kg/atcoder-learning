@@ -228,161 +228,173 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long MX = 2;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
+template <class S, S(*op)(S, S), S(*e)()>
+struct SegTree {
+    int n, mx;
+    vector<S> a;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    friend mints operator+(long long a, mints b) { return mints(a)+b; }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<n);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    friend mints operator-(long long a, mints b) { return mints(a)-b; }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    friend mints operator*(long long a, mints b) { return mints(a)*b; }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
+    void set(int i, S x, bool do_op=true) {
+        assert(i>=0 && i<n);
+        set_only(i, x, do_op);
+        i += n; i>>=1;  // i is node id
+        while(i) {
+            update(i);
+            i>>=1;
         }
+    }
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<2*n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
+    }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
+    }
+    S get(int i) { // i = nodeid - n
+        i += n;
+        assert(i>=1 && i<2*n);
+        return a[i];
+    }
+    S prod(int ql, int qr) {
+        assert(ql>=0 && qr<=n);
+        auto f=[&](auto f, int l, int r, int i) -> S {
+            if(r<=ql || l>=qr) return e();
+            if(l>=ql && r<=qr) return get(i-n);
+            int m = (l+r)/2;
+            S ret = op(f(f, l, m, i<<1), f(f, m, r, (i<<1)|1));
+            return ret;
+        };
+        S ret = f(f, 0, n, 1);
         return ret;
     }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
         }
-        return false;
+        return mx;
     }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
     }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { cerr<<a[i+n]<<' '; }
+        cerr<<endl;
+        #endif
     }
 };
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-}
-istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
-ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
-using vm = vector<mints>;
-using vvm = vector<vector<mints>>;
 
-template <class mints> struct RollingHash {
-    int n;
-    long long base;
-    vector<mints> rh, bpow;
-    RollingHash(string s="", long long base=1234567): base(base) {
-        if(s!="") set(s, base);
-    };
-    void set(string &s, long long _base=1234567) {
-        n = s.size(); rh.resize(n+1,0); bpow.resize(n+1, 1);
-        base = _base;
-        for(int i=0; i<n; ++i) {
-            rh[i+1] = rh[i]*base + s[i];
-            bpow[i+1] = bpow[i] * base;
+struct Seg {
+    int n, mx;
+    using ST = multiset<ll>;
+    vector<ST> d;
+    Seg(int mx=1):mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        d.resize(2*n);
+    }
+    void add(int l, int r, ll x) {
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) d[l].insert(x), ++l;
+            if(r&1) --r, d[r].insert(x);
+            l>>=1, r>>=1;
         }
     }
-    mints get(int l, int r) { // [l,r)
-        assert(l<=r);
-        return rh[r] - rh[l]*bpow[r-l];
+    void del(int l, int r, ll x) {
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) erase(d[l], x), ++l;
+            if(r&1) --r, erase(d[r], x);
+            l>>=1, r>>=1;
+        }
+    }
+    ll get(int i) {
+        i += n;
+        ll ret = -INF;
+        while(i) {
+            if(d[i].size()) chmax(ret, *d[i].rbegin());
+            i>>=1;
+        }
+        return ret;
     }
 };
 
 void solve() {
     LONG(N);
-    VS(S, N);
-    vector<RollingHash<mints>> rh(N);
-    rep(i, N) rh[i].set(S[i]);
-    vb inside(N);
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        if(SIZE(S[i])>=SIZE(S[j])) continue;
-        ll a = S[i].size(), b = S[j].size();
-        rep(k, b+1-a) {
-            if(rh[i].get(0,a)==rh[j].get(k,k+a)) {
-                inside[i] = true;
-            }
+    VL(A, N);
+    LONG(Q);
+    Seg seg(N);
+    rep(i, N) seg.add(i,i+1,A[i]);
+    vt4 query;
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(l,r,x); --l;
+            query.emplace_back(t,l,r,x);
+        } else {
+            LONGM(i);
+            query.emplace_back(t,i,-1,-1);
         }
     }
-    vvl common(N, vl(N));
-    rep(i, N) rep(j, N) {
-        if(inside[i] || inside[j]) continue;
-        ll a = S[i].size(), b = S[j].size();
-        ll m = min(a,b);
-        rep1(k, m) {
-            if(rh[i].get(a-k,a)==rh[j].get(0,k)) common[i][j] = k;
+    for(auto [t,l,r,x]: query) {
+        if(t==1) {
+            seg.add(l,r,x);
+        } else if (t==2) {
+            auto [pt,pl,pr,px] = query[l];
+            seg.del(pl,pr,px);
+        } else {
+            ll ans = seg.get(l);
+            Out(ans);
         }
     }
-    vvl dp(1<<N, vl(N,INF));
-    rep(i, N) {
-        if(inside[i]) continue;
-        dp[1<<i][i] = S[i].size();
-    }
-    rep(s, 1<<N) rep(i, N) {
-        ll now = dp[s][i];
-        if(now==INF) continue;
-        rep(j, N) if(~s>>j&1) {
-            if(inside[j]) continue;
-            chmin(dp[s|1<<j][j], now+SIZE(S[j])-common[i][j]);
-        }
-    }
-
-    ll ts = 0;
-    rep(i, N) if(!inside[i]) ts |= 1<<i;
-
-    ll ans = INF;
-    rep(i, N) {
-        if(inside[i]) continue;
-        chmin(ans, dp[ts][i]);
-    }
-    Out(ans);
 
 }
 

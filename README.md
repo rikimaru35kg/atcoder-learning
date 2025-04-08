@@ -764,6 +764,13 @@
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
+## 双対セグメントツリー（Dual Segment Tree）
+- 区間更新、一点取得のセグ木
+- 更新時は区間に作用させ、取得時に葉から根まで上る（セグ木と更新・取得を逆にするだけ）
+- 遅延セグ木があれば不要と思いきや、区間に作用させたまま下に伝播させたくない場合は双対セグ木を使うと良い
+### 例題
+- [G - Retroactive Range Chmax](https://atcoder.jp/contests/abc342/tasks/abc342_g)
+
 ## マージソートツリー
 - マージソートしながらセグ木を構築
 - オンラインで葉を更新するのは計算量が大きすぎるので注意！
