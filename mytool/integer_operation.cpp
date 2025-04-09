@@ -107,8 +107,6 @@ long long nHr (long long n, long long r, bool one=false) {
     else return nCr(r-1, n-1);
 }
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
 class Combination {
     long long mx, mod;
     vector<long long> facts, ifacts;
@@ -116,33 +114,33 @@ public:
     // argument mod must be a prime number!!
     Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
         facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
         ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
         if (r < 0 || r > n || n < 0) return 0;
         return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+    long long nPr(int n, int r) {
+        assert(n<=mx);
         if (r < 0 || r > n || n < 0) return 0;
         return facts[n] * ifacts[n-r] % mod;
     }
-    long long nHr(long long n, long long r, bool one=false) {
+    long long nHr(int n, int r, bool one=false) {
         if(!one) return nCr(n+r-1, r);
         else return nCr(r-1, n-1);
     }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
         return facts[n];
     }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
         return ifacts[n];
     }
     long long modpow(long long a, long long b) {
