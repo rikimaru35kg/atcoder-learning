@@ -228,33 +228,149 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Binary Trie (template only)
-template<class T=long long, int k=62> class BinaryTrie {
-    struct Node {
-        int to[2];
-        int cnt, p;
-        Node(int p=-1): cnt(0), p(p) { to[0] = to[1] = -1; }
-    };
-    vector<Node> nodes;
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  // i is node id
+        while(i) { update(i); i>>=1; }
+    }
+    void update(int i) {  // i is node id
+        assert(i>=1 && i<n);
+        int l = i<<1, r = l|1;  // l,r are children
+        a[i] = op(a[l], a[r]);
+    }
 public:
-    BinaryTrie(): nodes(1,Node()) {}
-    void add(T x, int c) {
-        int v = 0;
-        nodes[v].cnt += c;
-        for(int i=k; i>=0; --i) {
-            int b = x>>i&1;
-            if(nodes[v].to[b]==-1) {
-                nodes[v].to[b] = nodes.size();
-                nodes.push_back(Node(v));
-            }
-            v = nodes[v].to[b];
-            nodes[v].cnt += c;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
+    }
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
+    }
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    void build() {
+        for(int i=n-1; i>=1; --i) { update(i); }
+    }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S ret = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) ret = op(ret, a[l++]);
+            if(r&1) ret = op(ret, a[--r]);
+            l>>=1, r>>=1;
         }
+        return ret;
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
     }
 };
 
+struct S {
+    ll x, i;
+    S(ll x=INF, ll i=INF): x(x),i(i) {}
+    bool operator<(S o) const {
+        if(x==o.x) return i<o.i;
+        return x<o.x;
+    }
+};
+S op(S a, S b) { return min(a,b); }
+S e() {return S();}
+
 void solve() {
-    BinaryTrie<ll,31> trie;
+    LONG(N, M);
+    VLM(A, N);
+    SegTree<S,op,e> seg(N);
+    rep(i, N) seg.set_only(i, S(A[i],i));
+    seg.build();
+    vvl is(M);
+    rep(i, N) is[A[i]].push_back(i);
+    set<ll> lasts;
+    rep(i, M) lasts.insert(is[i].back());
+
+    ll l = 0;
+    vl ans;
+    rep(i, M) {
+        seg.dump();
+        ll r = *lasts.begin()+1;
+        auto [a,ci] = seg.prod(l,r);
+        de4(l,r,a,ci)
+        ans.push_back(a+1);
+        l = ci+1;
+        lasts.erase(is[a].back());
+        for(auto j: is[a]) { seg.set(j, e()); }
+    }
+    Out(ans);
+
 }
 
 int main () {
