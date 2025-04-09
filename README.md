@@ -2158,6 +2158,7 @@
 - [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
 - [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
+- [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 
 ## ACできたがグダった問題
 <!-- where i am now for rank E -->
