@@ -1470,6 +1470,7 @@
 - !要復習 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !復習価値中 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
 - !復習価値低 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
+- !要復習 [G - Yet Another RGB Sequence](https://atcoder.jp/contests/abc266/tasks/abc266_g)
 
 ## 分布に対するDP
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
