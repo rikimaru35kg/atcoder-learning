@@ -228,45 +228,183 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll M = 1e5;
-vl dp(M);
-
-long long kth_root2(long long n, long long k) {
-    assert(n>=0 && k>0);
-    auto powk=[&](long long x) -> bool {
-        long long p = 1;
-        for(int i=0; i<k; ++i)  p *= x;
-        return p<=n;
+template <class S>
+struct ReversibleVector {
+    struct xorshift {
+        using u32 = uint32_t;
+        u32 x = 123456789, y = 362436069, z = 521288629, w = 88675123;
+        xorshift(u32 seed = 0) { z ^= seed; }
+        u32 operator()() {
+            u32 t = x ^ (x << 11);
+            x = y;
+            y = z;
+            z = w;
+            return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8));
+        }
     };
-    long long ret = powl(n, 1.0/k);
-    while(!powk(ret)) --ret;
-    while(powk(ret+1)) ++ret;
-    return ret;
-}
+    xorshift rnd;
+    struct Node {
+        S val;
+        int pri, cnt;
+        bool rev;
+        Node *l, *r;
+        Node(S val_, int pri_) : val(val_), pri(pri_), cnt(1), rev(false), l(nullptr), r(nullptr) {}
+    } *root = nullptr;
+    using tree = Node *;
+    int count(tree t) { return t ? t->cnt : 0; }
+    void proc(tree &t) { if(t) t->cnt = 1 + count(t->l) + count(t->r); }
+    void eval(tree &t) {
+        if(t and t->rev) {
+            t->rev = false;
+            std::swap(t->l, t->r);
+            if(t->l) t->l->rev ^= 1;
+            if(t->r) t->r->rev ^= 1;
+        }
+        proc(t);
+    }
+    void split(tree t, int key, tree &l, tree &r) {
+        if(!t) {
+            l = r = nullptr;
+            return;
+        }
+        eval(t);
+        int imp_key = count(t->l) + 1;
+        if(key < imp_key) {
+            split(t->l, key, l, t->l), r = t;
+        } else {
+            split(t->r, key - imp_key, t->r, r), l = t;
+        }
+        proc(t);
+    }
+    void merge(tree &t, tree &l, tree &r) {
+        eval(l);
+        eval(r);
+        if(!l or !r) t = l ? l : r;
+        else if(l->pri > r->pri) merge(l->r, l->r, r), t = l;
+        else merge(r->l, l, r->l), t = r;
+        proc(t);
+    }
+    void insert(tree &t, int key, tree item) {
+        tree t1, t2;
+        split(t, key, t1, t2);
+        merge(t1, t1, item);
+        merge(t, t1, t2);
+    }
+    void erase(tree &t, int key) {
+        tree t1, t2, t3;
+        split(t, key + 1, t1, t2);
+        split(t1, key, t1, t3);
+        merge(t, t1, t2);
+    }
+    void reverse(tree t, int l, int r) {
+        if(l > r) return;
+        tree t1, t2, t3;
+        split(t, l, t1, t2);
+        split(t2, r - l, t2, t3);
+        t2->rev ^= 1;
+        merge(t2, t2, t3);
+        merge(t, t1, t2);
+    }
+    void rotate(tree t, int l, int m, int r) {
+        reverse(t, l, r);
+        reverse(t, l, l + r - m);
+        reverse(t, l + r - m, r);
+    }
+   public:
+    ReversibleVector() {}
+    ReversibleVector(std::vector<S> as) {
+        std::reverse(as.begin(), as.end());
+        for(S &a : as) { insert(0, a); }
+    }
+    ReversibleVector(std::string as) {
+        std::reverse(as.begin(), as.end());
+        for(S &a : as) { insert(0, a); }
+    }
+    int size() { return count(root); }
+    void insert(int pos, S x) { insert(root, pos, new Node(x, rnd())); }
+    void erase(int pos) { erase(root, pos); }
+    void reverse(int l, int r) { reverse(root, l, r); }
+    void rotate(int l, int m, int r) { rotate(root, l, m, r); }
+    void push_back(S x) { insert(size(), x); }
+    void push_front(S x) { insert(0, x); }
+    void pop_back() {
+        assert(size());
+        erase(size() - 1);
+    }
+    void pop_front() {
+        assert(size());
+        erase(0);
+    }
+    S &operator[](int pos) {
+        tree t1, t2, t3;
+        split(root, pos + 1, t1, t2);
+        split(t1, pos, t1, t3);
+        S &ret = t3->val;
+        merge(t1, t1, t3);
+        merge(root, t1, t2);
+        return ret;
+    }
+};
 
 void solve() {
-    LONG(X);
-    ll ans = 0;
-    rep1(z, M-1) {
-        ll l = z*z;
-        ll r = kth_root2(X,2);
-        ans += max(r-l+1,0LL) * dp[z];
+    LONG(N, L, R);
+    auto get_kth=[&](ll k) -> Pr {
+        rep(i, N) {
+            if(k>N-1-i) {
+                k -= N-1-i;
+                continue;
+            }
+            ll l = i;
+            ll r = i+k;
+            return {l,r};
+        }
+        assert(0);
+        return {-1,-1};
+    };
+    auto [x1,y1] = get_kth(L);
+    auto [x2,y2] = get_kth(R);
+
+    ReversibleVector<ll> v;
+    rep(i, N) v.push_back(i+1);
+
+    auto dump=[&]() {
+        vl ans;
+        ll n = v.size();
+        rep(i, n) ans.push_back(v[i]);
+        de(ans);
+    };
+    auto rot=[&](ll x, ll l, ll r) {
+        vl stck;
+        ll w = r-x+1;
+        w -= l-x-1;
+        rep(i, l-x-1) {
+            auto now = v[x+1];
+            v.erase(x+1);
+            stck.push_back(now);
+        }
+        v.rotate(x,x+w-1,x+w);
+        while(stck.size()) {
+            v.insert(x+1, pop(stck));
+        }
+    };
+
+
+    for(ll x=x1; x<=x2; ++x) {
+        ll l = x+1, r = N-1;
+        if(x==x1) chmax(l, y1);
+        if(x==x2) chmin(r, y2);
+        rot(x,l,r);
     }
+    vl ans;
+    rep(i, N) ans.push_back(v[i]);
     Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    dp[1] = 1;
-    for(ll i=2; i<M; ++i) {
-        for(ll j=1; j*j<=i; ++j) {
-            dp[i] += dp[j];
-        }
-    }
-
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

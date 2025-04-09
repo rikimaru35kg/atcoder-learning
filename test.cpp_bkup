@@ -228,108 +228,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Only when <= 1e6
-//! If not, use Combination2 class below.
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (long long i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (long long i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(long long n, long long r) {
-        return nCr(n, r);
-    }
-    long long nCr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(long long n, long long r) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(long long n, long long r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return facts[n];
-    }
-    long long get_factinv(long long n) {
-        if(n>mx) assert(0&&"[Error@Combination] n>mx");
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
+ll M = 1e5;
+vl dp(M);
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long kth_root2(long long n, long long k) {
+    assert(n>=0 && k>0);
+    auto powk=[&](long long x) -> bool {
+        long long p = 1;
+        for(int i=0; i<k; ++i)  p *= x;
+        return p<=n;
+    };
+    long long ret = powl(n, 1.0/k);
+    while(!powk(ret)) --ret;
+    while(powk(ret+1)) ++ret;
+    return ret;
+}
 
 void solve() {
-    LONG(N, M);
-    Combination comb(10000, M998);
-    vl sz;
-    rep(i, M) {
-        if(i==0) sz.push_back(N/M);
-        else sz.push_back((N+M-i)/M);
+    LONG(X);
+    ll ans = 0;
+    rep1(z, M-1) {
+        ll l = z*z;
+        ll r = kth_root2(X,2);
+        ans += max(r-l+1,0LL) * dp[z];
     }
-
-    vm num(N+1);
-    rep1(n, N) {
-        mint now = 1;
-        for(auto k: sz) {
-            now *= comb.nPr(n, k);
-        }
-        num[n] = now;
-    }
-    de(num)
-    vm ans(N+1);
-    rep1(n, N) {
-        mint res;
-        rep(k, n) {
-            mint now = 1;
-            now *= comb(n, k);
-            now *= num[n-k];
-            if(k&1) res -= now;
-            else res += now;
-        }
-        ans[n] = res;
-    }
-    rep1(n, N) {
-        mint now = ans[n]*comb.get_factinv(n);
-        Out(now);
-    }
-
+    Out(ans);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    dp[1] = 1;
+    for(ll i=2; i<M; ++i) {
+        for(ll j=1; j*j<=i; ++j) {
+            dp[i] += dp[j];
+        }
+    }
+
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
