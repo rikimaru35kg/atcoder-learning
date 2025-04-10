@@ -228,81 +228,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    vl mn;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), mn(n) {
-        rep(i, n) mn[i] = i;
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+struct S {
+    int cnt[3], w;
+    S(ll x=-1, ll w=0): w(w) {
+        rep(i, 3) cnt[i] = 0;
+        if(x!=-1) cnt[x] += w;
     }
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        chmin(mn[y], mn[x]);
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    ll get_root(ll v) {
-        v = leader(v);
-        return mn[v];
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
+    void merge(const S &o) {
+        rep(i, 3) cnt[i] += o.cnt[i];
+        w += o.w;
     }
 };
+S op(S a, S b) {
+    a.merge(b);
+    return a;
+}
+S e() {return S();}
+using F = ll;
+S mapping(F f, S x) {
+    if(f==-1) return x;
+    return S(f, x.w);
+}
+F composition(F f, F g) {
+    if(f==-1) return g;
+    return f;
+}
+F id() {return -1;}
 
 void solve() {
-    LONG(N);
-    vl p(N,-1);
-    rep1(i, N-1) {
-        LONGM(par);
-        p[i] = par;
+    LONG(N,Q,X);
+    VL(P, N);
+    rep(i, N) {
+        if(P[i]<X) P[i] = 0;
+        else if(P[i]==X) P[i] = 1;
+        else P[i] = 2;
     }
-
-    WeightedUnionFind uf(N);
-
-    LONG(Q);
+    de(P)
+    vector<S> init(N);
+    rep(i, N) {
+        init[i] = S(P[i],1);
+    }
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    auto dump=[&]() {
+        #ifdef __DEBUG
+        rep(i, N) {
+            ll x = -1;
+            rep(j, 3) {
+                if(seg.get(i).cnt[j]==1) x = j;
+            }
+            fprintf(stderr, "%lld ", x);
+        }
+        cerr<<endl;
+        #endif
+    };
     rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(v,rv);
-            v = uf.get_root(v), rv = uf.get_root(rv);
-            while(v!=rv) {
-                uf.merge(v,p[v]);
-                v = uf.get_root(v);
+        LONG(c,l,r); --l;
+        if(c==1) {
+            S d = seg.prod(l,r);
+            rep(i, 3) {
+                seg.apply(l,l+d.cnt[i],i);
+                l += d.cnt[i];
             }
         } else {
-            LONGM(x);
-            Out(uf.get_root(x)+1);
+            S d = seg.prod(l,r);
+            repr(i, 3) {
+                seg.apply(l,l+d.cnt[i],i);
+                l += d.cnt[i];
+            }
         }
+        dump();
     }
+    ll ans = -1;
+    rep(i, N) {
+        if(seg.get(i).cnt[1]==1) ans = i+1;
+    }
+    Out(ans);
+
 
 }
 

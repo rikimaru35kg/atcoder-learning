@@ -228,94 +228,81 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! count the # of t in s.  O(|S||T|)
-int count(string &s, string t) {
-    int ret = 0;
-    for(int i=0; i<int(s.size()); ) {
-        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
-        else ++i;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vl mn;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), mn(n) {
+        rep(i, n) mn[i] = i;
     }
-    return ret;
-}
-int count(string &s, char c) { return count(s, string(1,c)); }
-int count(vector<string> &s, string t) {
-    int ret = 0;
-    for(auto &cs: s) ret += count(cs, t);
-    return ret;
-}
-int count(vector<string> &s, char c) { return count(s, string(1,c)); }
-
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    return ret;
-}
-
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        chmin(mn[y], mn[x]);
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    return ret;
-}
+    ll get_root(ll v) {
+        v = leader(v);
+        return mn[v];
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
 
 void solve() {
-    LONG(N, K);
-    STRING(S);
-
-    ll x = count(S, 'X');
-    if(x<K) {
-        for(auto &c: S) c ^= 'X'^'Y';
-        x = N-x;
-        K = N-K;
+    LONG(N);
+    vl p(N,-1);
+    rep1(i, N-1) {
+        LONGM(par);
+        p[i] = par;
     }
 
-    if(x==N) { Outend(max(K-1,0LL)); }
+    WeightedUnionFind uf(N);
 
-    ll base = 0;
-    rep(i, N-1) { if(S.substr(i,2)=="YY") ++base; }
-
-    ll extr = 0;
-    for(int i=0; i<N; ++i) {
-        if(S[i]=='Y') break;
-        extr++;
-    }
-    S = S.substr(extr);
-    while(S.back()=='X') {
-        ++extr;
-        S.pop_back();
-    }
-    ll now = 0;
-    N = S.size();
-    vl cand;
-    rep(i, N) {
-        if(S[i]=='Y') {
-            if(now) cand.emplace_back(now);
-            now=0;
+    LONG(Q);
+    rep(_, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(v,rv);
+            v = uf.get_root(v), rv = uf.get_root(rv);
+            while(v!=rv) {
+                uf.merge(v,p[v]);
+                v = uf.get_root(v);
+            }
         } else {
-            ++now;
+            LONGM(x);
+            Out(uf.get_root(x)+1);
         }
     }
-    sort(all(cand));
-
-    ll ans = base;
-    for(auto n: cand) {
-        ll mn = min(n,K);
-        if(mn==n) ans += mn+1;
-        else ans += mn;
-        K -= mn;
-    }
-    ans += min(extr,K);
-    Out(ans);
-
-
-
 
 }
 

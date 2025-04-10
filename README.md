@@ -2162,6 +2162,7 @@
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
 - [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
+- [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
 
 ## ACできたがグダった問題
 <!-- where i am now for rank E -->
