@@ -1965,11 +1965,12 @@
 - !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !要復習 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 
-## 凸包
+## 凸包・Convex Hull Trick
 - 凸な多角形を作る事で上手くいく問題
 ### 
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
+- !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）
