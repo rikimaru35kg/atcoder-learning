@@ -228,84 +228,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
-struct S {
-    int cnt[3], w;
-    S(ll x=-1, ll w=0): w(w) {
-        rep(i, 3) cnt[i] = 0;
-        if(x!=-1) cnt[x] += w;
+//! count the # of t in s.  O(|S||T|)
+int count(string &s, string t) {
+    int ret = 0;
+    for(int i=0; i<int(s.size()); ) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
     }
-    void merge(const S &o) {
-        rep(i, 3) cnt[i] += o.cnt[i];
-        w += o.w;
-    }
-};
-S op(S a, S b) {
-    a.merge(b);
-    return a;
+    return ret;
 }
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==-1) return x;
-    return S(f, x.w);
+int count(string &s, char c) { return count(s, string(1,c)); }
+int count(vector<string> &s, string t) {
+    int ret = 0;
+    for(auto &cs: s) ret += count(cs, t);
+    return ret;
 }
-F composition(F f, F g) {
-    if(f==-1) return g;
-    return f;
+int count(vector<string> &s, char c) { return count(s, string(1,c)); }
+
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
 }
-F id() {return -1;}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
 void solve() {
-    LONG(N,Q,X);
-    VL(P, N);
+    STRING(S);
+    ll N = S.size();
+    LONG(K);
+    ll Y = count(S, 'Y');
+    if(Y==0) Pm0
+    vl is;
+    ll cnt = 0;
     rep(i, N) {
-        if(P[i]<X) P[i] = 0;
-        else if(P[i]==X) P[i] = 1;
-        else P[i] = 2;
+        if(S[i]=='.') continue;
+        is.push_back(i-cnt++);
     }
-    de(P)
-    vector<S> init(N);
-    rep(i, N) {
-        init[i] = S(P[i],1);
-    }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-    auto dump=[&]() {
-        #ifdef __DEBUG
-        rep(i, N) {
-            ll x = -1;
-            rep(j, 3) {
-                if(seg.get(i).cnt[j]==1) x = j;
-            }
-            fprintf(stderr, "%lld ", x);
+    auto Sc = cumsum(is);
+
+    auto f=[&](ll x) -> bool {
+        rep(l, Y+1-x) {
+            ll r = l+x-1;
+            ll m = (l+r)/2;
+            ll left = m-l, right = r-m;
+            ll cnt = 0;
+            cnt += is[m]*left - (Sc[m]-Sc[l]);
+            cnt += (Sc[r+1]-Sc[m+1]) - is[m]*right;
+            if(cnt<=K) return true;
         }
-        cerr<<endl;
-        #endif
+        return false;
     };
-    rep(_, Q) {
-        LONG(c,l,r); --l;
-        if(c==1) {
-            S d = seg.prod(l,r);
-            rep(i, 3) {
-                seg.apply(l,l+d.cnt[i],i);
-                l += d.cnt[i];
-            }
-        } else {
-            S d = seg.prod(l,r);
-            repr(i, 3) {
-                seg.apply(l,l+d.cnt[i],i);
-                l += d.cnt[i];
-            }
-        }
-        dump();
-    }
-    ll ans = -1;
-    rep(i, N) {
-        if(seg.get(i).cnt[1]==1) ans = i+1;
-    }
+
+    ll ans = binary_search(1, Y+1, f);
     Out(ans);
+
 
 
 }

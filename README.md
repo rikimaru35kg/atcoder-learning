@@ -479,6 +479,7 @@
 - 基本 1からの距離総和が最小な全域木 [E - Road Reduction](https://atcoder.jp/contests/abc252/tasks/abc252_e)
 - 基本 [C - Keep Graph Connected](https://atcoder.jp/contests/arc108/tasks/arc108_c)
 - 基本 電気スイッチ [F - Many Lamps](https://atcoder.jp/contests/abc345/tasks/abc345_f)
+- !復習価値低 [G - Construct Good Path](https://atcoder.jp/contests/abc244/tasks/abc244_g)
 
 ## 木の重心分解
 ### 例題
@@ -1893,6 +1894,7 @@
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
 - !復習価値中 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
+- !復習価値低 典型てんこ盛り問題として紹介したい [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
