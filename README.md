@@ -2164,9 +2164,7 @@
 
 ## ACできたがグダった問題
 <!-- where i am now for rank E -->
-<!-- last submission 2025/3/10 -->
-- [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
-- [B - XYYYX](https://atcoder.jp/contests/arc157/tasks/arc157_b)
+<!-- last submission 2025/3/11 -->
 - [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
 - [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
@@ -2234,3 +2232,4 @@
 - [E - Ringo's Favorite Numbers 3](https://atcoder.jp/contests/abc400/tasks/abc400_e)
 - [G - Compress Strings](https://atcoder.jp/contests/abc343/tasks/abc343_g)
 - [G - Swap Many Times](https://atcoder.jp/contests/abc253/tasks/abc253_g)
+- [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
