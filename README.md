@@ -660,6 +660,7 @@
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
 - 基本 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
+- !要復習 [G - Minimum Reachable City](https://atcoder.jp/contests/abc295/tasks/abc295_g)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる

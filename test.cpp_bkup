@@ -228,27 +228,94 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! count the # of t in s.  O(|S||T|)
+int count(string &s, string t) {
+    int ret = 0;
+    for(int i=0; i<int(s.size()); ) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
+    }
+    return ret;
+}
+int count(string &s, char c) { return count(s, string(1,c)); }
+int count(vector<string> &s, string t) {
+    int ret = 0;
+    for(auto &cs: s) ret += count(cs, t);
+    return ret;
+}
+int count(vector<string> &s, char c) { return count(s, string(1,c)); }
+
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
+    }
+    return ret;
+}
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
+    }
+    return ret;
+}
+
 void solve() {
     LONG(N, K);
-    VL(A, N);
-    vl rr(N+1);
-    repr(i, N) rr[i] = rr[i+1] ^ A[i];
+    STRING(S);
 
-    ll ans = 0;
-    auto f=[&](auto f, ll i, ll k, ll x) -> void {
-        if(k==K) {
-            chmax(ans, x);
-            return;
+    ll x = count(S, 'X');
+    if(x<K) {
+        for(auto &c: S) c ^= 'X'^'Y';
+        x = N-x;
+        K = N-K;
+    }
+
+    if(x==N) { Outend(max(K-1,0LL)); }
+
+    ll base = 0;
+    rep(i, N-1) { if(S.substr(i,2)=="YY") ++base; }
+
+    ll extr = 0;
+    for(int i=0; i<N; ++i) {
+        if(S[i]=='Y') break;
+        extr++;
+    }
+    S = S.substr(extr);
+    while(S.back()=='X') {
+        ++extr;
+        S.pop_back();
+    }
+    ll now = 0;
+    N = S.size();
+    vl cand;
+    rep(i, N) {
+        if(S[i]=='Y') {
+            if(now) cand.emplace_back(now);
+            now=0;
+        } else {
+            ++now;
         }
-        if(K-k==N-i) {
-            chmax(ans, x^rr[i]);
-            return;
-        }
-        f(f, i+1, k, x);
-        f(f, i+1, k+1, x^A[i]);
-    };
-    f(f, 0, 0, 0);
+    }
+    sort(all(cand));
+
+    ll ans = base;
+    for(auto n: cand) {
+        ll mn = min(n,K);
+        if(mn==n) ans += mn+1;
+        else ans += mn;
+        K -= mn;
+    }
+    ans += min(extr,K);
     Out(ans);
+
+
+
 
 }
 
