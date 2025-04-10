@@ -228,69 +228,216 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// get max for lines(ai*x+bi)
-class ConvexHullTrick {
-    struct Line {
-        long long a, b;
-        Line(long long a, long long b): a(a), b(b) {}
-    };
-    deque<Line> lines;
-    long long fx(Line l, long long x) { return l.a*x + l.b; }
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
 public:
-    ConvexHullTrick() {}
-    void add(long long a3, long long b3) {
-        // (a3,b3) must be input in the asceinding order!
-        while((int)lines.size()>=2) {
-            auto [a1,b1] = lines.end()[-2];
-            auto [a2,b2] = lines.end()[-1];
-            if((b1-b2)*(a3-a2)<(a2-a1)*(b2-b3)) break;
-            lines.pop_back();
-        }
-        lines.emplace_back(a3,b3);
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    long long get(long long x) {
-        //! O(Q*log(N,3))
-        int l=0, r=lines.size()-1;
-        while(r-l>2) {
-            int m1 = (l*2+r)/3;
-            int m2 = (l+2*r)/3;
-            if(fx(lines[m1],x)<fx(lines[m2],x)) l=m1;
-            else r = m2;
-        }
-        long long ret = fx(lines[l],x);
-        for(int i=l+1; i<=r; ++i) ret = max(ret, fx(lines[i],x));
-        return ret;
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    long long get_in_the_ascending_order(long long x) {
-        //! O(N+Q) and irrevirsible
-        long long ret = fx(lines[0], x);
-        while((int)lines.size()>=2) {
-            long long nxt = fx(lines[1], x);
-            if(nxt<ret) break;
-            ret = nxt;
-            lines.pop_front();
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
+    }
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
         }
-        return ret;
+        return op(lft, rgt);
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
     }
 };
 
-void solve() {
-    LONG(N, M);
-    VL(B, N); VL(C, M);
-    ConvexHullTrick cht;
-    sort(allr(B));
-    vp Cs;
-    rep(i, M) Cs.emplace_back(C[i], i);
-    sort(all(Cs));
-
-    rep(i, N) cht.add(i+1, (i+1)*B[i]);
-    vl ans(M);
-    rep(i, M) {
-        auto [c, ci] = Cs[i];
-        ll y = cht.get(c);
-        ans[ci] = y;
+//! n*n matrix
+constexpr int MX = 6;  // DEFINE PROPERLY!!
+template <typename T> class Mat {
+    int n;
+    T a[MX][MX];
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
     }
-    Out(ans);
+public:
+    // Initialize n*n matrix as unit matrix
+    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
+        }
+    }
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
+    }
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
+    }
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        assert(abs(det)>=EPS);
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    void transpose() {
+        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
+            swap(a[i][j], a[j][i]);
+        }
+    }
+    // power k (A^k)
+    Mat pow(long long k) { return pow_recursive(*this, k); }
+    void set(int i, int j, T x) { a[i][j] = x; }
+    T operator()(int i, int j) { return a[i][j]; }
+    void print(string debugname="------") {  // for debug
+        #ifdef __DEBUG
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+        #endif
+    }
+};
+
+using S = Mat<uint>;
+S op(S a, S b) {return b*a;}
+S e() {return S(6);}
+
+void solve() {
+    STRING(Str);
+    ll N = Str.size();
+    LONG(Q);
+    SegTree<S,op,e> seg(N);
+    vector<S> ms(6, Mat<uint>(6));
+    rep(i, 5) {
+        ms[i].set(i+1,i,1);
+    }
+    string disco = "DISCO";
+    rep(i, N) {
+        rep(j, 5) {
+            if(Str[i]==disco[j]) {
+                seg.set_only(i, ms[j]);
+            }
+        }
+    }
+    seg.build();
+    vector<uint> init(6);
+    init[0] = 1;
+    rep(_, Q) {
+        LONG(l,r); --l;
+        vector<uint> x = seg.prod(l,r) * init;
+        ll ans = x.back();
+        Out(ans);
+    }
 
 }
 

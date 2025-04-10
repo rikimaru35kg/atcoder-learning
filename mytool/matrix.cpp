@@ -101,9 +101,10 @@ ostream& operator<<(ostream& os, const Vecd& v) {
 }
 
 //! n*n matrix
-const int MX = 2;  // DEFINE PROPERLY!!
-template <typename T>
-class Mat {
+constexpr int MX = 6;  // DEFINE PROPERLY!!
+template <typename T> class Mat {
+    int n;
+    T a[MX][MX];
     Mat pow_recursive(Mat b, long long k) {
         Mat ret(b.n);
         if (k == 0) return ret;
@@ -112,9 +113,8 @@ class Mat {
         return ret * tmp * tmp;
     }
 public:
-    int n; T a[MX][MX];
     // Initialize n*n matrix as unit matrix
-    Mat (int n, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
         if(!src) {
             for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
                 if(i==j) a[i][j] = 1;

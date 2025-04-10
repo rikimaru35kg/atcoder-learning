@@ -4,14 +4,8 @@ using namespace std;
 template <class S, S(*op)(S, S), S(*e)()> class SegTree {
     int n, mx;
     vector<S> a;
-    void climb(int i) {  // i is node id
-        while(i) { update(i); i>>=1; }
-    }
-    void update(int i) {  // i is node id
-        assert(i>=1 && i<n);
-        int l = i<<1, r = l|1;  // l,r are children
-        a[i] = op(a[l], a[r]);
-    }
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
 public:
     SegTree(int mx): mx(mx) {
         n = 1;
@@ -34,23 +28,21 @@ public:
         set_only(i, x, true);
         climb((i+n)>>1);
     }
-    void build() {
-        for(int i=n-1; i>=1; --i) { update(i); }
-    }
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
     S get(int i) {
         assert(i>=0 && i<mx);
         return a[i+n];
     }
     S prod(int l, int r) {
         assert(l>=0 && r<=mx && l<=r);
-        S ret = e();
+        S lft = e(), rgt = e();
         l += n, r += n;
         while(l<r) {
-            if(l&1) ret = op(ret, a[l++]);
-            if(r&1) ret = op(ret, a[--r]);
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
             l>>=1, r>>=1;
         }
-        return ret;
+        return op(lft, rgt);
     }
     S all_prod() { return a[1]; }
     int max_right(int l, auto f) {
