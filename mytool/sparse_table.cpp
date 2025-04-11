@@ -1,19 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-template<class S, S(*op)(S, S), S(*e)()>
-struct SparseTable {
+template<class S, S(*op)(S, S), S(*e)()> struct SparseTable {
     int n, len=0;
     vector<vector<S>> a;
     vector<int> row; // width -> row of a
     SparseTable(int n): n(n), row(n+1) {
         for(int w=1; w<=n; w<<=1) {
-            a.push_back(vector<S>());
-            for(int l=0; l<n+1-w; ++l) {
-                a.back().push_back(e());
-            }
+            a.push_back(vector<S>(n+1-w, e()));
         }
-        int i=0, rw=0;
+        int i=0, rw=0;  // i: width for query, rw: row of a
         for(int w=1; w<=n; w<<=1) {
             while(i<=n && i<(w<<1)) row[i++] = rw;
             ++rw;

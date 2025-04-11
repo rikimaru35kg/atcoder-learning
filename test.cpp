@@ -228,73 +228,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return 0;}
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
-        }
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
 }
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
+template<class S, S(*op)(S, S), S(*e)()> struct SparseTable {
+    int n, len=0;
+    vector<vector<S>> a;
+    vector<int> row; // width -> row of a
+    SparseTable(int n): n(n), row(n+1) {
+        for(int w=1; w<=n; w<<=1) {
+            a.push_back(vector<S>(n+1-w, e()));
+        }
+        int i=0, rw=0;  // i: width for query, rw: row of a
+        for(int w=1; w<=n; w<<=1) {
+            while(i<=n && i<(w<<1)) row[i++] = rw;
+            ++rw;
         }
     }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+    void set(int i, S x) {
+        assert(i>=0 && i<n);
+        a[0][i] = x;
+    }
+    void build() {
+        int rw=0;
+        for(int w=2; w<=n; w<<=1) {
+            for(int l=0; l<n+1-w; ++l) {
+                a[rw+1][l] = op(a[rw][l], a[rw][l+w/2]);
+            }
+            ++rw;
+        }
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=n && l<=r);
+        if(l==r) return e();
+        int rw = row[r-l];
+        int w = 1<<rw;
+        return op(a[rw][l], a[rw][r-w]);
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<n; ++i) cerr<<a[0][i]<<' ';
+        cerr<<endl;
+        #endif
+    }
+};
 
 void solve() {
-    LONG(P);
-    ll N = P-1;
-    auto ds = listup_divisor(N, true);
-    auto ps = prime_factorization(N);
-    umap<ll,mint> dp;
-
-    auto dump=[&]() {
-        for(auto d: ds) {
-            printf("{%lld, %d} ", d, dp[d].val());
-        }
-        cout<<endl;
-    };
-
-    for(auto d: ds) dp[d] = N/d;
-
-    for(auto [p,n]: ps) {
-        for(auto d: ds) {
-            if(N%(d*p)==0) dp[d] -= dp[d*p];
-        }
+    LONG(N);
+    VL(A, N);
+    vl f(N);
+    ll r = 0;
+    rep(l, N) {
+        while(r<N && A[r]<2*A[l]) ++r;
+        f[l] = r;
     }
-    mint ans = 1;
-    for(auto d: ds) ans += dp[d]*N/d;
-    Out(ans);
+    SparseTable<S,op,e> seg(N);
+    rep(i, N) seg.set(i, f[i]-i);
+    seg.build();
+
+    LONG(Q);
+    rep(_, Q) {
+        LONG(l,r); --l;
+        auto g=[&](ll w) -> bool {
+            ll mx = seg.prod(l,l+w);
+            return mx<=r-w-l;
+        };
+        ll ans = binary_search(0, (r-l)/2+1, g);
+        Out(ans);
+    }
 
 }
 

@@ -2169,8 +2169,7 @@
 
 ## ACできなかった問題
 <!-- where i am now for rank D -->
-<!-- last submission 2025/3/11 -->
-- [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
+<!-- last submission 2025/3/12 -->
 - [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
 - [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
@@ -2184,11 +2183,6 @@
 ## ACできたがグダった問題
 <!-- where i am now for rank E -->
 <!-- last submission 2025/3/11 -->
-- [No.2819 Binary Binary-Operator](https://yukicoder.me/problems/no/2819)
-- [C - Align](https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_c)
-- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
-- [C - つらら](https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c)
-- [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
 - [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
@@ -2252,3 +2246,6 @@
 - [G - Compress Strings](https://atcoder.jp/contests/abc343/tasks/abc343_g)
 - [G - Swap Many Times](https://atcoder.jp/contests/abc253/tasks/abc253_g)
 - [E - Maximize XOR](https://atcoder.jp/contests/abc386/tasks/abc386_e)
+- [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
+- [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
+- [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
