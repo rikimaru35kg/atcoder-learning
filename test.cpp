@@ -228,34 +228,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    STRING(N);
-    auto dsum=[&](ll a) -> ll {
-        ll k = 0;
-        while(a) {
-            k += a%10;
-            a /= 10;
+    LONG(N);
+    VLM(P, N);
+    vvm dp1(N+1, vm(N+1));  // dp1[l][r]: lを根とした部分木における場合の数
+    vvm dp2(N+1, vm(N+1));  // dp2[l][r]: [l,r)を複数の部分木に分けた時の場合の数
+    rep(i, N+1) dp1[i][i] = 1; rep(i, N+1) dp2[i][i] = 1;
+    rep(i, N) dp1[i][i+1] = 1; rep(i, N) dp2[i][i+1] = 1;
+
+    repk(w, 2, N+1) {
+        rep(l, N+1-w) {
+            ll r = l+w;
+            dp1[l][r] = dp2[l+1][r];  // [l+1,r)が複数の子になる
+            for(ll m=l+1; m<=r; ++m) {
+                // 重複なく数える為には、[l,m)で切れ目がない（＝[l,m)は1つの部分木）
+                // ようにする必要がある。
+                // [l,m)は1つの部分木なので、順序関係のチェックは下記のみでOK
+                if(m!=r && P[l]>P[m]) continue;
+                dp2[l][r] += dp1[l][m]*dp2[m][r];
+            }
         }
-        return k;
-    };
-    auto good=[&](ll a) -> bool {
-        return a%dsum(a)==0;
-    };
-    if(SIZE(N)<=6) {
-        ll n = stoll(N);
-        repk(a, n, 2*n) {
-            if(!good(a)) continue;
-            if(!good(a+1)) continue;
-            Outend(a);
-        }
-        Pm1
     }
-    ll h = stoll(N.substr(0,2));
-    ++h;
-    while(dsum(h)!=8) {
-        ++h;
-    }
-    string ans = to_string(h) + string(SIZE(N)-2, '0');
+    mint ans = dp1[0][N];
     Out(ans);
 
 }

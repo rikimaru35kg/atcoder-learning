@@ -228,49 +228,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Complex {
-    long long a, b;
-    Complex(long long a, long long b): a(a), b(b) {}
-    Complex operator+(const Complex &o) const { return Complex(a+o.a, b+o.b); }
-    Complex& operator+=(const Complex &o) { *this = *this + o; return *this; }
-    Complex operator-(const Complex &o) const { return Complex(a-o.a, b-o.b); }
-    Complex& operator-=(const Complex &o) { *this = *this - o; return *this; }
-    Complex operator*(const Complex &o) const { return Complex(a*o.a-b*o.b, a*o.b+b*o.a); }
-    Complex& operator*=(const Complex &o) { *this = *this * o; return *this; }
-    bool operator<(const Complex &o) const {
-        if(a==o.a) return b<o.b;
-        return a<o.a;
-    }
-    bool operator==(const Complex &o) const { return a==o.a && b==o.b; }
-    long long norm2() { return a*a + b*b; }
-};
-
 void solve() {
-    LONG(N);
-    vector<Complex> P1, P2;
-    rep(i, N) {
-        LONG(a,b);
-        P1.emplace_back(a, b);
+    STRING(N);
+    auto dsum=[&](ll a) -> ll {
+        ll k = 0;
+        while(a) {
+            k += a%10;
+            a /= 10;
+        }
+        return k;
+    };
+    auto good=[&](ll a) -> bool {
+        return a%dsum(a)==0;
+    };
+    if(SIZE(N)<=6) {
+        ll n = stoll(N);
+        repk(a, n, 2*n) {
+            if(!good(a)) continue;
+            if(!good(a+1)) continue;
+            Outend(a);
+        }
+        Pm1
     }
-    rep(i, N) {
-        LONG(a,b);
-        P2.emplace_back(a, b);
+    ll h = stoll(N.substr(0,2));
+    ++h;
+    while(dsum(h)!=8) {
+        ++h;
     }
-    if(N==1) PYes
-
-    Complex a1 = P1[0], b1 = P1[1];
-    rep(i, N) rep(j, N) {
-        if(i==j) continue;
-        Complex a2 = P2[i], b2 = P2[j];
-        if((b1-a1).norm2()!=(b2-a2).norm2()) continue;
-        vector<Complex> p1, p2;
-        rep(k, N) { p1.emplace_back((P1[k]-a1)*(b2-a2)); }
-        rep(k, N) { p2.emplace_back((P2[k]-a2)*(b1-a1)); }
-        sort(all(p1));
-        sort(all(p2));
-        if(p1==p2) PYes
-    }
-    PNo
+    string ans = to_string(h) + string(SIZE(N)-2, '0');
+    Out(ans);
 
 }
 

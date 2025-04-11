@@ -1007,6 +1007,7 @@
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - !復習価値中 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 - !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
+- !復習価値高 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
 
 ## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
