@@ -2182,9 +2182,7 @@
 
 ## ACできたがグダった問題
 <!-- where i am now for rank E -->
-<!-- last submission 2025/3/11 -->
-- [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
-- [E - Digit Sum Divisible 2](https://atcoder.jp/contests/abc387/tasks/abc387_e)
+<!-- last submission 2025/3/12 -->
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
@@ -2249,3 +2247,4 @@
 - [C - ソフトクリーム (Softcream)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_c)
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
+- [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)

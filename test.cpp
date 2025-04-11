@@ -228,96 +228,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-using S = ll;
-S op(S a, S b) {return max(a,b);}
-S e() {return 0;}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-template<class S, S(*op)(S, S), S(*e)()> struct SparseTable {
-    int n, len=0;
-    vector<vector<S>> a;
-    vector<int> row; // width -> row of a
-    SparseTable(int n): n(n), row(n+1) {
-        for(int w=1; w<=n; w<<=1) {
-            a.push_back(vector<S>(n+1-w, e()));
-        }
-        int i=0, rw=0;  // i: width for query, rw: row of a
-        for(int w=1; w<=n; w<<=1) {
-            while(i<=n && i<(w<<1)) row[i++] = rw;
-            ++rw;
-        }
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<n);
-        a[0][i] = x;
-    }
-    void build() {
-        int rw=0;
-        for(int w=2; w<=n; w<<=1) {
-            for(int l=0; l<n+1-w; ++l) {
-                a[rw+1][l] = op(a[rw][l], a[rw][l+w/2]);
-            }
-            ++rw;
-        }
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=n && l<=r);
-        if(l==r) return e();
-        int rw = row[r-l];
-        int w = 1<<rw;
-        return op(a[rw][l], a[rw][r-w]);
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<n; ++i) cerr<<a[0][i]<<' ';
-        cerr<<endl;
-        #endif
-    }
-};
-
 void solve() {
-    LONG(N);
-    VL(A, N);
-    vl f(N);
-    ll r = 0;
-    rep(l, N) {
-        while(r<N && A[r]<2*A[l]) ++r;
-        f[l] = r;
+    STRING(N);
+    auto dsum=[&](ll a) -> ll {
+        ll k = 0;
+        while(a) {
+            k += a%10;
+            a /= 10;
+        }
+        return k;
+    };
+    auto good=[&](ll a) -> bool {
+        return a%dsum(a)==0;
+    };
+    if(SIZE(N)<=6) {
+        ll n = stoll(N);
+        repk(a, n, 2*n) {
+            if(!good(a)) continue;
+            if(!good(a+1)) continue;
+            Outend(a);
+        }
+        Pm1
     }
-    SparseTable<S,op,e> seg(N);
-    rep(i, N) seg.set(i, f[i]-i);
-    seg.build();
-
-    LONG(Q);
-    rep(_, Q) {
-        LONG(l,r); --l;
-        auto g=[&](ll w) -> bool {
-            ll mx = seg.prod(l,l+w);
-            return mx<=r-w-l;
-        };
-        ll ans = binary_search(0, (r-l)/2+1, g);
-        Out(ans);
+    ll h = stoll(N.substr(0,2));
+    ++h;
+    while(dsum(h)!=8) {
+        ++h;
     }
+    string ans = to_string(h) + string(SIZE(N)-2, '0');
+    Out(ans);
 
 }
 
