@@ -1395,6 +1395,14 @@
 - 基本 CRTを思い出すのに役立つ [E - Oversleeping](https://atcoder.jp/contests/abc193/tasks/abc193_e)
 - 基本 functional graphを使ってNを推定（インタラクティブ） [F - Guess The Number 2](https://atcoder.jp/contests/abc286/tasks/abc286_f)
 
+## 原始根
+- 素数Pには少なくとも1つ原始根が存在（証明難らしい）
+- 1から始め、原始根rをかけ続けると、mod Pで1~P-1まで全て埋めつくす
+- 原始根のグラフを考えた場合、1ずつ進む
+- 非原始根の場合、kステップずつ進む事に相当（k=1~N）
+### 例題
+- !要復習 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
+
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
 - 平方数を考えるときは指数をMOD 2で考える（つまり0か1のみで、0の場合は無いのと同じなので指数が1の素因数の積になる）
@@ -1973,7 +1981,7 @@
 ### 
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
-- !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
+- !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/jbc289_g)
 
 ## オイラー路
 - 一筆書き

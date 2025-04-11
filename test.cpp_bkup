@@ -228,94 +228,76 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    return ok;
-}
-
-//! count the # of t in s.  O(|S||T|)
-int count(string &s, string t) {
-    int ret = 0;
-    for(int i=0; i<int(s.size()); ) {
-        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
-        else ++i;
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
-    return ret;
-}
-int count(string &s, char c) { return count(s, string(1,c)); }
-int count(vector<string> &s, string t) {
-    int ret = 0;
-    for(auto &cs: s) ret += count(cs, t);
-    return ret;
-}
-int count(vector<string> &s, char c) { return count(s, string(1,c)); }
-
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
+};
 
 void solve() {
-    STRING(S);
-    ll N = S.size();
+    LONG(N, M);
+    WeightedUnionFind uf(N);
+    VPM(edge, M);
     LONG(K);
-    ll Y = count(S, 'Y');
-    if(Y==0) Pm0
-    vl is;
-    ll cnt = 0;
-    rep(i, N) {
-        if(S[i]=='.') continue;
-        is.push_back(i-cnt++);
+    VLM(X, K);
+    vb one(M);
+    rep(i, K) {
+        one[X[i]] = true;
     }
-    auto Sc = cumsum(is);
-
-    auto f=[&](ll x) -> bool {
-        rep(l, Y+1-x) {
-            ll r = l+x-1;
-            ll m = (l+r)/2;
-            ll left = m-l, right = r-m;
-            ll cnt = 0;
-            cnt += is[m]*left - (Sc[m]-Sc[l]);
-            cnt += (Sc[r+1]-Sc[m+1]) - is[m]*right;
-            if(cnt<=K) return true;
+    rep(i, M) {
+        if(!one[i]) {
+            auto [a,b] = edge[i];
+            uf.merge(a,b);
         }
-        return false;
-    };
-
-    ll ans = binary_search(1, Y+1, f);
-    Out(ans);
+    }
+    vl deg(N);
+    rep(i, M) {
+        if(!one[i]) continue;
+        auto [a,b] = edge[i];
+        a = uf.leader(a), b = uf.leader(b);
+        deg[a]++, deg[b]++;
+    }
+    ll opoint = 0;
+    rep(i, N) if(i==uf.leader(i)) {
+        if(deg[i]&1) ++opoint;
+    }
+    if(opoint==0 || opoint==2) PYes PNo
 
 
 

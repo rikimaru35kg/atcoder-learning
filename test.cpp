@@ -228,78 +228,73 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
+}
+
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
     }
-};
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
 void solve() {
-    LONG(N, M);
-    WeightedUnionFind uf(N);
-    VPM(edge, M);
-    LONG(K);
-    VLM(X, K);
-    vb one(M);
-    rep(i, K) {
-        one[X[i]] = true;
-    }
-    rep(i, M) {
-        if(!one[i]) {
-            auto [a,b] = edge[i];
-            uf.merge(a,b);
+    LONG(P);
+    ll N = P-1;
+    auto ds = listup_divisor(N, true);
+    auto ps = prime_factorization(N);
+    umap<ll,mint> dp;
+
+    auto dump=[&]() {
+        for(auto d: ds) {
+            printf("{%lld, %d} ", d, dp[d].val());
+        }
+        cout<<endl;
+    };
+
+    for(auto d: ds) dp[d] = N/d;
+
+    for(auto [p,n]: ps) {
+        for(auto d: ds) {
+            if(N%(d*p)==0) dp[d] -= dp[d*p];
         }
     }
-    vl deg(N);
-    rep(i, M) {
-        if(!one[i]) continue;
-        auto [a,b] = edge[i];
-        a = uf.leader(a), b = uf.leader(b);
-        deg[a]++, deg[b]++;
-    }
-    ll opoint = 0;
-    rep(i, N) if(i==uf.leader(i)) {
-        if(deg[i]&1) ++opoint;
-    }
-    if(opoint==0 || opoint==2) PYes PNo
-
-
+    mint ans = 1;
+    for(auto d: ds) ans += dp[d]*N/d;
+    Out(ans);
 
 }
 
