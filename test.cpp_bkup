@@ -228,36 +228,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    STRING(S);
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
-    vi s(N);
-    vb visited(N);
-    vl ans;
-    auto reach=[&](ll v) {
-        s[v] ^= 1;
-        ans.push_back(v+1);
-    };
-    auto dfs=[&](auto f, ll v) -> void {
-        reach(v);
-        visited[v] = true;
-        for(auto nv: from[v]) if(!visited[nv]) {
-            f(f, nv);
-            reach(v);
-            if(s[nv]!=S[nv]-'0') reach(nv), reach(v);
+//! count the # of t in s.  O(|S||T|)
+int count(string &s, string t) {
+    int ret = 0;
+    for(int i=0; i<int(s.size()); ) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
+    }
+    return ret;
+}
+int count(string &s, char c) { return count(s, string(1,c)); }
+int count(vector<string> &s, string t) {
+    int ret = 0;
+    for(auto &cs: s) ret += count(cs, t);
+    return ret;
+}
+int count(vector<string> &s, char c) { return count(s, string(1,c)); }
+
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
+void solve() {
+    STRING(S);
+    ll N = S.size();
+    LONG(K);
+    ll Y = count(S, 'Y');
+    if(Y==0) Pm0
+    vl is;
+    ll cnt = 0;
+    rep(i, N) {
+        if(S[i]=='.') continue;
+        is.push_back(i-cnt++);
+    }
+    auto Sc = cumsum(is);
+
+    auto f=[&](ll x) -> bool {
+        rep(l, Y+1-x) {
+            ll r = l+x-1;
+            ll m = (l+r)/2;
+            ll left = m-l, right = r-m;
+            ll cnt = 0;
+            cnt += is[m]*left - (Sc[m]-Sc[l]);
+            cnt += (Sc[r+1]-Sc[m+1]) - is[m]*right;
+            if(cnt<=K) return true;
         }
+        return false;
     };
-    dfs(dfs, 0);
-    if(s[0]!=S[0]-'0') ans.pop_back();
-    Out(ans.size());
+
+    ll ans = binary_search(1, Y+1, f);
     Out(ans);
+
 
 
 }

@@ -1975,6 +1975,13 @@
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
 - !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
+## オイラー路
+- 一筆書き
+- 奇点が0個か2個なら可能
+- 構築する場合は、dfsの帰りがけ順で。一度通った辺は破壊しながらdfsすると良い
+### 例題
+- [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
+
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）
 - これが出題された場合、基本的にはDPで解くしかない
