@@ -228,42 +228,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 void solve() {
-    LONG(N);
-    VLM(P, N);
-    vvm dp1(N+1, vm(N+1));  // dp1[l][r]: lを根とした部分木における場合の数
-    vvm dp2(N+1, vm(N+1));  // dp2[l][r]: [l,r)を複数の部分木に分けた時の場合の数
-    rep(i, N+1) dp1[i][i] = 1; rep(i, N+1) dp2[i][i] = 1;
-    rep(i, N) dp1[i][i+1] = 1; rep(i, N) dp2[i][i+1] = 1;
+    LONG(N, L);
+    VL(A, N);
 
-    repk(w, 2, N+1) {
-        rep(l, N+1-w) {
-            ll r = l+w;
-            dp1[l][r] = dp2[l+1][r];  // [l+1,r)が複数の子になる
-            for(ll m=l+1; m<=r; ++m) {
-                // 重複なく数える為には、[l,m)で切れ目がない（＝[l,m)は1つの部分木）
-                // ようにする必要がある。
-                // [l,m)は1つの部分木なので、順序関係のチェックは下記のみでOK
-                if(m!=r && P[l]>P[m]) continue;
-                dp2[l][r] += dp1[l][m]*dp2[m][r];
-            }
+    auto calc=[&](ll x) -> vl {
+        ll l = 0; 
+        vl ret(N+1,-1);
+        ll sum = 0;
+        rep1(r, N) {
+            sum += A[r-1];
+            while(l<r && sum>x) { sum -= A[l++]; }
+            ret[r] = l;
         }
-    }
-    mint ans = dp1[0][N];
+        return ret;
+    };
+    auto l1 = calc(L);
+
+    auto f=[&](ll x) -> bool {
+        auto l2 = calc(x-1);
+        vl dp(N+1), ds(N+2);
+        dp[0] = 1, ds[1] = 1;
+        auto sum=[&](ll l, ll r) { return ds[r]-ds[l]; };
+        rep1(r, N) {
+            ll cnt = sum(l1[r], l2[r]);
+            if(cnt) dp[r] = 1;
+            ds[r+1] = ds[r] + dp[r];
+        }
+        return dp[N]>0;
+    };
+
+    ll ans = binary_search(0, L+1, f);
     Out(ans);
 
 }

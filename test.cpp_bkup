@@ -229,34 +229,28 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(N);
-    auto dsum=[&](ll a) -> ll {
-        ll k = 0;
-        while(a) {
-            k += a%10;
-            a /= 10;
-        }
-        return k;
+    LONG(N, D);
+    VVL(A, D, N);
+
+    vvl dp(N, vl(2, INF));
+    auto get_min=[&]() -> ll {
+        ll ret = INF;
+        rep(j, N) rep(k, 2) chmin(ret, dp[j][k]);
+        return ret;
     };
-    auto good=[&](ll a) -> bool {
-        return a%dsum(a)==0;
-    };
-    if(SIZE(N)<=6) {
-        ll n = stoll(N);
-        repk(a, n, 2*n) {
-            if(!good(a)) continue;
-            if(!good(a+1)) continue;
-            Outend(a);
-        }
-        Pm1
+
+    ll pmin = 0;
+    rep(i, D) {
+        vvl pdp(N, vl(2, INF)); swap(pdp, dp);
+        rep(j, N) chmin(dp[j][0], pmin+A[i][j]);
+        rep(j, N) chmin(dp[j][1], pdp[j][0]+A[i][j]*9/10);
+        rep(j, N) chmin(dp[j][1], pdp[j][1]+A[i][j]*7/10);
+
+        pmin = get_min();
+        de(dp)
     }
-    ll h = stoll(N.substr(0,2));
-    ++h;
-    while(dsum(h)!=8) {
-        ++h;
-    }
-    string ans = to_string(h) + string(SIZE(N)-2, '0');
-    Out(ans);
+
+    Out(pmin);
 
 }
 

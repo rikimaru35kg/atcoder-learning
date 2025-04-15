@@ -412,6 +412,7 @@
 - 基本 [E - Tree and Hamilton Path 2](https://atcoder.jp/contests/abc361/tasks/abc361_e)
 - 基本 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
 - 基本 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
+- !要復習 [F - Add One Edge 3](https://atcoder.jp/contests/abc401/tasks/abc401_f)
 - 基本 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木（Euler Tour）
@@ -747,8 +748,7 @@
 - 基本 [N - 旅行会社](https://atcoder.jp/contests/past202012-open/tasks/past202012_n)
 - 基本 荷物をできるだけ左側の箱に入れていく [M - お片付け](https://atcoder.jp/contests/past202303-open/tasks/past202303_m)
 
-## 遅延伝播セグメントツリー（Lazy segment tree）
-- セグメント木に加え、区間更新が可能
+## 遅延伝播セグメントツリー（Lazy segment tree） - セグメント木に加え、区間更新が可能
 - 上側更新はO(logN)だが、下側更新は計算量が多いので、更新は最大区間で止めて必要になった時に下側に伝播させる
 - 更新（＝作用）を組み合わせられる必要があるので、作用素モノイドが必要
 - 作用素モノイドは結合律に加え、合成できる事が必要
@@ -764,6 +764,7 @@
 - !要復習 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
+- !要復習 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 双対セグメントツリー（Dual Segment Tree）
@@ -970,9 +971,7 @@
 - 基本 [D - 塗り絵](https://atcoder.jp/contests/abc036/tasks/abc036_d)
 - 基本 [P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_committee)
-<!-- where i am now for rank C -->
-<!-- last submission 2025/3/15 -->
-- !復習価値低 [E - Path Decomposition of a Tree](https://atcoder.jp/contests/abc397/tasks/abc397_e)
+- 基本 [E - Path Decomposition of a Tree](https://atcoder.jp/contests/abc397/tasks/abc397_e)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
 <!-- where i am now for rank B -->
 <!-- last submission 2025/3/17 -->
@@ -1029,9 +1028,9 @@
 - 基本 飛び飛びの場合の経路数 [D - Leaping Tak](https://atcoder.jp/contests/abc179/tasks/abc179_d)
 - 基本 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - 基本 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
-- !復習価値低 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
+- 基本 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
 - !復習価値高 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
-- !復習価値低 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
+- !復習価値中 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
 - !復習価値高 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
 - !復習価値中 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値中 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
@@ -1041,6 +1040,8 @@
 - 何回操作したか等の長さもキーにするDP
 - 制約が小さいときに見かけがち
 ### 例題
+<!-- where i am now for rank C -->
+<!-- last submission 2025/2/25 -->
 - !復習価値低 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
 - 基本 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 - 基本 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
@@ -1966,6 +1967,7 @@
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
 - !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
+- !要復習 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - !復習価値高 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 畳み込み（FFT/NTT）
@@ -2249,3 +2251,5 @@
 - [N - ソートと関数](https://atcoder.jp/contests/past16-open/tasks/past202309_n)
 - [G - Simultaneous Kagamimochi 2](https://atcoder.jp/contests/abc388/tasks/abc388_g)
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
+- [D - Logical Filling](https://atcoder.jp/contests/abc401/tasks/abc401_d)
+- [E - Reachable Set](https://atcoder.jp/contests/abc401/tasks/abc401_e)
