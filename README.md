@@ -856,8 +856,8 @@
 - 基本 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 - 基本 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 - 基本 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)
-<!-- where i am now for rank A -->
-<!-- last submission 2025/3/27 -->
+
+!!! where i am now for rank A (last submission 2025/3/27)
 - !復習価値高 [023 - Avoid War（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_w)
 
 ## 部分集合の部分集合DP
@@ -973,14 +973,13 @@
 - 基本 [committee - 委員会 (Committee)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_committee)
 - 基本 [E - Path Decomposition of a Tree](https://atcoder.jp/contests/abc397/tasks/abc397_e)
 - 基本 [E - 最軽量のモビール](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_e)
-<!-- where i am now for rank B -->
-<!-- last submission 2025/3/17 -->
-- !復習価値中 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
+
+- !復習価値低 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - 基本 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
 - !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
-- !復習価値中 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
-- !復習価値中 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
+- !復習価値低 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
+- 基本 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
 
 ## 全方位木DP
 - まず木DPで下向き部分木の求めたい値を求める
@@ -990,8 +989,8 @@
 - 左右からの累積和（累積max）を事前計算しておけば、移動先頂点における上側部分木が求まる。移動先頂点における上側部分木は、自分中心の部分木なので計算しやすいはず
 - かつっぱ氏の動画（V subtree）が分かりやすい
 ### 例題
-- !復習価値中 [V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
-- !復習価値中（想定解も覚えておきたい。想定解が違うのでNote非掲載） [G - Avoid Straight Line](https://atcoder.jp/contests/abc312/tasks/abc312_g)
+- !復習価値低 [V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
+- !復習価値低（想定解も覚えておきたい。想定解が違うのでNote非掲載） [G - Avoid Straight Line](https://atcoder.jp/contests/abc312/tasks/abc312_g)
 <!-- - !下に同じ問題あり。距離総和を全頂点について求める（想定解は全方位木DPではない） [F - Distance Sums 2](https://atcoder.jp/contests/abc220/tasks/abc220_f) -->
 
 ## 区間DP
@@ -1004,6 +1003,8 @@
 - 基本 [N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
+
+!!! where i am now for rank B (last submission 2025/3/17)
 - !復習価値中 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 - !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
 - !復習価値高 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
@@ -1040,9 +1041,7 @@
 - 何回操作したか等の長さもキーにするDP
 - 制約が小さいときに見かけがち
 ### 例題
-<!-- where i am now for rank C -->
-<!-- last submission 2025/2/25 -->
-- !復習価値低 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
+- 基本 等差数列の個数 [E - Count Arithmetic Subsequences](https://atcoder.jp/contests/abc362/tasks/abc362_e)
 - 基本 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f)
 - 基本 [G - AtCoder Tour](https://atcoder.jp/contests/abc358/tasks/abc358_g)
 
@@ -1054,9 +1053,11 @@
 - 基本 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - 基本 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
 - !復習価値中 [D - 水ようかん (Mizuyokan)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_d)
-- !復習価値低 [F - Diversity](https://atcoder.jp/contests/abc383/tasks/abc383_f)
+- 基本 [F - Diversity](https://atcoder.jp/contests/abc383/tasks/abc383_f)
 - 基本 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - 基本 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
+
+!!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
 - !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
@@ -1275,8 +1276,8 @@
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
 - !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
-<!-- where i am now for rank S-->
-<!-- last submission 2025/3/16 -->
+
+!!! where i am now for rank S (last submission 2025/3/16)
 - !要復習 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
 
 ## 約数
@@ -2171,10 +2172,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-<!-- where i am now for rank D -->
-<!-- last submission 2025/3/12 -->
-- [C - Coprime Set](https://atcoder.jp/contests/arc118/tasks/arc118_c)
-- [A - Please Sign](https://atcoder.jp/contests/arc169/tasks/arc169_a)
+!!! where i am now for rank D (last submission 2025/3/14)
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
@@ -2184,8 +2182,7 @@
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
 
 ## ACできたがグダった問題
-<!-- where i am now for rank E -->
-<!-- last submission 2025/3/12 -->
+!!! where i am now for rank E (last submission 2025/3/12)
 - [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
