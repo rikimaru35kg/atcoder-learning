@@ -774,6 +774,12 @@
 ### 例題
 - [G - Retroactive Range Chmax](https://atcoder.jp/contests/abc342/tasks/abc342_g)
 
+## 動的セグメントツリー
+- 範囲は広くても葉の数が少ない（1e6など）場合に使える
+- 実装上はunorderd_mapを使うと楽（ただし定数倍は重い）
+### 例題
+- !要復習 [G - Odd Position Sum Query](https://atcoder.jp/contests/abc403/tasks/abc403_g)
+
 ## マージソートツリー
 - マージソートしながらセグ木を構築
 - オンラインで葉を更新するのは計算量が大きすぎるので注意！
@@ -1124,6 +1130,14 @@
 - 基本 [E - エゴイ展 (EGOI Exhibition)](https://atcoder.jp/contests/joig2022-open/tasks/joig2022_e)
 - !復習価値低 色が隣合わないようにK個選んだ時の価値総和最大値 [E - Colorful Subsequence](https://atcoder.jp/contests/abc345/tasks/abc345_e)
 
+## BNF記法
+- バッカス・ナウア記法
+- <expr>,<term>,<factor>,<number>の構造を定義
+- <expr>,<term>,<factor>が循環参照する形になる
+### 例題
+- !要復習 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
+
+
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
 - 自分的に苦手な考え方のDPをまとめておく
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
@@ -1161,6 +1175,7 @@
 ### 例題
 - 基本 [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+- !復習価値中 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 - !要復習 [G - Minimum Xor Pair Query](https://atcoder.jp/contests/abc308/tasks/abc308_g)
 
