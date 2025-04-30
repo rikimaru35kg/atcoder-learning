@@ -228,48 +228,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
 void solve() {
-    LONG(H, W);
-    VS(C, H);
-
-    umap<ll,mint> dp;
-    dp[0] = 1;
-    ll mask = (1LL<<(W+1))-1;
-    rep(i, H) rep(j, W) {
-        umap<ll,mint> pdp; swap(pdp, dp);
-        for(auto [s,n]: pdp) {
-            dp[s>>1] += n;
-            if(C[i][j]=='#') continue;
-            if(s&1) continue;
-            ll ns = s;
-            if(j<W-1) ns |= 1<<1;
-            if(j) ns |= 1<<(W-1);
-            ns |= 1<<W;
-            if(j<W-1) ns |= 1<<(W+1);
-            ns >>= 1;
-            ns &= mask;
-            dp[ns] += n;
+    LONG(N, L, D);
+    auto caldeal=[&]() -> vd {
+        vd ret(N+1);
+        ret[0] = 1;
+        db sum = 1;
+        rep1(i, N) {
+            if(i-D-1>=0 && i-D-1<L) sum -= ret[i-D-1];
+            ret[i] = sum/D;
+            if(i<L) sum += ret[i];
         }
+        rep(i, L) ret[i] = 0;
+        return ret;
+    };
+    vd pd = caldeal();
+    vd Sc = cumsum(pd);
+    db pover = 1 - accumulate(all(pd), 0.0);
+    de(pd)
+
+    vd dp(N+1);
+    db sum = 0;
+    repr(i, N+1) {
+        chmax(dp[i], pover+Sc[i]);
+        if(i+D+1<=N) sum -= dp[i+D+1];
+        chmax(dp[i], sum/D);
+        sum += dp[i];
     }
-    mint ans;
-    for(auto [s,n]: dp) ans += n;
-    Out(ans);
-
-
+    Out(dp[0]);
 
 }
 

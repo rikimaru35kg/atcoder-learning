@@ -230,7 +230,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -242,82 +242,55 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
     }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
+    return ret;
+}
 
 void solve() {
-    LONG(N, M);
-    N = N + N;
-    Combination comb(N, M998);
-    vvb frnd(N, vb(N));
-    rep(i, M) {
-        LONGM(a,b);
-        frnd[a][b] = frnd[b][a] = true;
+    vl ten(1,1);
+    rep(_, 10) ten.push_back(ten.back()*10);
+    LONG(N, P);
+    mint::set_mod(P);
+
+    vvm dp(N+10, vm(N+1));
+    vvm ds(N+10, vm(N+2));
+    rep1(a, N) {
+        auto v = separate_digit(a);
+        dp[v.size()+1][a] = 26;
     }
-
-    vvm dp1(N+1, vm(N+1));
-    vvm dp2(N+1, vm(N+1));
-    rep(i, N+1) dp2[i][i] = 1;
-
-    for(ll w=2; w<=N; w+=2) {
-        rep(l, N+1-w) {
-            ll r = l+w;
-            if(frnd[l][r-1]) dp1[l][r] = dp2[l+1][r-1];
-            for(ll m=l+2; m<r; m+=2) {
-                ll a = (m-l)/2, b = (r-m)/2;
-                dp2[l][r] += dp1[l][m] * dp2[m][r] * comb(a+b, a);
-            }
-            dp2[l][r] += dp1[l][r];
+    rep(j, N+1) rep(i, N) ds[j][i+1] = ds[j][i] + dp[j][i];
+    rep(j, N+1) rep(i, N+1) {
+        rep1(k, 4) {
+            if(j-k-1<0) break;
+            ll lb = i-ten[k]+1, ub = i-ten[k-1]+1;
+            chmax(lb, 0LL); chmax(ub, 0LL);
+            dp[j][i] += (ds[j-k-1][ub] - ds[j-k-1][lb])*25;
         }
+        ds[j][i+1] = ds[j][i] + dp[j][i];
     }
-    de(dp1)
-    de(dp2)
 
-    mint ans = dp2[0][N];
+    mint ans = 0;
+    rep(j, N) ans += dp[j][N];
     Out(ans);
-
 
 }
 
