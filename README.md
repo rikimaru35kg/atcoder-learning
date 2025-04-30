@@ -1184,9 +1184,7 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
-
-!!! where i am now for rank B (last submission 2025/2/25)
-- !復習価値中 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
+- !復習価値高 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
 
 ## 区間操作
 - 区間に操作させても内部に影響がない場合、区間の端だけ考えて考察すると良い
@@ -1233,6 +1231,8 @@
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
+
+!!! where i am now for rank B (last submission 2025/2/27)
 - !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
 - !復習価値中 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)

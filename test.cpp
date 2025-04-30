@@ -228,95 +228,99 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
+vector<int> z_algo(string s) {
+    int n = s.size();
+    vector<int> a(n);
+    int from=-1, last=-1;
+    for (int i=1; i<n; ++i) {
+        int same=0;  // length of same substring
+        // skip duplicated search
+        if (from!=-1) same = min(a[i-from], max(last-i, 0));
+        // move forward while possible
+        while (i+same<n && s[same]==s[i+same]) ++same;
+        a[i] = same;
+        if(last < i+same) {  // update from & last
+            from = i;
+            last = i+same;
+        }
+    }
+    a[0] = n;  // substitute ovious value at last
+    return a;
 }
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
+vector<int> z_algo(vector<int> s) {
+    int n = s.size();
+    vector<int> a(n);
+    int from=-1, last=-1;
+    for (int i=1; i<n; ++i) {
+        int same = 0;  // length of same substring
+        // skip duplicated search
+        if (from!=-1) same = min(a[i-from], max(last-i, 0));
+        // move forward while possible
+        while (i+same<n && s[same]==s[i+same]) ++same;
+        a[i] = same;
+        if(last < i+same) {  // update from & last
+            from = i;
+            last = i+same;
+        }
+    }
+    a[0] = n;  // substitute ovious value at last
+    return a;
 }
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+class Manacher {
+    vector<int> p; // palindrome radii
+    void calc(string &s) {
+        int n = s.size(); p.assign(n, 1);
+        int l = -1, r = 0;
+        for(int i=0; i<n; i++) {
+            p[i] = i>=r ? 1: min(r-i, p[l+r-i]);
+            while(i+p[i]<n && i-p[i]>=0 && s[i+p[i]]==s[i-p[i]]) {
+                p[i]++;
+            }
+            if(i+p[i]>r) l=i-p[i], r=i+p[i];
+        }
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+public:
+    Manacher(string &s) {
+        string t = "#";
+        for(auto c: s) t += c, t += '#';
+        calc(t);
     }
-    return ok;
-}
+    bool is_palindrome(int l, int r) {  // [l,r)
+        if(l==r) return true;
+        --r; l = 2*l+1, r = 2*r+1;
+        int m = (l+r)/2;
+        return p[m] >= r-m+1;
+    }
+    // return the longest palindrome from center of [l,r)
+    int get_length(int l, int r) {
+        assert(r-l<=1);
+        int m = l==r ? 2*l : 2*l+1;
+        return p[m]-1;
+    }
+    // return one of the longest palindrome among all substrings
+    pair<int,int> longest_palindrome() {  // [l,r)
+        int n = p.size();
+        pair<int,int> mx;
+        for(int i=0; i<n; ++i) mx = max(mx, {p[i],i});
+        int m = mx.second;
+        int l = (m-(p[m]-2)-1)/2, r = (m+(p[m]-2)-1)/2+1;
+        return {l,r};
+    }
+};
 
 void solve() {
-    LONG(N);
-    VL(L, N);
-    auto Sc = cumsum(L);
-    vl cand;
-    rep(i, N) repk(j, i+1, N+1) {
-        if(i==0 && j==N) continue;
-        cand.push_back(Sc[j]-Sc[i]);
-    }
-    sort(all(cand));
-    ll m = cand.size();
-
-    auto calbound=[&](ll x) -> vl {
-        vl ret(N+1);
-        ll l = 0;
-        rep1(r, N) {
-            while(l<r && Sc[r]-Sc[l]>x) ++l;
-            ret[r] = l;
+    STRING(S);
+    ll N = S.size();
+    Manacher man(S);
+    rep(i, N+1) {
+        if(man.is_palindrome(i,N)) {
+            string a = S.substr(0,i);
+            reverse(all(a));
+            string ans = S + a;
+            Outend(ans);
         }
-        return ret;
-    };
-
-    ll ans = INF;
-    for(auto mn: cand) {
-        auto f=[&](ll i) -> bool {
-            ll mx = cand[i];
-            if(mn==1 && mx==10) {
-                cout<<"";
-            }
-            vl dp(N+1); vl ds(N+2);
-            dp[0] = 1; ds[1] = 1;
-            vl lb = calbound(mx);
-            vl ub = calbound(mn-1);
-            rep1(r, N) {
-                ll i1 = lb[r], i2 = ub[r];
-                if(ds[i2]-ds[i1]>0) dp[r] = 1;
-                ds[r+1] = ds[r] + dp[r];
-            }
-            return dp[N] > 0;
-        };
-        ll now = binary_search(m, -1, f);
-        de2(mn,now)
-        if(now==m) continue;
-        chmin(ans, cand[now]-mn);
     }
-    Out(ans);
-
 }
 
 int main () {
