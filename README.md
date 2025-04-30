@@ -1137,7 +1137,6 @@
 ### 例題
 - !要復習 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
-
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
 - 自分的に苦手な考え方のDPをまとめておく
 - 問題によってはvectorではなくmapを使った方が良かったり、値ではなく要素番号（座標圧縮のイメージ）でテーブルを持った方が実装が楽になる場合あり
@@ -2187,11 +2186,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/3/14)
-- [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
-- [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
-- [B. Game with Doors](https://codeforces.com/contest/2004/problem/B)
-- [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
+!!! where i am now for rank D (last submission 2025/3/20)
 - [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
@@ -2265,3 +2260,6 @@
 - [D - Congruence Points](https://atcoder.jp/contests/abc207/tasks/abc207_d)
 - [D - Logical Filling](https://atcoder.jp/contests/abc401/tasks/abc401_d)
 - [E - Reachable Set](https://atcoder.jp/contests/abc401/tasks/abc401_e)
+- [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
+- [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
+- [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)

@@ -229,67 +229,16 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vs expr(N+1);
-    vs term(N+1);
-    vs factor(N+1);
-    vs expr2(N+1);
-    vs term2(N+1);
-    vs factor2(N+1);
-    auto upd=[&](string &s, string t) {
-        if(t=="") return;
-        if(s=="") {
-            s = t; return;
-        }
-        if(SIZE(s)>SIZE(t)) s = t;
-    };
-    ll _x = 1;
-    while(_x<=N) {
-        upd(factor[_x], to_string(_x));
-        upd(factor2[_x], to_string(_x));
-        _x = _x*10 + 1;
+    LONG(l, r, L, R);
+    if(l>L) swap(l,L), swap(r,R);
+    if(r<L) {
+        Out(1); return;
     }
 
-    rep1(i, N) {
-        rep(ri, 2) {
-            upd(expr[i], term[i]);
-            repk(j, 1, i) {
-                if(expr[i-j]=="") continue;
-                if(term[j]=="") continue;
-                upd(expr[i], expr[i-j]+'+'+term[j]);
-            }
-            upd(term[i], factor[i]);
-            repk(j, 1, i) {
-                if(i%j!=0) continue;
-                if(term[j]=="") continue;
-                if(factor[i/j]=="") continue;
-                upd(term[i], term[j]+'*'+factor[i/j]);
-            }
-            if(expr[i]!="") upd(factor[i], '('+expr[i]+')');
-            // upd(factor[i], '('+expr[i]+')');
-        }
-        rep(ri, 2) {
-            upd(expr2[i], term2[i]);
-            repk(j, 1, i) {
-                if(expr2[i-j]=="") continue;
-                if(term2[j]=="") continue;
-                upd(expr2[i], expr2[i-j]+'+'+term2[j]);
-            }
-            upd(term2[i], factor2[i]);
-            repk(j, 1, i) {
-                if(i%j!=0) continue;
-                if(term2[j]=="") continue;
-                if(factor2[i/j]=="") continue;
-                upd(term2[i], term2[j]+'*'+factor2[i/j]);
-            }
-            if(i-2>0 && expr2[i]!="") upd(factor2[i], '('+expr2[i]+')');
-            // upd(factor2[i], '('+expr2[i]+')');
-        }
-        if(term[i]!=term2[i]) {
-            de3(i, term[i], term2[i]);
-        }
-    }
-    string ans = expr[N];
+    ll lb = max(l,L), ub = min(r,R);
+    ll ans = ub-lb;
+    if(l!=L) ++ans;
+    if(r!=R) ++ans;
     Out(ans);
 
 }
@@ -297,7 +246,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

@@ -228,141 +228,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    ll n, mx;
-    umap<ll,S> a;
-    void climb(ll i) {  while(i){ update(i); i>>=1; } }
-    void update(ll i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(ll mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-    }
-    void set_only(ll i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(ll i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x);
-        climb((i+n)>>1);
-    }
-    void set_and_op(ll i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
-    }
-    void build() { for(ll i=n-1; i>=1; --i) { update(i); } }
-    S get(ll i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(ll l, ll r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
-        }
-        return op(lft, rgt);
-    }
-    S all_prod() { return a[1]; }
-    ll max_right(ll l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    ll min_left(ll r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(ll i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
-    }
-};
-
-struct S {
-    ll n,s1,s2;
-    S(ll n=0, ll s1=0, ll s2=0):n(n),s1(s1),s2(s2) {}
-};
-S op(S a, S b) {
-    if(a.n%2) {
-        a.s1 += b.s2;
-        a.s2 += b.s1;
-    } else {
-        a.s1 += b.s1;
-        a.s2 += b.s2;
-    }
-    a.n += b.n;
-    return a;
-}
-S e(){return S();}
-
 void solve() {
-    LONG(Q);
-    ll M = 1e9+10;
-    SegTree<S,op,e> seg(M);
-    ll z = 0;
-    ll mod = 1e9;
-    rep(_, Q) {
-        LONG(y);
-        ll x = (y+z)%mod+1;
-        seg.set_and_op(x, S(1,x,0));
-        z = seg.all_prod().s1;
-        Out(z);
+    LONG(N, K);
+    VL(A, N);
+    vvl dp(N+1, vl(K+1, INF));
+    dp[0][0] = 0;
+
+    rep(i, N) {
+        rep(j, K+1) {
+            if(dp[i][j]==INF) continue;
+            ll mn = INF;
+            rep(k, K+1-j) {
+                if(i+k>=N) break;
+                chmin(mn, A[i+k]);
+                ll plus = (k+1)*mn;
+                chmin(dp[i+k+1][j+k], dp[i][j]+plus);
+            }
+        }
     }
+
+    ll ans = INF;
+    rep(j, K+1) chmin(ans, dp[N][j]);
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
