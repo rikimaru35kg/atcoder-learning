@@ -230,7 +230,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -242,33 +242,81 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve() {
-    LONG(H, W);
-    VS(C, H);
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
-    umap<ll,mint> dp;
-    dp[0] = 1;
-    ll mask = (1LL<<(W+1))-1;
-    rep(i, H) rep(j, W) {
-        umap<ll,mint> pdp; swap(pdp, dp);
-        for(auto [s,n]: pdp) {
-            dp[s>>1] += n;
-            if(C[i][j]=='#') continue;
-            if(s&1) continue;
-            ll ns = s;
-            if(j<W-1) ns |= 1<<1;
-            if(j) ns |= 1<<(W-1);
-            ns |= 1<<W;
-            if(j<W-1) ns |= 1<<(W+1);
-            ns >>= 1;
-            ns &= mask;
-            dp[ns] += n;
+void solve() {
+    LONG(N, M);
+    N = N + N;
+    Combination comb(N, M998);
+    vvb frnd(N, vb(N));
+    rep(i, M) {
+        LONGM(a,b);
+        frnd[a][b] = frnd[b][a] = true;
+    }
+
+    vvm dp1(N+1, vm(N+1));
+    vvm dp2(N+1, vm(N+1));
+    rep(i, N+1) dp2[i][i] = 1;
+
+    for(ll w=2; w<=N; w+=2) {
+        rep(l, N+1-w) {
+            ll r = l+w;
+            if(frnd[l][r-1]) dp1[l][r] = dp2[l+1][r-1];
+            for(ll m=l+2; m<r; m+=2) {
+                ll a = (m-l)/2, b = (r-m)/2;
+                dp2[l][r] += dp1[l][m] * dp2[m][r] * comb(a+b, a);
+            }
+            dp2[l][r] += dp1[l][r];
         }
     }
-    mint ans;
-    for(auto [s,n]: dp) ans += n;
-    Out(ans);
+    de(dp1)
+    de(dp2)
 
+    mint ans = dp2[0][N];
+    Out(ans);
 
 
 }

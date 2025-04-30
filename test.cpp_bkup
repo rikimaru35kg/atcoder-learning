@@ -228,26 +228,48 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    ll K = 25;
-    vl S(K+1);
-    rep(d, K) {
-        ll mod = 1LL<<d;
-        vl cnt(mod), sum(mod);
-        rep(i, N) {
-            ll a = A[i]%mod;
-            cnt[a]++;
-            sum[a] += A[i];
-            ll b = (-a + mod)%mod;
-            S[d] += cnt[b]*A[i] + sum[b];
+void solve() {
+    LONG(H, W);
+    VS(C, H);
+
+    umap<ll,mint> dp;
+    dp[0] = 1;
+    ll mask = (1LL<<(W+1))-1;
+    rep(i, H) rep(j, W) {
+        umap<ll,mint> pdp; swap(pdp, dp);
+        for(auto [s,n]: pdp) {
+            dp[s>>1] += n;
+            if(C[i][j]=='#') continue;
+            if(s&1) continue;
+            ll ns = s;
+            if(j<W-1) ns |= 1<<1;
+            if(j) ns |= 1<<(W-1);
+            ns |= 1<<W;
+            if(j<W-1) ns |= 1<<(W+1);
+            ns >>= 1;
+            ns &= mask;
+            dp[ns] += n;
         }
     }
-    ll ans = 0;
-    rep(d, K) ans += (S[d]-S[d+1])/(1LL<<d);
+    mint ans;
+    for(auto [s,n]: dp) ans += n;
     Out(ans);
+
+
 
 }
 
