@@ -1290,9 +1290,7 @@
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
 - !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
-
-!!! where i am now for rank S (last submission 2025/3/16)
-- !要復習 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
+- !復習価値低 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
 
 ## 約数
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -1364,6 +1362,8 @@
 - ただし実際には1500ではなく30個程度調べれば十分との話もある
 ### 例題
 - 基本 [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
+
+!!! where i am now for rank S (last submission 2025/3/16)
 - !要復習 [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
 
 ## 剰余埋めつくし系

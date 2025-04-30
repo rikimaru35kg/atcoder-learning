@@ -229,35 +229,31 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    vvl dp(N+1, vl(K+1, INF));
-    dp[0][0] = 0;
-
-    rep(i, N) {
-        rep(j, K+1) {
-            if(dp[i][j]==INF) continue;
-            ll mn = INF;
-            rep(k, K+1-j) {
-                if(i+k>=N) break;
-                chmin(mn, A[i+k]);
-                ll plus = (k+1)*mn;
-                chmin(dp[i+k+1][j+k], dp[i][j]+plus);
+    LONG(N);
+    auto p3=[&](ll x) {return x*x*x;};
+    for(ll d=1; p3(d)<N; ++d) {
+        if((p3(d)-N)%(3*d)!=0) continue;
+        ll c = (p3(d)-N)/(3*d);
+        ll D = d*d - 4*c;
+        if(D<0) continue;
+        ll y = (-d+sqrt(D))/2;
+        // de4(d,y,D,c)
+        auto f=[&](ll y) { return y*y + d*y + c; };
+        for(ll cy=y-2; cy<=y+2; ++cy) {
+            if(f(y)==0) {
+                printf("%lld %lld\n", y+d, y);
+                return;
             }
         }
     }
-
-    ll ans = INF;
-    rep(j, K+1) chmin(ans, dp[N][j]);
-    Out(ans);
+    Pm1
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
