@@ -229,31 +229,33 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    auto p3=[&](ll x) {return x*x*x;};
-    for(ll d=1; p3(d)<N; ++d) {
-        if((p3(d)-N)%(3*d)!=0) continue;
-        ll c = (p3(d)-N)/(3*d);
-        ll D = d*d - 4*c;
-        if(D<0) continue;
-        ll y = (-d+sqrt(D))/2;
-        // de4(d,y,D,c)
-        auto f=[&](ll y) { return y*y + d*y + c; };
-        for(ll cy=y-2; cy<=y+2; ++cy) {
-            if(f(y)==0) {
-                printf("%lld %lld\n", y+d, y);
+    LONG(l,r,G);
+    l = Divceil(l,G)*G;
+    r = Div(r,G)*G;
+    if(l>r) {
+        puts("-1 -1");
+        return;
+    }
+    ll wmax = (r-l)/G+1;
+    // de(wmax)
+    for(ll w=wmax; w>0; --w) {
+        for(ll a=l; a<=r; a+=G) {
+            ll b = a+(w-1)*G;
+            if(b>r) break;
+            if(gcd(a,b)==G) {
+                printf("%lld %lld\n", a, b);
                 return;
             }
         }
     }
-    Pm1
-
+    puts("-1 -1");
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
