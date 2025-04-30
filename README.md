@@ -862,9 +862,7 @@
 - 基本 並び替え [F - Simple Operations on Sequence](https://atcoder.jp/contests/abc232/tasks/abc232_f)
 - 基本 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 - 基本 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)
-
-!!! where i am now for rank A (last submission 2025/3/27)
-- !復習価値高 [023 - Avoid War（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_w)
+- !復習価値低 [023 - Avoid War（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_w)
 
 ## 部分集合の部分集合DP
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
@@ -983,6 +981,8 @@
 - !復習価値低 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - 基本 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
+
+!!! where i am now for rank A (last submission 2025/3/31)
 - !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値低 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
 - 基本 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
