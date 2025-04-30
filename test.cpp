@@ -228,68 +228,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
     return ret;
 }
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    return ret;
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
 }
 
 void solve() {
-    vl ten(1,1);
-    rep(_, 10) ten.push_back(ten.back()*10);
-    LONG(N, P);
-    mint::set_mod(P);
-
-    vvm dp(N+10, vm(N+1));
-    vvm ds(N+10, vm(N+2));
-    rep1(a, N) {
-        auto v = separate_digit(a);
-        dp[v.size()+1][a] = 26;
+    LONG(N);
+    VL(L, N);
+    auto Sc = cumsum(L);
+    vl cand;
+    rep(i, N) repk(j, i+1, N+1) {
+        if(i==0 && j==N) continue;
+        cand.push_back(Sc[j]-Sc[i]);
     }
-    rep(j, N+1) rep(i, N) ds[j][i+1] = ds[j][i] + dp[j][i];
-    rep(j, N+1) rep(i, N+1) {
-        rep1(k, 4) {
-            if(j-k-1<0) break;
-            ll lb = i-ten[k]+1, ub = i-ten[k-1]+1;
-            chmax(lb, 0LL); chmax(ub, 0LL);
-            dp[j][i] += (ds[j-k-1][ub] - ds[j-k-1][lb])*25;
+    sort(all(cand));
+    ll m = cand.size();
+
+    auto calbound=[&](ll x) -> vl {
+        vl ret(N+1);
+        ll l = 0;
+        rep1(r, N) {
+            while(l<r && Sc[r]-Sc[l]>x) ++l;
+            ret[r] = l;
         }
-        ds[j][i+1] = ds[j][i] + dp[j][i];
-    }
+        return ret;
+    };
 
-    mint ans = 0;
-    rep(j, N) ans += dp[j][N];
+    ll ans = INF;
+    for(auto mn: cand) {
+        auto f=[&](ll i) -> bool {
+            ll mx = cand[i];
+            if(mn==1 && mx==10) {
+                cout<<"";
+            }
+            vl dp(N+1); vl ds(N+2);
+            dp[0] = 1; ds[1] = 1;
+            vl lb = calbound(mx);
+            vl ub = calbound(mn-1);
+            rep1(r, N) {
+                ll i1 = lb[r], i2 = ub[r];
+                if(ds[i2]-ds[i1]>0) dp[r] = 1;
+                ds[r+1] = ds[r] + dp[r];
+            }
+            return dp[N] > 0;
+        };
+        ll now = binary_search(m, -1, f);
+        de2(mn,now)
+        if(now==m) continue;
+        chmin(ans, cand[now]-mn);
+    }
     Out(ans);
 
 }
