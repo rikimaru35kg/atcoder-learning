@@ -1362,9 +1362,7 @@
 - ただし実際には1500ではなく30個程度調べれば十分との話もある
 ### 例題
 - 基本 [A - Coprime Pair](https://atcoder.jp/contests/arc137/tasks/arc137_a)
-
-!!! where i am now for rank S (last submission 2025/3/16)
-- !要復習 [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
+- 基本 [D. Problem about GCD](https://codeforces.com/contest/2043/problem/D)
 
 ## 剰余埋めつくし系
 - 0, a, 2a, ..., (N-1)aはaとNが互いに素のときMOD Nで全て異なる
@@ -1392,6 +1390,8 @@
 - !復習価値低 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
+
+!!! where i am now for rank S (last submission 2025/2/27)
 - !要復習 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
 - !復習価値高（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
 
