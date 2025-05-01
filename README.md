@@ -1064,8 +1064,6 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
-
-!!! where i am now for rank A (last submission 2025/3/26)
 - !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
@@ -1095,6 +1093,8 @@
 
 ## DP配列のマージ
 ### 例題
+
+!!! where i am now for rank A (last submission 2025/3/25)
 - !復習価値高 [005 - Restricted Digits（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_e)
 
 ## 戻すDP
