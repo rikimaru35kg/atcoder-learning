@@ -268,10 +268,13 @@ vector<int> z_algo(vector<int> s) {
 }
 
 class Manacher {
-    vector<int> p; // palindrome radii
+    int n0;  // length of the original string
+    vector<int> p;  // palindrome radii of new string(eg. #a#b#c#)
+    // [NOTE] p-1 is palindrome length of the original string
     void calc(string &s) {
         int n = s.size(); p.assign(n, 1);
-        int l = -1, r = 0;
+        int l = -1, r = 0;  // boundary of rightmost palindrome
+        // [NOTE] rightmost palindrome span is not [l,r] but (l,r)
         for(int i=0; i<n; i++) {
             p[i] = i>=r ? 1: min(r-i, p[l+r-i]);
             while(i+p[i]<n && i-p[i]>=0 && s[i+p[i]]==s[i-p[i]]) {
@@ -281,20 +284,22 @@ class Manacher {
         }
     }
 public:
-    Manacher(string &s) {
+    Manacher(string &s): n0(s.size()) {
         string t = "#";
         for(auto c: s) t += c, t += '#';
         calc(t);
     }
     bool is_palindrome(int l, int r) {  // [l,r)
+        assert(l>=0 && r<=n0 && l<=r);
         if(l==r) return true;
         --r; l = 2*l+1, r = 2*r+1;
         int m = (l+r)/2;
         return p[m] >= r-m+1;
     }
     // return the longest palindrome from center of [l,r)
+    // (note: l,r are partition index values)
     int get_length(int l, int r) {
-        assert(r-l<=1);
+        assert(l>=0 && r<=n0 && l<=r && r-l<=1);
         int m = l==r ? 2*l : 2*l+1;
         return p[m]-1;
     }
@@ -313,14 +318,15 @@ void solve() {
     STRING(S);
     ll N = S.size();
     Manacher man(S);
-    rep(i, N+1) {
-        if(man.is_palindrome(i,N)) {
-            string a = S.substr(0,i);
-            reverse(all(a));
-            string ans = S + a;
-            Outend(ans);
-        }
+    rep(i, N) {
+        Out(man.get_length(i,i+1));
     }
+    rep(i, N+1) repk(j, i, N+1) {
+        de(S.substr(i,j-i))
+        de(man.is_palindrome(i,j))
+    }
+    man.get_length();
+
 }
 
 int main () {

@@ -68,18 +68,18 @@ vector<vector<int>> make_next(string &s, char base='a') {
     return next;
 }
 
-vector<long long> z_algo(string s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
+vector<int> z_algo(string s) {
+    int n = s.size();
+    vector<int> a(n);
+    int from=-1, last=-1;
+    for (int i=1; i<n; ++i) {
+        int same=0;  // length of same substring
         // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        if (from!=-1) same = min(a[i-from], max(last-i, 0));
         // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
+        while (i+same<n && s[same]==s[i+same]) ++same;
         a[i] = same;
-        if(last < i + same) {  // update from & last
+        if(last < i+same) {  // update from & last
             from = i;
             last = i+same;
         }
@@ -87,18 +87,18 @@ vector<long long> z_algo(string s) {
     a[0] = n;  // substitute ovious value at last
     return a;
 }
-vector<long long> z_algo(vector<long long> s) {
-    long long n = s.size();
-    vector<long long> a(n);
-    long long from = -1, last = -1;
-    for (long long i = 1; i < n; ++i) {
-        long long same = 0;  // length of same substring
+vector<int> z_algo(vector<int> s) {
+    int n = s.size();
+    vector<int> a(n);
+    int from=-1, last=-1;
+    for (int i=1; i<n; ++i) {
+        int same = 0;  // length of same substring
         // skip duplicated search
-        if (from != -1) same = min(a[i-from], max(last - i, 0LL));
+        if (from!=-1) same = min(a[i-from], max(last-i, 0));
         // move forward while possible
-        while (i + same < n && s[same] == s[i+same]) ++same;
+        while (i+same<n && s[same]==s[i+same]) ++same;
         a[i] = same;
-        if(last < i + same) {  // update from & last
+        if(last < i+same) {  // update from & last
             from = i;
             last = i+same;
         }
@@ -129,10 +129,13 @@ template <class mints> struct RollingHash {
 };
 
 class Manacher {
-    vector<int> p; // palindrome radii
+    int n0;  // length of the original string
+    vector<int> p;  // palindrome radii of new string(eg. #a#b#c#)
+    // [NOTE] p-1 is palindrome length of the original string
     void calc(string &s) {
         int n = s.size(); p.assign(n, 1);
-        int l = -1, r = 0;
+        int l = -1, r = 0;  // boundary of rightmost palindrome
+        // [NOTE] rightmost palindrome span is not [l,r] but (l,r)
         for(int i=0; i<n; i++) {
             p[i] = i>=r ? 1: min(r-i, p[l+r-i]);
             while(i+p[i]<n && i-p[i]>=0 && s[i+p[i]]==s[i-p[i]]) {
@@ -142,20 +145,22 @@ class Manacher {
         }
     }
 public:
-    Manacher(string &s) {
+    Manacher(string &s): n0(s.size()) {
         string t = "#";
         for(auto c: s) t += c, t += '#';
         calc(t);
     }
     bool is_palindrome(int l, int r) {  // [l,r)
+        assert(l>=0 && r<=n0 && l<=r);
         if(l==r) return true;
         --r; l = 2*l+1, r = 2*r+1;
         int m = (l+r)/2;
         return p[m] >= r-m+1;
     }
     // return the longest palindrome from center of [l,r)
+    // (note: l,r are partition index values)
     int get_length(int l, int r) {
-        assert(r-l<=1);
+        assert(l>=0 && r<=n0 && l<=r && r-l<=1);
         int m = l==r ? 2*l : 2*l+1;
         return p[m]-1;
     }
