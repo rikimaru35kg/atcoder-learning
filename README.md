@@ -1034,11 +1034,9 @@
 - 基本 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - 基本 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - 基本 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
-
-!!! where i am now for rank A (last submission 2025/2/21)
-- !復習価値高 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
+- !復習価値中 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
 - !復習価値中 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
-- !復習価値高 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
+- !復習価値中 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
 - !復習価値低 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値低 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
 - !復習価値中 [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
@@ -1066,6 +1064,8 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
+
+!!! where i am now for rank A (last submission 2025/3/26)
 - !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP

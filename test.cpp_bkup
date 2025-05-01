@@ -228,30 +228,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
-}
-
 void solve() {
-    LONG(M, K);
-    ll a = 0, b = 1;
-    rep(i, K) {
-        auto [g,x0,y0] = extgcd(b,-a);
-        if(g==-1) {
-            x0 *= -1, y0 *= -1;
-        }
-        de3(g,x0,y0)
-        ll k = Div(M-y0,b);
-        ll y = y0 + k*b;
-        ll x = (1+a*y)/b;
-        a = x, b = y;
-        if(b==1) Pm1
+    LONG(N, K);
+    VL(A, N);
+
+    vvl dp(N, vl(N, -INF));
+    rep(i, N) rep(j, i) dp[i][j] = A[i]+A[j];
+    // vvl dp0 = dp;
+    vvl ds = dp;
+    rep(i, N) repk(j, 1, i) chmax(ds[i][j], ds[i][j-1]);
+
+    rep(i, N) rep(j, i) {
+        ll kmax = i-K+1;
+        chmin(kmax, j);
+        // rep(k, kmax) chmax(dp0[i][j], dp0[j][k]+A[i]);
+        if(kmax>0) chmax(dp[i][j], ds[j][kmax-1]+A[i]);
+
+        if(j) chmax(ds[i][j], max(dp[i][j], ds[i][j-1]));
     }
-    printf("%lld %lld\n", a, b);
+
+    ll ans = 0;
+    rep(i, N) rep(j, i) chmax(ans, dp[i][j]);
+    Out(ans);
+
+
 }
 
 int main () {
