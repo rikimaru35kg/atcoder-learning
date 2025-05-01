@@ -229,57 +229,37 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M, K);
-    vvl from(N);
-    vl deg(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        deg[b]++;
+    LONG(N);
+    VL(B, N-1);
+    ll jump = 0;
+    ll jb = -1, ji = -1;
+    ll mx = 0;
+    rep(i, N-1) {
+        if(B[i]>mx+2) Pm0
+        if(B[i]==mx+2) ++jump, jb = B[i], ji = i;
+        chmax(mx, B[i]);
     }
-    vl cand;
-    rep(i, N) if(deg[i]==0) cand.push_back(i);
-    vvl ans;
-    vl vs;
-    auto del=[&](ll i) {
-        swap(cand[i], cand.back());
-        cand.pop_back();
-    };
-    auto add=[&](ll i, ll x) {
-        cand.push_back(x);
-        swap(cand[i], cand.back());
-    };
-    auto dfs=[&](auto f) -> ll {
-        if(cand.empty()) {
-            if(SIZE(vs)!=N) return -1;
-            ans.push_back(vl());
-            for(auto v: vs) ans.back().push_back(v+1);
-            if(SIZE(ans)==K) return 1;
-            return 0;
-        }
-        ll m = cand.size();
-        rep(i, m) {
-            ll v = cand[i];
-            vs.push_back(v);
-            del(i);
-            for(auto nv: from[v]) {
-                deg[nv]--;
-                if(deg[nv]==0) cand.push_back(nv);
+    if(jump>1) Pm0
+    de3(jump,jb,ji)
+    if(jump==1) {
+        if(ji==0) Outend(1);
+        rep(i, N-1) {
+            if(B[i]==jb-2) {
+                Outend(ji-i);
             }
-            ll res = f(f);
-            if(res==-1 || res==1) return res;
-            for(auto nv: from[v]) {
-                if(deg[nv]==0) cand.pop_back();
-                deg[nv]++;
-            }
-            add(i, v);
-            vs.pop_back();
         }
-        return 0;
-    };
-    ll res = dfs(dfs);
-    if(res!=1) Out(-1);
-    else Out(ans);
+    }
+    mx = 0;
+    ll ans = 0;
+    rep(i, N) {
+        ans += mx+1;
+        de(ans)
+
+        if(i==N-1) break;
+        chmax(mx, B[i]);
+    }
+    ans -= N-1;
+    Out(ans);
 
 }
 

@@ -228,39 +228,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
+//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
+tuple<long long,long long,long long> extgcd(long long a, long long b) {
+    if (b == 0) return make_tuple(a, 1, 0);
+    auto [g, x, y] = extgcd(b, a%b);
+    return make_tuple(g, y, x - a/b*y);
+}
+
 void solve() {
-    LONG(N);
-    VL(B, N-1);
-    ll jump = 0;
-    ll jb = -1, ji = -1;
-    ll mx = 0;
-    rep(i, N-1) {
-        if(B[i]>mx+2) Pm0
-        if(B[i]==mx+2) ++jump, jb = B[i], ji = i;
-        chmax(mx, B[i]);
-    }
-    if(jump>1) Pm0
-    de3(jump,jb,ji)
-    if(jump==1) {
-        if(ji==0) Outend(1);
-        rep(i, N-1) {
-            if(B[i]==jb-2) {
-                Outend(ji-i);
-            }
+    LONG(M, K);
+    ll a = 0, b = 1;
+    rep(i, K) {
+        auto [g,x0,y0] = extgcd(b,-a);
+        if(g==-1) {
+            x0 *= -1, y0 *= -1;
         }
+        de3(g,x0,y0)
+        ll k = Div(M-y0,b);
+        ll y = y0 + k*b;
+        ll x = (1+a*y)/b;
+        a = x, b = y;
+        if(b==1) Pm1
     }
-    mx = 0;
-    ll ans = 0;
-    rep(i, N) {
-        ans += mx+1;
-        de(ans)
-
-        if(i==N-1) break;
-        chmax(mx, B[i]);
-    }
-    ans -= N-1;
-    Out(ans);
-
+    printf("%lld %lld\n", a, b);
 }
 
 int main () {

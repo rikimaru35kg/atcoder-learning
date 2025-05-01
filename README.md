@@ -100,6 +100,8 @@
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
+
+!!! where i am now for rank S (last submission 2025/4/04)
 - !要復習 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
 
 ## 三分探索法
@@ -2039,9 +2041,7 @@
 - ファレイ数列の重要な性質として、xi/yi->xi+1/yi+1と並んでいるとすると、yi*(xi+1)-xi*(yi+1)==1がある
 - これを用いれば順次次の項を求めていく事ができる
 ### 例題
-
-!!! where i am now for rank S (last submission 2025/3/21)
-- !要復習 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
+- !復習価値低 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
 ## 構築系問題
 - 構築させる問題
