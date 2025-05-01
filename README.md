@@ -49,6 +49,8 @@
 - 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 - 基本 [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
+
+!!! where i am now for rank S (last submission 2025/1/26)
 - !要復習 [D - Stone XOR](https://atcoder.jp/contests/abc390/tasks/abc390_d)
 - 基本 お堀の決め方の数（DFSとUF両方で解いてね） [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 - 基本 彩色数全探索 [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
@@ -1990,16 +1992,14 @@
 ### 例題
 - 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
 - !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
-
-!!! where i am now for rank S (last submission 2025/3/26)
-- !要復習 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
+- !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 
 ## 凸包・Convex Hull Trick
 - 凸な多角形を作る事で上手くいく問題
 ### 
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
-- !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/jbc289_g)
+- !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## オイラー路
 - 一筆書き

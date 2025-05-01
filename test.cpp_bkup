@@ -228,65 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
     }
     return ret;
 }
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
 
 void solve() {
-    LONG(N, K);
+    LONG(N);
+    auto v = separate_digit(N);
+    ll m = v.size();
+    ll ten = 1;
+    rep(i, m-1) ten *= 10;
 
-    auto caln=[&](ll n, ll s) -> ll {
-        ll ret = 0;
-        rep(k, n+1) {
-            ll now = nHr(n, s-k*N);
-            now *= nCr(n, k);
-            if(k&1) ret -= now;
-            else ret += now;
-        }
-        return ret;
-    };
+    ll up = 0; ll low = N;
+    ll ans = 0;
+    // 方針: i桁目がleading onesに何回含まれるかをカウント
+    rep(i, m) {
+        up = up*10 + v[i];
+        low -= ten*v[i];
 
-    repk(s, 3, 3*N+1) {
-        ll n3 = caln(3, s-3);
-        if(n3<K) {
-            K -= n3;
-            continue;
+        ll one = 1;
+        while(one<=up) {
+            if(one<up) ans += ten;
+            else ans += low+1;
+            one = one*10 + 1;
         }
-        // s fixed
-        rep1(x, N) {
-            ll n2 = caln(2, s-x-2);
-            if(n2<K) {
-                K -= n2;
-                continue;
-            }
-            // x fixed
-            rep1(y, N) {
-                ll z = s-x-y;
-                if(z<0 || z>N) continue;
-                if(K==1) {
-                    printf("%lld %lld %lld\n", x, y, z);
-                    return;
-                }
-                --K;
-            }
-        }
+
+        ten /= 10;
     }
+    Out(ans);
 
 }
 

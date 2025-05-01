@@ -228,53 +228,72 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
+#include<atcoder/convolution>
+using namespace atcoder;
 
 void solve() {
-    LONG(N);
-    auto v = separate_digit(N);
-    ll m = v.size();
-    ll ten = 1;
-    rep(i, m-1) ten *= 10;
+    LONG(R,G,B,K);
+    LONG(X,Y,Z);
+    Combination comb(max({R,G,B}), M998);
+    vl rs(R+1), gs(G+1), bs(B+1);
+    repk(r, K-Y, R+1) rs[r] = comb(R, r);
+    repk(g, K-Z, G+1) gs[g] = comb(G, g);
+    repk(b, K-X, B+1) bs[b] = comb(B, b);
 
-    ll up = 0; ll low = N;
+    auto ns = convolution(rs, gs);
     ll ans = 0;
-    // 方針: i桁目がleading onesに何回含まれるかをカウント
-    rep(i, m) {
-        up = up*10 + v[i];
-        low -= ten*v[i];
-
-        ll one = 1;
-        while(one<=up) {
-            if(one<up) ans += ten;
-            else ans += low+1;
-            one = one*10 + 1;
-        }
-
-        ten /= 10;
+    rep(i, ns.size()) {
+        if(K-i<0 || K-i>B) continue;
+        ans += ns[i]*bs[K-i];
+        ans %= M998;
     }
     Out(ans);
+
 
 }
 
