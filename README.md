@@ -1852,9 +1852,7 @@
 ### 例題
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
-
-!!! where i am now for rank S (last submission 2025/3/06)
-- !要復習 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
+- !復習価値高 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
 - !復習価値高 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
@@ -1992,6 +1990,8 @@
 ### 例題
 - 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
 - !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
+
+!!! where i am now for rank S (last submission 2025/3/26)
 - !要復習 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 
 ## 凸包・Convex Hull Trick
