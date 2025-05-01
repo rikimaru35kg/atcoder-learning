@@ -228,53 +228,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(N);
-    auto v = separate_digit(N);
-    ll m = v.size();
-    ll ten = 1;
-    rep(i, m-1) ten *= 10;
-
-    ll up = 0; ll low = N;
-    ll ans = 0;
-    // 方針: i桁目がleading onesに何回含まれるかをカウント
-    rep(i, m) {
-        up = up*10 + v[i];
-        low -= ten*v[i];
-
-        ll one = 1;
-        while(one<=up) {
-            if(one<up) ans += ten;
-            else ans += low+1;
-            one = one*10 + 1;
-        }
-
-        ten /= 10;
+    LONG(N, M, K);
+    vvl from(N);
+    vl deg(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        deg[b]++;
     }
-    Out(ans);
+    vl cand;
+    rep(i, N) if(deg[i]==0) cand.push_back(i);
+    vvl ans;
+    vl vs;
+    auto del=[&](ll i) {
+        swap(cand[i], cand.back());
+        cand.pop_back();
+    };
+    auto add=[&](ll i, ll x) {
+        cand.push_back(x);
+        swap(cand[i], cand.back());
+    };
+    auto dfs=[&](auto f) -> ll {
+        if(cand.empty()) {
+            if(SIZE(vs)!=N) return -1;
+            ans.push_back(vl());
+            for(auto v: vs) ans.back().push_back(v+1);
+            if(SIZE(ans)==K) return 1;
+            return 0;
+        }
+        ll m = cand.size();
+        rep(i, m) {
+            ll v = cand[i];
+            vs.push_back(v);
+            del(i);
+            for(auto nv: from[v]) {
+                deg[nv]--;
+                if(deg[nv]==0) cand.push_back(nv);
+            }
+            ll res = f(f);
+            if(res==-1 || res==1) return res;
+            for(auto nv: from[v]) {
+                if(deg[nv]==0) cand.pop_back();
+                deg[nv]++;
+            }
+            add(i, v);
+            vs.pop_back();
+        }
+        return 0;
+    };
+    ll res = dfs(dfs);
+    if(res!=1) Out(-1);
+    else Out(ans);
 
 }
 

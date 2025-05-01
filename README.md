@@ -49,9 +49,7 @@
 - 木DFSの超基本 [C - Simple path](https://atcoder.jp/contests/abc270/tasks/abc270_c)
 - 基本 [E - Round Trip](https://atcoder.jp/contests/abc276/tasks/abc276_e)
 - 基本 [072 - Loop Railway Plan（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_bt)
-
-!!! where i am now for rank S (last submission 2025/1/26)
-- !要復習 [D - Stone XOR](https://atcoder.jp/contests/abc390/tasks/abc390_d)
+- 基本 [D - Stone XOR](https://atcoder.jp/contests/abc390/tasks/abc390_d)
 - 基本 お堀の決め方の数（DFSとUF両方で解いてね） [E - Moat](https://atcoder.jp/contests/abc219/tasks/abc219_e)
 - 基本 彩色数全探索 [D - RGB Coloring 2](https://atcoder.jp/contests/abc199/tasks/abc199_d)
 - 基本 ポリオミオ（Polyomio） [E - Red Polyomino](https://atcoder.jp/contests/abc211/tasks/abc211_e)
@@ -527,7 +525,7 @@
 - 基本 巨大マス目上の最長経路問題 [E - Integers on Grid](https://atcoder.jp/contests/abc224/tasks/abc224_e)
 - !復習価値低 最小試合日数 [E - League](https://atcoder.jp/contests/abc139/tasks/abc139_e)
 - !復習価値低 [E - 尾根 (Ridge)](https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_e)
-- !要復習 [071 - Fuzzy Priority（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bs)
+- !復習価値低 [071 - Fuzzy Priority（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bs)
 
 ## サイクル検出
 - 無向グラフ：検出するだけならunion findを使うべし（**DFSは難しい。**直前の頂点に戻らないようにしないといけないし、更に言うとけんちょんページのやり方も単純でないグラフでは適用不可。どうしてもやりたいなら使った辺も管理が必要）
@@ -923,7 +921,7 @@
 - 基本 LIS+前後 [060 - Chimera（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bh)
 - 基本 LIS+木 [F - LIS on tree](https://atcoder.jp/contests/abc165/tasks/abc165_f)
 - 基本 復元パートあり [F - Gather Coins](https://atcoder.jp/contests/abc369/tasks/abc369_f)
-- !要復習 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
+- !復習価値低 [E - ビルの飾りつけ 3](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_e)
 - 基本 [G - Suitable Edit for LIS](https://atcoder.jp/contests/abc360/tasks/abc360_g)
 
 ## 桁DP（Digit DP）
@@ -2041,6 +2039,8 @@
 - ファレイ数列の重要な性質として、xi/yi->xi+1/yi+1と並んでいるとすると、yi*(xi+1)-xi*(yi+1)==1がある
 - これを用いれば順次次の項を求めていく事ができる
 ### 例題
+
+!!! where i am now for rank S (last submission 2025/3/21)
 - !要復習 [fraction - 分数 (Fraction)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_fraction)
 
 ## 構築系問題
