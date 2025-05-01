@@ -228,30 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! return {gcd(a,b), x, y}, where ax + by = gcd(a, b)
-//! IF a<0||b<0, gcd(a,b) COULD BE NEGATIVE VALUE!!!
-tuple<long long,long long,long long> extgcd(long long a, long long b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto [g, x, y] = extgcd(b, a%b);
-    return make_tuple(g, y, x - a/b*y);
-}
-
 void solve() {
-    LONG(M, K);
-    ll a = 0, b = 1;
-    rep(i, K) {
-        auto [g,x0,y0] = extgcd(b,-a);
-        if(g==-1) {
-            x0 *= -1, y0 *= -1;
-        }
-        de3(g,x0,y0)
-        ll k = Div(M-y0,b);
-        ll y = y0 + k*b;
-        ll x = (1+a*y)/b;
-        a = x, b = y;
-        if(b==1) Pm1
+    LONG(N, K);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    printf("%lld %lld\n", a, b);
+    VL(A, N);
+
+    auto merge=[&](vl &dp1, vl &dp2) -> vl {
+        vl dp(K+1, -INF);
+        rep(i, K+1) rep(j, K+1) {
+            if(i+j>K) break;
+            if(dp1[i]==-INF || dp2[j]==-INF) continue;
+            chmax(dp[i+j], dp1[i]+dp2[j]);
+        }
+        return dp;
+    };
+
+    auto dfs=[&](auto f, ll v, ll p=-1) -> vvl {
+        vvl dp(2, vl(K+1, -INF));
+        dp[0][0] = dp[1][0] = 0;
+        dp[1][1] = A[v];
+        for(auto nv: from[v]) if(nv!=p) {
+            auto cdp = f(f, nv, v);
+            dp[1] = merge(dp[1], cdp[0]);
+            dp[0] = merge(dp[0], cdp[1]);
+        }
+        rep(i, K+1) chmax(dp[1][i], dp[0][i]);
+        return dp;
+    };
+
+    vvl dp = dfs(dfs, 0);
+    ll ans = max(dp[0][K], dp[1][K]);
+    if(ans==-INF) Out(-1);
+    else Out(ans);
+
 }
 
 int main () {

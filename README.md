@@ -983,9 +983,7 @@
 - !復習価値低 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - 基本 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
-
-!!! where i am now for rank A (last submission 2025/3/31)
-- !復習価値高 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
+- !復習価値中 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値低 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
 - 基本 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
 
@@ -1036,6 +1034,8 @@
 - 基本 花の高さと美しさ [Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
 - 基本 料理価値最大化 [037 - Don't Leave the Spice（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ak)
 - 基本 [nile - ナイルドットコム (Nile.Com)](https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile)
+
+!!! where i am now for rank A (last submission 2025/2/21)
 - !復習価値高 [D - 飴 2 (Candies 2)](https://atcoder.jp/contests/joi2022yo2/tasks/joi2022_yo2_d)
 - !復習価値中 [M - 棒の出荷](https://atcoder.jp/contests/past202012-open/tasks/past202012_m)
 - !復習価値高 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
@@ -2186,7 +2186,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/4/09)
+!!! where i am now for aank D (last submission 2025/4/09)
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
 
