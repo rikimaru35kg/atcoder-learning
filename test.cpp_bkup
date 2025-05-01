@@ -228,104 +228,129 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<int> z_algo(string s) {
-    int n = s.size();
-    vector<int> a(n);
-    int from=-1, last=-1;
-    for (int i=1; i<n; ++i) {
-        int same=0;  // length of same substring
-        // skip duplicated search
-        if (from!=-1) same = min(a[i-from], max(last-i, 0));
-        // move forward while possible
-        while (i+same<n && s[same]==s[i+same]) ++same;
-        a[i] = same;
-        if(last < i+same) {  // update from & last
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;  // substitute ovious value at last
-    return a;
-}
-vector<int> z_algo(vector<int> s) {
-    int n = s.size();
-    vector<int> a(n);
-    int from=-1, last=-1;
-    for (int i=1; i<n; ++i) {
-        int same = 0;  // length of same substring
-        // skip duplicated search
-        if (from!=-1) same = min(a[i-from], max(last-i, 0));
-        // move forward while possible
-        while (i+same<n && s[same]==s[i+same]) ++same;
-        a[i] = same;
-        if(last < i+same) {  // update from & last
-            from = i;
-            last = i+same;
-        }
-    }
-    a[0] = n;  // substitute ovious value at last
-    return a;
-}
-
-class Manacher {
-    int n0;  // length of the original string
-    vector<int> p;  // palindrome radii of new string(eg. #a#b#c#)
-    // [NOTE] p-1 is palindrome length of the original string
-    void calc(string &s) {
-        int n = s.size(); p.assign(n, 1);
-        int l = -1, r = 0;  // boundary of rightmost palindrome
-        // [NOTE] rightmost palindrome span is not [l,r] but (l,r)
-        for(int i=0; i<n; i++) {
-            p[i] = i>=r ? 1: min(r-i, p[l+r-i]);
-            while(i+p[i]<n && i-p[i]>=0 && s[i+p[i]]==s[i-p[i]]) {
-                p[i]++;
-            }
-            if(i+p[i]>r) l=i-p[i], r=i+p[i];
-        }
-    }
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
 public:
-    Manacher(string &s): n0(s.size()) {
-        string t = "#";
-        for(auto c: s) t += c, t += '#';
-        calc(t);
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    bool is_palindrome(int l, int r) {  // [l,r)
-        assert(l>=0 && r<=n0 && l<=r);
-        if(l==r) return true;
-        --r; l = 2*l+1, r = 2*r+1;
-        int m = (l+r)/2;
-        return p[m] >= r-m+1;
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    // return the longest palindrome from center of [l,r)
-    // (note: l,r are partition index values)
-    int get_length(int l, int r) {
-        assert(l>=0 && r<=n0 && l<=r && r-l<=1);
-        int m = l==r ? 2*l : 2*l+1;
-        return p[m]-1;
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
     }
-    // return one of the longest palindrome among all substrings
-    pair<int,int> longest_palindrome() {  // [l,r)
-        int n = p.size();
-        pair<int,int> mx;
-        for(int i=0; i<n; ++i) mx = max(mx, {p[i],i});
-        int m = mx.second;
-        int l = (m-(p[m]-2)-1)/2, r = (m+(p[m]-2)-1)/2+1;
-        return {l,r};
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
+        }
+        return op(lft, rgt);
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
     }
 };
 
+using S = ll;
+S op(S a, S b) {return max(a,b);}
+S e() {return -INF;}
+
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    Manacher man(S);
+    LONG(N);
+    VL(A, N);
+    VL(B, N);
+    SegTree<S,op,e> seg(2*N);
+    ll now = 0;
+    rep(i, 2*N) {
+        seg.set_only(i, A[i%N]-now);
+        now += B[i%N];
+    }
+    seg.build();
+    ll ans = INF;
+    now = 0;
     rep(i, N) {
-        Out(man.get_length(i,i+1));
+        ll mx = seg.prod(i,i+N);
+        ll init = now + mx;
+        chmin(ans, init);
+        now += B[i%N];
     }
-    rep(i, N+1) repk(j, i, N+1) {
-        de(S.substr(i,j-i))
-        de(man.is_palindrome(i,j))
-    }
-    man.get_length();
+    Out(ans);
 
 }
 
