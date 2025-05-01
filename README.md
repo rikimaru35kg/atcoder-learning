@@ -2186,8 +2186,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/3/20)
-- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
+!!! where i am now for rank D (last submission 2025/4/09)
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
 
@@ -2263,3 +2262,4 @@
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
+- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
