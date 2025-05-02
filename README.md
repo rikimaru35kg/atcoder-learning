@@ -1840,8 +1840,6 @@
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
-
-!!! where i am now for rank A (last submission 2025/3/30)
 - !復習価値高 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
 
 ## N以下の数字の何かを求める
@@ -1855,6 +1853,8 @@
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
 - !復習価値高 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
+
+!!! where i am now for rank A (last submission 2025/3/06)
 - !復習価値高 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
