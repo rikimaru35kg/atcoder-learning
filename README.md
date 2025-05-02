@@ -1508,9 +1508,7 @@
 ### 例題
 - 基本 [D - Nowhere P](https://atcoder.jp/contests/jsc2021/tasks/jsc2021_d)
 - 基本 クエリ条件に合う数の総数 [086 - Snuke's Favorite Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_ch)
-
-!!! where i am now for rank B (last submission 2025/2/28)
-- !復習価値中 N回後(X,Y)にいる確率 [D - 大ジャンプ](https://atcoder.jp/contests/abc011/tasks/abc011_4)
+- !復習価値低 N回後(X,Y)にいる確率 [D - 大ジャンプ](https://atcoder.jp/contests/abc011/tasks/abc011_4)
 
 ## 確率・期待値
 - 期待値にも確率と同様に漸化式が成立する（dpで解ける問題があるという事）
@@ -1525,6 +1523,8 @@
 - 基本 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
+
+!!! where i am now for rank B (last submission 2025/2/28)
 - !復習価値中 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 
 ## 期待値の線形性
@@ -2186,7 +2186,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for aank D (last submission 2025/4/09)
+!!! where i am now for rank D (last submission 2025/4/09)
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
 
