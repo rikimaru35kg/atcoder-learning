@@ -1853,9 +1853,7 @@
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
 - !復習価値高 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
-
-!!! where i am now for rank A (last submission 2025/3/06)
-- !復習価値高 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
+- !復習価値低 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
 ### 例題
@@ -1958,6 +1956,8 @@
 ## 斜め45度を水平垂直に直す
 ### 例題
 - 基本 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
+
+!!! where i am now for rank A (last submission 2025/3/07)
 - !復習価値高 [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
 
 ## 挿入ソート

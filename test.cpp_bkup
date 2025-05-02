@@ -228,84 +228,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
+ll solve(ll N, vl A) {
+    ll M = 10;
+    ll ans = 0;
+    rep(l, N) {
+        ll r = l;
+        vl cnt(M);
+        vb good(M);
+        auto update=[&](ll r) {
+            rep(i, M) {
+                if(cnt[i]==0) continue;
+                ll nxt = 2*A[r]-i;
+                if(nxt<0 || nxt>=M) continue;
+                good[nxt] = true;
+            }
+            cnt[A[r]]++;
+        };
+        while(r<N && !good[A[r]]) {
+            update(r);
+            ++r;
         }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+        // de3(l,r,N-r)
+        ans += N-r;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
+    return ans;
+}
 
-void solve() {
-    LONG(N, M, S); --S;
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a,b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-
-    vl mn(N);
-    priority_queue<Pr> que;
-    auto push=[&](ll v, ll d) {
-        if(mn[v]>=d) return;
-        mn[v] = d;
-        que.emplace(d, v);
+ll solve2(ll N, vl A) {
+    ll ans = 0;
+    auto judge=[&](ll l, ll r) -> bool {
+        repk(i, l, r) repk(j, i+1, r) repk(k, j+1, r) {
+            if(A[j]-A[i]==A[k]-A[j]) return true;
+        }
+        return false;
     };
-    push(S, S);
-    while(que.size()) {
-        auto [d,v] = que.top(); que.pop();
-        if(mn[v]!=d) continue;
-        for(auto nv: from[v]) {
-            push(nv, min(d,nv));
-        }
+    rep(l, N) repk(r, l+1, N+1) {
+        if(judge(l,r)) ++ans;
     }
-    vl ans;
-    rep(i, N) {
-        if(mn[i]>=i) ans.push_back(i+1);
-    }
-    for(auto i: ans) Out(i);
-
+    return ans;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    VLM(A, N);
+    ll ans = solve(N, A);
+    Out(ans);
+    // // return 0;
+    // while(true) {
+    //     vl A;
+    //     rep(i, N) {
+    //         A.push_back(rand()%10);
+    //     }
+    //     ll ans = solve(N, A);
+    //     ll ans2 = solve2(N, A);
+    //     if(ans!=ans2) {
+    //         de(A)
+    //         de2(ans, ans2)
+    //         return 0;
+    //     }
+    // }
 }
 
 // ### test.cpp ###

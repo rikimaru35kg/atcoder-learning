@@ -228,67 +228,90 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll solve(ll N, vl A) {
-    ll M = 10;
-    ll ans = 0;
-    rep(l, N) {
-        ll r = l;
-        vl cnt(M);
-        vb good(M);
-        auto update=[&](ll r) {
-            rep(i, M) {
-                if(cnt[i]==0) continue;
-                ll nxt = 2*A[r]-i;
-                if(nxt<0 || nxt>=M) continue;
-                good[nxt] = true;
-            }
-            cnt[A[r]]++;
-        };
-        while(r<N && !good[A[r]]) {
-            update(r);
-            ++r;
+vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
+    vector<long long> ret;
+    if(x==0) ret.push_back(0);
+    while(x) {
+        ret.push_back(x%base);
+        x /= base;
+    }
+    if(sz!=-1) {
+        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
+        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+long long consolidate_digit(vector<long long> a, long long base=10) {
+    long long ret = 0;
+    for(auto x: a) {
+        ret = ret*base + x;
+    }
+    return ret;
+}
+
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+    long long ans = 1;
+    a %= mod;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a % mod;
         }
-        // de3(l,r,N-r)
-        ans += N-r;
+        a = a * a % mod;
+        b = (b >> 1);
     }
     return ans;
 }
 
-ll solve2(ll N, vl A) {
-    ll ans = 0;
-    auto judge=[&](ll l, ll r) -> bool {
-        repk(i, l, r) repk(j, i+1, r) repk(k, j+1, r) {
-            if(A[j]-A[i]==A[k]-A[j]) return true;
+//! Calculate a^b
+//! a >= 0, b >= 0
+long long spow(long long a, long long b) {
+    long long ans = 1;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a;
         }
-        return false;
-    };
-    rep(l, N) repk(r, l+1, N+1) {
-        if(judge(l,r)) ++ans;
+        a = a * a;
+        b = (b >> 1);
     }
     return ans;
+}
+
+void solve() {
+    LONG(L, R);
+    auto calc=[&](ll n) -> ll {
+        auto v = separate_digit(n);
+        ll m = v.size();
+        ll ret = 0;
+        repk(d, 2, m) {
+            for(ll x=1; x<=9; ++x) {
+                ret += spow(x, d-1);
+            }
+        }
+        for(ll x=1; x<v[0]; ++x) {
+            ret += spow(x, m-1);
+        }
+        repk(i, 1, m) {
+            for(ll x=0; x<min(v[0],v[i]); ++x) {
+                ret += spow(v[0], m-1-i);
+            }
+            if(v[i]>=v[0]) break;
+        }
+        return ret;
+    };
+
+    ll ans = calc(R+1) - calc(L);
+    Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-    ll ans = solve(N, A);
-    Out(ans);
-    // // return 0;
-    // while(true) {
-    //     vl A;
-    //     rep(i, N) {
-    //         A.push_back(rand()%10);
-    //     }
-    //     ll ans = solve(N, A);
-    //     ll ans2 = solve2(N, A);
-    //     if(ans!=ans2) {
-    //         de(A)
-    //         de2(ans, ans2)
-    //         return 0;
-    //     }
-    // }
+    solve();
 }
 
 // ### test.cpp ###
