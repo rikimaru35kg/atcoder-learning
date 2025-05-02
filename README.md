@@ -1011,6 +1011,8 @@
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 - !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
+
+!!! where i am now for rank A (last submission 2025/4/11)
 - !復習価値高 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
 
 ## DP経路復元
@@ -1956,9 +1958,7 @@
 ## 斜め45度を水平垂直に直す
 ### 例題
 - 基本 道路工事 [E - Roadwork](https://atcoder.jp/contests/abc128/tasks/abc128_e)
-
-!!! where i am now for rank A (last submission 2025/3/07)
-- !復習価値高 [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
+- !復習価値低 [F - Yet Another Grid Task](https://atcoder.jp/contests/abc311/tasks/abc311_f)
 
 ## 挿入ソート
 - 任意のトランプを取り出して好きな位置に挿入できる場合、LISとの関連が深い
@@ -1983,7 +1983,7 @@
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
 - !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
 - !要復習 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
-- !復習価値高 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
+- 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 畳み込み（FFT/NTT）
 - ACLで求める

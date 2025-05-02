@@ -228,67 +228,52 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll solve(ll N, vl A) {
-    ll M = 10;
-    ll ans = 0;
-    rep(l, N) {
-        ll r = l;
-        vl cnt(M);
-        vb good(M);
-        auto update=[&](ll r) {
-            rep(i, M) {
-                if(cnt[i]==0) continue;
-                ll nxt = 2*A[r]-i;
-                if(nxt<0 || nxt>=M) continue;
-                good[nxt] = true;
-            }
-            cnt[A[r]]++;
-        };
-        while(r<N && !good[A[r]]) {
-            update(r);
-            ++r;
-        }
-        // de3(l,r,N-r)
-        ans += N-r;
-    }
-    return ans;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-ll solve2(ll N, vl A) {
-    ll ans = 0;
-    auto judge=[&](ll l, ll r) -> bool {
-        repk(i, l, r) repk(j, i+1, r) repk(k, j+1, r) {
-            if(A[j]-A[i]==A[k]-A[j]) return true;
-        }
-        return false;
-    };
-    rep(l, N) repk(r, l+1, N+1) {
-        if(judge(l,r)) ++ans;
+void solve() {
+    LONG(H, W);
+    VS(S, H);
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='.') continue;
+        if(i<H-1 && j<W-1) S[i+1][j+1] = '#';
+        if(i<H-1) S[i+1][j] = '#';
     }
-    return ans;
+
+    deque<mint> dp(H+1, 1);
+    rep(j, W) {
+        deque<mint> ndp(H+2);
+        rep(i, H+1) {
+            if(i && S[i-1][j]=='#') continue;
+            ndp[i+1] += dp[i];
+        }
+        repr(i, H+1) {
+            ndp[i] += ndp[i+1];
+        }
+        ndp.pop_back();
+        swap(dp, ndp);
+    }
+    mint ans = dp[0];
+    Out(ans);
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    VLM(A, N);
-    ll ans = solve(N, A);
-    Out(ans);
-    // // return 0;
-    // while(true) {
-    //     vl A;
-    //     rep(i, N) {
-    //         A.push_back(rand()%10);
-    //     }
-    //     ll ans = solve(N, A);
-    //     ll ans2 = solve2(N, A);
-    //     if(ans!=ans2) {
-    //         de(A)
-    //         de2(ans, ans2)
-    //         return 0;
-    //     }
-    // }
+    solve();
 }
 
 // ### test.cpp ###

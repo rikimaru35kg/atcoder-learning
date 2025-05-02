@@ -228,82 +228,81 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
+class MaxFlow {
+    int n;
+    vector<int> dist, iter;
+    long long inf = numeric_limits<long long>::max();
+    struct Edge {
+        int to; long long cap; int rev;
+        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
+    };
+    void bfs(int sv) {
+        dist.assign(n, -1);
+        queue<int> que;
+        dist[sv] = 0; que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,cap,rev]: from[v]) {
+                if(cap==0 || dist[nv]!=-1) continue;
+                dist[nv] = dist[v]+1, que.push(nv); 
+            }
         }
-        a = a * a % mod;
-        b = (b >> 1);
     }
-    return ans;
-}
-
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
+    long long dfs(int v, int t, long long f) {
+        if(v==t) return f;
+        for(int &i=iter[v]; i<int(from[v].size()); i++) {
+            auto [nv,cap,rev] = from[v][i];
+            if(dist[nv]<=dist[v] || cap==0) continue;
+            long long res = dfs(nv, t, min(f,cap));
+            if(res) {
+                from[v][i].cap -= res;
+                from[nv][rev].cap += res;
+                return res;
+            }
         }
-        a = a * a;
-        b = (b >> 1);
+        return 0;
     }
-    return ans;
-}
+public:
+    vector<vector<Edge>> from;
+    MaxFlow(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c) {
+        from[a].emplace_back(Edge(b,c,from[b].size()));
+        from[b].emplace_back(Edge(a,0,from[a].size()-1));
+    }
+    long long flow(int s, int t) {
+        long long ret = 0;
+        while(true) {
+            bfs(s);
+            if(dist[t]==-1) return ret;
+            iter.assign(n, 0);
+            long long now=0;
+            while((now=dfs(s,t,inf))>0) {
+                ret += now;
+            }
+        }
+        return 0;
+    }
+};
 
 void solve() {
-    LONG(L, R);
-    auto calc=[&](ll n) -> ll {
-        auto v = separate_digit(n);
-        ll m = v.size();
-        ll ret = 0;
-        repk(d, 2, m) {
-            for(ll x=1; x<=9; ++x) {
-                ret += spow(x, d-1);
-            }
+    LONG(N, M);
+    VL(P, N);
+    MaxFlow graph(N+2);
+    rep(i, M) {
+        LONGM(a, b);
+        graph.add_edge(a,b,INF);
+    }
+    ll base = 0;
+    ll s = N, t = s+1;
+    rep(i, N) {
+        if(P[i]>=0) {
+            base += P[i];
+            graph.add_edge(s,i,P[i]);
+        } else {
+            graph.add_edge(i,t,-P[i]);
         }
-        for(ll x=1; x<v[0]; ++x) {
-            ret += spow(x, m-1);
-        }
-        repk(i, 1, m) {
-            for(ll x=0; x<min(v[0],v[i]); ++x) {
-                ret += spow(v[0], m-1-i);
-            }
-            if(v[i]>=v[0]) break;
-        }
-        return ret;
-    };
-
-    ll ans = calc(R+1) - calc(L);
+    }
+    ll ans = base - graph.flow(s,t);
     Out(ans);
 
 }
