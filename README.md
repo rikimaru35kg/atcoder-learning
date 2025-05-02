@@ -1490,9 +1490,7 @@
 - 基本 木の辺の塗り方 [F - Tree and Constraints](https://atcoder.jp/contests/abc152/tasks/abc152_f)
 - 基本 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
 - 基本 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
-
-!!! where i am now for rank B (last submission 2025/2/28)
-- !復習価値中 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4) （[解説は自分の提出参照](https://atcoder.jp/contests/abc003/submissions/58846679)）
+- 基本 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4) （[解説は自分の提出参照](https://atcoder.jp/contests/abc003/submissions/58846679)）
 - !復習価値低 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !復習価値中 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
@@ -1503,6 +1501,8 @@
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
 ### 例題
 - !復習価値低 相異なる3数字の選び方総数 [D - Distinct Trio](https://atcoder.jp/contests/abc252/tasks/abc252_d)
+
+!!! where i am now for rank B (last submission 2025/2/28)
 - !復習価値中 （note非掲載下の問題と類似） [F - Reordering](https://atcoder.jp/contests/abc234/tasks/abc234_f)
 - 基本 K文字以下アルファベットの並べ方総数 [E - Alphabet Tiles](https://atcoder.jp/contests/abc358/tasks/abc358_e)
 

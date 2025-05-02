@@ -228,101 +228,15 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(N);
-    VL(A, N); VL(B, N);
-
-    ll ans = 0;
-    rep(d, 30) {
-        ll T = 1LL<<d;
-        vl a(N), b(N);
-        rep(i, N) a[i] = A[i]%(T<<1);
-        rep(i, N) b[i] = B[i]%(T<<1);
-        sort(all(b));
-
-        auto count=[&](ll l, ll r, ll x) -> ll {
-            auto [n1,y1] = lowbou(b, l-x);
-            auto [n2,y2] = lowbou(b, r-x);
-            return n2-n1;
-        };
-        ll cnt = 0;
-        rep(i, N) {
-            cnt += count(T, 2*T, a[i]);
-            cnt += count(3*T, 4*T, a[i]);
-        }
-        if(cnt&1) ans |= 1LL<<d;
+    LONG(N, M);
+    ll ans = INF;
+    for(ll a=1; a*a<=M && a<=N; ++a) {
+        ll b = Divceil(M, a);
+        if(b>N) continue;
+        chmin(ans, a*b);
     }
+    ch1(ans);
     Out(ans);
 
 }
