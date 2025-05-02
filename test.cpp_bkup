@@ -228,153 +228,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! n*n matrix
-constexpr int MX = 32;  // DEFINE PROPERLY!!
-template <typename T> class Mat {
-    int n;
-    T a[MX][MX];
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-public:
-    // Initialize n*n matrix as unit matrix
-    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
-            }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
+// Combination for very small r
+long long nCr (long long n, long long r) {
+    long long ninf = 9e18;
+    if(n<0 || r>n || r<0) return 0;
+    r = min(r, n-r);
+    long long ret = 1;
+    for(long long k=1; k<=r; ++k) {
+        if(n-k+1 > ninf/ret) {
+            assert(0&&"[Error:nCr] Too large return value.");
         }
+        ret *= n-k+1;
+        ret /= k;
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        assert(abs(det)>=EPS);
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    Mat pow(long long k) { return pow_recursive(*this, k); }
-    void set(int i, int j, T x) { a[i][j] = x; }
-    void add(int i, int j, T x) { a[i][j] += x; }
-    T operator()(int i, int j) { return a[i][j]; }
-    void print(string debugname="------") {  // for debug
-        #ifdef __DEBUG
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-        #endif
-    }
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+    return ret;
+}
+long long nHr (long long n, long long r, bool one=false) {
+    if(!one) return nCr(n+r-1, r);
+    else return nCr(r-1, n-1);
+}
 
 void solve() {
-    LONG(N, M);
-    VS(S, M);
-    ll L = 5;
+    LONG(N);
+    VLM(A, N);
+    vl cnt(N);
+    rep(i, N) cnt[A[i]]++;
+    ll now = 0;
+    rep(i, N) now += nCr(cnt[i], 2);
 
-    auto s2str=[&](ll s, ll n) -> string {
-        string ret;
-        while(s) {
-            ret += (s&1)+'a';
-            s>>=1;
-        }
-        while(SIZE(ret)<n) ret += 'a';
-        reverse(all(ret));
-        return ret;
+    auto del=[&](ll x) {
+        now -= nCr(cnt[x], 2);
+        cnt[x]--;
+        now += nCr(cnt[x], 2);
     };
 
-    if(N<=L) {
-        ll ans = 0;
-        rep(s, 1<<N) {
-            string now = s2str(s, N);
-            bool ok = true;
-            rep(i, M) {
-                if(now.find(S[i])!=string::npos) ok = false;
-            }
-            if(ok) ++ans;
-        }
-        Outend(ans);
+    ll l = 0, r = N;
+    ll ans = 0;
+    while(l<r) {
+        ll num = nCr(r-l, 2);
+        num -= now;
+        ans += num;
+        del(A[l]);
+        del(A[r-1]);
+        ++l, --r;
     }
-
-    vb ng(1<<(L+1));
-    rep(s, 1<<(L+1)) {
-        string now = s2str(s, L+1);
-        rep(i, M) {
-            if(now.find(S[i])!=string::npos) ng[s] = true;
-        }
-    }
-
-    Mat<mint> mat;
-    rep(i, MX) rep(j, MX) mat.set(i,j,0);
-    rep(s, 1<<L) rep(x, 2) {
-        ll ns = s<<1 | x;
-        if(ng[ns]) continue;
-        ns &= (1<<L)-1;
-        mat.add(ns,s,1);
-    }
-    
-    vm x(MX, 1);
-    mat = mat.pow(N-L);
-    vm y = mat*x;
-    mint ans;
-    rep(i, MX) ans += y[i];
     Out(ans);
 
 

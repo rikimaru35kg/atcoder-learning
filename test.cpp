@@ -228,52 +228,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// Combination for very small r
-long long nCr (long long n, long long r) {
-    long long ninf = 9e18;
-    if(n<0 || r>n || r<0) return 0;
-    r = min(r, n-r);
-    long long ret = 1;
-    for(long long k=1; k<=r; ++k) {
-        if(n-k+1 > ninf/ret) {
-            assert(0&&"[Error:nCr] Too large return value.");
-        }
-        ret *= n-k+1;
-        ret /= k;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    return ret;
-}
-long long nHr (long long n, long long r, bool one=false) {
-    if(!one) return nCr(n+r-1, r);
-    else return nCr(r-1, n-1);
-}
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vl cnt(N);
-    rep(i, N) cnt[A[i]]++;
-    ll now = 0;
-    rep(i, N) now += nCr(cnt[i], 2);
-
-    auto del=[&](ll x) {
-        now -= nCr(cnt[x], 2);
-        cnt[x]--;
-        now += nCr(cnt[x], 2);
-    };
-
-    ll l = 0, r = N;
-    ll ans = 0;
-    while(l<r) {
-        ll num = nCr(r-l, 2);
-        num -= now;
-        ans += num;
-        del(A[l]);
-        del(A[r-1]);
-        ++l, --r;
+    LONG(N, M, S); --S;
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a,b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    Out(ans);
 
+    vl mn(N);
+    priority_queue<Pr> que;
+    auto push=[&](ll v, ll d) {
+        if(mn[v]>=d) return;
+        mn[v] = d;
+        que.emplace(d, v);
+    };
+    push(S, S);
+    while(que.size()) {
+        auto [d,v] = que.top(); que.pop();
+        if(mn[v]!=d) continue;
+        for(auto nv: from[v]) {
+            push(nv, min(d,nv));
+        }
+    }
+    vl ans;
+    rep(i, N) {
+        if(mn[i]>=i) ans.push_back(i+1);
+    }
+    for(auto i: ans) Out(i);
 
 }
 

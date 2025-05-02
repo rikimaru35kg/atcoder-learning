@@ -1804,9 +1804,7 @@
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - 基本 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 - !復習価値低 [F - Operations on a Matrix](https://atcoder.jp/contests/abc253/tasks/abc253_f)
-
-!!! where i am now for rank A (last submission 2025/3/30)
-- !復習価値高 （先読みしない方法も是非）[B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
+- !復習価値低 （先読みしない方法も是非）[B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
 
 ## ハッシュで一致判定
 - ロリハと同じように一致判定はハッシュを使うと効率が良い
@@ -1842,6 +1840,8 @@
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
+
+!!! where i am now for rank A (last submission 2025/3/30)
 - !復習価値高 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
 
 ## N以下の数字の何かを求める
