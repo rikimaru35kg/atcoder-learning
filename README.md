@@ -1654,9 +1654,7 @@
 - !復習価値低 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
 - 基本 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
-
-!!! where i am now for rank A (last submission 2025/3/30)
-- !復習価値高 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
+- 基本 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 - !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
 
 ## 投票方式で考える
@@ -1806,6 +1804,8 @@
 - 基本 [D - Decayed Bridges](https://atcoder.jp/contests/abc120/tasks/abc120_d)
 - 基本 隣接要素の和が与えられる [068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp)
 - !復習価値低 [F - Operations on a Matrix](https://atcoder.jp/contests/abc253/tasks/abc253_f)
+
+!!! where i am now for rank A (last submission 2025/3/30)
 - !復習価値高 （先読みしない方法も是非）[B - 駐車場](https://atcoder.jp/contests/arc056/tasks/arc056_b)
 
 ## ハッシュで一致判定
