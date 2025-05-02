@@ -228,6 +228,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 class Combination {
     long long mx, mod;
     vector<long long> facts, ifacts;
@@ -273,42 +287,28 @@ public:
     }
 };
 
-#include <atcoder/modint>
+#include<atcoder/convolution>
 using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
 
 void solve() {
-    LONG(R,C,X,Y,D,L);
-    ll K = D+L;
-    Combination comb(X*Y, M107);
+    STRING(S);
+    ll N = S.size();
+    ll M = 26;
+    vl cnt(M);
+    for(auto c: S) cnt[c-'a']++;
+    Combination comb(N, M998);
 
-    mint ans = 0;
-    rep(s, 16) {
-        ll x = X, y = Y;
-        if(s>>0&1) --x;
-        if(s>>1&1) --x;
-        if(s>>2&1) --y;
-        if(s>>3&1) --y;
-        if(x<=0 || y<=0) continue;
-        mint now = comb(x*y, K);
-        if(parity(s)) ans -= now;
-        else ans += now;
+    vm dp(1, 1);
+    rep(i, M) {
+        vm cdp;
+        for(ll k=0; k<=cnt[i]; ++k) {
+            cdp.push_back(comb.get_factinv(k));
+        }
+        dp = convolution(dp, cdp);
     }
-
-    ans *= comb(K, D);
-    ans *= (R-X+1) * (C-Y+1);
+    mint ans = 0;
+    rep1(i, N) ans += comb.get_fact(i) * dp[i];
     Out(ans);
-
 
 }
 
