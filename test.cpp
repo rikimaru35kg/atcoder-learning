@@ -228,71 +228,80 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, L);
-    VL(X, N);
-    X.insert(X.begin(), 0);
-    X.push_back(L);
-    VL(T, N);
-    T.insert(T.begin(), INF);
-    T.push_back(INF);
-    N += 2;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    auto calt=[&](ll i, ll j, ll t) -> ll {
-        if(i>j) swap(i,j);
-        if(t==0) return X[j]-X[i];
-        return L-(X[j]-X[i]);
+//! Calculate mod(a^b, mod)
+//! a >= 0, b >= 0, mod > 0;
+long long modpow(long long a, long long b, long long mod) {
+    long long ans = 1;
+    a %= mod;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a % mod;
+        }
+        a = a * a % mod;
+        b = (b >> 1);
+    }
+    return ans;
+}
+
+//! Calculate a^b
+//! a >= 0, b >= 0
+long long spow(long long a, long long b) {
+    long long ans = 1;
+    while (b > 0) {
+        if ((b & 1) == 1) {
+            ans = ans * a;
+        }
+        a = a * a;
+        b = (b >> 1);
+    }
+    return ans;
+}
+
+void solve() {
+    LONG(N, B, K);
+    VL(C, K);
+
+    vm dp_unit(B);
+    rep(i, K) {
+        dp_unit[C[i]%B]++;
+    }
+
+    auto merge=[&](vm dp1, vm dp2, ll n) -> vm {
+        ll w = modpow(10,n,B);
+        vm ret(B);
+        rep(i, B) rep(j, B) {
+            ret[(w*i+j)%B] += dp1[i]*dp2[j];
+        }
+        return ret;
     };
 
-    using vvvvl = vector<vvvl>;
-    vvvvl dp(2, vvvl(N, vvl(N, vl(N, INF))));
-    dp[0][0][N-1][0] = 0;
-    rep(l, N) repr(r, N) rep(p, 2) rep(n, N) {
-        if(r<=l+1) continue;
-        ll t = dp[p][l][r][n];
-        if(t==INF) continue;
-        ll i = l;
-        if(p==1) i = r;
-        if(p==0) {
-            // right
-            {
-                ll nn = n;
-                ll dt = calt(i,l+1,0);
-                if(t+dt<=T[l+1]) ++nn;
-                chmin(dp[p][l+1][r][nn], t+dt);
-            }
-            // left
-            {
-                ll nn = n;
-                ll dt = calt(i,r-1,1);
-                if(t+dt<=T[r-1]) ++nn;
-                chmin(dp[p^1][l][r-1][nn], t+dt);
-            }
-        } else {
-            // right
-            {
-                ll nn = n;
-                ll dt = calt(i,l+1,1);
-                if(t+dt<=T[l+1]) ++nn;
-                chmin(dp[p^1][l+1][r][nn], t+dt);
-            }
-            // left
-            {
-                ll nn = n;
-                ll dt = calt(i,r-1,0);
-                if(t+dt<=T[r-1]) ++nn;
-                chmin(dp[p][l][r-1][nn], t+dt);
-            }
+    auto f=[&](auto f, ll n) -> vm {
+        if(n==0) {
+            vm ret(B);
+            ret[0] = 1;
+            return ret;
         }
-    }
-    ll ans = 0;
-    rep(p, 2) rep(l, N) rep(r, N) rep(n, N) {
-        if(dp[p][l][r][n]==INF) continue;
-        chmax(ans, n);
-    }
-    Out(ans);
+        if(n&1) return merge(f(f, n-1), dp_unit, 1);
+        vm res = f(f, n/2);
+        return merge(res,res,n/2);
+    };
 
-
+    vm res = f(f, N);
+    Out(res[0]);
 
 }
 

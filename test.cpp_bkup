@@ -228,135 +228,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    vector<S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x);
-        climb((i+n)>>1);
-    }
-    void set_and_op(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
-    }
-    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
-        }
-        return op(lft, rgt);
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
-    }
-};
-
-using S = ll;
-S op(S a, S b) {return min(a,b);}
-S e() {return INF;}
-
 void solve() {
-    LONG(N, K);
-    STRING(Str);
-    using SEG = SegTree<S,op,e>;
-    vector<SEG> dp(3, SEG(N+1));
-    dp[2].set(0, 0);
-    vl A;
-    for(auto c: Str) {
-        if(c=='R') A.push_back(0);
-        if(c=='G') A.push_back(1);
-        if(c=='B') A.push_back(2);
-    }
+    LONG(N, L);
+    VL(X, N);
+    X.insert(X.begin(), 0);
+    X.push_back(L);
+    VL(T, N);
+    T.insert(T.begin(), INF);
+    T.push_back(INF);
+    N += 2;
 
-    rep(i, N) {
-        rep(j, 3) {
-            ll l = i-K+1, r = i+1;
-            chmax(l, 0LL);
-            ll pre = dp[j].prod(l,r);
-            if(pre==INF) continue;
-            dp[j].set_and_op(i+1, pre+1);
+    auto calt=[&](ll i, ll j, ll t) -> ll {
+        if(i>j) swap(i,j);
+        if(t==0) return X[j]-X[i];
+        return L-(X[j]-X[i]);
+    };
+
+    using vvvvl = vector<vvvl>;
+    vvvvl dp(2, vvvl(N, vvl(N, vl(N, INF))));
+    dp[0][0][N-1][0] = 0;
+    rep(l, N) repr(r, N) rep(p, 2) rep(n, N) {
+        if(r<=l+1) continue;
+        ll t = dp[p][l][r][n];
+        if(t==INF) continue;
+        ll i = l;
+        if(p==1) i = r;
+        rep(np, 2) {
+            ll nl = l, nr = r;
+            if(np==0) nl++;
+            else nr--;
+            ll ni = nl;
+            if(np==1) ni = nr;
+            ll nn = n;
+            ll dt = calt(i,ni,p!=np);
+            if(t+dt<=T[ni]) ++nn;
+            chmin(dp[np][nl][nr][nn], t+dt);
         }
-        ll ppre = dp[(A[i]+2)%3].get(i);
-        if(ppre!=INF) dp[A[i]].set_and_op(i+1, ppre);
     }
-    ll ans = dp[2].get(N);
+    ll ans = 0;
+    rep(p, 2) rep(l, N) rep(r, N) rep(n, N) {
+        if(dp[p][l][r][n]==INF) continue;
+        chmax(ans, n);
+    }
     Out(ans);
+
+
 
 }
 
