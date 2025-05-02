@@ -1521,9 +1521,7 @@
 - 基本 [E - Sugoroku 3](https://atcoder.jp/contests/abc263/tasks/abc263_e)
 - 基本 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 - 基本 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
-
-!!! where i am now for rank A (last submission 2025/2/28)
-- !復習価値高 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
+- !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値中 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 
@@ -1629,6 +1627,8 @@
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 - !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
+
+!!! where i am now for rank A (last submission 2025/3/03)
 - !復習価値高 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）
