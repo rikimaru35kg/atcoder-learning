@@ -228,81 +228,101 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class MaxFlow {
-    int n;
-    vector<int> dist, iter;
-    long long inf = numeric_limits<long long>::max();
-    struct Edge {
-        int to; long long cap; int rev;
-        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
-    };
-    void bfs(int sv) {
-        dist.assign(n, -1);
-        queue<int> que;
-        dist[sv] = 0; que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,cap,rev]: from[v]) {
-                if(cap==0 || dist[nv]!=-1) continue;
-                dist[nv] = dist[v]+1, que.push(nv); 
-            }
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    long long dfs(int v, int t, long long f) {
-        if(v==t) return f;
-        for(int &i=iter[v]; i<int(from[v].size()); i++) {
-            auto [nv,cap,rev] = from[v][i];
-            if(dist[nv]<=dist[v] || cap==0) continue;
-            long long res = dfs(nv, t, min(f,cap));
-            if(res) {
-                from[v][i].cap -= res;
-                from[nv][rev].cap += res;
-                return res;
-            }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
         }
-        return 0;
     }
-public:
-    vector<vector<Edge>> from;
-    MaxFlow(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c) {
-        from[a].emplace_back(Edge(b,c,from[b].size()));
-        from[b].emplace_back(Edge(a,0,from[a].size()-1));
-    }
-    long long flow(int s, int t) {
-        long long ret = 0;
-        while(true) {
-            bfs(s);
-            if(dist[t]==-1) return ret;
-            iter.assign(n, 0);
-            long long now=0;
-            while((now=dfs(s,t,inf))>0) {
-                ret += now;
-            }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
         }
-        return 0;
     }
-};
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(N, M);
-    VL(P, N);
-    MaxFlow graph(N+2);
-    rep(i, M) {
-        LONGM(a, b);
-        graph.add_edge(a,b,INF);
-    }
-    ll base = 0;
-    ll s = N, t = s+1;
-    rep(i, N) {
-        if(P[i]>=0) {
-            base += P[i];
-            graph.add_edge(s,i,P[i]);
-        } else {
-            graph.add_edge(i,t,-P[i]);
+    LONG(N);
+    VL(A, N); VL(B, N);
+
+    ll ans = 0;
+    rep(d, 30) {
+        ll T = 1LL<<d;
+        vl a(N), b(N);
+        rep(i, N) a[i] = A[i]%(T<<1);
+        rep(i, N) b[i] = B[i]%(T<<1);
+        sort(all(b));
+
+        auto count=[&](ll l, ll r, ll x) -> ll {
+            auto [n1,y1] = lowbou(b, l-x);
+            auto [n2,y2] = lowbou(b, r-x);
+            return n2-n1;
+        };
+        ll cnt = 0;
+        rep(i, N) {
+            cnt += count(T, 2*T, a[i]);
+            cnt += count(3*T, 4*T, a[i]);
         }
+        if(cnt&1) ans |= 1LL<<d;
     }
-    ll ans = base - graph.flow(s,t);
     Out(ans);
 
 }

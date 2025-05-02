@@ -1233,9 +1233,7 @@
 - 基本 [E - Red Scarf](https://atcoder.jp/contests/abc171/tasks/abc171_e)
 - 基本 木XOR [E - Xor Distances](https://atcoder.jp/contests/abc201/tasks/abc201_e)
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
-
-!!! where i am now for rank B (last submission 2025/2/27)
-- !復習価値中 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
+- 基本 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
 - !復習価値中 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
@@ -1291,6 +1289,8 @@
 - M<=abとなるなるべく小さいabに分解するには、aが固定された場合はb=roundup(M/a)となる
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
+
+!!! where i am now for rank B (last submission 2025/10/11)
 - !復習価値中 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
 - !復習価値低 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
 

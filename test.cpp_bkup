@@ -228,45 +228,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+class MaxFlow {
+    int n;
+    vector<int> dist, iter;
+    long long inf = numeric_limits<long long>::max();
+    struct Edge {
+        int to; long long cap; int rev;
+        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
+    };
+    void bfs(int sv) {
+        dist.assign(n, -1);
+        queue<int> que;
+        dist[sv] = 0; que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,cap,rev]: from[v]) {
+                if(cap==0 || dist[nv]!=-1) continue;
+                dist[nv] = dist[v]+1, que.push(nv); 
+            }
+        }
+    }
+    long long dfs(int v, int t, long long f) {
+        if(v==t) return f;
+        for(int &i=iter[v]; i<int(from[v].size()); i++) {
+            auto [nv,cap,rev] = from[v][i];
+            if(dist[nv]<=dist[v] || cap==0) continue;
+            long long res = dfs(nv, t, min(f,cap));
+            if(res) {
+                from[v][i].cap -= res;
+                from[nv][rev].cap += res;
+                return res;
+            }
+        }
+        return 0;
+    }
+public:
+    vector<vector<Edge>> from;
+    MaxFlow(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c) {
+        from[a].emplace_back(Edge(b,c,from[b].size()));
+        from[b].emplace_back(Edge(a,0,from[a].size()-1));
+    }
+    long long flow(int s, int t) {
+        long long ret = 0;
+        while(true) {
+            bfs(s);
+            if(dist[t]==-1) return ret;
+            iter.assign(n, 0);
+            long long now=0;
+            while((now=dfs(s,t,inf))>0) {
+                ret += now;
+            }
+        }
+        return 0;
+    }
+};
 
 void solve() {
-    LONG(H, W);
-    VS(S, H);
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='.') continue;
-        if(i<H-1 && j<W-1) S[i+1][j+1] = '#';
-        if(i<H-1) S[i+1][j] = '#';
+    LONG(N, M);
+    VL(P, N);
+    MaxFlow graph(N+2);
+    rep(i, M) {
+        LONGM(a, b);
+        graph.add_edge(a,b,INF);
     }
-
-    deque<mint> dp(H+1, 1);
-    rep(j, W) {
-        deque<mint> ndp(H+2);
-        rep(i, H+1) {
-            if(i && S[i-1][j]=='#') continue;
-            ndp[i+1] += dp[i];
+    ll base = 0;
+    ll s = N, t = s+1;
+    rep(i, N) {
+        if(P[i]>=0) {
+            base += P[i];
+            graph.add_edge(s,i,P[i]);
+        } else {
+            graph.add_edge(i,t,-P[i]);
         }
-        repr(i, H+1) {
-            ndp[i] += ndp[i+1];
-        }
-        ndp.pop_back();
-        swap(dp, ndp);
     }
-    mint ans = dp[0];
+    ll ans = base - graph.flow(s,t);
     Out(ans);
-
 
 }
 
