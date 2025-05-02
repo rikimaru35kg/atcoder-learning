@@ -228,80 +228,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! Calculate mod(a^b, mod)
-//! a >= 0, b >= 0, mod > 0;
-long long modpow(long long a, long long b, long long mod) {
-    long long ans = 1;
-    a %= mod;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a % mod;
-        }
-        a = a * a % mod;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
-//! Calculate a^b
-//! a >= 0, b >= 0
-long long spow(long long a, long long b) {
-    long long ans = 1;
-    while (b > 0) {
-        if ((b & 1) == 1) {
-            ans = ans * a;
-        }
-        a = a * a;
-        b = (b >> 1);
-    }
-    return ans;
-}
-
 void solve() {
-    LONG(N, B, K);
-    VL(C, K);
+    STRING(S);
+    S = '(' + S + ')';
+    ll N = S.size();
+    vvl from(N);
+    vb flip(N);
 
-    vm dp_unit(B);
-    rep(i, K) {
-        dp_unit[C[i]%B]++;
-    }
-
-    auto merge=[&](vm dp1, vm dp2, ll n) -> vm {
-        ll w = modpow(10,n,B);
-        vm ret(B);
-        rep(i, B) rep(j, B) {
-            ret[(w*i+j)%B] += dp1[i]*dp2[j];
+    ll i = 1;
+    auto parse=[&](auto f, ll si, ll c) -> void {
+        flip[si] = c;
+        while(true) {
+            if(S[i]=='(') {
+                from[si].push_back(i);
+                f(f, i++, c^1);
+            } else if(S[i]==')') {
+                ++i; return;
+            } else {
+                if(c) S[i] ^= 32;
+                from[si].push_back(i++);
+            }
+        }
+    };
+    parse(parse, 0, 0);
+    string ans;
+    auto get=[&](auto f, ll si) -> string {
+        if(flip[si]) reverse(all(from[si]));
+        for(auto ni: from[si]) {
+            if(S[ni]!='(') ans += S[ni];
+            else f(f, ni);
         }
         return ret;
     };
-
-    auto f=[&](auto f, ll n) -> vm {
-        if(n==0) {
-            vm ret(B);
-            ret[0] = 1;
-            return ret;
-        }
-        if(n&1) return merge(f(f, n-1), dp_unit, 1);
-        vm res = f(f, n/2);
-        return merge(res,res,n/2);
-    };
-
-    vm res = f(f, N);
-    Out(res[0]);
+    get(get, 0);
+    Out(ans);
 
 }
 

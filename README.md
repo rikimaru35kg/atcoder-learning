@@ -1192,9 +1192,7 @@
 ### 例題
 - 基本 反転時交互列最大化 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
-
-!!! where i am now for rank A (last submission 2025/2/26)
-- !復習価値高（構文木で解く場合） 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
+- !復習価値中（構文木で解く場合） 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 - !復習価値低 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 
 ## Suffix Array
@@ -1393,6 +1391,8 @@
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 - !復習価値中 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
+
+!!! where i am now for rank A (last submission 2025/2/17)
 - !復習価値高（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
