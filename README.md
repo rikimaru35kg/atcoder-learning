@@ -1523,9 +1523,7 @@
 - 基本 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
-
-!!! where i am now for rank B (last submission 2025/2/28)
-- !復習価値中 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
+- !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
@@ -1534,7 +1532,7 @@
 - 基本 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - 基本 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - 基本 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
-- !復習価値中 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
+- !復習価値低 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
 
 ## 対称性を利用する
 ### 例題
@@ -1611,6 +1609,8 @@
 - 基本 [E - カードゲーム 3 (Card Game 3)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_e)
 - 基本 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - 基本 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
+
+!!! where i am now for rank B (last submission 2025/3/7)
 - !復習価値中 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
