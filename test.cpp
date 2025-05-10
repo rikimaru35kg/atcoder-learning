@@ -228,94 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-
 void solve() {
-    LONG(N, K);
-    VLM(P, N);
-    auto calall=[&]() -> mint {
-        BIT<ll> bit(N);
-        mint ret = 0;
-        rep(i, N) {
-            ret += bit.sum(P[i]+1, N);
-            bit.add(P[i], 1);
+    LONG(N,T,M,K);
+    ll B = min(N, M);
+
+    vvl cand;
+    vl distri(B);
+    auto dfs=[&](auto f, ll i, ll r) -> void {
+        if(i==B) {
+            if(r!=0) return;
+            cand.push_back(distri);
+            return;
         }
-        return ret;
+        if(i==0) {
+            rep1(k, r) {
+                if(k*B<r) continue;
+                distri[i] = k;
+                f(f, i+1, r-k);
+            }
+        } else {
+            ll last = distri[i-1];
+            rep(k, min(last, r)+1) {
+                if(k*(B-i)<r) continue;
+                distri[i] = k;
+                f(f, i+1, r-k);
+            }
+        }
     };
-    auto calK=[&]() -> mint {
-        BIT<ll> bit(N);
-        mint now = 0;
-        rep(i, K) {
-            now += bit.sum(P[i]+1, N);
-            bit.add(P[i], 1);
+    dfs(dfs, 0, M);
+    de(cand)
+
+    ll rem = N-B;
+
+    vvd dp(T+1, vd(K+1));
+    rep(t, T+1) dp[t][0] = 1;
+    rep1(t, T) rep1(k, K) {
+        for(auto dist: cand) {
+            db now = 0;
+            for(auto d: dist) {
+                now += dp[t-1][max(k-d,0LL)]/N;
+            }
+            now += rem*dp[t-1][k]/N;
+            chmax(dp[t][k], now);
         }
-        mint ret = 0;
-        rep(i, N+1-K) {
-            ret += now;
-            now -= bit.sum(0, P[i]);
-            if(i+K>=N) break;
-            bit.add(P[i], -1);
-            now += bit.sum(P[i+K], N);
-            bit.add(P[i+K], 1);
-        }
-        ret /= N-K+1;
-        return ret;
-    };
-    mint ans = calall() - calK() + (mint)K*(K-1)/2/2;
+    }
+    db ans = dp[T][K];
     Out(ans);
+
 
 }
 
