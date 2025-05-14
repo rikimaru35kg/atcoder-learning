@@ -1524,6 +1524,7 @@
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
+- !復習価値高 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
@@ -1972,6 +1973,7 @@
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+- !復習価値高 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
 
 ## 最大フロー・最小カット
 - ACLで求める
@@ -2263,3 +2265,7 @@
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
 - [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
+- [C - Cycle Graph?](https://atcoder.jp/contests/abc404/tasks/abc404_c)
+- [E - Bowls and Beans](https://atcoder.jp/contests/abc404/tasks/abc404_e)
+- [E - Fruit Lineup](https://atcoder.jp/contests/abc405/tasks/abc405_e)
+- [F - Chord Crossing](https://atcoder.jp/contests/abc405/tasks/abc405_f)

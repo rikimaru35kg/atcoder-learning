@@ -228,6 +228,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
 #include <atcoder/modint>
 using namespace atcoder;
 using mint = modint998244353;
@@ -243,26 +288,19 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N);
-    vm dp(1,1);
-    mint inv2=mint(2).inv();
-    rep(i, N-1) {
-        ll psz = dp.size();
-        vm a(psz+1), b(psz+1);
-        a[0] = 1;
-        repk(j, 1, psz+1) {
-            a[j] += a[j-1] * inv2;
-            b[j] += b[j-1] * inv2;
-            b[j] += dp[j-1] * inv2;
-        }
-        mint x = b.back() / (2-a.back());
-        vm ndp(psz+1);
-        rep(j, psz+1) ndp[j] = a[j]*x + b[j];
-        swap(ndp, dp);
+    LONG(A,B,C,D);
+    Combination comb(5e6, M998);
+
+    mint ans;
+    ans += comb(A+B, A) * comb(C+D-1, C);
+    de(ans)
+    rep(b, B+1) {
+        mint now = comb(A+B-b, A) * comb(C+D-1+b, C-1);
+        ans += now;
+        de2(b, now.val())
     }
-    vm ans;
-    for(auto x: dp) ans.push_back(x);
     Out(ans);
+
 
 }
 

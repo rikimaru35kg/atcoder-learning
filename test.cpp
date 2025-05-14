@@ -228,20 +228,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 template<typename T>
 struct BIT {
     long long size;
@@ -284,38 +270,40 @@ struct BIT {
 
 
 void solve() {
-    LONG(N, K);
-    VLM(P, N);
-    auto calall=[&]() -> mint {
-        BIT<ll> bit(N);
-        mint ret = 0;
-        rep(i, N) {
-            ret += bit.sum(P[i]+1, N);
-            bit.add(P[i], 1);
+    LONG(N, M);
+    vp ab;
+    rep(i, M) {
+        LONGM(a,b);
+        ab.emplace_back(a,b);
+    }
+    sort(allr(ab));
+    LONG(Q);
+    vt3 query;
+    rep(i, Q) {
+        LONGM(c,d);
+        query.emplace_back(c,d,i);
+    }
+    sort(all(query));
+
+    N = N+N;
+    vl imos(N+1);
+    for(auto [a,b]: ab) {
+        imos[a]++, imos[b+1]--;
+    }
+    rep(i, N) imos[i+1] += imos[i];
+
+    vl ans(Q);
+    BIT<ll> bit(N);
+    for(auto [c,d,qi]: query) {
+        while(ab.size() && ab.back().first<c) {
+            auto [a,b] = pop(ab);
+            bit.add(b, 1);
         }
-        return ret;
-    };
-    auto calK=[&]() -> mint {
-        BIT<ll> bit(N);
-        mint now = 0;
-        rep(i, K) {
-            now += bit.sum(P[i]+1, N);
-            bit.add(P[i], 1);
-        }
-        mint ret = 0;
-        rep(i, N+1-K) {
-            ret += now;
-            now -= bit.sum(0, P[i]);
-            if(i+K>=N) break;
-            bit.add(P[i], -1);
-            now += bit.sum(P[i+K], N);
-            bit.add(P[i+K], 1);
-        }
-        ret /= N-K+1;
-        return ret;
-    };
-    mint ans = calall() - calK() + (mint)K*(K-1)/2/2;
-    Out(ans);
+        ll ofs = bit.sum(d,N);
+        ans[qi] = imos[c] + imos[d] - 2*ofs;
+    }
+    for(auto x: ans) Out(x);
+
 
 }
 
