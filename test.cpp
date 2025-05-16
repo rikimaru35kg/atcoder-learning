@@ -228,82 +228,177 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+struct Diameter {
+    int n, a, b; bool done=false;
+    long long diam;
+    using II = pair<int,int>;
+    using LI = pair<long long,int>;
+    vector<vector<LI>> from;
+    Diameter(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1) {
+        assert(0<=a && a<n && 0<=b && b<n);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
+    LI dfs(int v, long long d=0, int p=-1) {
+        LI ret(d, v);
+        for(auto [nv,c]: from[v]) if(nv!=p) {
+            ret = max(ret, dfs(nv, d+c, v));
+        }
         return ret;
     }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
+    II get_end_points() {
+        if(done) return {a,b};
+        done = true;
+        a = dfs(0).second;
+        auto [dtmp, btmp] = dfs(a);
+        b = btmp, diam = dtmp;
+        return {a,b};
     }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
+    int get_diameter() {
+        get_end_points();
+        return diam;
+    }
+    // calculate dist(N) from sv using DFS
+    vector<long long> caldist(int sv) {
+        assert(0<=sv && sv<n);
+        vector<long long> dist(n);
+        auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
+            dist[v] = d;
+            for(auto [nv,c]: from[v]) if(nv!=p) { f(f, nv, d+c, v); }
+        };
+        dfs(dfs, sv);
+        return dist;
     }
 };
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(N, M);
-    vp ab;
-    rep(i, M) {
-        LONGM(a,b);
-        ab.emplace_back(a,b);
-    }
-    sort(allr(ab));
-    LONG(Q);
-    vt3 query;
-    rep(i, Q) {
-        LONGM(c,d);
-        query.emplace_back(c,d,i);
-    }
-    sort(all(query));
-
-    N = N+N;
-    vl imos(N+1);
-    for(auto [a,b]: ab) {
-        imos[a]++, imos[b+1]--;
-    }
-    rep(i, N) imos[i+1] += imos[i];
-
-    vl ans(Q);
-    BIT<ll> bit(N);
-    for(auto [c,d,qi]: query) {
-        while(ab.size() && ab.back().first<c) {
-            auto [a,b] = pop(ab);
-            bit.add(b, 1);
+    ll D = 0;
+    auto getds=[&](ll N) -> vl {
+        Diameter dia(N);
+        rep(i, N-1) {
+            LONGM(a,b);
+            dia.add_edge(a,b);
         }
-        ll ofs = bit.sum(d,N);
-        ans[qi] = imos[c] + imos[d] - 2*ofs;
-    }
-    for(auto x: ans) Out(x);
+        auto [a,b] = dia.get_end_points();
+        vl da = dia.caldist(a);
+        vl db = dia.caldist(b);
+        vl ret(N);
+        rep(i, N) ret[i] = max(da[i], db[i]);
+        ll diam = dia.get_diameter();
+        chmax(D, diam);
+        return ret;
+    };
+    LONG(N1);
+    vl d1s = getds(N1);
+    LONG(N2);
+    vl d2s = getds(N2);
+    sort(all(d1s));
+    sort(all(d2s));
 
+    auto Sc = cumsum(d2s);
+
+    ll ans = 0;
+    rep(i, N1) {
+        ll d = d1s[i];
+        auto [n,x] = lowbou(d2s, D-d-1);
+        ans += D * n;
+        ans += Sc[N2] - Sc[n];
+        ans += (N2-n)*(d+1);
+    }
+    Out(ans);
 
 }
 

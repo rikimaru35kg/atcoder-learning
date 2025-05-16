@@ -100,9 +100,7 @@
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
-
-!!! where i am now for rank S (last submission 2025/4/04)
-- !要復習 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
+- !復習価値高 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
@@ -414,7 +412,7 @@
 - 基本 [E - Tree and Hamilton Path 2](https://atcoder.jp/contests/abc361/tasks/abc361_e)
 - 基本 木の頂点からある距離にある頂点 [F - Exactly K Steps](https://atcoder.jp/contests/abc267/tasks/abc267_f)
 - 基本 木の重心 [E - Minimize Sum of Distances](https://atcoder.jp/contests/abc348/tasks/abc348_e)
-- !要復習 [F - Add One Edge 3](https://atcoder.jp/contests/abc401/tasks/abc401_f)
+- !復習価値低 [F - Add One Edge 3](https://atcoder.jp/contests/abc401/tasks/abc401_f)
 - 基本 任意の頂点からのコストmax点 [F - Expensive Expense](https://atcoder.jp/contests/abc222/tasks/abc222_f)
 
 ## オイラーツアーと部分木（Euler Tour）
@@ -486,6 +484,7 @@
 
 ## 木の重心分解
 ### 例題
+!!! where i am now for rank S (last submission 2025/4/4)
 - !要復習 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
