@@ -940,6 +940,7 @@
 - 基本 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 - 基本 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
 - 基本 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
+- !復習価値高 [E - Popcount Sum 3](https://atcoder.jp/contests/abc406/tasks/abc406_e)
 
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
@@ -2268,3 +2269,4 @@
 - [E - Bowls and Beans](https://atcoder.jp/contests/abc404/tasks/abc404_e)
 - [E - Fruit Lineup](https://atcoder.jp/contests/abc405/tasks/abc405_e)
 - [F - Chord Crossing](https://atcoder.jp/contests/abc405/tasks/abc405_f)
+- [C - ~](https://atcoder.jp/contests/abc406/tasks/abc406_c)
