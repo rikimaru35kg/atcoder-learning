@@ -39,42 +39,17 @@ public:
         from[a].emplace_back(b,c); from[b].emplace_back(a,c);
     }
 
-    ////////// data here //////////
-    long long ans=0;
-    vector<long long> A;
-    void initialize(vector<long long> &a) {
-        for(auto x: a) A.push_back(x);
-    }
-    long long get_ans() {return ans;}
-    ////////// data here //////////
+    long long ans = 0;
 
     void decomposition(int sv) {
+        // calculate value in the tree including sv
         cal_size(sv);
-        int c = find_centroid(sv);
+        int c = find_centroid(sv);  // find centroid of the tree
         cent[c] = true;
         //! DO NOT USE "sv" ANYMORE in this function
 
         ////////// algorithm here //////////
-        unordered_map<long long,long long> cnt, sum;
-        cnt[A[c]] = 1, sum[A[c]] = 0;
-        for(auto [nv,d]: from[c]) if(!cent[nv]) {
-            vector<pair<long long,long long>> data;
-            auto dfs=[&](auto f, int v, int d, int p=-1) -> void {
-                data.emplace_back(A[v], d);
-                for(auto [nv,c]: from[v]) {
-                    if(nv==p || cent[nv]) continue;
-                    f(f, nv, d+1, v);
-                }
-            };
-            dfs(dfs, nv, 1);
-            for(auto [a,d]: data) {
-                ans += d*cnt[a] + sum[a];
-            }
-            for(auto [a,d]: data) {
-                cnt[a]++;
-                sum[a] += d;
-            }
-        }
+
         ////////// algorithm here //////////
 
         for(auto [nv,d]: from[c]) if(!cent[nv]) decomposition(nv);

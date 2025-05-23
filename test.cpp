@@ -228,92 +228,73 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+class CentroidDecomposition {
+    int n;
+    using IL = pair<int,long long>;
+    vector<vector<IL>> from;
+    vector<int> sz;
+    vector<bool> cent;
+    void cal_size(int sv) {
+        auto dfs=[&](auto f, int v, int p=-1) -> void {
+            sz[v] = 1;
+            for(auto [nv,c]: from[v]) {
+                if(nv==p || cent[nv]) continue;
+                f(f, nv, v);
+                sz[v] += sz[nv];
+            }
+        };
+        dfs(dfs, sv);
     }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
+    int find_centroid(int sv) {
+        int tot = sz[sv], ret = -1;
+        auto dfs=[&](auto f, int v, int p=-1) -> void {
+            bool ok = 2*(tot-sz[v])<=tot;
+            for(auto [nv,c]: from[v]) {
+                if(nv==p || cent[nv]) continue;
+                f(f, nv, v);
+                ok &= 2*sz[nv]<=tot;
+            }
+            if(ok) ret = v;
+        };
+        dfs(dfs, sv);
+        assert(ret!=-1);
         return ret;
     }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
+public:
+    CentroidDecomposition(int n): n(n), from(n), sz(n), cent(n) {}
+    void add_edge(int a, int b, long long c=1) {
+        from[a].emplace_back(b,c); from[b].emplace_back(a,c);
     }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
+
+    long long ans = 0;
+
+    void decomposition(int sv) {
+        // calculate value in the tree including sv
+        cal_size(sv);
+        int c = find_centroid(sv);  // find centroid of the tree
+        cent[c] = true;
+        //! DO NOT USE "sv" ANYMORE in this function
+
+        ////////// algorithm here //////////
+
+        ////////// algorithm here //////////
+
+        for(auto [nv,d]: from[c]) if(!cent[nv]) decomposition(nv);
     }
 };
 
-
 void solve() {
     LONG(N);
-    vvl from(N);
-    vp edge;
+    CentroidDecomposition tree(N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-        edge.emplace_back(a, b);
+        LONGM(a,b);
+        tree.add_edge(a,b);
     }
+    VL(A, N);
+    rep(i, N) tree.A[i] = A[i];
 
-    vl depth(N);
-    ll idx = 0;
-    vp span(N);
-    auto dfs=[&](auto f, ll v, ll d, ll p=-1) -> void {
-        depth[v] = d;
-        span[v].first = idx++;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, d+1, v);
-        }
-        span[v].second = idx;
-    };
-    dfs(dfs, 0, 0);
-
-    ll tot = N;
-    BIT<ll> bit(N);
-    rep(i, N) bit.add(i, 1);
-
-    LONG(Q);
-    rep(_, Q) {
-        LONG(t);
-        if(t==2) {
-            LONGM(ei);
-            auto [a, b] = edge[ei];
-            if(depth[a]<depth[b]) swap(a,b);
-            auto [l,r] = span[a];
-            ll lower = bit.sum(l,r);
-            ll upper = tot - lower;
-            Out(abs(lower-upper));
-        } else {
-            LONG(x, w); --x;
-            tot += w;
-            bit.add(span[x].first, w);
-        }
-    }
+    ll ans = tree.calc();
+    Out(ans);
 
 }
 
