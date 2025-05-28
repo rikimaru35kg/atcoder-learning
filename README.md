@@ -2191,6 +2191,7 @@
 !!! where i am now for rank D (last submission 2025/4/09)
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
+- [E - Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
@@ -2270,3 +2271,4 @@
 - [E - Fruit Lineup](https://atcoder.jp/contests/abc405/tasks/abc405_e)
 - [F - Chord Crossing](https://atcoder.jp/contests/abc405/tasks/abc405_f)
 - [C - ~](https://atcoder.jp/contests/abc406/tasks/abc406_c)
+- [D - Domino Covering XOR](https://atcoder.jp/contests/abc407/tasks/abc407_d)
