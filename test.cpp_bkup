@@ -229,69 +229,26 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W);
-    VVL(A, H, W);
-
-    vvb domino(H, vb(W));
-
-    auto next=[&](ll i, ll j) -> Pr {
-        if(j==W-1) return {i+1, 0};
-        return {i, j+1};
-    };
-    auto calc=[&]() -> ll {
-        ll ret = 0;
-        rep(i, H) rep(j, W) {
-            if(domino[i][j]) continue;
-            ret ^= A[i][j];
-        }
-        return ret;
-    };
-    auto judge=[&](ll i, ll j) -> bool {
-        if(j==0) return true;
-        if(i<=1) return true;
-        if(!domino[i-2][j-1]) return true;
-        if(!domino[i-2][j]) return true;
-        if(!domino[i-2][j+1]) return true;
-        if(!domino[i-1][j-1]) return true;
-        if(domino[i-1][j]) return true;
-        if(!domino[i-1][j+1]) return true;
-        if(!domino[i][j-1]) return true;
-        return false;
-    };
-
+    LONG(N);
+    N = N+N;
+    VL(A, N);
+    priority_queue<ll> que;
     ll ans = 0;
-    auto dfs=[&](auto f, Pr p) -> void {
-        auto [i,j] = p;
-        if(i == H) {
-            chmax(ans, calc());
-            return;
+    rep(i, N) {
+        que.push(A[i]);
+        if(i%2==0) {
+            ll mx = que.top(); que.pop();
+            ans += mx;
         }
-        f(f, next(i, j));
-        if(domino[i][j]) return;
-        if(j<W-1 && !domino[i][j+1]) {
-            domino[i][j] = true;
-            domino[i][j+1] = true;
-            f(f, next(i, j));
-            domino[i][j] = false;
-            domino[i][j+1] = false;
-        }
-        if(i<H-1) {
-            domino[i][j] = true;
-            domino[i+1][j] = true;
-            f(f, next(i, j));
-            domino[i][j] = false;
-            domino[i+1][j] = false;
-        }
-    };
-    dfs(dfs, {0,0});
+    }
     Out(ans);
-
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

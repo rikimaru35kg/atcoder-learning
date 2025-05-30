@@ -229,6 +229,7 @@
 - 基本 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 - 基本 海洋生息区域重なり [E - 魚の生息範囲 (Fish)](https://atcoder.jp/contests/joi2013yo/tasks/joi2013yo_e)
 - 基本 分断領域の個数 [E - ペンキの色](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_e)
+- !要復習 [F - Sums of Sliding Window Maximum](https://atcoder.jp/contests/abc407/tasks/abc407_f)
 
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
