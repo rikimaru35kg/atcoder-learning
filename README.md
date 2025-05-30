@@ -485,7 +485,6 @@
 
 ## 木の重心分解
 ### 例題
-!!! where i am now for rank S (last submission 2025/4/4)
 - !要復習 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
@@ -664,7 +663,7 @@
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
 - 基本 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
-- !要復習 [G - Minimum Reachable City](https://atcoder.jp/contests/abc295/tasks/abc295_g)
+- !復習価値中 [G - Minimum Reachable City](https://atcoder.jp/contests/abc295/tasks/abc295_g)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
 - Nが大きすぎる場合は、存在する値のみsetやmapで管理し、変更部分だけ操作すれば計算量を抑えられる
@@ -763,9 +762,10 @@
 - 基本 2数列区間加算区間内積クエリ [F - Two Sequence Queries](https://atcoder.jp/contests/abc357/tasks/abc357_f)
 - 基本 0/1フリップ＆最大1連続長 [F - Vacation Query](https://atcoder.jp/contests/abc322/tasks/abc322_f)
 - 基本 [hideseek - かくれんぼ (Hide-and-seek)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_hideseek)
-- !要復習 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
+- !復習価値中 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
+!!! where i am now for rank S (last submission 2025/4/14)
 - !要復習 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 

@@ -229,32 +229,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(A, N);
-    vp as;
-    rep(i, N) {
-        as.emplace_back(A[i], i);
-    }
-    sort(allr(as));
-
-    set<ll> st;
-    st.insert(-1); st.insert(N);
-
-    vl imos(N+10);
-    for(auto [a,i]: as) {
-        auto it = st.insert(i).first;
-        ++it;
-        ll r = *it - i;
-        --it; --it;
-        ll l = i - *it;
-        imos[1] += a;
-        if(r>l) swap(r, l);
-        imos[r+1] -= a;
-        imos[l+1] -= a;
-        imos[r+l+1] += a;
-    }
-    rep(ri, 2) rep(i, N+9) imos[i+1] += imos[i];
-    rep1(i, N) Out(imos[i]);
 
 }
 
