@@ -228,62 +228,74 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    // cross>0 means *this->v is counterclockwise.
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
+    }
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
+    }
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
+    }
+};
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+bool overlapping(long long l1, long long r1, long long l2, long long r2) {
+    if(l1>r1) swap(l1, r1);
+    if(l2>r2) swap(l2, r2);
+    long long lmax = max(l1, l2);
+    long long rmin = min(r1, r2);
+    return lmax <= rmin;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
+    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
+    if(c12_13 * c12_14 > 0) return false;
+    if(c34_31 * c34_32 > 0) return false;
+    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
+        // both x & y conditions necessary considering vertical cases
+        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
+           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
+        else return false;
+    }
+    return true;
+}
 
 struct S {
-    ll mn, n;
-    S(ll mn=INF, ll n=0): mn(mn), n(n) {}
+    ll x;
+    S(ll x=10): x(x) {}
 };
-S op(S a, S b) {
-    if(a.mn==b.mn) return S(a.mn, a.n+b.n);
-    if(a.mn>b.mn) swap(a,b);
-    return a;
+ostream& operator<<(ostream& os, const S& v) {
+    os<<v.x; return os;
 }
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) { return S(x.mn+f, x.n); }
-F composition(F f, F g) {return f+g;}
-F id(){return 0;}
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vvl is(N);
-    rep(i, N) { is[A[i]].push_back(i); }
-    vvt3 query(N+1);
-    rep(i, N) {
-        vl &cis = is[i];
-        if(cis.size()==0) continue;
-        cis.insert(cis.begin(), -1);
-        cis.push_back(N);
-        ll m = cis.size();
-        rep(j, m-2) {
-            ll i0 = cis[j], i1 = cis[j+1], i2 = cis[j+2];
-            query[i0+1].emplace_back(i1+1, i2+1, 1);
-            query[i1+1].emplace_back(i1+1, i2+1, -1);
-        }
-    }
-
-    vector<S> init(N+1, S(0,1));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-
-    ll ans = 0;
-    rep(i, N+1) {
-        for(auto [a,b,c]: query[i]) {
-            seg.apply(a,b,c);
-        }
-        auto [mn,n] = seg.all_prod();
-        if(mn) {
-            assert(0);
-            ans += N+1;
-        }
-        else {
-            ans += N+1-n;
-        }
-    }
-    Out(ans);
-
+    umap<ll,S> mp;
+    S x = mp[10000];
+    de(x)
 
 }
 
