@@ -228,89 +228,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    umap<ll,S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        // a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x);
-        climb((i+n)>>1);
-    }
-    void set_and_op(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
-    }
-    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
-        }
-        return op(lft, rgt);
-    }
-    S all_prod() { return a[1]; }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
-    }
-};
-
-
-struct S {
-    ll n, s0, s1;
-    S(ll n=0, ll s0=0, ll s1=0): n(n),s0(s0),s1(s1) {}
-};
-S op(S a ,S b) {
-    if(a.n&1) {
-        a.s0 += b.s1;
-        a.s1 += b.s0;
-    } else {
-        a.s0 += b.s0;
-        a.s1 += b.s1;
-    }
-    a.n += b.n;
-    return a;
-}
-S e() {return S();}
-
 void solve() {
-    LONG(Q);
-    ll z = 0;
-    ll mod = 1e9;
-    SegTree<S,op,e> seg(mod+10);
-    rep(_, Q) {
-        LONG(y);
-        ll x = (y+z)%mod + 1;
-        seg.set_and_op(x, S(1,x,0));
-        z = seg.all_prod().s0;
-        // z = seg.prod(0,mod+10).s0;
-        Out(z);
+    LONG(N);
+    VLM(C, N);
+    rep(i, N) C.push_back(C[i]);
+    VL(X, N);
+
+    ll N2 = N+N;
+    vvl dp(N2+1, vl(N2+1, INF));
+    vvl dp2(N2+1, vl(N2+1, INF));
+    rep(i, N2) dp2[i][i+1] = X[C[i]];
+
+    for(ll w=1; w<=N; ++w) {
+        rep(l, N) {
+            ll r = l+w;
+            if(w>1 && C[r-1]==C[l]) chmin(dp2[l][r], dp2[l][r-1]);
+            for(ll m=l+1; m<r; ++m) chmin(dp2[l][r], dp2[l][m]+dp[m][r]);
+
+            chmin(dp[l][r], dp2[l][r]+w);
+            for(ll m=l+1; m<r; ++m) chmin(dp[l][r], dp[l][m]+dp[m][r]);
+        }
     }
+
+    ll ans = INF;
+    rep(l, N) chmin(ans, dp[l][l+N]);
+    Out(ans);
 
 }
 

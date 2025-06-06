@@ -1010,7 +1010,6 @@
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-!!! where i am now for rank S (last submission 2025/4/7)
 - !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
 
 !!! where i am now for rank A (last submission 2025/4/11)
@@ -1136,6 +1135,7 @@
 - <expr>,<term>,<factor>,<number>の構造を定義
 - <expr>,<term>,<factor>が循環参照する形になる
 ### 例題
+!!! where i am now for rank S (last submission 2025/4/28)
 - !要復習 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
