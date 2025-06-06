@@ -230,29 +230,35 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VLM(C, N);
-    rep(i, N) C.push_back(C[i]);
-    VL(X, N);
-
-    ll N2 = N+N;
-    vvl dp(N2+1, vl(N2+1, INF));
-    vvl dp2(N2+1, vl(N2+1, INF));
-    rep(i, N2) dp2[i][i+1] = X[C[i]];
-
-    for(ll w=1; w<=N; ++w) {
-        rep(l, N2+1-w) {
-            ll r = l+w;
-            if(w>1 && C[r-1]==C[l]) chmin(dp2[l][r], dp2[l][r-1]);
-            for(ll m=l+1; m<r; ++m) chmin(dp2[l][r], dp2[l][m]+dp[m][r]);
-
-            chmin(dp[l][r], dp2[l][r]+w);
-            for(ll m=l+1; m<r; ++m) chmin(dp[l][r], dp[l][m]+dp[m][r]);
+    auto update=[&](string &s, string t) {
+        if(t=="") return;
+        if(t.back()=='+' || t.back()=='*') return;
+        if(t[0]=='+' || t[0]=='*') return;
+        if(s=="") s = t;
+        else if(s.size()>t.size()) s = t;
+    };
+    vs expr(N+1), term(N+1), factor(N+1), num(N+1);
+    {
+        ll x = 1;
+        while(x<=N) {
+            num[x] = to_string(x);
+            x = x*10 + 1;
         }
     }
-
-    ll ans = INF;
-    rep(l, N) chmin(ans, dp[l][l+N]);
-    Out(ans);
+    rep1(i, N) {
+        rep(ri, 3) {
+            update(expr[i], term[i]);
+            rep1(j, i-1) update(expr[i], expr[j]+"+"+term[i-j]);
+            update(term[i], factor[i]);
+            rep1(j, i) {
+                if(i%j) continue;
+                update(term[i], term[j]+"*"+term[i/j]);
+            }
+            update(factor[i], num[i]);
+            update(factor[i], "("+expr[i]+")");
+        }
+    }
+    Out(expr[N]);
 
 }
 

@@ -1135,8 +1135,7 @@
 - <expr>,<term>,<factor>,<number>の構造を定義
 - <expr>,<term>,<factor>が循環参照する形になる
 ### 例題
-!!! where i am now for rank S (last submission 2025/4/28)
-- !要復習 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
+- !復習価値高 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
 - 自分的に苦手な考え方のDPをまとめておく
@@ -1177,6 +1176,7 @@
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 - !復習価値中 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
+!!! where i am now for rank S (last submission 2025/4/8)
 - !要復習 [G - Minimum Xor Pair Query](https://atcoder.jp/contests/abc308/tasks/abc308_g)
 
 ## Z-algorithm（Zアルゴリズム）
