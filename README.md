@@ -2194,6 +2194,7 @@
 - [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
 - [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
 - [E - Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
+- [F - Connecting Points](https://atcoder.jp/contests/abc409/tasks/abc409_f)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)

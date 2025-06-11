@@ -230,28 +230,25 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VLM(C, N);
-    rep(i, N) C.push_back(C[i]);
     VL(X, N);
-
-    ll N2 = N+N;
-    vvl dp(N2+1, vl(N2+1, INF));
-    vvl dp2(N2+1, vl(N2+1, INF));
-    rep(i, N2) dp2[i][i+1] = X[C[i]];
-
-    for(ll w=1; w<=N; ++w) {
-        rep(l, N2+1-w) {
-            ll r = l+w;
-            if(w>1 && C[r-1]==C[l]) chmin(dp2[l][r], dp2[l][r-1]);
-            for(ll m=l+1; m<r; ++m) chmin(dp2[l][r], dp2[l][m]+dp[m][r]);
-
-            chmin(dp[l][r], dp2[l][r]+w);
-            for(ll m=l+1; m<r; ++m) chmin(dp[l][r], dp[l][m]+dp[m][r]);
-        }
+    vvp from(N);
+    rep(i, N-1) {
+        LONGM(a, b); LONG(c);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
     }
 
-    ll ans = INF;
-    rep(l, N) chmin(ans, dp[l][l+N]);
+    ll ans = 0;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
+        ll ret = X[v];
+        for(auto [nv, w]: from[v]) if(nv!=p) {
+            ll tmp = f(f, nv, v);
+            ans += abs(tmp) * w;
+            ret += tmp;
+        }
+        return ret;
+    };
+    dfs(dfs, 0);
     Out(ans);
 
 }
