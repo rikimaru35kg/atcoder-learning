@@ -228,124 +228,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
+//! Binary Trie (template only)
+template<class T=long long, int k=62> class BinaryTrie {
+    struct Node {
+        int to[2];
+        int cnt, p;
+        ll dp;
+        Node(int p=-1): cnt(0), p(p), dp(INF) { to[0] = to[1] = -1; }
+    };
+public:
+    vector<Node> nodes;
+    BinaryTrie(): nodes(1,Node()) {}
+    void add(T x, int c) {
+        int v = 0;
+        nodes[v].cnt += c;
+        for(int i=k; i>=0; --i) {
+            int b = x>>i&1;
+            if(nodes[v].to[b]==-1) {
+                nodes[v].to[b] = nodes.size();
+                nodes.push_back(Node(v));
+            }
+            v = nodes[v].to[b];
+            nodes[v].cnt += c;
         }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
+
+        if (nodes[v].cnt == 1) nodes[v].dp = x;
+        else if(nodes[v].cnt==0) nodes[v].dp = INF;
+        else nodes[v].dp = 0;
+
+        while(nodes[v].p!=-1) {
+            v = nodes[v].p;
+            ll c1 = nodes[v].to[0], c2 = nodes[v].to[1];
+            if(nodes[v].cnt==1) {
+                if(c1!=-1 && nodes[c1].cnt) nodes[v].dp = nodes[c1].dp;
+                if(c2!=-1 && nodes[c2].cnt) nodes[v].dp = nodes[c2].dp;
+            } else if(nodes[v].cnt>=2) {
+                nodes[v].dp = INF;
+                rep(i, 2) {
+                    ll nv = nodes[v].to[i];
+                    if(nv==-1) continue;
+                    if(nodes[nv].cnt>=2) chmin(nodes[v].dp, nodes[nv].dp);
+                }
+                if(nodes[v].dp!=INF) continue;
+                // if (c1!=-1 && nodes[c1].cnt==1) {
+                    chmin(nodes[v].dp, nodes[c1].dp^nodes[c2].dp);
+                // }
+            } else {
+                nodes[v].dp = INF;
+            }
+        }
     }
 };
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-//! Calculate Manhattan distance
-long long manhattan_dist(pair<long long,long long> p1, pair<long long,long long> p2) {
-    long long ret = 0;
-    ret += abs(p1.first - p2.first);
-    ret += abs(p1.second - p2.second);
-    return ret;
-}
 
 void solve() {
-    LONG(N, Q);
-    vp ps;
-    priority_queue<t3,vt3,greater<t3>> que;
-
-    auto add=[&](ll x, ll y) {
-        ll ci = ps.size();
-        rep(i, ps.size()) {
-            que.emplace(manhattan_dist(ps[i], {x,y}), i, ci);
-        }
-        ps.emplace_back(x, y);
-    };
-    rep(i, N) {
-        LONG(x,y);
-        add(x, y);
-    }
-    WeightedUnionFind uf(N+Q);
-
+    LONG(Q);
+    BinaryTrie<ll,30> trie;
     rep(_, Q) {
         LONG(t);
         if(t==1) {
-            LONG(x,y);
-            add(x, y);
-        } else if(t==2) {
-            while(que.size()) {
-                auto [d,i,j] = que.top();
-                if(!uf.same(i, j)) break;
-                que.pop();
-            }
-            if(que.empty()) {
-                Out(-1); continue;
-            }
-            auto [dmn, _i, _j] = que.top();
-            Out(dmn);
-            while(que.size()) {
-                auto [d,i,j] = que.top();
-                if(dmn!=d) break;
-                que.pop();
-                uf.merge(i, j);
-            }
+            LONG(x);
+            trie.add(x, 1);
+        } else if (t==2) {
+            LONG(x);
+            trie.add(x, -1);
         } else {
-            LONGM(u,v);
-            if(uf.same(u,v)) puts("Yes");
-            else puts("No");
+            ll ans = trie.nodes[0].dp;
+            Out(ans);
         }
     }
-
 
 }
 
