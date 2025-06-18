@@ -228,82 +228,80 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Binary Trie (template only)
-template<class T=long long, int k=62> class BinaryTrie {
-    struct Node {
-        int to[2];
-        int cnt, p;
-        ll dp;
-        Node(int p=-1): cnt(0), p(p), dp(INF) { to[0] = to[1] = -1; }
-    };
-public:
-    vector<Node> nodes;
-    BinaryTrie(): nodes(1,Node()) {}
-    void add(T x, int c) {
-        int v = 0;
-        nodes[v].cnt += c;
-        for(int i=k; i>=0; --i) {
-            int b = x>>i&1;
-            if(nodes[v].to[b]==-1) {
-                nodes[v].to[b] = nodes.size();
-                nodes.push_back(Node(v));
-            }
-            v = nodes[v].to[b];
-            nodes[v].cnt += c;
-        }
-
-        if (nodes[v].cnt == 1) nodes[v].dp = x;
-        else if(nodes[v].cnt==0) nodes[v].dp = INF;
-        else nodes[v].dp = 0;
-
-        while(nodes[v].p!=-1) {
-            v = nodes[v].p;
-            ll c1 = nodes[v].to[0], c2 = nodes[v].to[1];
-            if(nodes[v].cnt==1) {
-                if(c1!=-1 && nodes[c1].cnt) nodes[v].dp = nodes[c1].dp;
-                if(c2!=-1 && nodes[c2].cnt) nodes[v].dp = nodes[c2].dp;
-            } else if(nodes[v].cnt>=2) {
-                nodes[v].dp = INF;
-                rep(i, 2) {
-                    ll nv = nodes[v].to[i];
-                    if(nv==-1) continue;
-                    if(nodes[nv].cnt>=2) chmin(nodes[v].dp, nodes[nv].dp);
-                }
-                if(nodes[v].dp!=INF) continue;
-                // if (c1!=-1 && nodes[c1].cnt==1) {
-                    chmin(nodes[v].dp, nodes[c1].dp^nodes[c2].dp);
-                // }
-            } else {
-                nodes[v].dp = INF;
-            }
-        }
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
     }
-};
-
+    return ret;
+}
+template <typename T>
+vector<vector<T>> transpose(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
+        ret[j][i] = a[i][j];
+    }
+    return ret;
+}
 
 void solve() {
-    LONG(Q);
-    BinaryTrie<ll,30> trie;
-    rep(_, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            trie.add(x, 1);
-        } else if (t==2) {
-            LONG(x);
-            trie.add(x, -1);
-        } else {
-            ll ans = trie.nodes[0].dp;
-            Out(ans);
-        }
+    LONG(H, W);
+    VS(S, H);
+    if(H>W) {
+        swap(H, W);
+        S = transpose(S);
     }
+
+    vvl Sc(H+1, vl(W+1));
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='#') Sc[i+1][j+1]++;
+        else Sc[i+1][j+1]--;
+    }
+    rep(i, H) rep(j, W+1) Sc[i+1][j] += Sc[i][j];
+    rep(i, H+1) rep(j, W) Sc[i][j+1] += Sc[i][j];
+
+    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
+        ll ret = 0;
+        ret += Sc[i2][j2];
+        ret -= Sc[i1][j2];
+        ret -= Sc[i2][j1];
+        ret += Sc[i1][j1];
+        return ret;
+    };
+
+    auto make_cum=[&](ll i1, ll i2) -> vl {
+        vl ret(W+1);
+        rep(j, W) {
+            ret[j+1] = sum(i1, i2, j, j+1);
+        }
+        rep(j, W) ret[j+1] += ret[j];
+        return ret;
+    };
+    ll mid = H*W;
+    vl cnt(2*mid+1);
+    ll ans = 0;
+    rep(i1, H) repk(i2, i1+1, H+1) {
+        vl sc = make_cum(i1, i2);
+        cnt[sc[0]+mid] = 1;
+        ll now = 0;
+        rep(j, W) {
+            now += cnt[sc[j+1]+mid];
+            cnt[sc[j+1]+mid]++;
+        }
+        ans += now;
+        rep(j, W+1) cnt[sc[j]+mid] = 0;
+    }
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

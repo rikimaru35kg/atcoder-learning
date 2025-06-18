@@ -228,71 +228,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> transpose(vector<string> &s) {
-    long long h = s.size(), w = s[0].size();
-    vector<string> ret(w, string(h, '.'));
-    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
-        ret[j][i] = s[i][j];
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
     }
+    if (issort) sort(ret.begin(), ret.end());
     return ret;
 }
-template <typename T>
-vector<vector<T>> transpose(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(w, vector<T>(h));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
-        ret[j][i] = a[i][j];
+
+vl listup_primes(ll n) {
+    vl ret;
+    ll x = n;
+    for(ll p=2; p*p<=n; ++p) {
+        if(x%p) continue;
+        ret.push_back(p);
+        while(x%p==0) {
+            x /= p;
+        }
     }
+    if(x>1) ret.push_back(x);
     return ret;
 }
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(H, W);
-    VS(S, H);
-    if(H>W) {
-        swap(H, W);
-        S = transpose(S);
-    }
+    LONG(P);
+    ll N = P-1;
+    auto ds = listup_divisor(N, true);
+    auto ps = listup_primes(N);
 
-    vvl Sc(H+1, vl(W+1));
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='#') Sc[i+1][j+1]++;
-        else Sc[i+1][j+1]--;
-    }
-    rep(i, H) rep(j, W+1) Sc[i+1][j] += Sc[i][j];
-    rep(i, H+1) rep(j, W) Sc[i][j+1] += Sc[i][j];
-
-    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
-        ll ret = 0;
-        ret += Sc[i2][j2];
-        ret -= Sc[i1][j2];
-        ret -= Sc[i2][j1];
-        ret += Sc[i1][j1];
-        return ret;
-    };
-
-    auto make_cum=[&](ll i1, ll i2) -> vl {
-        vl ret(W+1);
-        rep(j, W) {
-            ret[j+1] = sum(i1, i2, j, j+1);
+    umap<ll,mint> f;
+    for(auto d: ds) f[d] = N/d;
+    for(auto p: ps) {
+        for(auto d: ds) {
+            if(d%p) continue;
+            f[d/p] -= f[d];
         }
-        rep(j, W) ret[j+1] += ret[j];
-        return ret;
-    };
-    ll mid = H*W;
-    vl cnt(2*mid+1);
-    ll ans = 0;
-    rep(i1, H) repk(i2, i1+1, H+1) {
-        vl sc = make_cum(i1, i2);
-        cnt[sc[0]+mid] = 1;
-        ll now = 0;
-        rep(j, W) {
-            now += cnt[sc[j+1]+mid];
-            cnt[sc[j+1]+mid]++;
-        }
-        ans += now;
-        rep(j, W+1) cnt[sc[j]+mid] = 0;
     }
+    mint ans = 1;
+    for(auto d: ds) ans += f[d] * (N/d);
     Out(ans);
 
 }
@@ -300,8 +291,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
