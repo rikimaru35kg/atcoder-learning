@@ -1496,7 +1496,6 @@
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !復習価値中 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
 - !復習価値低 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
-!!! where i am now for rank S (last submission 2025/4/9)
 - !要復習 [G - Yet Another RGB Sequence](https://atcoder.jp/contests/abc266/tasks/abc266_g)
 
 ## 分布に対するDP
@@ -1617,6 +1616,7 @@
 - !復習価値中 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
+!!! where i am now for rank S (last submission 2025/4/9)
 - !要復習 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
 
 # 行列

@@ -288,21 +288,26 @@ public:
 };
 
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    Combination comb(K, M998);
+    LONG(R,G,B,K);
+    R -= K, G -= K;
+    ll N = R+G+B+K;
+    Combination comb(N, M998);
 
-    vm dp(K+1);
     mint ans;
-    rep(i, N) {
-        dp[0] += 1;
-        vm pdp(K+1); swap(dp, pdp);
-        rep(j, K+1) {
-            rep(c, K-j+1) {
-                dp[j+c] += pdp[j] * mint(A[i]).pow(c) * comb(K-j, c);
-            }
-        }
-        ans += dp[K];
+    ll M = min(R,G);
+    rep(i, M+1) {
+        mint now;
+        ll r = R-i, g = G-i, b = B, k = K;
+        de5(r,g,b,k,i)
+        now = comb.get_fact(r+g+b+k+i);
+        now /= comb.get_fact(r);
+        now /= comb.get_fact(g);
+        now /= comb.get_fact(b);
+        now /= comb.get_fact(k);
+        now /= comb.get_fact(i);
+
+        if(i&1) ans -= now;
+        else ans += now;
     }
     Out(ans);
 
