@@ -1616,8 +1616,7 @@
 - !復習価値中 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
-!!! where i am now for rank S (last submission 2025/4/9)
-- !要復習 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
+- !復習価値高 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
 
 # 行列
 
@@ -1729,8 +1728,8 @@
 ### 例題
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
+- !復習価値中 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
 - !要復習 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
-- !要復習 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
@@ -1749,6 +1748,7 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 - !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
+!!! where i am now for rank S (last submission 2025/4/7)
 - !要復習 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
 
 ## K番目の何かを答える
