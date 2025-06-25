@@ -228,104 +228,89 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+        return t;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
     }
 };
 
+
 void solve() {
-    LONG(N, Q);
-    ll ans = 0;
-
+    LONG(N);
     vvl from(N);
-    vl p(N, -1);
-    WeightedUnionFind uf(N);
-
-    auto upk=[&](ll v, ll k) -> ll {
-        rep(i, k) {
-            if(p[v]==-1) return -1;
-            v = p[v];
-        }
-        return v;
-    };
-    auto dfs=[&](auto f, ll v, ll pa=-1) -> void {
-        p[v] = pa;
-        de2(v, pa)
-        for(auto nv: from[v]) if(nv!=pa) {
-            f(f, nv, v);
-        }
-    };
-
-    rep(_, Q) {
-        LONG(a,b,c);
-        ll t = ((a*(1+ans)) % M998) % 2;
-        ll u = ((b*(1+ans)) % M998) % N;
-        ll v = ((c*(1+ans)) % M998) % N;
-        de3(t+1,u+1,v+1)
-        de(from)
-        de(p)
-
-        if(t==0) {
-            ll su = uf.size(u), sv = uf.size(v);
-            if(su>sv) swap(u, v);
-            dfs(dfs, u, v);
-
-            from[u].push_back(v);
-            from[v].push_back(u);
-            uf.merge(u, v);
-        } else {
-            if(!uf.same(u, v)) {
-                ans = 0;
-            } else if(upk(u, 2)==v) {
-                ans = p[u]+1;
-            } else if(upk(v, 2)==u) {
-                ans = p[v]+1;
-            } else if(p[u]==p[v]) {
-                ans = p[u]+1;
-            } else {
-                ans = 0;
-            }
-
-            Out(ans);
-        }
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+    vl dp(N);
+    vvl dc(N);
+    vl ans(N);
+    {
+        BIT<ll> tree(N);
+        auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+            tree.add(v, 1);
+            dp[v] -= tree.sum(0, v);
+            for(auto nv: from[v]) if(nv!=p) {
+                dc[v].push_back(0);
+                dc[v].back() -= tree.sum(0, v);
+                f(f, nv, v);
+                dc[v].back() += tree.sum(0, v);
+            }
+            dp[v] += tree.sum(0, v);
+        };
+        dfs(dfs, 0);
+    }
+    rep(i, N) ans[0] += dp[i];
+    de(ans[0])
+
+    auto dfs=[&](auto f, ll v, ll now, ll p=-1) -> void {
+        ans[v] = now;
+        ll i = 0;
+        for(auto nv: from[v]) if(nv!=p) {
+            ll nnow = now;
+            nnow += nv - dp[nv];
+            nnow -= dc[v][i];
+            f(f, nv, nnow, v);
+            ++i;
+        }
+    };
+    dfs(dfs, 0, ans[0]);
+    Out(ans);
 
 }
 
