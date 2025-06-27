@@ -228,88 +228,118 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+class MaxFlow {
+    int n;
+    vector<int> dist, iter;
+    long long inf = numeric_limits<long long>::max();
+    struct Edge {
+        int to; long long cap; int rev;
+        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
+    };
+    void bfs(int sv) {
+        dist.assign(n, -1);
+        queue<int> que;
+        dist[sv] = 0; que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,cap,rev]: from[v]) {
+                if(cap==0 || dist[nv]!=-1) continue;
+                dist[nv] = dist[v]+1, que.push(nv); 
+            }
         }
-        return t;
     }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
+    long long dfs(int v, int t, long long f) {
+        if(v==t) return f;
+        for(int &i=iter[v]; i<int(from[v].size()); i++) {
+            auto [nv,cap,rev] = from[v][i];
+            if(dist[nv]<=dist[v] || cap==0) continue;
+            long long res = dfs(nv, t, min(f,cap));
+            if(res) {
+                from[v][i].cap -= res;
+                from[nv][rev].cap += res;
+                return res;
+            }
+        }
+        return 0;
+    }
+public:
+    vector<vector<Edge>> from;
+    MaxFlow(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c) {
+        from[a].emplace_back(Edge(b,c,from[b].size()));
+        from[b].emplace_back(Edge(a,0,from[a].size()-1));
+    }
+    long long flow(int s, int t) {
+        long long ret = 0;
+        while(true) {
+            bfs(s);
+            if(dist[t]==-1) return ret;
+            iter.assign(n, 0);
+            long long now=0;
+            while((now=dfs(s,t,inf))>0) {
+                ret += now;
+            }
+        }
+        return 0;
     }
 };
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 500;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<ll,ll> p1, pair<ll,ll> p2) {
+    double ret = 0;
+    ret = hypot(p1.first-p2.first, p1.second-p2.second);
+    // ret += (p1.first - p2.first) * (p1.first - p2.first);
+    // ret += (p1.second - p2.second) * (p1.second - p2.second);
+    // ret = sqrt(ret);
+    return ret;
+}
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vl dp(N);
-    vvl dc(N);
-    vl ans(N);
-    {
-        BIT<ll> tree(N);
-        auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-            tree.add(v, 1);
-            dp[v] -= tree.sum(0, v);
-            for(auto nv: from[v]) if(nv!=p) {
-                dc[v].push_back(0);
-                dc[v].back() -= tree.sum(0, v);
-                f(f, nv, v);
-                dc[v].back() += tree.sum(0, v);
-            }
-            dp[v] += tree.sum(0, v);
-        };
-        dfs(dfs, 0);
-    }
-    rep(i, N) ans[0] += dp[i];
-    de(ans[0])
+    ll N; cin>>N;
+    VP(S, N);
+    VP(G, N);
 
-    auto dfs=[&](auto f, ll v, ll now, ll p=-1) -> void {
-        ans[v] = now;
-        ll i = 0;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll nnow = now;
-            nnow += nv - dp[nv];
-            nnow -= dc[v][i];
-            f(f, nv, nnow, v);
-            ++i;
+    auto f=[&](db x) -> bool {
+        MaxFlow flow(2*N+2);
+        ll st = 2*N, gl = st+1;
+
+        rep(i, N) rep(j, N) {
+            db d = euclid_distd(S[i], G[j]);
+            if (d>x) continue;
+
+            flow.add_edge(i, j+N, 1);
         }
+        rep(i, N) flow.add_edge(st, i, 1);
+        rep(j, N) flow.add_edge(j+N, gl, 1);
+
+        ll res = flow.flow(st, gl);
+        return res == N;
     };
-    dfs(dfs, 0, ans[0]);
+
+    db ans = binary_search(2*INF, 0, f);
     Out(ans);
 
 }
@@ -321,3 +351,4 @@ int main () {
 }
 
 // ### test.cpp ###
+
