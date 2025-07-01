@@ -228,80 +228,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-};
-
-
 void solve() {
-    LONG(L, R);
-    ll M = R-L+1;
-    vb prime(M, true);
+    LONG(N);
+    VL(A, N);
+    set<ll> st;
+    st.insert(-1), st.insert(N);
 
-    if (L==1) prime[0] = false;
+    vp P;
+    rep(i, N) P.emplace_back(A[i], i);
+    sort(allr(P));
 
-    Sieve sieve(1e7);
-
-    for(ll p=2; p*p<=R; ++p) {
-        if(!sieve.is_prime(p)) continue;
-        for(ll k=Divceil(L,p); k*p<=R; ++k) {
-            ll x = k*p;
-            if(x==p) continue;
-            prime[x-L] = false;
-        }
+    vl imos(N+3);
+    for(auto [a, i]: P) {
+        auto it = st.insert(i).first;
+        ll l = i-*prev(it), r = *next(it)-i;
+        if(l>r) swap(l, r);
+        de2(l,r)
+        imos[1] += a;
+        imos[l+1] -= a;
+        imos[r+1] -= a;
+        imos[l+r+1] += a;
     }
-
-    ll ans = 0;
-    rep(i, M) if(prime[i]) ++ans;
-
-    bool useL = false;
-
-    for(sll p=2; p*p<=R; ++p) {
-        if(!sieve.is_prime(p)) continue;
-        sll x = p*p;
-        while(x<=R) {
-            if (x>=L) {
-                if(x==L) useL = true;
-                ++ans;
-            }
-            x *= p;
-        }
+    rep(i, N+2) imos[i+1] += imos[i];
+    rep(i, N+2) imos[i+1] += imos[i];
+    rep1(k, N) {
+        Out(imos[k]);
     }
-    if(!useL && !prime[0]) ++ans;
-
-    Out(ans);
 
 }
 

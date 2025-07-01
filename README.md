@@ -229,7 +229,7 @@
 - 基本 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 - 基本 海洋生息区域重なり [E - 魚の生息範囲 (Fish)](https://atcoder.jp/contests/joi2013yo/tasks/joi2013yo_e)
 - 基本 分断領域の個数 [E - ペンキの色](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_e)
-- !要復習 [F - Sums of Sliding Window Maximum](https://atcoder.jp/contests/abc407/tasks/abc407_f)
+- !復習価値中 [F - Sums of Sliding Window Maximum](https://atcoder.jp/contests/abc407/tasks/abc407_f)
 
 ## 連続部分列問題
 - 左右を固定してO(N^2)を考えた後、右端を固定して高速に求められないか検討すると良い
@@ -485,6 +485,7 @@
 
 ## 木の重心分解
 ### 例題
+!!! where i am now for rank S (last submission 2025/5/23)
 - !要復習 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
@@ -2003,7 +2004,6 @@
 ### 
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
-!!! where i am now for rank S (last submission 2025/4/10)
 - !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## オイラー路

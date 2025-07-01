@@ -228,53 +228,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    vvb init(N, vb(N));
-    rep(i, M) {
-        LONGM(a,b);
-        init[a][b] = init[b][a] = true;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
+        }
     }
-    ll ans = INF;
-
-    vvb table(N, vb(N));
-    vl deg(N);
-    auto count=[&]() -> ll {
-        ll ret = 0;
-        rep(i, N) repk(j, i+1, N) {
-            if(table[i][j]!=init[i][j]) ++ret;
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
         }
         return ret;
-    };
+    }
+    int mu(long long k) { return mobius[k]; }
+};
 
-    auto dfs=[&](auto f, ll i, ll j) -> void {
-        if(i>=j) {
-            f(f, i, j+1);
-            return;
+
+void solve() {
+    LONG(L, R);
+    ll M = R-L+1;
+    vb prime(M, true);
+
+    if (L==1) prime[0] = false;
+
+    Sieve sieve(1e7);
+
+    for(ll p=2; p*p<=R; ++p) {
+        if(!sieve.is_prime(p)) continue;
+        for(ll k=Divceil(L,p); k*p<=R; ++k) {
+            ll x = k*p;
+            if(x==p) continue;
+            prime[x-L] = false;
         }
-        if (j==N) {
-            if (deg[i]!=2) return;
-            if (i<N-1) {
-                f(f, i+1, 0);
-            } else {
-                chmin(ans, count());
+    }
+
+    ll ans = 0;
+    rep(i, M) if(prime[i]) ++ans;
+
+    bool useL = false;
+
+    for(sll p=2; p*p<=R; ++p) {
+        if(!sieve.is_prime(p)) continue;
+        sll x = p*p;
+        while(x<=R) {
+            if (x>=L) {
+                if(x==L) useL = true;
+                ++ans;
             }
-            return;
+            x *= p;
         }
+    }
+    if(!useL && !prime[0]) ++ans;
 
-        f(f, i, j+1);
-
-        if(deg[i] >= 2) return;
-        if(deg[j] >= 2) return;
-
-        table[i][j] = table[j][i] = true;
-        deg[i]++, deg[j]++;
-        f(f, i, j+1);
-        table[i][j] = table[j][i] = false;
-        deg[i]--, deg[j]--;
-    };
-
-    dfs(dfs, 0, 0);
     Out(ans);
 
 }
