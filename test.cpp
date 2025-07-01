@@ -228,118 +228,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class MaxFlow {
-    int n;
-    vector<int> dist, iter;
-    long long inf = numeric_limits<long long>::max();
-    struct Edge {
-        int to; long long cap; int rev;
-        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
-    };
-    void bfs(int sv) {
-        dist.assign(n, -1);
-        queue<int> que;
-        dist[sv] = 0; que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,cap,rev]: from[v]) {
-                if(cap==0 || dist[nv]!=-1) continue;
-                dist[nv] = dist[v]+1, que.push(nv); 
-            }
-        }
-    }
-    long long dfs(int v, int t, long long f) {
-        if(v==t) return f;
-        for(int &i=iter[v]; i<int(from[v].size()); i++) {
-            auto [nv,cap,rev] = from[v][i];
-            if(dist[nv]<=dist[v] || cap==0) continue;
-            long long res = dfs(nv, t, min(f,cap));
-            if(res) {
-                from[v][i].cap -= res;
-                from[nv][rev].cap += res;
-                return res;
-            }
-        }
-        return 0;
-    }
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
 public:
-    vector<vector<Edge>> from;
-    MaxFlow(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c) {
-        from[a].emplace_back(Edge(b,c,from[b].size()));
-        from[b].emplace_back(Edge(a,0,from[a].size()-1));
-    }
-    long long flow(int s, int t) {
-        long long ret = 0;
-        while(true) {
-            bfs(s);
-            if(dist[t]==-1) return ret;
-            iter.assign(n, 0);
-            long long now=0;
-            while((now=dfs(s,t,inf))>0) {
-                ret += now;
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
             }
         }
-        return 0;
     }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+    int mu(long long k) { return mobius[k]; }
 };
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 500;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<ll,ll> p1, pair<ll,ll> p2) {
-    double ret = 0;
-    ret = hypot(p1.first-p2.first, p1.second-p2.second);
-    // ret += (p1.first - p2.first) * (p1.first - p2.first);
-    // ret += (p1.second - p2.second) * (p1.second - p2.second);
-    // ret = sqrt(ret);
-    return ret;
-}
 
 void solve() {
-    ll N; cin>>N;
-    VP(S, N);
-    VP(G, N);
+    LONG(L, R);
+    ll M = R-L+1;
+    vb prime(M, true);
 
-    auto f=[&](db x) -> bool {
-        MaxFlow flow(2*N+2);
-        ll st = 2*N, gl = st+1;
+    if (L==1) prime[0] = false;
 
-        rep(i, N) rep(j, N) {
-            db d = euclid_distd(S[i], G[j]);
-            if (d>x) continue;
+    Sieve sieve(1e7);
 
-            flow.add_edge(i, j+N, 1);
+    for(ll p=2; p*p<=R; ++p) {
+        if(!sieve.is_prime(p)) continue;
+        for(ll k=Divceil(L,p); k*p<=R; ++k) {
+            ll x = k*p;
+            if(x==p) continue;
+            prime[x-L] = false;
         }
-        rep(i, N) flow.add_edge(st, i, 1);
-        rep(j, N) flow.add_edge(j+N, gl, 1);
+    }
 
-        ll res = flow.flow(st, gl);
-        return res == N;
-    };
+    ll ans = 0;
+    rep(i, M) if(prime[i]) ++ans;
 
-    db ans = binary_search(2*INF, 0, f);
+    bool useL = false;
+
+    for(sll p=2; p*p<=R; ++p) {
+        if(!sieve.is_prime(p)) continue;
+        sll x = p*p;
+        while(x<=R) {
+            if (x>=L) {
+                if(x==L) useL = true;
+                ++ans;
+            }
+            x *= p;
+        }
+    }
+    if(!useL && !prime[0]) ++ans;
+
     Out(ans);
 
 }
@@ -351,4 +312,3 @@ int main () {
 }
 
 // ### test.cpp ###
-

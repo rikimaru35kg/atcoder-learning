@@ -2279,3 +2279,5 @@
 - [D - Domino Covering XOR](https://atcoder.jp/contests/abc407/tasks/abc407_d)
 - [D - Conflict 2](https://atcoder.jp/contests/abc411/tasks/abc411_d)
 - [E - E [max]](https://atcoder.jp/contests/abc411/tasks/abc411_e)
+- [C - Giant Domino](https://atcoder.jp/contests/abc412/tasks/abc412_c)
+- [E - LCM Sequence](https://atcoder.jp/contests/abc412/tasks/abc412_e)
