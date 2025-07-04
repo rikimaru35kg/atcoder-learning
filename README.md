@@ -496,7 +496,6 @@
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
 - 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
-!!! where i am now for rank S (last submission 2025/5/1)
 - !要復習 [E - Replace](https://atcoder.jp/contests/abc399/tasks/abc399_e)
 
 ## パスグラフ
@@ -766,6 +765,7 @@
 - !復習価値中 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
+!!! where i am now for rank S (last submission 2025/6/4)
 - !要復習 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 

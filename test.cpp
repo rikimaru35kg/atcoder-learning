@@ -228,32 +228,100 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct SCC {
+    SCC (int n): n(n), from(n), ifrom(n) {}
+    void add_edge (int a, int b) {
+        from[a].push_back(b); ifrom[b].push_back(a);
+    }
+    vector<vector<int>> scc () {
+        vector<vector<int>> groups;
+        postorder = vector<int>();
+        visited.assign(n, false);
+        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
+        visited.assign(n, false);
+        reverse(all(postorder));
+        for(auto v: postorder) if(!visited[v]) {
+            vector<int> group;
+            dfs2(v, group);
+            groups.push_back(group);
+        }
+        return groups;
+    }
+private:
+    int n;
+    vector<vector<int>> from, ifrom;
+    vector<int> postorder;
+    vector<bool> visited;
+    void dfs1 (int v) {
+        visited[v] = true;
+        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
+        postorder.push_back(v);
+    }
+    void dfs2 (int v, vector<int> &group) {
+        visited[v] = true;
+        group.push_back(v);
+        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
+    }
+};
+
 void solve() {
     LONG(N);
-    VL(A, N);
+    STRING(S, T);
+    if(S==T) Pm0
+
+    ll M = 26;
+    set<Pr> arrow;
     set<ll> st;
-    st.insert(-1), st.insert(N);
-
-    vp P;
-    rep(i, N) P.emplace_back(A[i], i);
-    sort(allr(P));
-
-    vl imos(N+3);
-    for(auto [a, i]: P) {
-        auto it = st.insert(i).first;
-        ll l = i-*prev(it), r = *next(it)-i;
-        if(l>r) swap(l, r);
-        de2(l,r)
-        imos[1] += a;
-        imos[l+1] -= a;
-        imos[r+1] -= a;
-        imos[l+r+1] += a;
+    rep(i, N) {
+        arrow.emplace(S[i]-'a', T[i]-'a');
+        st.insert(T[i]);
     }
-    rep(i, N+2) imos[i+1] += imos[i];
-    rep(i, N+2) imos[i+1] += imos[i];
-    rep1(k, N) {
-        Out(imos[k]);
+    // if(SIZE(st)==26) Pm1
+
+    vp edge;
+    vl ain(M), aout(M);
+    {
+        for(auto [a,b]: arrow) {
+            ain[b]++;
+            aout[a]++;
+            if(a!=b) edge.emplace_back(a,b);
+        }
+        rep(i, M) {
+            if(aout[i]>=2) Pm1
+        }
     }
+    bool allcycle = true;
+    rep(i, M) {
+        allcycle &= (ain[i]==1 && aout[i]==1);
+    }
+    if(allcycle) Pm1
+
+    SCC scc(M);
+    for(auto [a,b]: edge) {
+        scc.add_edge(a,b);
+    }
+    ll ans = edge.size();
+    // de(edge)
+    // de(ans)
+    // de(indeg)
+    vl indeg(M), outdeg(M);
+    for(auto [a,b]: edge) {
+        indeg[b]++;
+        outdeg[a]++;
+    }
+    auto grs = scc.scc();
+    for(auto gr: grs) {
+        if(SIZE(gr)==1) continue;
+        bool cycle = true;
+        for(auto v: gr) {
+            if(indeg[v]!=1) cycle = false;
+        }
+        if(cycle) {
+            // de(gr)
+            ++ans;
+        }
+    }
+    Out(ans);
 
 }
 
