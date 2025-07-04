@@ -485,8 +485,7 @@
 
 ## 木の重心分解
 ### 例題
-!!! where i am now for rank S (last submission 2025/5/23)
-- !要復習 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
+- !復習価値中 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
@@ -497,6 +496,7 @@
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
 - 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
+!!! where i am now for rank S (last submission 2025/5/1)
 - !要復習 [E - Replace](https://atcoder.jp/contests/abc399/tasks/abc399_e)
 
 ## パスグラフ
