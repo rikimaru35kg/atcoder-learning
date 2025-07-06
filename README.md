@@ -2281,3 +2281,6 @@
 - [E - E [max]](https://atcoder.jp/contests/abc411/tasks/abc411_e)
 - [C - Giant Domino](https://atcoder.jp/contests/abc412/tasks/abc412_c)
 - [E - LCM Sequence](https://atcoder.jp/contests/abc412/tasks/abc412_e)
+- [D - Make Geometric Sequence](https://atcoder.jp/contests/abc413/tasks/abc413_d)
+- [E - Reverse 2^i](https://atcoder.jp/contests/abc413/tasks/abc413_e)
+- [F - No Passage](https://atcoder.jp/contests/abc413/tasks/abc413_f)
