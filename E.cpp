@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### E.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -242,51 +242,19 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
 void solve() {
-    LONG(N, C); --C;
-    VL(A, N);
-    vp P;
-    A[C]++;
-    rep(i, N) P.emplace_back(A[i], i);
-    sort(all(P));
+    LONG(N);
+    mint ans = (mint)N*(N+1)/2;
 
-    vl Sc(N+1);
-    rep(i, N) Sc[i+1] = Sc[i] + P[i].first;
-
-    mint sum = 0;
-    vm dp(N);
-    ll s = Sc[N] - 1;
-
-    repr(i, N) {
-        dp[i] = (sum+s) / (s-Sc[i]);
-        sum += P[i].first*dp[i];
+    ll b = 1;
+    while(b<N) {
+        ll x = N/b;
+        ll nb = N/x+1;
+        ans -= (nb-b)*x;
+        b = nb;
     }
+    Out(ans);
 
-    rep(i, N) {
-        if(P[i].second !=C) continue;
-        Out(dp[i]);
-    }
 
 }
 
@@ -296,4 +264,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### E.cpp ###
