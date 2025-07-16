@@ -1010,7 +1010,6 @@
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-!!! where i am now for rank S (last submission 2025/6/6)
 - !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
 
 !!! where i am now for rank A (last submission 2025/4/11)
@@ -1177,6 +1176,7 @@
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 - !復習価値中 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
+!!! where i am now for rank S (last submission 2025/6/13)
 - !要復習 [G - Minimum Xor Pair Query](https://atcoder.jp/contests/abc308/tasks/abc308_g)
 
 ## Z-algorithm（Zアルゴリズム）
