@@ -1,4 +1,4 @@
-// ### E.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,33 +228,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    umap<ll,S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
+public:
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+    }
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
+        }
+        return op(lft, rgt);
+    }
+    S all_prod() { return a[1]; }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
+    }
+};
+
+struct S {
+    ll l, r, n;
+    S(ll l=0, ll r=0, ll n=0): l(l),r(r),n(n) {}
+};
+S op(S a, S b) {
+    if(a.n&1) swap(b.l, b.r);
+    return S(a.l+b.l, a.r+b.r, a.n+b.n);
+}
+S e() { return S(); }
+
 
 void solve() {
-    LONG(N);
-    mint ans = (mint)N*(N+1)/2;
-
-    ll b = 1;
-    while(b<N) {
-        ll x = N/b;
-        ll nb = N/x+1;
-        ans -= (nb-b)*x;
-        b = nb;
+    LONG(Q);
+    ll mod = 1e9;
+    SegTree<S,op,e> seg(mod+1);
+    ll z = 0;
+    rep(i, Q) {
+        LONG(y);
+        ll x = (y+z)%mod + 1;
+        seg.set(x, S(x,0,1));
+        ll ans = seg.all_prod().l;
+        Out(ans);
+        z = ans;
     }
-    Out(ans);
-
 
 }
 
@@ -264,4 +306,4 @@ int main () {
     solve();
 }
 
-// ### E.cpp ###
+// ### test.cpp ###
