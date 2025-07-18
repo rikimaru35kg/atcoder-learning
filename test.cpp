@@ -228,37 +228,62 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VLM(C, N);
-    VL(X, N);
-    rep(i, N) C.push_back(C[i]);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    ll N2 = 2*N;
-    vvl dp(N2+1, vl(N2+1, INF));
-    vvl dp2(N2+1, vl(N2+1, INF));
-
-    rep(i, N2) dp2[i][i+1] = X[C[i]];
-
-    for(ll w=1; w<=N; ++w) {
-        rep(l, N2+1-w) {
-            ll r = l+w;
-
-            for(ll m=l+1; m<r; ++m) {
-                chmin(dp2[l][r], dp2[l][m]+dp[m][r]);
-            }
-            if(r<N2 && C[r]==C[l]) chmin(dp2[l][r+1], dp2[l][r]);
-
-            chmin(dp[l][r], dp2[l][r]+w);
-            for(ll m=l+1; m<r; ++m) {
-                chmin(dp[l][r], dp[l][m]+dp[m][r]);
-            }
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
         }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
 
+void solve() {
+    LONG(N); --N;
+    auto ds = listup_divisor(N, true);
+    vl ps;
+    {
+        ll x = N;
+        for(ll p=2; p*p<=N; ++p) {
+            if(x%p!=0) continue;
+            ps.push_back(p);
+            while(x%p==0) x /= p;
+        }
+        if(x!=1) ps.push_back(x);
     }
 
-    ll ans = INF;
-    rep(l, N) chmin(ans, dp[l][l+N]);
+    ll m = ds.size();
+    vm cnt(m);
+    rep(i, m) cnt[i] = N/ds[i];
+
+    repr(i, m) {
+        repk(j, i+1, m) {
+            if(ds[j]%ds[i]==0) {
+                cnt[i] -= cnt[j];
+            }
+        }
+    }
+
+    mint ans = 1;
+    rep(i, m) {
+        ans += cnt[i] * N/ds[i];
+    }
     Out(ans);
 
 }
