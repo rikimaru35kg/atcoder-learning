@@ -835,6 +835,7 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
+- !要復習 [G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
 - 単純にDPで足し合わせていけば経路数が求める
