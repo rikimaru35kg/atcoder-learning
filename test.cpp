@@ -230,53 +230,59 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N, M);
-    N += 1;
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
+    vector<uset<ll>> from(N);
+    vp edge;
     rep(i, M) {
-        LONG(a,b,c); --a, --b;
-        chmin(dist[a][b], c);
-        chmin(dist[b][a], c);
+        LONGM(a, b);
+        from[a].insert(b);
+        from[b].insert(a);
+        edge.emplace_back(a, b);
     }
-    LONG(K, T);
-    rep(i, K) {
-        LONGM(d);
-        chmin(dist[d][N-1], T);
-        chmin(dist[N-1][d], 0LL);
-    }
-
-    auto upd=[&](ll x) {
-        rep(i, N) rep(j, N) chmin(dist[i][j], dist[i][x]+dist[x][j]);
-    };
-
-    rep(k, N) upd(k);
+    vl k2v(N);
+    iota(all(k2v), 0);
+    vvl v2k(N);
+    rep(i, N) v2k[i].push_back(i);
 
     LONG(Q);
-    rep(_, Q) {
-        LONG(q);
-        if(q==1) {
-            LONGM(x,y); LONG(t);
-            chmin(dist[x][y], t);
-            chmin(dist[y][x], t);
-            upd(x);
-            upd(y);
-        } else if (q==2) {
-            LONGM(x);
-            chmin(dist[x][N-1], T);
-            chmin(dist[N-1][x], 0LL);
-            upd(x);
-            upd(N-1);
-        } else {
-            ll ans = 0;
-            rep(i, N-1) rep(j, N-1) {
-                if(dist[i][j]==INF) continue;
-                ans += dist[i][j];
-            }
-            Out(ans);
+    VLM(X, Q);
+
+    rep(i, Q) {
+        auto [a, b] = edge[X[i]];
+        a = k2v[a], b = k2v[b];
+
+        if (a==b) {
+            Out(M);
+            continue;
         }
 
-    }
+        ll sa = SIZE(v2k[a]) + SIZE(from[a]);
+        ll sb = SIZE(v2k[b]) + SIZE(from[b]);
+        if(sa>sb) swap(a, b), swap(sa, sb);
 
+        for(auto k: v2k[a]) {
+            v2k[b].push_back(k);
+            k2v[k] = b;
+        }
+        v2k[a] = vl();
+
+        from[a].erase(b); from[b].erase(a);
+        --M;
+
+        for(auto it=from[a].begin(); it!=from[a].end();) {
+            ll v = *it;
+            from[v].erase(a);
+            if(from[b].count(v)) {
+                --M;
+            } else {
+                from[b].insert(v);
+                from[v].insert(b);
+            }
+            it = from[a].erase(it);
+        }
+
+        Out(M);
+
+    }
 
 }
 

@@ -1732,8 +1732,7 @@
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
 - !復習価値中 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
-!!! where i am now for rank S (last submission 2025/6/24)
-- !要復習 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
+- !復習価値中 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
@@ -1752,6 +1751,7 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 - !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
+!!! where i am now for rank S (last submission 2025/6/25)
 - !要復習 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
 
 ## K番目の何かを答える
