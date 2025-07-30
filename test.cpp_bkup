@@ -228,54 +228,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
     LONG(N, M);
-    N += 1;
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
-    rep(i, M) {
-        LONG(a,b,c); --a, --b;
-        chmin(dist[a][b], c);
-        chmin(dist[b][a], c);
-    }
-    LONG(K, T);
-    rep(i, K) {
-        LONGM(d);
-        chmin(dist[d][N-1], T);
-        chmin(dist[N-1][d], 0LL);
-    }
+    VL(A, N);
+    VL(B, N);
+    rep(i, N) A[i] %= M;
+    rep(i, N) B[i] %= M;
+    sort(allr(A)); sort(allr(B));
 
-    auto upd=[&](ll x) {
-        rep(i, N) rep(j, N) chmin(dist[i][j], dist[i][x]+dist[x][j]);
+    auto f=[&](ll k) -> bool {
+        rep(i, k) {
+            if(A[i]+B[k-1-i]<M) return false;
+        }
+        return true;
     };
 
-    rep(k, N) upd(k);
+    ll mx = binary_search(0, N+1, f);
 
-    LONG(Q);
-    rep(_, Q) {
-        LONG(q);
-        if(q==1) {
-            LONGM(x,y); LONG(t);
-            chmin(dist[x][y], t);
-            chmin(dist[y][x], t);
-            upd(x);
-            upd(y);
-        } else if (q==2) {
-            LONGM(x);
-            chmin(dist[x][N-1], T);
-            chmin(dist[N-1][x], 0LL);
-            upd(x);
-            upd(N-1);
-        } else {
-            ll ans = 0;
-            rep(i, N-1) rep(j, N-1) {
-                if(dist[i][j]==INF) continue;
-                ans += dist[i][j];
-            }
-            Out(ans);
-        }
+    ll ans = 0;
+    ans += accumulate(all(A), 0LL);
+    ans += accumulate(all(B), 0LL);
+    ans -= mx * M;
+    Out(ans);
 
-    }
 
 
 }
@@ -283,7 +279,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
