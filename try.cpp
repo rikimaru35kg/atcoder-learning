@@ -284,6 +284,17 @@ public:
     }
 };
 
+//! Calculate Euclid distance
+//! input type = double
+//! output type = double
+double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
+    double ret = 0;
+    ret += (p1.first - p2.first) * (p1.first - p2.first);
+    ret += (p1.second - p2.second) * (p1.second - p2.second);
+    ret = sqrt(ret);
+    return ret;
+}
+
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
@@ -296,7 +307,7 @@ long long binary_search (long long ok, long long ng, auto f) {
 //! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
 //! TO CORRECTLY INFER THE PROPER FUNCTION!!
 double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 200;
+    const int REPEAT = 100;
     for(int i=0; i<=REPEAT; ++i) {
         double m = (ok + ng) / 2;
         if (f(m)) ok = m;
@@ -305,50 +316,35 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
-
 void solve() {
-    ll N; cin>>N;
-    VPD(S, N);
-    VPD(G, N);
-
+    LONG(N);
+    VP(S, N);
+    VP(G, N);
+    
     vd ds;
     rep(i, N) rep(j, N) {
         ds.push_back(euclid_distd(S[i], G[j]));
     }
     sort(all(ds));
 
-    auto f=[&](ll xi) -> bool {
+    auto f = [&](ll di) -> bool {
+        db d = ds[di];
         MaxFlow flow(2*N+2);
-        ll st = 2*N, gl = st+1;
-
+        ll s = 2*N, g = s+1;
         rep(i, N) rep(j, N) {
-            db d = euclid_distd(S[i], G[j]);
-            if (d>ds[xi]) continue;
-
-            flow.add_edge(i, j+N, 1);
-            // de2(i, j)
+            db cd = euclid_distd(S[i], G[j]);
+            if (cd <= d) flow.add_edge(i, N+j, 1);
         }
-        rep(i, N) flow.add_edge(st, i, 1);
-        rep(j, N) flow.add_edge(j+N, gl, 1);
+        rep(i, N) flow.add_edge(s, i, 1);
+        repk(i, N, 2*N) flow.add_edge(i, g, 1);
 
-        ll res = flow.flow(st, gl);
-        // de(res)
-        return res == N;
+        ll mxf = flow.flow(s, g);
+        return mxf >= N;
     };
 
-    // de(f(1))
     ll ansi = binary_search(N*N, -1, f);
     Out(ds[ansi]);
+
 
 }
 
@@ -359,7 +355,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
-
-
-
