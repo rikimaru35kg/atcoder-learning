@@ -1751,8 +1751,7 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 - !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
-!!! where i am now for rank S (last submission 2025/6/25)
-- !要復習 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
+- !復習価値高 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
 
 ## K番目の何かを答える
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
@@ -1990,6 +1989,7 @@
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
 - !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
+!!! where i am now for rank S (last submission 2025/6/27)
 - !要復習 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
