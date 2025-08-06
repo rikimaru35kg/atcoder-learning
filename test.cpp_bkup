@@ -229,53 +229,57 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    N += 1;
-    vvl dist(N, vl(N, INF));
-    rep(i, N) dist[i][i] = 0;
+    LONG(N, M, X, Y); --X, --Y;
+    vvl from(N);
     rep(i, M) {
-        LONG(a,b,c); --a, --b;
-        chmin(dist[a][b], c);
-        chmin(dist[b][a], c);
-    }
-    LONG(K, T);
-    rep(i, K) {
-        LONGM(d);
-        chmin(dist[d][N-1], T);
-        chmin(dist[N-1][d], 0LL);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
 
-    auto upd=[&](ll x) {
-        rep(i, N) rep(j, N) chmin(dist[i][j], dist[i][x]+dist[x][j]);
+    vb ok(N);
+    vb visited(N);
+    vl ans;
+
+    auto update=[&]() {
+        ok = vb(N);
+        queue<ll> que;
+        auto push=[&](ll v) {
+            if(visited[v]) return;
+            if(ok[v]) return;
+            ok[v] = true;
+            que.push(v);
+        };
+        push(Y);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto nv: from[v]) {
+                push(nv);
+            }
+        }
     };
 
-    rep(k, N) upd(k);
-
-    LONG(Q);
-    rep(_, Q) {
-        LONG(q);
-        if(q==1) {
-            LONGM(x,y); LONG(t);
-            chmin(dist[x][y], t);
-            chmin(dist[y][x], t);
-            upd(x);
-            upd(y);
-        } else if (q==2) {
-            LONGM(x);
-            chmin(dist[x][N-1], T);
-            chmin(dist[N-1][x], 0LL);
-            upd(x);
-            upd(N-1);
-        } else {
-            ll ans = 0;
-            rep(i, N-1) rep(j, N-1) {
-                if(dist[i][j]==INF) continue;
-                ans += dist[i][j];
-            }
-            Out(ans);
+    ll v = X;
+    while(true) {
+        ans.push_back(v+1);
+        visited[v] = true;
+        if (v==Y) break;
+        update();
+        ll mn = INF;
+        for(auto nv: from[v]) {
+            if(!ok[nv]) continue;
+            chmin(mn, nv);
         }
-
+        for(auto nv: from[v]) {
+            if(nv==mn) {
+                v = nv;
+                break;
+            }
+        }
     }
+    Out(ans);
+    
+
 
 
 }
@@ -283,7 +287,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

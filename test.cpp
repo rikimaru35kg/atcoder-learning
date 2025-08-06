@@ -228,127 +228,165 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class MaxFlow {
-    int n;
-    vector<int> dist, iter;
-    long long inf = numeric_limits<long long>::max();
-    struct Edge {
-        int to; long long cap; int rev;
-        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
-    };
-    void bfs(int sv) {
-        dist.assign(n, -1);
-        queue<int> que;
-        dist[sv] = 0; que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,cap,rev]: from[v]) {
-                if(cap==0 || dist[nv]!=-1) continue;
-                dist[nv] = dist[v]+1, que.push(nv); 
-            }
-        }
-    }
-    long long dfs(int v, int t, long long f) {
-        if(v==t) return f;
-        for(int &i=iter[v]; i<int(from[v].size()); i++) {
-            auto [nv,cap,rev] = from[v][i];
-            if(dist[nv]<=dist[v] || cap==0) continue;
-            long long res = dfs(nv, t, min(f,cap));
-            if(res) {
-                from[v][i].cap -= res;
-                from[nv][rev].cap += res;
-                return res;
-            }
-        }
-        return 0;
-    }
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
 public:
-    vector<vector<Edge>> from;
-    MaxFlow(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c) {
-        from[a].emplace_back(Edge(b,c,from[b].size()));
-        from[b].emplace_back(Edge(a,0,from[a].size()-1));
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    long long flow(int s, int t) {
-        long long ret = 0;
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
+    }
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
+        }
+        return op(lft, rgt);
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
         while(true) {
-            bfs(s);
-            if(dist[t]==-1) return ret;
-            iter.assign(n, 0);
-            long long now=0;
-            while((now=dfs(s,t,inf))>0) {
-                ret += now;
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
             }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
         }
         return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
     }
 };
+#include <atcoder/lazysegtree>
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+struct S {
+    mint sum; ll w;
+    S(mint sum=0, ll w=0): sum(sum), w(w) {}
+};
+S op(S a, S b) { return {a.sum+b.sum, a.w+b.w};}
+S e() {return S();}
+using F = ll;
+S mapping(F f, S x) {
+    if(f==-1) return x;
+    return S(f*x.w, x.w);
 }
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 200;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
+F composition(F f, F g) {
+    if(f==-1) return g;
+    return f;
 }
+F id(){return -1;}
 
-//! Calculate Euclid distance
-//! input type = double
-//! output type = double
-double euclid_distd(pair<double,double> p1, pair<double,double> p2) {
-    double ret = 0;
-    ret += (p1.first - p2.first) * (p1.first - p2.first);
-    ret += (p1.second - p2.second) * (p1.second - p2.second);
-    ret = sqrt(ret);
-    return ret;
-}
 
 void solve() {
-    ll N; cin>>N;
-    VPD(S, N);
-    VPD(G, N);
-
-    vd ds;
-    rep(i, N) rep(j, N) {
-        ds.push_back(euclid_distd(S[i], G[j]));
+    LONG(N, M);
+    VL(A, N);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    rep(i, N) {
+        seg.set(i, S(A[i], 1));
     }
-    sort(all(ds));
 
-    auto f=[&](ll xi) -> bool {
-        MaxFlow flow(2*N+2);
-        ll st = 2*N, gl = st+1;
+    // auto segprint=[&](){
+    // #ifdef __DEBUG
+    //     de("-- segprint --")
+    //     ll sz = seg.max_right(0,[](S x)->bool{return true;});
+    //     rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).sum.val());
+    //     cerr<<endl;
+    // #endif
+    // };
 
-        rep(i, N) rep(j, N) {
-            db d = euclid_distd(S[i], G[j]);
-            if (d>ds[xi]) continue;
-
-            flow.add_edge(i, j+N, 1);
-            // de2(i, j)
-        }
-        rep(i, N) flow.add_edge(st, i, 1);
-        rep(j, N) flow.add_edge(j+N, gl, 1);
-
-        ll res = flow.flow(st, gl);
-        // de(res)
-        return res == N;
-    };
-
-    // de(f(1))
-    ll ansi = binary_search(N*N, -1, f);
-    Out(ds[ansi]);
+    rep(i, M) {
+        LONG(l, r); --l;
+        mint sum = seg.prod(l, r).sum;
+        ll x = (sum/(r-l)).val();
+        de5(l, r, x, sum.val(), r-l)
+        seg.apply(l, r, x);
+        // segprint();
+    }
+    vm ans(N);
+    rep(i, N) ans[i] = seg.get(i).sum;
+    Out(ans);
 
 }
 
@@ -359,7 +397,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
-
-
-

@@ -2202,6 +2202,7 @@
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
 - [C - Palindromic in Both Bases](https://atcoder.jp/contests/abc414/tasks/abc414_c)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
+- [E - A Path in A Dictionary](https://atcoder.jp/contests/abc417/tasks/abc417_e)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
@@ -2294,3 +2295,4 @@
 - [F - Socks 4](https://atcoder.jp/contests/abc412/tasks/abc412_f)
 - [D - Conflict 2](https://atcoder.jp/contests/abc411/tasks/abc411_d)
 - [D - Match, Mod, Minimize 2](https://atcoder.jp/contests/abc416/tasks/abc416_d)
+- [D - Takahashi's Expectation](https://atcoder.jp/contests/abc417/tasks/abc417_d)
