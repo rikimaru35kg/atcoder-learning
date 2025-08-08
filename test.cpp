@@ -228,165 +228,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    vector<S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
+// get max for lines(ai*x+bi)
+class ConvexHullTrick {
+    struct Line {
+        long long a, b;
+        Line(long long a, long long b): a(a), b(b) {}
+    };
+    deque<Line> lines;
+    long long fx(Line l, long long x) { return l.a*x + l.b; }
 public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x);
-        climb((i+n)>>1);
-    }
-    void set_and_op(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
-    }
-    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
+    ConvexHullTrick() {}
+    void add(long long a3, long long b3) {
+        // (a3,b3) must be input in the asceinding order!
+        while((int)lines.size()>=2) {
+            auto [a1,b1] = lines.end()[-2];
+            auto [a2,b2] = lines.end()[-1];
+            if((b1-b2)*(a3-a2)<(a2-a1)*(b2-b3)) break;
+            lines.pop_back();
         }
-        return op(lft, rgt);
+        lines.emplace_back(a3,b3);
     }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
+    long long get(long long x) {
+        //! O(Q*log(N,3))
+        int l=0, r=lines.size()-1;
+        while(r-l>2) {
+            int m1 = (l*2+r)/3;
+            int m2 = (l+2*r)/3;
+            if(fx(lines[m1],x)<fx(lines[m2],x)) l=m1;
+            else r = m2;
         }
-        return mx;
+        long long ret = fx(lines[l],x);
+        for(int i=l+1; i<=r; ++i) ret = max(ret, fx(lines[i],x));
+        return ret;
     }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
+    long long get_in_the_ascending_order(long long x) {
+        //! O(N+Q) and irrevirsible
+        long long ret = fx(lines[0], x);
+        while((int)lines.size()>=2) {
+            long long nxt = fx(lines[1], x);
+            if(nxt<ret) break;
+            ret = nxt;
+            lines.pop_front();
         }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
+        return ret;
     }
 };
-#include <atcoder/lazysegtree>
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-struct S {
-    mint sum; ll w;
-    S(mint sum=0, ll w=0): sum(sum), w(w) {}
-};
-S op(S a, S b) { return {a.sum+b.sum, a.w+b.w};}
-S e() {return S();}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==-1) return x;
-    return S(f*x.w, x.w);
-}
-F composition(F f, F g) {
-    if(f==-1) return g;
-    return f;
-}
-F id(){return -1;}
-
 
 void solve() {
     LONG(N, M);
-    VL(A, N);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(N);
+    VL(B, N);
+    VL(C, M);
+    ConvexHullTrick cht;
+
+    sort(allr(B));
+
     rep(i, N) {
-        seg.set(i, S(A[i], 1));
+        cht.add(i+1, (i+1)*B[i]);
     }
-
-    // auto segprint=[&](){
-    // #ifdef __DEBUG
-    //     de("-- segprint --")
-    //     ll sz = seg.max_right(0,[](S x)->bool{return true;});
-    //     rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).sum.val());
-    //     cerr<<endl;
-    // #endif
-    // };
-
+    vl ans;
     rep(i, M) {
-        LONG(l, r); --l;
-        mint sum = seg.prod(l, r).sum;
-        ll x = (sum/(r-l)).val();
-        de5(l, r, x, sum.val(), r-l)
-        seg.apply(l, r, x);
-        // segprint();
+        ll x = cht.get(C[i]);
+        ans.push_back(x);
     }
-    vm ans(N);
-    rep(i, N) ans[i] = seg.get(i).sum;
     Out(ans);
+
 
 }
 
