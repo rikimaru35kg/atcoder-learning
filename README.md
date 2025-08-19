@@ -2203,6 +2203,7 @@
 - [C - Palindromic in Both Bases](https://atcoder.jp/contests/abc414/tasks/abc414_c)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
 - [E - A Path in A Dictionary](https://atcoder.jp/contests/abc417/tasks/abc417_e)
+- [E - Subarray Sum Divisibility](https://atcoder.jp/contests/abc419/tasks/abc419_e)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
