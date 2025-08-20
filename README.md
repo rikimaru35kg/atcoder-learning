@@ -779,8 +779,7 @@
 - 範囲は広くても葉の数が少ない（1e6など）場合に使える
 - 実装上はunorderd_mapを使うと楽（ただし定数倍は重い）
 ### 例題
-!!! where i am now for rank S (last submission 2025/7/16)
-- !要復習 [G - Odd Position Sum Query](https://atcoder.jp/contests/abc403/tasks/abc403_g)
+- !復習価値中 [G - Odd Position Sum Query](https://atcoder.jp/contests/abc403/tasks/abc403_g)
 
 ## マージソートツリー
 - マージソートしながらセグ木を構築
@@ -836,6 +835,7 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
+!!! where i am now for rank S (last submission 2025/7/23)
 - !要復習 [G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
