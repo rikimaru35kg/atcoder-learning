@@ -496,8 +496,7 @@
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
 - 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
-!!! where i am now for rank S (last submission 2025/7/4)
-- !要復習 [E - Replace](https://atcoder.jp/contests/abc399/tasks/abc399_e)
+- !復習価値高 [E - Replace](https://atcoder.jp/contests/abc399/tasks/abc399_e)
 
 ## パスグラフ
 - パスグラフである為の必要十分条件は、連結でありかつ全頂点の次数が2以下の木である事
@@ -780,6 +779,7 @@
 - 範囲は広くても葉の数が少ない（1e6など）場合に使える
 - 実装上はunorderd_mapを使うと楽（ただし定数倍は重い）
 ### 例題
+!!! where i am now for rank S (last submission 2025/7/16)
 - !要復習 [G - Odd Position Sum Query](https://atcoder.jp/contests/abc403/tasks/abc403_g)
 
 ## マージソートツリー

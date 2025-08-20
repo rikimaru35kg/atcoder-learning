@@ -228,71 +228,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// get max for lines(ai*x+bi)
-class ConvexHullTrick {
-    struct Line {
-        long long a, b;
-        Line(long long a, long long b): a(a), b(b) {}
-    };
-    deque<Line> lines;
-    long long fx(Line l, long long x) { return l.a*x + l.b; }
-public:
-    ConvexHullTrick() {}
-    void add(long long a3, long long b3) {
-        // (a3,b3) must be input in the asceinding order!
-        while((int)lines.size()>=2) {
-            auto [a1,b1] = lines.end()[-2];
-            auto [a2,b2] = lines.end()[-1];
-            if((b1-b2)*(a3-a2)<(a2-a1)*(b2-b3)) break;
-            lines.pop_back();
-        }
-        lines.emplace_back(a3,b3);
+struct SCC {
+    SCC (int n): n(n), from(n), ifrom(n) {}
+    void add_edge (int a, int b) {
+        from[a].push_back(b); ifrom[b].push_back(a);
     }
-    long long get(long long x) {
-        //! O(Q*log(N,3))
-        int l=0, r=lines.size()-1;
-        while(r-l>2) {
-            int m1 = (l*2+r)/3;
-            int m2 = (l+2*r)/3;
-            if(fx(lines[m1],x)<fx(lines[m2],x)) l=m1;
-            else r = m2;
+    vector<vector<int>> scc () {
+        vector<vector<int>> groups;
+        postorder = vector<int>();
+        visited.assign(n, false);
+        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
+        visited.assign(n, false);
+        reverse(all(postorder));
+        for(auto v: postorder) if(!visited[v]) {
+            vector<int> group;
+            dfs2(v, group);
+            groups.push_back(group);
         }
-        long long ret = fx(lines[l],x);
-        for(int i=l+1; i<=r; ++i) ret = max(ret, fx(lines[i],x));
-        return ret;
+        return groups;
     }
-    long long get_in_the_ascending_order(long long x) {
-        //! O(N+Q) and irrevirsible
-        long long ret = fx(lines[0], x);
-        while((int)lines.size()>=2) {
-            long long nxt = fx(lines[1], x);
-            if(nxt<ret) break;
-            ret = nxt;
-            lines.pop_front();
-        }
-        return ret;
+private:
+    int n;
+    vector<vector<int>> from, ifrom;
+    vector<int> postorder;
+    vector<bool> visited;
+    void dfs1 (int v) {
+        visited[v] = true;
+        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
+        postorder.push_back(v);
+    }
+    void dfs2 (int v, vector<int> &group) {
+        visited[v] = true;
+        group.push_back(v);
+        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
     }
 };
 
 void solve() {
-    LONG(N, M);
-    VL(B, N);
-    VL(C, M);
-    ConvexHullTrick cht;
+    LONG(N);
+    STRING(S, T);
+    if(S==T) Outend(0);
 
-    sort(allr(B));
+    ll M = 26;
+    auto branch=[&]() -> bool {
+        set<Pr> edge;
+        rep(i, N) edge.emplace(S[i]-'a', T[i]-'a');
+        vl ind(M), oud(M);
+        for(auto [a,b]: edge) {
+            oud[a]++; ind[b]++;
+        }
+        rep(i, M) { if(oud[i]>1) return true; }
 
+        auto cycle=[&]() -> bool {
+            rep(i, M) {
+                if(ind[i]!=1 || oud[i]!=1) return false;
+            }
+            return true;
+        };
+        if(cycle()) return true;
+
+        return false;
+    };
+    if(branch()) Outend(-1);
+    
+    set<Pr> edge;
     rep(i, N) {
-        cht.add(i+1, (i+1)*B[i]);
+        if(S[i]==T[i]) continue;
+        edge.emplace(S[i]-'a', T[i]-'a');
     }
-    vl ans;
-    rep(i, M) {
-        ll x = cht.get(C[i]);
-        ans.push_back(x);
+    ll ans = edge.size();
+
+    vl ind(M), oud(M);
+    SCC scc(M);
+    for(auto [a,b]: edge) {
+        scc.add_edge(a,b);
+        oud[a]++, ind[b]++;
+    }
+    de(ind)
+
+    auto grs = scc.scc();
+    for(auto gr: grs) {
+        if(gr.size()==1) continue;
+        bool cycle = true;
+        de(gr)
+        for(auto v: gr) {
+            if(ind[v]!=1) { cycle = false; }
+        }
+        if (cycle) ++ans;
     }
     Out(ans);
-
-
 }
 
 int main () {
