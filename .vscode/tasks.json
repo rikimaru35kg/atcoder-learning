@@ -12,7 +12,7 @@
                 // "${fileDirname}/${fileBasenameNoExtension}",
                 "${fileDirname}/a.out",
                 "-std=gnu++2b",
-                "-I/opt/ac-library",
+                "-I/home/ryo/lib/ac-library",
                 "-Wall",
                 "-Wextra",
                 "-O0",

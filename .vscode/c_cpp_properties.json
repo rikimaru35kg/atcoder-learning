@@ -3,7 +3,7 @@
         {
             "name": "WSL",
             "includePath": [
-                "/opt/ac-library/",
+                "/home/ryo/lib/ac-library/**",
                 "${workspaceFolder}/**",
                 "/usr/include/**"
             ],

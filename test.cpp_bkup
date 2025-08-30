@@ -228,95 +228,119 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct SCC {
-    SCC (int n): n(n), from(n), ifrom(n) {}
-    void add_edge (int a, int b) {
-        from[a].push_back(b); ifrom[b].push_back(a);
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    umap<ll,S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
+public:
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
     }
-    vector<vector<int>> scc () {
-        vector<vector<int>> groups;
-        postorder = vector<int>();
-        visited.assign(n, false);
-        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
-        visited.assign(n, false);
-        reverse(all(postorder));
-        for(auto v: postorder) if(!visited[v]) {
-            vector<int> group;
-            dfs2(v, group);
-            groups.push_back(group);
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
         }
-        return groups;
+        return op(lft, rgt);
     }
-private:
-    int n;
-    vector<vector<int>> from, ifrom;
-    vector<int> postorder;
-    vector<bool> visited;
-    void dfs1 (int v) {
-        visited[v] = true;
-        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
-        postorder.push_back(v);
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
     }
-    void dfs2 (int v, vector<int> &group) {
-        visited[v] = true;
-        group.push_back(v);
-        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
     }
 };
 
+struct S {
+    ll n, l, r;
+    S(ll n=0, ll l=0, ll r=0): n(n),l(l),r(r) {}
+};
+S op(S a, S b) {
+    if(a.n&1) return S(a.n+b.n, a.l+b.r, a.r+b.l);
+    else return S(a.n+b.n, a.l+b.l, a.r+b.r);
+}
+S e(){return S();}
+
 void solve() {
-    LONG(N);
-    STRING(S, T);
-    if(S==T) Outend(0);
-
-    ll M = 26;
-    auto branch=[&]() -> bool {
-        set<Pr> edge;
-        rep(i, N) edge.emplace(S[i]-'a', T[i]-'a');
-        vl ind(M), oud(M);
-        for(auto [a,b]: edge) {
-            oud[a]++; ind[b]++;
-        }
-        rep(i, M) { if(oud[i]>1) return true; }
-
-        auto cycle=[&]() -> bool {
-            rep(i, M) {
-                if(ind[i]!=1 || oud[i]!=1) return false;
-            }
-            return true;
-        };
-        if(cycle()) return true;
-
-        return false;
-    };
-    if(branch()) Outend(-1);
-    
-    set<Pr> edge;
-    rep(i, N) {
-        if(S[i]==T[i]) continue;
-        edge.emplace(S[i]-'a', T[i]-'a');
+    LONG(Q);
+    SegTree<S,op,e> seg(1e9+10);
+    rep(i, Q) {
+        cout<<endl;
+        LONG(x);
+        seg.set_and_op(x, S(1, x, 0));
+        auto [n,l,r] = seg.prod(1, 6);
+        Out(l);
     }
-    ll ans = edge.size();
 
-    vl ind(M), oud(M);
-    SCC scc(M);
-    for(auto [a,b]: edge) {
-        scc.add_edge(a,b);
-        oud[a]++, ind[b]++;
-    }
-    de(ind)
-
-    auto grs = scc.scc();
-    for(auto gr: grs) {
-        if(gr.size()==1) continue;
-        bool cycle = true;
-        de(gr)
-        for(auto v: gr) {
-            if(ind[v]!=1) { cycle = false; }
-        }
-        if (cycle) ++ans;
-    }
-    Out(ans);
 }
 
 int main () {
