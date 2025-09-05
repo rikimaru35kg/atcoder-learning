@@ -228,117 +228,102 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    umap<ll,S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
+struct BidirectionalList {
+    const long long ninf = (long long)3e18;
+    unordered_map<long long,pair<long long,long long>> mp;
+    BidirectionalList () {
+        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
     }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
+    void add_next(long long x, long long y) {  // put y after x
+        auto [p, n] = mp[x];
+        mp[x].second = y; mp[n].first = y;
+        mp[y] = {x, n};
     }
-    void set_and_op(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
+    void add_prev(long long x, long long y) {  // put y before x
+        auto [p, n] = mp[x];
+        mp[x].first = y; mp[p].second = y;
+        mp[y] = {p, x};
     }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
+    void add_head(long long x) { add_next(-ninf, x); }
+    void add_tail(long long x) { add_prev(ninf, x); }
+    pair<long long,long long> erase(long long x) {
+        auto [p, n] = mp[x];
+        mp[p].second = n; mp[n].first = p;
+        mp.erase(x);
+        return {p, n};
     }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
+    pair<long long,long long> get(long long x) { return mp[x]; }
+    void print() {
+        long long next = mp[-ninf].second;
+        vector<long long> vec;
+        while (next != ninf) {
+            vec.push_back(next);
+            next = mp[next].second;
         }
-        return op(lft, rgt);
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
+        for (int i=0; i<(int)vec.size(); ++i) {
+            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
         }
-        return mx;
     }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
+    vl get_list() {
+        long long next = mp[-ninf].second;
+        vector<long long> vec;
+        while (next != ninf) {
+            vec.push_back(next);
+            next = mp[next].second;
         }
-        return 0;
+        return vec;
     }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
+    ll sum_bet(ll x, ll y) {
+        ll next = mp[x].second;
+        ll ret = 0;
+        while(next != y) {
+            ret += next;
+            next = mp[next].second;
+        }
+        return ret;
+    }
+    void del_bet(ll x, ll y) {
+        mp[x].second = y;
+        mp[y].first = x;
     }
 };
-
-struct S {
-    ll n, l, r;
-    S(ll n=0, ll l=0, ll r=0): n(n),l(l),r(r) {}
-};
-S op(S a, S b) {
-    if(a.n&1) return S(a.n+b.n, a.l+b.r, a.r+b.l);
-    else return S(a.n+b.n, a.l+b.l, a.r+b.r);
-}
-S e(){return S();}
 
 void solve() {
     LONG(Q);
-    SegTree<S,op,e> seg(1e9+10);
+    BidirectionalList blist;
+    blist.add_tail(0);
+    vt4 query;
     rep(i, Q) {
-        cout<<endl;
-        LONG(x);
-        seg.set_and_op(x, S(1, x, 0));
-        auto [n,l,r] = seg.prod(1, 6);
-        Out(l);
+        LONG(t, x);
+        if(t==1) {
+            blist.add_next(x, i+1);
+            query.emplace_back(t, x, -1, i);
+        } else {
+            LONG(y);
+            query.emplace_back(t, x, y, i);
+        }
+    }
+
+    vl vec = blist.get_list();
+    vl inv(Q+1, -1);
+    ll n = vec.size();
+    rep(i, n) {
+        inv[vec[i]] = i;
+    }
+
+    BidirectionalList list;
+    list.add_tail(0);
+
+    for(auto [t,x,y,qi]: query) {
+        if(t==1) {
+            list.add_next(x, qi+1);
+        } else {
+            ll i1 = inv[x], i2 = inv[y];
+            if(i1>i2) swap(x, y);
+            ll ans = list.sum_bet(x, y);
+            Out(ans);
+            list.del_bet(x, y);
+        }
     }
 
 }

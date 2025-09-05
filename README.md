@@ -835,8 +835,7 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
-!!! where i am now for rank S (last submission 2025/7/23)
-- !要復習 [G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
+- !復習価値中 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
 - 単純にDPで足し合わせていけば経路数が求める
@@ -1012,6 +1011,7 @@
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
+!!! where i am now for rank S (last submission 2025/7/16)
 - !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
 
 !!! where i am now for rank A (last submission 2025/4/11)

@@ -228,27 +228,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    Out(1);
-    Out(2);
-    Out(3);
-    Out(4);
-    Out(5);
-    Out(6);
+    LONG(N, M);
+    ll K = 300;
+    vl b(K+1);
+    rep(i, M) {
+        LONG(_a, _b);
+        chmax(b[_a], _b);
+    }
+    ll ma = 1, mb = 0;
+    rep1(a, K) {
+        if(b[a]*ma > mb*a) {
+            ma = a, mb = b[a];
+        }
+    }
+    ll Mx = 90000;
+
+    vl dp(Mx+1);
+    rep(i, Mx+1) {
+        rep1(a, min(i,K)) {
+            chmax(dp[i], dp[i-a+b[a]]+b[a]);
+        }
+    }
+
+    if (N<=Mx) {
+        Outend(N+dp[N]);
+    }
+
+    ll k = Divceil(N-Mx, ma-mb);
+    ll ans = N;
+    ans += k*mb;
+    ans += dp[N-k*(ma-mb)];
+    Out(ans);
+
 
 }
 
