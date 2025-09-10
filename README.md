@@ -2004,10 +2004,14 @@
 
 ## 凸包・Convex Hull Trick
 - 凸な多角形を作る事で上手くいく問題
-### 
+### 例題
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
 - !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
+
+## 乱択
+### 例題
+- !要復習 [E - Colinear](https://atcoder.jp/contests/abc422/tasks/abc422_e)
 
 ## オイラー路
 - 一筆書き
@@ -2204,6 +2208,7 @@
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
 - [E - A Path in A Dictionary](https://atcoder.jp/contests/abc417/tasks/abc417_e)
 - [E - Subarray Sum Divisibility](https://atcoder.jp/contests/abc419/tasks/abc419_e)
+- [F - Eat and Ride](https://atcoder.jp/contests/abc422/tasks/abc422_f)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)

@@ -228,103 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct BidirectionalList {
-    const long long ninf = (long long)3e18;
-    unordered_map<long long,pair<long long,long long>> mp;
-    BidirectionalList () {
-        mp[-ninf] = {-ninf, ninf}; mp[ninf] = {-ninf, ninf};
-    }
-    void add_next(long long x, long long y) {  // put y after x
-        auto [p, n] = mp[x];
-        mp[x].second = y; mp[n].first = y;
-        mp[y] = {x, n};
-    }
-    void add_prev(long long x, long long y) {  // put y before x
-        auto [p, n] = mp[x];
-        mp[x].first = y; mp[p].second = y;
-        mp[y] = {p, x};
-    }
-    void add_head(long long x) { add_next(-ninf, x); }
-    void add_tail(long long x) { add_prev(ninf, x); }
-    pair<long long,long long> erase(long long x) {
-        auto [p, n] = mp[x];
-        mp[p].second = n; mp[n].first = p;
-        mp.erase(x);
-        return {p, n};
-    }
-    pair<long long,long long> get(long long x) { return mp[x]; }
-    void print() {
-        long long next = mp[-ninf].second;
-        vector<long long> vec;
-        while (next != ninf) {
-            vec.push_back(next);
-            next = mp[next].second;
-        }
-        for (int i=0; i<(int)vec.size(); ++i) {
-            cout << vec[i] << (i==(int)vec.size()-1?'\n':' ');
-        }
-    }
-    vl get_list() {
-        long long next = mp[-ninf].second;
-        vector<long long> vec;
-        while (next != ninf) {
-            vec.push_back(next);
-            next = mp[next].second;
-        }
-        return vec;
-    }
-    ll sum_bet(ll x, ll y) {
-        ll next = mp[x].second;
-        ll ret = 0;
-        while(next != y) {
-            ret += next;
-            next = mp[next].second;
-        }
-        return ret;
-    }
-    void del_bet(ll x, ll y) {
-        mp[x].second = y;
-        mp[y].first = x;
-    }
-};
+long long mersenne(long long mn, long long mx) {
+    static mt19937_64 mt64(0);
+    uniform_int_distribution<long long> get(mn, mx);
+    return get(mt64);
+}
+
+tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
+    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
+    auto [x1,y1] = p1; auto [x2,y2] = p2;
+    long long a = 0, b = 0, c = 0;
+    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
+    long long g = gcd(gcd(a,b),c);
+    a /= g, b /= g, c /= g;
+    if(a==0 && b<0) b=-b, c=-c;
+    if(a<0) a=-a, b=-b, c=-c;
+    return {a,b,c};
+}
 
 void solve() {
-    LONG(Q);
-    BidirectionalList blist;
-    blist.add_tail(0);
-    vt4 query;
-    rep(i, Q) {
-        LONG(t, x);
-        if(t==1) {
-            blist.add_next(x, i+1);
-            query.emplace_back(t, x, -1, i);
-        } else {
-            LONG(y);
-            query.emplace_back(t, x, y, i);
+    LONG(N);
+    VP(P, N);
+
+    auto judge=[&](ll i, ll j) -> bool {
+        auto [a,b,c] = get_line(P[i], P[j]);
+        ll cnt = 0;
+        rep(k, N) {
+            auto [x,y] = P[k];
+            if (a*x + b*y + c == 0) ++cnt;
+            if (cnt > N/2) return true;
         }
-    }
+        return false;
+    };
 
-    vl vec = blist.get_list();
-    vl inv(Q+1, -1);
-    ll n = vec.size();
-    rep(i, n) {
-        inv[vec[i]] = i;
-    }
-
-    BidirectionalList list;
-    list.add_tail(0);
-
-    for(auto [t,x,y,qi]: query) {
-        if(t==1) {
-            list.add_next(x, qi+1);
-        } else {
-            ll i1 = inv[x], i2 = inv[y];
-            if(i1>i2) swap(x, y);
-            ll ans = list.sum_bet(x, y);
-            Out(ans);
-            list.del_bet(x, y);
+    ll R = 100;
+    while(R) {
+        ll i = mersenne(0, N-1);
+        ll j = mersenne(0, N-1);
+        if (i==j) continue;
+        if (judge(i,j)) {
+            auto [a,b,c] = get_line(P[i], P[j]);
+            puts("Yes");
+            printf("%lld %lld %lld\n", a, b, c);
+            return;
         }
+        --R;
     }
+    puts("No");
 
 }
 

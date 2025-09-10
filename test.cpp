@@ -230,37 +230,29 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N, M);
-    ll K = 300;
-    vl b(K+1);
+    VL(W, N);
+    vvl from(N);
     rep(i, M) {
-        LONG(_a, _b);
-        chmax(b[_a], _b);
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    ll ma = 1, mb = 0;
-    rep1(a, K) {
-        if(b[a]*ma > mb*a) {
-            ma = a, mb = b[a];
+
+    vvl dp(N, vl(M+1, INF));
+    rep(x, M+1) dp[0][x] = 0;
+
+    rep1r(x, M) {
+        rep(v, N) {
+            for(auto nv: from[v]) {
+                chmin(dp[nv][x-1], dp[v][x]+x*W[v]);
+            }
         }
     }
-    ll Mx = 90000;
 
-    vl dp(Mx+1);
-    rep(i, Mx+1) {
-        rep1(a, min(i,K)) {
-            chmax(dp[i], dp[i-a+b[a]]+b[a]);
-        }
+    rep(i, N) {
+        ll ans = dp[i][0];
+        Out(ans);
     }
-
-    if (N<=Mx) {
-        Outend(N+dp[N]);
-    }
-
-    ll k = Divceil(N-Mx, ma-mb);
-    ll ans = N;
-    ans += k*mb;
-    ans += dp[N-k*(ma-mb)];
-    Out(ans);
-
 
 }
 
