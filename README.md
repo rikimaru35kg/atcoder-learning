@@ -1999,6 +1999,7 @@
 - c_{i+j} += ai * bjとなる
 ### 例題
 - 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
+- !復習価値高 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 
