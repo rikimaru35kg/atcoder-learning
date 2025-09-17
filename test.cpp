@@ -229,30 +229,24 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VL(W, N);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    LONG(N, Q);
+    VL(A, N);
+    vl S0(N+1), S1(N+2), S2(N+1);
 
-    vvl dp(N, vl(M+1, INF));
-    rep(x, M+1) dp[0][x] = 0;
+    rep(i, N) S0[i+1] = S0[i] + A[i];
+    rep(i, N) S1[i+1] = S1[i] + A[i]*i;
+    rep(i, N) S2[i+1] = S2[i] + A[i]*i*i;
 
-    rep1r(x, M) {
-        rep(v, N) {
-            for(auto nv: from[v]) {
-                chmin(dp[nv][x-1], dp[v][x]+x*W[v]);
-            }
-        }
-    }
+    rep(i, Q) {
+        LONG(l, r); --l;
+        ll ld = l - 1;
 
-    rep(i, N) {
-        ll ans = dp[i][0];
+        ll ans = -ld*r*(S0[r]-S0[l]);
+        ans += (ld+r)*(S1[r]-S1[l]);
+        ans -= S2[r]-S2[l];
         Out(ans);
     }
+
 
 }
 

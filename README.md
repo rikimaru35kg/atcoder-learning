@@ -1660,6 +1660,7 @@
 ### 例題
 - !復習価値低 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
 - 基本 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
+- !要復習 [E - Sum of Subarrays](https://atcoder.jp/contests/abc423/tasks/abc423_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - 基本 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 - !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
@@ -2303,3 +2304,4 @@
 - [D - Conflict 2](https://atcoder.jp/contests/abc411/tasks/abc411_d)
 - [D - Match, Mod, Minimize 2](https://atcoder.jp/contests/abc416/tasks/abc416_d)
 - [D - Takahashi's Expectation](https://atcoder.jp/contests/abc417/tasks/abc417_d)
+- [D - Long Waiting](https://atcoder.jp/contests/abc423/tasks/abc423_d)

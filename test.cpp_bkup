@@ -228,53 +228,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long mersenne(long long mn, long long mx) {
-    static mt19937_64 mt64(0);
-    uniform_int_distribution<long long> get(mn, mx);
-    return get(mt64);
-}
-
-tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
-    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
-    auto [x1,y1] = p1; auto [x2,y2] = p2;
-    long long a = 0, b = 0, c = 0;
-    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
-    long long g = gcd(gcd(a,b),c);
-    a /= g, b /= g, c /= g;
-    if(a==0 && b<0) b=-b, c=-c;
-    if(a<0) a=-a, b=-b, c=-c;
-    return {a,b,c};
-}
-
 void solve() {
-    LONG(N);
-    VP(P, N);
-
-    auto judge=[&](ll i, ll j) -> bool {
-        auto [a,b,c] = get_line(P[i], P[j]);
-        ll cnt = 0;
-        rep(k, N) {
-            auto [x,y] = P[k];
-            if (a*x + b*y + c == 0) ++cnt;
-            if (cnt > N/2) return true;
-        }
-        return false;
-    };
-
-    ll R = 100;
-    while(R) {
-        ll i = mersenne(0, N-1);
-        ll j = mersenne(0, N-1);
-        if (i==j) continue;
-        if (judge(i,j)) {
-            auto [a,b,c] = get_line(P[i], P[j]);
-            puts("Yes");
-            printf("%lld %lld %lld\n", a, b, c);
-            return;
-        }
-        --R;
+    LONG(N, K);
+    ll M = 2e7+10;
+    queue<t3> que;
+    priority_queue<Pr,vp,greater<Pr>> shop;
+    rep(i, N) {
+        LONG(a,b,c);
+        que.emplace(a,b,c);
     }
-    puts("No");
+    ll p = 0, t = 0;
+    while(que.size()) {
+        auto [a,b,c] = que.front(); que.pop();
+        chmax(t, a);
+        while(shop.size() && shop.top().first<=t) {
+            auto [pt,pc] = shop.top(); shop.pop();
+            p -= pc;
+        }
+        while(c+p>K) {
+            auto [pt,pc] = shop.top(); shop.pop();
+            t = pt;
+            p -= pc;
+        }
+        Out(t);
+        p += c;
+        shop.emplace(t+b, c);
+    }
+    // rep(t, M) {
+    //     while(shop.size() && shop.top().first<=t) {
+    //         auto [b, c] = shop.top(); shop.pop();
+    //         p -= c;
+    //     }
+    //     while(que.size()) {
+    //         auto [a,b,c] = que.front();
+    //         if(a>t) break;
+    //         if (c>K-p) break;
+    //         que.pop();
+    //         Out(t);
+    //         p += c;
+    //         shop.emplace(t+b,c);
+    //     }
+    // }
+
+
 
 }
 
