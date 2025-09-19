@@ -1724,8 +1724,7 @@
 - !復習価値低 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 - 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
-!!! where i am now for rank S (last submission 2025/7/15)
-- !要復習 [E - Count A%B=C](https://atcoder.jp/contests/abc414/tasks/abc414_e)
+- !復習価値高 [E - Count A%B=C](https://atcoder.jp/contests/abc414/tasks/abc414_e)
 
 ## データ構造をマージする一般的なテク
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
@@ -1991,6 +1990,7 @@
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
 - !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
+!!! where i am now for rank S (last submission 2025/8/1)
 - !要復習 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 

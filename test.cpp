@@ -242,69 +242,18 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
 void solve() {
-    LONG(N, K);
-    Combination comb(100, M998);
-
-    vm dp(K+1);
-    mint ans = 0;
-    rep(i, N) {
-        LONG(a);
-        dp[0] += 1;
-        vm pdp(K+1);
-        swap(dp, pdp);
-        rep(m, K+1) {
-            rep(x, K-m+1) {
-                dp[m+x] += pdp[m] * mint(a).pow(x) * comb(K-m, x);
-            }
-        }
-        ans += dp[K];
+    LONG(N);
+    ll b = 1;
+    mint sum = 0;
+    while(b <= N) {
+        ll x = N/b;
+        ll nb = N/x+1;
+        sum += (nb-b) * x;
+        b = nb;
     }
+    mint ans = mint(N)*(N+1)/2;
+    ans -= sum;
     Out(ans);
 
 }
