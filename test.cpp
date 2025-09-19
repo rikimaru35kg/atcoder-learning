@@ -228,25 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    vl S0(N+1), S1(N+2), S2(N+1);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    rep(i, N) S0[i+1] = S0[i] + A[i];
-    rep(i, N) S1[i+1] = S1[i] + A[i]*i;
-    rep(i, N) S2[i+1] = S2[i] + A[i]*i*i;
-
-    rep(i, Q) {
-        LONG(l, r); --l;
-        ll ld = l - 1;
-
-        ll ans = -ld*r*(S0[r]-S0[l]);
-        ans += (ld+r)*(S1[r]-S1[l]);
-        ans -= S2[r]-S2[l];
-        Out(ans);
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
 
+void solve() {
+    LONG(N, K);
+    Combination comb(100, M998);
+
+    vm dp(K+1);
+    mint ans = 0;
+    rep(i, N) {
+        LONG(a);
+        dp[0] += 1;
+        vm pdp(K+1);
+        swap(dp, pdp);
+        rep(m, K+1) {
+            rep(x, K-m+1) {
+                dp[m+x] += pdp[m] * mint(a).pow(x) * comb(K-m, x);
+            }
+        }
+        ans += dp[K];
+    }
+    Out(ans);
 
 }
 

@@ -229,47 +229,23 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    ll M = 2e7+10;
-    queue<t3> que;
-    priority_queue<Pr,vp,greater<Pr>> shop;
-    rep(i, N) {
-        LONG(a,b,c);
-        que.emplace(a,b,c);
-    }
-    ll p = 0, t = 0;
-    while(que.size()) {
-        auto [a,b,c] = que.front(); que.pop();
-        chmax(t, a);
-        while(shop.size() && shop.top().first<=t) {
-            auto [pt,pc] = shop.top(); shop.pop();
-            p -= pc;
-        }
-        while(c+p>K) {
-            auto [pt,pc] = shop.top(); shop.pop();
-            t = pt;
-            p -= pc;
-        }
-        Out(t);
-        p += c;
-        shop.emplace(t+b, c);
-    }
-    // rep(t, M) {
-    //     while(shop.size() && shop.top().first<=t) {
-    //         auto [b, c] = shop.top(); shop.pop();
-    //         p -= c;
-    //     }
-    //     while(que.size()) {
-    //         auto [a,b,c] = que.front();
-    //         if(a>t) break;
-    //         if (c>K-p) break;
-    //         que.pop();
-    //         Out(t);
-    //         p += c;
-    //         shop.emplace(t+b,c);
-    //     }
-    // }
+    LONG(N, Q);
+    VL(A, N);
+    vl S0(N+1), S1(N+2), S2(N+1);
 
+    rep(i, N) S0[i+1] = S0[i] + A[i];
+    rep(i, N) S1[i+1] = S1[i] + A[i]*i;
+    rep(i, N) S2[i+1] = S2[i] + A[i]*i*i;
+
+    rep(i, Q) {
+        LONG(l, r); --l;
+        ll ld = l - 1;
+
+        ll ans = -ld*r*(S0[r]-S0[l]);
+        ans += (ld+r)*(S1[r]-S1[l]);
+        ans -= S2[r]-S2[l];
+        Out(ans);
+    }
 
 
 }

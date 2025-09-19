@@ -1011,8 +1011,7 @@
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-!!! where i am now for rank S (last submission 2025/7/16)
-- !要復習 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
+- !復習価値中 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
 
 !!! where i am now for rank A (last submission 2025/4/11)
 - !復習価値高 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
@@ -1475,7 +1474,7 @@
 - !復習価値低 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
-- !要復習 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
+- !復習価値高 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
 
 ## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
@@ -1725,6 +1724,7 @@
 - !復習価値低 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 - 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
+!!! where i am now for rank S (last submission 2025/7/15)
 - !要復習 [E - Count A%B=C](https://atcoder.jp/contests/abc414/tasks/abc414_e)
 
 ## データ構造をマージする一般的なテク
