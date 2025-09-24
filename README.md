@@ -2211,6 +2211,7 @@
 - [E - A Path in A Dictionary](https://atcoder.jp/contests/abc417/tasks/abc417_e)
 - [E - Subarray Sum Divisibility](https://atcoder.jp/contests/abc419/tasks/abc419_e)
 - [F - Eat and Ride](https://atcoder.jp/contests/abc422/tasks/abc422_f)
+- [E - Cut in Half](https://atcoder.jp/contests/abc424/tasks/abc424_e)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
@@ -2305,3 +2306,4 @@
 - [D - Match, Mod, Minimize 2](https://atcoder.jp/contests/abc416/tasks/abc416_d)
 - [D - Takahashi's Expectation](https://atcoder.jp/contests/abc417/tasks/abc417_d)
 - [D - Long Waiting](https://atcoder.jp/contests/abc423/tasks/abc423_d)
+- [F - Adding Chords](https://atcoder.jp/contests/abc424/tasks/abc424_f)
