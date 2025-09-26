@@ -1990,8 +1990,7 @@
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
 - !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
-!!! where i am now for rank S (last submission 2025/8/1)
-- !要復習 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
+- !復習価値低 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
 ## 畳み込み（FFT/NTT）
@@ -2009,10 +2008,11 @@
 ### 例題
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
-- !要復習 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
+- !復習価値中 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## 乱択
 ### 例題
+!!! where i am now for rank S (last submission 2025/9/9)
 - !要復習 [E - Colinear](https://atcoder.jp/contests/abc422/tasks/abc422_e)
 
 ## オイラー路
@@ -2200,9 +2200,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/4/09)
-- [G - Sqrt](https://atcoder.jp/contests/abc243/tasks/abc243_g)
-- [G - Range Sort Query](https://atcoder.jp/contests/abc237/tasks/abc237_g)
+!!! where i am now for rank D (last submission 2025/5/28)
 - [E - Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
 - [F - Connecting Points](https://atcoder.jp/contests/abc409/tasks/abc409_f)
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
@@ -2285,7 +2283,7 @@
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
-- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b)
+- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_ba
 - [C - Cycle Graph?](https://atcoder.jp/contests/abc404/tasks/abc404_c)
 - [E - Bowls and Beans](https://atcoder.jp/contests/abc404/tasks/abc404_e)
 - [E - Fruit Lineup](https://atcoder.jp/contests/abc405/tasks/abc405_e)
