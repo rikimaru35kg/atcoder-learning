@@ -2200,9 +2200,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/5/28)
-- [E - Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
-- [F - Connecting Points](https://atcoder.jp/contests/abc409/tasks/abc409_f)
+!!! where i am now for rank D (last submission 2025/6/17)
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
 - [C - Palindromic in Both Bases](https://atcoder.jp/contests/abc414/tasks/abc414_c)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
@@ -2306,3 +2304,4 @@
 - [D - Long Waiting](https://atcoder.jp/contests/abc423/tasks/abc423_d)
 - [F - Adding Chords](https://atcoder.jp/contests/abc424/tasks/abc424_f)
 - [F - Inserting Process](https://atcoder.jp/contests/abc425/tasks/abc425_f)
+- [E - Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
