@@ -2200,9 +2200,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/8/5)
-- [E - A Path in A Dictionary](https://atcoder.jp/contests/abc417/tasks/abc417_e)
-- [E - Subarray Sum Divisibility](https://atcoder.jp/contests/abc419/tasks/abc419_e)
+!!! where i am now for rank D (last submission 2025/9/10)
 - [F - Eat and Ride](https://atcoder.jp/contests/abc422/tasks/abc422_f)
 - [E - Cut in Half](https://atcoder.jp/contests/abc424/tasks/abc424_e)
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
