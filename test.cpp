@@ -229,62 +229,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    vp edges;
-    vvp from(N);
-    rep(i, N-1) {
-        LONGM(a,b);
-        edges.emplace_back(a, b);
+    LONG(N, M);
+    VL(W, N);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    rep(i, N-1) {
-        auto [a,b] = edges[i];
-        edges.emplace_back(b,a);
-    }
-    ll N2 = (N-1)*2;
-    rep(ei, N2) {
-        auto [a,b] = edges[ei];
-        from[a].emplace_back(b, ei);
-    }
-    vvl dist(N2, vl(K, INF));
-    vvl cnt(N, vl(K));
-    queue<Pr> que;
-    auto push=[&](ll ei, ll d) {
-        if(dist[ei][d%K]<=d) return;
-        dist[ei][d%K] = d;
-        que.emplace(ei, d%K);
-    };
-    for(auto [v, ei]: from[0]) push(ei, 1);
-    while(que.size()) {
-        auto [ei, k] = que.front(); que.pop();
-        auto [a,b] = edges[ei];
-        ll d = dist[ei][k];
-        cnt[b][k]++;
-        if(cnt[b][k]>2) continue;
-        for(auto [nv,ej]: from[b]) {
-            if(k!=0 && ej%(N-1)==ei%(N-1)) continue;
-            push(ej, d+1);
+    vvl dp(N, vl(N, INF));
+    rep(k, N) dp[0][k] = 0;
+
+    for(ll k=N-1; k>0; --k) {
+        rep(v, N) {
+            for(auto nv: from[v]) {
+                chmin(dp[nv][k-1], dp[v][k]+k*W[v]);
+            }
         }
     }
-    vl ans(N, INF);
-    rep(ei, N2) {
-        auto [a,b] = edges[ei];
-        chmin(ans[b], dist[ei][0]);
+    rep(v, N) {
+        Out(dp[v][0]);
     }
-    repk(i, 1, N) {
-        ll x = ans[i];
-        if(x==INF) x = -1;
-        else x = x/K;
-        printf("%lld ", x);
-    }
-    cout<<endl;
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

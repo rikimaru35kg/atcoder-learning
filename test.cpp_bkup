@@ -228,69 +228,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<long long> separate_digit(long long x, long long base=10, long long sz=-1) {
-    vector<long long> ret;
-    if(x==0) ret.push_back(0);
-    while(x) {
-        ret.push_back(x%base);
-        x /= base;
-    }
-    if(sz!=-1) {
-        while((long long)ret.size()<sz) ret.push_back(0); // sz桁になるまで上桁を0埋め
-        while((long long)ret.size()>sz) ret.pop_back(); // 下sz桁を取り出す
-    }
-    reverse(ret.begin(), ret.end());
-    return ret;
-}
-
-long long consolidate_digit(vector<long long> a, long long base=10) {
-    long long ret = 0;
-    for(auto x: a) {
-        ret = ret*base + x;
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(A, N);
-    ll M = 1e6;
-    auto ispalin=[&](ll x) -> bool {
-        vl v = separate_digit(x, A);
-        vl r = v; reverse(all(v));
-        return v==r;
+    LONG(N, K);
+    vp edges;
+    vvp from(N);
+    rep(i, N-1) {
+        LONGM(a,b);
+        edges.emplace_back(a, b);
+    }
+    rep(i, N-1) {
+        auto [a,b] = edges[i];
+        edges.emplace_back(b,a);
+    }
+    ll N2 = (N-1)*2;
+    rep(ei, N2) {
+        auto [a,b] = edges[ei];
+        from[a].emplace_back(b, ei);
+    }
+    vvl dist(N2, vl(K, INF));
+    vvl cnt(N, vl(K));
+    queue<Pr> que;
+    auto push=[&](ll ei, ll d) {
+        if(dist[ei][d%K]<=d) return;
+        dist[ei][d%K] = d;
+        que.emplace(ei, d%K);
     };
-    ll ans = 0;
-    for(ll i=1; i<M; ++i) {
-        string s = to_string(i);
-        string r = s;
-        reverse(all(r));
-        {
-            string t = s + string(r.begin()+1, r.end());
-            ll x = stoll(t);
-            if(x<=N) {
-                if(ispalin(x)) {
-                    ans += x;
-                }
-            }
-        }
-        {
-            string t = s + r;
-            ll x = stoll(t);
-            if(x<=N) {
-                if(ispalin(x)) {
-                    ans += x;
-                }
-            }
+    for(auto [v, ei]: from[0]) push(ei, 1);
+    while(que.size()) {
+        auto [ei, k] = que.front(); que.pop();
+        auto [a,b] = edges[ei];
+        ll d = dist[ei][k];
+        cnt[b][k]++;
+        if(cnt[b][k]>2) continue;
+        for(auto [nv,ej]: from[b]) {
+            if(k!=0 && ej%(N-1)==ei%(N-1)) continue;
+            push(ej, d+1);
         }
     }
-    Out(ans);
+    vl ans(N, INF);
+    rep(ei, N2) {
+        auto [a,b] = edges[ei];
+        chmin(ans[b], dist[ei][0]);
+    }
+    repk(i, 1, N) {
+        ll x = ans[i];
+        if(x==INF) x = -1;
+        else x = x/K;
+        printf("%lld ", x);
+    }
+    cout<<endl;
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

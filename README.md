@@ -2200,8 +2200,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/9/10)
-- [F - Eat and Ride](https://atcoder.jp/contests/abc422/tasks/abc422_f)
+!!! where i am now for rank D (last submission 2025/9/23)
 - [E - Cut in Half](https://atcoder.jp/contests/abc424/tasks/abc424_e)
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
@@ -2302,3 +2301,4 @@
 - [F - Adding Chords](https://atcoder.jp/contests/abc424/tasks/abc424_f)
 - [F - Inserting Process](https://atcoder.jp/contests/abc425/tasks/abc425_f)
 - [E - Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
+- [F - Eat and Ride](https://atcoder.jp/contests/abc422/tasks/abc422_f)
