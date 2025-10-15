@@ -1012,9 +1012,7 @@
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
 - !復習価値中 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
-
-!!! where i am now for rank A (last submission 2025/4/11)
-- !復習価値高 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
+- !復習価値中 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
 
 ## DP経路復元
 - 逆順にたどれば良いだけなのでよく考えればできるはず
@@ -1067,6 +1065,7 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
+!!! where i am now for rank A (last submission 2025/5/1)
 - !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
