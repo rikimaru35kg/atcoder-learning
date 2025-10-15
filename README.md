@@ -1065,7 +1065,6 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
-!!! where i am now for rank A (last submission 2025/5/1)
 - !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
@@ -1135,6 +1134,7 @@
 - <expr>,<term>,<factor>,<number>の構造を定義
 - <expr>,<term>,<factor>が循環参照する形になる
 ### 例題
+!!! where i am now for rank A (last submission 2025/6/6)
 - !復習価値高 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）

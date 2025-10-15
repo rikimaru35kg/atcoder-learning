@@ -228,82 +228,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, L);
-    VL(X, N);
-    VL(T, N);
-    X.insert(X.begin(), 0);
-    X.push_back(L);
-    T.insert(T.begin(), -1);
-    T.push_back(-1);
+    LONG(N);
+    VLM(P, N);
 
-    using vvvvl = vector<vvvl>;
-    vvvvl dp(N+2, vvvl(N+2, vvl(2, vl(N+1, INF))));
-    dp[0][N+1][0][0] = 0;
+    vvm dp0(N+1, vm(N+1));
+    vvm dp1(N+1, vm(N+1));
 
-    auto calcost=[&](ll i, ll j, bool outside=false) -> ll {
-        ll ret = abs(X[j] - X[i]);
-        if(outside) ret = L - ret;
-        return ret;
-    };
-    auto calgain=[&](ll ntime, ll t) -> ll {
-        if(ntime<=T[t]) return 1;
-        return 0;
-    };
+    rep(i, N) dp0[i][i+1] = 1;
+    rep(i, N) dp1[i][i+1] = 1;
 
-    rep(l, N+1) {
-        for(ll r=N+1; r-l>1; --r) {
-            rep(p, 2) {
-                rep(n, N+1) {
-                    ll now = dp[l][r][p][n];
-                    if(now==INF) continue;
-                    if(l==0 && r==5 && p==1 && n==2) {
-                        cout<<"";
-                    }
-                    if(p==0) {
-                        // l->l
-                        {
-                            ll t = l+1;
-                            ll ntime = now + calcost(l, t);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[t][r][p][nn], ntime);
-                        }
-                        // l->r
-                        {
-                            ll t = r-1;
-                            ll ntime = now + calcost(l, t, true);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[l][t][p^1][nn], ntime);
-                        }
-                    } else {
-                        // r->r
-                        {
-                            ll t = r-1;
-                            ll ntime = now + calcost(r, t);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[l][t][p][nn], ntime);
-                        }
-                        // r->l
-                        {
-                            ll t = l+1;
-                            ll ntime = now + calcost(r, t, true);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[t][r][p^1][nn], ntime);
-                        }
-                    }
-                }
+    for(ll w=2; w<=N; ++w) {
+        rep(l, N+1-w) {
+            ll r = l+w;
+            dp0[l][r] += dp1[l+1][r];
+            for(ll m=l+1; m<r; ++m) {
+                if(P[l]>P[m]) continue;
+                dp1[l][r] += dp0[l][m] * dp1[m][r];
             }
+            dp1[l][r] += dp0[l][r];
         }
     }
+    Out(dp0[0][N]);
 
-    ll ans = 0;
-    rep(l, N+2) rep(r, N+2) rep(p, 2) rep(n, N+1) {
-        if(dp[l][r][p][n]<INF) {
-            if(n==5) de5(l,r,p,n, dp[l][r][p][n])
-            chmax(ans, n);
-        }
-    }
-    Out(ans);
 
 }
 
