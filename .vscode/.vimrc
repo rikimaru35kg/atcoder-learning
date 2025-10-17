@@ -1,3 +1,6 @@
+" set <leader> key
+let mapleader = " "
+
 " Setting
 "文字コードをUFT-8に設定
 set fenc=utf-8
@@ -65,4 +68,21 @@ set wrapscan
 set hlsearch
 " ESC連打でハイライト解除
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
+
+" Move
+nnoremap m 5<C-e>
+nnoremap t 5<C-y>
+
+" plugin keyboard shortcuts
+nmap <C-d> <C-n>
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+
+" plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'preservim/nerdtree'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+call plug#end()
 

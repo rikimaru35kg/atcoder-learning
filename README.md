@@ -1134,8 +1134,7 @@
 - <expr>,<term>,<factor>,<number>の構造を定義
 - <expr>,<term>,<factor>が循環参照する形になる
 ### 例題
-!!! where i am now for rank A (last submission 2025/6/6)
-- !復習価値高 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
+- !復習価値中 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
 - 自分的に苦手な考え方のDPをまとめておく
@@ -1186,6 +1185,7 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+!!! where i am now for rank A (last submission 2025/4/30)
 - !復習価値高 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
 
 ## 区間操作
