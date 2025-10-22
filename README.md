@@ -2205,6 +2205,7 @@
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
 - [E - Wind Cleaning](https://atcoder.jp/contests/abc427/tasks/abc427_e)
 - [F - Not Adjacent](https://atcoder.jp/contests/abc427/tasks/abc427_f)
+- [F - Pyramid Alignment](https://atcoder.jp/contests/abc428/tasks/abc428_f)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)

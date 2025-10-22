@@ -228,82 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+struct S {
+    ll v, l;
+    S(ll v=-1, ll l=-1): v(v), l(l) {}
+};
+S op(S a, S b) {return a;}
+S e() {return S();}
+S mapping(S f, S x) {
+    if(f.v==-1) return x;
+    return f;
+}
+S composition(S f, S g) {
+    if(f.v==-1) return g;
+    return f;
+}
+S id() {return S();}
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N, L);
-    VL(X, N);
-    VL(T, N);
-    X.insert(X.begin(), 0);
-    X.push_back(L);
-    T.insert(T.begin(), -1);
-    T.push_back(-1);
+    LONG(N);
+    VL(W, N);
+    vl left(N);
 
-    using vvvvl = vector<vvvl>;
-    vvvvl dp(N+2, vvvl(N+2, vvl(2, vl(N+1, INF))));
-    dp[0][N+1][0][0] = 0;
+    vector<S> init(N, S(-1,-1));
+    rep(i, N) {
+        init[i] = S(i, 0);
+    }
+    lazy_segtree<S,op,e,S,mapping,composition,id> seg(init);
 
-    auto calcost=[&](ll i, ll j, bool outside=false) -> ll {
-        ll ret = abs(X[j] - X[i]);
-        if(outside) ret = L - ret;
-        return ret;
-    };
-    auto calgain=[&](ll ntime, ll t) -> ll {
-        if(ntime<=T[t]) return 1;
-        return 0;
-    };
-
-    rep(l, N+1) {
-        for(ll r=N+1; r-l>1; --r) {
-            rep(p, 2) {
-                rep(n, N+1) {
-                    ll now = dp[l][r][p][n];
-                    if(now==INF) continue;
-                    if(l==0 && r==5 && p==1 && n==2) {
-                        cout<<"";
-                    }
-                    if(p==0) {
-                        // l->l
-                        {
-                            ll t = l+1;
-                            ll ntime = now + calcost(l, t);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[t][r][p][nn], ntime);
-                        }
-                        // l->r
-                        {
-                            ll t = r-1;
-                            ll ntime = now + calcost(l, t, true);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[l][t][p^1][nn], ntime);
-                        }
-                    } else {
-                        // r->r
-                        {
-                            ll t = r-1;
-                            ll ntime = now + calcost(r, t);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[l][t][p][nn], ntime);
-                        }
-                        // r->l
-                        {
-                            ll t = l+1;
-                            ll ntime = now + calcost(r, t, true);
-                            ll nn = n + calgain(ntime, t);
-                            chmin(dp[t][r][p^1][nn], ntime);
-                        }
-                    }
-                }
+    LONG(Q);
+    rep(_, Q) {
+        LONG(t);
+        if(t<=2) {
+            LONGM(v);
+            auto [nv, l] = seg.get(v);
+            if(l==0) {
+                left[v] = left[nv];
+            } else {
+                left[v] = left[nv]+W[nv]-W[v];
             }
+            if(t==1) seg.apply(0, v, S(v, 0));
+            else seg.apply(0, v, S(v, 1));
+        } else {
+            LONG(x);
+            auto f=[&](ll i) -> bool {
+                auto [nv,l] = seg.get(i);
+                ll lef = left[nv];
+                if(l==1) {
+                    lef = left[nv]+W[nv]-W[i];
+                }
+                return lef<=x && x<lef+W[i];
+            };
+            ll i = binary_search(N, -1, f);
+            Out(N-i);
         }
     }
-
-    ll ans = 0;
-    rep(l, N+2) rep(r, N+2) rep(p, 2) rep(n, N+1) {
-        if(dp[l][r][p][n]<INF) {
-            if(n==5) de5(l,r,p,n, dp[l][r][p][n])
-            chmax(ans, n);
-        }
-    }
-    Out(ans);
 
 }
 

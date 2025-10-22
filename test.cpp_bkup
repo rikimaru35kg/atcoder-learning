@@ -228,43 +228,70 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct Diameter {
+    int n, a, b; bool done=false;
+    long long diam;
+    using II = pair<int,int>;
+    using LI = pair<long long,int>;
+    vector<vector<LI>> from;
+    Diameter(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c=1) {
+        assert(0<=a && a<n && 0<=b && b<n);
+        from[a].emplace_back(b, c);
+        from[b].emplace_back(a, c);
+    }
+    LI dfs(int v, long long d=0, int p=-1) {
+        LI ret(d, v);
+        for(auto [nv,c]: from[v]) if(nv!=p) {
+            ret = max(ret, dfs(nv, d+c, v));
+        }
+        return ret;
+    }
+    II get_end_points() {
+        if(done) return {a,b};
+        done = true;
+        a = dfs(0).second;
+        auto [dtmp, btmp] = dfs(a);
+        b = btmp, diam = dtmp;
+        return {a,b};
+    }
+    int get_diameter() {
+        get_end_points();
+        return diam;
+    }
+    // calculate dist(N) from sv using DFS
+    vector<long long> caldist(int sv) {
+        assert(0<=sv && sv<n);
+        vector<long long> dist(n);
+        auto dfs=[&](auto f, int v, long long d=0, int p=-1) -> void {
+            dist[v] = d;
+            for(auto [nv,c]: from[v]) if(nv!=p) { f(f, nv, d+c, v); }
+        };
+        dfs(dfs, sv);
+        return dist;
+    }
+};
 
 void solve() {
     LONG(N);
-    VLM(P, N);
-
-    vvm dp0(N+1, vm(N+1));
-    vvm dp1(N+1, vm(N+1));
-
-    rep(i, N) dp0[i][i+1] = 1;
-    rep(i, N) dp1[i][i+1] = 1;
-
-    for(ll w=2; w<=N; ++w) {
-        rep(l, N+1-w) {
-            ll r = l+w;
-            dp0[l][r] += dp1[l+1][r];
-            for(ll m=l+1; m<r; ++m) {
-                if(P[l]>P[m]) continue;
-                dp1[l][r] += dp0[l][m] * dp1[m][r];
-            }
-            dp1[l][r] += dp0[l][r];
-        }
+    Diameter tree(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+        tree.add_edge(a, b);
     }
-    Out(dp0[0][N]);
 
+    auto [a,b] = tree.get_end_points();
+    vl da = tree.caldist(a);
+    vl db = tree.caldist(b);
+    rep(i, N) {
+        Pr p = {-1, -1};
+        chmax(p, {da[i], a+1});
+        chmax(p, {db[i], b+1});
+        Out(p.second);
+    }
 
 }
 
