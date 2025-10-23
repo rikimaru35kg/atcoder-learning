@@ -766,6 +766,7 @@
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
 - !復習価値中 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
+!!! where i am now for rank S (last submission ~~)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 双対セグメントツリー（Dual Segment Tree）
@@ -1658,8 +1659,7 @@
 ### 例題
 - !復習価値低 種類数総和 [E - I Hate Sigma Problems](https://atcoder.jp/contests/abc371/tasks/abc371_e)
 - 基本 駒置きコストの総和 [E - Cell Distance](https://atcoder.jp/contests/abc127/tasks/abc127_e)
-!!! where i am now for rank S (last submission 2025/9/17)
-- !要復習 [E - Sum of Subarrays](https://atcoder.jp/contests/abc423/tasks/abc423_e)
+- !復習価値低 [E - Sum of Subarrays](https://atcoder.jp/contests/abc423/tasks/abc423_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - 基本 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
 - !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
