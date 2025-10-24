@@ -228,91 +228,39 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-struct S {
-    ll v, l;
-    S(ll v=-1, ll l=-1): v(v), l(l) {}
-};
-S op(S a, S b) {return a;}
-S e() {return S();}
-S mapping(S f, S x) {
-    if(f.v==-1) return x;
-    return f;
-}
-S composition(S f, S g) {
-    if(f.v==-1) return g;
-    return f;
-}
-S id() {return S();}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N);
-    VL(W, N);
-    vl left(N);
+    LONG(N, K, X);
+    VL(A, N);
 
-    vector<S> init(N, S(-1,-1));
-    rep(i, N) {
-        init[i] = S(i, 0);
+    using P = pair<db,ll>;
+    priority_queue<P> que;
+    rep(i, N) que.emplace(A[i], 1);
+
+    while(K) {
+        auto [l,n] = que.top(); que.pop();
+        ll n_ope = min(n, K);
+        que.emplace(l/2, n_ope*2);
+        K -= n_ope;
+        n -= n_ope;
+        if(n>0) que.emplace(l,n);
     }
-    lazy_segtree<S,op,e,S,mapping,composition,id> seg(init);
 
-    LONG(Q);
-    rep(_, Q) {
-        LONG(t);
-        if(t<=2) {
-            LONGM(v);
-            auto [nv, l] = seg.get(v);
-            if(l==0) {
-                left[v] = left[nv];
-            } else {
-                left[v] = left[nv]+W[nv]-W[v];
-            }
-            if(t==1) seg.apply(0, v, S(v, 0));
-            else seg.apply(0, v, S(v, 1));
-        } else {
-            LONG(x);
-            auto f=[&](ll i) -> bool {
-                auto [nv,l] = seg.get(i);
-                ll lef = left[nv];
-                if(l==1) {
-                    lef = left[nv]+W[nv]-W[i];
-                }
-                return lef<=x && x<lef+W[i];
-            };
-            ll i = binary_search(N, -1, f);
-            Out(N-i);
+    while(X) {
+        auto [l,n] = que.top(); que.pop();
+        if(X<=n) {
+            Out(l);return;
         }
+        X -= n;
     }
+    assert(0);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

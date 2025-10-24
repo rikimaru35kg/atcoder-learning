@@ -69,6 +69,9 @@ set hlsearch
 " ESC連打でハイライト解除
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
+" terminal open
+nnoremap <leader>t :bel term<CR>
+
 " Move
 nnoremap m 5<C-e>
 nnoremap t 5<C-y>
