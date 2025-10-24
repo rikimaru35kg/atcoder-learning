@@ -242,42 +242,69 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
 void solve() {
-    LONG(P);
-    ll N = P-1;
-    vl ps, ds;
-    {
-        ll n = N;
-        for(ll p=2; p*p<=n; ++p) {
-            if(n%p!=0) continue;
-            ps.push_back(p);
-            while(n%p==0) n /= p;
-        }
-        if(n!=1) ps.push_back(n);
-    }
-    {
-        ll n = N;
-        for(ll d=1; d*d<=n; ++d){ 
-            if(n%d!=0) continue;
-            ds.push_back(d);
-            if(d*d!=n) ds.push_back(n/d);
-        }
-    }
-    umap<ll,mint> cnt;
-    sort(allr(ds));
-    for(auto d: ds) { cnt[d] = N/d; }
+    LONG(R,G,B,K);
+    R -= K, G -= K;
+    ll X = K;
+    ll M = min(R, G);
 
-    for(auto p: ps) {
-        for(auto d: ds) {
-            // if(N%(d*p)!=0) continue;
-            if(!cnt.count(d*p)) continue;
-            cnt[d*p] -= cnt[d];
-        }
-    }
+    Combination comb(R+G+B+K, M998);
 
-    mint ans = 1;
-    for(auto [d,n]: cnt) {
-        ans += n * (N / gcd(N, d));
+    auto f=[&](ll x) -> mint { return comb.get_fact(x); };
+    auto inf=[&](ll x) -> mint { return comb.get_factinv(x); };
+
+    mint ans;
+    rep(ng, M+1) {
+        ll r = R-ng, g = G-ng, b = B, x = X;
+        ll n = r+g+b+x+ng;
+        mint now = f(n) * inf(r) * inf(g) * inf(b) * inf(x) * inf(ng);
+        if(ng&1) ans -= now;
+        else ans += now;
     }
     Out(ans);
 

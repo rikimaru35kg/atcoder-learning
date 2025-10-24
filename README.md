@@ -1473,8 +1473,7 @@
 - !復習価値低 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
-!!! where i am now for rank A (last submission 2025/9/19)
-- !復習価値高 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
+- !復習価値中 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
 
 ## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
@@ -1498,7 +1497,7 @@
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !復習価値中 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
 - !復習価値低 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
-- !復習価値高 [G - Yet Another RGB Sequence](https://atcoder.jp/contests/abc266/tasks/abc266_g)
+- !復習価値低 [G - Yet Another RGB Sequence](https://atcoder.jp/contests/abc266/tasks/abc266_g)
 
 ## 分布に対するDP
 - 分布に対して1つずつ決めていく事で現実的な計算量でDPできる事がある
@@ -1527,6 +1526,7 @@
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
+!!! where i am now for rank A (last submission 2025/9/19)
 - !復習価値高 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
