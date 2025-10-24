@@ -1526,7 +1526,6 @@
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
-!!! where i am now for rank A (last submission 2025/9/19)
 - !復習価値高 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
@@ -1618,7 +1617,7 @@
 - !復習価値中 [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
-- !復習価値高 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
+- !要復習 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
 
 # 行列
 
@@ -1724,6 +1723,7 @@
 - !復習価値低 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 - 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
+!!! where i am now for rank A (last submission 2025/9/19)
 - !復習価値高 [E - Count A%B=C](https://atcoder.jp/contests/abc414/tasks/abc414_e)
 
 ## データ構造をマージする一般的なテク
