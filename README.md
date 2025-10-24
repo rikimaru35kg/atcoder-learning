@@ -1751,8 +1751,7 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 - !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
-!!! where i am now for rank A (last submission 2025/9/19)
-- !復習価値高 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
+- !復習価値低 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
 
 ## K番目の何かを答える
 - 1番目をxと置くと、求めるものはxからK-1個進めたものとなる
@@ -1849,6 +1848,7 @@
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
+!!! where i am now for rank A (last submission 2025/9/19)
 - !復習価値高 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
 
 ## N以下の数字の何かを求める
