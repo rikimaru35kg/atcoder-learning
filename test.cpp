@@ -228,52 +228,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, M);
-    vvt3 from(N);
-    vl ws;
-    rep(ei, M) {
-        LONGM(a,b); LONG(w);
-        from[a].emplace_back(b, w, ei);
-        from[b].emplace_back(a, w, ei);
-        ws.push_back(w);
+    LONG(P);
+    ll N = P-1;
+    vl ps, ds;
+    {
+        ll n = N;
+        for(ll p=2; p*p<=n; ++p) {
+            if(n%p!=0) continue;
+            ps.push_back(p);
+            while(n%p==0) n /= p;
+        }
+        if(n!=1) ps.push_back(n);
     }
-    vb del(M);
-
-    auto able=[&](ll k) -> bool {
-        queue<ll> que;
-        vb pushed(N);
-        auto push=[&](ll v) {
-            if(pushed[v]) return;
-            pushed[v] = true;
-            que.push(v);
-        };
-        push(0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            if(v==N-1) return true;
-            for(auto [nv, w, ei]: from[v]) {
-                if(w>>k&1) continue;
-                if(del[ei]) continue;
-                push(nv);
-            }
+    {
+        ll n = N;
+        for(ll d=1; d*d<=n; ++d){ 
+            if(n%d!=0) continue;
+            ds.push_back(d);
+            if(d*d!=n) ds.push_back(n/d);
         }
-        return false;
-    };
+    }
+    umap<ll,mint> cnt;
+    sort(allr(ds));
+    for(auto d: ds) { cnt[d] = N/d; }
 
-    ll K = 29;
-    ll ans = 0;
-    for(ll k=K; k>=0; --k) {
-        if(able(k)) {
-            rep(ei, M) {
-                if(ws[ei]>>k&1) del[ei] = true;
-            }
-        } else {
-            ans |= 1LL<<k;
+    for(auto p: ps) {
+        for(auto d: ds) {
+            // if(N%(d*p)!=0) continue;
+            if(!cnt.count(d*p)) continue;
+            cnt[d*p] -= cnt[d];
         }
+    }
+
+    mint ans = 1;
+    for(auto [d,n]: cnt) {
+        ans += n * (N / gcd(N, d));
     }
     Out(ans);
-
 
 }
 
