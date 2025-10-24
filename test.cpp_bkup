@@ -228,32 +228,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
     LONG(N);
-    mint sum = 0;
-    ll b = 1;
-    while(b<=N) {
-        ll x = N/b;
-        ll nb = N/x+1;
-        sum += mint(nb-b) * x;
-        b = nb;
+    vl ten(18, 1);
+    rep(i, 17) ten[i] = ten[i] * 10;
+
+    ll l = 1;
+    ll ans = 0;
+    while(l<N) {
+        rep(d, 16) {
+            ll mx = l*ten[d+1]-1;
+            ans += mx-mn+1 - max(mx-N)
+        }
+        l = l*10 + 1;
     }
-    mint ans = mint(N)*(N+1)/2 - sum;
-    Out(ans);
 
 }
 

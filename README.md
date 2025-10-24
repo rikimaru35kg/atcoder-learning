@@ -1848,8 +1848,7 @@
 - 基本 （経路復元で解く場合のdiffは跳ね上がる。snuke氏も苦労） [D - Happy Birthday! 2](https://atcoder.jp/contests/abc200/tasks/abc200_d)
 - 基本 [088 - Similar but Different Ways（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_cj)
 - 基本 [F - Find 4-cycle](https://atcoder.jp/contests/abc260/tasks/abc260_f)
-!!! where i am now for rank A (last submission 2025/9/19)
-- !復習価値高 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
+- !復習価値低 [B - Arithmetic Progression Subsequence](https://atcoder.jp/contests/arc170/tasks/arc170_b)
 
 ## N以下の数字の何かを求める
 - 以下、桁和の総和を求め方
@@ -1861,7 +1860,7 @@
 ### 例題
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
-- !復習価値高 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
+- !要復習 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
 - !復習価値低 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
@@ -1979,6 +1978,7 @@
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+!!! where i am now for rank A (last submission 2025/9/19)
 - !復習価値高 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
 
 ## 最大フロー・最小カット

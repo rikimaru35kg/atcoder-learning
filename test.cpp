@@ -228,90 +228,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-
 void solve() {
     LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    BIT<ll> tree(N);
 
-    vl dp(N);
-    vvl dpc(N);
-    vl ans(N);
-    {
-        auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-            tree.add(v, 1);
-            dp[v] -= tree.sum(0, v);
-            for(auto nv: from[v]) if(nv!=p) {
-                dpc[v].push_back(-tree.sum(0, v));
-                f(f, nv, v);
-                dpc[v].back() += tree.sum(0, v);
-            }
-            dp[v] += tree.sum(0, v);
-            ans[0] += dp[v];
-        };
-        dfs(dfs, 0);
-    }
+    string s = to_string(N);
+    ll M = s.size();
+    ll up = 0, low = N;
+    ll ten = 1;
+    rep(i, M-1) ten *= 10;
 
-    auto dfs=[&](auto f, ll v, ll x, ll p=-1) -> void {
-        ans[v] = x;
-        ll i = 0;
-        for(auto nv: from[v]) if(nv!=p) {
-            ll nx = x;
-            nx += nv - dp[nv];
-            nx -= dpc[v][i];
-            f(f, nv, nx, v);
-            ++i;
+    ll ans = 0;
+    rep(d, M) {
+        ll x = s[d]-'0';
+        up = up*10 + x;
+        low -= x * ten;
+
+        ll ones = 1;
+        while(ones<=up) {
+            if(ones==up) ans += low+1;
+            else ans += ten;
+            ones = ones*10 + 1;
         }
-    };
-    dfs(dfs, 0, ans[0]);
+        ten /= 10;
+    }
     Out(ans);
-
-
 
 }
 
