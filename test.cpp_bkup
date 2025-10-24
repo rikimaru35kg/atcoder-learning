@@ -229,19 +229,34 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vl ten(18, 1);
-    rep(i, 17) ten[i] = ten[i] * 10;
-
-    ll l = 1;
-    ll ans = 0;
-    while(l<N) {
-        rep(d, 16) {
-            ll mx = l*ten[d+1]-1;
-            ans += mx-mn+1 - max(mx-N)
-        }
-        l = l*10 + 1;
+    LONG(N, M);
+    vt3 edge;
+    rep(i, M) {
+        LONG(l, r, s); --l;
+        edge.emplace_back(l, r, s);
+        edge.emplace_back(r, l, -s);
     }
+    rep(i, N) {
+        edge.emplace_back(i+1, i, -1);
+    }
+
+    ll cnt = 0;
+    vl dist(N+1, INF);
+    dist[N] = 0;
+    while(cnt<N+10) {
+        ll upd = false;
+        for(auto [a,b,x]: edge) {
+            if(dist[a]==INF) continue;
+            if(dist[b]>dist[a]+x) upd = true;
+            chmin(dist[b], dist[a]+x);
+        }
+        if(!upd) break;
+        ++cnt;
+    }
+    de(dist)
+
+    if(cnt>N+5) Pm1
+    Out(-dist[0]);
 
 }
 

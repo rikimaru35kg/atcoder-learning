@@ -100,6 +100,7 @@
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
+!!! where i am now for rank A (last submission 2025/5/15)
 - !復習価値高 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
 
 ## 三分探索法
@@ -1978,8 +1979,7 @@
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
-!!! where i am now for rank A (last submission 2025/9/19)
-- !復習価値高 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
+- !要復習 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
 
 ## 最大フロー・最小カット
 - ACLで求める
