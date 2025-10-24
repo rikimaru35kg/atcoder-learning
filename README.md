@@ -1186,7 +1186,6 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
-!!! where i am now for rank A (last submission 2025/4/30)
 - !復習価値高 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
 
 ## 区間操作
@@ -1243,7 +1242,7 @@
 - ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
 ### 例題
 - !復習価値低 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
-- !復習価値高 [E - Minimum OR Path](https://atcoder.jp/contests/abc408/tasks/abc408_e)
+- 基本 [E - Minimum OR Path](https://atcoder.jp/contests/abc408/tasks/abc408_e)
 
 ## 2進数
 - 2進数を用いると、N桁で2^Nの情報量を表せる
@@ -1419,6 +1418,7 @@
 - 原始根のグラフを考えた場合、1ずつ進む
 - 非原始根の場合、kステップずつ進む事に相当（k=1~N）
 ### 例題
+!!! where i am now for rank A (last submission 2025/7/18)
 - !復習価値高 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
 
 ## 平方数

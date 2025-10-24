@@ -229,38 +229,58 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K, X);
-    VL(A, N);
-
-    using P = pair<db,ll>;
-    priority_queue<P> que;
-    rep(i, N) que.emplace(A[i], 1);
-
-    while(K) {
-        auto [l,n] = que.top(); que.pop();
-        ll n_ope = min(n, K);
-        que.emplace(l/2, n_ope*2);
-        K -= n_ope;
-        n -= n_ope;
-        if(n>0) que.emplace(l,n);
+    LONG(N, M);
+    vvt3 from(N);
+    vl ws;
+    rep(ei, M) {
+        LONGM(a,b); LONG(w);
+        from[a].emplace_back(b, w, ei);
+        from[b].emplace_back(a, w, ei);
+        ws.push_back(w);
     }
+    vb del(M);
 
-    while(X) {
-        auto [l,n] = que.top(); que.pop();
-        if(X<=n) {
-            Out(l);return;
+    auto able=[&](ll k) -> bool {
+        queue<ll> que;
+        vb pushed(N);
+        auto push=[&](ll v) {
+            if(pushed[v]) return;
+            pushed[v] = true;
+            que.push(v);
+        };
+        push(0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            if(v==N-1) return true;
+            for(auto [nv, w, ei]: from[v]) {
+                if(w>>k&1) continue;
+                if(del[ei]) continue;
+                push(nv);
+            }
         }
-        X -= n;
+        return false;
+    };
+
+    ll K = 29;
+    ll ans = 0;
+    for(ll k=K; k>=0; --k) {
+        if(able(k)) {
+            rep(ei, M) {
+                if(ws[ei]>>k&1) del[ei] = true;
+            }
+        } else {
+            ans |= 1LL<<k;
+        }
     }
-    assert(0);
+    Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
