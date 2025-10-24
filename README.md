@@ -1723,8 +1723,7 @@
 - !復習価値低 ΣΣfloor(max{a,b}/min{a,b}) [E - Max/Min](https://atcoder.jp/contests/abc356/tasks/abc356_e)
 - 基本 [N - 上からと横から](https://atcoder.jp/contests/past202209-open/tasks/past202209_n)
 - 基本 [K - マス目](https://atcoder.jp/contests/past16-open/tasks/past202309_k)
-!!! where i am now for rank A (last submission 2025/9/19)
-- !復習価値高 [E - Count A%B=C](https://atcoder.jp/contests/abc414/tasks/abc414_e)
+- !復習価値低 [E - Count A%B=C](https://atcoder.jp/contests/abc414/tasks/abc414_e)
 
 ## データ構造をマージする一般的なテク
 - 箱に入ったボールを次々に移し替えていく場合、少ない方を大きい方に移すことで、各ボールの移し替えられる回数は高々logN回に抑えられる（データ構造をマージする一般的なテク）
@@ -1752,6 +1751,7 @@
 - 基本 カードの期待値 [F - Double Chance](https://atcoder.jp/contests/abc276/tasks/abc276_f)
 - 基本 [D - 日本沈没 (Japan Sinks)](https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d)
 - !復習価値低 [E - Chinese Restaurant (Three-Star Version)](https://atcoder.jp/contests/abc268/tasks/abc268_e)
+!!! where i am now for rank A (last submission 2025/9/19)
 - !復習価値高 [G - Tree Inversion](https://atcoder.jp/contests/abc337/tasks/abc337_g)
 
 ## K番目の何かを答える
