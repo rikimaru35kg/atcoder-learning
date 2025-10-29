@@ -1633,6 +1633,7 @@
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 - !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
+- !要復習 [F - Shortest Path Query](https://atcoder.jp/contests/abc429/tasks/abc429_f)
 - !復習価値中 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）
