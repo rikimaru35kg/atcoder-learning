@@ -100,8 +100,7 @@
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
-!!! where i am now for rank A (last submission 2025/5/15)
-- !復習価値高 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
+- !復習価値中 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
@@ -497,6 +496,7 @@
 - functional graphを強連結成分分解すれば、サイクルのみを取り出すことが可能
 ### 例題
 - 基本 [E - Just one](https://atcoder.jp/contests/abc226/tasks/abc226_e)
+!!! where i am now for rank A (last submission 2025/8/20)
 - !復習価値高 [E - Replace](https://atcoder.jp/contests/abc399/tasks/abc399_e)
 
 ## パスグラフ

@@ -228,55 +228,165 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Data {
-    ll v1, v2, d1, d2;
-    Data(ll v1=-1, ll v2=-1, ll d1=INF, ll d2=INF)
-        : v1(v1),v2(v2),d1(d1),d2(d2) {}
-    bool update(ll v, ll d) {
-        if(v2!=-1) return false;
-        if(v1==-1) {
-            v1 = v, d1 = d;
-            return true;
-        }
-        if(v1==v) return false;
-
-        v2 = v, d2 = d;
-        return true;
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
+public:
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    ll get() { return d1+d2; }
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
+    }
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
+        }
+        return op(lft, rgt);
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
+    }
 };
 
-void solve() {
-    LONG(N, M);
-    vvl from(N);
-    rep(i, M) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
     }
-    STRING(S);
-
-    vector<Data> dist(N);
-    queue<t3> que;
-    auto push=[&](ll v, ll sv, ll d) {
-        if(dist[v].update(sv, d)) que.emplace(v, sv, d);
-    };
-    rep(i, N) {
-        if(S[i]=='S') push(i, i, 0);
+    return ret;
+}
+template <typename T>
+vector<vector<T>> transpose(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
+        ret[j][i] = a[i][j];
     }
+    return ret;
+}
 
-    while(que.size()) {
-        auto [v,sv,d] = que.front(); que.pop();
-        de3(v, sv, d)
-        for(auto nv: from[v]) {
-            push(nv, sv, d+1);
+struct D {
+    ll dist[3][3];
+    D (string s="") {
+        if(s=="") {
+            rep(i, 3) rep(j, 3) dist[i][j] = INF;
+            rep(i, 3) dist[i][i] = 0;
+            return;
         }
+        rep(i, 3) rep(j, 3) dist[i][j] = abs(i-j);
+        rep(k, 3) if(s[k]=='#') {
+            rep(i, k+1) repk(j, k, 3) dist[i][j]=dist[j][i]=INF;
+        }
+    };
+};
+D op(D a, D b) {
+    D ret("###");
+    rep(i, 3) rep(j, 3) rep(k, 3) {
+        chmin(ret.dist[i][j], a.dist[i][k]+b.dist[k][j]);
     }
+    return ret;
+}
+D e() {return D("");}
 
-    rep(i, N) if(S[i]=='D') {
-        Out(dist[i].get());
+void solve() {
+    LONG(N);
+    VS(S, 3);
+    S = transpose(S);
+
+    SegTree<D,op,e> seg(N);
+    rep(i, N) seg.set_only(i, S[i]);
+    seg.build();
+
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(r, c);
+        S[c][r] ^= '#'^'.';
+        seg.set(c, D(S[c]));
+        ll ans = seg.all_prod().dist[0][2];
+        ans += N-1;
+        if(ans>=INF) ans = -1;
+        Out(ans);
     }
-
 
 }
 
