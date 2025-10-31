@@ -1633,8 +1633,7 @@
 - !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
 - !要復習 [F - Shortest Path Query](https://atcoder.jp/contests/abc429/tasks/abc429_f)
-!!! where i am now for rank B (last submission 2025/5/2)
-- !復習価値中 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
+- !要復習 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）
 - x, yが1次を保ったまま変換される場合は、アフィン変換可能
@@ -1647,6 +1646,7 @@
 - 基底を次々に追加する実装が分かりやすい（F-Spicesの解説動画参照）
 - 行列を用意してからやる方法はけんちょん氏のページが分かりやすい
 ### 例題
+!!! where i am now for rank B (last submission 2025/5/2)
 - !復習価値中 最小スパイスコスト [F - Spices](https://atcoder.jp/contests/abc236/tasks/abc236_f)
 - !復習価値低 [D - 数列 XOR](https://atcoder.jp/contests/bitflyer2018-final/tasks/bitflyer2018_final_d)
 - !復習価値中 [057 - Flip Flap（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_be)

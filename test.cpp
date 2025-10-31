@@ -228,8 +228,25 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! count the # of t in s.  O(|S||T|)
+int count(string &s, string t) {
+    int ret = 0;
+    for(int i=0; i<int(s.size()); ) {
+        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
+        else ++i;
+    }
+    return ret;
+}
+int count(string &s, char c) { return count(s, string(1,c)); }
+int count(vector<string> &s, string t) {
+    int ret = 0;
+    for(auto &cs: s) ret += count(cs, t);
+    return ret;
+}
+int count(vector<string> &s, char c) { return count(s, string(1,c)); }
+
 //! n*n matrix
-constexpr int MX = 2;  // DEFINE PROPERLY!!
+constexpr int MX = 32;  // DEFINE PROPERLY!!
 template <typename T> class Mat {
     int n;
     T a[MX][MX];
@@ -311,7 +328,7 @@ public:
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -324,25 +341,55 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(K, M);
-    mint::set_mod(M);
-    mint ans = 0;
+    LONG(N, M);
+    VS(S, M);
 
-    auto calc=[&](auto f, ll d) -> mint {
-        if(d==1) return 1;
-        mint ret = f(f, d/2);
-        ret += ret*mint(10).pow(d/2);
-        if(d&1) ret = ret*10 + 1;
+    auto int2string=[&](ll s, ll d) -> string {
+        string now;
+        rep(i, d) {
+            if(s>>i&1) now += 'b';
+            else now += 'a';
+        }
+        return now;
+    };
+    auto string2int=[&](string s) -> int {
+        reverse(all(s));
+        int ret = 0;
+        rep(i, s.size()) ret = (ret<<1) + s[i]-'a';
         return ret;
     };
-
-    rep(i, K) {
-        LONG(c, d);
-        mint now = calc(calc, d) * c;
-        ans = ans * mint(10).pow(d) + now;
+    auto include=[&](string &s) {
+        rep(i, M) { if(count(s, S[i])) return true; }
+        return false;
+    };
+    if(N<=5) {
+        ll ans = 0;
+        rep(s, 1<<N) {
+            string now = int2string(s, N);
+            if(!include(now)) ++ans;
+        }
+        Outend(ans);
     }
-    Out(ans);
 
+    Mat<mint> mat;
+    rep(i, MX) rep(j, MX) mat.set(i,j,0);
+    rep(i, MX) {
+        string base = int2string(i, 5);
+        rep(x, 2) {
+            string now = base + char('a'+x);
+            if(!include(now)) {
+                now = now.substr(1);
+                ll j = string2int(now);
+                mat.set(j, i, mat(j, i)+1);
+            }
+        }
+    }
+    mat = mat.pow(N-5);
+    vm x(MX, 1);
+    vm y = mat*x;
+    mint ans;
+    rep(i, MX) ans += y[i];
+    Out(ans);
 }
 
 int main () {
