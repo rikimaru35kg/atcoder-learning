@@ -228,168 +228,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! count the # of t in s.  O(|S||T|)
-int count(string &s, string t) {
-    int ret = 0;
-    for(int i=0; i<int(s.size()); ) {
-        if(s.substr(i,t.size()) == t) ++ret, i+=t.size();
-        else ++i;
+//! O(ROW * COL^2 / 64?)
+const int COL = 16;
+using BS = bitset<COL>; // size=COL
+using vBS = vector<BS>;
+struct XorBase {
+    int ROW;
+    int rank = 0;
+    vBS base;
+    XorBase(int n): ROW(n), base(n) {}
+    void initialize(vBS _base) { base = _base;} 
+    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
+        if(rank==ROW) return;
+        base[rank] = bs;
+        sweep();  // O(ROW * COL^2 / 64?)
     }
-    return ret;
-}
-int count(string &s, char c) { return count(s, string(1,c)); }
-int count(vector<string> &s, string t) {
-    int ret = 0;
-    for(auto &cs: s) ret += count(cs, t);
-    return ret;
-}
-int count(vector<string> &s, char c) { return count(s, string(1,c)); }
+    void sweep() {
+        rank = 0;
+        for(int j=0; j<COL; ++j) {  // find pivot for column j
+            int pi = -1;  // pivot i
+            for(int i=rank; i<ROW; ++i) {
+                if(!base[i][j]) continue;
+                pi = i; break;
+            }
+            if(pi==-1) continue;  // no pivot at column j
 
-//! n*n matrix
-constexpr int MX = 32;  // DEFINE PROPERLY!!
-template <typename T> class Mat {
-    int n;
-    T a[MX][MX];
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-public:
-    // Initialize n*n matrix as unit matrix
-    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
+            swap(base[rank], base[pi]);
+            // delete all other 1 at column j
+            for(int i=0; i<ROW; ++i) {
+                if(i==rank) continue;
+                if(!base[i][j]) continue;
+                base[i] ^= base[rank];
             }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
+            ++rank;
         }
     }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
+    vBS get_base() { return base;}
+    int get_rank() { return rank;}
+    BS get_row(int i) { return base[i]; }
+    vector<int> find_pivots() {
+        // ret[idx_col] = idx_row, (-1: no pivit for the column)
+        vector<int> ret(COL, -1);
+        int j = 0;
+        for(int i=0; i<rank; ++i) {
+            while(j<COL && !base[i][j]) ++j;
+            if(j<COL) ret[j] = i;
         }
         return ret;
     }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
+    bool operator==(const XorBase &o) const {
+        if(ROW != o.ROW) return false;
+        if(rank != o.rank) return false;
+        for(int i=0; i<rank; ++i) {
+            if (base[i] != o.base[i]) return false;
         }
-        return ret;
+        return true;
     }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        assert(abs(det)>=EPS);
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    Mat pow(long long k) { return pow_recursive(*this, k); }
-    void set(int i, int j, T x) { a[i][j] = x; }
-    T operator()(int i, int j) { return a[i][j]; }
-    void print(string debugname="------") {  // for debug
+    void dump() { // for debug
         #ifdef __DEBUG
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
+        for(int i=0; i<ROW; ++i) { cerr << base[i] << endl; }
         #endif
     }
+    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
+    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
+    //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, M);
-    VS(S, M);
-
-    auto int2string=[&](ll s, ll d) -> string {
-        string now;
-        rep(i, d) {
-            if(s>>i&1) now += 'b';
-            else now += 'a';
-        }
-        return now;
-    };
-    auto string2int=[&](string s) -> int {
-        reverse(all(s));
-        int ret = 0;
-        rep(i, s.size()) ret = (ret<<1) + s[i]-'a';
-        return ret;
-    };
-    auto include=[&](string &s) {
-        rep(i, M) { if(count(s, S[i])) return true; }
-        return false;
-    };
-    if(N<=5) {
-        ll ans = 0;
-        rep(s, 1<<N) {
-            string now = int2string(s, N);
-            if(!include(now)) ++ans;
-        }
-        Outend(ans);
+    LONG(N);
+    vp P;
+    ll N2 = 1LL<<N;
+    rep1(i, N2-1) {
+        LONG(c);
+        P.emplace_back(c, i);
     }
-
-    Mat<mint> mat;
-    rep(i, MX) rep(j, MX) mat.set(i,j,0);
-    rep(i, MX) {
-        string base = int2string(i, 5);
-        rep(x, 2) {
-            string now = base + char('a'+x);
-            if(!include(now)) {
-                now = now.substr(1);
-                ll j = string2int(now);
-                mat.set(j, i, mat(j, i)+1);
-            }
-        }
+    sort(all(P));
+    XorBase base(N);
+    ll ans = 0;
+    for(auto [c,i]: P) {
+        BS x(i);
+        XorBase nbase = base;
+        nbase.set_new_row(x);
+        if(nbase==base) continue;
+        ans += c;
+        base = nbase;
     }
-    mat = mat.pow(N-5);
-    vm x(MX, 1);
-    vm y = mat*x;
-    mint ans;
-    rep(i, MX) ans += y[i];
     Out(ans);
+
 }
 
 int main () {
