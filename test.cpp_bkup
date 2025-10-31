@@ -229,7 +229,7 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 //! O(ROW * COL^2 / 64?)
-const int COL = 16;
+const int COL = 300;
 using BS = bitset<COL>; // size=COL
 using vBS = vector<BS>;
 struct XorBase {
@@ -294,26 +294,55 @@ struct XorBase {
     //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）
 };
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N);
-    vp P;
-    ll N2 = 1LL<<N;
-    rep1(i, N2-1) {
-        LONG(c);
-        P.emplace_back(c, i);
+    LONG(N, M);
+    vBS bases(N);
+    rep(i, N) {
+        LONG(t);
+        BS x;
+        rep(j, t) {
+            LONGM(a);
+            x.set(a, true);
+        }
+        bases[i] = x;
     }
-    sort(all(P));
     XorBase base(N);
-    ll ans = 0;
-    for(auto [c,i]: P) {
-        BS x(i);
-        XorBase nbase = base;
-        nbase.set_new_row(x);
-        if(nbase==base) continue;
-        ans += c;
-        base = nbase;
+    base.initialize(bases);
+    base.sweep();
+    vi pivots = base.find_pivots();
+
+    BS target;
+    rep(i, M) {
+        LONG(s);
+        if(s==0) continue;
+        target.set(i, true);
     }
+
+    rep(i, M) {
+        if(!target[i]) continue;
+        if(pivots[i]==-1) Outend(0);
+        BS x = base.get_row(pivots[i]);
+        target ^= x;
+    }
+    ll rank = base.get_rank();
+    mint ans = 1;
+    rep(i, N-rank) ans *= 2;
     Out(ans);
+
 
 }
 

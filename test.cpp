@@ -228,121 +228,101 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 300;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(int n): ROW(n), base(n) {}
-    void initialize(vBS _base) { base = _base;} 
-    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
-        if(rank==ROW) return;
-        base[rank] = bs;
-        sweep();  // O(ROW * COL^2 / 64?)
-    }
-    void sweep() {
-        rank = 0;
-        for(int j=0; j<COL; ++j) {  // find pivot for column j
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;  // no pivot at column j
-
-            swap(base[rank], base[pi]);
-            // delete all other 1 at column j
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-    BS get_row(int i) { return base[i]; }
-    vector<int> find_pivots() {
-        // ret[idx_col] = idx_row, (-1: no pivit for the column)
-        vector<int> ret(COL, -1);
-        int j = 0;
-        for(int i=0; i<rank; ++i) {
-            while(j<COL && !base[i][j]) ++j;
-            if(j<COL) ret[j] = i;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
         }
-        return ret;
     }
-    bool operator==(const XorBase &o) const {
-        if(ROW != o.ROW) return false;
-        if(rank != o.rank) return false;
-        for(int i=0; i<rank; ++i) {
-            if (base[i] != o.base[i]) return false;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
         }
-        return true;
     }
-    void dump() { // for debug
-        #ifdef __DEBUG
-        for(int i=0; i<ROW; ++i) { cerr << base[i] << endl; }
-        #endif
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
     }
-    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
-    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
-    //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(N, M);
-    vBS bases(N);
-    rep(i, N) {
-        LONG(t);
-        BS x;
-        rep(j, t) {
-            LONGM(a);
-            x.set(a, true);
+    LONG(N);
+    VLM(A, N);
+    vvl is(N);
+    rep(i, N) is[i].push_back(-1);
+    rep(i, N) is[A[i]].push_back(i);
+    rep(i, N) is[i].push_back(N);
+    
+    ll ans = 0;
+    rep(a, N) {
+        vl &cis = is[a];
+        ll sz = cis.size();
+        repk(j, 1, sz-1) {
+            ll i = cis[j];
+            ll l = cis[j-1], r = N;
+            if(a) {
+                auto [n,x] = lowbou(is[a-1], i);
+                chmax(l, is[a-1][n-1]);
+                chmin(r, is[a-1][n]);
+            }
+            ans += (i-l)*(r-i);
         }
-        bases[i] = x;
     }
-    XorBase base(N);
-    base.initialize(bases);
-    base.sweep();
-    vi pivots = base.find_pivots();
-
-    BS target;
-    rep(i, M) {
-        LONG(s);
-        if(s==0) continue;
-        target.set(i, true);
-    }
-
-    rep(i, M) {
-        if(!target[i]) continue;
-        if(pivots[i]==-1) Outend(0);
-        BS x = base.get_row(pivots[i]);
-        target ^= x;
-    }
-    ll rank = base.get_rank();
-    mint ans = 1;
-    rep(i, N-rank) ans *= 2;
     Out(ans);
-
 
 }
 
