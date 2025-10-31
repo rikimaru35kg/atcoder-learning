@@ -228,44 +228,64 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-void solve() {
-    LONG(N, K);
-
-    vvm cnt(2, vm(K+1));
-    cnt[0][0] = 1;
-    vvm dp(2, vm(K+1));
-    mint ans = 0;
-
-    for(ll i=59; i>=0; --i) {
-        vvm pcnt(2, vm(K+1)); swap(pcnt, cnt);
-        vvm pdp(2, vm(K+1)); swap(dp, pdp);
-        ll d = N>>i&1;
-        rep(j, 2) rep(k, K+1) rep(x, 2) {
-            if(j==0 && x>d) continue;
-            ll nj = j;
-            if(x<d) nj = 1;
-            ll nk = k + x;
-            if(nk>K) continue;
-            cnt[nj][nk] += pcnt[j][k];
-            dp[nj][nk] += pdp[j][k] + pcnt[j][k]*x*mint(1LL<<i);
-        }
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    
-    ans = dp[0][K] + dp[1][K];
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+
+// 左右分割でうまくいかない凡例 A={6,5,1,2,4,3}
+// 1を左、2を右に追いやればよいが、その時の正しい分割は5と4の間
+// つまり、左右に分割した後で転倒操作をしたものとは一致しない
+void solve() {
+    LONG(N); VLM(A, N);
+    vl rev(N);
+    rep(i, N) rev[A[i]] = i;
+    BIT<int> tree(N);
+    rep(i, N) tree.add(i, 1);
+
+    ll ans = 0;
+    rep(a, N) {
+        int i = rev[a];
+        ll l = tree.sum(0, i), r = tree.sum(i+1, N);
+        ans += min(l, r);
+        tree.add(i, -1);
+    }
     Out(ans);
 
 }
@@ -273,8 +293,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
+

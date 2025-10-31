@@ -228,79 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct SCC {
-    SCC (int n): n(n), from(n), ifrom(n) {}
-    void add_edge (int a, int b) {
-        from[a].push_back(b); ifrom[b].push_back(a);
-    }
-    vector<vector<int>> scc () {
-        vector<vector<int>> groups;
-        postorder = vector<int>();
-        visited.assign(n, false);
-        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
-        visited.assign(n, false);
-        reverse(all(postorder));
-        for(auto v: postorder) if(!visited[v]) {
-            vector<int> group;
-            dfs2(v, group);
-            groups.push_back(group);
-        }
-        return groups;
-    }
-private:
-    int n;
-    vector<vector<int>> from, ifrom;
-    vector<int> postorder;
-    vector<bool> visited;
-    void dfs1 (int v) {
-        visited[v] = true;
-        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
-        postorder.push_back(v);
-    }
-    void dfs2 (int v, vector<int> &group) {
-        visited[v] = true;
-        group.push_back(v);
-        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
-    }
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N); STRING(S, T);
-    if(S==T) Outend(0);
+    LONG(N, K);
 
-    ll M = 26;
-    set<Pr> edge;
-    rep(i, N) { edge.emplace(S[i]-'a', T[i]-'a'); }
+    vvm cnt(2, vm(K+1));
+    cnt[0][0] = 1;
+    vvm dp(2, vm(K+1));
+    mint ans = 0;
 
-    vl ind(M), oud(M);
-    for(auto [a,b]: edge) {
-        oud[a]++, ind[b]++;
-        if(oud[a]>1) Pm1
-    }
-    bool ng = true;
-    rep(i, M) {
-        if(ind[i]==0) ng = false;
-    }
-    if(ng) Pm1
-
-    SCC scc(M);
-    ll ans = 0;
-    for(auto [a,b]: edge) {
-        if(a==b) {
-            ind[b]--, oud[a]--;
-        } else {
-            scc.add_edge(a,b);
-            ++ans;
+    for(ll i=59; i>=0; --i) {
+        vvm pcnt(2, vm(K+1)); swap(pcnt, cnt);
+        vvm pdp(2, vm(K+1)); swap(dp, pdp);
+        ll d = N>>i&1;
+        rep(j, 2) rep(k, K+1) rep(x, 2) {
+            if(j==0 && x>d) continue;
+            ll nj = j;
+            if(x<d) nj = 1;
+            ll nk = k + x;
+            if(nk>K) continue;
+            cnt[nj][nk] += pcnt[j][k];
+            dp[nj][nk] += pdp[j][k] + pcnt[j][k]*x*mint(1LL<<i);
         }
     }
-    for(auto gr: scc.scc()) {
-        if(SIZE(gr)==1) continue;
-        bool allone = true;
-        for(auto v: gr) {
-            if(ind[v]!=1) allone = false;
-        }
-        if(allone) ++ans;
-    }
+    
+    ans = dp[0][K] + dp[1][K];
     Out(ans);
 
 }
@@ -308,7 +273,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
