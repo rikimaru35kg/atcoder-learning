@@ -1616,8 +1616,7 @@
 
 - !復習価値高 (提出結果にコメントあり) [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
-!!! where i am now for rank B (last submission 2025/3/7)
-- !復習価値中 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
+- !復習価値低 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
 - !要復習 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
 
 # 行列
@@ -1634,6 +1633,7 @@
 - !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
 - !要復習 [F - Shortest Path Query](https://atcoder.jp/contests/abc429/tasks/abc429_f)
+!!! where i am now for rank B (last submission 2025/5/2)
 - !復習価値中 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）

@@ -228,63 +228,118 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+//! n*n matrix
+constexpr int MX = 2;  // DEFINE PROPERLY!!
+template <typename T> class Mat {
+    int n;
+    T a[MX][MX];
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
     }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
+public:
+    // Initialize n*n matrix as unit matrix
+    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
+        }
     }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
         return ret;
     }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
         }
-        return t;
+        return ret;
     }
-    void dump() {
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        assert(abs(det)>=EPS);
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    void transpose() {
+        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
+            swap(a[i][j], a[j][i]);
+        }
+    }
+    // power k (A^k)
+    Mat pow(long long k) { return pow_recursive(*this, k); }
+    void set(int i, int j, T x) { a[i][j] = x; }
+    T operator()(int i, int j) { return a[i][j]; }
+    void print(string debugname="------") {  // for debug
         #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
         #endif
     }
 };
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-// 左右分割でうまくいかない凡例 A={6,5,1,2,4,3}
-// 1を左、2を右に追いやればよいが、その時の正しい分割は5と4の間
-// つまり、左右に分割した後で転倒操作をしたものとは一致しない
 void solve() {
-    LONG(N); VLM(A, N);
-    vl rev(N);
-    rep(i, N) rev[A[i]] = i;
-    BIT<int> tree(N);
-    rep(i, N) tree.add(i, 1);
+    LONG(K, M);
+    mint::set_mod(M);
+    mint ans = 0;
 
-    ll ans = 0;
-    rep(a, N) {
-        int i = rev[a];
-        ll l = tree.sum(0, i), r = tree.sum(i+1, N);
-        ans += min(l, r);
-        tree.add(i, -1);
+    auto calc=[&](auto f, ll d) -> mint {
+        if(d==1) return 1;
+        mint ret = f(f, d/2);
+        ret += ret*mint(10).pow(d/2);
+        if(d&1) ret = ret*10 + 1;
+        return ret;
+    };
+
+    rep(i, K) {
+        LONG(c, d);
+        mint now = calc(calc, d) * c;
+        ans = ans * mint(10).pow(d) + now;
     }
     Out(ans);
 
@@ -297,4 +352,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
