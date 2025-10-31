@@ -228,114 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(H, W);
-    VVL(F, H, W);
-    vt3 h3;
-    rep(i, H) rep(j, W) {
-        h3.emplace_back(F[i][j], i, j);
-    }
-    sort(all(h3));
+    LONG(N, K);
 
-    LONG(Q);
-    using t6 = tuple<int,int,int,int,int,int>;
-    vector<t6> query(Q);
-    vp span(Q);
-    ll N = H*W;
-    rep(i, Q) {
-        LONG(a,b,y,c,d,z);
-        --a, --b, --c, --d;
-        query[i] = {a,b,y,c,d,z};
-        span[i] = {-1, N};
-    }
+    vvm cnt(2, vm(K+1));
+    cnt[0][0] = 1;
+    vvm dp(2, vm(K+1));
+    mint ans = 0;
 
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-
-    while(true) {
-        bool upd = false;
-        vvl h2qis(N);
-        rep(qi, Q) {
-            auto [l,r] = span[qi];
-            if(r-l>1) {
-                upd = true;
-                ll m = (l+r)/2;
-                h2qis[m].push_back(qi);
-            }
-        }
-        if(!upd) break;
-        WeightedUnionFind uf(N);
-        for(ll ni=N-1; ni>=0; --ni) {
-            auto [h,i,j] = h3[ni];
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(F[ni][nj]<h) continue;
-                uf.merge(gid(i,j), gid(ni,nj));
-            }
-            for(auto qi: h2qis[ni]) {
-                auto [a,b,y,c,d,z] = query[qi];
-                if(uf.same(gid(a,b), gid(c,d))) span[qi].first = ni;
-                else span[qi].second = ni;
-            }
+    for(ll i=59; i>=0; --i) {
+        vvm pcnt(2, vm(K+1)); swap(pcnt, cnt);
+        vvm pdp(2, vm(K+1)); swap(dp, pdp);
+        ll d = N>>i&1;
+        rep(j, 2) rep(k, K+1) rep(x, 2) {
+            if(j==0 && x>d) continue;
+            ll nj = j;
+            if(x<d) nj = 1;
+            ll nk = k + x;
+            if(nk>K) continue;
+            cnt[nj][nk] += pcnt[j][k];
+            dp[nj][nk] += pdp[j][k] + pcnt[j][k]*x*mint(1LL<<i);
         }
     }
-    rep(qi, Q) {
-        auto [a,b,y,c,d,z] = query[qi];
-        ll mn = min(y,z);
-        auto [h,i,j] = h3[span[qi].first];
-        chmin(mn, h);
-        ll ans = y-mn + z-mn;
-        Out(ans);
-    }
+    
+    ans = dp[0][K] + dp[1][K];
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
