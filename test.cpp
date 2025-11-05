@@ -228,108 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vvl is(N);
-    rep(i, N) is[i].push_back(-1);
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N) is[i].push_back(N);
-    
-    ll ans = 0;
-    rep(a, N) {
-        vl &cis = is[a];
-        ll sz = cis.size();
-        repk(j, 1, sz-1) {
-            ll i = cis[j];
-            ll l = cis[j-1], r = N;
-            if(a) {
-                auto [n,x] = lowbou(is[a-1], i);
-                chmax(l, is[a-1][n-1]);
-                chmin(r, is[a-1][n]);
-            }
-            ans += (i-l)*(r-i);
-        }
+    LONG(N); STRING(S);
+    vl to(N, -1), ito(N, -1);
+    vvl from(N), ifrom(N);
+    rep(i, N-1) {
+        if(S[i]=='R') from[i].push_back(i+1), ifrom[i+1].push_back(i);
+        else from[i+1].push_back(i), ifrom[i].push_back(i+1);
     }
-    Out(ans);
+
+    auto calrear=[&](vvl &from) -> vl {
+        vl ret(N, -1);
+        auto dfs=[&](auto f, ll v) -> ll {
+            if(ret[v]!=-1) return ret[v] + 1;
+            ret[v] = 0;
+            for(auto nv: from[v]) {
+                ret[v] += f(f, nv);
+            }
+            return ret[v] + 1;
+        };
+        rep(v, N) { dfs(dfs, v); }
+        return ret;
+    };
+    vl rear = calrear(from);
+    vl front = calrear(ifrom);
+    vl imos(N+1);
+    rep(i, N) {
+        imos[front[i]]++;
+        imos[N-rear[i]]--;
+    }
+    rep(i, N) imos[i+1] += imos[i];
+    rep(i, N) cout << imos[i] << ' ';
+    cout<<'\n';
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
