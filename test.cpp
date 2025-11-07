@@ -228,33 +228,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K);
-    vl rem(N);
-    vt4 events;
-    rep(i, N) {
-        LONG(a,b,c);
-        events.emplace_back(a, 0, i, b+1);
-        events.emplace_back(b+1, 1, i, -1);
-        rem[i] = c;
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    sort(all(events));
-
-    ll ans = 0;
-    ll pt = 0;
-    pq que;
-    for(auto [t,type,i,dead]: events) {
-        ll dt = t - pt;
-        while(dt && que.size()) {
-            auto [cdead,ci] = que.top(); que.pop();
-            ll n = min(rem[ci], dt);
-            dt -= n, rem[ci] -= n;
-            ans += n;
-            if(rem[ci]) que.emplace(cdead,ci);
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
-        if(type==0) que.emplace(dead, i);
-        else rem[i] = 0;
-        pt = t;
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+
+void solve() {
+    LONG(N);
+    VL(P, N);
+    BIT<int> tree(N);
+    rep(i, N) tree.add(i, 1);
+
+    vl ans(N);
+
+    repr(i, N) {
+        ll pi = tree.lower_bound(P[i]);
+        ans[pi] = i+1;
+        tree.add(pi, -1);
     }
     Out(ans);
 

@@ -1690,10 +1690,10 @@
 - 基本 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
 - !復習価値低 （DPでも解いてみよう） [E - Stamp](https://atcoder.jp/contests/abc329/tasks/abc329_e)
 - 基本 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
-!!! where i am now for rank B (last submission 2025/3/4)
-- !復習価値中 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
+- !復習価値低 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
+!!! where i am now for rank B (last submission 2025/3/4)
 - !復習価値中 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
 
 ## 三つ組は真ん中を固定

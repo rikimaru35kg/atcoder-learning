@@ -229,45 +229,41 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N); STRING(S);
-    vl to(N, -1), ito(N, -1);
-    vvl from(N), ifrom(N);
-    rep(i, N-1) {
-        if(S[i]=='R') from[i].push_back(i+1), ifrom[i+1].push_back(i);
-        else from[i+1].push_back(i), ifrom[i].push_back(i+1);
-    }
-
-    auto calrear=[&](vvl &from) -> vl {
-        vl ret(N, -1);
-        auto dfs=[&](auto f, ll v) -> ll {
-            if(ret[v]!=-1) return ret[v] + 1;
-            ret[v] = 0;
-            for(auto nv: from[v]) {
-                ret[v] += f(f, nv);
-            }
-            return ret[v] + 1;
-        };
-        rep(v, N) { dfs(dfs, v); }
-        return ret;
-    };
-    vl rear = calrear(from);
-    vl front = calrear(ifrom);
-    vl imos(N+1);
+    LONG(N, K);
+    vl rem(N);
+    vt4 events;
     rep(i, N) {
-        imos[front[i]]++;
-        imos[N-rear[i]]--;
+        LONG(a,b,c);
+        events.emplace_back(a, 0, i, b+1);
+        events.emplace_back(b+1, 1, i, -1);
+        rem[i] = c;
     }
-    rep(i, N) imos[i+1] += imos[i];
-    rep(i, N) cout << imos[i] << ' ';
-    cout<<'\n';
+    sort(all(events));
+
+    ll ans = 0;
+    ll pt = 0;
+    pq que;
+    for(auto [t,type,i,dead]: events) {
+        ll dt = t - pt;
+        while(dt && que.size()) {
+            auto [cdead,ci] = que.top(); que.pop();
+            ll n = min(rem[ci], dt);
+            dt -= n, rem[ci] -= n;
+            ans += n;
+            if(rem[ci]) que.emplace(cdead,ci);
+        }
+        if(type==0) que.emplace(dead, i);
+        else rem[i] = 0;
+        pt = t;
+    }
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
