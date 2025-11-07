@@ -1677,8 +1677,7 @@
 - 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
 - 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
-!!! where i am now for rank B (last submission 2025/3/4)
-- !復習価値中 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
+- !復習価値高 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
 - 基本 [C16 - Flights](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fn)
 - !復習価値低 [E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
 
@@ -1691,6 +1690,7 @@
 - 基本 [E - Paint](https://atcoder.jp/contests/abc346/tasks/abc346_e)
 - !復習価値低 （DPでも解いてみよう） [E - Stamp](https://atcoder.jp/contests/abc329/tasks/abc329_e)
 - 基本 [K - 連結チェック](https://atcoder.jp/contests/past202209-open/tasks/past202209_k)
+!!! where i am now for rank B (last submission 2025/3/4)
 - !復習価値中 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)

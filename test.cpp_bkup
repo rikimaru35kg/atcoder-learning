@@ -229,57 +229,45 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    INF = 5e9;
-    VL(X, N);
-    set<Pr> st;
-    st.emplace(-INF,INF);
-    st.emplace(0, INF);
-    st.emplace(INF,INF);
-    ll ans = INF;
+    LONG(N); STRING(S);
+    vl to(N, -1), ito(N, -1);
+    vvl from(N), ifrom(N);
+    rep(i, N-1) {
+        if(S[i]=='R') from[i].push_back(i+1), ifrom[i+1].push_back(i);
+        else from[i+1].push_back(i), ifrom[i].push_back(i+1);
+    }
 
-    using PP = pair<Pr,Pr>;
-
-    auto update=[&](auto it1) -> PP{
-        PP ret;
-        auto [x1,d1] = *it1;
-        if(x1==INF) return ret;
-
-        auto [x0,d0] = *prev(it1);
-        auto [x2,d2] = *next(it1);
-        ans -= d1;
-        ret.first = {x1,d1};
-
-        chmin(d1, x1-x0);
-        chmin(d1, x2-x1);
-        ans += d1;
-        ret.second = {x1,d1};
+    auto calrear=[&](vvl &from) -> vl {
+        vl ret(N, -1);
+        auto dfs=[&](auto f, ll v) -> ll {
+            if(ret[v]!=-1) return ret[v] + 1;
+            ret[v] = 0;
+            for(auto nv: from[v]) {
+                ret[v] += f(f, nv);
+            }
+            return ret[v] + 1;
+        };
+        rep(v, N) { dfs(dfs, v); }
         return ret;
     };
-
+    vl rear = calrear(from);
+    vl front = calrear(ifrom);
+    vl imos(N+1);
     rep(i, N) {
-        vector<PP> stck;
-        ll x = X[i];
-        auto it = st.emplace(x,INF).first;
-        ans += INF;
-        stck.push_back(update(it));
-        stck.push_back(update(prev(it)));
-        auto [x2,d2] = *next(it);
-        if(x2!=INF) stck.push_back(update(next(it)));
-        Out(ans);
-
-        for(auto [p1,p2]: stck) {
-            st.erase(p1);
-            st.insert(p2);
-        }
+        imos[front[i]]++;
+        imos[N-rear[i]]--;
     }
+    rep(i, N) imos[i+1] += imos[i];
+    rep(i, N) cout << imos[i] << ' ';
+    cout<<'\n';
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
