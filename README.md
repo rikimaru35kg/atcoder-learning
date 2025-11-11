@@ -1112,6 +1112,7 @@
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
 - !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+- !要復習 [F - Almost Sorted 2](https://atcoder.jp/contests/abc431/tasks/abc431_f)
 
 ## 決め打ちDP
 - ある条件を決め打ってDPする事で、問題が解けるようになる場合あり
@@ -2307,3 +2308,4 @@
 - [E - Cut in Half](https://atcoder.jp/contests/abc424/tasks/abc424_e)
 - [D - Neighbor Distance](https://atcoder.jp/contests/abc430/tasks/abc430_d)
 - [F - Back and Forth Filling](https://atcoder.jp/contests/abc430/tasks/abc430_f)
+- [E - Reflection on Grid](https://atcoder.jp/contests/abc431/tasks/abc431_e)
