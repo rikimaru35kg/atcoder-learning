@@ -2201,8 +2201,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/10/2)
-- [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
+!!! where i am now for rank D (last submission 2025/10/3)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
 - [E - Wind Cleaning](https://atcoder.jp/contests/abc427/tasks/abc427_e)
 - [F - Not Adjacent](https://atcoder.jp/contests/abc427/tasks/abc427_f)
@@ -2309,3 +2308,4 @@
 - [D - Neighbor Distance](https://atcoder.jp/contests/abc430/tasks/abc430_d)
 - [F - Back and Forth Filling](https://atcoder.jp/contests/abc430/tasks/abc430_f)
 - [E - Reflection on Grid](https://atcoder.jp/contests/abc431/tasks/abc431_e)
+- [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
