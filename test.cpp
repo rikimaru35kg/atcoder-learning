@@ -228,63 +228,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<string> transpose(vector<string> &s) {
-    long long h = s.size(), w = s[0].size();
-    vector<string> ret(w, string(h, '.'));
-    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
-        ret[j][i] = s[i][j];
-    }
-    return ret;
-}
-template <typename T>
-vector<vector<T>> transpose(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(w, vector<T>(h));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
-        ret[j][i] = a[i][j];
-    }
-    return ret;
-}
-
 void solve() {
-    LONG(H, W);
-    VS(S, H);
-    if(H>W) {
-        S = transpose(S);
-        swap(H, W);
+    LONG(N, K);
+    vvp from(N);
+    vp edge;
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b, 2*i);
+        from[b].emplace_back(a, 2*i+1);
+        edge.emplace_back(a, b);
+        edge.emplace_back(b, a);
     }
-    vvl Sc(H+1, vl(W+1));
-    rep(i, H) rep(j, W) {
-        if(S[i][j]=='.') continue;
-        Sc[i+1][j+1]++;
-    }
-    rep(i, H) rep(j, W+1) Sc[i+1][j] += Sc[i][j];
-    rep(i, H+1) rep(j, W) Sc[i][j+1] += Sc[i][j];
-
-    auto gets=[&](ll i1, ll i2, ll j) -> ll {
-        return Sc[i2][j] - Sc[i1][j];
-    };
-    ll K = 2*H*W;
-    vl cnt(2*K+1);
-    vl es;
-    auto add=[&](ll x) {
-        cnt[x]++;
-        es.push_back(x);
+    vvl cnt(N, vl(K));
+    vvl dp(2*(N-1), vl(K, INF));
+    queue<Pr> que;
+    auto push=[&](ll ei, ll d) {
+        if(dp[ei][d%K]<=d) return;
+        dp[ei][d%K] = d;
+        que.emplace(ei, d%K);
     };
 
-    ll ans = 0;
-    rep(i1, H) repk(i2, i1+1, H+1) {
-        ll h = i2-i1;
-        add(K);
-        rep1(j, W) {
-            ll now = 2*gets(i1,i2,j) - h*j;
-            ans += cnt[now+K];
-            add(now+K);
+    for(auto [v, ei]: from[0]) { push(ei, 1); }
+
+    while(que.size()) {
+        auto [ei,k] = que.front(); que.pop();
+        auto [a,b] = edge[ei];
+        if(cnt[b][k]>=2) continue;
+        cnt[b][k]++;
+
+        for(auto [nv,nei]: from[b]) {
+            if(k!=0 && ei/2==nei/2) continue;
+            push(nei, dp[ei][k]+1);
         }
-        for(auto e: es) cnt[e] = 0;
-        es = vl();
     }
-    Out(ans);
+
+    vl ans(N, INF);
+    rep(ei, 2*(N-1)) {
+        auto [a,b] = edge[ei];
+        chmin(ans[b], dp[ei][0]);
+    }
+    rep(i, N) {
+        if(ans[i]==INF) ans[i] = -1;
+        else ans[i] /= K;
+    }
+    repk(i, 1, N) cout << ans[i] << ' ';
+    cout<<'\n';
 
 }
 

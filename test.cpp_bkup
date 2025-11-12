@@ -228,99 +228,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+vector<string> transpose(vector<string> &s) {
+    long long h = s.size(), w = s[0].size();
+    vector<string> ret(w, string(h, '.'));
+    for(long long i=0; i<h; ++i) for(long long j=0; j<w; ++j) {
+        ret[j][i] = s[i][j];
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    return ret;
+}
+template <typename T>
+vector<vector<T>> transpose(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(w, vector<T>(h));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) {
+        ret[j][i] = a[i][j];
     }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+    return ret;
+}
 
 void solve() {
-    LONG(N, D);
-    ll M = 1e6;
-    // ll M = 5;
-    VLM(A, N);
-    vl cnt(M), Sc(M+1);
-    rep(i, N) cnt[A[i]]++;
-    rep(i, M) Sc[i+1] = Sc[i] + cnt[i];
+    LONG(H, W);
+    VS(S, H);
+    if(H>W) {
+        S = transpose(S);
+        swap(H, W);
+    }
+    vvl Sc(H+1, vl(W+1));
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='.') continue;
+        Sc[i+1][j+1]++;
+    }
+    rep(i, H) rep(j, W+1) Sc[i+1][j] += Sc[i][j];
+    rep(i, H+1) rep(j, W) Sc[i][j+1] += Sc[i][j];
 
-    mint ans = 1;
-    Combination comb(3e6, M998);
-    auto getsum=[&](ll l, ll r) -> ll {
-        chmax(l, 0LL);
-        // de3(l,r, Sc[r]-Sc[l])
-        return Sc[r] - Sc[l];
+    auto gets=[&](ll i1, ll i2, ll j) -> ll {
+        return Sc[i2][j] - Sc[i1][j];
+    };
+    ll K = 2*H*W;
+    vl cnt(2*K+1);
+    vl es;
+    auto add=[&](ll x) {
+        cnt[x]++;
+        es.push_back(x);
     };
 
-    rep(i, M) {
-        mint now = comb.nHr(getsum(i-D, i)+1, cnt[i]);
-        // if(now==0) {
-        //     de3(i, getsum(i-D, i)+1, cnt[i])
-        //     return;
-        // }
-        ans *= now;
+    ll ans = 0;
+    rep(i1, H) repk(i2, i1+1, H+1) {
+        ll h = i2-i1;
+        add(K);
+        rep1(j, W) {
+            ll now = 2*gets(i1,i2,j) - h*j;
+            ans += cnt[now+K];
+            add(now+K);
+        }
+        for(auto e: es) cnt[e] = 0;
+        es = vl();
     }
     Out(ans);
-
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
