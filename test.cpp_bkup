@@ -228,54 +228,86 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
 void solve() {
-    LONG(N);
-    vt3 tele;
-    vvl receive(N);
-    rep(i, N-1) {
-        LONG(a);
-        rep(j, a) {
-            LONGM(p,q);
-            tele.emplace_back(i, p, q);
-            ll sz = tele.size();
-            receive[p].push_back(sz-1);
-            receive[q].push_back(sz-1);
-        }
-    }
-    ll M = tele.size();
-    vl cnt(M);
-    queue<ll> que;
-    vl dist(N, INF);
-    dist[N-1] = 0;
-    vb used(M);
+    LONG(N, Q);
+    WeightedUnionFind uf(N);
+    ll x = 0;
+    vl p(N, -1);
 
-    rep(i, M) {
-        auto [v,p,q] = tele[i];
-        if(q==N-1 && p==N-1) {
-            cnt[i]=2;
-            que.push(i);
-            used[i] = true;
-        }
-    }
-
-    while(que.size()) {
-        auto ti = que.front(); que.pop();
-        auto [v,p,q] = tele[ti];
-        ll d = max(dist[p], dist[q]) + 1;
-        if(dist[v]<=d) continue;
-        dist[v] = d;
-        for(auto nti: receive[v]) {
-            if(used[nti]) continue;
-            cnt[nti]++;
-            if(cnt[nti]==2) {
-                que.push(nti);
-                used[nti] = true;;
+    auto getp=[&](ll v) -> ll {
+        if(v==-1) return -1;
+        return p[v];
+    };
+    rep(i, Q) {
+        LONG(a,b,c);
+        ll t = ((a*(1+x)) % M998) % 2;
+        ll u = ((b*(1+x)) % M998) % N;
+        ll v = ((c*(1+x)) % M998) % N;
+        if(t==0) {
+            if(uf.size(v)>uf.size(u)) swap(u, v);
+            uf.merge(u, v);
+            ll pre_v = u;
+            while(v!=-1) {
+                ll nv = p[v];
+                p[v] = pre_v;
+                pre_v = v;
+                v = nv;
             }
+        } else {
+            x = 0;
+            if(p[u]!=-1 && p[u]==p[v]) {
+                x = p[u]+1;
+            } else if(getp(getp(u))==v) {
+                x = getp(u)+1;
+            } else if(getp(getp(v))==u) {
+                x = getp(v)+1;
+            }
+            Out(x);
         }
+
     }
-    ll ans = dist[0];
-    ch1(ans);
-    Out(ans);
 
 }
 

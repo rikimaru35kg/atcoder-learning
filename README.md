@@ -1734,8 +1734,7 @@
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
 - !復習価値低 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
-!!! where i am now for rank B (last submission 2025/7/30)
-- !復習価値中 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
+- !復習価値低 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
 
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
@@ -1887,6 +1886,7 @@
 - !復習価値低 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
 - 基本 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
 - !復習価値低 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+!!! where i am now for rank B (last submission 2025/3/6)
 - !復習価値中 [G - Sort from 1 to 4](https://atcoder.jp/contests/abc302/tasks/abc302_g)
 
 ## まとめ買いを個別買いに変換
