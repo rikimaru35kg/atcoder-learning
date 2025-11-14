@@ -1694,8 +1694,7 @@
 - !復習価値低 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
-!!! where i am now for rank B (last submission 2025/3/4)
-- !復習価値中 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
+- !要復習 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
 
 ## 三つ組は真ん中を固定
 ### 例題
@@ -1734,6 +1733,7 @@
 ### 例題
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
+!!! where i am now for rank B (last submission 2025/6/24)
 - !復習価値中 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
 - !復習価値中 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
 
