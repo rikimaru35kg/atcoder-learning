@@ -1733,8 +1733,8 @@
 ### 例題
 - 基本 [F - Colored Ball](https://atcoder.jp/contests/abc329/tasks/abc329_f)
 - 基本 [H - 連結成分](https://atcoder.jp/contests/past202203-open/tasks/past202203_h)
-!!! where i am now for rank B (last submission 2025/6/24)
-- !復習価値中 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
+- !復習価値低 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
+!!! where i am now for rank B (last submission 2025/7/30)
 - !復習価値中 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
 
 ## 標準形を考える

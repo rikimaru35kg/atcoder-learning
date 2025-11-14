@@ -229,58 +229,60 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    vvp from(N);
-    vp edge;
+    LONG(N);
+    vt3 tele;
+    vvl receive(N);
     rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b, 2*i);
-        from[b].emplace_back(a, 2*i+1);
-        edge.emplace_back(a, b);
-        edge.emplace_back(b, a);
+        LONG(a);
+        rep(j, a) {
+            LONGM(p,q);
+            tele.emplace_back(i, p, q);
+            ll sz = tele.size();
+            receive[p].push_back(sz-1);
+            receive[q].push_back(sz-1);
+        }
     }
-    vvl cnt(N, vl(K));
-    vvl dp(2*(N-1), vl(K, INF));
-    queue<Pr> que;
-    auto push=[&](ll ei, ll d) {
-        if(dp[ei][d%K]<=d) return;
-        dp[ei][d%K] = d;
-        que.emplace(ei, d%K);
-    };
+    ll M = tele.size();
+    vl cnt(M);
+    queue<ll> que;
+    vl dist(N, INF);
+    dist[N-1] = 0;
+    vb used(M);
 
-    for(auto [v, ei]: from[0]) { push(ei, 1); }
-
-    while(que.size()) {
-        auto [ei,k] = que.front(); que.pop();
-        auto [a,b] = edge[ei];
-        if(cnt[b][k]>=2) continue;
-        cnt[b][k]++;
-
-        for(auto [nv,nei]: from[b]) {
-            if(k!=0 && ei/2==nei/2) continue;
-            push(nei, dp[ei][k]+1);
+    rep(i, M) {
+        auto [v,p,q] = tele[i];
+        if(q==N-1 && p==N-1) {
+            cnt[i]=2;
+            que.push(i);
+            used[i] = true;
         }
     }
 
-    vl ans(N, INF);
-    rep(ei, 2*(N-1)) {
-        auto [a,b] = edge[ei];
-        chmin(ans[b], dp[ei][0]);
+    while(que.size()) {
+        auto ti = que.front(); que.pop();
+        auto [v,p,q] = tele[ti];
+        ll d = max(dist[p], dist[q]) + 1;
+        if(dist[v]<=d) continue;
+        dist[v] = d;
+        for(auto nti: receive[v]) {
+            if(used[nti]) continue;
+            cnt[nti]++;
+            if(cnt[nti]==2) {
+                que.push(nti);
+                used[nti] = true;;
+            }
+        }
     }
-    rep(i, N) {
-        if(ans[i]==INF) ans[i] = -1;
-        else ans[i] /= K;
-    }
-    repk(i, 1, N) cout << ans[i] << ' ';
-    cout<<'\n';
+    ll ans = dist[0];
+    ch1(ans);
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
