@@ -2004,6 +2004,7 @@
 - !復習価値高 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値中 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
+- !要復習 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
 
 ## 凸包・Convex Hull Trick
 - 凸な多角形を作る事で上手くいく問題
@@ -2205,6 +2206,7 @@
 - [E - Wind Cleaning](https://atcoder.jp/contests/abc427/tasks/abc427_e)
 - [F - Not Adjacent](https://atcoder.jp/contests/abc427/tasks/abc427_f)
 - [F - Pyramid Alignment](https://atcoder.jp/contests/abc428/tasks/abc428_f)
+- [D - Suddenly, A Tempest](https://atcoder.jp/contests/abc432/tasks/abc432_d)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
