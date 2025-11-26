@@ -1476,6 +1476,7 @@
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
 - !復習価値中 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
+- !要復習 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
 
 ## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
@@ -2311,3 +2312,4 @@
 - [E - Reflection on Grid](https://atcoder.jp/contests/abc431/tasks/abc431_e)
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
+- [E - Max Matrix 2](https://atcoder.jp/contests/abc433/tasks/abc433_e)
