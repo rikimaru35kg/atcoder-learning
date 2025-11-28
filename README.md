@@ -1065,8 +1065,7 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
-!!! where i am now for rank A (last submission 2025/10/15)
-- !復習価値高 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
+- !要復習 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
@@ -1187,6 +1186,7 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
+!!! where i am now for rank A (last submission 2025/10/17)
 - !復習価値高 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
 
 ## 区間操作
@@ -1419,8 +1419,7 @@
 - 原始根のグラフを考えた場合、1ずつ進む
 - 非原始根の場合、kステップずつ進む事に相当（k=1~N）
 ### 例題
-!!! where i am now for rank S (last submission 2025/10/24)
-- !要復習 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
+- !復習価値中 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
@@ -1619,7 +1618,7 @@
 - !復習価値高 (提出結果にコメントあり) [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値低 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
-- !要復習 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
+- !復習価値低 [G - Minimum Permutation](https://atcoder.jp/contests/abc299/tasks/abc299_g)
 
 # 行列
 
@@ -1634,7 +1633,7 @@
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 - !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
-- !要復習 [F - Shortest Path Query](https://atcoder.jp/contests/abc429/tasks/abc429_f)
+!!! where i am now for rank S (last submission 2025/10/29)
 - !要復習 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）

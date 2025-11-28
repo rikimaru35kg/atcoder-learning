@@ -228,95 +228,153 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
+public:
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
+    }
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
+    }
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
+    }
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
+    }
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
+    }
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
+        }
+        return op(lft, rgt);
+    }
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
+    }
+};
+
+struct S {
+    ll x, i;
+    S(ll x=INF, ll i=-1): x(x), i(i) {}
+};
+S op(S a, S b) {
+    if(a.x==b.x) {
+        if(a.i<b.i) return a;
+        else return b;
+    } else {
+        if(a.x<b.x) return a;
+        else return b;
+    }
+}
+S e(){return S();}
+
 void solve() {
     LONG(N, M);
-    VLM(X, N); VLM(Y, M);
-    vp p(N*M, Pr(-1,-1));
-    rep(i, N) p[X[i]].first = i;
-    rep(j, M) p[Y[j]].second = j;
+    VLM(A, N);
+    vvl is(M);
+    rep(i, N) { is[A[i]].push_back(i); }
+    set<Pr> st;
+    rep(i, M) st.emplace(is[i].back(), i);
 
-    auto judge=[&](vl &x) -> bool {
-        ll n = x.size();
-        vb used(N*M);
-        rep(i, n) {
-            if(used[x[i]]) return false;
-            used[x[i]] = true;
-        }
-        return true;
-    };
-    if(!judge(X) || !judge(Y)) {puts("No"); return;}
+    SegTree<S,op,e> seg(N);
+    rep(i, N) seg.set_only(i, {A[i],i});
+    seg.build();
 
-    ll nxt = 0;
-    vb used(N*M);
-
-    vvl ans(N, vl(M, -1));
-
-    auto fillrow=[&](ll i, ll lim) -> bool {
-        rep(j, M) {
-            if(ans[i][j]!=-1) continue;
-            while(nxt<lim && used[nxt]) ++nxt;
-            if(nxt==lim) return false;
-            ans[i][j] = nxt; used[nxt] = true;
-        }
-        return true;
-    };
-    auto fillcol=[&](ll j, ll lim) -> bool {
-        rep(i, N) {
-            if(ans[i][j]!=-1) continue;
-            while(nxt<lim && used[nxt]) ++nxt;
-            if(nxt==lim) return false;
-            ans[i][j] = nxt; used[nxt] = true;
-        }
-        return true;
-    };
-
-    rep(k, N*M) {
-        auto [i, j] = p[k];
-        if(i==-1 && j==-1) continue;
-        if(i!=-1 && j!=-1) {
-            if(ans[i][j]!=-1) { puts("No"); return; }
-            ans[i][j] = k; used[k] = true;
-            if(!fillrow(i, k)) { puts("No"); return; }
-            if(!fillcol(j, k)) { puts("No"); return; }
-        } else if (i!=-1) {
-            ll j = 0;
-            while(j<M && ans[i][j]!=-1) ++j;
-            if(j==M) { puts("No"); return;}
-            ans[i][j] = k; used[k] = true;
-            if(!fillrow(i, k)) {puts("No"); return;}
-        } else {
-            ll i = 0;
-            while(i<N && ans[i][j]!=-1) ++i;
-            if(i==N) { puts("No"); return;}
-            ans[i][j] = k; used[k] = true;
-            if(!fillcol(j, k)) {puts("No"); return;}
-        }
+    ll l = 0;
+    vl ans;
+    while(SIZE(ans)<M) {
+        assert(st.size());
+        auto [i, a] = *st.begin();
+        ll r = i+1;
+        assert(l<r);
+        auto [mn, mi] = seg.prod(l,r);
+        ans.push_back(mn+1);
+        for(auto x: is[mn]) seg.set(x, S());
+        st.erase({is[mn].back(), mn});
+        l = mi+1;
     }
-
-    // rep(i, N) {
-    //     ll mx = *max_element(all(ans[i]));
-    //     ll mn = *min_element(all(ans[i]));
-    //     if(mx!=X[i] || mn==-1) {puts("No"); return; }
-    // }
-    // rep(j, M) {
-    //     ll mx = -1;
-    //     ll mn = INF;
-    //     rep(i, N) {
-    //         chmax(mx, ans[i][j]);
-    //         chmin(mn, ans[i][j]);
-    //     }
-    //     if(mx!=Y[j] || mn==-1) { puts("No"); return;}
-    // }
-    puts("Yes");
-    rep(i, N) rep(j, M) ans[i][j]++;
     Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
