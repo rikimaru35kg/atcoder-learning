@@ -2280,7 +2280,7 @@
 - [D. Colored Balls](https://codeforces.com/contest/1954/problem/D)
 - [C. Sums on Segments](https://codeforces.com/contest/2043/problem/C)
 - [C. Minimizing the Sum](https://codeforces.com/contest/1969/problem/C)
-- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_ba
+- [B - 勇者ビ太郎 2 (Bitaro the Brave 2)](https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_b?lang=ja)
 - [C - Cycle Graph?](https://atcoder.jp/contests/abc404/tasks/abc404_c)
 - [E - Bowls and Beans](https://atcoder.jp/contests/abc404/tasks/abc404_e)
 - [E - Fruit Lineup](https://atcoder.jp/contests/abc405/tasks/abc405_e)
@@ -2312,3 +2312,4 @@
 - [F - Balanced Rectangles](https://atcoder.jp/contests/abc410/tasks/abc410_f)
 - [F - Jump Traveling](https://atcoder.jp/contests/abc414/tasks/abc414_f)
 - [E - Max Matrix 2](https://atcoder.jp/contests/abc433/tasks/abc433_e)
+- [D - Clouds](https://atcoder.jp/contests/abc434/tasks/abc434_d)
