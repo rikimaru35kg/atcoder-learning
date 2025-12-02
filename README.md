@@ -1186,8 +1186,7 @@
 - コードがバグっていてもO(N^2)で正しい答えが出てしまうので注意！（最初の要素を飛ばすとか、fromやlastの更新をしなくても正しい答えだけは出てしまうので・・・）
 ### 例題
 - 基本 [E - Who Says a Pun?](https://atcoder.jp/contests/abc141/tasks/abc141_e)
-!!! where i am now for rank A (last submission 2025/10/17)
-- !復習価値高 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
+- !復習価値中 [F - ABCBA](https://atcoder.jp/contests/abc398/tasks/abc398_f)
 
 ## 区間操作
 - 区間に操作させても内部に影響がない場合、区間の端だけ考えて考察すると良い
@@ -1528,6 +1527,7 @@
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
+!!! where i am now for rank A (last submission 2025/10/24)
 - !復習価値高 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
@@ -1633,8 +1633,7 @@
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
 - !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
-!!! where i am now for rank S (last submission 2025/10/29)
-- !要復習 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
+- !復習価値低 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
 ## アフィン変換（同次行列）
 - x, yが1次を保ったまま変換される場合は、アフィン変換可能
@@ -1694,6 +1693,7 @@
 - !復習価値低 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
+!!! where i am now for rank S (last submission 2025/11/13)
 - !要復習 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
 
 ## 三つ組は真ん中を固定
