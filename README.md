@@ -1527,8 +1527,7 @@
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
-!!! where i am now for rank A (last submission 2025/10/24)
-- !復習価値高 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
+- !要復習 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
@@ -1615,6 +1614,7 @@
 - 基本 辞書順最小 [006 - Smallest Subsequence](https://atcoder.jp/contests/typical90/tasks/typical90_f)
 - 基本 半径D以内に爆弾を繰り返す（基本+α） [F - Silver Fox vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_f)
 
+!!! where i am now for rank A (last submission 2025/10/31)
 - !復習価値高 (提出結果にコメントあり) [C - 積み木](https://atcoder.jp/contests/arc031/tasks/arc031_3)
 - 基本 パンの切り分けコスト最小化 [F - Bread](https://atcoder.jp/contests/abc252/tasks/abc252_f)
 - !復習価値低 着く駅の数最大化 [B - 準急電車 (Semiexpress)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_b)
