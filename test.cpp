@@ -229,54 +229,55 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(H, W);
-    VS(S, H);
-    ll ti=0, tj=0;
-    rep(i, H) rep(j, W) { if(S[i][j]=='T') ti=i, tj=j; }
-    using t6 = tuple<ll,ll,ll,ll,ll,ll>;
-    queue<t6> que;
-    map<t6,ll> dist;
-    auto push=[&](t6 t, ll d) {
-        if(dist.count(t)) return;
-        dist[t] = d;
-        que.push(t);
-    };
-    push({0,0,0,H,0,W}, 0);
-    vvl Sc(H+1, vl(W+1));
-    rep(i, H) rep(j, W) if(S[i][j]=='#') Sc[i+1][j+1]++;
-    rep(i, H) rep(j, W+1) Sc[i+1][j] += Sc[i][j];
-    rep(i, H+1) rep(j, W) Sc[i][j+1] += Sc[i][j];
-    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
-        ll ret = Sc[i2][j2];
-        ret += Sc[i1][j1];
-        ret -= Sc[i1][j2];
-        ret -= Sc[i2][j1];
+    LONG(N, M);
+    VL(A, N);
+    vl R = A; reverse(all(R));
+
+    if(N<3) {
+        ll ans = 1;
+        rep(i, N) {
+            if(A[i]%M==0) ++ans;
+        }
+        Outend(ans);
+    }
+
+    auto listup=[&](vl a) -> vl {
+        ll n = a.size();
+        vl ret;
+        auto dfs=[&](auto f, ll i, ll pi=-2, ll sum=0) -> void {
+            if(i==n) {
+                ret.push_back(sum%M);
+                return;
+            }
+            f(f, i+1, pi, sum);
+            if (i-pi>1) f(f, i+1, i, sum+a[i]);
+        };
+        dfs(dfs, 0);
+        sort(all(ret));
         return ret;
     };
-    auto judge=[&](ll i1, ll i2, ll j1, ll j2) -> bool {
-        return sum(i1,i2,j1,j2) == 0;
-    };
 
-    while(que.size()) {
-        auto t = que.front(); que.pop();
-        auto [i,j,i1,i2,j1,j2] = t;
-        // de2(i,j)
-        // de5(i1,i2,j1,j2,dist[t])
-        if(judge(i1,i2,j1,j2)) {
-            Outend(dist[t]);
-        }
-        for(auto [di,dj]: dij) {
-            ll ni = i + di, nj = j + dj;
-            ll nti = ti+ni, ntj = tj+nj;
-            if(nti>=i1 && nti<i2 && ntj>=j1 && ntj<j2) {
-                if(S[nti][ntj]=='#') continue;
-            }
-            ll ni1 = max(i1, ni), ni2 = min(i2, ni+H);
-            ll nj1 = max(j1, nj), nj2 = min(j2, nj+W);
-            push({ni,nj,ni1,ni2,nj1,nj2}, dist[t]+1);
+    ll ans = 0;
+    ll m = N/2;
+    {
+        auto v1 = listup(vl(A.begin(), A.begin()+m-1));
+        auto v2 = listup(vl(A.begin()+m+2, A.end()));
+        for(auto s: v1) {
+            ll t = ((M-A[m]-s)%M+M)%M;
+            ll n = lower_bound(all(v2), t) - upper_bound(all(v2), t);
+            ans += n;
         }
     }
-    Out(-1);
+    {
+        auto v1 = listup(vl(A.begin(), A.begin()+m));
+        auto v2 = listup(vl(A.begin()+m+1, A.end()));
+        for(auto s: v1) {
+            ll t = ((M-s)%M+M)%M;
+            ll n = lower_bound(all(v2), t) - upper_bound(all(v2), t);
+            ans += n;
+        }
+    }
+    Out(-ans);
 
 }
 

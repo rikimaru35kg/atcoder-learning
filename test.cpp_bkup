@@ -228,115 +228,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
-
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    LONG(K);
-    vl p;
-    rep(i, N) {
-        if(S[i]=='.') continue;
-        p.push_back(i-p.size());
-    }
-    ll m = p.size();
-    vl Sc = cumsum(p);
-
-    auto f=[&](ll w) -> bool {
-        rep(i, m+1-w) {
-            ll mi = (i+i+w-1)/2;
-            ll mid = p[mi];
-            ll cntl = mi-i, cntr = i+w-1-mi;
-            ll now = mid*cntl - (Sc[mi]-Sc[i]);
-            now += Sc[i+w]-Sc[mi+1] - mid*cntr;
-            if(now<=K) return true;
-        }
-        return false;
+    LONG(H, W);
+    VS(S, H);
+    ll ti=0, tj=0;
+    rep(i, H) rep(j, W) { if(S[i][j]=='T') ti=i, tj=j; }
+    using t6 = tuple<ll,ll,ll,ll,ll,ll>;
+    queue<t6> que;
+    map<t6,ll> dist;
+    auto push=[&](t6 t, ll d) {
+        if(dist.count(t)) return;
+        dist[t] = d;
+        que.push(t);
+    };
+    push({0,0,0,H,0,W}, 0);
+    vvl Sc(H+1, vl(W+1));
+    rep(i, H) rep(j, W) if(S[i][j]=='#') Sc[i+1][j+1]++;
+    rep(i, H) rep(j, W+1) Sc[i+1][j] += Sc[i][j];
+    rep(i, H+1) rep(j, W) Sc[i][j+1] += Sc[i][j];
+    auto sum=[&](ll i1, ll i2, ll j1, ll j2) -> ll {
+        ll ret = Sc[i2][j2];
+        ret += Sc[i1][j1];
+        ret -= Sc[i1][j2];
+        ret -= Sc[i2][j1];
+        return ret;
+    };
+    auto judge=[&](ll i1, ll i2, ll j1, ll j2) -> bool {
+        return sum(i1,i2,j1,j2) == 0;
     };
 
-    ll ans = binary_search(0, N+1, f);
-    Out(ans);
+    while(que.size()) {
+        auto t = que.front(); que.pop();
+        auto [i,j,i1,i2,j1,j2] = t;
+        // de2(i,j)
+        // de5(i1,i2,j1,j2,dist[t])
+        if(judge(i1,i2,j1,j2)) {
+            Outend(dist[t]);
+        }
+        for(auto [di,dj]: dij) {
+            ll ni = i + di, nj = j + dj;
+            ll nti = ti+ni, ntj = tj+nj;
+            if(nti>=i1 && nti<i2 && ntj>=j1 && ntj<j2) {
+                if(S[nti][ntj]=='#') continue;
+            }
+            ll ni1 = max(i1, ni), ni2 = min(i2, ni+H);
+            ll nj1 = max(j1, nj), nj2 = min(j2, nj+W);
+            push({ni,nj,ni1,ni2,nj1,nj2}, dist[t]+1);
+        }
+    }
+    Out(-1);
 
 }
 

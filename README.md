@@ -2202,7 +2202,6 @@
 
 ## ACできなかった問題
 !!! where i am now for rank D (last submission 2025/10/13)
-- [F - Not Adjacent](https://atcoder.jp/contests/abc427/tasks/abc427_f)
 - [F - Pyramid Alignment](https://atcoder.jp/contests/abc428/tasks/abc428_f)
 - [D - Suddenly, A Tempest](https://atcoder.jp/contests/abc432/tasks/abc432_d)
 
