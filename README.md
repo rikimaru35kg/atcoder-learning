@@ -1925,8 +1925,8 @@
 - 相異なる必要がある場合、事前にかさ増しすると上手くいく
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
+- !復習価値低 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
 !!! where i am now for rank B (last submission 2025/12/5)
-- !復習価値中 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
 - !復習価値低 典型てんこ盛り問題として紹介したい [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)

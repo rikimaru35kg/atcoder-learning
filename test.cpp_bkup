@@ -228,57 +228,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vl B = A;
-    sort(all(B));
-    ll M = 4;
-    vvl g(M, vl(M));
-    rep(i, N) {
-        if(A[i]==B[i]) continue;
-        g[A[i]][B[i]]++;
-    }
-    ll ans = 0;
-    rep(i, M) rep(j, M) {
-        if(i==j) continue;
-        ll mn = min(g[i][j], g[j][i]);
-        ans += mn;
-        g[i][j] -= mn;
-        g[j][i] -= mn;
-    }
-    rep(i, M) rep(j, M) {
-        if(g[i][j]<=0) continue;
-        g[j][i] = -g[i][j];
-    }
-    // de(g)
-    vl p(M);
-    iota(all(p), 0);
-    auto check=[&](vl &p) -> bool {
-        rep(i, M) if(g[p[i]][p[(i+1)%M]]<0) return false;
-        if(g[p[2]][p[0]]<0) return false;
-        if(g[p[1]][p[3]]<0) return false;
+    LONG(N, M);
+    VL(P, N);
+
+    ll num = 0;
+    ll psum = 0;
+    auto f = [&](ll x) -> bool {
+        num = 0;
+        psum = 0;
+        rep(i, N) {
+            ll k = (x/P[i]+1)/2;
+            if(k!=0 && k>M/P[i]/k) return false;
+            psum += k*k*P[i];
+            if(psum>M) return false;
+            num += k;
+        }
         return true;
     };
-    ll num = INF;
-    // de(ans)
-    do {
-        if(!check(p)) continue;
-        ll now = 0;
-        ll c = g[p[2]][p[3]];
-        ll b = g[p[1]][p[2]];
-        ll d = g[p[3]][p[0]];
-        now += 3*c;
-        now += 2*(b-c);
-        now += 2*(d-c);
-        // if(b-c<0 || d-c<0) continue;
-        if(now==0) {
-            de(p)
-        }
-        chmin(num, now);
-    } while(next_permutation(all(p)));
 
-    ans += num;
+    ll x = binary_search(0, INF, f);
+    f(x);
+    ll r = M-psum;
+    de3(num, x, psum)
+    ll ans = num + r/(x+1);
     Out(ans);
 
 }
