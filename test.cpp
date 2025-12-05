@@ -228,63 +228,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-
 void solve() {
     LONG(N);
     VLM(A, N);
-    BIT<int> bit(N);
-    rep(i, N) bit.add(i, 1);
-    vl idx(N);
-    rep(i, N) idx[A[i]] = i;
-    ll ans = 0;
-    rep(a, N) {
-        ll i = idx[a];
-        ll l = bit.sum(0, i), r = bit.sum(i+1, N);
-        de4(a, i, l, r)
-        ans += min(l, r);
-        bit.add(i, -1);
+    vl B = A;
+    sort(all(B));
+    ll M = 4;
+    vvl g(M, vl(M));
+    rep(i, N) {
+        if(A[i]==B[i]) continue;
+        g[A[i]][B[i]]++;
     }
-    cout<<ans<<endl;
+    ll ans = 0;
+    rep(i, M) rep(j, M) {
+        if(i==j) continue;
+        ll mn = min(g[i][j], g[j][i]);
+        ans += mn;
+        g[i][j] -= mn;
+        g[j][i] -= mn;
+    }
+    rep(i, M) rep(j, M) {
+        if(g[i][j]<=0) continue;
+        g[j][i] = -g[i][j];
+    }
+    // de(g)
+    vl p(M);
+    iota(all(p), 0);
+    auto check=[&](vl &p) -> bool {
+        rep(i, M) if(g[p[i]][p[(i+1)%M]]<0) return false;
+        if(g[p[2]][p[0]]<0) return false;
+        if(g[p[1]][p[3]]<0) return false;
+        return true;
+    };
+    ll num = INF;
+    // de(ans)
+    do {
+        if(!check(p)) continue;
+        ll now = 0;
+        ll c = g[p[2]][p[3]];
+        ll b = g[p[1]][p[2]];
+        ll d = g[p[3]][p[0]];
+        now += 3*c;
+        now += 2*(b-c);
+        now += 2*(d-c);
+        // if(b-c<0 || d-c<0) continue;
+        if(now==0) {
+            de(p)
+        }
+        chmin(num, now);
+    } while(next_permutation(all(p)));
+
+    ans += num;
+    Out(ans);
 
 }
 

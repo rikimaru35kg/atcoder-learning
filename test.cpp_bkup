@@ -228,49 +228,63 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, T, M, K);
-
-    vvl strategy;
-    ll MX = min(N, M);
-    auto dfs=[&](auto f, ll i, vl v) -> void {
-        ll sum = accumulate(all(v), 0LL);
-        if(SIZE(v)==MX) {
-            if(sum==M) strategy.push_back(v);
-            return;
-        }
-        ll back = M+1;
-        if(v.size()) back = v.back();
-
-        ll rem = M - sum;
-        rep(x, min(rem, back)+1) {
-            v.push_back(x);
-            f(f, i+1, v);
-            v.pop_back();
-        }
-    };
-    dfs(dfs, 0, vl());
-    ll sz = strategy.size();
-
-    vd dp(K+1);
-    dp[K] = 1.0;
-    rep(t, T) {
-        vd pdp(K+1); swap(pdp, dp);
-        rep(k, K+1) {
-            db mx = 0.0;
-            rep(s, sz) {
-                db win = 0;
-                rep(i, MX) {
-                    ll num = strategy[s][i];
-                    win += pdp[min(k+num, K)] / N;
-                }
-                win += pdp[k] * (N-MX) / N;
-                chmax(mx, win);
-            }
-            dp[k] = mx;
-        }
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    Out(dp[0]);
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+
+void solve() {
+    LONG(N);
+    VLM(A, N);
+    BIT<int> bit(N);
+    rep(i, N) bit.add(i, 1);
+    vl idx(N);
+    rep(i, N) idx[A[i]] = i;
+    ll ans = 0;
+    rep(a, N) {
+        ll i = idx[a];
+        ll l = bit.sum(0, i), r = bit.sum(i+1, N);
+        de4(a, i, l, r)
+        ans += min(l, r);
+        bit.add(i, -1);
+    }
+    cout<<ans<<endl;
 
 }
 
