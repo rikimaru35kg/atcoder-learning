@@ -1926,8 +1926,7 @@
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
 - !復習価値低 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
-!!! where i am now for rank B (last submission 2025/12/5)
-- !復習価値低 典型てんこ盛り問題として紹介したい [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
+- !復習価値中 [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
@@ -1990,6 +1989,7 @@
 - 基本 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
+!!! where i am now for rank B (last submission 2025/12/5)
 - !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
 - !復習価値低 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
