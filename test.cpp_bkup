@@ -228,56 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) {return a+b;}
+S e(){return 0;}
+using F = ll;
+S mapping(F f, S x) {
+    if(f==-1) return x;
+    return f;
+}
+F composition(F f, F g) {
+    if(f==-1) return g;
+    return f;
+}
+F id() {return -1;}
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N, M);
-    VL(A, N);
-    vl R = A; reverse(all(R));
+    LONG(N);
+    VL(W, N);
 
-    if(N<3) {
-        ll ans = 1;
-        rep(i, N) {
-            if(A[i]%M==0) ++ans;
-        }
-        Outend(ans);
-    }
+    lazy_segtree<S,op,e,F,mapping,composition,id> left(N), is_right(N);
+    lazy_segtree<S,op,e,F,mapping,composition,id> right(N);
+    rep(i, N) { right.set(i, W[i]); }
 
-    auto listup=[&](vl a) -> vl {
-        ll n = a.size();
-        vl ret;
-        auto dfs=[&](auto f, ll i, ll pi=-2, ll sum=0) -> void {
-            if(i==n) {
-                ret.push_back(sum%M);
-                return;
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(t);
+        if(t==0) {
+            LONGM(v);
+            ll l = left.get(v);
+            if(is_right.get(v)==1) {
+                l = right.get(v) - W[v];
             }
-            f(f, i+1, pi, sum);
-            if (i-pi>1) f(f, i+1, i, sum+a[i]);
-        };
-        dfs(dfs, 0);
-        sort(all(ret));
-        return ret;
-    };
-
-    ll ans = 0;
-    ll m = N/2;
-    {
-        auto v1 = listup(vl(A.begin(), A.begin()+m-1));
-        auto v2 = listup(vl(A.begin()+m+2, A.end()));
-        for(auto s: v1) {
-            ll t = ((M-A[m]-s)%M+M)%M;
-            ll n = lower_bound(all(v2), t) - upper_bound(all(v2), t);
-            ans += n;
+            left.apply(0, v+1, l);
+            is_right.apply(0, v+1, 0);
+        } else if (t==1) {
+            LONGM(v);
+            ll r = left.get(v)+W[v];
+            if(is_right.get(v)==1) {
+                r = right.get(v);
+            }
+            right.apply(0, v+1, r);
+            is_right.apply(0, v+1, 1);
+        } else {
+            LONG(x);
+            auto f=[&](ll v) -> bool {
+                ll l = left.get(v);
+                if(is_right.get(v)==1) l = right.get(v)-W[v];
+                ll r = l + W[v];
+                return l<=x && x<r;
+            };
+            ll v = binary_search(N, -1, f);
+            ll ans = N-v;
+            Out(ans);
         }
     }
-    {
-        auto v1 = listup(vl(A.begin(), A.begin()+m));
-        auto v2 = listup(vl(A.begin()+m+1, A.end()));
-        for(auto s: v1) {
-            ll t = ((M-s)%M+M)%M;
-            ll n = lower_bound(all(v2), t) - upper_bound(all(v2), t);
-            ans += n;
-        }
-    }
-    Out(-ans);
 
 }
 

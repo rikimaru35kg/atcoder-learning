@@ -228,84 +228,123 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) {return a+b;}
-S e(){return 0;}
-using F = ll;
-S mapping(F f, S x) {
-    if(f==-1) return x;
-    return f;
-}
-F composition(F f, F g) {
-    if(f==-1) return g;
-    return f;
-}
-F id() {return -1;}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-void solve() {
-    LONG(N);
-    VL(W, N);
-
-    lazy_segtree<S,op,e,F,mapping,composition,id> left(N), is_right(N);
-    lazy_segtree<S,op,e,F,mapping,composition,id> right(N);
-    rep(i, N) { right.set(i, W[i]); }
-
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(t);
-        if(t==0) {
-            LONGM(v);
-            ll l = left.get(v);
-            if(is_right.get(v)==1) {
-                l = right.get(v) - W[v];
+class MaxFlow {
+    int n;
+    vector<int> dist, iter;
+    long long inf = numeric_limits<long long>::max();
+    struct Edge {
+        int to; long long cap; int rev;
+        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
+    };
+    void bfs(int sv) {
+        dist.assign(n, -1);
+        queue<int> que;
+        dist[sv] = 0; que.push(sv);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,cap,rev]: from[v]) {
+                if(cap==0 || dist[nv]!=-1) continue;
+                dist[nv] = dist[v]+1, que.push(nv); 
             }
-            left.apply(0, v+1, l);
-            is_right.apply(0, v+1, 0);
-        } else if (t==1) {
-            LONGM(v);
-            ll r = left.get(v)+W[v];
-            if(is_right.get(v)==1) {
-                r = right.get(v);
-            }
-            right.apply(0, v+1, r);
-            is_right.apply(0, v+1, 1);
-        } else {
-            LONG(x);
-            auto f=[&](ll v) -> bool {
-                ll l = left.get(v);
-                if(is_right.get(v)==1) l = right.get(v)-W[v];
-                ll r = l + W[v];
-                return l<=x && x<r;
-            };
-            ll v = binary_search(N, -1, f);
-            ll ans = N-v;
-            Out(ans);
         }
     }
+    long long dfs(int v, int t, long long f) {
+        if(v==t) return f;
+        for(int &i=iter[v]; i<int(from[v].size()); i++) {
+            auto [nv,cap,rev] = from[v][i];
+            if(dist[nv]<=dist[v] || cap==0) continue;
+            long long res = dfs(nv, t, min(f,cap));
+            if(res) {
+                from[v][i].cap -= res;
+                from[nv][rev].cap += res;
+                return res;
+            }
+        }
+        return 0;
+    }
+public:
+    vector<vector<Edge>> from;
+    MaxFlow(int n): n(n), from(n) {}
+    void add_edge(int a, int b, long long c) {
+        from[a].emplace_back(Edge(b,c,from[b].size()));
+        from[b].emplace_back(Edge(a,0,from[a].size()-1));
+    }
+    long long flow(int s, int t) {
+        long long ret = 0;
+        while(true) {
+            bfs(s);
+            if(dist[t]==-1) return ret;
+            iter.assign(n, 0);
+            long long now=0;
+            while((now=dfs(s,t,inf))>0) {
+                ret += now;
+            }
+        }
+        return 0;
+    }
+};
+
+#include <atcoder/maxflow>
+using namespace atcoder;
+
+void solve() {
+    LONG(N, T);
+    VP(A, N);
+    VP(B, N);
+    map<Pr,vl> mp;
+    rep(i, N) { mp[B[i]].push_back(i+N); }
+    mf_graph<int> graph(2*N+2);
+    vp edges;
+    rep(i, N) {
+        auto [x,y] = A[i];
+        for(auto [di,dj]: dij8) {
+            ll nx = x+T*di, ny = y+T*dj;
+            if(mp.count({nx,ny})) {
+                vl v = mp[{nx,ny}];
+                for(auto j: mp[{nx,ny}]) {
+                    graph.add_edge(i, j, 1);
+                    edges.emplace_back(i, j);
+                }
+            }
+        }
+    }
+    auto getdir=[&](ll i, ll j) -> ll {
+        auto [x1,y1] = A[i];
+        auto [x2,y2] = B[j-N];
+        ll dx = x2-x1, dy = y2-y1;
+        if(dx!=0) {
+            ll k = abs(dx);
+            dx /= k, dy /= k;
+        }
+        if(dy!=0) {
+            ll k = abs(dy);
+            dx /= k, dy /= k;
+        }
+        if(dx==1 && dy==0) return 1;
+        if(dx==1 && dy==1) return 2;
+        if(dx==0 && dy==1) return 3;
+        if(dx==-1 && dy==1) return 4;
+        if(dx==-1 && dy==0) return 5;
+        if(dx==-1 && dy==-1) return 6;
+        if(dx==0 && dy==-1) return 7;
+        if(dx==1 && dy==-1) return 8;
+        assert(0);
+    };
+    ll s = 2*N, t = s+1;
+    rep(i, N) graph.add_edge(s, i, 1);
+    rep(i, N) graph.add_edge(N+i, t, 1);
+    ll flow = graph.flow(s, t);
+    if(flow!=N) Outend("No");
+    else puts("Yes");
+    vl ans(N);
+    rep(i, edges.size()) {
+        auto e = graph.get_edge(i);
+        if(e.flow==1) {
+            ans[e.from] = getdir(e.from, e.to);
+        }
+    }
+    Out(ans);
+
 
 }
 
