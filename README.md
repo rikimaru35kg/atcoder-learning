@@ -2008,8 +2008,8 @@
 - 凸な多角形を作る事で上手くいく問題
 ### 例題
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
-!!! where i am now for rank B (last submission 2025/3/27)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
+!!! where i am now for rank B (last submission 2025/9/25)
 - !復習価値中 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## 乱択

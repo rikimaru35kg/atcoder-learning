@@ -228,80 +228,115 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include<atcoder/convolution>
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+struct Vecll {
+    long long x, y;
+    Vecll(long long x=0, long long y=0): x(x), y(y) {}
+    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
+    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
+    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
+    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
+    // cross>0 means *this->v is counterclockwise.
+    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
+    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
+    long long norm2() const { return x*x + y*y; }
+    double norm() const {return sqrt(norm2()); }
+    Vecll rot90(bool counterclockwise=true) { 
+        if(counterclockwise) return Vecll(-y, x);
+        else return Vecll(y, -x);
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    int ort() const { // orthant
+        if (x==0 && y==0 ) return 0;
+        if (y>0) return x>0 ? 1 : 2;
+        else return x>0 ? 4 : 3;
     }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
+    bool operator<(const Vecll& v) const {
+        int o = ort(), vo = v.ort();
+        if (o != vo) return o < vo;
+        return cross(v) > 0;
     }
 };
+istream& operator>>(istream& is, Vecll& v) {
+    is >> v.x >> v.y; return is;
+}
+ostream& operator<<(ostream& os, const Vecll& v) {
+    os<<"("<<v.x<<","<<v.y<<")"; return os;
+}
+bool overlapping(long long l1, long long r1, long long l2, long long r2) {
+    if(l1>r1) swap(l1, r1);
+    if(l2>r2) swap(l2, r2);
+    long long lmax = max(l1, l2);
+    long long rmin = min(r1, r2);
+    return lmax <= rmin;
+}
+// v1-v2 cross v3-v4?
+// just point touch -> true
+bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
+    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
+    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
+    if(c12_13 * c12_14 > 0) return false;
+    if(c34_31 * c34_32 > 0) return false;
+    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
+        // both x & y conditions necessary considering vertical cases
+        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
+           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
+        else return false;
+    }
+    return true;
+}
 
 void solve() {
-    ll M = 200010;
-    Combination comb(M, M998);
+    LONG(N);
+    VP(P, N);
+    sort(all(P));
+    auto makecorners=[&](bool upp) -> vp {
+        vector<Pr> p;
+        rep(i, N) {
+            while(p.size()>=2) {
+                Pr p1 = p.end()[-2];
+                Pr p2 = p.end()[-1];
+                Pr p3 = P[i];
+                Vecll v1(p2.first-p1.first, p2.second-p1.second);
+                Vecll v2(p3.first-p2.first, p3.second-p2.second);
+                if(upp && v1.cross(v2)<0) break;
+                if(!upp && v1.cross(v2)>0) break;
+                p.pop_back();
+            }
+            p.emplace_back(P[i]);
+        }
+        return p;
+    };
+    vp upper = makecorners(true);
+    vp lower = makecorners(false);
+    reverse(all(lower));
+    vp sticks = upper;
+    for(auto p: lower) {
+        if(p==upper[0] || p==upper.back()) continue;
+        sticks.push_back(p);
+    }
+    ll m = sticks.size();
 
-    LONG(R,G,B,K);
-    LONG(X, Y, Z);
-    vm r(R+1), g(G+1), b(B+1);
-    repk(i, K-X, B+1) b[i] = comb(B, i);
-    repk(i, K-Y, R+1) r[i] = comb(R, i);
-    repk(i, K-Z, G+1) g[i] = comb(G, i);
+    ll S2 = 0;
+    auto [x0,y0] = sticks[0];
+    repk(i, 1, m-1) {
+        auto [x1,y1] = sticks[i];
+        auto [x2,y2] = sticks[i+1];
+        x1 -= x0, y1 -= y0;
+        x2 -= x0, y2 -= y0;
+        ll now = abs(x1*y2-y1*x2);
+        S2 += now;
+    }
+    ll b = 0;
+    rep(i, m) {
+        auto [x1,y1] = sticks[i];
+        auto [x2,y2] = sticks[(i+1)%m];
+        ll g = gcd(x2-x1, y2-y1);
+        b += g;
+    }
+    de(b)
+    ll inter = (S2-b+2)/2;
+    ll ans = b+inter-N;
+    Out(ans);
 
-    auto v = convolution(r, g);
-    auto w = convolution(v, b);
-    Out(w[K]);
 
 }
 
