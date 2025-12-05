@@ -2201,8 +2201,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/10/13)
-- [F - Pyramid Alignment](https://atcoder.jp/contests/abc428/tasks/abc428_f)
+!!! where i am now for rank D (last submission 2025/11/15)
 - [D - Suddenly, A Tempest](https://atcoder.jp/contests/abc432/tasks/abc432_d)
 
 ## ACできたがグダった問題
