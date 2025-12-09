@@ -2310,3 +2310,5 @@
 - [E - Max Matrix 2](https://atcoder.jp/contests/abc433/tasks/abc433_e)
 - [D - Clouds](https://atcoder.jp/contests/abc434/tasks/abc434_d)
 - [E - Wind Cleaning](https://atcoder.jp/contests/abc427/tasks/abc427_e)
+- [E - Cover query](https://atcoder.jp/contests/abc435/tasks/abc435_e)
+- [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)

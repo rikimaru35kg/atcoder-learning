@@ -228,80 +228,153 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include<atcoder/convolution>
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
+template <class S, S(*op)(S, S), S(*e)()> class SegTree {
+    int n, mx;
+    vector<S> a;
+    void climb(int i) {  while(i){ update(i); i>>=1; } }
+    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
 public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    SegTree(int mx): mx(mx) {
+        n = 1;
+        while(n<mx) n<<=1;
+        a.resize(n*2, e());
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
+        assert(i>=0 && i<mx);
+        i += n;  // i is node id
+        if(do_op) a[i] = op(a[i], x);
+        else a[i] = x;
     }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
+    void set(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x);
+        climb((i+n)>>1);
     }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
+    void set_and_op(int i, S x) {
+        assert(i>=0 && i<mx);
+        set_only(i, x, true);
+        climb((i+n)>>1);
     }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
+    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
+    S get(int i) {
+        assert(i>=0 && i<mx);
+        return a[i+n];
     }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
+    S prod(int l, int r) {
+        assert(l>=0 && r<=mx && l<=r);
+        S lft = e(), rgt = e();
+        l += n, r += n;
+        while(l<r) {
+            if(l&1) lft = op(lft, a[l++]);
+            if(r&1) rgt = op(a[--r], rgt);
+            l>>=1, r>>=1;
+        }
+        return op(lft, rgt);
     }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
+    S all_prod() { return a[1]; }
+    int max_right(int l, auto f) {
+        assert(l>=0 && l<=mx);
+        assert(f(e()));
+        if(l==mx) return mx;
+        l += n;  // l is node id
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            while(~l&1) l>>=1; // go to parent if left node
+            if(!f(op(cum, a[l]))) {  // search descendants
+                while(l<n) {  // while l is not leaf
+                    l<<=1;
+                    if(f(op(cum, a[l]))) {
+                        cum = op(cum, a[l]);
+                        ++l;
+                    }
+                }
+                return l-n;
+            }
+            cum = op(cum, a[l]); ++l;
+            if((l&-l)==l) break;  // right most node -> return n
+        }
+        return mx;
+    }
+    int min_left(int r, auto f) {
+        assert(r>=0 && r<=mx);
+        assert(f(e()));
+        if(r==0) return 0;
+        r += n;  // r is node id(+1)
+        S cum = e();  // cumulation of fixed span
+        while(true) {
+            --r; // r is node id
+            while(r>1 && r&1) r>>=1; // go to parent if right node
+            if(!f(op(a[r], cum))) {  // search descendants
+                while(r<n) {  // while r is not leaf
+                    r = r<<1|1;
+                    if(f(op(a[r], cum))) {
+                        cum = op(a[r], cum);
+                        --r;
+                    }
+                }
+                return r+1-n;
+            }
+            cum = op(a[r], cum);
+            if((r&-r)==r) break;  // left most node -> return 0
+        }
+        return 0;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
+        cerr<<endl;
+        #endif
     }
 };
 
+struct S {
+    ll mx, mxi, mn;
+    S(ll mx=-1, ll mxi=-1, ll mn=INF): mx(mx), mxi(mxi), mn(mn) {}
+    void update(S a) {
+        if(a.mx>mx) { mx = a.mx; mxi = a.mxi; }
+        if(a.mn<mn) mn = a.mn;
+    }
+};
+S op(S a, S b) {
+    S ret;
+    ret.update(a);
+    ret.update(b);
+    return ret;
+}
+S e() {return S();}
+
+
 void solve() {
-    ll M = 200010;
-    Combination comb(M, M998);
+    LONG(N);
+    VLM(P, N);
+    vl idx(N);
+    rep(i, N) idx[P[i]] = i;
+    vl dp(N);
 
-    LONG(R,G,B,K);
-    LONG(X, Y, Z);
-    vm r(R+1), g(G+1), b(B+1);
-    repk(i, K-X, B+1) b[i] = comb(B, i);
-    repk(i, K-Y, R+1) r[i] = comb(R, i);
-    repk(i, K-Z, G+1) g[i] = comb(G, i);
-
-    auto v = convolution(r, g);
-    auto w = convolution(v, b);
-    Out(w[K]);
+    SegTree<S,op,e> seg(N);
+    rep(i, N) seg.set_and_op(i, S(-1,i,-1));
+    for(auto i: idx) {
+        auto f=[&](S x) -> bool {
+            return x.mn>=0;
+        };
+        ll now = 0;
+        de2(i, P[i])
+        {
+            ll r = seg.max_right(i+1, f);
+            auto x = seg.prod(i+1, r);
+            de3(x.mx, x.mxi, x.mn)
+            if(x.mxi!=-1) chmax(now, x.mxi-i+dp[x.mxi]);
+        }
+        {
+            ll l = seg.min_left(i, f);
+            auto x = seg.prod(l, i);
+            de3(x.mx, x.mxi, x.mn)
+            if(x.mxi!=-1) chmax(now, i-x.mxi+dp[x.mxi]);
+        }
+        seg.set_and_op(i, S(P[i], i, P[i]));
+        dp[i] = now;
+    }
+    de(dp)
 
 }
 

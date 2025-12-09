@@ -228,115 +228,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Vecll {
-    long long x, y;
-    Vecll(long long x=0, long long y=0): x(x), y(y) {}
-    Vecll& operator+=(const Vecll &o) { x += o.x; y += o.y; return *this; }
-    Vecll operator+(const Vecll &o) const { return Vecll(*this) += o; }
-    Vecll& operator-=(const Vecll &o) { x -= o.x; y -= o.y; return *this; }
-    Vecll operator-(const Vecll &o) const { return Vecll(*this) -= o; }
-    // cross>0 means *this->v is counterclockwise.
-    long long cross(const Vecll &o) const { return x*o.y - y*o.x; }
-    long long dot(const Vecll &o) const { return x*o.x + y*o.y; }
-    long long norm2() const { return x*x + y*y; }
-    double norm() const {return sqrt(norm2()); }
-    Vecll rot90(bool counterclockwise=true) { 
-        if(counterclockwise) return Vecll(-y, x);
-        else return Vecll(y, -x);
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vp mx;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), mx(n) {}
+    void init(vl p) {
+        ll n = p.size();
+        rep(i, n) { mx[i] = {p[i], i}; }
     }
-    int ort() const { // orthant
-        if (x==0 && y==0 ) return 0;
-        if (y>0) return x>0 ? 1 : 2;
-        else return x>0 ? 4 : 3;
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    bool operator<(const Vecll& v) const {
-        int o = ort(), vo = v.ort();
-        if (o != vo) return o < vo;
-        return cross(v) > 0;
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        chmax(mx[y], mx[x]);
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
 };
-istream& operator>>(istream& is, Vecll& v) {
-    is >> v.x >> v.y; return is;
-}
-ostream& operator<<(ostream& os, const Vecll& v) {
-    os<<"("<<v.x<<","<<v.y<<")"; return os;
-}
-bool overlapping(long long l1, long long r1, long long l2, long long r2) {
-    if(l1>r1) swap(l1, r1);
-    if(l2>r2) swap(l2, r2);
-    long long lmax = max(l1, l2);
-    long long rmin = min(r1, r2);
-    return lmax <= rmin;
-}
-// v1-v2 cross v3-v4?
-// just point touch -> true
-bool crossing(const Vecll &v1, const Vecll &v2, const Vecll &v3, const Vecll &v4) {
-    long long c12_13 = (v2-v1).cross(v3-v1), c12_14 = (v2-v1).cross(v4-v1);
-    long long c34_31 = (v4-v3).cross(v1-v3), c34_32 = (v4-v3).cross(v2-v3);
-    if(c12_13 * c12_14 > 0) return false;
-    if(c34_31 * c34_32 > 0) return false;
-    if(c12_13==0 && c12_14==0) {  // 4 points on the same line
-        // both x & y conditions necessary considering vertical cases
-        if(overlapping(v1.x,v2.x,v3.x,v4.x) &&
-           overlapping(v1.y,v2.y,v3.y,v4.y)) return true;
-        else return false;
-    }
-    return true;
-}
 
 void solve() {
     LONG(N);
-    VP(P, N);
-    sort(all(P));
-    auto makecorners=[&](bool upp) -> vp {
-        vector<Pr> p;
-        rep(i, N) {
-            while(p.size()>=2) {
-                Pr p1 = p.end()[-2];
-                Pr p2 = p.end()[-1];
-                Pr p3 = P[i];
-                Vecll v1(p2.first-p1.first, p2.second-p1.second);
-                Vecll v2(p3.first-p2.first, p3.second-p2.second);
-                if(upp && v1.cross(v2)<0) break;
-                if(!upp && v1.cross(v2)>0) break;
-                p.pop_back();
-            }
-            p.emplace_back(P[i]);
+    VLM(P, N);
+    WeightedUnionFind uf(N);
+    uf.init(P);
+    vl idx(N);
+    rep(i, N) idx[P[i]] = i;
+    vl dp(N);
+
+    for(auto i: idx) {
+        if(i<N-1 && P[i]>P[i+1]) {
+            auto [mx, mxi] = uf.mx[uf.leader(i+1)];
+            chmax(dp[i], mxi-i+dp[mxi]);
+            uf.merge(i, i+1);
         }
-        return p;
-    };
-    vp upper = makecorners(true);
-    vp lower = makecorners(false);
-    reverse(all(lower));
-    vp sticks = upper;
-    for(auto p: lower) {
-        if(p==upper[0] || p==upper.back()) continue;
-        sticks.push_back(p);
+        if(i>0 && P[i]>P[i-1]) {
+            auto [mx, mxi] = uf.mx[uf.leader(i-1)];
+            chmax(dp[i], i-mxi+dp[mxi]);
+            uf.merge(i, i-1);
+        }
     }
-    ll m = sticks.size();
-
-    ll S2 = 0;
-    auto [x0,y0] = sticks[0];
-    repk(i, 1, m-1) {
-        auto [x1,y1] = sticks[i];
-        auto [x2,y2] = sticks[i+1];
-        x1 -= x0, y1 -= y0;
-        x2 -= x0, y2 -= y0;
-        ll now = abs(x1*y2-y1*x2);
-        S2 += now;
-    }
-    ll b = 0;
-    rep(i, m) {
-        auto [x1,y1] = sticks[i];
-        auto [x2,y2] = sticks[(i+1)%m];
-        ll g = gcd(x2-x1, y2-y1);
-        b += g;
-    }
-    de(b)
-    ll inter = (S2-b+2)/2;
-    ll ans = b+inter-N;
-    Out(ans);
-
+    de(dp)
+    Out(dp[idx.back()]);
 
 }
 
