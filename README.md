@@ -941,8 +941,7 @@
 - 基本 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 - 基本 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
 - 基本 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
-!!! where i am now for rank A (last submission 2025/10/31)
-- !復習価値高 [E - Popcount Sum 3](https://atcoder.jp/contests/abc406/tasks/abc406_e)
+- !復習価値低 [E - Popcount Sum 3](https://atcoder.jp/contests/abc406/tasks/abc406_e)
 
 ## 対戦ゲームDP
 - 二人が最適戦略を取るという事は、後ろから考えていくと良い
@@ -1778,7 +1777,8 @@
 ## MODで考えてみる
 - 求めたい物に割り算が関係する場合、MODで考えてみると見通しが良くなる場合あり。特にDPする際には、MODであれば状態数が減らせる
 <!-- ### 例題 -->
-<!-- - 長さを持つDPに移動 !復習価値高 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f) -->
+!!! where i am now for rank A (last submission *)
+<!-- - 長さを持つDPに移動 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f) -->
 
 ## 円環問題
 - 円環はそのままでは扱いにくいので、(1)2つ繋げて列にするか、(2)頂点1から頂点1までの区間長Nの列にするか、(3)頂点1から頂点Nまでの区間長N-1の列にするかで考えると見通しが良くなる
