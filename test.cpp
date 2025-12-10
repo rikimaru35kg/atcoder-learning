@@ -228,77 +228,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    vp mx;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), mx(n) {}
-    void init(vl p) {
-        ll n = p.size();
-        rep(i, n) { mx[i] = {p[i], i}; }
-    }
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        chmax(mx[y], mx[x]);
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 void solve() {
-    LONG(N);
-    VLM(P, N);
-    WeightedUnionFind uf(N);
-    uf.init(P);
-    vl idx(N);
-    rep(i, N) idx[P[i]] = i;
-    vl dp(N);
+    LONG(N, K);
+    vl rem(N);
+    vl deadline(N);
 
-    for(auto i: idx) {
-        if(i<N-1 && P[i]>P[i+1]) {
-            auto [mx, mxi] = uf.mx[uf.leader(i+1)];
-            chmax(dp[i], mxi-i+dp[mxi]);
-            uf.merge(i, i+1);
-        }
-        if(i>0 && P[i]>P[i-1]) {
-            auto [mx, mxi] = uf.mx[uf.leader(i-1)];
-            chmax(dp[i], i-mxi+dp[mxi]);
-            uf.merge(i, i-1);
-        }
+    vt3 events;
+    rep(i, N) {
+        LONG(a,b,c);
+        events.emplace_back(a, i, c);
+        events.emplace_back(b+1, i, -c);
+        deadline[i] = b;
     }
-    de(dp)
-    Out(dp[idx.back()]);
+    sort(all(events));
+
+    pq que;
+    ll pt = 0;
+    ll ans = 0;
+    for(auto [t,i,c]: events) {
+        ll dt = t - pt;
+        while(dt>0 && que.size()) {
+            auto [tlim, ci] = que.top(); que.pop();
+            ll mn = min(rem[ci], dt);
+            rem[ci] -= mn;
+            dt -= mn;
+            ans += mn;
+            if(rem[ci]>0) {
+                que.emplace(tlim, ci);
+                break;
+            }
+        }
+        rem[i] += c;
+        chmax(rem[i], 0LL);
+        if(rem[i]>0) que.emplace(deadline[i], i);
+        pt = t;
+    }
+    Out(ans);
 
 }
 

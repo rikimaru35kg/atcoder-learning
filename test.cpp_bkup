@@ -228,153 +228,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    vector<S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vp mx;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), mx(n) {}
+    void init(vl p) {
+        ll n = p.size();
+        rep(i, n) { mx[i] = {p[i], i}; }
     }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    void set(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x);
-        climb((i+n)>>1);
-    }
-    void set_and_op(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
-    }
-    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
         }
-        return op(lft, rgt);
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        chmax(mx[y], mx[x]);
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
 };
-
-struct S {
-    ll mx, mxi, mn;
-    S(ll mx=-1, ll mxi=-1, ll mn=INF): mx(mx), mxi(mxi), mn(mn) {}
-    void update(S a) {
-        if(a.mx>mx) { mx = a.mx; mxi = a.mxi; }
-        if(a.mn<mn) mn = a.mn;
-    }
-};
-S op(S a, S b) {
-    S ret;
-    ret.update(a);
-    ret.update(b);
-    return ret;
-}
-S e() {return S();}
-
 
 void solve() {
     LONG(N);
     VLM(P, N);
+    WeightedUnionFind uf(N);
+    uf.init(P);
     vl idx(N);
     rep(i, N) idx[P[i]] = i;
     vl dp(N);
 
-    SegTree<S,op,e> seg(N);
-    rep(i, N) seg.set_and_op(i, S(-1,i,-1));
     for(auto i: idx) {
-        auto f=[&](S x) -> bool {
-            return x.mn>=0;
-        };
-        ll now = 0;
-        de2(i, P[i])
-        {
-            ll r = seg.max_right(i+1, f);
-            auto x = seg.prod(i+1, r);
-            de3(x.mx, x.mxi, x.mn)
-            if(x.mxi!=-1) chmax(now, x.mxi-i+dp[x.mxi]);
+        if(i<N-1 && P[i]>P[i+1]) {
+            auto [mx, mxi] = uf.mx[uf.leader(i+1)];
+            chmax(dp[i], mxi-i+dp[mxi]);
+            uf.merge(i, i+1);
         }
-        {
-            ll l = seg.min_left(i, f);
-            auto x = seg.prod(l, i);
-            de3(x.mx, x.mxi, x.mn)
-            if(x.mxi!=-1) chmax(now, i-x.mxi+dp[x.mxi]);
+        if(i>0 && P[i]>P[i-1]) {
+            auto [mx, mxi] = uf.mx[uf.leader(i-1)];
+            chmax(dp[i], i-mxi+dp[mxi]);
+            uf.merge(i, i-1);
         }
-        seg.set_and_op(i, S(P[i], i, P[i]));
-        dp[i] = now;
     }
     de(dp)
+    Out(dp[idx.back()]);
 
 }
 
