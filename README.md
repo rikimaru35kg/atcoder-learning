@@ -941,6 +941,7 @@
 - 基本 おつり（桁DPの亜種） [E - Payment](https://atcoder.jp/contests/abc155/tasks/abc155_e)
 - 基本 おつり2（上の問題＋一工夫） [E - Minimal payments](https://atcoder.jp/contests/abc231/tasks/abc231_e)
 - 基本 回文 [E - (∀x∀)](https://atcoder.jp/contests/abc242/tasks/abc242_e)
+!!! where i am now for rank A (last submission 2025/10/31)
 - !復習価値高 [E - Popcount Sum 3](https://atcoder.jp/contests/abc406/tasks/abc406_e)
 
 ## 対戦ゲームDP
@@ -1998,8 +1999,7 @@
 - c_{i+j} += ai * bjとなる
 ### 例題
 - 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
-!!! where i am now for rank A (last submission 2025/10/24)
-- !復習価値高 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
+- 基本 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値低 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 - !要復習 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
