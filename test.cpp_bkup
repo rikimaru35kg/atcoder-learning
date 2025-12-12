@@ -229,7 +229,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
-#include<atcoder/convolution>
 using namespace atcoder;
 using mint = modint998244353;
 using vm = vector<mint>;
@@ -243,89 +242,37 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
-    }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-};
-
-mint solve1(ll N, ll A, ll B, ll C) {
-    vm a(N+1), b(N+1), c(N+1);
-    for(ll i=0; i<=N; i+=A) a[i] = 1;
-    for(ll i=0; i<=N; i+=B) b[i] = 1;
-    for(ll i=0; i<=N; i+=C) c[i] = 1;
-
-    vm d = convolution(a, b);
-    d = convolution(d, c);
-    return d[N];
-}
-
-mint solve2(ll N, ll A, ll B, ll C) {
-    Combination comb(N, M998);
-    vm a(N+1), b(N+1), c(N+1);
-    for(ll i=0; i<=N; i+=A) a[i] = comb.get_factinv(i);
-    for(ll i=0; i<=N; i+=B) b[i] = comb.get_factinv(i);
-    for(ll i=0; i<=N; i+=C) c[i] = comb.get_factinv(i);
-
-    vm d = convolution(a, b);
-    d = convolution(d, c);
-    return d[N]*comb.get_fact(N);
-
-}
-
 void solve() {
-    LONG(N,A,B,C);
-
-    Out(solve1(N,A,B,C));
-    Out(solve2(N,A,B,C));
-
-
+    LONG(N, K);
+    ll M = 60;
+    vvm cnt(2, vm(K+1)), sum(2, vm(K+1));
+    cnt[0][0] = 1;
+    for(ll i=M-1; i>=0; --i) {
+        vvm pcnt(2, vm(K+1)), psum(2, vm(K+1));
+        swap(cnt, pcnt); swap(sum, psum);
+        ll nx = N>>i&1;
+        rep(j, 2) rep(k, K+1) rep(x, 2) {
+            if(j==0 && x>nx) continue;
+            ll nj = j;
+            if(x<nx) nj = 1;
+            ll nk = k;
+            if(x==1) nk++;
+            if(nk>K) continue;
+            cnt[nj][nk] += pcnt[j][k];
+            ll val = 0;
+            if(x==1) val = 1LL<<i;
+            sum[nj][nk] += psum[j][k] + val*pcnt[j][k];
+        }
+    }
+    Out(sum[0][K]+sum[1][K]);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

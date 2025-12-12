@@ -228,51 +228,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+template <class T> struct CartesianTree {
+    // root = largest element
+    vector<int> l, r;
+    int root;
+    CartesianTree(vector<T> a) {
+        // a[i]!=a[j] where i!=j
+        int n = a.size();
+        l.resize(n, -1); r.resize(n, -1);
+        pair<T,int> mx;
+        vector<int> stck;
+        for(int i=0; i<n; ++i) {
+            mx = max(mx, {a[i], i});
+            while(stck.size() && a[stck.back()] < a[i]) {
+                l[i] = stck.back(); stck.pop_back();
+            }
+            if(stck.size()) r[stck.back()] = i;
+            stck.push_back(i);
+        }
+        root = mx.second;
+    }
+};
 
 void solve() {
-    LONG(N, K);
-    ll M = 60;
-    vvm cnt(2, vm(K+1)), sum(2, vm(K+1));
-    cnt[0][0] = 1;
-    for(ll i=M-1; i>=0; --i) {
-        vvm pcnt(2, vm(K+1)), psum(2, vm(K+1));
-        swap(cnt, pcnt); swap(sum, psum);
-        ll nx = N>>i&1;
-        rep(j, 2) rep(k, K+1) rep(x, 2) {
-            if(j==0 && x>nx) continue;
-            ll nj = j;
-            if(x<nx) nj = 1;
-            ll nk = k;
-            if(x==1) nk++;
-            if(nk>K) continue;
-            cnt[nj][nk] += pcnt[j][k];
-            ll val = 0;
-            if(x==1) val = 1LL<<i;
-            sum[nj][nk] += psum[j][k] + val*pcnt[j][k];
-        }
+    LONG(N);
+    VLM(P, N);
+    CartesianTree<ll> tree(P);
+    vl dp(N);
+    
+    vl idx(N);
+    rep(i, N) idx[P[i]] = i;
+    for(auto i: idx) {
+        ll l = tree.l[i], r = tree.r[i];
+        if(l != -1) chmax(dp[i], dp[l]+i-l);
+        if(r != -1) chmax(dp[i], dp[r]+r-i);
     }
-    Out(sum[0][K]+sum[1][K]);
+    Out(dp[tree.root]);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
