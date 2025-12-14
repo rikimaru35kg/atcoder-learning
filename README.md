@@ -799,6 +799,12 @@
 ### 例題
 - 基本 Sparse Tableの考え方 [F - Union of Two Sets](https://atcoder.jp/contests/abc282/tasks/abc282_f)
 
+## Catesian Tree
+- 配列値の降順で二分木を作る
+- stack利用でO(N)で構築可能
+### 例題
+- !復習価値高 [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)
+
 # 動的計画法（DP）
 
 ## 一般的なこと
@@ -1734,6 +1740,11 @@
 - !復習価値低 [G - Mediator](https://atcoder.jp/contests/abc350/tasks/abc350_g)
 - !復習価値低 [F - Contraction](https://atcoder.jp/contests/abc411/tasks/abc411_f)
 
+## 区間をsetで管理するテク
+- 名前通りのテク
+### 例題
+- !復習価値中 [E - Cover query](https://atcoder.jp/contests/abc435/tasks/abc435_e)
+
 ## 標準形を考える
 - 直線の傾きは{x, y}（xとyは互いに素、x>=0）で一意に定められる（ただし{0,-1}と{0,1}を分けてしまわないように注意）
 - なお、y=ax+bを標準系として保存したい場合、a=p/qとすると、qy=px+bqとなるので、y切片bではなく分母をかけたbq(=qy-px)を保存すると良い
@@ -2310,5 +2321,3 @@
 - [E - Max Matrix 2](https://atcoder.jp/contests/abc433/tasks/abc433_e)
 - [D - Clouds](https://atcoder.jp/contests/abc434/tasks/abc434_d)
 - [E - Wind Cleaning](https://atcoder.jp/contests/abc427/tasks/abc427_e)
-- [E - Cover query](https://atcoder.jp/contests/abc435/tasks/abc435_e)
-- [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)
