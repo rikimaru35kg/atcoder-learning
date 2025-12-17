@@ -1871,8 +1871,7 @@
 ### 例題
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
-!!! where i am now for rank S (last submission 2025/11/13)
-- !要復習 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
+- !復習価値低 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
 - !復習価値低 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
 ## 最終形を考える
@@ -1990,6 +1989,7 @@
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+!!! where i am now for rank S (last submission 2025/10/24)
 - !要復習 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
 
 ## 最大フロー・最小カット

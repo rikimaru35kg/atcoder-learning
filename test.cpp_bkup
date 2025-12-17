@@ -228,61 +228,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
-
 void solve() {
     LONG(N);
-    VLM(B, N);
-    vl idx(N);
-    rep(i, N) idx[B[i]] = i;
-    BIT<int> bit(N);
-
-    ll ans = 0;
-    for(auto i: idx) {
-        ll r = bit.sum(i+1, N);
-        ll l = bit.sum(0, i);
-        ans += (r+1)*(l+1);
-        bit.add(i, 1);
+    vt3 tel;
+    vvl from(N);
+    rep(i, N-1) {
+        LONG(A);
+        rep(j, A) {
+            LONGM(p, q);
+            tel.emplace_back(i, p, q);
+            from[p].push_back(tel.size()-1);
+            from[q].push_back(tel.size()-1);
+        }
     }
+    ll M = tel.size();
+
+    vl dist(N, INF);
+    vl cnt(M);
+    queue<ll> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]!=INF) return;
+        dist[v] = d;
+        for(auto nti: from[v]) {
+            cnt[nti]++;
+            if(cnt[nti]==2) que.push(nti);
+        }
+    };
+    push(N-1, 0);
+    while(que.size()) {
+        auto ti = que.front(); que.pop();
+        auto [v, v1, v2] = tel[ti];
+        push(v, max(dist[v1], dist[v2])+1);
+    }
+    ll ans = dist[0];
+    ch1(ans);
     Out(ans);
 
 }

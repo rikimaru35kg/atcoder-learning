@@ -230,38 +230,36 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    vt3 tel;
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(A);
-        rep(j, A) {
-            LONGM(p, q);
-            tel.emplace_back(i, p, q);
-            from[p].push_back(tel.size()-1);
-            from[q].push_back(tel.size()-1);
-        }
-    }
-    ll M = tel.size();
 
-    vl dist(N, INF);
-    vl cnt(M);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]!=INF) return;
-        dist[v] = d;
-        for(auto nti: from[v]) {
-            cnt[nti]++;
-            if(cnt[nti]==2) que.push(nti);
+    ll ones = 1;
+    ll ans = 0;
+    ll done = 1;
+    while(true) {
+        if(ones>N) break;
+        ans += done;
+        de2(ones, ans)
+
+        for(ll x=0; x<=9; ++x) {
+            if(x==1) continue;
+            ll tmp = ones*10 + x;
+            de(tmp)
+            if(tmp>N) break;
+            rep(d, 19) {
+                string sufmn = string(d, '0');
+                ll mn = stoll(to_string(tmp)+sufmn);
+                if(mn>N) break;
+                string sufmx = string(d, '9');
+                ll mx = stoll(to_string(tmp)+sufmx);
+                ll l = max(mn, 1LL);
+                ll r = min(mx, N);
+                ans += (r-l+1)*done;
+                de3(r-l+1, done, ans)
+            }
         }
-    };
-    push(N-1, 0);
-    while(que.size()) {
-        auto ti = que.front(); que.pop();
-        auto [v, v1, v2] = tel[ti];
-        push(v, max(dist[v1], dist[v2])+1);
+
+        ones = ones*10 + 1;
+        done++;
     }
-    ll ans = dist[0];
-    ch1(ans);
     Out(ans);
 
 }
