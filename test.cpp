@@ -228,43 +228,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class T> struct CartesianTree {
-    // root = largest element
-    vector<int> l, r;
-    int root;
-    CartesianTree(vector<T> a) {
-        // a[i]!=a[j] where i!=j
-        int n = a.size();
-        l.resize(n, -1); r.resize(n, -1);
-        pair<T,int> mx;
-        vector<int> stck;
-        for(int i=0; i<n; ++i) {
-            mx = max(mx, {a[i], i});
-            while(stck.size() && a[stck.back()] < a[i]) {
-                l[i] = stck.back(); stck.pop_back();
-            }
-            if(stck.size()) r[stck.back()] = i;
-            stck.push_back(i);
-        }
-        root = mx.second;
-    }
-};
-
 void solve() {
     LONG(N);
-    VLM(P, N);
-    CartesianTree<ll> tree(P);
-    vl dp(N);
-    
-    vl idx(N);
-    rep(i, N) idx[P[i]] = i;
-    for(auto i: idx) {
-        ll l = tree.l[i], r = tree.r[i];
-        if(l != -1) chmax(dp[i], dp[l]+i-l);
-        if(r != -1) chmax(dp[i], dp[r]+r-i);
+    vt3 tel;
+    vvl from(N);
+    rep(i, N-1) {
+        LONG(A);
+        rep(j, A) {
+            LONGM(p, q);
+            tel.emplace_back(i, p, q);
+            from[p].push_back(tel.size()-1);
+            from[q].push_back(tel.size()-1);
+        }
     }
-    Out(dp[tree.root]);
+    ll M = tel.size();
 
+    vl dist(N, INF);
+    vl cnt(M);
+    queue<ll> que;
+    auto push=[&](ll v, ll d) {
+        if(dist[v]!=INF) return;
+        dist[v] = d;
+        for(auto nti: from[v]) {
+            cnt[nti]++;
+            if(cnt[nti]==2) que.push(nti);
+        }
+    };
+    push(N-1, 0);
+    while(que.size()) {
+        auto ti = que.front(); que.pop();
+        auto [v, v1, v2] = tel[ti];
+        push(v, max(dist[v1], dist[v2])+1);
+    }
+    ll ans = dist[0];
+    ch1(ans);
+    Out(ans);
 
 }
 

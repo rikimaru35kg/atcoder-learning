@@ -1697,8 +1697,7 @@
 - !復習価値低 [F - Insert](https://atcoder.jp/contests/abc392/tasks/abc392_f)
 - 基本 [062 - Paint All（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_bj)
 - !復習価値低 [N - ゴミ出し](https://atcoder.jp/contests/past202303-open/tasks/past202303_n)
-!!! where i am now for rank S (last submission 2025/11/13)
-- !要復習 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
+- !復習価値低 [B - テレポーター (Teleporter)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_b)
 
 ## 三つ組は真ん中を固定
 ### 例題
@@ -1872,6 +1871,7 @@
 ### 例題
 - !復習価値低 1の出現数 [D - 1](https://atcoder.jp/contests/abc029/tasks/abc029_d)
 - !復習価値低 [B37 - Sum of Digits](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_dj)
+!!! where i am now for rank S (last submission 2025/11/13)
 - !要復習 [A - Leading 1s](https://atcoder.jp/contests/arc127/tasks/arc127_a)
 - !復習価値低 [C - Snake Numbers](https://atcoder.jp/contests/abc387/tasks/abc387_c)
 
