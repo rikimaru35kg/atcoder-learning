@@ -229,40 +229,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vt3 tel;
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(A);
-        rep(j, A) {
-            LONGM(p, q);
-            tel.emplace_back(i, p, q);
-            from[p].push_back(tel.size()-1);
-            from[q].push_back(tel.size()-1);
-        }
-    }
-    ll M = tel.size();
-
-    vl dist(N, INF);
-    vl cnt(M);
-    queue<ll> que;
-    auto push=[&](ll v, ll d) {
-        if(dist[v]!=INF) return;
-        dist[v] = d;
-        for(auto nti: from[v]) {
-            cnt[nti]++;
-            if(cnt[nti]==2) que.push(nti);
-        }
-    };
-    push(N-1, 0);
-    while(que.size()) {
-        auto ti = que.front(); que.pop();
-        auto [v, v1, v2] = tel[ti];
-        push(v, max(dist[v1], dist[v2])+1);
-    }
-    ll ans = dist[0];
-    ch1(ans);
-    Out(ans);
 
 }
 

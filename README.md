@@ -1989,8 +1989,7 @@
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
-!!! where i am now for rank S (last submission 2025/10/24)
-- !要復習 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
+- !復習価値低 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
 
 ## 最大フロー・最小カット
 - ACLで求める
@@ -2013,6 +2012,7 @@
 - 基本 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値低 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
+!!! where i am now for rank S (last submission 2025/11/15)
 - !要復習 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
 
 ## 凸包・Convex Hull Trick
