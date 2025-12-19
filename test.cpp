@@ -228,30 +228,83 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    }
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+};
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+#include<atcoder/convolution>
+
 void solve() {
     LONG(N, M);
-    vt3 edge;
-    rep(i, M) {
-        LONG(l, r); --l; LONG(s);
-        edge.emplace_back(l, r, s);
-        edge.emplace_back(r, l, -s);
+    VL(A, N);
+    VL(B, M);
+    ll K = 5e5+10;
+    Combination comb(K, M998);
+    vm b(K);
+    vm c(K);
+    rep(i, M) { b[B[i]] += comb.get_factinv(B[i]); }
+    rep(k, K) c[k] = comb.get_factinv(k);
+    vm d = convolution(b, c);
+    mint ans;
+    rep(i, N) {
+        ans += comb.get_fact(A[i]) * d[A[i]];
     }
-    rep(i, N) edge.emplace_back(i+1, i, -1);
+    Out(ans);
 
-    vl dist(N+1, INF);
-    dist[N] = 0;
-    bool update = false;
-    rep(_, N+10) {
-        update = false;
-        for(auto [v, nv, c]: edge) {
-            if(dist[v]+c<dist[nv]) {
-                update = true;
-                dist[nv] = dist[v]+c;
-            }
-        }
-    }
-    if(update) Pm1
-    Out(-dist[0]);
 
 }
 

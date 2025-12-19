@@ -229,6 +229,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(N, M);
+    vt3 edge;
+    rep(i, M) {
+        LONG(l, r); --l; LONG(s);
+        edge.emplace_back(l, r, s);
+        edge.emplace_back(r, l, -s);
+    }
+    rep(i, N) edge.emplace_back(i+1, i, -1);
+
+    vl dist(N+1, INF);
+    dist[N] = 0;
+    bool update = false;
+    rep(_, N+10) {
+        update = false;
+        for(auto [v, nv, c]: edge) {
+            if(dist[v]+c<dist[nv]) {
+                update = true;
+                dist[nv] = dist[v]+c;
+            }
+        }
+    }
+    if(update) Pm1
+    Out(-dist[0]);
 
 }
 

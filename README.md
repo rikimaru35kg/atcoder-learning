@@ -1071,6 +1071,7 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
+!!! where i am now for rank S (last submission 2025/11/28)
 - !要復習 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
@@ -2012,7 +2013,6 @@
 - 基本 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値低 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
-!!! where i am now for rank S (last submission 2025/11/15)
 - !要復習 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
 
 ## 凸包・Convex Hull Trick
@@ -2020,7 +2020,7 @@
 ### 例題
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
-!!! where i am now for rank B (last submission 2025/9/25)
+!!! where i am now for rank B (last submission 2025/9a25)
 - !復習価値中 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## 乱択
