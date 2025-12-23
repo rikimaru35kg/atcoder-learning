@@ -2024,7 +2024,6 @@
 
 ## 乱択
 ### 例題
-!!! where i am now for rank B (last submission 2025/10/14)
 - !復習価値低 [E - Colinear](https://atcoder.jp/contests/abc422/tasks/abc422_e)
 
 ## オイラー路
@@ -2040,6 +2039,7 @@
 - DPでも解けない場合、もしかしたら一部貪欲で計算量を押さえられる可能性あり
 ### 例題
 - 基本 [B - Bought Review](https://atcoder.jp/contests/arc174/tasks/arc174_b)
+!!! where i am now for rank B (last submission 2025/3/7)
 - !復習価値低 [E - Sensor Optimization Dilemma 2](https://atcoder.jp/contests/abc374/tasks/abc374_e)
 
 ## 木を見て森を見る

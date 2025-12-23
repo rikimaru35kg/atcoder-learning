@@ -228,39 +228,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
-    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
-    auto [x1,y1] = p1; auto [x2,y2] = p2;
-    long long a = 0, b = 0, c = 0;
-    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
-    long long g = gcd(gcd(a,b),c);
-    a /= g, b /= g, c /= g;
-    if(a==0 && b<0) b=-b, c=-c;
-    if(a<0) a=-a, b=-b, c=-c;
-    return {a,b,c};
-}
+// get max for lines(ai*x+bi)
+class ConvexHullTrick {
+    struct Line {
+        long long a, b;
+        Line(long long a, long long b): a(a), b(b) {}
+    };
+    deque<Line> lines;
+    long long fx(Line l, long long x) { return l.a*x + l.b; }
+public:
+    ConvexHullTrick() {}
+    void add(long long a3, long long b3) {
+        // (a3,b3) must be input in the asceinding order!
+        while((int)lines.size()>=2) {
+            auto [a1,b1] = lines.end()[-2];
+            auto [a2,b2] = lines.end()[-1];
+            if((b1-b2)*(a3-a2)<(a2-a1)*(b2-b3)) break;
+            lines.pop_back();
+        }
+        lines.emplace_back(a3,b3);
+    }
+    long long get(long long x) {
+        //! O(Q*log(N,3))
+        int l=0, r=lines.size()-1;
+        while(r-l>2) {
+            int m1 = (l*2+r)/3;
+            int m2 = (l+2*r)/3;
+            if(fx(lines[m1],x)<fx(lines[m2],x)) l=m1;
+            else r = m2;
+        }
+        long long ret = fx(lines[l],x);
+        for(int i=l+1; i<=r; ++i) ret = max(ret, fx(lines[i],x));
+        return ret;
+    }
+    long long get_in_the_ascending_order(long long x) {
+        //! O(N+Q) and irrevirsible
+        long long ret = fx(lines[0], x);
+        while((int)lines.size()>=2) {
+            long long nxt = fx(lines[1], x);
+            if(nxt<ret) break;
+            ret = nxt;
+            lines.pop_front();
+        }
+        return ret;
+    }
+};
 
 void solve() {
-    LONG(N);
-    VP(P, N);
+    LONG(N, M);
+    VL(B, N);
+    VL(C, M);
+    sort(allr(B));
 
-    rep(_, 50) {
-        ll i = rand()%N, j = rand()%(N-1);
-        if(j>=i) ++j;
-        auto [a,b,c] = get_line(P[i], P[j]);
-        ll cnt = 0;
-        rep(k, N) {
-            auto [x,y] = P[k];
-            if(a*x+b*y+c==0) ++cnt;
-        }
-        if(cnt>N/2) {
-            puts("Yes");
-            printf("%lld %lld %lld\n", a, b, c);
-            return;
-        }
+    ConvexHullTrick cht;
+    rep(i, N) {
+        cht.add(i+1, (i+1)*B[i]);
     }
-    puts("No");
-
+    rep(i, M) {
+        ll ans = cht.get(C[i]);
+        cout << ans << ' ';
+    }
+    cout<<endl;
 }
 
 int main () {
