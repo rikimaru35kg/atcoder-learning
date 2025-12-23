@@ -228,101 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
+    return ok;
+}
 
 void solve() {
-    LONG(N, X, Y);
-    vt4 box;
-    box.emplace_back(0, X, 0, Y);
-    auto flip=[&]() {
-        vt4 nbox;
-        for(auto [x1,x2,y1,y2]: box) nbox.emplace_back(y1,y2,x1,x2);
-        swap(nbox, box);
-    };
-    rep(i, N) {
-        CHAR(t); LONG(a,b);
-        if(t=='Y') flip();
-        de3(t,a,b)
+    LONG(N, X);
+    vl A(N),P(N),B(N),Q(N);
+    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
 
-        vt4 nbox;
-        for(auto [x1,x2,y1,y2]: box) {
-            if(a<=x1) nbox.emplace_back(x1,x2,y1+b,y2+b);
-            else if(a>=x2) nbox.emplace_back(x1,x2,y1-b,y2-b);
-            else {
-                nbox.emplace_back(x1,a,y1-b,y2-b);
-                nbox.emplace_back(a,x2,y1+b,y2+b);
-            }
+    auto calc=[&](ll A, ll P, ll B, ll Q, ll w) -> ll {
+        if(B*P>A*Q) swap(A,B), swap(P, Q); // cheap A
+        ll ret = INF;
+        rep(nb, A+1) {
+            ll na = Divceil(w-nb*B, A);
+            chmax(na, 0LL);
+            ll now = na*P + nb*Q;
+            chmin(ret, now);
         }
-        swap(nbox, box);
-
-        if(t=='Y') flip();
-    }
-    auto overlap=[&](ll x1, ll x2, ll a1, ll a2) -> ll {
-        ll l = max(x1,a1), r = min(x2,a2);
-        return r-l;
+        return ret;
     };
-    ll M = box.size();
-    WeightedUnionFind uf(M);
-    rep(i, M) rep(j, i) {
-        auto [x1,x2,y1,y2] = box[i];
-        auto [a1,a2,b1,b2] = box[j];
-        ll ox = overlap(x1,x2,a1,a2);
-        ll oy = overlap(y1,y2,b1,b2);
-        if(ox<0 || oy<0) continue;
-        if(ox>0 || oy>0) {
-            uf.merge(i, j);
+    auto f=[&](ll w) -> bool {
+        ll sum = 0;
+        rep(i, N) {
+            ll now = calc(A[i],P[i],B[i],Q[i],w);
+            sum += now;
+            if(sum>X) return false;
         }
-    }
-    vl cnt(M);
-    rep(i, M) {
-        ll l = uf.leader(i);
-        auto [x1,x2,y1,y2] = box[i];
-        cnt[l] += (x2-x1) * (y2-y1);
-    }
-    vl ans;
-    rep(i, M) if(cnt[i]) ans.push_back(cnt[i]);
-    sort(all(ans));
-    Out(ans.size());
+        return true;
+    };
+    ll ans = binary_search(0, (ll)2e9, f);
     Out(ans);
 
 }

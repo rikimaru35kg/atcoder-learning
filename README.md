@@ -2046,11 +2046,11 @@
 全体を考えると難しくても、局所を見るだけで大丈夫な場合があります。
 ### 例題
 - 基本 [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
-!!! where i am now for rank B (last submission 2025/3/7)
-- !復習価値低 [A - いっしょ (Together)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a)
+- 基本 [A - いっしょ (Together)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a)
 
 ## 周期に着目する
 ### 例題
+!!! where i am now for rank B (last submission 2025/3/7)
 - !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
 ## 単対多は単を動かす

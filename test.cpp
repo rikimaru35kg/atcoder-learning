@@ -228,54 +228,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N, X);
-    vl A(N),P(N),B(N),Q(N);
-    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
-
-    auto calc=[&](ll A, ll P, ll B, ll Q, ll w) -> ll {
-        if(B*P>A*Q) swap(A,B), swap(P, Q); // cheap A
-        ll ret = INF;
-        rep(nb, A+1) {
-            ll na = Divceil(w-nb*B, A);
-            chmax(na, 0LL);
-            ll now = na*P + nb*Q;
-            chmin(ret, now);
+    LONG(N);
+    VL(X, N);
+    sort(all(X));
+    vl dp(2, INF);
+    dp[0] = 0;
+    repk(i, 1, N) {
+        vl pdp(2, INF); swap(pdp, dp);
+        rep(j, 2) rep(k, 2) {
+            if(j==0 && k==0) continue;
+            if(pdp[j]==INF) continue;
+            ll cost = 0;
+            if(k) cost = X[i]-X[i-1];
+            chmin(dp[k], pdp[j]+cost);
         }
-        return ret;
-    };
-    auto f=[&](ll w) -> bool {
-        ll sum = 0;
-        rep(i, N) {
-            ll now = calc(A[i],P[i],B[i],Q[i],w);
-            sum += now;
-            if(sum>X) return false;
-        }
-        return true;
-    };
-    ll ans = binary_search(0, (ll)2e9, f);
-    Out(ans);
+    }
+    Out(dp[1]);
 
 }
 
