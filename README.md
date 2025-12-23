@@ -97,6 +97,7 @@
 ## 二分探索による最大ペアリング探索
 ### 例題
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
+!!! where i am now for rank B (last submission 2025/3/28)
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
@@ -2050,7 +2051,6 @@
 
 ## 周期に着目する
 ### 例題
-!!! where i am now for rank B (last submission 2025/3/7)
 - !復習価値低 [F - 最悪の記者 3 (Worst Reporter 3)](https://atcoder.jp/contests/joisc2018/tasks/joisc2018_f)
 
 ## 単対多は単を動かす

@@ -228,53 +228,55 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(N, X);
-    vl A(N),P(N),B(N),Q(N);
-    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
+    LONG(N);
+    LONG(M);
+    LONG(P,Q,R);
+    vp spans;
+    spans.emplace_back(1, N+1);
 
-    auto calc=[&](ll A, ll P, ll B, ll Q, ll w) -> ll {
-        if(B*P>A*Q) swap(A,B), swap(P, Q); // cheap A
-        ll ret = INF;
-        rep(nb, A+1) {
-            ll na = Divceil(w-nb*B, A);
-            chmax(na, 0LL);
-            ll now = na*P + nb*Q;
-            chmin(ret, now);
+    auto cut=[&](vp &spans, ll x, ll y) -> vp {
+        vp ret;
+        ll sum = 0;
+        for(auto [l,r]: spans) {
+            ll nl = sum, nr = sum+(r-l);
+            if(nr<=x) {
+                sum += r-l;
+                continue;
+            }
+            if(nl>=y) break;
+            ll a = max(nl, x) - nl;
+            ll b = min(nr, y) - nl;
+            ret.emplace_back(l+a, l+b);
+            sum += r-l;
         }
         return ret;
     };
-    auto f=[&](ll w) -> bool {
-        ll sum = 0;
-        rep(i, N) {
-            ll now = calc(A[i],P[i],B[i],Q[i],w);
-            sum += now;
-            if(sum>X) return false;
+    rep(i, M) {
+        LONG(x,y);
+        vp now;
+        {
+            vp tmp = cut(spans, y, N);
+            now.insert(now.end(), all(tmp));
         }
-        return true;
-    };
-    ll ans = binary_search(0, (ll)2e9, f);
+        {
+            vp tmp = cut(spans, x, y);
+            now.insert(now.end(), all(tmp));
+        }
+        {
+            vp tmp = cut(spans, 0, x);
+            now.insert(now.end(), all(tmp));
+        }
+        swap(now, spans);
+    }
+    auto span = cut(spans, P-1, Q);
+    ll ans = 0;
+    for(auto [l,r]: span) {
+        ll low = max(l, 1LL);
+        ll upp = min(R+1, r);
+        if(upp-low<=0) continue;
+        ans += upp-low;
+    }
     Out(ans);
 
 }
