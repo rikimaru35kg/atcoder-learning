@@ -2020,11 +2020,11 @@
 ### 例題
 - !復習価値低 [F - Visible Buildings](https://atcoder.jp/contests/abc385/tasks/abc385_f)
 - !復習価値中 [041 - Piles in AtCoder Farm（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_ao)
-!!! where i am now for rank B (last submission 2025/9a25)
-- !復習価値中 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
+- !復習価値低 [G - Shopping in AtCoder store](https://atcoder.jp/contests/abc289/tasks/abc289_g)
 
 ## 乱択
 ### 例題
+!!! where i am now for rank B (last submission 2025/10/14)
 - !復習価値低 [E - Colinear](https://atcoder.jp/contests/abc422/tasks/abc422_e)
 
 ## オイラー路

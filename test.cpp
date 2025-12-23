@@ -228,84 +228,67 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
+// get max for lines(ai*x+bi)
+class ConvexHullTrick {
+    struct Line {
+        long long a, b;
+        Line(long long a, long long b): a(a), b(b) {}
+    };
+    deque<Line> lines;
+    long long fx(Line l, long long x) { return l.a*x + l.b; }
 public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+    ConvexHullTrick() {}
+    void add(long long a3, long long b3) {
+        // (a3,b3) must be input in the asceinding order!
+        while((int)lines.size()>=2) {
+            auto [a1,b1] = lines.end()[-2];
+            auto [a2,b2] = lines.end()[-1];
+            if((b1-b2)*(a3-a2)<(a2-a1)*(b2-b3)) break;
+            lines.pop_back();
+        }
+        lines.emplace_back(a3,b3);
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    long long get(long long x) {
+        //! O(Q*log(N,3))
+        int l=0, r=lines.size()-1;
+        while(r-l>2) {
+            int m1 = (l*2+r)/3;
+            int m2 = (l+2*r)/3;
+            if(fx(lines[m1],x)<fx(lines[m2],x)) l=m1;
+            else r = m2;
+        }
+        long long ret = fx(lines[l],x);
+        for(int i=l+1; i<=r; ++i) ret = max(ret, fx(lines[i],x));
+        return ret;
     }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
+    long long get_in_the_ascending_order(long long x) {
+        //! O(N+Q) and irrevirsible
+        long long ret = fx(lines[0], x);
+        while((int)lines.size()>=2) {
+            long long nxt = fx(lines[1], x);
+            if(nxt<ret) break;
+            ret = nxt;
+            lines.pop_front();
+        }
+        return ret;
     }
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-#include<atcoder/convolution>
-
 void solve() {
     LONG(N, M);
-    VL(A, N);
-    VL(B, M);
-    ll K = 5e5+10;
-    Combination comb(K, M998);
-    vm b(K);
-    vm c(K);
-    rep(i, M) { b[B[i]] += comb.get_factinv(B[i]); }
-    rep(k, K) c[k] = comb.get_factinv(k);
-    vm d = convolution(b, c);
-    mint ans;
+    VL(B, N);
+    VL(C, M);
+    sort(allr(B));
+
+    ConvexHullTrick cht;
     rep(i, N) {
-        ans += comb.get_fact(A[i]) * d[A[i]];
+        cht.add(i+1, (i+1)*B[i]);
     }
-    Out(ans);
-
-
+    rep(i, M) {
+        ll ans = cht.get(C[i]);
+        cout << ans << ' ';
+    }
+    cout<<endl;
 }
 
 int main () {
