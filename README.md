@@ -2212,8 +2212,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/11/15)
-- [D - Suddenly, A Tempest](https://atcoder.jp/contests/abc432/tasks/abc432_d)
+!!! where i am now for rank D (last submission 2025/--/--)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
@@ -2321,3 +2320,4 @@
 - [E - Max Matrix 2](https://atcoder.jp/contests/abc433/tasks/abc433_e)
 - [D - Clouds](https://atcoder.jp/contests/abc434/tasks/abc434_d)
 - [E - Wind Cleaning](https://atcoder.jp/contests/abc427/tasks/abc427_e)
+- [D - Suddenly, A Tempest](https://atcoder.jp/contests/abc432/tasks/abc432_d)
