@@ -228,38 +228,102 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
-    if(p1==p2) assert(0&&"[Error] get_line() same point for p1 & p2");
-    auto [x1,y1] = p1; auto [x2,y2] = p2;
-    long long a = 0, b = 0, c = 0;
-    a = y2-y1, b = -(x2-x1), c = -x1*y2+y1*x2;
-    long long g = gcd(gcd(a,b),c);
-    a /= g, b /= g, c /= g;
-    if(a==0 && b<0) b=-b, c=-c;
-    if(a<0) a=-a, b=-b, c=-c;
-    return {a,b,c};
-}
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
 
 void solve() {
-    LONG(N);
-    VP(P, N);
+    LONG(N, X, Y);
+    vt4 box;
+    box.emplace_back(0, X, 0, Y);
+    auto flip=[&]() {
+        vt4 nbox;
+        for(auto [x1,x2,y1,y2]: box) nbox.emplace_back(y1,y2,x1,x2);
+        swap(nbox, box);
+    };
+    rep(i, N) {
+        CHAR(t); LONG(a,b);
+        if(t=='Y') flip();
+        de3(t,a,b)
 
-    rep(_, 50) {
-        ll i = rand()%N, j = rand()%(N-1);
-        if(j>=i) ++j;
-        auto [a,b,c] = get_line(P[i], P[j]);
-        ll cnt = 0;
-        rep(k, N) {
-            auto [x,y] = P[k];
-            if(a*x+b*y+c==0) ++cnt;
+        vt4 nbox;
+        for(auto [x1,x2,y1,y2]: box) {
+            if(a<=x1) nbox.emplace_back(x1,x2,y1+b,y2+b);
+            else if(a>=x2) nbox.emplace_back(x1,x2,y1-b,y2-b);
+            else {
+                nbox.emplace_back(x1,a,y1-b,y2-b);
+                nbox.emplace_back(a,x2,y1+b,y2+b);
+            }
         }
-        if(cnt>N/2) {
-            puts("Yes");
-            printf("%lld %lld %lld\n", a, b, c);
-            return;
+        swap(nbox, box);
+
+        if(t=='Y') flip();
+    }
+    auto overlap=[&](ll x1, ll x2, ll a1, ll a2) -> ll {
+        ll l = max(x1,a1), r = min(x2,a2);
+        return r-l;
+    };
+    ll M = box.size();
+    WeightedUnionFind uf(M);
+    rep(i, M) rep(j, i) {
+        auto [x1,x2,y1,y2] = box[i];
+        auto [a1,a2,b1,b2] = box[j];
+        ll ox = overlap(x1,x2,a1,a2);
+        ll oy = overlap(y1,y2,b1,b2);
+        if(ox<0 || oy<0) continue;
+        if(ox>0 || oy>0) {
+            uf.merge(i, j);
         }
     }
-    puts("No");
+    vl cnt(M);
+    rep(i, M) {
+        ll l = uf.leader(i);
+        auto [x1,x2,y1,y2] = box[i];
+        cnt[l] += (x2-x1) * (y2-y1);
+    }
+    vl ans;
+    rep(i, M) if(cnt[i]) ans.push_back(cnt[i]);
+    sort(all(ans));
+    Out(ans.size());
+    Out(ans);
 
 }
 

@@ -2039,13 +2039,14 @@
 - DPでも解けない場合、もしかしたら一部貪欲で計算量を押さえられる可能性あり
 ### 例題
 - 基本 [B - Bought Review](https://atcoder.jp/contests/arc174/tasks/arc174_b)
-!!! where i am now for rank B (last submission 2025/3/7)
-- !復習価値低 [E - Sensor Optimization Dilemma 2](https://atcoder.jp/contests/abc374/tasks/abc374_e)
+- !復習価値中
+ [E - Sensor Optimization Dilemma 2](https://atcoder.jp/contests/abc374/tasks/abc374_e)
 
 ## 木を見て森を見る
 全体を考えると難しくても、局所を見るだけで大丈夫な場合があります。
 ### 例題
 - 基本 [D - アンバランス / Unbalanced](https://atcoder.jp/contests/abc043/tasks/arc059_b)
+!!! where i am now for rank B (last submission 2025/3/7)
 - !復習価値低 [A - いっしょ (Together)](https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a)
 
 ## 周期に着目する
