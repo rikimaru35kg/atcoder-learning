@@ -228,106 +228,104 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Rotate field by +/-90deg
-vector<string> rot90(vector<string> &field, bool clockwise=true) {
-    int h = field.size(), w = field[0].size();
-    vector<string> ret(w, string(h, '.'));
-    for (int i=0; i<h; ++i) for (int j=0; j<w; ++j) {
-        if (clockwise) ret[j][h-1-i] = field[i][j];
-        else ret[w-1-j][i] = field[i][j];
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    return ret;
-}
-template<typename T>
-vector<vector<T>> rot90(vector<vector<T>> &field, bool clockwise=true) {
-    int h = field.size(), w = field[0].size();
-    vector<vector<T>> ret(w, vector<T>(h));
-    for (int i=0; i<h; ++i) for (int j=0; j<w; ++j) {
-        if (clockwise) ret[j][h-1-i] = field[i][j];
-        else ret[w-1-j][i] = field[i][j];
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    return ret;
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
+};
 
 void solve() {
     LONG(H, W);
-    VVL(A, H, W);
-    ll mx = -INF, mn = INF;
+    VVL(F, H, W);
+    vt3 buildings;
     rep(i, H) rep(j, W) {
-        chmax(mx, A[i][j]);
-        chmin(mn, A[i][j]);
+        buildings.emplace_back(F[i][j], i, j);
     }
+    sort(all(buildings));
 
-    ll cnt = 0;
-    auto calc=[&](vvl &A) -> ll {
-        ll H = A.size(), W = A[0].size();
-        vvl lmax(H, vl(W+1, -1));
-        vvl rmin(H, vl(W+1, INF));
-        rep(i, H) {
-            rep(j, W) chmax(lmax[i][j+1], max(A[i][j], lmax[i][j]));
-            repr(j, W) chmin(rmin[i][j], min(rmin[i][j+1], A[i][j]));
+    LONG(Q);
+    using t6 = tuple<ll,ll,ll,ll,ll,ll>;
+    using vt6 = vector<t6>;
+    vt6 query;
+    rep(i, Q) {
+        LONG(a,b,y,c,d,z); --a, --b, --c, --d;
+        query.emplace_back(a,b,y,c,d,z);
+    }
+    vl l(Q, -1), r(Q, H*W);
+
+    auto gid=[&](ll i, ll j) {return i*W+j;};
+    // auto rid=[&](ll id) -> Pr {return {id/, id%};};
+
+    rep(_, 200) {
+        vvl m2qi(H*W);
+        bool update = false;
+        rep(qi, Q) {
+            if(r[qi]-l[qi]<=1) continue;
+            ll m = (l[qi]+r[qi])/2;
+            m2qi[m].push_back(qi);
+            update = true;
         }
-        de(A)
-        // de(lmax)
-        // de(rmin)
-        auto f=[&](ll x) -> bool {
-            // if(cnt==3) {
-            //     cout<<"";
-            // }
-            ll l = 0;
-            rep(i, H) {
-                ll cl = W, cr = 0;
-                rep(j, W+1) {
-                    if(lmax[i][j]<=x+mn && rmin[i][j]>=mx-x) {
-                        chmin(cl, j);
-                        chmax(cr, j);
-                    }
-                }
-                if(cr<cl) return false;
-                if(cr<l) return false;
-                chmax(l, cl);
+        if(!update) break;
+        WeightedUnionFind uf(H*W);
+        repr(ni, H*W) {
+            auto [h,i,j] = buildings[ni];
+            for(auto [di,dj]: dij) {
+                ll ni = i + di, nj = j + dj;
+                if(!isin(ni,nj,H,W)) continue;
+                if(F[ni][nj]>=F[i][j]) uf.merge(gid(i,j), gid(ni,nj));
             }
-            return true;
-        };
-        // de(f(11))
-        // return 0;
-        ll ret = binary_search((ll)1e9, -1, f);
-        return ret;
-    };
-
-    ll ans = INF;
-    rep(ri, 4) {
-        ll now = calc(A);
-        chmin(ans, now);
-        A = rot90(A);
-        swap(H, W);
-        ++cnt;
-        de(now)
+            for(auto qi: m2qi[ni]) {
+                auto [a,b,y,c,d,z] = query[qi];
+                if(uf.same(gid(a,b), gid(c,d))) l[qi] = ni;
+                else r[qi] = ni;
+            }
+        }
     }
-    Out(ans);
-
+    rep(qi, Q) {
+        de(buildings[l[qi]])
+        auto [h,i,j] = buildings[l[qi]];
+        auto [a,b,y,c,d,z] = query[qi];
+        ll ans = max(y-h, 0LL) + max(z-h, 0LL);
+        chmin(y, h), chmin(z, h);
+        ans += abs(y-z);
+        Out(ans);
+    }
 
 }
 

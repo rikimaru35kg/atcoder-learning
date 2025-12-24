@@ -97,11 +97,10 @@
 ## 二分探索による最大ペアリング探索
 ### 例題
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
-!!! where i am now for rank B (last submission 2025/3/28)
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
-- !復習価値中 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
+- !復習価値低 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
 
 ## 三分探索法
 - 狭義に下に凸の区間における最小値を求めるときに使える。
@@ -174,6 +173,7 @@
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
+!!! where i am now for rank B (last submission 2025/3/27)
 - !復習価値中 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b) [解説は自分の提出に記載](https://atcoder.jp/contests/abc093/submissions/62866492)
 
 ## ペアつなぎ
@@ -804,6 +804,7 @@
 - 配列値の降順で二分木を作る
 - stack利用でO(N)で構築可能
 ### 例題
+!!! where i am now for rank A (last submission 2025/12/12)
 - !復習価値高 [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)
 
 # 動的計画法（DP）
@@ -1789,7 +1790,6 @@
 ## MODで考えてみる
 - 求めたい物に割り算が関係する場合、MODで考えてみると見通しが良くなる場合あり。特にDPする際には、MODであれば状態数が減らせる
 <!-- ### 例題 -->
-!!! where i am now for rank A (last submission *)
 <!-- - 長さを持つDPに移動 薬の最適調合 [F - Potion](https://atcoder.jp/contests/abc192/tasks/abc192_f) -->
 
 ## 円環問題
