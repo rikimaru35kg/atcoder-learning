@@ -485,8 +485,7 @@
 
 ## 木の重心分解
 ### 例題
-!!! where i am now for rank B (last submission 2025/7/2)
-- !復習価値中 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
+- !復習価値低 [G - Sum of Tree Distance](https://atcoder.jp/contests/abc359/tasks/abc359_g)
 
 ## なもりグラフ（pseudo tree）とFunctional graph
 - 頂点数と辺の数が一致する（実際は木ではない）
@@ -664,6 +663,7 @@
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
 - 基本 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
+!!! where i am now for rank B (last submission 2025/5/30)
 - !復習価値中 [G - Minimum Reachable City](https://atcoder.jp/contests/abc295/tasks/abc295_g)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）

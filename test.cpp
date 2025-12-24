@@ -228,56 +228,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class T> struct CartesianTree {
-    // root = largest element
-    // multiple largest elements -> root = rightmost element
-    vector<int> l, r;
-    int root;
-    CartesianTree(vector<T> a) {
-        int n = a.size();
-        l.resize(n, -1); r.resize(n, -1);
-        pair<T,int> mx;
-        vector<int> stck;
-        for(int i=0; i<n; ++i) {
-            mx = max(mx, {a[i], i});
-            while(stck.size() && a[stck.back()] <= a[i]) {
-                l[i] = stck.back(); stck.pop_back();
+class CentroidDecomposition {
+    int n;
+    using IL = pair<int,long long>;
+    vector<vector<IL>> from;
+    vector<int> sz;
+    vector<bool> cent;
+    void cal_size(int sv) {
+        auto dfs=[&](auto f, int v, int p=-1) -> void {
+            sz[v] = 1;
+            for(auto [nv,c]: from[v]) {
+                if(nv==p || cent[nv]) continue;
+                f(f, nv, v);
+                sz[v] += sz[nv];
             }
-            if(stck.size()) r[stck.back()] = i;
-            stck.push_back(i);
+        };
+        dfs(dfs, sv);
+    }
+    int find_centroid(int sv) {
+        int tot = sz[sv], ret = -1;
+        auto dfs=[&](auto f, int v, int p=-1) -> void {
+            bool ok = 2*(tot-sz[v])<=tot;
+            for(auto [nv,c]: from[v]) {
+                if(nv==p || cent[nv]) continue;
+                f(f, nv, v);
+                ok &= 2*sz[nv]<=tot;
+            }
+            if(ok) ret = v;
+        };
+        dfs(dfs, sv);
+        assert(ret!=-1);
+        return ret;
+    }
+public:
+    CentroidDecomposition(int n): n(n), from(n), sz(n), cent(n) {}
+    void add_edge(int a, int b, long long c=1) {
+        from[a].emplace_back(b,c); from[b].emplace_back(a,c);
+    }
+
+    ////////// data here //////////
+    ll ans = 0;
+    vl A;
+    void init(vl &a) {
+        for(auto x: a) A.push_back(x);
+    };
+    ////////// data here //////////
+
+    void decomposition(int sv) {
+        cal_size(sv);
+        int c = find_centroid(sv);
+        cent[c] = true;
+        //! DO NOT USE "sv" ANYMORE in this function
+
+        ////////// algorithm here //////////
+        umap<ll,ll> cnt, sum;
+        cnt[A[c]]++;
+        for(auto [r,_]: from[c]) {
+            vp data;
+            if(cent[r]) continue;
+            auto dfs=[&](auto f, ll v, ll d=1, ll p=-1) -> void {
+                ans += cnt[A[v]]*d + sum[A[v]];
+                data.emplace_back(d, A[v]);
+                for(auto [nv,_]: from[v]) {
+                    if(nv==p || cent[nv]) continue;
+                    f(f, nv, d+1, v);
+                }
+            };
+            dfs(dfs, r);
+            for(auto [d,a]: data) {
+                cnt[a]++; sum[a]+=d;
+            }
         }
-        root = mx.second;
+        ////////// algorithm here //////////
+
+        for(auto [nv,d]: from[c]) if(!cent[nv]) decomposition(nv);
     }
 };
 
 void solve() {
     LONG(N);
+    CentroidDecomposition tree(N);
+    rep(i, N-1) {
+        LONGM(a,b);
+        tree.add_edge(a,b);
+    }
     VL(A, N);
-    CartesianTree<ll> tree(A);
-    vl imos(N+10);
 
-    // rep(i, N) {
-    //     printf("%lld %d %d\n", i, tree.l[i], tree.r[i]);
-    // }
+    tree.init(A);
+    tree.decomposition(0);
 
-    auto dfs=[&](auto f, ll v) -> ll {
-        ll li = tree.l[v], ri = tree.r[v];
-        ll l = 0, r = 0;
-        if(li!=-1) l = f(f, li);
-        if(ri!=-1) r = f(f, ri);
-        ++l, ++r;
-        imos[1] += A[v];
-        imos[min(r,l)+1] -= A[v];
-        imos[max(r,l)+1] -= A[v];
-        imos[r+l+1] += A[v];
-        return l-1+r-1+1;
-    };
-    dfs(dfs, tree.root);
-
-    rep(i, N+8) imos[i+1] += imos[i];
-    rep(i, N+8) imos[i+1] += imos[i];
-
-    repk(k, 1, N+1) Out(imos[k]);
+    Out(tree.ans);
 
 }
 
