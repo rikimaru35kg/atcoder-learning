@@ -228,6 +228,27 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
 long long binary_search (long long ok, long long ng, auto f) {
     while (llabs(ok-ng) > 1) {
         ll l = min(ok, ng), r = max(ok, ng);
@@ -249,62 +270,120 @@ double binary_search (double ok, double ng, auto f) {
     return ok;
 }
 
-ll calmax(ll a, ll b, ll k) {
-    ll l = 0, r = k-1;
-    auto f=[&](ll m) -> ll {
-        return (a+m)*(b+k-1-m);
-    };
-    while(r-l>2) {
-        ll m1 = (2*l+r)/3, m2 = (l+2*r)/3;
-        if(f(m1)>f(m2)) r = m2;
-        else l = m1;
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
     }
-    ll ret = 0;
-    for(ll i=l; i<=r; ++i) chmax(ret, f(i));
-    return ret;
-};
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(Q);
-    rep(i, Q) {
-        LONG(a, b);
-        if(a>b) swap(a,b);
-        auto f=[&](ll n) -> bool {
-            ll na = n, nb = n;
-            if(na>=a) na++;
-            if(nb>=b) nb++;
-            if(a>na && b>nb) return true;
-            if(na>nb) {
-                ll mx = 0;
-                chmax(mx, calmax(1, nb-a+1, a-1));
-                chmax(mx, calmax(a+1, 1, na-a));
-                return mx < a*b;
-            }
-            if(a-1==nb-b) {
-                ll mx = 0;
-                chmax(mx, calmax(1, b+1, a-1));
-                chmax(mx, calmax(a+1, 1, b-1));
-                return mx < a*b;
-            }
-            if(a-1<nb-b) {
-                ll mx = 0;
-                ll k1 = a-1, k2 = nb-b-k1;
-                chmax(mx, calmax(1, nb-k1+1, k1));
-                chmax(mx, calmax(a+1, b+1, k2));
-                chmax(mx, calmax(a+1+k2, 1, b-1));
-                return mx < a*b;
+    LONG(N, M, K);
+    VL(A, N);
+    K -= accumulate(all(A), 0LL);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        return A[i]<A[j];
+    });
+    vl B = A;
+    sort(all(B));
+    auto Sc = cumsum(B);
+    vl idx(N);
+    rep(i, N) idx[p[i]] = i;
 
-            }
-            ll k1 = nb-b, k2 = a-1-k1;
-            ll mx = 0;
-            chmax(mx, calmax(1, nb-k1+1, k1));
-            chmax(mx, calmax(1+k1, b-k2, k2));
-            chmax(mx, calmax(a+1, 1, na-a));
-            return mx < a*b;
-        };
-        ll ans = binary_search(0, 2e9+10, f);
-        Out(ans);
+    if(M==N) {
+        rep(i, N) cout<<"0 ";
+        cout<<endl;
+        return;
     }
+
+    rep(i, N) {
+        ll pi = idx[i];
+        ll a = A[i];
+
+        auto f=[&](ll x) -> bool {
+            ll bar = a+x+1;
+            ll l = N-M;
+            if(pi>=l) --l;
+            auto [r,y] = lowbou(B, bar);
+            if(r<l) return false;
+            ll num = bar*(r-l) - (Sc[r]-Sc[l]);
+            if(l<=pi && pi<r) {
+                num += a - bar;
+            }
+            return num+x > K;
+        };
+
+        ll ans = binary_search(K+1, -1, f);
+        if(ans==K+1) ans = -1;
+        cout << ans << ' ';
+    }
+    cout<<endl;
 
 }
 

@@ -228,162 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
+template <class T> struct CartesianTree {
+    // root = largest element
+    // multiple largest elements -> root = rightmost element
+    vector<int> l, r;
+    int root;
+    CartesianTree(vector<T> a) {
+        int n = a.size();
+        l.resize(n, -1); r.resize(n, -1);
+        pair<T,int> mx;
+        vector<int> stck;
+        for(int i=0; i<n; ++i) {
+            mx = max(mx, {a[i], i});
+            while(stck.size() && a[stck.back()] <= a[i]) {
+                l[i] = stck.back(); stck.pop_back();
+            }
+            if(stck.size()) r[stck.back()] = i;
+            stck.push_back(i);
         }
+        root = mx.second;
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+};
 
 void solve() {
-    LONG(N, M, K);
+    LONG(N);
     VL(A, N);
-    K -= accumulate(all(A), 0LL);
-    vl p(N);
-    iota(all(p), 0);
-    sort(all(p), [&](ll i, ll j){
-        return A[i]<A[j];
-    });
-    vl B = A;
-    sort(all(B));
-    auto Sc = cumsum(B);
-    vl idx(N);
-    rep(i, N) idx[p[i]] = i;
+    CartesianTree<ll> tree(A);
+    vl imos(N+10);
 
-    if(M==N) {
-        rep(i, N) cout<<"0 ";
-        cout<<endl;
-        return;
-    }
+    // rep(i, N) {
+    //     printf("%lld %d %d\n", i, tree.l[i], tree.r[i]);
+    // }
 
-    rep(i, N) {
-        ll pi = idx[i];
-        ll a = A[i];
+    auto dfs=[&](auto f, ll v) -> ll {
+        ll li = tree.l[v], ri = tree.r[v];
+        ll l = 0, r = 0;
+        if(li!=-1) l = f(f, li);
+        if(ri!=-1) r = f(f, ri);
+        ++l, ++r;
+        imos[1] += A[v];
+        imos[min(r,l)+1] -= A[v];
+        imos[max(r,l)+1] -= A[v];
+        imos[r+l+1] += A[v];
+        return l-1+r-1+1;
+    };
+    dfs(dfs, tree.root);
 
-        auto f=[&](ll x) -> bool {
-            ll bar = a+x+1;
-            ll l = N-M;
-            if(pi>=l) --l;
-            auto [r,y] = lowbou(B, bar);
-            if(r<l) return false;
-            ll num = bar*(r-l) - (Sc[r]-Sc[l]);
-            if(l<=pi && pi<r) {
-                num += a - bar;
-            }
-            return num+x > K;
-        };
+    rep(i, N+8) imos[i+1] += imos[i];
+    rep(i, N+8) imos[i+1] += imos[i];
 
-        ll ans = binary_search(K+1, -1, f);
-        if(ans==K+1) ans = -1;
-        cout << ans << ' ';
-    }
-    cout<<endl;
+    repk(k, 1, N+1) Out(imos[k]);
 
 }
 
