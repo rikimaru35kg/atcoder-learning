@@ -228,96 +228,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class CentroidDecomposition {
-    int n;
-    using IL = pair<int,long long>;
-    vector<vector<IL>> from;
-    vector<int> sz;
-    vector<bool> cent;
-    void cal_size(int sv) {
-        auto dfs=[&](auto f, int v, int p=-1) -> void {
-            sz[v] = 1;
-            for(auto [nv,c]: from[v]) {
-                if(nv==p || cent[nv]) continue;
-                f(f, nv, v);
-                sz[v] += sz[nv];
-            }
-        };
-        dfs(dfs, sv);
+vector<pair<char,long long>> run_length_encoding(string &s) {
+    vector<pair<char,long long>> ret;
+    for(auto c: s) {
+        if(ret.size() && ret.back().first==c) ret.back().second++;
+        else ret.emplace_back(c, 1);
     }
-    int find_centroid(int sv) {
-        int tot = sz[sv], ret = -1;
-        auto dfs=[&](auto f, int v, int p=-1) -> void {
-            bool ok = 2*(tot-sz[v])<=tot;
-            for(auto [nv,c]: from[v]) {
-                if(nv==p || cent[nv]) continue;
-                f(f, nv, v);
-                ok &= 2*sz[nv]<=tot;
-            }
-            if(ok) ret = v;
-        };
-        dfs(dfs, sv);
-        assert(ret!=-1);
-        return ret;
+    return ret;
+}
+
+vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
+    vector<pair<long long,long long>> ret;
+    long long last_num = v[0]+1;
+    for (auto x: v) {
+        if (x != last_num) ret.emplace_back(x, 1);
+        else ++ret.back().second;
+        last_num = x;
     }
-public:
-    CentroidDecomposition(int n): n(n), from(n), sz(n), cent(n) {}
-    void add_edge(int a, int b, long long c=1) {
-        from[a].emplace_back(b,c); from[b].emplace_back(a,c);
-    }
-
-    ////////// data here //////////
-    ll ans = 0;
-    vl A;
-    void init(vl &a) {
-        for(auto x: a) A.push_back(x);
-    };
-    ////////// data here //////////
-
-    void decomposition(int sv) {
-        cal_size(sv);
-        int c = find_centroid(sv);
-        cent[c] = true;
-        //! DO NOT USE "sv" ANYMORE in this function
-
-        ////////// algorithm here //////////
-        umap<ll,ll> cnt, sum;
-        cnt[A[c]]++;
-        for(auto [r,_]: from[c]) {
-            vp data;
-            if(cent[r]) continue;
-            auto dfs=[&](auto f, ll v, ll d=1, ll p=-1) -> void {
-                ans += cnt[A[v]]*d + sum[A[v]];
-                data.emplace_back(d, A[v]);
-                for(auto [nv,_]: from[v]) {
-                    if(nv==p || cent[nv]) continue;
-                    f(f, nv, d+1, v);
-                }
-            };
-            dfs(dfs, r);
-            for(auto [d,a]: data) {
-                cnt[a]++; sum[a]+=d;
-            }
-        }
-        ////////// algorithm here //////////
-
-        for(auto [nv,d]: from[c]) if(!cent[nv]) decomposition(nv);
-    }
-};
+    return ret;
+}
 
 void solve() {
-    LONG(N);
-    CentroidDecomposition tree(N);
-    rep(i, N-1) {
-        LONGM(a,b);
-        tree.add_edge(a,b);
+    LONG(N, M);
+    VVL(A, N, M);
+    using BS = bitset<2000>;
+    using vBS = vector<BS>;
+    vBS bs(N);
+
+    rep(j, M) {
+        vvl is(1000);
+        rep(i, N) is[A[i][j]].push_back(i);
+        BS cbs;
+        rep(x, 1000) {
+            for(auto i: is[x]) cbs[i] = 1;
+            for(auto i: is[x]) bs[i] ^= cbs;
+            for(auto i: is[x]) cbs[i] = 0;
+        }
     }
-    VL(A, N);
 
-    tree.init(A);
-    tree.decomposition(0);
-
-    Out(tree.ans);
+    ll ans = 0;
+    rep(i, N) {
+        ans += bs[i].count();
+        ans -= bs[i][i];
+    }
+    ans /= 2;
+    Out(ans);
 
 }
 

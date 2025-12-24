@@ -228,56 +228,82 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class T> struct CartesianTree {
-    // root = largest element
-    // multiple largest elements -> root = rightmost element
-    vector<int> l, r;
-    int root;
-    CartesianTree(vector<T> a) {
-        int n = a.size();
-        l.resize(n, -1); r.resize(n, -1);
-        pair<T,int> mx;
-        vector<int> stck;
-        for(int i=0; i<n; ++i) {
-            mx = max(mx, {a[i], i});
-            while(stck.size() && a[stck.back()] <= a[i]) {
-                l[i] = stck.back(); stck.pop_back();
-            }
-            if(stck.size()) r[stck.back()] = i;
-            stck.push_back(i);
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    vl mn;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n), mn(n) {
+        rep(i, n) mn[i] = i;
+    }
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    ll top(ll x) {
+        x = leader(x);
+        return mn[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
         }
-        root = mx.second;
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        chmin(mn[y], mn[x]);
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
 };
 
 void solve() {
     LONG(N);
-    VL(A, N);
-    CartesianTree<ll> tree(A);
-    vl imos(N+10);
+    vl p(N, -1);
+    rep(i, N-1) {
+        LONGM(a);
+        p[i+1] = a;
+    }
+    WeightedUnionFind uf(N);
 
-    // rep(i, N) {
-    //     printf("%lld %d %d\n", i, tree.l[i], tree.r[i]);
-    // }
-
-    auto dfs=[&](auto f, ll v) -> ll {
-        ll li = tree.l[v], ri = tree.r[v];
-        ll l = 0, r = 0;
-        if(li!=-1) l = f(f, li);
-        if(ri!=-1) r = f(f, ri);
-        ++l, ++r;
-        imos[1] += A[v];
-        imos[min(r,l)+1] -= A[v];
-        imos[max(r,l)+1] -= A[v];
-        imos[r+l+1] += A[v];
-        return l-1+r-1+1;
-    };
-    dfs(dfs, tree.root);
-
-    rep(i, N+8) imos[i+1] += imos[i];
-    rep(i, N+8) imos[i+1] += imos[i];
-
-    repk(k, 1, N+1) Out(imos[k]);
+    LONG(Q);
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(u, v);
+            u = uf.top(u), v = uf.top(v);
+            while(u!=v) {
+                ll nu = uf.top(p[u]);
+                uf.merge(u, nu);
+                u = nu;
+            }
+        } else {
+            LONGM(x);
+            x = uf.leader(x);
+            Out(uf.mn[x]+1);
+        }
+    }
 
 }
 
