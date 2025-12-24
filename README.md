@@ -205,8 +205,7 @@
 - 基本+α 幾つかの区間和から総和が求まるか [E - Range Sums](https://atcoder.jp/contests/abc238/tasks/abc238_e)
 - 基本 単調増加数列へ変換（解法が分かるなら実装必要なし） [D - Non-decreasing](https://atcoder.jp/contests/abc081/tasks/arc086_b)
 - 基本 setのサイズを足していく [E - Set Add Query](https://atcoder.jp/contests/abc347/tasks/abc347_e)
-!!! where i am now for rank B (last submission 2025/3/27)
-- !復習価値中 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
+- !復習価値低 当選必要票数 [E - How to Win the Election](https://atcoder.jp/contests/abc373/tasks/abc373_e)
 
 ## 2次元累積和
 - 累積和は2次元でも取れる
@@ -230,6 +229,7 @@
 - 基本 木上の累積和 [E - Through Path](https://atcoder.jp/contests/abc187/tasks/abc187_e)
 - 基本 海洋生息区域重なり [E - 魚の生息範囲 (Fish)](https://atcoder.jp/contests/joi2013yo/tasks/joi2013yo_e)
 - 基本 分断領域の個数 [E - ペンキの色](https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_e)
+!!! where i am now for rank B (last submission 2025/3/27)
 - !復習価値中 [F - Sums of Sliding Window Maximum](https://atcoder.jp/contests/abc407/tasks/abc407_f)
 
 ## 連続部分列問題
