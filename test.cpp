@@ -228,102 +228,81 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
+    return ok;
+}
+
+ll calmax(ll a, ll b, ll k) {
+    ll l = 0, r = k-1;
+    auto f=[&](ll m) -> ll {
+        return (a+m)*(b+k-1-m);
+    };
+    while(r-l>2) {
+        ll m1 = (2*l+r)/3, m2 = (l+2*r)/3;
+        if(f(m1)>f(m2)) r = m2;
+        else l = m1;
     }
+    ll ret = 0;
+    for(ll i=l; i<=r; ++i) chmax(ret, f(i));
+    return ret;
 };
 
 void solve() {
-    LONG(H, W);
-    VVL(F, H, W);
-    vt3 buildings;
-    rep(i, H) rep(j, W) {
-        buildings.emplace_back(F[i][j], i, j);
-    }
-    sort(all(buildings));
-
     LONG(Q);
-    using t6 = tuple<ll,ll,ll,ll,ll,ll>;
-    using vt6 = vector<t6>;
-    vt6 query;
     rep(i, Q) {
-        LONG(a,b,y,c,d,z); --a, --b, --c, --d;
-        query.emplace_back(a,b,y,c,d,z);
-    }
-    vl l(Q, -1), r(Q, H*W);
-
-    auto gid=[&](ll i, ll j) {return i*W+j;};
-    // auto rid=[&](ll id) -> Pr {return {id/, id%};};
-
-    rep(_, 200) {
-        vvl m2qi(H*W);
-        bool update = false;
-        rep(qi, Q) {
-            if(r[qi]-l[qi]<=1) continue;
-            ll m = (l[qi]+r[qi])/2;
-            m2qi[m].push_back(qi);
-            update = true;
-        }
-        if(!update) break;
-        WeightedUnionFind uf(H*W);
-        repr(ni, H*W) {
-            auto [h,i,j] = buildings[ni];
-            for(auto [di,dj]: dij) {
-                ll ni = i + di, nj = j + dj;
-                if(!isin(ni,nj,H,W)) continue;
-                if(F[ni][nj]>=F[i][j]) uf.merge(gid(i,j), gid(ni,nj));
+        LONG(a, b);
+        if(a>b) swap(a,b);
+        auto f=[&](ll n) -> bool {
+            ll na = n, nb = n;
+            if(na>=a) na++;
+            if(nb>=b) nb++;
+            if(a>na && b>nb) return true;
+            if(na>nb) {
+                ll mx = 0;
+                chmax(mx, calmax(1, nb-a+1, a-1));
+                chmax(mx, calmax(a+1, 1, na-a));
+                return mx < a*b;
             }
-            for(auto qi: m2qi[ni]) {
-                auto [a,b,y,c,d,z] = query[qi];
-                if(uf.same(gid(a,b), gid(c,d))) l[qi] = ni;
-                else r[qi] = ni;
+            if(a-1==nb-b) {
+                ll mx = 0;
+                chmax(mx, calmax(1, b+1, a-1));
+                chmax(mx, calmax(a+1, 1, b-1));
+                return mx < a*b;
             }
-        }
-    }
-    rep(qi, Q) {
-        de(buildings[l[qi]])
-        auto [h,i,j] = buildings[l[qi]];
-        auto [a,b,y,c,d,z] = query[qi];
-        ll ans = max(y-h, 0LL) + max(z-h, 0LL);
-        chmin(y, h), chmin(z, h);
-        ans += abs(y-z);
+            if(a-1<nb-b) {
+                ll mx = 0;
+                ll k1 = a-1, k2 = nb-b-k1;
+                chmax(mx, calmax(1, nb-k1+1, k1));
+                chmax(mx, calmax(a+1, b+1, k2));
+                chmax(mx, calmax(a+1+k2, 1, b-1));
+                return mx < a*b;
+
+            }
+            ll k1 = nb-b, k2 = a-1-k1;
+            ll mx = 0;
+            chmax(mx, calmax(1, nb-k1+1, k1));
+            chmax(mx, calmax(1+k1, b-k2, k2));
+            chmax(mx, calmax(a+1, 1, na-a));
+            return mx < a*b;
+        };
+        ll ans = binary_search(0, 2e9+10, f);
         Out(ans);
     }
 
