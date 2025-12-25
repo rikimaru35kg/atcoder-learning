@@ -230,74 +230,66 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/lazysegtree>
 using namespace atcoder;
-const int M = 11;
 
 struct S {
-    int cnt[M], w;
-    S(ll x=-1) {
-        rep(i, M) cnt[i] = 0;
-        w = 0;
-        if(x==-1) return;
-        cnt[x] = 1;
-        w = 1;
-    }
+    ll mn, n;
+    S(ll mn=INF, ll n=0): mn(mn),n(n) {}
 };
 S op(S a, S b) {
-    S ret;
-    rep(i, M) {
-        ret.cnt[i] = a.cnt[i] + b.cnt[i];
-    }
-    ret.w = a.w + b.w;
-    return ret;
+    if(a.mn==b.mn) return S(a.mn, a.n+b.n);
+    if(a.mn<b.mn) return a;
+    return b;
 }
-S e() {return S();}
-
-using F = int;
-S mapping(F f, S x) {
-    if(f==-1) return x;
-    S ret;
-    ret.cnt[f] = x.w;
-    ret.w = x.w;
-    return ret;
-}
-F composition(F f, F g) {
-    if(f==-1) return g;
-    return f;
-}
-F id() {return -1;}
+S e() { return S();}
+using F = ll;
+S mapping(F f, S x) { return S(x.mn+f, x.n); }
+F composition(F f, F g) { return f+g; }
+F id() {return 0;}
 
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    vector<S> init(N);
-    rep(i, N) init[i] = S(A[i]);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    LONG(N);
+    VLM(A, N);
+    vvl is(N, vl(1,-1));
+    rep(i, N) {
+        is[A[i]].push_back(i);
+    }
+    rep(i, N) is[i].push_back(N);
 
-    rep(i, Q) {
-        LONG(c, l, r); --l;
-        if(c==1) {
-            S mon = seg.prod(l, r);
-            rep(j, M) {
-                int nr = l+mon.cnt[j];
-                seg.apply(l, nr, j);
-                l = nr;
-            }
-        } else if(c==2) {
-            S mon = seg.prod(l, r);
-            repr(j, M) {
-                int nr = l+mon.cnt[j];
-                seg.apply(l, nr, j);
-                l = nr;
-            }
-        } else {
-            S mon = seg.prod(l, r);
-            ll ans = 0;
-            rep(j, M) {
-                ans += j*mon.cnt[j];
-            }
-            Out(ans);
+    vvt3 box(N+2);
+    rep(i, N) {
+        ll n = is[i].size();
+        if(n<=2) continue;
+        rep(j, n-2) {
+            ll i1 = is[i][j], i2 = is[i][j+1], i3 = is[i][j+2];
+            box[i1+1].emplace_back(i2+1, i3+1, 1);
+            box[i2+1].emplace_back(i2+1, i3+1, -1);
         }
     }
+
+    vector<S> init(N+2, S(0,1));
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+
+    auto segprint=[&](){
+    #ifdef __DEBUG
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i).mn);
+        cerr<<endl;
+    #endif
+    };
+
+    ll ans = 0;
+    rep(l, N+2) {
+        for(auto [r1, r2, x]: box[l]) {
+            seg.apply(r1, r2, x);
+        }
+        // segprint();
+        auto [mn, n] = seg.all_prod();
+        if(mn==0) ans += N+2-n;
+        else ans += N+2;
+        de4(l, mn, n, ans)
+    }
+    Out(ans);
 
 
 }
