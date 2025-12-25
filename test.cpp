@@ -229,37 +229,41 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    ll K = 300;
-    vl b(K+1);
-    rep(i, M) {
-        LONG(A,B);
-        chmax(b[A], B);
+    LONG(N, K);
+    vvl from(N);
+    rep(i, N-1) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
+    VL(A, N);
 
-    ll ma = 1;
-    rep(a, K+1) {
-        if(b[a]*(ma-b[ma]) > b[ma]*(a-b[a])) { ma = a; }
-    }
-
-    ll K2 = K*K+300;
-    vl dp(K2+1);
-    rep(i, K2+1) {
-        rep1(a, K) {
-            if(i-a<0) continue;
-            chmax(dp[i], dp[i-a+b[a]]+b[a]);
+    auto merge=[&](vl &dp1, vl &dp2) -> vl {
+        vl dp(K+1, -1);
+        rep(i, K+1) rep(j, K+1-i) {
+            if(dp1[i]==-1 || dp2[j]==-1) continue;
+            chmax(dp[i+j], dp1[i]+dp2[j]);
         }
-    }
+        return dp;
+    };
 
-    ll ans = N;
-    if(N<=K2) Outend(ans + dp[N]);
-    de2(ma, b[ma])
-
-    ll n = Divceil(N-K2, ma-b[ma]);
-    ans += n * b[ma];
-    N -= n*(ma-b[ma]);
-
-    ans += dp[N];
+    auto dfs=[&](auto f, ll v, ll p=-1) -> pair<vl,vl> {
+        vl dp0(1, 0), dp1(2, vl(0, 1)K+1, -1);
+        dp0[0] = dp1[0] = 0;
+        dp1[1] = A[v];
+        for(auto nv: from[v]) if(nv!=p) {
+            auto [ndp0, ndp1] = f(f, nv, v);
+            dp0 = merge(dp0, ndp1);
+            dp1 = merge(dp1, ndp0);
+        }
+        rep(i, K+1) chmax(dp1[i], dp0[i]);
+        de(v)de(dp0)de(dp1)
+        return {dp0, dp1};
+    };
+    auto [dp0, dp1] = dfs(dfs, 0);
+    ll ans = max(dp0[K], dp1[K]);
+    de(dp0)
+    de(dp1)
     Out(ans);
 
 }
