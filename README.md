@@ -842,8 +842,7 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
-!!! where i am now for rank B (last submission 2025/3/27)
-- !復習価値中 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
+- !要復習 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
 - 単純にDPで足し合わせていけば経路数が求める
@@ -992,6 +991,7 @@
 - !復習価値低 [distribution - 冊子の配布 (Distribution)](https://atcoder.jp/contests/joisc2009/tasks/joisc2009_distribution)
 - 基本 [F - Alkane](https://atcoder.jp/contests/abc394/tasks/abc394_f)
 - 基本 ab連結のまま辺削除 [073 - We Need Both a and b（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bu) [かつっぱ氏の解説](https://www.youtube.com/watch?v=woK8jwuc3z0)と[こちらの解説](https://takeg.hatenadiary.jp/entry/2021/12/03/113718)を合わせて見れば理解可能。どちらの考え方も身に着けておきたい
+!!! where i am now for rank B (last submission 2025/3/27)
 - !復習価値中 [K - 隣接禁止](https://atcoder.jp/contests/past19-open/tasks/past19_k)
 - !復習価値低 [F - Count Arrays](https://atcoder.jp/contests/abc387/tasks/abc387_f)
 - 基本 [F - Select Edges](https://atcoder.jp/contests/abc259/tasks/abc259_f)
