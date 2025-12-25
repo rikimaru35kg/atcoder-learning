@@ -229,42 +229,42 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N);
+    VLM(C, N);
+    VL(X, N);
+    // rep(i, N) C.push_back(C[i]);
+
+    vvl dp0(N, vl(N, INF));
+    vvl dp1(N, vl(N, INF));
+    rep(i, N) dp0[i][i] = X[C[i]];
+    rep(i, N) dp1[i][i] = X[C[i]]+1;
+
+    auto idx=[&](ll i) -> ll {
+        return (i%N+N)%N;
+    };
+
+    for(ll w=2; w<=N; ++w) {
+        rep(l, N) {
+            ll r = idx(l+w-1);
+            if(C[l]==C[r]) chmin(dp0[l][r], dp0[l][idx(r-1)]);
+            ll m = idx(l+1);
+            while(true) {
+                chmin(dp1[l][r], dp1[l][idx(m-1)]+dp1[m][r]);
+                chmin(dp0[l][r], dp0[l][idx(m-1)]+dp1[m][r]);
+                if(m==r) break;
+                ++m;
+                if(m==N) m = 0;
+            }
+            chmin(dp1[l][r], dp0[l][r]+w);
+        }
     }
-    VL(A, N);
-
-    auto merge=[&](vl &dp1, vl &dp2) -> vl {
-        vl dp(K+1, -1);
-        rep(i, K+1) rep(j, K+1-i) {
-            if(dp1[i]==-1 || dp2[j]==-1) continue;
-            chmax(dp[i+j], dp1[i]+dp2[j]);
-        }
-        return dp;
-    };
-
-    auto dfs=[&](auto f, ll v, ll p=-1) -> pair<vl,vl> {
-        vl dp0(1, 0), dp1(2, vl(0, 1)K+1, -1);
-        dp0[0] = dp1[0] = 0;
-        dp1[1] = A[v];
-        for(auto nv: from[v]) if(nv!=p) {
-            auto [ndp0, ndp1] = f(f, nv, v);
-            dp0 = merge(dp0, ndp1);
-            dp1 = merge(dp1, ndp0);
-        }
-        rep(i, K+1) chmax(dp1[i], dp0[i]);
-        de(v)de(dp0)de(dp1)
-        return {dp0, dp1};
-    };
-    auto [dp0, dp1] = dfs(dfs, 0);
-    ll ans = max(dp0[K], dp1[K]);
-    de(dp0)
-    de(dp1)
+    ll ans = INF;
+    rep(l, N) chmin(ans, dp1[l][idx(l+N-1)]);
     Out(ans);
+
+
+
+
 
 }
 

@@ -1018,8 +1018,8 @@
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
-!!! where i am now for rank B (last submission 2025/9/18)
 - !復習価値中 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
+!!! where i am now for rank B (last submission 2025/10/15)
 - !復習価値中 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
 
 ## DP経路復元
