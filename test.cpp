@@ -228,41 +228,26 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N);
-    VLM(P, N);
+    LONG(N, K);
+    VL(A, N);
 
-    vvm dp1(N+1, vm(N+1));
-    vvm dp2(N+1, vm(N+1));
-    rep(i, N) dp1[i][i+1] = dp2[i][i+1] = 1;
+    vvl dp(N, vl(N,-INF));
+    vvl mx(N, vl(N,-INF));
 
-    for(ll w=2; w<=N; ++w) {
-        rep(l, N+1-w) {
-            ll r = l+w;
-            dp1[l][r] += dp2[l+1][r];
-            for(ll m=l+1; m<r; ++m) {
-                if(P[l]>P[m]) continue;
-                dp2[l][r] += dp1[l][m] * dp2[m][r];
-            }
-            dp2[l][r] += dp1[l][r];
+    rep(i, N) rep(j, i) mx[i][j] = dp[i][j] = A[i]+A[j];
+
+    rep(i, N) {
+        rep(j, i) {
+            ll k = min(j-1,i-K);
+            if(k>=0) chmax(dp[i][j], mx[j][k]+A[i]);
+            if(j) chmax(mx[i][j], mx[i][j-1]);
+            chmax(mx[i][j], dp[i][j]);
         }
     }
 
-    mint ans = dp1[0][N];
+    ll ans = -INF;
+    rep(i, N) rep(j, i) chmax(ans, dp[i][j]);
     Out(ans);
 
 }

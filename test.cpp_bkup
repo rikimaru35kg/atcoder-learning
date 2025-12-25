@@ -228,43 +228,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
     LONG(N);
-    VLM(C, N);
-    VL(X, N);
-    // rep(i, N) C.push_back(C[i]);
+    VLM(P, N);
 
-    vvl dp0(N, vl(N, INF));
-    vvl dp1(N, vl(N, INF));
-    rep(i, N) dp0[i][i] = X[C[i]];
-    rep(i, N) dp1[i][i] = X[C[i]]+1;
-
-    auto idx=[&](ll i) -> ll {
-        return (i%N+N)%N;
-    };
+    vvm dp1(N+1, vm(N+1));
+    vvm dp2(N+1, vm(N+1));
+    rep(i, N) dp1[i][i+1] = dp2[i][i+1] = 1;
 
     for(ll w=2; w<=N; ++w) {
-        rep(l, N) {
-            ll r = idx(l+w-1);
-            if(C[l]==C[r]) chmin(dp0[l][r], dp0[l][idx(r-1)]);
-            ll m = idx(l+1);
-            while(true) {
-                chmin(dp1[l][r], dp1[l][idx(m-1)]+dp1[m][r]);
-                chmin(dp0[l][r], dp0[l][idx(m-1)]+dp1[m][r]);
-                if(m==r) break;
-                ++m;
-                if(m==N) m = 0;
+        rep(l, N+1-w) {
+            ll r = l+w;
+            dp1[l][r] += dp2[l+1][r];
+            for(ll m=l+1; m<r; ++m) {
+                if(P[l]>P[m]) continue;
+                dp2[l][r] += dp1[l][m] * dp2[m][r];
             }
-            chmin(dp1[l][r], dp0[l][r]+w);
+            dp2[l][r] += dp1[l][r];
         }
     }
-    ll ans = INF;
-    rep(l, N) chmin(ans, dp1[l][idx(l+N-1)]);
+
+    mint ans = dp1[0][N];
     Out(ans);
-
-
-
-
 
 }
 
