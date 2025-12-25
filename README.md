@@ -1047,7 +1047,6 @@
 - 基本 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
 - !復習価値低 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値低 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
-!!! where i am now for rank B (last submission 2025/4/30)
 - !復習価値中 [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
 ## 長さを持つDP
@@ -1065,6 +1064,7 @@
 - 基本 桁和 [042 - Multiple of 9（★4）](https://atcoder.jp/contests/typical90/tasks/typical90_ap)
 - 基本 輪ゴムで釘を囲む [D - 釘 (Nails) ](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho4)
 - 基本 甘さ辛さ気絶 [E - Maximum Glutton](https://atcoder.jp/contests/abc364/tasks/abc364_e)
+!!! where i am now for rank B (last submission 2025/4/30)
 - !復習価値中 [D - 水ようかん (Mizuyokan)](https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_d)
 - 基本 [F - Diversity](https://atcoder.jp/contests/abc383/tasks/abc383_f)
 - 基本 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)

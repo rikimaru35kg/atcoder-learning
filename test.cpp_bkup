@@ -228,73 +228,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
 void solve() {
-    LONG(N, L);
-    VL(A, N);
-    auto Sc = cumsum(A);
+    LONG(N, K);
+    STRING(S);
+    vl A;
+    for(auto c: S) {
+        if(c=='R') A.push_back(0);
+        if(c=='G') A.push_back(1);
+        if(c=='B') A.push_back(2);
+    }
 
-    auto f=[&](ll x) -> bool {
-        vb ok(N+1);
-        ok[0] = true;
-        ll l = 0, r =0;
-        ll cnt = 0;
-        rep1(i, N) {
-            while(r<=N && Sc[i]-Sc[r]>=x) {
-                if(ok[r]) ++cnt;
-                ++r;
+    vl dp(3, INF);
+    dp[2] = 0;
+
+    rep(i, N) {
+        vl pdp(3, INF); swap(pdp, dp);
+        rep(j, 3) {
+            if(pdp[j]==INF) continue;
+            chmin(dp[j], pdp[j]+1);
+            if((j+1)%3==A[i]) {
+                ll now = Divceil(pdp[j], K) * K;
+                chmin(dp[A[i]], now);
             }
-            while(l<=N && Sc[i]-Sc[l]>L) {
-                if(ok[l]) --cnt;
-                ++l;
-            }
-            if(cnt>0) ok[i] = true;
         }
-        return ok[N];
-    };
+    }
 
-    ll ans = binary_search(0, L+1, f);
+    ll ans = Divceil(dp[2], K);
     Out(ans);
 
 }
