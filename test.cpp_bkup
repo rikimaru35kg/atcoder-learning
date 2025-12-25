@@ -228,51 +228,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-vector<pair<char,long long>> run_length_encoding(string &s) {
-    vector<pair<char,long long>> ret;
-    for(auto c: s) {
-        if(ret.size() && ret.back().first==c) ret.back().second++;
-        else ret.emplace_back(c, 1);
-    }
-    return ret;
-}
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+const int M = 11;
 
-vector<pair<long long,long long>> run_length_encoding(vector<long long> &v) {
-    vector<pair<long long,long long>> ret;
-    long long last_num = v[0]+1;
-    for (auto x: v) {
-        if (x != last_num) ret.emplace_back(x, 1);
-        else ++ret.back().second;
-        last_num = x;
+struct S {
+    int cnt[M], w;
+    S(ll x=-1) {
+        rep(i, M) cnt[i] = 0;
+        w = 0;
+        if(x==-1) return;
+        cnt[x] = 1;
+        w = 1;
     }
+};
+S op(S a, S b) {
+    S ret;
+    rep(i, M) {
+        ret.cnt[i] = a.cnt[i] + b.cnt[i];
+    }
+    ret.w = a.w + b.w;
     return ret;
 }
+S e() {return S();}
+
+using F = int;
+S mapping(F f, S x) {
+    if(f==-1) return x;
+    S ret;
+    ret.cnt[f] = x.w;
+    ret.w = x.w;
+    return ret;
+}
+F composition(F f, F g) {
+    if(f==-1) return g;
+    return f;
+}
+F id() {return -1;}
 
 void solve() {
-    LONG(N, M);
-    VVL(A, N, M);
-    using BS = bitset<2000>;
-    using vBS = vector<BS>;
-    vBS bs(N);
+    LONG(N, Q);
+    VL(A, N);
+    vector<S> init(N);
+    rep(i, N) init[i] = S(A[i]);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
 
-    rep(j, M) {
-        vvl is(1000);
-        rep(i, N) is[A[i][j]].push_back(i);
-        BS cbs;
-        rep(x, 1000) {
-            for(auto i: is[x]) cbs[i] = 1;
-            for(auto i: is[x]) bs[i] ^= cbs;
-            for(auto i: is[x]) cbs[i] = 0;
+    rep(i, Q) {
+        LONG(c, l, r); --l;
+        if(c==1) {
+            S mon = seg.prod(l, r);
+            rep(j, M) {
+                int nr = l+mon.cnt[j];
+                seg.apply(l, nr, j);
+                l = nr;
+            }
+        } else if(c==2) {
+            S mon = seg.prod(l, r);
+            repr(j, M) {
+                int nr = l+mon.cnt[j];
+                seg.apply(l, nr, j);
+                l = nr;
+            }
+        } else {
+            S mon = seg.prod(l, r);
+            ll ans = 0;
+            rep(j, M) {
+                ans += j*mon.cnt[j];
+            }
+            Out(ans);
         }
     }
 
-    ll ans = 0;
-    rep(i, N) {
-        ans += bs[i].count();
-        ans -= bs[i][i];
-    }
-    ans /= 2;
-    Out(ans);
 
 }
 
