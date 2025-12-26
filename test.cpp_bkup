@@ -228,32 +228,50 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
-    LONG(N, K);
-    STRING(S);
-    vl A;
-    for(auto c: S) {
-        if(c=='R') A.push_back(0);
-        if(c=='G') A.push_back(1);
-        if(c=='B') A.push_back(2);
-    }
+    LONG(N, P);
+    mint::set_mod(P);
+    vl ten(10, 1);
+    rep(i, 9) ten[i+1] = ten[i] * 10;
 
-    vl dp(3, INF);
-    dp[2] = 0;
+    vvm dp(N, vm(N+1));
+    vvm ds(N+1, vm(N+2));
+    dp[0][0] = 1;
+    ds[0][1] = 26;
 
-    rep(i, N) {
-        vl pdp(3, INF); swap(pdp, dp);
-        rep(j, 3) {
-            if(pdp[j]==INF) continue;
-            chmin(dp[j], pdp[j]+1);
-            if((j+1)%3==A[i]) {
-                ll now = Divceil(pdp[j], K) * K;
-                chmin(dp[A[i]], now);
+    rep1(i, N) {
+        rep(j, N) {
+            for(ll w=2; w<=5; ++w) {
+                ll i1 = i-(ten[w-1]-1);
+                ll i2 = i-(ten[w-2]-1);
+                chmax(i1, 0LL); chmax(i2, 0LL);
+                // repk(ci, i1, i2) {
+                //     ll coef = 25;
+                //     if(ci==0) coef = 26;
+                //     dp[j][i] += coef * dp[j-w][ci];
+                // }
+                if(j>=w) dp[j][i] += ds[j-w][i2] - ds[j-w][i1];
+                ds[j][i+1] = ds[j][i] + 25*dp[j][i];
             }
         }
     }
 
-    ll ans = Divceil(dp[2], K);
+    mint ans = 0;
+    rep(j, N) ans += dp[j][N];
     Out(ans);
 
 }
