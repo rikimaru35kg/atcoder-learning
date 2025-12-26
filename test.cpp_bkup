@@ -228,44 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll keta(ll x) {
-    ll ret = 0;
-    while(x) {
-        ++ret;
-        x>>=1;
-    }
-    return ret;
-}
+void solve() {
+    LONG(L, R);
+    ll N = R-L+1;
+    vb nc(N);
+    ll M = 1e7+1;
+    vb isp(M, true);
+    vb isp2(N, true);
 
-ll solve() {
-    LONG(N, K);
-    ll sz = keta(N);
-    ll d = pcnt(N, sz);
-    if((1LL<<d)<K) return -1;
-
-    --K;
-    ll b = 0;
-    ll ans = 0;
-    ll ki = 0;
-    while(true) {
-        if((1LL<<b)>N) break;
-        if(N>>b&1) {
-            ans += 1LL<<b;
-            ++b;
-            continue;
+    for(ll p=2; p<M; ++p) {
+        if(!isp[p]) continue;
+        for(ll x=p*p; x<M; x+=p) {
+            isp[x] = false;
         }
-        ans += (K>>ki&1)<<b;
-        ++b;
-        ++ki;
+        ll k = Divceil(L,p);
+        ll fx = max(k*p,p*p);
+        for(ll x=fx; x<=R; x+=p) {
+            isp2[x-L] = false;
+        }
+        ll cp = p;
+        while(cp<=R) {
+            if(cp>=L) nc[cp-L] = true;
+            cp *= p;
+        }
     }
-    return ans;
+
+    ll ans = 0;
+    rep(i, N) {
+        if(isp2[i]) nc[i] = true;
+    }
+    if(L==1) nc[0] = true;
+    rep(i, N) if(nc[i]) ++ans;
+    if(!nc[0]) ++ans;
+    Out(ans);
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) Out(solve());
+    solve();
 }
 
 // ### test.cpp ###

@@ -229,37 +229,36 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(L, R);
-    ll N = R-L+1;
-    vb nc(N);
-    ll M = 1e7+1;
-    vb isp(M, true);
-    vb isp2(N, true);
+    LONG(N);
+    VL(A, N);
 
-    for(ll p=2; p<M; ++p) {
-        if(!isp[p]) continue;
-        for(ll x=p*p; x<M; x+=p) {
-            isp[x] = false;
-        }
-        ll k = Divceil(L,p);
-        ll fx = max(k*p,p*p);
-        for(ll x=fx; x<=R; x+=p) {
-            isp2[x-L] = false;
-        }
-        ll cp = p;
-        while(cp<=R) {
-            if(cp>=L) nc[cp-L] = true;
-            cp *= p;
-        }
-    }
+    ll K =26; 
+    vector<umap<ll,ll>> mp(K+1), sum(K+1);
 
-    ll ans = 0;
+    vl two(K+1, 1);
+    rep(i, K) two[i+1] = two[i]<<1;
+
+    auto getm=[&](ll x, ll m) -> ll {
+        return (m-x)%m;
+    };
+
+    vl v(K+1);
     rep(i, N) {
-        if(isp2[i]) nc[i] = true;
+        rep(d, K+1) {
+            ll r = A[i]%two[d];
+            mp[d][r]++;
+            sum[d][r] += A[i];
+        }
+        rep(d, K) {
+            ll r1 = getm(A[i]%two[d], two[d]);
+            ll r2 = getm(A[i]%two[d+1], two[d+1]);
+            ll cnt = mp[d][r1] - mp[d+1][r2];
+            v[d] += cnt * A[i];
+            v[d] += sum[d][r1] - sum[d+1][r2];
+        }
     }
-    if(L==1) nc[0] = true;
-    rep(i, N) if(nc[i]) ++ans;
-    if(!nc[0]) ++ans;
+    ll ans = 0;
+    rep(d, K+1) ans += v[d]/two[d];
     Out(ans);
 
 }
