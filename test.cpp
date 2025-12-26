@@ -228,84 +228,122 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Trie {
+    struct Node {
+        using MP = map<char,int>;
+        MP to;
+        int num;  // # of words that go through this node
+        int words; // # of words that end at this node
+        Node(MP to=MP(), int num=0, int words=0): to(to),num(num),words(words) {}
+    };
+    int n;  // # of nodes
+    vector<Node> node;
+    Trie(): n(1),node(1) {}  // only root node
+    void add(string &s) {
+        int v = 0;
+        node[0].num++;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            v = node[v].to[c];
+            node[v].num++;
+        }
+        node[v].words++;
+    }
+    int search_num(string &s) { // # of s added to the trie
+        int v = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            v = node[v].to[c];
+        }
+        return node[v].words;
+    }
+    int search_prefix_num(string &s) { // # of words that have s as prefix
+        int v = 0;
+        int ret = node[v].num;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            v = node[v].to[c];
+            ret = node[v].num;
+        }
+        return ret;
+    }
+    int get_lcp(string &s) { // Use this function after s is added.
+        int v = 0;
+        int ret = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            int nv = node[v].to[c];
+            if(node[nv].num<=1) break;
+            ++ret;
+            v = nv;
+        }
+        return ret;
+    }
+};
+
+struct Triea {
+    struct Node {
+        using MP = map<char,int>;
+        MP to;
+        bool x;
+        int cnty;
+        Node(MP to=MP(), bool x=false, int cnty=0): to(to),x(x),cnty(cnty) {}
+    };
+    int n;  // # of nodes
+    vector<Node> node;
+    Trie(): n(1),node(1) {}  // only root node
+    void addx(string &s) {
+        int v = 0;
+        vi vs;
+        vs.push_back(v);
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            if(node[v].x) return;
+            v = node[v].to[c];
+            vs.push_back(v);
+        }
+        node[v].x = true;
+        int cnty = node[v].cnty;
+        for(auto cv: vs) node[cv].cnty -= cnty;
+    }
+    void addy(string &s) {
+        int v = 0;
+        vi vs;
+        vs.push_back(v);
+        bool through_x = false;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            v = node[v].to[c];
+            if(node[v].x) through_x = true;
+            vs.push_back(v);
+        }
+        if(!through_x) {
+            for(auto cv: vs) node[cv].cnty++;
+        }
+    }
+};
+
 void solve() {
-    LONG(N);
-    vs expr(N+1), term(N+1), factor(N+1), number(N+1);
-    priority_queue<t3,vt3,greater<t3>> que;
-
-    auto push=[&](ll n, string s, ll t) {
-        if(n>N || s=="") return;
-        if(s[0]=='+' || s.back()=='+') return;
-        if(s[0]=='*' || s.back()=='*') return;
-        if(s=="()") return;
-        vs &dist = expr;
-        if(t==1) dist = term;
-        if(t==2) dist = factor;
-        if(t==3) dist = number;
-        if(dist[n].size() && dist[n].size()>=s.size()) return;
-        dist[n] = s;
-        que.emplace(s.size(), n, t);
-    };
-
-    {
-        string n = "1";
-        while(stoll(n)<=N) {
-            number[stoll(n)] = n;
-            push(stoll(n), n, 3);
-            n += '1';
-        }
+    LONG(Q);
+    Trie tree;
+    rep(i, Q) {
+        LONG(t); STRING(s);
+        if(t==1) tree.addx(s);
+        else tree.addy(s);
+        Out(tree.node[0].cnty);
     }
-
-    auto update=[&](string &a, string b) -> void {
-        if(b=="" || b[0]=='+' || b.back()=='+') return;
-        if(b[0]=='*' || b.back()=='*' || b=="()") return;
-        if(a=="") {
-            a = b; return;
-        }
-        if(a.size()>b.size()) a = b;
-    };
-
-    while(que.size()) {
-        auto [d, n, t] = que.top(); que.pop();
-        if(t==0) {
-            if(SIZE(expr[n])==d) continue;
-            push(n, term[n], 0);
-            rep1(m, n-1) push(n, expr[n-m]+'+'+term[m], 0);
-        }
-        if(t==1) {
-            if(SIZE(term[n]==d)) continue;
-            rep1(m, n-1) {
-                if(n%m!=0) continue;
-                push(n, term[n/m]+'*'+factor[m], 1);
-            }
-        }
-        if(t==2) {
-            if(SIZE(factor[n]==d)) continue;
-            push(n, number[n], 2);
-            push(n, '('+expr[n]+')', 2);
-        }
-    }
-
-    rep1(n, N) {
-        rep(ri, 3) {
-            update(expr[n], term[n]);
-            rep1(m, n-1) {
-                update(expr[n], expr[n-m] + '+' + term[m]);
-            }
-            update(term[n], factor[n]);
-            rep1(m, n-1) {
-                if(n%m!=0) continue;
-                update(term[n], term[n/m] + '*' + factor[m]);
-            }
-            update(factor[n], number[n]);
-            update(factor[n], '(' + expr[n] + ')');
-        }
-    }
-    Out(expr[N]);
-
-
-
-
 
 }
 
