@@ -1184,7 +1184,6 @@
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 - !復習価値中 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
-!!! where i am now for rank B (last submission 2025/4/28)
 - !復習価値中 [G - Minimum Xor Pair Query](https://atcoder.jp/contests/abc308/tasks/abc308_g)
 
 ## Z-algorithm（Zアルゴリズム）
@@ -1203,6 +1202,7 @@
 ### 例題
 - 基本 反転時交互列最大化 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
+!!! where i am now for rank B (last submission 2025/5/2)
 - !復習価値中（構文木で解く場合） 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 - !復習価値低 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 

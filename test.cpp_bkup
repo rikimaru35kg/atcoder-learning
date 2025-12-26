@@ -228,120 +228,121 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-const long long MX = 2;
-const long long ps[12] = {1000000007, 1000000009, 1000000021,
-                          1000000033, 1000000087, 1000000093,
-                          1000000097, 1000000103, 1000000123,
-                          1000000181, 1000000207, 1000000223};
-struct mints {
-    long long data[MX];
-    mints(long long x=0) { for(int i=0; i<MX; ++i) data[i] = (x+ps[i])%ps[i]; }
-    mints operator+(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]+x.data[i]) % ps[i];
-        return x;
+struct Trie {
+    struct Node {
+        using MP = map<char,int>;
+        MP to;
+        int num;  // # of words that go through this node
+        int words; // # of words that end at this node
+        Node(MP to=MP(), int num=0, int words=0): to(to),num(num),words(words) {}
+    };
+    int n;  // # of nodes
+    vector<Node> node;
+    Trie(): n(1),node(1) {}  // only root node
+    void add(string &s) {
+        int v = 0;
+        node[0].num++;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            v = node[v].to[c];
+            node[v].num++;
+        }
+        node[v].words++;
     }
-    mints &operator+=(mints x) { *this = *this + x; return *this; }
-    mints operator+(long long x) const { return *this + mints(x); }
-    friend mints operator+(long long a, mints b) { return mints(a)+b; }
-    mints operator-(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = (data[i]-x.data[i]+ps[i]) % ps[i];
-        return x;
+    int search_num(string &s) { // # of s added to the trie
+        int v = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            v = node[v].to[c];
+        }
+        return node[v].words;
     }
-    mints &operator-=(mints x) { *this = *this - x; return *this; }
-    mints operator-(long long x) const { return *this - mints(x); }
-    friend mints operator-(long long a, mints b) { return mints(a)-b; }
-    mints operator*(mints x) const {
-        for(int i=0; i<MX; ++i) x.data[i] = data[i]*x.data[i]%ps[i];
-        return x;
-    }
-    mints &operator*=(mints x) { *this = *this * x; return *this; }
-    mints operator*(long long x) const { return *this * mints(x); }
-    friend mints operator*(long long a, mints b) { return mints(a)*b; }
-    mints pow(long long x) const {
-        if (x==0) return mints(1);
-        mints ret = pow(x/2);
-        ret = ret * ret;
-        if (x%2==1) ret = ret * *this;
-        return ret;
-    }
-    long long pow(long long a, long long b, long long p) const {
-        if(b==0) return 1;
-        a %= p;
-        long long ret = pow(a, b/2, p);
-        ret = ret * ret % p;
-        if (b%2==1) ret = ret * a % p;
-        return ret;
-    }
-    mints inv() const {
-        mints ret;
-        for(int i=0; i<MX; ++i) {
-            long long p = ps[i];
-            long long x = pow(data[i], p-2, p);
-            ret.data[i] = x;
+    int search_prefix_num(string &s) { // # of words that have s as prefix
+        int v = 0;
+        int ret = node[v].num;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            v = node[v].to[c];
+            ret = node[v].num;
         }
         return ret;
     }
-    bool operator<(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) {
-            return data[i] < x.data[i];
+    int get_lcp(string &s) { // Use this function after s is added.
+        int v = 0;
+        int ret = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) return 0;
+            int nv = node[v].to[c];
+            if(node[nv].num<=1) break;
+            ++ret;
+            v = nv;
         }
-        return false;
-    }
-    bool operator==(mints x) const {
-        for(int i=0; i<MX; ++i) if (data[i] != x.data[i]) return false;
-        return true;
-    }
-    void print() const {
-        for(int i=0; i<MX; ++i) cerr << data[i] << ' ';
-        cerr << '\n';
+        return ret;
     }
 };
-namespace std {
-template<>
-struct hash<mints> {
-    size_t operator()(const mints &x) const {
-        size_t seed = 0;
-        for(int i=0; i<MX; ++i) {
-            hash<long long> phash;
-            seed ^= phash(x.data[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+
+struct Triea {
+    struct Node {
+        using MP = map<char,int>;
+        MP to;
+        bool x;
+        int cnty;
+        Node(MP to=MP(), bool x=false, int cnty=0): to(to),x(x),cnty(cnty) {}
+    };
+    int n;  // # of nodes
+    vector<Node> node;
+    Trie(): n(1),node(1) {}  // only root node
+    void addx(string &s) {
+        int v = 0;
+        vi vs;
+        vs.push_back(v);
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            if(node[v].x) return;
+            v = node[v].to[c];
+            vs.push_back(v);
         }
-        return seed;
+        node[v].x = true;
+        int cnty = node[v].cnty;
+        for(auto cv: vs) node[cv].cnty -= cnty;
+    }
+    void addy(string &s) {
+        int v = 0;
+        vi vs;
+        vs.push_back(v);
+        bool through_x = false;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            v = node[v].to[c];
+            if(node[v].x) through_x = true;
+            vs.push_back(v);
+        }
+        if(!through_x) {
+            for(auto cv: vs) node[cv].cnty++;
+        }
     }
 };
-}
-istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }
-ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }
-using vm = vector<mints>;
-using vvm = vector<vector<mints>>;
 
 void solve() {
     LONG(Q);
-    uset<ll> yis;
-    uset<mints> xhs;
-    umap<mints,uset<ll>> h2yis;
-    ll b = 123456;
-
-    auto update_y=[&](mints ha) {
-        if(!h2yis[ha].count()) return;
-        if(h2yis[ha])
-        for(auto yi: h2yis[ha]) {
-            yis.erase(yi);
-        }
-    };
-
-    rep(qi, Q) {
+    Trie tree;
+    rep(i, Q) {
         LONG(t); STRING(s);
-
-        if(t==1) {
-            mints ha;
-            for(auto c: s) {
-                ha = ha*b + c;
-                update_y(ha);
-                xhs.insert(ha);
-            }
-        } else {
-
-        }
+        if(t==1) tree.addx(s);
+        else tree.addy(s);
+        Out(tree.node[0].cnty);
     }
 
 }
