@@ -228,53 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    STRING(S);
-    ll N = S.size();
-
-    vvl from(N+1);
-    {
-        ll idx = 0;
-        auto dfs=[&](auto f, ll p=0, ll d=0) -> void {
-            if(idx==N) return;
-            while(idx<N) {
-                if(S[idx]=='(') {
-                    from[p].push_back(idx+1);
-                    ++idx;
-                    f(f, idx, d^1);
-                } else if(S[idx]==')') { ++idx; return; }
-                else {
-                    from[p].push_back(idx+1);
-                    ++idx;
-                }
-            }
-        };
-        dfs(dfs);
+ll keta(ll x) {
+    ll ret = 0;
+    while(x) {
+        ++ret;
+        x>>=1;
     }
+    return ret;
+}
 
-    string ans;
-    auto dfs=[&](auto f, ll v, ll d=0) -> void {
-        ll coef = 0;
-        if(d) {
-            reverse(all(from[v]));
-            coef = 32;
+ll solve() {
+    LONG(N, K);
+    ll sz = keta(N);
+    ll d = pcnt(N, sz);
+    if((1LL<<d)<K) return -1;
+
+    --K;
+    ll b = 0;
+    ll ans = 0;
+    ll ki = 0;
+    while(true) {
+        if((1LL<<b)>N) break;
+        if(N>>b&1) {
+            ans += 1LL<<b;
+            ++b;
+            continue;
         }
-        for(auto nv: from[v]) {
-            if(S[nv-1]=='(') f(f, nv, d^1);
-            else ans += S[nv-1] ^ coef;
-        }
-    };
-    dfs(dfs, 0);
-
-    Out(ans);
-
-
+        ans += (K>>ki&1)<<b;
+        ++b;
+        ++ki;
+    }
+    return ans;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) Out(solve());
 }
 
 // ### test.cpp ###
