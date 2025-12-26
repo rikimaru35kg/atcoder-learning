@@ -1243,7 +1243,6 @@
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - 基本 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
-!!! where i am now for rank B (last submission 2025/5/2)
 - !復習価値中 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
 ## OR
@@ -1365,6 +1364,7 @@
 - 基本 xと(x+1)/2が素数となる数の個数 [D - 2017-like Number](https://atcoder.jp/contests/abc084/tasks/abc084_d)
 - 基本 N以下でp*q^3と表せる数の個数 [D - 250-like Number](https://atcoder.jp/contests/abc250/tasks/abc250_d)
 - 基本 LCMがオーバーフローするときどうするか問題 [E - Flatten](https://atcoder.jp/contests/abc152/tasks/abc152_e)
+!!! where i am now for rank B (last submission 2025/7/1)
 - !復習価値中 [E - LCM Sequence](https://atcoder.jp/contests/abc412/tasks/abc412_e)
 
 ## 素数の間隔
