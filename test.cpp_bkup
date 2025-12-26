@@ -228,121 +228,77 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
+//! Binary Trie (template only)
+template<class T=long long, int k=62> class BinaryTrie {
+public:
     struct Node {
-        using MP = map<char,int>;
-        MP to;
-        int num;  // # of words that go through this node
-        int words; // # of words that end at this node
-        Node(MP to=MP(), int num=0, int words=0): to(to),num(num),words(words) {}
+        int to[2];
+        int cnt;
+        ll dp;
+        Node(): cnt(0){ to[0] = to[1] = -1; }
     };
-    int n;  // # of nodes
-    vector<Node> node;
-    Trie(): n(1),node(1) {}  // only root node
-    void add(string &s) {
+    vector<Node> nodes;
+    BinaryTrie(): nodes(1,Node()) {}
+    void add(T x, int c) {
+        vl vs;
         int v = 0;
-        node[0].num++;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
+        nodes[v].cnt += c;
+        for(int i=k; i>=0; --i) {
+            vs.push_back(v);
+            int b = x>>i&1;
+            if(nodes[v].to[b]==-1) {
+                nodes[v].to[b] = nodes.size();
+                nodes.push_back(Node());
             }
-            v = node[v].to[c];
-            node[v].num++;
+            v = nodes[v].to[b];
+            nodes[v].cnt += c;
         }
-        node[v].words++;
-    }
-    int search_num(string &s) { // # of s added to the trie
-        int v = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            v = node[v].to[c];
+        if(nodes[v].cnt==1) nodes[v].dp = x;
+        if(nodes[v].cnt>=2) nodes[v].dp = 0;
+
+        auto gcnt=[&](ll nv) -> ll {
+            if(nv==-1) return 0;
+            return nodes[nv].cnt;
+        };
+
+        reverse(all(vs));
+        for(auto v: vs) {
+            ll cnt = nodes[v].cnt;
+            ll l = nodes[v].to[0], r = nodes[v].to[1];
+            if(cnt==0) continue;
+            if(cnt==1) {
+                ll nv = l;
+                if(gcnt(r)==1) nv = r;
+                nodes[v].dp = nodes[nv].dp;
+                continue;
+            }
+            if(gcnt(l)==1 && gcnt(r)==1) {
+                nodes[v].dp = nodes[l].dp ^ nodes[r].dp;
+                continue;
+            }
+            ll &dp = nodes[v].dp;
+            dp = INF;
+            if(gcnt(l)>=2) chmin(dp, nodes[l].dp);
+            if(gcnt(r)>=2) chmin(dp, nodes[r].dp);
         }
-        return node[v].words;
-    }
-    int search_prefix_num(string &s) { // # of words that have s as prefix
-        int v = 0;
-        int ret = node[v].num;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            v = node[v].to[c];
-            ret = node[v].num;
-        }
-        return ret;
-    }
-    int get_lcp(string &s) { // Use this function after s is added.
-        int v = 0;
-        int ret = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) return 0;
-            int nv = node[v].to[c];
-            if(node[nv].num<=1) break;
-            ++ret;
-            v = nv;
-        }
-        return ret;
     }
 };
 
-struct Triea {
-    struct Node {
-        using MP = map<char,int>;
-        MP to;
-        bool x;
-        int cnty;
-        Node(MP to=MP(), bool x=false, int cnty=0): to(to),x(x),cnty(cnty) {}
-    };
-    int n;  // # of nodes
-    vector<Node> node;
-    Trie(): n(1),node(1) {}  // only root node
-    void addx(string &s) {
-        int v = 0;
-        vi vs;
-        vs.push_back(v);
-        for(auto c: s) {
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
-            }
-            if(node[v].x) return;
-            v = node[v].to[c];
-            vs.push_back(v);
-        }
-        node[v].x = true;
-        int cnty = node[v].cnty;
-        for(auto cv: vs) node[cv].cnty -= cnty;
-    }
-    void addy(string &s) {
-        int v = 0;
-        vi vs;
-        vs.push_back(v);
-        bool through_x = false;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
-            }
-            v = node[v].to[c];
-            if(node[v].x) through_x = true;
-            vs.push_back(v);
-        }
-        if(!through_x) {
-            for(auto cv: vs) node[cv].cnty++;
-        }
-    }
-};
 
 void solve() {
     LONG(Q);
-    Trie tree;
+    BinaryTrie<ll,30> trie;
     rep(i, Q) {
-        LONG(t); STRING(s);
-        if(t==1) tree.addx(s);
-        else tree.addy(s);
-        Out(tree.node[0].cnty);
+        LONG(t);
+        if(t==1) {
+            LONG(x);
+            trie.add(x, 1);
+        } else if(t==2) {
+            LONG(x);
+            trie.add(x, -1);
+        } else {
+            Out(trie.nodes[0].dp);
+        }
     }
 
 }

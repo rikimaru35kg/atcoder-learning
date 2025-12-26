@@ -1202,7 +1202,6 @@
 ### 例題
 - 基本 反転時交互列最大化 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
-!!! where i am now for rank B (last submission 2025/5/2)
 - !復習価値中（構文木で解く場合） 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 - !復習価値低 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 
@@ -1244,6 +1243,7 @@
 - 基本 XORした後の最大値の最小化 [F - Xor Minimization](https://atcoder.jp/contests/abc281/tasks/abc281_f)
 - 基本 和のXOR [D - Two Sequences](https://atcoder.jp/contests/abc091/tasks/arc092_b)
 - !復習価値低 [C - XOR to All](https://atcoder.jp/contests/arc135/tasks/arc135_c)
+!!! where i am now for rank B (last submission 2025/5/2)
 - !復習価値中 [B - XOR = MOD](https://atcoder.jp/contests/arc191/tasks/arc191_b)
 
 ## OR

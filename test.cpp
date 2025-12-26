@@ -228,78 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Binary Trie (template only)
-template<class T=long long, int k=62> class BinaryTrie {
-public:
-    struct Node {
-        int to[2];
-        int cnt;
-        ll dp;
-        Node(): cnt(0){ to[0] = to[1] = -1; }
-    };
-    vector<Node> nodes;
-    BinaryTrie(): nodes(1,Node()) {}
-    void add(T x, int c) {
-        vl vs;
-        int v = 0;
-        nodes[v].cnt += c;
-        for(int i=k; i>=0; --i) {
-            vs.push_back(v);
-            int b = x>>i&1;
-            if(nodes[v].to[b]==-1) {
-                nodes[v].to[b] = nodes.size();
-                nodes.push_back(Node());
-            }
-            v = nodes[v].to[b];
-            nodes[v].cnt += c;
-        }
-        if(nodes[v].cnt==1) nodes[v].dp = x;
-        if(nodes[v].cnt>=2) nodes[v].dp = 0;
-
-        auto gcnt=[&](ll nv) -> ll {
-            if(nv==-1) return 0;
-            return nodes[nv].cnt;
-        };
-
-        reverse(all(vs));
-        for(auto v: vs) {
-            ll cnt = nodes[v].cnt;
-            ll l = nodes[v].to[0], r = nodes[v].to[1];
-            if(cnt==0) continue;
-            if(cnt==1) {
-                ll nv = l;
-                if(gcnt(r)==1) nv = r;
-                nodes[v].dp = nodes[nv].dp;
-                continue;
-            }
-            if(gcnt(l)==1 && gcnt(r)==1) {
-                nodes[v].dp = nodes[l].dp ^ nodes[r].dp;
-                continue;
-            }
-            ll &dp = nodes[v].dp;
-            dp = INF;
-            if(gcnt(l)>=2) chmin(dp, nodes[l].dp);
-            if(gcnt(r)>=2) chmin(dp, nodes[r].dp);
-        }
-    }
-};
-
-
 void solve() {
-    LONG(Q);
-    BinaryTrie<ll,30> trie;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            trie.add(x, 1);
-        } else if(t==2) {
-            LONG(x);
-            trie.add(x, -1);
-        } else {
-            Out(trie.nodes[0].dp);
-        }
+    STRING(S);
+    ll N = S.size();
+
+    vvl from(N+1);
+    {
+        ll idx = 0;
+        auto dfs=[&](auto f, ll p=0, ll d=0) -> void {
+            if(idx==N) return;
+            while(idx<N) {
+                if(S[idx]=='(') {
+                    from[p].push_back(idx+1);
+                    ++idx;
+                    f(f, idx, d^1);
+                } else if(S[idx]==')') { ++idx; return; }
+                else {
+                    from[p].push_back(idx+1);
+                    ++idx;
+                }
+            }
+        };
+        dfs(dfs);
     }
+
+    string ans;
+    auto dfs=[&](auto f, ll v, ll d=0) -> void {
+        ll coef = 0;
+        if(d) {
+            reverse(all(from[v]));
+            coef = 32;
+        }
+        for(auto nv: from[v]) {
+            if(S[nv-1]=='(') f(f, nv, d^1);
+            else ans += S[nv-1] ^ coef;
+        }
+    };
+    dfs(dfs, 0);
+
+    Out(ans);
+
 
 }
 
