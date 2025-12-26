@@ -228,95 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
     LONG(N);
-    VL(L, N);
-    vl Sc = cumsum(L);
+    vs expr(N+1), term(N+1), factor(N+1), number(N+1);
+    priority_queue<t3,vt3,greater<t3>> que;
 
-    vl cand;
-    rep(i, N) repk(j, i+1, N+1) {
-        cand.push_back(Sc[j]-Sc[i]);
-    }
-    sort(all(cand));
-    ll M = cand.size();
-
-    auto cuttable=[&](ll mn, ll mx) -> bool {
-        vb ok(N+1);
-        ok[0] = true;
-        ll l = 0, r = 0;
-        ll cnt = 0;
-        rep1(i, N) {
-            while(r<=N && Sc[i]-Sc[r]>=mn) {
-                if(ok[r]) ++cnt;
-                ++r;
-            }
-            while(l<=N && Sc[i]-Sc[l]>mx) {
-                if(ok[l]) --cnt;
-                ++l;
-            }
-            if(cnt>0) ok[i] = true;
-        }
-        if(!ok[N]) return false;
-        if(cnt>=2) return true;
-        if(l==0) return false;
-        return true;
+    auto push=[&](ll n, string s, ll t) {
+        if(n>N || s=="") return;
+        if(s[0]=='+' || s.back()=='+') return;
+        if(s[0]=='*' || s.back()=='*') return;
+        if(s=="()") return;
+        vs &dist = expr;
+        if(t==1) dist = term;
+        if(t==2) dist = factor;
+        if(t==3) dist = number;
+        if(dist[n].size() && dist[n].size()>=s.size()) return;
+        dist[n] = s;
+        que.emplace(s.size(), n, t);
     };
 
-    ll ans = INF;
-    rep(mni, M) {
-        ll mn = cand[mni];
-        auto f=[&](ll mxi) -> bool {
-            ll mx = cand[mxi];
-            return cuttable(mn,mx);
-        };
-        ll mxi = binary_search(M, mni, f);
-        if(mxi==M) continue;
-        ll mx = cand[mxi];
-        if (cuttable(mn,mx)) chmin(ans, mx-mn);
+    {
+        string n = "1";
+        while(stoll(n)<=N) {
+            number[stoll(n)] = n;
+            push(stoll(n), n, 3);
+            n += '1';
+        }
     }
-    Out(ans);
+
+    auto update=[&](string &a, string b) -> void {
+        if(b=="" || b[0]=='+' || b.back()=='+') return;
+        if(b[0]=='*' || b.back()=='*' || b=="()") return;
+        if(a=="") {
+            a = b; return;
+        }
+        if(a.size()>b.size()) a = b;
+    };
+
+    while(que.size()) {
+        auto [d, n, t] = que.top(); que.pop();
+        if(t==0) {
+            if(SIZE(expr[n])==d) continue;
+            push(n, term[n], 0);
+            rep1(m, n-1) push(n, expr[n-m]+'+'+term[m], 0);
+        }
+        if(t==1) {
+            if(SIZE(term[n]==d)) continue;
+            rep1(m, n-1) {
+                if(n%m!=0) continue;
+                push(n, term[n/m]+'*'+factor[m], 1);
+            }
+        }
+        if(t==2) {
+            if(SIZE(factor[n]==d)) continue;
+            push(n, number[n], 2);
+            push(n, '('+expr[n]+')', 2);
+        }
+    }
+
+    rep1(n, N) {
+        rep(ri, 3) {
+            update(expr[n], term[n]);
+            rep1(m, n-1) {
+                update(expr[n], expr[n-m] + '+' + term[m]);
+            }
+            update(term[n], factor[n]);
+            rep1(m, n-1) {
+                if(n%m!=0) continue;
+                update(term[n], term[n/m] + '*' + factor[m]);
+            }
+            update(factor[n], number[n]);
+            update(factor[n], '(' + expr[n] + ')');
+        }
+    }
+    Out(expr[N]);
+
+
+
+
 
 }
 

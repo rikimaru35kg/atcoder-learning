@@ -228,50 +228,94 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
 void solve() {
-    LONG(N, P);
-    mint::set_mod(P);
-    vl ten(10, 1);
-    rep(i, 9) ten[i+1] = ten[i] * 10;
+    LONG(N);
+    VL(L, N);
+    vl Sc = cumsum(L);
 
-    vvm dp(N, vm(N+1));
-    vvm ds(N+1, vm(N+2));
-    dp[0][0] = 1;
-    ds[0][1] = 26;
-
-    rep1(i, N) {
-        rep(j, N) {
-            for(ll w=2; w<=5; ++w) {
-                ll i1 = i-(ten[w-1]-1);
-                ll i2 = i-(ten[w-2]-1);
-                chmax(i1, 0LL); chmax(i2, 0LL);
-                // repk(ci, i1, i2) {
-                //     ll coef = 25;
-                //     if(ci==0) coef = 26;
-                //     dp[j][i] += coef * dp[j-w][ci];
-                // }
-                if(j>=w) dp[j][i] += ds[j-w][i2] - ds[j-w][i1];
-                ds[j][i+1] = ds[j][i] + 25*dp[j][i];
-            }
-        }
+    vl cand;
+    rep(i, N) repk(j, i+1, N+1) {
+        cand.push_back(Sc[j]-Sc[i]);
     }
+    sort(all(cand));
+    ll M = cand.size();
 
-    mint ans = 0;
-    rep(j, N) ans += dp[j][N];
+    auto cuttable=[&](ll mn, ll mx) -> bool {
+        vb ok(N+1);
+        ok[0] = true;
+        ll l = 0, r = 0;
+        ll cnt = 0;
+        rep1(i, N) {
+            while(r<=N && Sc[i]-Sc[r]>=mn) {
+                if(ok[r]) ++cnt;
+                ++r;
+            }
+            while(l<=N && Sc[i]-Sc[l]>mx) {
+                if(ok[l]) --cnt;
+                ++l;
+            }
+            if(cnt>0) ok[i] = true;
+        }
+        if(!ok[N]) return false;
+        if(cnt>=2) return true;
+        if(l==0) return false;
+        return true;
+    };
+
+    ll ans = INF;
+    rep(mni, M) {
+        ll mn = cand[mni];
+        auto f=[&](ll mxi) -> bool {
+            ll mx = cand[mxi];
+            return cuttable(mn,mx);
+        };
+        ll mxi = binary_search(M, mni, f);
+        if(mxi==M) continue;
+        ll mx = cand[mxi];
+        if (cuttable(mn,mx)) chmin(ans, mx-mn);
+    }
     Out(ans);
 
 }

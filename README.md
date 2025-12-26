@@ -1143,7 +1143,6 @@
 - <expr>,<term>,<factor>,<number>の構造を定義
 - <expr>,<term>,<factor>が循環参照する形になる
 ### 例題
-!!! where i am now for rank B (last submission 2025/10/16)
 - !復習価値中 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）
@@ -1183,6 +1182,7 @@
 ### 例題
 - 基本 [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+!!! where i am now for rank B (last submission 2025/4/28)
 - !復習価値中 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 - !復習価値中 [G - Minimum Xor Pair Query](https://atcoder.jp/contests/abc308/tasks/abc308_g)
