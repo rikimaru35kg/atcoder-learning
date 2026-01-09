@@ -229,38 +229,32 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(L, R);
-    ll N = R-L+1;
-    vb nc(N);
-    ll M = 1e7+1;
-    vb isp(M, true);
-    vb isp2(N, true);
+    LONG(N, Q);
+    VLM(A, N);
 
-    for(ll p=2; p<M; ++p) {
-        if(!isp[p]) continue;
-        for(ll x=p*p; x<M; x+=p) {
-            isp[x] = false;
-        }
-        ll k = Divceil(L,p);
-        ll fx = max(k*p,p*p);
-        for(ll x=fx; x<=R; x+=p) {
-            isp2[x-L] = false;
-        }
-        ll cp = p;
-        while(cp<=R) {
-            if(cp>=L) nc[cp-L] = true;
-            cp *= p;
-        }
+    ll K = 30;
+    vvl to(K, vl(N));
+    vvl sum(K, vl(N));
+
+    rep(i, N) to[0][i] = A[i];
+    rep(i, N) sum[0][i] = i+1;
+
+    rep(k, K-1) rep(i, N) {
+        to[k+1][i] = to[k][to[k][i]];
+        sum[k+1][i] = sum[k][i] + sum[k][to[k][i]];
     }
 
-    ll ans = 0;
-    rep(i, N) {
-        if(isp2[i]) nc[i] = true;
+    rep(i, Q) {
+        LONG(t, b); --b;
+        ll ans = 0;
+        ll v = b;
+        for(ll k=K-1; k>=0; --k) {
+            if(~t>>k&1) continue;
+            ans += sum[k][v];
+            v = to[k][v];
+        }
+        Out(ans);
     }
-    if(L==1) nc[0] = true;
-    rep(i, N) if(nc[i]) ++ans;
-    if(!nc[0]) ++ans;
-    Out(ans);
 
 }
 

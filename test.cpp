@@ -228,37 +228,75 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+ll choose(ll n) { return n*(n+1)/2; }
+
 void solve() {
     LONG(N);
-    VL(A, N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONG(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
 
-    ll K =26; 
-    vector<umap<ll,ll>> mp(K+1), sum(K+1);
+    vl sz(N);
+    vl par(N);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
+        par[v] = p;
+        sz[v] = 1;
+        for(auto nv: from[v]) if(nv!=p) {
+            sz[v] += f(f, nv, v);
+        }
+        return sz[v];
+    };
+    dfs(dfs, 0);
 
-    vl two(K+1, 1);
-    rep(i, K) two[i+1] = two[i]<<1;
-
-    auto getm=[&](ll x, ll m) -> ll {
-        return (m-x)%m;
+    ll mem = -1;
+    auto get_0side_sz=[&](ll v) -> ll {
+        if(mem!=-1) return mem;
+        while(par[v] != 0) { v = par[v]; }
+        return mem = N - sz[v];
     };
 
-    vl v(K+1);
-    rep(i, N) {
-        rep(d, K+1) {
-            ll r = A[i]%two[d];
-            mp[d][r]++;
-            sum[d][r] += A[i];
+    auto calc=[&](ll a, ll b) -> ll {
+        if(a==0) swap(a,b);
+        ll ret = 0;
+        if(b==0) {
+            ll sz_b = get_0side_sz(a);
+            ret = sz[a] * sz_b;
+        } else {
+            ret = sz[a] * sz[b];
         }
-        rep(d, K) {
-            ll r1 = getm(A[i]%two[d], two[d]);
-            ll r2 = getm(A[i]%two[d+1], two[d+1]);
-            ll cnt = mp[d][r1] - mp[d+1][r2];
-            v[d] += cnt * A[i];
-            v[d] += sum[d][r1] - sum[d+1][r2];
-        }
-    }
+        return ret;
+    };
+
+    vb used(N);
+    used[0] = true;
     ll ans = 0;
-    rep(d, K+1) ans += v[d]/two[d];
+    ll a = 0, b = 0;
+    for(ll i=1; i<N; ++i) {
+        ll v = i;
+        if(used[v]) {
+            ans += calc(a,b);
+            continue;
+        }
+        while(!used[v]) {
+            used[v] = true;
+            v = par[v];
+        }
+        if(v!=a && v!=b) break;
+
+        if(a==v) a = i;
+        else b = i;
+
+        ans += calc(a,b);
+    }
+
+    ans += choose(N);
+    for(auto v: from[0]) {
+        ans -= choose(sz[v]);
+    }
+
     Out(ans);
 
 }
