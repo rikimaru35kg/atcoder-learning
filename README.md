@@ -1072,8 +1072,7 @@
 !!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
-!!! where i am now for rank S (last submission 2025/11/28)
-- !要復習 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
+- !復習価値低 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
@@ -1119,6 +1118,7 @@
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
 - !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+!!! where i am now for rank S (last submission 2025/11/11)
 - !要復習 [F - Almost Sorted 2](https://atcoder.jp/contests/abc431/tasks/abc431_f)
 
 ## 決め打ちDP

@@ -229,43 +229,43 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VL2(P, V, N);
+    LONG(N, L);
+    VL(X, N);
+    VL(T, N);
+    X.push_back(L);
+    rep(i, N) X.push_back(L+X[i]);
+    T.push_back(INF);
+    rep(i, N) T.push_back(T[i]);
 
-    string ans(N, '.');
-    auto newdp=[&](ll i1, ll i2, vl dp) -> vl {
-        repk(i, i1, i2) {
-            vl ndp = dp;
-            rep(j, M+1-P[i]) {
-                chmax(ndp[j+P[i]], dp[j]+V[i]);
-            }
-            swap(ndp, dp);
-        }
-        return dp;
-    };
+    using vvvvl = vector<vvvl>;
+    ll N2 = 2*N+1;
+    vvvvl dp(2, vvvl(N2, vvl(N2, vl(N+1, INF))));
+    dp[0][N][N][0] = 0;
+    for(ll l=N; l>=0; --l) for(ll r=N; r<N2 && r-l<N; ++r) {
+        rep(p, 2) rep(n, N) rep(q, 2) {
+            ll nl = l, nr = r;
+            if(q==0) --nl;
+            else ++nr;
+            if(nl<0 || nr>=N2) continue;
+            ll t = dp[p][l][r][n];
+            if(t==INF) continue;
 
-    auto dfs=[&](auto f, ll l, ll r, vl dp) -> void {
-        if(r-l==1) {
-            auto ndp = newdp(l, r, dp);
-            ll wo = dp[M];
-            ll w = dp[M-P[l]]+V[l];
-            if(w<wo) ans[l] = 'C';
-            else if(w>wo) ans[l] = 'A';
-            else ans[l] = 'B';
-            return;
+            ll i = l; if(p) i = r;
+            ll j = nl; if(q) j = nr;
+            ll dist = abs(X[j]-X[i]);
+            ll nt = t + dist;
+            ll nn = n;
+            if(nt<=T[j]) ++nn;
+            chmin(dp[q][nl][nr][nn], nt);
         }
-        ll m = (l+r)/2;
-        {
-            auto ndp = newdp(m, r, dp);
-            f(f, l, m, ndp);
-        }
-        {
-            auto ndp = newdp(l, m, dp);
-            f(f, m, r, ndp);
-        }
-    };
-    vl dp(M+1);
-    dfs(dfs, 0, N, dp);
+    }
+
+    ll ans = 0;
+    rep(l, N2) repk(r, l, N2) rep(p, 2) rep(n, N+1) {
+        ll t = dp[p][l][r][n];
+        if(t==INF) continue;
+        chmax(ans, n);
+    }
     Out(ans);
 
 }

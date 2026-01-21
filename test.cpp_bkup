@@ -229,37 +229,43 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K, X);
-    VL(A, N);
-    sort(allr(A));
-    using P = pair<ll,vl>;
-    priority_queue<P,vector<P>> que;
-    vl init(N);
-    init[0] = K;
-    que.emplace(K*A[0], init);
+    LONG(N, M);
+    VL2(P, V, N);
 
-    set<vl> st;
-
-    vl ans;
-    while(true) {
-        assert(que.size());
-        auto [s,v] = que.top(); que.pop();
-        if(!st.insert(v).second) continue;
-        ans.push_back(s);
-        if(SIZE(ans)==X) break;
-
-        auto fwd=[&](ll j, ll c=1) {
-            v[j] -= c, v[j+1] += c;
-            s -= c*A[j], s += c*A[j+1];
-        };
-        auto bwd=[&](ll j) {fwd(j, -1);};
-        rep(j, N) {
-            if(j==N-1 || v[j]==0) continue;
-            fwd(j);
-            que.emplace(s, v);
-            bwd(j);
+    string ans(N, '.');
+    auto newdp=[&](ll i1, ll i2, vl dp) -> vl {
+        repk(i, i1, i2) {
+            vl ndp = dp;
+            rep(j, M+1-P[i]) {
+                chmax(ndp[j+P[i]], dp[j]+V[i]);
+            }
+            swap(ndp, dp);
         }
-    }
+        return dp;
+    };
+
+    auto dfs=[&](auto f, ll l, ll r, vl dp) -> void {
+        if(r-l==1) {
+            auto ndp = newdp(l, r, dp);
+            ll wo = dp[M];
+            ll w = dp[M-P[l]]+V[l];
+            if(w<wo) ans[l] = 'C';
+            else if(w>wo) ans[l] = 'A';
+            else ans[l] = 'B';
+            return;
+        }
+        ll m = (l+r)/2;
+        {
+            auto ndp = newdp(m, r, dp);
+            f(f, l, m, ndp);
+        }
+        {
+            auto ndp = newdp(l, m, dp);
+            f(f, m, r, ndp);
+        }
+    };
+    vl dp(M+1);
+    dfs(dfs, 0, N, dp);
     Out(ans);
 
 }
