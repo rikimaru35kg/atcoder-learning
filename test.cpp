@@ -228,75 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-ll choose(ll n) { return n*(n+1)/2; }
-
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    LONG(N, M);
+    VL2(P, V, N);
 
-    vl sz(N);
-    vl par(N);
-    auto dfs=[&](auto f, ll v, ll p=-1) -> ll {
-        par[v] = p;
-        sz[v] = 1;
-        for(auto nv: from[v]) if(nv!=p) {
-            sz[v] += f(f, nv, v);
+    string ans(N, '.');
+    auto newdp=[&](ll i1, ll i2, vl dp) -> vl {
+        repk(i, i1, i2) {
+            vl ndp = dp;
+            rep(j, M+1-P[i]) {
+                chmax(ndp[j+P[i]], dp[j]+V[i]);
+            }
+            swap(ndp, dp);
         }
-        return sz[v];
-    };
-    dfs(dfs, 0);
-
-    ll mem = -1;
-    auto get_0side_sz=[&](ll v) -> ll {
-        if(mem!=-1) return mem;
-        while(par[v] != 0) { v = par[v]; }
-        return mem = N - sz[v];
+        return dp;
     };
 
-    auto calc=[&](ll a, ll b) -> ll {
-        if(a==0) swap(a,b);
-        ll ret = 0;
-        if(b==0) {
-            ll sz_b = get_0side_sz(a);
-            ret = sz[a] * sz_b;
-        } else {
-            ret = sz[a] * sz[b];
+    auto dfs=[&](auto f, ll l, ll r, vl dp) -> void {
+        if(r-l==1) {
+            auto ndp = newdp(l, r, dp);
+            ll wo = dp[M];
+            ll w = dp[M-P[l]]+V[l];
+            if(w<wo) ans[l] = 'C';
+            else if(w>wo) ans[l] = 'A';
+            else ans[l] = 'B';
+            return;
         }
-        return ret;
+        ll m = (l+r)/2;
+        {
+            auto ndp = newdp(m, r, dp);
+            f(f, l, m, ndp);
+        }
+        {
+            auto ndp = newdp(l, m, dp);
+            f(f, m, r, ndp);
+        }
     };
-
-    vb used(N);
-    used[0] = true;
-    ll ans = 0;
-    ll a = 0, b = 0;
-    for(ll i=1; i<N; ++i) {
-        ll v = i;
-        if(used[v]) {
-            ans += calc(a,b);
-            continue;
-        }
-        while(!used[v]) {
-            used[v] = true;
-            v = par[v];
-        }
-        if(v!=a && v!=b) break;
-
-        if(a==v) a = i;
-        else b = i;
-
-        ans += calc(a,b);
-    }
-
-    ans += choose(N);
-    for(auto v: from[0]) {
-        ans -= choose(sz[v]);
-    }
-
+    vl dp(M+1);
+    dfs(dfs, 0, N, dp);
     Out(ans);
 
 }

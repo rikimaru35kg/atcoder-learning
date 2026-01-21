@@ -2028,6 +2028,10 @@
 ### 例題
 - !復習価値低 [E - Colinear](https://atcoder.jp/contests/abc422/tasks/abc422_e)
 
+## 分割統治
+### 例題
+- !要復習 [F - Must Buy](https://atcoder.jp/contests/abc441/tasks/abc441_f)
+
 ## オイラー路
 - 一筆書き
 - 奇点が0個か2個なら可能

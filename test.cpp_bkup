@@ -229,32 +229,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, Q);
-    VLM(A, N);
+    LONG(N, K, X);
+    VL(A, N);
+    sort(allr(A));
+    using P = pair<ll,vl>;
+    priority_queue<P,vector<P>> que;
+    vl init(N);
+    init[0] = K;
+    que.emplace(K*A[0], init);
 
-    ll K = 30;
-    vvl to(K, vl(N));
-    vvl sum(K, vl(N));
+    set<vl> st;
 
-    rep(i, N) to[0][i] = A[i];
-    rep(i, N) sum[0][i] = i+1;
+    vl ans;
+    while(true) {
+        assert(que.size());
+        auto [s,v] = que.top(); que.pop();
+        if(!st.insert(v).second) continue;
+        ans.push_back(s);
+        if(SIZE(ans)==X) break;
 
-    rep(k, K-1) rep(i, N) {
-        to[k+1][i] = to[k][to[k][i]];
-        sum[k+1][i] = sum[k][i] + sum[k][to[k][i]];
-    }
-
-    rep(i, Q) {
-        LONG(t, b); --b;
-        ll ans = 0;
-        ll v = b;
-        for(ll k=K-1; k>=0; --k) {
-            if(~t>>k&1) continue;
-            ans += sum[k][v];
-            v = to[k][v];
+        auto fwd=[&](ll j, ll c=1) {
+            v[j] -= c, v[j+1] += c;
+            s -= c*A[j], s += c*A[j+1];
+        };
+        auto bwd=[&](ll j) {fwd(j, -1);};
+        rep(j, N) {
+            if(j==N-1 || v[j]==0) continue;
+            fwd(j);
+            que.emplace(s, v);
+            bwd(j);
         }
-        Out(ans);
     }
+    Out(ans);
 
 }
 
