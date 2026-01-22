@@ -1118,8 +1118,7 @@
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
 - !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
-!!! where i am now for rank S (last submission 2025/11/11)
-- !要復習 [F - Almost Sorted 2](https://atcoder.jp/contests/abc431/tasks/abc431_f)
+- !復習価値低 [F - Almost Sorted 2](https://atcoder.jp/contests/abc431/tasks/abc431_f)
 
 ## 決め打ちDP
 - ある条件を決め打ってDPする事で、問題が解けるようになる場合あり
@@ -1267,6 +1266,7 @@
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
+!!! where i am now for rank S (last submission 2026/1/9)
 - !要復習 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
 ## 整数とMOD
