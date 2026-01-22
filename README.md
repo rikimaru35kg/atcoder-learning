@@ -803,8 +803,8 @@
 - 配列値の降順で二分木を作る
 - stack利用でO(N)で構築可能
 ### 例題
-!!! where i am now for rank A (last submission 2025/12/12)
-- !復習価値高 [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)
+- !復習価値低 [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)
+!!! where i am now for rank A (last submission 9999/99/99)
 
 # 動的計画法（DP）
 
