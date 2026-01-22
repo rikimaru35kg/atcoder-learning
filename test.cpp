@@ -228,44 +228,32 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <class T> struct CartesianTree {
-    // root = largest element
-    // multiple largest elements -> root = rightmost element
-    vector<int> l, r;
-    int root;
-    CartesianTree(vector<T> a) {
-        int n = a.size();
-        l.resize(n, -1); r.resize(n, -1);
-        pair<T,int> mx;
-        vector<int> stck;
-        for(int i=0; i<n; ++i) {
-            mx = max(mx, {a[i], i});
-            while(stck.size() && a[stck.back()] <= a[i]) {
-                l[i] = stck.back(); stck.pop_back();
-            }
-            if(stck.size()) r[stck.back()] = i;
-            stck.push_back(i);
-        }
-        root = mx.second;
-    }
-};
-
 void solve() {
-    LONG(N);
-    VL(P, N);
+    LONG(N, K);
+    VL(A, N);
 
-    CartesianTree<ll> tree(P);
-    ll root = tree.root;
+    ll M = 1e6;
+    vl cnt(M+1);
+    rep(i, N) { cnt[A[i]]++; }
 
-    auto dfs=[&](auto f, ll v) -> ll {
-        ll l = tree.l[v], r = tree.r[v];
-        ll ret = 0;
-        if(l!=-1) chmax(ret, f(f, l) + v-l);
-        if(r!=-1) chmax(ret, f(f, r) + r-v);
-        return ret;
-    };
-    ll ans = dfs(dfs, root);
-    Out(ans);
+    vl sum(M+1);
+    rep1(x, M) {
+        for(ll y=x; y<=M; y+=x) {
+            sum[x] += cnt[y];
+        }
+    }
+
+    vl mx(M+1);
+    rep1(x, M) {
+        if(sum[x]<K) continue;
+        for(ll y=x; y<=M; y+=x) {
+            mx[y] = x;
+        }
+    }
+
+    rep(i, N) {
+        Out(mx[A[i]]);
+    }
 
 }
 
