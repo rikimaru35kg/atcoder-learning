@@ -1428,8 +1428,7 @@
 - 原始根のグラフを考えた場合、1ずつ進む
 - 非原始根の場合、kステップずつ進む事に相当（k=1~N）
 ### 例題
-!!! where i am now for rank B (last submission 2025/11/27)
-- !復習価値中 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
+- !要復習 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
@@ -1640,7 +1639,8 @@
 - 等比級数を求めたい時、a={{r,1},{0,1}}とすると、a^nのa[0][1]が項数nの等比級数となっている
 ### 例題
 - 基本 [R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
-- !復習価値中 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
+- !復習価値低 [D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)
+!!! where i am now for rank B (last submission 2025/10/31)
 - !復習価値中 行列累乗はオーバーキルなのでNote非掲載だが覚えておきたいテク [L - N mod M](https://atcoder.jp/contests/past202203-open/tasks/past202203_l)
 - !復習価値低 [G - Banned Substrings](https://atcoder.jp/contests/abc305/tasks/abc305_g)
 
