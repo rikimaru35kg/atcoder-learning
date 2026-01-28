@@ -228,8 +228,22 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 //! n*n matrix
-constexpr int MX = 6;  // DEFINE PROPERLY!!
+constexpr int MX = 2;  // DEFINE PROPERLY!!
 template <typename T> class Mat {
     int n;
     T a[MX][MX];
@@ -309,136 +323,25 @@ public:
     }
 };
 
-using u32 = unsigned int;
-
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    vector<S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x);
-        climb((i+n)>>1);
-    }
-    void set_and_op(int i, S x) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, true);
-        climb((i+n)>>1);
-    }
-    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
-        }
-        return op(lft, rgt);
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
-    }
-};
-
-using S = Mat<u32>;
-S op(S a, S b) {return b*a;}
-S e() {return Mat<u32>();}
-
 void solve() {
-    STRING(Str);
-    ll N = Str.size();
-    vector<Mat<u32>> mats(5);
+    LONG(K, M);
+    mint::set_mod(M);
 
-    rep(i, 5) {
-        mats[i] = Mat<u32>();
-        mats[i].set(i+1, i, 1);
-    }
-    SegTree<S,op,e> seg(N);
-    string disco="DISCO";
-    rep(i, N) {
-        ll j = 0;
-        while(1) { if(disco[j]==Str[i]) break; ++j;}
-        seg.set_only(i, mats[j]);
-    }
-    seg.build();
+    Mat<mint> mat;
+    mat.set(0, 0, mint(10));
+    mat.set(1, 0, 1);
 
-    LONG(Q);
-    rep(i, Q) {
-        LONG(l, r); --l;
-        auto mon = seg.prod(l, r);
-        Out(mon(MX-1, 0));
+    auto repunit=[&](ll d) -> mint {
+        Mat<mint> ret = mat.pow(d);
+        return ret(1, 0);
+    };
+    mint ans = 0;
+    rep(i, K) {
+        LONG(c, d);
+        ans *= mint(10).pow(d);
+        ans += c*repunit(d);
     }
-
+    Out(ans);
 }
 
 int main () {
