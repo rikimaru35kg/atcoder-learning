@@ -228,120 +228,28 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! n*n matrix
-constexpr int MX = 2;  // DEFINE PROPERLY!!
-template <typename T> class Mat {
-    int n;
-    T a[MX][MX];
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-public:
-    // Initialize n*n matrix as unit matrix
-    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
-            }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        assert(abs(det)>=EPS);
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    Mat pow(long long k) { return pow_recursive(*this, k); }
-    void set(int i, int j, T x) { a[i][j] = x; }
-    T operator()(int i, int j) { return a[i][j]; }
-    void print(string debugname="------") {  // for debug
-        #ifdef __DEBUG
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-        #endif
-    }
-};
-
 void solve() {
-    LONG(K, M);
-    mint::set_mod(M);
+    LONG(N);
+    VL(A, N);
+    vvl is(N+1, vl(1, -1));
+    rep(i, N) is[A[i]].push_back(i);
+    rep(i, N+1) is[i].push_back(N);
 
-    Mat<mint> mat;
-    mat.set(0, 0, mint(10));
-    mat.set(1, 0, 1);
-
-    auto repunit=[&](ll d) -> mint {
-        Mat<mint> ret = mat.pow(d);
-        return ret(1, 0);
-    };
-    mint ans = 0;
-    rep(i, K) {
-        LONG(c, d);
-        ans *= mint(10).pow(d);
-        ans += c*repunit(d);
+    ll ans = 0;
+    rep(i, N) {
+        ll a = A[i];
+        vl &cis = is[a], &pis = is[a-1];
+        ll idx = lower_bound(all(cis), i) - cis.begin();
+        ll l = cis[idx-1];
+        ll idx2 = upper_bound(all(pis), i) - pis.begin();
+        chmax(l, pis[idx2-1]);
+        ll idx3 = upper_bound(all(pis), i) - pis.begin();
+        ll r = pis[idx3];
+        ll now = (i-l) * (r-i);
+        ans += now;
     }
     Out(ans);
+
 }
 
 int main () {

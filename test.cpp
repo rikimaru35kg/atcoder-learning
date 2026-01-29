@@ -228,89 +228,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! O(ROW * COL^2 / 64?)
-const int COL = 16;
-using BS = bitset<COL>; // size=COL
-using vBS = vector<BS>;
-struct XorBase {
-    int ROW;
-    int rank = 0;
-    vBS base;
-    XorBase(int n): ROW(n), base(n) {}
-    void initialize(vBS _base) { base = _base;} 
-    void set_new_row(BS bs) { // BE CAREFUL ABOUT CALCULATION COST
-        if(rank==ROW) return;
-        base[rank] = bs;
-        sweep();  // O(ROW * COL^2 / 64?)
-    }
-    void sweep() {
-        rank = 0;
-        for(int j=0; j<COL; ++j) {  // find pivot for column j
-            int pi = -1;  // pivot i
-            for(int i=rank; i<ROW; ++i) {
-                if(!base[i][j]) continue;
-                pi = i; break;
-            }
-            if(pi==-1) continue;  // no pivot at column j
-
-            swap(base[rank], base[pi]);
-            // delete all other 1 at column j
-            for(int i=0; i<ROW; ++i) {
-                if(i==rank) continue;
-                if(!base[i][j]) continue;
-                base[i] ^= base[rank];
-            }
-            ++rank;
-        }
-    }
-    vBS get_base() { return base;}
-    int get_rank() { return rank;}
-    BS get_row(int i) { return base[i]; }
-    vector<int> find_pivots() {
-        // ret[idx_col] = idx_row, (-1: no pivit for the column)
-        vector<int> ret(COL, -1);
-        int j = 0;
-        for(int i=0; i<rank; ++i) {
-            while(j<COL && !base[i][j]) ++j;
-            if(j<COL) ret[j] = i;
-        }
-        return ret;
-    }
-    bool operator==(const XorBase &o) const {
-        if(ROW != o.ROW) return false;
-        if(rank != o.rank) return false;
-        for(int i=0; i<rank; ++i) {
-            if (base[i] != o.base[i]) return false;
-        }
-        return true;
-    }
-    void dump() { // for debug
-        #ifdef __DEBUG
-        for(int i=0; i<ROW; ++i) { cerr << base[i] << endl; }
-        #endif
-    }
-    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！
-    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]
-    //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）
-};
-
 void solve() {
     LONG(N);
-    vp spices;
-    rep1(i, (1LL<<N)-1) {
-        LONG(c);
-        spices.emplace_back(c, i); 
-    }
-    sort(all(spices));
+    VL(A, N);
+    vvl is(N+1, vl(1, -1));
+    rep(i, N) is[A[i]].push_back(i);
+    rep(i, N+1) is[i].push_back(N);
+
+    auto nc2=[&](ll n) {return n*(n-1)/2;};
+
+    auto include=[&](vl &cis) -> ll {
+        ll u = N*(N+1)/2;
+        ll sz = cis.size();
+        ll ret = 0;
+        for(ll i=0; i<sz-1; ++i) {
+            ret += nc2(cis[i+1]-cis[i]);
+        }
+        return u-ret;
+    };
+
     ll ans = 0;
-    XorBase base(N);
-    for(auto [c,i]: spices) {
-        XorBase nbase = base;
-        nbase.set_new_row(BS(i));
-        if(nbase!=base) ans += c;
-        swap(nbase, base);
+    rep1(i, N) {
+        vl merged;
+        merge(all(is[i]), all(is[i-1]), back_insert_iterator(merged));
+        ll both = include(merged);
+        ll only = include(is[i-1]);
+        ll now = both - only;
+        ans += now;
     }
     Out(ans);
+
 
 }
 

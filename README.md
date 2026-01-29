@@ -1670,7 +1670,6 @@
 - !復習価値低 [E - Sum of Subarrays](https://atcoder.jp/contests/abc423/tasks/abc423_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - 基本 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
-!!! where i am now for rank B (last submission 2025/10/31)
 - !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
 
 ## 投票方式で考える
@@ -1686,6 +1685,7 @@
 - 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
 - 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
+!!! where i am now for rank B (last submission 2025/12/10)
 - !復習価値中 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
 - 基本 [C16 - Flights](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fn)
 - !復習価値低 [E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
