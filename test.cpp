@@ -229,42 +229,52 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(A, N);
-    vvl is(N+1, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N+1) is[i].push_back(N);
+    LONG(N, C); --C;
+    VS(S, N);
+    vl mx(N, -1);
+    rep(i, N) rep(j, N) {
+        if(S[i][j]=='.') continue;
+        chmax(mx[j], i);
+    }
 
-    auto nc2=[&](ll n) {return n*(n-1)/2;};
+    vvb dp(N, vb(N));
+    dp[N-1][C] = true;
 
-    auto include=[&](vl &cis) -> ll {
-        ll u = N*(N+1)/2;
-        ll sz = cis.size();
-        ll ret = 0;
-        for(ll i=0; i<sz-1; ++i) {
-            ret += nc2(cis[i+1]-cis[i]);
+    auto is_first=[&](ll i, ll j) -> bool { return mx[j]==i; };
+    auto goup=[&](ll i, ll j) {
+        while(i>=0) {
+            dp[i][j] = true;
+            --i;
         }
-        return u-ret;
+    };
+    auto check=[&](ll i, ll j) -> bool {
+        if (j<0 || j>=N) return false;
+        if (i<0) return false;
+        if (S[i][j]=='.') return true;
+        if (is_first(i, j)) return true;
+        return false;
     };
 
-    ll ans = 0;
-    rep1(i, N) {
-        vl merged;
-        merge(all(is[i]), all(is[i-1]), back_insert_iterator(merged));
-        ll both = include(merged);
-        ll only = include(is[i-1]);
-        ll now = both - only;
-        ans += now;
+    repr(i, N) {
+        rep(j, N) {
+            if(!dp[i][j]) continue;
+            if(is_first(i,j)) goup(i, j);
+            if(check(i-1,j-1)) dp[i-1][j-1] = true;
+            if(check(i-1,j))   dp[i-1][j] = true;
+            if(check(i-1,j+1)) dp[i-1][j+1] = true;
+        }
     }
+    string ans(N, '0');
+    rep(j, N) if(dp[0][j]) ans[j] = '1';
     Out(ans);
-
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

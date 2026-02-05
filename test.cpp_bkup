@@ -230,24 +230,12 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VL(A, N);
-    vvl is(N+1, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N+1) is[i].push_back(N);
-
+    VL(R, N);
+    vl L = R;
+    rep(i, N-1) chmin(R[i+1], R[i]+1);
+    repr(i, N-1) chmin(R[i], R[i+1]+1);
     ll ans = 0;
-    rep(i, N) {
-        ll a = A[i];
-        vl &cis = is[a], &pis = is[a-1];
-        ll idx = lower_bound(all(cis), i) - cis.begin();
-        ll l = cis[idx-1];
-        ll idx2 = upper_bound(all(pis), i) - pis.begin();
-        chmax(l, pis[idx2-1]);
-        ll idx3 = upper_bound(all(pis), i) - pis.begin();
-        ll r = pis[idx3];
-        ll now = (i-l) * (r-i);
-        ans += now;
-    }
+    rep(i, N) ans += L[i]-R[i];
     Out(ans);
 
 }
@@ -255,7 +243,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

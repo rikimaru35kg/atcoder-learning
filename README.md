@@ -1685,8 +1685,7 @@
 - 時系列がそのまま依存関係になるので、実質的にDAGを構成できる。時刻をキーに載せたqueueにでも突っ込んでおけば、後から~~以下の時刻だけ処理するなどという事も可能
 ### 例題
 - 基本 [D - Snuke Prime](https://atcoder.jp/contests/abc188/tasks/abc188_d)
-!!! where i am now for rank B (last submission 2025/12/10)
-- !復習価値中 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
+- !復習価値低 [E - スマートフォン (Smartphone)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_e)
 - 基本 [C16 - Flights](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fn)
 - !復習価値低 [E - Train Delay](https://atcoder.jp/contests/abc368/tasks/abc368_e)
 
@@ -1722,6 +1721,7 @@
 - 基本 （上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
+!!! where i am now for rank B (last submission 2025/11/13)
 - !復習価値中 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
 
 ## 調和級数やsqrt(N)で計算量を落とす
@@ -2219,7 +2219,10 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/--/--)
+!!! where i am now for rank D (last submission 2025/2/4)
+- [D - Pawn Line](https://atcoder.jp/contests/abc443/tasks/abc443_d)
+- [E - Climbing Silver](https://atcoder.jp/contests/abc443/tasks/abc443_e)
+- [F - Non-Increasing Number](https://atcoder.jp/contests/abc443/tasks/abc443_f)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
