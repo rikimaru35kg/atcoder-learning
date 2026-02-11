@@ -12,6 +12,8 @@
         {"before": ["<C-d>"], "after": ["g","b"]},
         {"before": ["m"], "after": ["5","<c-e>"]},
         {"before": ["t"], "after": ["5","<c-y>"]},
+        {"before": ["<space>", "g"], "commands": ["workbench.view.search"]},
+        {"before": ["<space>", "f"], "commands": ["workbench.action.quickOpen"]},
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {"before": ["<C-d>"], "after": ["g","b"]},

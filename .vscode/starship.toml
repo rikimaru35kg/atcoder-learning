@@ -28,6 +28,7 @@ $cmd_duration\
 $line_break\
 $character"""
 
+
 palette = 'catppuccin_mocha'
 
 [os]
@@ -146,7 +147,7 @@ style = "bg:darkblue"
 format = '[[  $time ](fg:mytext bg:darkblue)]($style)'
 
 [line_break]
-disabled = true
+disabled = false
 
 [character]
 disabled = false

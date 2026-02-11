@@ -1266,8 +1266,7 @@
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
-!!! where i am now for rank S (last submission 2026/1/9)
-- !要復習 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
+- !復習価値高 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
 ## 整数とMOD
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
@@ -1428,6 +1427,7 @@
 - 原始根のグラフを考えた場合、1ずつ進む
 - 非原始根の場合、kステップずつ進む事に相当（k=1~N）
 ### 例題
+!!! where i am now for rank S (last submission 2026/1/24)
 - !要復習 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
 
 ## 平方数

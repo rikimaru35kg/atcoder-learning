@@ -228,14 +228,162 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
 void solve() {
-    LONG(N);
-    VL(R, N);
-    vl L = R;
-    rep(i, N-1) chmin(R[i+1], R[i]+1);
-    repr(i, N-1) chmin(R[i], R[i+1]+1);
-    ll ans = 0;
-    rep(i, N) ans += L[i]-R[i];
+    LONG(N, M);
+    VL(A, N);
+    sort(all(A));
+    ll K = (N+M+1)/2;
+
+    vl cand;
+    rep(i, N) {
+        ll a = A[i];
+        while(a>1) {
+            cand.push_back(a/2);
+            if(a&1) cand.push_back((a+1)/2);
+            a = (a+1)/2;
+        }
+    }
+    unique(cand);
+    ll Z = cand.size();
+
+    auto countok=[&](multiset<ll> &st, ll x) -> ll {
+        ll nok = 0;
+        for(auto y: st) if(y>=x) ++nok;
+        return nok >= K;
+    };
+
+    auto f=[&](ll i) -> bool {
+        ll x = cand[i];
+        multiset<ll> st(all(A));
+        while(SIZE(st)<N+M) {
+            auto it = st.end(); --it;
+            ll mx = *it;
+            if(mx/2<x) break;
+            erase(st, mx);
+            st.insert(mx/2);
+            st.insert((mx+1)/2);
+        }
+        if(SIZE(st)==N+M) {
+            if(countok(st, x)) return true;
+        }
+        ll sz = SIZE(st);
+        while(sz<N+M && st.size()) {
+            auto it = st.begin();
+            ll mn = *it;
+            erase(st, mn);
+            if(mn>1) {
+                st.insert(mn/2);
+                st.insert((mn+1)/2);
+                ++sz;
+            }
+        }
+        if(sz!=N+M) return false;
+        return countok(st, x);
+    };
+
+    // de(f(10));
+
+    ll ansi = binary_search(0, Z, f);
+    ll ans = 1;
+    if(ansi==0) ans = 1;
+    else ans = cand[ansi];
     Out(ans);
 
 }

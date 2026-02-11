@@ -1,8 +1,20 @@
-// Place your key bindings in this file to override the defaults
+/// Place your key bindings in this file to override the defaults
 [
     {
-        "key": "shift+enter",
+        "key": "alt+j",
         "command": "terminal.focus"
+    },
+    {
+        "key": "alt+k",
+        "command": "workbench.action.focusFirstEditorGroup"
+    },
+    {
+        "key": "alt+l",
+        "command": "workbench.action.focusFirstEditorGroup"
+    },
+    {
+        "key": "alt+h",
+        "command": "workbench.files.action.focusFilesExplorer"
     },
     {
         "key": "ctrl+d",
@@ -13,10 +25,6 @@
         "key": "ctrl+f",
         "command": "",
         "when": "terminalFocus"
-    },
-    {
-        "key": "shift+backspace",
-        "command": "workbench.action.focusFirstEditorGroup"
     },
     {
         "key": "ctrl+1",

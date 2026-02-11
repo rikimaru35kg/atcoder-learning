@@ -229,52 +229,66 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, C); --C;
-    VS(S, N);
-    vl mx(N, -1);
-    rep(i, N) rep(j, N) {
-        if(S[i][j]=='.') continue;
-        chmax(mx[j], i);
+    LONG(N);
+    vvl from(N);
+    rep(i, N-1) {
+        LONG(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-
-    vvb dp(N, vb(N));
-    dp[N-1][C] = true;
-
-    auto is_first=[&](ll i, ll j) -> bool { return mx[j]==i; };
-    auto goup=[&](ll i, ll j) {
-        while(i>=0) {
-            dp[i][j] = true;
-            --i;
+    vl pa(N, -1);
+    vl sz(N, 1);
+    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
+        pa[v] = p;
+        for(auto nv: from[v]) if(nv!=p) {
+            f(f, nv, v);
+            sz[v] += sz[nv];
         }
     };
-    auto check=[&](ll i, ll j) -> bool {
-        if (j<0 || j>=N) return false;
-        if (i<0) return false;
-        if (S[i][j]=='.') return true;
-        if (is_first(i, j)) return true;
-        return false;
+    dfs(dfs, 0);
+    auto detect_c1=[&]() -> ll {
+        ll v = 1;
+        while(pa[v]!=0) v = pa[v];
+        return v;
     };
+    ll c1 = detect_c1();
+    ll other = N-sz[c1];
 
-    repr(i, N) {
-        rep(j, N) {
-            if(!dp[i][j]) continue;
-            if(is_first(i,j)) goup(i, j);
-            if(check(i-1,j-1)) dp[i-1][j-1] = true;
-            if(check(i-1,j))   dp[i-1][j] = true;
-            if(check(i-1,j+1)) dp[i-1][j+1] = true;
+    ll a = 0, b = -1;
+    auto get_size=[&](ll v) -> ll {
+        if(v==0) return other;
+        return sz[v];
+    };
+    vb onp(N);
+    onp[0] = true;
+    auto nc2d=[&](ll n) -> ll {return n*(n+1)/2;};
+    ll ans = nc2d(N);
+    for(auto v: from[0]) ans -= nc2d(sz[v]);
+    de(ans)
+    for(ll v=1; v<N; ++v) {
+        if(onp[v]) {
+            ans += get_size(a)*get_size(b);
+            continue;
         }
+        ll cv = v;
+        while(!onp[cv]) {
+            onp[cv] = true;
+            cv = pa[cv];
+        }
+        if(cv!=a && cv!=b) break;
+        if(b==-1) b = v;
+        else if(cv==a) a = v;
+        else b = v;
+        ans += get_size(a)*get_size(b);
+        de4(v, a, b, ans)
     }
-    string ans(N, '0');
-    rep(j, N) if(dp[0][j]) ans[j] = '1';
     Out(ans);
-
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
