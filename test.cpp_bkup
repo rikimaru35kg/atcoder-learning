@@ -228,162 +228,59 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
+struct Data {
+    ll n, p;
+    Data(ll n=INF, ll p=-1): n(n),p(p) {}
+    void update(ll nn, ll cp) {
+        if(nn>n) return;
+        if(nn<n) {
+            n = nn, p = cp;
+            return;
         }
+        chmax(p, cp);
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
+};
 
 void solve() {
-    LONG(N, M);
-    VL(A, N);
-    sort(all(A));
-    ll K = (N+M+1)/2;
+    LONG(N);
+    ll N2 = N*N;
+    auto gid=[&](ll i, ll j) {return i*N+j;};
+    auto rid=[&](ll id) -> Pr {return {id/N, id%N};};
+    VVL(P, N, N);
+    VVL(R, N, N-1);
+    VVL(D, N-1, N);
 
-    vl cand;
-    rep(i, N) {
-        ll a = A[i];
-        while(a>1) {
-            cand.push_back(a/2);
-            if(a&1) cand.push_back((a+1)/2);
-            a = (a+1)/2;
-        }
-    }
-    unique(cand);
-    ll Z = cand.size();
+    using vD = vector<Data>;
+    using vvD = vector<vD>;
 
-    auto countok=[&](multiset<ll> &st, ll x) -> ll {
-        ll nok = 0;
-        for(auto y: st) if(y>=x) ++nok;
-        return nok >= K;
-    };
+    vvD dp(N2, vD(N2));
+    dp[gid(0,0)][gid(0,0)] = Data(0, 0);
 
-    auto f=[&](ll i) -> bool {
-        ll x = cand[i];
-        multiset<ll> st(all(A));
-        while(SIZE(st)<N+M) {
-            auto it = st.end(); --it;
-            ll mx = *it;
-            if(mx/2<x) break;
-            erase(st, mx);
-            st.insert(mx/2);
-            st.insert((mx+1)/2);
-        }
-        if(SIZE(st)==N+M) {
-            if(countok(st, x)) return true;
-        }
-        ll sz = SIZE(st);
-        while(sz<N+M && st.size()) {
-            auto it = st.begin();
-            ll mn = *it;
-            erase(st, mn);
-            if(mn>1) {
-                st.insert(mn/2);
-                st.insert((mn+1)/2);
-                ++sz;
+    rep(i, N) rep(j, N) rep(mi, N) rep(mj, N) {
+        auto [n,p] = dp[gid(i,j)][gid(mi,mj)];
+        if(n==INF) continue;
+        ll cmi = mi, cmj = mj;
+        if(P[mi][mj]<P[i][j]) cmi = i, cmj = j;
+        ll mxp = P[cmi][cmj];
+        auto calc=[&](ll ni, ll nj, ll cost) {
+            ll nn = n+1;
+            ll cp = p-cost;
+            if(cp<0) {
+                ll k = Divceil(-cp, mxp);
+                nn += k;
+                cp += k*mxp;
             }
-        }
-        if(sz!=N+M) return false;
-        return countok(st, x);
-    };
+            dp[gid(ni,nj)][gid(cmi,cmj)].update(nn, cp);
+        };
+        if(j<N-1) calc(i, j+1, R[i][j]);
+        if(i<N-1) calc(i+1, j, D[i][j]);
+    }
 
-    // de(f(10));
-
-    ll ansi = binary_search(0, Z, f);
-    ll ans = 1;
-    if(ansi==0) ans = 1;
-    else ans = cand[ansi];
+    ll ans = INF;
+    rep(mi, N) rep(mj, N) {
+        auto [n,p] = dp[gid(N-1,N-1)][gid(mi,mj)];
+        chmin(ans, n);
+    }
     Out(ans);
 
 }
@@ -391,8 +288,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

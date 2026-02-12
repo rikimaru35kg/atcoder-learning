@@ -229,60 +229,66 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
+    LONG(N, D, K);
+    vl sa, sb;
+    rep(i, N) {
+        LONG(p, s);
+        if(p==1) sa.push_back(s);
+        else sb.push_back(s);
     }
-    vl pa(N, -1);
-    vl sz(N, 1);
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        pa[v] = p;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            sz[v] += sz[nv];
-        }
-    };
-    dfs(dfs, 0);
-    auto detect_c1=[&]() -> ll {
-        ll v = 1;
-        while(pa[v]!=0) v = pa[v];
-        return v;
-    };
-    ll c1 = detect_c1();
-    ll other = N-sz[c1];
+    sort(all(sa));
+    sort(all(sb));
+    ll na = sa.size(), nb = sb.size();
+    if(na==N || na==0) Outend(N);
+    vl dpa(na, -1), dpb(nb, -1);
+    dpa[0] = dpb[0] = 1;
 
-    ll a = 0, b = -1;
-    auto get_size=[&](ll v) -> ll {
-        if(v==0) return other;
-        return sz[v];
+    auto lastrun=[&](vl &dp, ll i) {
+        ll n = dp.size();
+        for(ll j=i; j<n-1; ++j) {
+            chmax(dp[j+1], dp[j]+1);
+        }
     };
-    vb onp(N);
-    onp[0] = true;
-    auto nc2d=[&](ll n) -> ll {return n*(n+1)/2;};
-    ll ans = nc2d(N);
-    for(auto v: from[0]) ans -= nc2d(sz[v]);
-    de(ans)
-    for(ll v=1; v<N; ++v) {
-        if(onp[v]) {
-            ans += get_size(a)*get_size(b);
-            continue;
+
+    ll ia = 0, ib = 0;
+    ll ha = 0, hb = 0;
+    while(ia<na || ib<nb) {
+        if(ia==na) {
+            lastrun(dpb, ib);
+            break;
         }
-        ll cv = v;
-        while(!onp[cv]) {
-            onp[cv] = true;
-            cv = pa[cv];
+        if(ib==nb) {
+            lastrun(dpa, ia);
+            break;
         }
-        if(cv!=a && cv!=b) break;
-        if(b==-1) b = v;
-        else if(cv==a) a = v;
-        else b = v;
-        ans += get_size(a)*get_size(b);
-        de4(v, a, b, ans)
+        ll ta = sa[ia], tb = sb[ib];
+        if(sa[ia]<=sb[ib]) {
+            ll now = dpa[ia];
+            if(ia<na-1) chmax(dpa[ia+1], now+1);
+            while(hb<nb) {
+                if(sb[hb]-(ta+1)<D+K*now) ++hb;
+                else break;
+            }
+            if(hb!=nb) chmax(dpb[hb], now+1);
+            ++ia;
+        }
+        else {
+            ll now = dpb[ib];
+            if(ib<nb-1) chmax(dpb[ib+1], now+1);
+            while(ha<na) {
+                if(sa[ha]-(tb+1)<D+K*now) ++ha;
+                else break;
+            }
+            if(ha!=na) chmax(dpa[ha], now+1);
+            ++ib;
+        }
     }
+    de(dpa)
+    de(dpb)
+    ll ans = max(dpa.back(), dpb.back());
     Out(ans);
+
+
 }
 
 int main () {

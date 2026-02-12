@@ -804,7 +804,6 @@
 - stack利用でO(N)で構築可能
 ### 例題
 - !復習価値低 [F - Cat exercise](https://atcoder.jp/contests/abc435/tasks/abc435_f)
-!!! where i am now for rank A (last submission 9999/99/99)
 
 # 動的計画法（DP）
 
@@ -1069,9 +1068,9 @@
 - 基本 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - 基本 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
 
-!!! where i am now for rank C (last submission 2025/2/25)
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
+!!! where i am now for rank C (last submission 2026/1/21)
 - !復習価値低 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
@@ -1266,6 +1265,7 @@
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
+!!! where i am now for rank A (last submission 2026/2/11)
 - !復習価値高 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
 ## 整数とMOD
@@ -1401,7 +1401,6 @@
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 - !復習価値中 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
-!!! where i am now for rank A (last submission 2026/1/22)
 - !復習価値高（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
