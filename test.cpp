@@ -229,65 +229,29 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, D, K);
-    vl sa, sb;
-    rep(i, N) {
-        LONG(p, s);
-        if(p==1) sa.push_back(s);
-        else sb.push_back(s);
-    }
-    sort(all(sa));
-    sort(all(sb));
-    ll na = sa.size(), nb = sb.size();
-    if(na==N || na==0) Outend(N);
-    vl dpa(na, -1), dpb(nb, -1);
-    dpa[0] = dpb[0] = 1;
+    LONG(N, K);
+    VVL(C, N, N);
 
-    auto lastrun=[&](vl &dp, ll i) {
-        ll n = dp.size();
-        for(ll j=i; j<n-1; ++j) {
-            chmax(dp[j+1], dp[j]+1);
+    auto merge=[&](vvl &c1, vvl &c2) -> vvl {
+        vvl ret(N, vl(N, INF));
+        rep(i, N) rep(j, N) rep(k, N) {
+            chmin(ret[i][k], c1[i][j]+c2[j][k]);
         }
+        return ret;
     };
 
-    ll ia = 0, ib = 0;
-    ll ha = 0, hb = 0;
-    while(ia<na || ib<nb) {
-        if(ia==na) {
-            lastrun(dpb, ib);
-            break;
-        }
-        if(ib==nb) {
-            lastrun(dpa, ia);
-            break;
-        }
-        ll ta = sa[ia], tb = sb[ib];
-        if(sa[ia]<=sb[ib]) {
-            ll now = dpa[ia];
-            if(ia<na-1) chmax(dpa[ia+1], now+1);
-            while(hb<nb) {
-                if(sb[hb]-(ta+1)<D+K*now) ++hb;
-                else break;
-            }
-            if(hb!=nb) chmax(dpb[hb], now+1);
-            ++ia;
-        }
-        else {
-            ll now = dpb[ib];
-            if(ib<nb-1) chmax(dpb[ib+1], now+1);
-            while(ha<na) {
-                if(sa[ha]-(tb+1)<D+K*now) ++ha;
-                else break;
-            }
-            if(ha!=na) chmax(dpa[ha], now+1);
-            ++ib;
-        }
-    }
-    de(dpa)
-    de(dpb)
-    ll ans = max(dpa.back(), dpb.back());
-    Out(ans);
+    auto dfs=[&](auto f, ll k) -> vvl {
+        if(k==1) return C;
+        vvl nc = f(f, k/2);
+        vvl ret = merge(nc, nc);
+        if(k&1) ret = merge(ret, C);
+        return ret;
+    };
 
+    auto fc = dfs(dfs, K);
+    rep(i, N) {
+        Out(fc[i][i]);
+    }
 
 }
 

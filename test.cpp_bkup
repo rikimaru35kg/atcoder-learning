@@ -228,58 +228,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Data {
-    ll n, p;
-    Data(ll n=INF, ll p=-1): n(n),p(p) {}
-    void update(ll nn, ll cp) {
-        if(nn>n) return;
-        if(nn<n) {
-            n = nn, p = cp;
-            return;
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
         }
-        chmax(p, cp);
     }
-};
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+    int mu(long long k) { return mobius[k]; }
+} sieve(1e7);
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 
 void solve() {
-    LONG(N);
-    ll N2 = N*N;
-    auto gid=[&](ll i, ll j) {return i*N+j;};
-    auto rid=[&](ll id) -> Pr {return {id/N, id%N};};
-    VVL(P, N, N);
-    VVL(R, N, N-1);
-    VVL(D, N-1, N);
-
-    using vD = vector<Data>;
-    using vvD = vector<vD>;
-
-    vvD dp(N2, vD(N2));
-    dp[gid(0,0)][gid(0,0)] = Data(0, 0);
-
-    rep(i, N) rep(j, N) rep(mi, N) rep(mj, N) {
-        auto [n,p] = dp[gid(i,j)][gid(mi,mj)];
-        if(n==INF) continue;
-        ll cmi = mi, cmj = mj;
-        if(P[mi][mj]<P[i][j]) cmi = i, cmj = j;
-        ll mxp = P[cmi][cmj];
-        auto calc=[&](ll ni, ll nj, ll cost) {
-            ll nn = n+1;
-            ll cp = p-cost;
-            if(cp<0) {
-                ll k = Divceil(-cp, mxp);
-                nn += k;
-                cp += k*mxp;
-            }
-            dp[gid(ni,nj)][gid(cmi,cmj)].update(nn, cp);
-        };
-        if(j<N-1) calc(i, j+1, R[i][j]);
-        if(i<N-1) calc(i+1, j, D[i][j]);
+    LONG(N); VL(A, N);
+    umap<ll,vl> pp;
+    rep(i, N) {
+        auto v = sieve.factorize(A[i]);
+        for(auto [p,n]: v) pp[p].push_back(n);
+    }
+    umap<ll,vp> pinfo;
+    for(auto [p,v]: pp) {
+        v.push_back(0);
+        sort(all(v));
+        vp rle;
+        for(auto n: v) {
+            if(rle.size() && rle.back().first==n) rle.back().second++;
+            else rle.emplace_back(n, 1);
+        }
+        reverse(all(rle));
+        pinfo[p] = rle;
+    }
+    mint base = 1;
+    for(auto [p,v]: pinfo) {
+        base *= mint(p).pow(v[0].first);
     }
 
-    ll ans = INF;
-    rep(mi, N) rep(mj, N) {
-        auto [n,p] = dp[gid(N-1,N-1)][gid(mi,mj)];
-        chmin(ans, n);
+    auto exmax=[&](ll p, ll n) -> ll {
+        auto [x,k] = pinfo[p][0];
+        if(x==n && k==1) return pinfo[p][1].first;
+        else return pinfo[p][0].first;
+    };
+
+    vm ans;
+    rep(i, N) {
+        auto v = sieve.factorize(A[i]);
+        mint now = base;
+        for(auto [p,n]: v) {
+            now /= mint(p).pow(pinfo[p][0].first);
+            now *= mint(p).pow(exmax(p,n));
+        }
+        ans.push_back(now);
     }
     Out(ans);
 
@@ -288,7 +326,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
