@@ -228,106 +228,42 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
-        }
-    }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
+void solve() {
+    LONG(N, K);
+    VVL(C, N, N);
+
+    auto merge=[&](vvl &c1, vvl &c2) -> vvl {
+        vvl ret(N, vl(N, INF));
+        rep(i, N) rep(j, N) rep(k, N) {
+            chmin(ret[i][k], c1[i][j]+c2[j][k]);
         }
         return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-} sieve(1e7);
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-
-void solve() {
-    LONG(N); VL(A, N);
-    umap<ll,vl> pp;
-    rep(i, N) {
-        auto v = sieve.factorize(A[i]);
-        for(auto [p,n]: v) pp[p].push_back(n);
-    }
-    umap<ll,vp> pinfo;
-    for(auto [p,v]: pp) {
-        v.push_back(0);
-        sort(all(v));
-        vp rle;
-        for(auto n: v) {
-            if(rle.size() && rle.back().first==n) rle.back().second++;
-            else rle.emplace_back(n, 1);
-        }
-        reverse(all(rle));
-        pinfo[p] = rle;
-    }
-    mint base = 1;
-    for(auto [p,v]: pinfo) {
-        base *= mint(p).pow(v[0].first);
-    }
-
-    auto exmax=[&](ll p, ll n) -> ll {
-        auto [x,k] = pinfo[p][0];
-        if(x==n && k==1) return pinfo[p][1].first;
-        else return pinfo[p][0].first;
     };
 
-    vm ans;
-    rep(i, N) {
-        auto v = sieve.factorize(A[i]);
-        mint now = base;
-        for(auto [p,n]: v) {
-            now /= mint(p).pow(pinfo[p][0].first);
-            now *= mint(p).pow(exmax(p,n));
-        }
-        ans.push_back(now);
-    }
-    Out(ans);
+    auto dfs=[&](auto f, ll k) -> vvl {
+        if(k==1) return C;
+        vvl nc = f(f, k/2);
+        vvl ret = merge(nc, nc);
+        if(k&1) ret = merge(ret, C);
+        return ret;
+    };
 
+    auto fc = dfs(dfs, K);
+    for(ll i=0; i<10; ++i) {
+      de(i)
+    }
+    rep(i, N) {
+      cout << i << endl;
+    }
+    rep(i, N) {
+        Out(fc[i][i]);
+    }
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

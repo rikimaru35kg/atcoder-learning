@@ -1,4 +1,5 @@
 // ### test.cpp ###
+#include <algorithm>
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,29 +230,64 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    VVL(C, N, N);
+    LONG(N);
+    VLM(A, N);
 
-    auto merge=[&](vvl &c1, vvl &c2) -> vvl {
-        vvl ret(N, vl(N, INF));
-        rep(i, N) rep(j, N) rep(k, N) {
-            chmin(ret[i][k], c1[i][j]+c2[j][k]);
-        }
-        return ret;
-    };
-
-    auto dfs=[&](auto f, ll k) -> vvl {
-        if(k==1) return C;
-        vvl nc = f(f, k/2);
-        vvl ret = merge(nc, nc);
-        if(k&1) ret = merge(ret, C);
-        return ret;
-    };
-
-    auto fc = dfs(dfs, K);
+    ll M = 4;
+    vvl edge(M, vl(M));
+    vl B = A;
+    sort(all(B));
     rep(i, N) {
-        Out(fc[i][i]);
+        edge[A[i]][B[i]]++;
     }
+    de(edge)
+    ll ans = 0;
+    rep(i, M) {
+        edge[i][i] = 0;
+    }
+    de(edge)
+    rep(i, M) rep(j, i) {
+        ll mn = min(edge[i][j], edge[j][i]);
+        ans += mn;
+        edge[i][j] -= mn;
+        edge[j][i] -= mn;
+    }
+    de(edge)
+
+    auto judge=[&](vl &p) -> bool {
+        auto get=[&](ll i, ll j) -> ll {
+            return edge[p[i]][p[j]];
+        };
+        if(get(0, 2)>0) return false;
+        if(get(0, 3)>0) return false;
+        if(get(1, 0)>0) return false;
+        if(get(1, 3)>0) return false;
+        if(get(2, 1)>0) return false;
+        if(get(3, 2)>0) return false;
+        return true;
+    };
+
+    de(ans)
+    vl p(M);
+    iota(all(p), 0);
+    ll add = INF;
+    do {
+        if(!judge(p)) continue;
+        vvl e = edge;
+        // auto add=[&](ll i, ll j, ll x) {
+        //     e[p[i]][p[j]] += x;
+        // };
+        ll now = 0;
+        now += 2*e[p[2]][p[0]];
+        now += 2*e[p[3]][p[1]];
+        now += 3*e[p[3]][p[0]];
+        // de(p)de(now)
+        chmin(add, now);
+    } while(next_permutation(all(p)));
+
+    Out(ans+add);
+
+
 
 }
 

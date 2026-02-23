@@ -1720,8 +1720,7 @@
 - 基本 （上とほぼ同じ問題の為note非掲載） [036 - Max Manhattan Distance（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_aj)
 - 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
-!!! where i am now for rank B (last submission 2025/11/13)
-- !復習価値中 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
+- 基本 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
 
 ## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
@@ -1939,6 +1938,7 @@
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
 - !復習価値低 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
+!!! where i am now for rank B (last submission 2025/12/5)
 - !復習価値中 [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
