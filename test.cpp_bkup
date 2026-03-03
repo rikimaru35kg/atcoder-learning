@@ -229,35 +229,33 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    VVL(C, N, N);
+    LONG(M, A, B);
+    vvl mem(M, vl(M, -1));
+    vvb seen(M, vb(M));
 
-    auto merge=[&](vvl &c1, vvl &c2) -> vvl {
-        vvl ret(N, vl(N, INF));
-        rep(i, N) rep(j, N) rep(k, N) {
-            chmin(ret[i][k], c1[i][j]+c2[j][k]);
-        }
-        return ret;
+    auto dfs=[&](auto f, ll x, ll y) -> ll {
+        seen[x][y] = true;
+        if(x==0 || y==0) { return mem[x][y] = 0; }
+
+        ll &ret = mem[x][y];
+        if(ret!=-1) return ret;
+
+        ll nx = y, ny = (A*y + B*x)%M;
+        if(mem[nx][ny]!=-1) return ret = mem[nx][ny];
+        if(seen[nx][ny]) return ret = 1;
+
+        return ret = f(f, nx, ny);
     };
 
-    auto dfs=[&](auto f, ll k) -> vvl {
-        if(k==1) return C;
-        vvl nc = f(f, k/2);
-        vvl ret = merge(nc, nc);
-        if(k&1) ret = merge(ret, C);
-        return ret;
-    };
+    ll ans = 0;
+    rep(_x, M) rep(_y, M) {
+        ans += dfs(dfs, _x, _y);
+    }
+    Out(ans);
+    // rep(x, M) rep(y, M) {
+    //     de3(x, y, mem[x][y]);
+    // }
 
-    auto fc = dfs(dfs, K);
-    for(ll i=0; i<10; ++i) {
-      de(i)
-    }
-    rep(i, N) {
-      cout << i << endl;
-    }
-    rep(i, N) {
-        Out(fc[i][i]);
-    }
 }
 
 int main () {

@@ -222,8 +222,8 @@
       "    }",
       "    if (issort) sort(ret.begin(), ret.end());",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Mersenne(Snippet)": {
     "prefix": "mersenne",
@@ -232,8 +232,8 @@
       "    static mt19937_64 mt64(0);",
       "    uniform_int_distribution<long long> get(mn, mx);",
       "    return get(mt64);",
-      "}",
-    ],
+      "}"
+    ]
   },
   "LCA": {
     "prefix": "lca",
@@ -291,8 +291,8 @@
       "        return ret;",
       "    }",
       "};",
-      "",
-    ],
+      ""
+    ]
   },
   "atcoder_all(Snippet)": {
     "prefix": "at_all",
@@ -309,8 +309,8 @@
       "inline void debug_view(mint e){cerr << e.val() << endl;}",
       "inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << \" \";} cerr << endl;}",
       "inline void debug_view(vvm &vv){cerr << \"----\" << endl;for(auto &v: vv){debug_view(v);} cerr << \"--------\" << endl;}",
-      "#endif",
-    ],
+      "#endif"
+    ]
   },
   "extgcd (Snippet)": {
     "prefix": "extgcd",
@@ -322,8 +322,8 @@
       "    auto [g, x, y] = extgcd(b, a%b);",
       "    return make_tuple(g, y, x - a/b*y);",
       "}",
-      "",
-    ],
+      ""
+    ]
   },
   "BidirectionalList": {
     "prefix": "bidirectional_list",
@@ -364,8 +364,8 @@
       "            cout << vec[i] << (i==(int)vec.size()-1?'\\\\n':' ');",
       "        }",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Combination2": {
     "prefix": "combination2",
@@ -394,8 +394,8 @@
       "        }",
       "        return ret;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "from(Snippet)": {
     "prefix": "fromsni",
@@ -405,8 +405,8 @@
       "    LONGM(a, b);",
       "    from[a].emplace_back(b);",
       "    from[b].emplace_back(a);",
-      "}",
-    ],
+      "}"
+    ]
   },
   "iota(Snippet)": {
     "prefix": "iotasni",
@@ -415,8 +415,8 @@
       "iota(all(p), 0);",
       "sort(all(p), [&](ll i, ll j){",
       "    $1",
-      "});",
-    ],
+      "});"
+    ]
   },
   "dfs(Snippet)": {
     "prefix": "dfssni",
@@ -425,8 +425,8 @@
       "    for(auto nv: from[v]) if (nv != p) {",
       "",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "atcoder/mint(Snippet)": {
     "prefix": "at_mint",
@@ -443,64 +443,64 @@
       "inline void debug_view(mint e){cerr << e.val() << endl;}",
       "inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << \" \";} cerr << endl;}",
       "inline void debug_view(vvm &vv){cerr << \"----\" << endl;for(auto &v: vv){debug_view(v);} cerr << \"--------\" << endl;}",
-      "#endif",
-    ],
+      "#endif"
+    ]
   },
   "atcoder/dsu(Snippet)": {
     "prefix": "at_dsu",
     "body": [
       "#include <atcoder/dsu>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/fenwick(Snippet)": {
     "prefix": "at_fenwick",
     "body": [
       "#include <atcoder/fenwicktree>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/segtree(Snippet)": {
     "prefix": "at_segtree",
     "body": [
       "#include <atcoder/segtree>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/lazysegtree(Snippet)": {
     "prefix": "at_lazysegtree",
     "body": [
       "#include <atcoder/lazysegtree>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/scc(Snippet)": {
     "prefix": "at_scc",
     "body": [
       "#include <atcoder/scc>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/math(Snippet)": {
     "prefix": "at_math",
     "body": [
       "#include <atcoder/math>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/string(Snippet)": {
     "prefix": "at_string",
     "body": [
       "#include <atcoder/string>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "atcoder/convolution(Snippet)": {
     "prefix": "at_conv",
     "body": [
       "#include<atcoder/convolution>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "Pascal(Snippet)": {
     "prefix": "pascal",
@@ -526,8 +526,8 @@
       "        }",
       "        return comb[n][r];",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "LazySegAffine(Snippet)": {
     "prefix": "affinesni",
@@ -548,8 +548,8 @@
       "F composition(F f, F g) {",
       "    return F(f.a*g.a, f.a*g.b+f.b);",
       "}",
-      "F id() {return F(1,0);}",
-    ],
+      "F id() {return F(1,0);}"
+    ]
   },
   "modpow(Snippet)": {
     "prefix": "modpow",
@@ -581,16 +581,16 @@
       "        b = (b >> 1);",
       "    }",
       "    return ans;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "DEBUG NOTION(Snippet)": {
     "prefix": "DDDDD",
     "body": [
       "// =============================================================",
       "//  DO NOT FORGET TO UNDO THE DEBUG CHANGES!!",
-      "// =============================================================",
-    ],
+      "// ============================================================="
+    ]
   },
   "Snippet(dij)": {
     "prefix": "dijsni",
@@ -598,8 +598,8 @@
       "for(auto [di,dj]: dij) {",
       "    ll ni = i + di, nj = j + dj;",
       "    if(!isin(ni,nj,$1,$2)) continue;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Kth-root)": {
     "prefix": "kth_root",
@@ -623,8 +623,8 @@
       "        else r = m;",
       "    }",
       "    return l;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(listup combinations)": {
     "prefix": "listup_combinations",
@@ -647,8 +647,8 @@
       "    vector<int> v={};",
       "    f(f, 0, v);",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(digit)": {
     "prefix": "digit",
@@ -674,8 +674,8 @@
       "        ret = ret*base + x;",
       "    }",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Run Length Encoding)": {
     "prefix": "run_length_encoding",
@@ -698,8 +698,8 @@
       "        last_num = x;",
       "    }",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(HeadK)": {
     "prefix": "headk",
@@ -749,8 +749,8 @@
       "        if(ascending) return sum;",
       "        else return -sum;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(split)": {
     "prefix": "split",
@@ -765,15 +765,15 @@
       "    }",
       "    if(now.size()) ret.push_back(now);",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(maxflow)": {
     "prefix": "at_flow",
     "body": [
       "#include <atcoder/maxflow>",
-      "using namespace atcoder;",
-    ],
+      "using namespace atcoder;"
+    ]
   },
   "Snippet(unique)": {
     "prefix": "unique",
@@ -781,8 +781,8 @@
       "template<typename T> void unique(vector<T> &v) {",
       "    sort(v.begin(), v.end());",
       "    v.erase(unique(v.begin(), v.end()), v.end());",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(pset[pbds])": {
     "prefix": "pset_pbds",
@@ -792,8 +792,8 @@
       "using namespace __gnu_pbds;",
       "template <class T>",
       "using pset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(Binary Search)": {
     "prefix": "binary_search",
@@ -817,8 +817,8 @@
       "        else ng = m;",
       "    }",
       "    return ok;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(vector)": {
     "prefix": "vector",
@@ -865,15 +865,15 @@
       "}",
       "ostream& operator<<(ostream& os, const Vec& v) {",
       "    os<<\"(\"<<v.x<<\",\"<<v.y<<\")\"; return os;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(gid)": {
     "prefix": "gid",
     "body": [
       "auto gid=[&](ll i, ll j) {return i*$1+j;};",
-      "auto rid=[&](ll id) -> Pr {return {id/$1, id%$1};};",
-    ],
+      "auto rid=[&](ll id) -> Pr {return {id/$1, id%$1};};"
+    ]
   },
   "Snippet(dprint)": {
     "prefix": "dprint",
@@ -884,8 +884,8 @@
       "    rep(i, N) fprintf(stderr, \" \");",
       "    cerr<<endl;",
       "#endif",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(segprint)": {
     "prefix": "segprint",
@@ -897,8 +897,8 @@
       "    rep(i, sz) fprintf(stderr, \"%lld \", seg.get(i));",
       "    cerr<<endl;",
       "#endif",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(tree dfs)": {
     "prefix": "treesni",
@@ -907,8 +907,8 @@
       "    for(auto nv: from[v]) if(nv!=p) {",
       "        f(f, nv, v);",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(lowbou)": {
     "prefix": "lowbou",
@@ -982,8 +982,8 @@
       "    }",
       "    if (l != -1) return make_pair(l, a[l]);",
       "    else return make_pair(-1, T());",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(ledendre_formula)": {
     "prefix": "legendre_formula",
@@ -997,8 +997,8 @@
       "        n /= x;",
       "    }",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(lessthan)": {
     "prefix": "lessthan",
@@ -1011,8 +1011,8 @@
       "    if(d<0) return false;",
       "    if(eq) return 4*x2*y2 <= d*d;",
       "    else return 4*x2*y2 < d*d;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(lucas)": {
     "prefix": "lucas",
@@ -1041,8 +1041,8 @@
       "        n /= m, r /= m;",
       "    }",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(get_line)": {
     "prefix": "line",
@@ -1057,8 +1057,8 @@
       "    if(a==0 && b<0) b=-b, c=-c;",
       "    if(a<0) a=-a, b=-b, c=-c;",
       "    return {a,b,c};",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(calmex)": {
     "prefix": "calmex",
@@ -1070,8 +1070,8 @@
       "    long long ret = 0;",
       "    while(ret<N && used[ret]) ++ret;",
       "    return ret;",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Excel String)": {
     "prefix": "excel",
@@ -1095,8 +1095,8 @@
       "        ret = ret*m + c-base + 1;",
       "    }",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Vector double)": {
     "prefix": "vectord",
@@ -1142,8 +1142,8 @@
       "}",
       "ostream& operator<<(ostream& os, const Vecd& v) {",
       "    os<<\"(\"<<v.x<<\",\"<<v.y<<\")\"; return os;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(que print)": {
     "prefix": "queprint",
@@ -1162,8 +1162,8 @@
       "        que.emplace(a, b);",
       "    }",
       "#endif",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(LIS length)": {
     "prefix": "lis",
@@ -1185,8 +1185,8 @@
       "    for(auto &x: b) x = -x;",
       "    long long ret = lis_length(b);",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(transpose)": {
     "prefix": "transpose",
@@ -1207,8 +1207,8 @@
       "        ret[j][i] = a[i][j];",
       "    }",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(dpush)": {
     "prefix": "dpush",
@@ -1216,8 +1216,8 @@
       "auto dpush=[&](ll a, ll b, ll c) {",
       "    from[a].emplace_back(b, c);",
       "    from[b].emplace_back(a, c);",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(WeightedUnionFind)": {
     "prefix": "unionfind",
@@ -1262,8 +1262,8 @@
       "        if(isinf(x)) return 3e18;  // infinite cycle",
       "        return diff[x] - diff[y];  // potential(y) - potential(x);",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(frompsni)": {
     "prefix": "frompsni",
@@ -1273,8 +1273,8 @@
       "    LONGM(a, b); LONG(c);",
       "    from[a].emplace_back(b, c);",
       "    from[b].emplace_back(a, c);",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Cumulated Sum)": {
     "prefix": "cumsum",
@@ -1298,8 +1298,8 @@
       "    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];",
       "    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Trie)": {
     "prefix": "trie",
@@ -1359,8 +1359,8 @@
       "        }",
       "        return ret;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Sieve)": {
     "prefix": "sieve",
@@ -1400,8 +1400,8 @@
       "    }",
       "    int mu(long long k) { return mobius[k]; }",
       "};",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(nCr for small r)": {
     "prefix": "ncr",
@@ -1424,8 +1424,8 @@
       "long long nHr (long long n, long long r, bool one=false) {",
       "    if(!one) return nCr(n+r-1, r);",
       "    else return nCr(r-1, n-1);",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Fraction)": {
     "prefix": "fraction",
@@ -1488,8 +1488,8 @@
       "    bool operator>=(const Frac &rhs) const { return p*rhs.q - q*rhs.p >= 0; }",
       "    bool operator==(const ll x) const { return (q==1 && p==x); }",
       "    bool operator==(const Frac &rhs) { return (p==rhs.p && q==rhs.q); }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Vectorll)": {
     "prefix": "vectorll",
@@ -1548,8 +1548,8 @@
       "        else return false;",
       "    }",
       "    return true;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Complex)": {
     "prefix": "complex",
@@ -1569,8 +1569,8 @@
       "    }",
       "    bool operator==(const Complex &o) const { return a==o.a && b==o.b; }",
       "    long long norm2() { return a*a + b*b; }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Merge Sort Tree)": {
     "prefix": "merge_sort_tree",
@@ -1630,8 +1630,8 @@
       "        long long ret = f(f, 0, n, 1);",
       "        return ret;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Date)": {
     "prefix": "date",
@@ -1672,8 +1672,8 @@
       "        if(d==lim) {++m, d=1; return;}",
       "        ++d;",
       "    };",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(is_prime)": {
     "prefix": "is_prime",
@@ -1685,8 +1685,8 @@
       "    }",
       "    return true;",
       "}",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(instring)": {
     "prefix": "instr_getline",
@@ -1696,8 +1696,8 @@
       "    getline(cin, ret);",
       "    if(ret.back()<=31 || ret.back()>=127) ret.pop_back();",
       "    return ret;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(ImplicitTreap)": {
     "prefix": "implicit_treap",
@@ -1858,8 +1858,8 @@
       "        dump(root);std::cerr<<std::endl;",
       "        #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(z_algorithm)": {
     "prefix": "z_algorithm",
@@ -1901,8 +1901,8 @@
       "    }",
       "    a[0] = n;  // substitute ovious value at last",
       "    return a;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Diameter)": {
     "prefix": "diameter",
@@ -1949,8 +1949,8 @@
       "        dfs(dfs, sv);",
       "        return dist;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(ReversibleVector)": {
     "prefix": "reversible_vector",
@@ -2071,8 +2071,8 @@
       "        merge(root, t1, t2);",
       "        return ret;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(OnlineMex)": {
     "prefix": "online_mex",
@@ -2097,8 +2097,8 @@
       "        assert(!rems.empty());",
       "        return *rems.begin();",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(XorBase)": {
     "prefix": "xor_base",
@@ -2167,8 +2167,8 @@
       "    //! ランクやピボット位置が同じでも基底が違えば作れる行列は異なる事に注意！",
       "    //! eg) [[1,1,0],[0,0,1]] != [[1,0,0],[0,0,1]]",
       "    //! 同じ行列が作れるかどうかは基底の完全一致と同値（operator==で判定）",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(CoordinateCompression)": {
     "prefix": "coordinate_compression",
@@ -2210,8 +2210,8 @@
       "        printf(\"\\\\n-----------------\\\\n\");",
       "        #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(count)": {
     "prefix": "count",
@@ -2231,8 +2231,8 @@
       "    for(auto &cs: s) ret += count(cs, t);",
       "    return ret;",
       "}",
-      "int count(vector<string> &s, char c) { return count(s, string(1,c)); }",
-    ],
+      "int count(vector<string> &s, char c) { return count(s, string(1,c)); }"
+    ]
   },
   "Snippet(mersenne_twister)": {
     "prefix": "mersenne",
@@ -2246,8 +2246,8 @@
       "    unordered_set<long long> st;",
       "    while(int(st.size())<n) st.insert(mersenne(mn,mx));",
       "    return vector<long long>(st.begin(), st.end());",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Rotate90)": {
     "prefix": "rot90",
@@ -2272,8 +2272,8 @@
       "    }",
       "    return ret;",
       "}",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(BIT_FenwickTree)": {
     "prefix": "fenwick_tree_bit",
@@ -2317,8 +2317,8 @@
       "        #endif",
       "    }",
       "};",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(mints)": {
     "prefix": "mints",
@@ -2407,8 +2407,8 @@
       "istream& operator>>(istream &is, mints &x) { long long a; cin>>a; x = a; return is; }",
       "ostream& operator<<(ostream& os, mints &x) { os<<x.data[0]; return os; }",
       "using vm = vector<mints>;",
-      "using vvm = vector<vector<mints>>;",
-    ],
+      "using vvm = vector<vector<mints>>;"
+    ]
   },
   "Snippet(subsequence)": {
     "prefix": "subsequence",
@@ -2432,8 +2432,8 @@
       "        if(s[si]==t[ti]) ++ti;",
       "    }",
       "    return ti;",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(Make_Next)": {
     "prefix": "make_next",
@@ -2463,8 +2463,8 @@
       "    int n = nxt.size();",
       "    if(i>=n) return n+1;",
       "    return nxt[i]+1;  // return next position",
-      "}",
-    ],
+      "}"
+    ]
   },
   "Snippet(RangeBIT)": {
     "prefix": "range_bit",
@@ -2503,8 +2503,8 @@
       "        cerr << endl;",
       "        #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(SpanBIT)": {
     "prefix": "span_bit",
@@ -2543,8 +2543,8 @@
       "        cerr<<endl;",
       "        #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Dijkstra)": {
     "prefix": "dijkstra",
@@ -2605,8 +2605,8 @@
       "        }",
       "        return ret;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(TryCombinations)": {
     "prefix": "try_combinations",
@@ -2620,8 +2620,8 @@
       "        long long x = comb&-comb, y = comb+x;",
       "        comb = ((~y&comb)/x>>1)|y;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Manacher)": {
     "prefix": "manacher",
@@ -2666,8 +2666,8 @@
       "        int l = (m-(p[m]-2)-1)/2, r = (m+(p[m]-2)-1)/2+1;",
       "        return {l,r};",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(LCA_Doubling)": {
     "prefix": "lca_doubling",
@@ -2722,8 +2722,8 @@
       "        int c = lca(a, b);",
       "        return dist[a]+dist[b]-2*dist[c];",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(RollingHash)": {
     "prefix": "rolling_hash",
@@ -2747,8 +2747,8 @@
       "        assert(l<=r);",
       "        return rh[r] - rh[l]*bpow[r-l];",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(SCC)": {
     "prefix": "scc",
@@ -2787,8 +2787,8 @@
       "        group.push_back(v);",
       "        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(MaxFlow)": {
     "prefix": "maxflow",
@@ -2847,8 +2847,8 @@
       "        }",
       "        return 0;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Birdge_Articulation": {
     "prefix": "bridge_articulation",
@@ -2892,8 +2892,8 @@
       "    }",
       "    vector<int> get_bridge() { start_calc(); return bridge;}",
       "    vector<int> get_articulation() { start_calc(); return artcl;}",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(LCA w/online cost change)": {
     "prefix": "lca2",
@@ -2983,8 +2983,8 @@
       "        return ret;",
       "    }",
       "};",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(CentroidDecomposition)": {
     "prefix": "centroid_decomposition",
@@ -3067,8 +3067,8 @@
       "",
       "        for(auto [nv,d]: from[c]) if(!cent[nv]) decomposition(nv);",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(HLD: Heavy Light Decomposition)": {
     "prefix": "hld",
@@ -3139,8 +3139,8 @@
       "    // get the index of the HLD sequence for each ei",
       "    // if ei==-1, then ei is a light edge (not on a path)",
       "    vector<int> get_eindex() { hld(); return eidx; }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(BinaryTrie)": {
     "prefix": "binary_trie",
@@ -3169,8 +3169,8 @@
       "        }",
       "    }",
       "};",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(DualSegTree)": {
     "prefix": "dual_segtree",
@@ -3214,8 +3214,8 @@
       "        cerr<<endl;",
       "    #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(Combination)": {
     "prefix": "combination",
@@ -3263,8 +3263,8 @@
       "        if (b % 2 == 0) return child * child % mod;",
       "        else return a * child % mod * child % mod;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(ConvexHullTrick)": {
     "prefix": "convex_hull_trick",
@@ -3313,8 +3313,8 @@
       "        }",
       "        return ret;",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(SegTree)": {
     "prefix": "segtree",
@@ -3417,8 +3417,8 @@
       "        #endif",
       "    }",
       "};",
-      "",
-    ],
+      ""
+    ]
   },
   "Snippet(Matrix)": {
     "prefix": "matrix",
@@ -3502,8 +3502,8 @@
       "        cerr << \"---------\" << '\\\\n';",
       "        #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(SparseTable)": {
     "prefix": "sparse_table",
@@ -3548,8 +3548,8 @@
       "        cerr<<endl;",
       "        #endif",
       "    }",
-      "};",
-    ],
+      "};"
+    ]
   },
   "Snippet(CartesianTree)": {
     "prefix": "cartesian-tree",
@@ -3574,7 +3574,7 @@
       "\t\t}",
       "\t\troot = mx.second;",
       "\t}",
-      "};",
-    ],
-  },
+      "};"
+    ]
+  }
 }

@@ -1,6 +1,6 @@
 // ### test.cpp ###
-#include <algorithm>
 #include <bits/stdc++.h>
+#include <cstdlib>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,65 +229,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+
 void solve() {
-    LONG(N);
-    VLM(A, N);
-
-    ll M = 4;
-    vvl edge(M, vl(M));
-    vl B = A;
-    sort(all(B));
-    rep(i, N) {
-        edge[A[i]][B[i]]++;
-    }
-    de(edge)
-    ll ans = 0;
+    LONG(N, M);
+    vvl from(N);
     rep(i, M) {
-        edge[i][i] = 0;
+        LONGM(a, b);
+        from[a].push_back(b);
     }
-    de(edge)
-    rep(i, M) rep(j, i) {
-        ll mn = min(edge[i][j], edge[j][i]);
-        ans += mn;
-        edge[i][j] -= mn;
-        edge[j][i] -= mn;
-    }
-    de(edge)
 
-    auto judge=[&](vl &p) -> bool {
-        auto get=[&](ll i, ll j) -> ll {
-            return edge[p[i]][p[j]];
-        };
-        if(get(0, 2)>0) return false;
-        if(get(0, 3)>0) return false;
-        if(get(1, 0)>0) return false;
-        if(get(1, 3)>0) return false;
-        if(get(2, 1)>0) return false;
-        if(get(3, 2)>0) return false;
-        return true;
+    vl mx(N, INF);
+    pq que;
+    auto push=[&](ll v, ll d) {
+        if(mx[v]<=d) return;
+        mx[v] = d;
+        que.emplace(d, v);
     };
+    push(0, 0);
 
-    de(ans)
-    vl p(M);
-    iota(all(p), 0);
-    ll add = INF;
-    do {
-        if(!judge(p)) continue;
-        vvl e = edge;
-        // auto add=[&](ll i, ll j, ll x) {
-        //     e[p[i]][p[j]] += x;
-        // };
-        ll now = 0;
-        now += 2*e[p[2]][p[0]];
-        now += 2*e[p[3]][p[1]];
-        now += 3*e[p[3]][p[0]];
-        // de(p)de(now)
-        chmin(add, now);
-    } while(next_permutation(all(p)));
+    while(que.size()) {
+        auto [d, v] = que.top(); que.pop();
+        if(mx[v]!=d) continue;
+        for(auto nv: from[v]) {
+            push(nv, max(d, nv));
+        }
+    }
 
-    Out(ans+add);
+    set<ll> st;
+    ll cmx = 0;
+    vl stck;
+    rep(i, N) {
+        chmax(cmx, mx[i]);
+        stck.push_back(i);
+        if(cmx>i) {
+            Out(-1); continue;
+        }
 
+        for(auto v: stck) {
+            for(auto nv: from[v]) {
+                if(nv>=i) st.insert(nv);
+            }
+        }
+        stck = vl();
 
+        auto it = st.begin();
+        while(it!=st.end()) {
+            if(*it>i) break;
+            it = st.erase(it);
+        }
+        Out(st.size());
+    }
 
 }
 
