@@ -1,6 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <cstdlib>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,63 +228,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
 void solve() {
-    LONG(N, M);
+    LONG(N);
     vvl from(N);
-    rep(i, M) {
+    rep(i, N-1) {
         LONGM(a, b);
-        from[a].push_back(b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
 
-    vl mx(N, INF);
-    pq que;
-    auto push=[&](ll v, ll d) {
-        if(mx[v]<=d) return;
-        mx[v] = d;
-        que.emplace(d, v);
-    };
-    push(0, 0);
-
-    while(que.size()) {
-        auto [d, v] = que.top(); que.pop();
-        if(mx[v]!=d) continue;
-        for(auto nv: from[v]) {
-            push(nv, max(d, nv));
-        }
-    }
-
-    set<ll> st;
-    ll cmx = 0;
-    vl stck;
-    rep(i, N) {
-        chmax(cmx, mx[i]);
-        stck.push_back(i);
-        if(cmx>i) {
-            Out(-1); continue;
-        }
-
-        for(auto v: stck) {
-            for(auto nv: from[v]) {
-                if(nv>=i) st.insert(nv);
+    ll ans = 1;
+    auto dfs=[&](auto f, ll v, ll p=-1) -> Pr {
+        ll dp1 = 0, dp2 = 0;
+        ll c = from[v].size();
+        if(p!=-1) --c;
+        if(c>=2) chmax(dp2, 1LL);
+        if(c>=1) chmax(dp1, 1LL);
+        vl dp2s;
+        for(auto nv: from[v]) if(nv!=p) {
+            auto [pdp1, pdp2] = f(f, nv, v);
+            dp2s.push_back(pdp2);
+            chmax(ans, pdp1);
+            if(pdp2!=0) {
+                if(c>=3) chmax(dp2, pdp2+1);
+                if(c>=2) chmax(dp1, pdp2+1);
             }
         }
-        stck = vl();
-
-        auto it = st.begin();
-        while(it!=st.end()) {
-            if(*it>i) break;
-            it = st.erase(it);
+        sort(allr(dp2s));
+        if(c>=3 && dp2s[0]>0 && dp2s[1]>0) {
+            chmax(dp1, dp2s[0]+dp2s[1]+1);
         }
-        Out(st.size());
-    }
+        if(c>=4 && dp2s[0]>0 && dp2s[1]>0) {
+            chmax(ans, dp2s[0]+dp2s[1]+1);
+        }
+        chmax(ans, dp2);
+        de3(v, dp1, dp2)
+        return {dp1, dp2};
+    };
+    dfs(dfs, 0);
+    Out(ans);
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

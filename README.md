@@ -2303,7 +2303,7 @@
 - [C - ~](https://atcoder.jp/contests/abc406/tasks/abc406_c)
 - [D - Domino Covering XOR](https://atcoder.jp/contests/abc407/tasks/abc407_d)
 - [D - Conflict 2](https://atcoder.jp/contests/abc411/tasks/abc411_d)
-- [E - E [max]](https://atcoder.jp/contests/abc411/tasks/abc411_e)
+- [E - E max](https://atcoder.jp/contests/abc411/tasks/abc411_e)
 - [C - Giant Domino](https://atcoder.jp/contests/abc412/tasks/abc412_c)
 - [E - LCM Sequence](https://atcoder.jp/contests/abc412/tasks/abc412_e)
 - [D - Make Geometric Sequence](https://atcoder.jp/contests/abc413/tasks/abc413_d)
@@ -2332,3 +2332,6 @@
 - [D - Suddenly, A Tempest](https://atcoder.jp/contests/abc432/tasks/abc432_d)
 - [E - Many LCMs](https://atcoder.jp/contests/abc445/tasks/abc445_e)
 - [F - Exactly K Steps 2](https://atcoder.jp/contests/abc445/tasks/abc445_f)
+- [E - Divide Graph](https://atcoder.jp/contests/abc447/tasks/abc447_e)
+- [F - Centipede Graph](https://atcoder.jp/contests/abc447/tasks/abc447_f)
+
