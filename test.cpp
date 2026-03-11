@@ -176,8 +176,7 @@ template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
-template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;}
-template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
+template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;} template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
@@ -230,43 +229,26 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONGM(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
+    vl X(N), Y(N);
+    rep(i, N) cin>>X[i]>>Y[i];
+    ll ymx = *max_element(all(Y));
+    ll h = ll(ymx/sqrt(N));
+    chmax(h, 1LL);
 
-    ll ans = 1;
-    auto dfs=[&](auto f, ll v, ll p=-1) -> Pr {
-        ll dp1 = 0, dp2 = 0;
-        ll c = from[v].size();
-        if(p!=-1) --c;
-        if(c>=2) chmax(dp2, 1LL);
-        if(c>=1) chmax(dp1, 1LL);
-        vl dp2s;
-        for(auto nv: from[v]) if(nv!=p) {
-            auto [pdp1, pdp2] = f(f, nv, v);
-            dp2s.push_back(pdp2);
-            chmax(ans, pdp1);
-            if(pdp2!=0) {
-                if(c>=3) chmax(dp2, pdp2+1);
-                if(c>=2) chmax(dp1, pdp2+1);
-            }
-        }
-        sort(allr(dp2s));
-        if(c>=3 && dp2s[0]>0 && dp2s[1]>0) {
-            chmax(dp1, dp2s[0]+dp2s[1]+1);
-        }
-        if(c>=4 && dp2s[0]>0 && dp2s[1]>0) {
-            chmax(ans, dp2s[0]+dp2s[1]+1);
-        }
-        chmax(ans, dp2);
-        de3(v, dp1, dp2)
-        return {dp1, dp2};
-    };
-    dfs(dfs, 0);
-    Out(ans);
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = Y[i]/h, hj = Y[j]/h;
+        if(hi!=hj) return hi<hj;
+        if (hi&1) return X[i]>X[j];
+        else return X[i]<X[j];
+    });
+    cout<<1<<' ';
+    for(auto i: p) {
+        if(i==0) continue;
+        cout<<i+1<<' ';
+    }
+    cout<<endl;
 
 
 }
@@ -274,8 +256,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

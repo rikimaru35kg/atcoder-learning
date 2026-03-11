@@ -228,52 +228,9 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -285,38 +242,38 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
+
 void solve() {
-    LONG(N, M);
-    vp edge;
-    rep(i, M) {
-        LONGM(a, b);
-        edge.emplace_back(a, b);
+    LONG(K, M);
+    vl C(K), L(K);
+    rep(i, K) {
+        cin>>C[i]>>L[i];
     }
 
-    ll status = 0;
-    ll nc = N;
-    mint ans = 0;
-    WeightedUnionFind uf(N);
-    repr(i, M) {
-        auto [a,b] = edge[i];
-        if(status==0) {
-            if(nc>2) {
-                if(!uf.same(a,b)) {
-                    nc--;
-                    uf.merge(a,b);
-                }
-            } else {
-                if(!uf.same(a,b)) {
-                    ans += mint(2).pow(i+1);
-                    status = 1;
-                }
-            }
-        } else {
-            if(!uf.same(a,b)) {
-                ans += mint(2).pow(i+1);
-            }
+    auto get_rem=[&](ll mod) -> ll {
+        mint::set_mod(mod);
+        mint ret;
+        auto calc=[&](auto f, ll k) -> mint {
+            if(k==0) return 0;
+            mint ret = f(f, k/2);
+            ret = ret*(mint(10).pow(k/2)) + ret;
+            if(k&1) ret = ret*10 + 1;
+            return ret;
+        };
+        rep(i, K) {
+            ll c = C[i], l = L[i];
+            mint now = calc(calc, l) * c;
+            de4(mod, c, l, calc(calc, l).val())
+            ret = ret*(mint(10).pow(l)) + now;
         }
-    }
+        return ret.val();
+    };
+
+    ll mrem = get_rem(M);
+    de(mrem)
+    mint::set_mod(10007);
+    mint ans = get_rem(10007) - mrem;
+    ans /= M;
     Out(ans);
 
 }
