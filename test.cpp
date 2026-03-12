@@ -242,42 +242,74 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+}comb(1e6+10, M998);
 
 void solve() {
-    LONG(N);--N;
-    vl ds = listup_divisor(N, true);
-    vl ps;
-    {
-        ll n = N;
-        for(ll p=2; p*p<=n; ++p) {
-            if(n%p) continue;
-            ps.push_back(p);
-            while(n%p==0) n /= p;
-        }
-        if (n!=1) ps.push_back(n);
-    }
-    umap<ll,mint> cnt;
-    for(auto d: ds) cnt[d] = N/d;
+    STRING(S);
+    ll N = S.size();
+    ll M = 10;
+    vl whole(M);
+    rep(i, N) whole[S[i]-'0']++;
 
-    for(auto p: ps) {
-        for(auto d: ds) {
-            if(!cnt.count(d*p)) continue;
-            cnt[d] -= cnt[d*p];
-        }
+    vl cnt(M);
+
+    auto calc=[&](ll a, ll b) -> mint {
+        mint ret = comb(a+b, b-1);
+        return ret;
+    };
+
+    mint ans;
+    rep(i, N-1) {
+        ll s = S[i]-'0';
+        cnt[s]++;
+        if (s==9) continue;
+        mint now = calc(cnt[s]-1, whole[s+1]-cnt[s+1]);
+        de4(s, cnt[s], whole[s+1]-cnt[s+1], now.val())
+        ans += now;
     }
-    mint ans = 1;
-    for(auto [g,n]: cnt) ans += n*N/g;
     Out(ans);
 
 }
