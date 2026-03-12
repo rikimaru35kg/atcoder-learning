@@ -176,8 +176,7 @@ template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
-template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;}
-template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
+template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;} template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T> inline void debug_view(tuple<T,T,T> t){cerr<<get<0>(t)<<' '<<get<1>(t)<<' '<<get<2>(t)<< endl;}
@@ -228,53 +227,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-
 void solve() {
-    LONG(K, M);
-    vl C(K), L(K);
-    rep(i, K) {
-        cin>>C[i]>>L[i];
+    LONG(N);
+    vl X(N), Y(N);
+    rep(i, N) cin>>X[i]>>Y[i];
+    ll ymx = *max_element(all(Y));
+    ll h = ll(ymx/sqrt(N));
+    chmax(h, 1LL);
+
+    vl p(N);
+    iota(all(p), 0);
+    sort(all(p), [&](ll i, ll j){
+        ll hi = Y[i]/h, hj = Y[j]/h;
+        if(hi!=hj) return hi<hj;
+        if (hi&1) return X[i]>X[j];
+        else return X[i]<X[j];
+    });
+    cout<<1<<' ';
+    for(auto i: p) {
+        if(i==0) continue;
+        cout<<i+1<<' ';
     }
+    cout<<endl;
 
-    auto get_rem=[&](ll mod) -> ll {
-        mint::set_mod(mod);
-        mint ret;
-        auto calc=[&](auto f, ll k) -> mint {
-            if(k==0) return 0;
-            mint ret = f(f, k/2);
-            ret = ret*(mint(10).pow(k/2)) + ret;
-            if(k&1) ret = ret*10 + 1;
-            return ret;
-        };
-        rep(i, K) {
-            ll c = C[i], l = L[i];
-            mint now = calc(calc, l) * c;
-            de4(mod, c, l, calc(calc, l).val())
-            ret = ret*(mint(10).pow(l)) + now;
-        }
-        return ret.val();
-    };
-
-    ll mrem = get_rem(M);
-    de(mrem)
-    mint::set_mod(10007);
-    mint ans = get_rem(10007) - mrem;
-    ans /= M;
-    Out(ans);
 
 }
 

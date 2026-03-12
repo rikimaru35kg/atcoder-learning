@@ -1426,8 +1426,7 @@
 - 原始根のグラフを考えた場合、1ずつ進む
 - 非原始根の場合、kステップずつ進む事に相当（k=1~N）
 ### 例題
-!!! where i am now for rank S (last submission 2026/1/24)
-- !要復習 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
+- !復習価値低 [G - Power Pair](https://atcoder.jp/contests/abc212/tasks/abc212_g)
 
 ## 平方数
 - 素因数分解したときの指数がすべて偶数なら平方数
@@ -1483,6 +1482,7 @@
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
 - !復習価値中 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
+!!! where i am now for rank S (last submission 2025/11/26)
 - !要復習 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
 
 ## Lucasの定理
