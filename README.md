@@ -2222,6 +2222,7 @@
 - [D - Pawn Line](https://atcoder.jp/contests/abc443/tasks/abc443_d)
 - [E - Climbing Silver](https://atcoder.jp/contests/abc443/tasks/abc443_e)
 - [F - Non-Increasing Number](https://atcoder.jp/contests/abc443/tasks/abc443_f)
+- [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)

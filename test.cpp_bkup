@@ -228,56 +228,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 void solve() {
-    LONG(N);--N;
-    vl ds = listup_divisor(N, true);
-    vl ps;
-    {
-        ll n = N;
-        for(ll p=2; p*p<=n; ++p) {
-            if(n%p) continue;
-            ps.push_back(p);
-            while(n%p==0) n /= p;
-        }
-        if (n!=1) ps.push_back(n);
-    }
-    umap<ll,mint> cnt;
-    for(auto d: ds) cnt[d] = N/d;
+    LONG(L,R,D,U);
+    ll M = max({abs(L),abs(R),abs(U),abs(D)});
 
-    for(auto p: ps) {
-        for(auto d: ds) {
-            if(!cnt.count(d*p)) continue;
-            cnt[d] -= cnt[d*p];
+    auto isin=[&](ll x, ll y) -> ll {
+        if(L<=x && x<=R && D<=y && y<=U) return 1;
+        else return 0;
+    };
+
+    auto calc=[&](ll k) -> ll {
+        ll ret = 0;
+        // left line
+        if(L<=-k && -k<=R) {
+            ll mn = max(D, -k);
+            ll mx = min(U, k);
+            // de2(mn,mx)
+            ret += max(mx-mn+1, 0LL);
         }
+        // de2(k, ret)
+        // right line
+        if(L<=k && k<=R) {
+            ll mn = max(D, -k);
+            ll mx = min(U, k);
+            ret += max(mx-mn+1, 0LL);
+        }
+        // de2(k, ret)
+        // bottom line
+        if(D<=-k && -k<=U) {
+            ll mn = max(L, -k);
+            ll mx = min(R, k);
+            ret += max(mx-mn+1, 0LL);
+        }
+        // de2(k, ret)
+        // upper line
+        if(D<=k && k<=U) {
+            ll mn = max(L, -k);
+            ll mx = min(R, k);
+            ret += max(mx-mn+1, 0LL);
+        }
+        // de2(k, ret)
+        ret -= isin(-k, -k);
+        ret -= isin(k, -k);
+        ret -= isin(-k, k);
+        ret -= isin(k, k);
+        // de2(k, ret)
+        return ret;
+    };
+
+    ll ans = 0;
+    ans += isin(0,0);
+    for(ll k=2; k<=M; k+=2) {
+        ll now = calc(k);
+        ans += now;
     }
-    mint ans = 1;
-    for(auto [g,n]: cnt) ans += n*N/g;
     Out(ans);
 
 }
