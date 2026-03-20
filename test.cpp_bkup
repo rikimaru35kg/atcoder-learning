@@ -229,44 +229,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, C); --C;
-    VS(S, N);
-    vl btm(N, -1);
-    rep(j, N) {
-        rep(i, N) if(S[i][j]=='#') {
-            chmax(btm[j], i);
-        }
-    }
+    LONG(N);
 
-    auto drill=[&](ll i, ll j) -> void {
-        rep(k, i+1) S[k][j] = '.';
+    vvb visited(N, vb(10));
+    queue<Pr> que;
+    vvp pre(N, vp(10, {-1,-1}));
+    auto push=[&](ll r, ll x, ll pr, ll px) {
+        r %= N;
+        if(visited[r][x]) return;
+        visited[r][x] = true;
+        que.emplace(r, x);
+        pre[r][x] = {pr,px};
     };
-    vb dp(N);
-    dp[C] = true;
-    repr(i, N-1) {
-        vb pdp(N); swap(pdp, dp);
-        rep(j, N) {
-            if(!pdp[j]) continue;
-            for(ll a=-1; a<=1; ++a) {
-                if(j+a<0 || j+a>=N) continue;
-                if(S[i][j+a]=='.') dp[j+a] = true;
-                else if(i==btm[j+a]) {
-                    dp[j+a] = true;
-                    drill(i, j+a);
-                }
+    for(ll x=1; x<=9; ++x) push(x, x, -1, -1);
+    while(que.size()) {
+        auto [r,x] = que.front(); que.pop();
+        if(r==0) {
+            string ans;
+            while(true) {
+                ans += '0'+x;
+                if(pre[r][x].first == -1) break;
+                auto [pr, px] = pre[r][x];
+                r = pr, x = px;
             }
+            reverse(all(ans));
+            Outend(ans);
+        }
+        for(ll nx=x; nx<=9; ++nx) {
+            push(r*10+nx, nx, r, x);
         }
     }
-    rep(j, N) cout << (dp[j]?'1':'0');
-    cout<<endl;
+    Out(-1);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
