@@ -841,7 +841,6 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
-!!! where i am now for rank S (last submission 2025/12/25)
 - !要復習 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
@@ -2030,6 +2029,7 @@
 
 ## 分割統治
 ### 例題
+!!! where i am now for rank S (last submission 2026/3/20)
 - !要復習 [F - Must Buy](https://atcoder.jp/contests/abc441/tasks/abc441_f)
 
 ## オイラー路
