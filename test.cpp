@@ -227,94 +227,52 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+#include<atcoder/convolution>
 
 void solve() {
     LONG(N, M);
-    VLM(A, N);
-    LONG(Q);
-    VLM(X, Q);
-    vp querys;
-    rep(i, Q) {
-        querys.emplace_back(X[i], i);
-    }
-    sort(allr(querys));
-    vl ans(Q, -1);
-    while(querys.size() && querys.back().first<N) {
-        auto [x,qi] = querys.back(); querys.pop_back();
-        ans[qi] = A[x];
-    }
-    vl cnt(M);
-    rep(i, N) cnt[A[i]]++;
-    vp hist;
-    rep(i, M) hist.emplace_back(cnt[i], i);
-    sort(all(hist));
+    VL(A, N);
+    VL(B, M);
+    ll K = 5e5+10;
+    vl cnta(K), cntb(K);
+    rep(i, N) cnta[A[i]]++;
+    rep(i, M) cntb[B[i]]++;
 
-    BIT<ll> bit(M);
+    vm fact(K, 1), ifact(K, 1);
+    for(ll x=1; x<K; ++x) {
+        fact[x] = fact[x-1]*x;
+    }
+    ifact[K-1] = 1/fact[K-1];
+    for(ll x=K-2; x>=1; --x) {
+        ifact[x] = ifact[x+1] * (x+1);
+    }
 
-    ll l = N;
-    rep(i, M-1) {
-        auto [n1, v1] = hist[i];
-        auto [n2, v2] = hist[i+1];
-        bit.add(v1, 1);
-        ll num = bit.sum(0, M);
-        ll r = l+num*(n2-n1);
-        while(querys.size() && querys.back().first<r) {
-            auto [x,qi] = querys.back(); querys.pop_back();
-            x -= l;
-            ll k = x%num;
-            ll v = bit.lower_bound(k+1);
-            ans[qi] = v;
-        }
-        l = r;
+    vm b(K), c(K);
+    rep(i, K) {
+        b[i] = ifact[i] * cntb[i];
+        c[i] = ifact[i];
     }
-    while(querys.size()) {
-        auto [x,qi] = querys.back(); querys.pop_back();
-        x -= l;
-        ll k = x%M;
-        ans[qi] = k;
+    vm v = convolution(b, c);
+
+    mint ans;
+    for(ll a=1; a<K; ++a) {
+        ans += fact[a]*cnta[a]*v[a];
     }
-    rep(i, Q) Out(ans[i]+1);
+    Out(ans);
+
 }
 
 int main () {

@@ -1535,8 +1535,7 @@
 - !復習価値低 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
-!!! where i am now for rank S (last submission 2025/12/3)
-- !要復習 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
+- !復習価値低 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
@@ -2015,7 +2014,7 @@
 - 基本 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値低 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
-- !要復習 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
+- !復習価値低 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
 
 ## 凸包・Convex Hull Trick
 - 凸な多角形を作る事で上手くいく問題
@@ -2030,6 +2029,7 @@
 
 ## 分割統治
 ### 例題
+!!! where i am now for rank S (last submission 2026/1/21)
 - !要復習 [F - Must Buy](https://atcoder.jp/contests/abc441/tasks/abc441_f)
 
 ## オイラー路

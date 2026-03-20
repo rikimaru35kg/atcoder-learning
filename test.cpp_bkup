@@ -228,62 +228,93 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(L,R,D,U);
-    ll M = max({abs(L),abs(R),abs(U),abs(D)});
-
-    auto isin=[&](ll x, ll y) -> ll {
-        if(L<=x && x<=R && D<=y && y<=U) return 1;
-        else return 0;
-    };
-
-    auto calc=[&](ll k) -> ll {
-        ll ret = 0;
-        // left line
-        if(L<=-k && -k<=R) {
-            ll mn = max(D, -k);
-            ll mx = min(U, k);
-            // de2(mn,mx)
-            ret += max(mx-mn+1, 0LL);
-        }
-        // de2(k, ret)
-        // right line
-        if(L<=k && k<=R) {
-            ll mn = max(D, -k);
-            ll mx = min(U, k);
-            ret += max(mx-mn+1, 0LL);
-        }
-        // de2(k, ret)
-        // bottom line
-        if(D<=-k && -k<=U) {
-            ll mn = max(L, -k);
-            ll mx = min(R, k);
-            ret += max(mx-mn+1, 0LL);
-        }
-        // de2(k, ret)
-        // upper line
-        if(D<=k && k<=U) {
-            ll mn = max(L, -k);
-            ll mx = min(R, k);
-            ret += max(mx-mn+1, 0LL);
-        }
-        // de2(k, ret)
-        ret -= isin(-k, -k);
-        ret -= isin(k, -k);
-        ret -= isin(-k, k);
-        ret -= isin(k, k);
-        // de2(k, ret)
-        return ret;
-    };
-
-    ll ans = 0;
-    ans += isin(0,0);
-    for(ll k=2; k<=M; k+=2) {
-        ll now = calc(k);
-        ans += now;
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    Out(ans);
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
 
+
+void solve() {
+    LONG(N, M);
+    VLM(A, N);
+    LONG(Q);
+    VLM(X, Q);
+    vp querys;
+    rep(i, Q) {
+        querys.emplace_back(X[i], i);
+    }
+    sort(allr(querys));
+    vl ans(Q, -1);
+    while(querys.size() && querys.back().first<N) {
+        auto [x,qi] = querys.back(); querys.pop_back();
+        ans[qi] = A[x];
+    }
+    vl cnt(M);
+    rep(i, N) cnt[A[i]]++;
+    vp hist;
+    rep(i, M) hist.emplace_back(cnt[i], i);
+    sort(all(hist));
+
+    BIT<ll> bit(M);
+
+    ll l = N;
+    rep(i, M-1) {
+        auto [n1, v1] = hist[i];
+        auto [n2, v2] = hist[i+1];
+        bit.add(v1, 1);
+        ll num = bit.sum(0, M);
+        ll r = l+num*(n2-n1);
+        while(querys.size() && querys.back().first<r) {
+            auto [x,qi] = querys.back(); querys.pop_back();
+            x -= l;
+            ll k = x%num;
+            ll v = bit.lower_bound(k+1);
+            ans[qi] = v;
+        }
+        l = r;
+    }
+    while(querys.size()) {
+        auto [x,qi] = querys.back(); querys.pop_back();
+        x -= l;
+        ll k = x%M;
+        ans[qi] = k;
+    }
+    rep(i, Q) Out(ans[i]+1);
 }
 
 int main () {

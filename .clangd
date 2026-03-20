@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+   - -I/home/ryo/lib/ac-library
+   - -D_GLIBCXX_DEBUG
+   - -std=gnu++2b
+
