@@ -228,29 +228,103 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    ll M = 2e6;
-    vl cnt(M), ccnt(M);
-    rep(i, N) cnt[A[i]]++;
-    vb ok(M);
-    rep1(i, M-1) {
-        for(ll j=i; j<M; j+=i) {
-            ccnt[i] += cnt[j];
-        }
-        if(ccnt[i]>=K) ok[i] = true;
-    }
-    vl d(M);
-    rep1(i, M-1) {
-        if(!ok[i]) continue;
-        for(ll j=i; j<M; j+=i) {
-            d[j] = i;
-        }
-    }
+    STRING(S);
+    ll N = S.size();
+    LONG(K);
+    vl ps;
     rep(i, N) {
-        Out(d[A[i]]);
+        if(S[i]=='Y') ps.push_back((i-ps.size()));
     }
+    if(ps.empty()) Outend(0);
+    ll P = ps.size();
+
+    auto f=[&](ll x) -> bool {
+        BIT<ll> bit(N), cnt(N);
+        deque<ll> que;
+        ll m = x/2;
+        rep(i, P) {
+            que.push_back(ps[i]);
+            bit.add(ps[i], ps[i]);
+            cnt.add(ps[i], 1);
+            while(SIZE(que)>x) {
+                ll pp = que.front(); que.pop_front();
+                bit.add(pp, -pp);
+                cnt.add(pp, -1);
+            }
+            if(SIZE(que)<x) continue;
+
+            ll cp = que[m];
+            ll dist = bit.sum(cp, N) - cnt.sum(cp, N)*cp;
+            dist += cnt.sum(0, cp)*cp - bit.sum(0, cp);
+            if(dist<=K) return true;
+        }
+        return false;
+    };
+
+    ll ans = binary_search(0, N+1, f);
+    Out(ans);
 }
 
 int main () {

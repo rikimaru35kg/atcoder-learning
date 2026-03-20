@@ -229,59 +229,28 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vl sz(N);
-    vl par(N, -1);
-    auto dfs=[&](auto f, ll v, ll p=-1) -> void {
-        sz[v] = 1;
-        par[v] = p;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, v);
-            sz[v] += sz[nv];
+    LONG(N, K);
+    VL(A, N);
+    ll M = 2e6;
+    vl cnt(M), ccnt(M);
+    rep(i, N) cnt[A[i]]++;
+    vb ok(M);
+    rep1(i, M-1) {
+        for(ll j=i; j<M; j+=i) {
+            ccnt[i] += cnt[j];
         }
-    };
-    dfs(dfs, 0);
-
-    auto update_sz0=[&]() {
-        ll v = 1;
-        while(par[v]!=0) v = par[v];
-        sz[0] -= sz[v];
-    };
-    update_sz0();
-
-    auto choose=[&](ll n) {return n*(n+1)/2;};
-
-    ll ans = choose(N);
-    for(auto v: from[0]) {
-        ans -= choose(sz[v]);
+        if(ccnt[i]>=K) ok[i] = true;
     }
-    vb onp(N);
-    onp[0] = true;
-    ll l = 0, r = 0;
-    repk(v, 1, N) {
-        ll x = v;
-        if(onp[x]) {
-            ans += sz[l] * sz[r];
-            continue;
+    vl d(M);
+    rep1(i, M-1) {
+        if(!ok[i]) continue;
+        for(ll j=i; j<M; j+=i) {
+            d[j] = i;
         }
-        while(!onp[x]) {
-            onp[x] = true;
-            x = par[x];
-        }
-        if(x!=l && x!=r) break;
-        if(x==l) { l = v; }
-        else r = v;
-        ans += sz[l] * sz[r];
-        de2(l,r)
     }
-    Out(ans);
-
+    rep(i, N) {
+        Out(d[A[i]]);
+    }
 }
 
 int main () {
