@@ -2000,8 +2000,7 @@
 - 基本 [D - 浮気予防](https://atcoder.jp/contests/abc010/tasks/abc010_4)
 - 基本 [B69 - Black Company 2](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ep)
 - 基本 [040 - Get More Money（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_an)
-!!! where i am now for rank B (last submission 2025/12/5)
-- !復習価値中 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
+- !復習価値低 [077 - Planes on a 2D Plane（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_by)
 - !復習価値低 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
@@ -2013,6 +2012,7 @@
 - 基本 [F - Convolution](https://atcoder.jp/contests/practice2/tasks/practice2_f)
 - 基本 [G - Balls and Boxes](https://atcoder.jp/contests/abc422/tasks/abc422_g)
 - !復習価値低 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
+!!! where i am now for rank B (last submission 2025/12/5)
 - !復習価値中 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 - !復習価値低 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
 
