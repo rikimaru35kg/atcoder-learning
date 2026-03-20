@@ -229,13 +229,44 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
+    LONG(N, C); --C;
+    VS(S, N);
+    vl btm(N, -1);
+    rep(j, N) {
+        rep(i, N) if(S[i][j]=='#') {
+            chmax(btm[j], i);
+        }
+    }
+
+    auto drill=[&](ll i, ll j) -> void {
+        rep(k, i+1) S[k][j] = '.';
+    };
+    vb dp(N);
+    dp[C] = true;
+    repr(i, N-1) {
+        vb pdp(N); swap(pdp, dp);
+        rep(j, N) {
+            if(!pdp[j]) continue;
+            for(ll a=-1; a<=1; ++a) {
+                if(j+a<0 || j+a>=N) continue;
+                if(S[i][j+a]=='.') dp[j+a] = true;
+                else if(i==btm[j+a]) {
+                    dp[j+a] = true;
+                    drill(i, j+a);
+                }
+            }
+        }
+    }
+    rep(j, N) cout << (dp[j]?'1':'0');
+    cout<<endl;
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

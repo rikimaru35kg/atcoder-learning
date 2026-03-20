@@ -2218,10 +2218,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2025/2/4)
-- [D - Pawn Line](https://atcoder.jp/contests/abc443/tasks/abc443_d)
-- [E - Climbing Silver](https://atcoder.jp/contests/abc443/tasks/abc443_e)
-- [F - Non-Increasing Number](https://atcoder.jp/contests/abc443/tasks/abc443_f)
+!!! where i am now for rank D (last submission 2026/3/19)
 - [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
 
 ## ACできたがグダった問題
@@ -2336,4 +2333,5 @@
 - [E - Divide Graph](https://atcoder.jp/contests/abc447/tasks/abc447_e)
 - [F - Centipede Graph](https://atcoder.jp/contests/abc447/tasks/abc447_f)
 - [E - Simple Division](https://atcoder.jp/contests/abc448/tasks/abc448_e)
+- [F - Non-Increasing Number](https://atcoder.jp/contests/abc443/tasks/abc443_f)
 

@@ -229,38 +229,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VL2(A, B, M);
-    ll K = 300;
-    vl b(K+1);
-    rep(i, M) {
-        chmax(b[A[i]], B[i]);
-    }
-    auto better=[&](ll i, ll j) -> ll {
-        if (b[i]*(j-b[j]) >= b[j]*(i-b[i])) return i;
-        else return j;
+    LONG(N);
+
+    vvb visited(N, vb(10));
+    queue<Pr> que;
+    vvp pre(N, vp(10, {-1,-1}));
+    auto push=[&](ll r, ll x, ll pr, ll px) {
+        r %= N;
+        if(visited[r][x]) return;
+        visited[r][x] = true;
+        que.emplace(r, x);
+        pre[r][x] = {pr,px};
     };
-    ll ba = 1;
-    rep1(i, K) {
-        ba = better(ba, i);
-    }
-    ll L = 1e5;
-    vl dp(L+1);
-    for(ll i=1; i<=L; ++i) {
-        rep1(a, K) {
-            if(a>i) break;
-            chmax(dp[i], dp[i-(a-b[a])]+b[a]);
+    for(ll x=1; x<=9; ++x) push(x, x, -1, -1);
+    while(que.size()) {
+        auto [r,x] = que.front(); que.pop();
+        if(r==0) {
+            string ans;
+            while(true) {
+                ans += '0'+x;
+                if(pre[r][x].first == -1) break;
+                auto [pr, px] = pre[r][x];
+                r = pr, x = px;
+            }
+            reverse(all(ans));
+            Outend(ans);
+        }
+        for(ll nx=x; nx<=9; ++nx) {
+            push(r*10+nx, nx, r, x);
         }
     }
-    // rep(i, N+1) {
-    //     de2(i, dp[i]);
-    // }
-    ll x = Divceil(N-L, ba-b[ba]);
-    chmax(x, 0LL);
-    ll ans = x*b[ba]+N;
-    N -= x*(ba-b[ba]);
-    ans += dp[N];
-    Out(ans);
+    Out(-1);
+
 }
 
 int main () {
