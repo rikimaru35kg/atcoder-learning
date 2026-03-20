@@ -227,50 +227,46 @@ Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-#include<atcoder/convolution>
 
 void solve() {
     LONG(N, M);
-    VL(A, N);
-    VL(B, M);
-    ll K = 5e5+10;
-    vl cnta(K), cntb(K);
-    rep(i, N) cnta[A[i]]++;
-    rep(i, M) cntb[B[i]]++;
+    VL2(P, V, N);
 
-    vm fact(K, 1), ifact(K, 1);
-    for(ll x=1; x<K; ++x) {
-        fact[x] = fact[x-1]*x;
-    }
-    ifact[K-1] = 1/fact[K-1];
-    for(ll x=K-2; x>=1; --x) {
-        ifact[x] = ifact[x+1] * (x+1);
-    }
+    auto update=[&](vl dp, ll l, ll r) -> vl {
+        for(ll i=l; i<r; ++i) {
+            vl ndp = dp;
+            rep(j, M+1) {
+                if(j+P[i]<=M) chmax(ndp[j+P[i]], dp[j]+V[i]);
+            }
+            swap(ndp, dp);
+        }
+        return dp;
+    };
 
-    vm b(K), c(K);
-    rep(i, K) {
-        b[i] = ifact[i] * cntb[i];
-        c[i] = ifact[i];
-    }
-    vm v = convolution(b, c);
-
-    mint ans;
-    for(ll a=1; a<K; ++a) {
-        ans += fact[a]*cnta[a]*v[a];
-    }
+    string ans;
+    auto dfs=[&](auto f, ll l, ll r, vl dp) -> void {
+        if(r-l==1) {
+            ll i = l;
+            ll a = dp[M-P[i]] + V[i];
+            ll b = dp[M];
+            if(a==b) ans += 'B';
+            if(a<b) ans += 'C';
+            if(a>b) ans += 'A';
+            return;
+        }
+        ll m = (l+r)/2;
+        // left
+        {
+            vl ndp = update(dp, m, r);
+            f(f, l, m, ndp);
+        }
+        // right
+        {
+            vl ndp = update(dp, l, m);
+            f(f, m, r, ndp);
+        }
+    };
+    dfs(dfs, 0, N, vl(M+1));
     Out(ans);
 
 }
