@@ -228,109 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class MaxFlow {
-    int n;
-    vector<int> dist, iter;
-    long long inf = numeric_limits<long long>::max();
-    struct Edge {
-        int to; long long cap; int rev;
-        Edge(int to, long long cap, int rev): to(to), cap(cap), rev(rev) {}
-    };
-    void bfs(int sv) {
-        dist.assign(n, -1);
-        queue<int> que;
-        dist[sv] = 0; que.push(sv);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,cap,rev]: from[v]) {
-                if(cap==0 || dist[nv]!=-1) continue;
-                dist[nv] = dist[v]+1, que.push(nv); 
-            }
-        }
-    }
-    long long dfs(int v, int t, long long f) {
-        if(v==t) return f;
-        for(int &i=iter[v]; i<int(from[v].size()); i++) {
-            auto [nv,cap,rev] = from[v][i];
-            if(dist[nv]<=dist[v] || cap==0) continue;
-            long long res = dfs(nv, t, min(f,cap));
-            if(res) {
-                from[v][i].cap -= res;
-                from[nv][rev].cap += res;
-                return res;
-            }
-        }
-        return 0;
-    }
-public:
-    vector<vector<Edge>> from;
-    MaxFlow(int n): n(n), from(n) {}
-    void add_edge(int a, int b, long long c) {
-        from[a].emplace_back(Edge(b,c,from[b].size()));
-        from[b].emplace_back(Edge(a,0,from[a].size()-1));
-    }
-    long long flow(int s, int t) {
-        long long ret = 0;
-        while(true) {
-            bfs(s);
-            if(dist[t]==-1) return ret;
-            iter.assign(n, 0);
-            long long now=0;
-            while((now=dfs(s,t,inf))>0) {
-                ret += now;
-            }
-        }
-        return 0;
-    }
-};
-
 void solve() {
-    LONG(N, T);
-    map<Pr,vl> B;
-    VP(A, N);
-    vp Borg;
-    rep(i, N) {
-        LONG(x,y);
-        Borg.emplace_back(x, y);
-        B[{x,y}].push_back(N+i);
+    STRING(X, Y);
+    ll nx = X.size(), ny = Y.size();
+    vp info;
+    info.emplace_back(nx, 0);
+    info.emplace_back(0, ny);
+    while(true){ 
+        auto [a1, b1] = info.end()[-2];
+        auto [a2, b2] = info.end()[-1];
+        if(a2+b2>=ll(2e18)) break;
+        info.emplace_back(a1+a2, b1+b2);
     }
-    vl dx = {1,1,0,-1,-1,-1,0,1};
-    vl dy = {0,1,1,1,0,-1,-1,-1};
-    MaxFlow flow(2*N+2);
-    ll s = 2*N, t = s+1;
-    rep(i, N) flow.add_edge(s, i, 1);
-    rep(i, N) flow.add_edge(N+i, t, 1);
-    rep(i, N) {
-        auto [x,y] = A[i];
-        rep(d, 8) {
-            ll nx = x + T*dx[d];
-            ll ny = y + T*dy[d];
-            for(auto bi: B[{nx,ny}]) {
-                flow.add_edge(i, bi, 1);
-            }
+    ll K = 26;
+    auto calsum=[&](string &X) -> vvl {
+        ll n = X.size();
+        vvl ret(K, vl(n+1));
+        rep(i, n) ret[X[i]-'a'][i+1]++;
+        rep(k, K) rep(i, n) ret[k][i+1] += ret[k][i];
+        return ret;
+    };
+    vvl cx = calsum(X), cy = calsum(Y);
+    auto calc=[&](ll x, char c) -> ll {
+        if(x<0) { return 0; }
+        Pr stck;
+        for(ll i=info.size()-1; i>1; --i) {
+            auto [a,b] = info[i];
+            if(x<a+b) continue;
+            x -= a+b;
+            stck.first += a/nx, stck.second += b/ny;
         }
+        ll ret = 0;
+        ret += stck.first * cx[c-'a'][nx];
+        ret += stck.second * cy[c-'a'][ny];
+        if(x<ny) {
+            ret += cy[c-'a'][x+1];
+        } else {
+            x -= ny;
+            ret += cy[c-'a'][ny];
+            ret += cx[c-'a'][x+1];
+        }
+        return ret;
+    };
+    LONG(Q);
+    rep(i, Q) {
+        LONGM(l, r); CHAR(c);
+        ll ans = 0;
+        ans += calc(r, c);
+        ans -= calc(l-1, c);
+        Out(ans);
     }
-    ll mx = flow.flow(s, t);
-    if(mx<N) PNo
-    Out("Yes");
-    rep(i, N) {
-        auto [x,y] = A[i];
-        ll bi = -1;
-        for(auto [ni,cap,rev]: flow.from[i]) {
-            if(cap==0) {
-                bi = ni-N;
-                break;
-            }
-        }
-        rep(d, 8) {
-            ll nx = x + T*dx[d];
-            ll ny = y + T*dy[d];
-            if(nx==Borg[bi].first && ny==Borg[bi].second) {
-                cout<<d+1<<' '; break;
-            }
-        }
-    }
-
 }
 
 int main () {

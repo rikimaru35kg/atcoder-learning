@@ -2220,6 +2220,7 @@
 ## ACできなかった問題
 !!! where i am now for rank D (last submission 2026/3/19)
 - [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
+- [E - Fibonacci String](https://atcoder.jp/contests/abc450/tasks/abc450_e)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)
