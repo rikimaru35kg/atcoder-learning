@@ -228,80 +228,86 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include<atcoder/convolution>
-using namespace atcoder;
-#include <atcoder/modint>
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-} comb(2e5, M998);
+};
 
 void solve() {
-    LONG(R,G,B,K);
-    LONG(X,Y,Z);
-    vm r(R+1), g(G+1), b(B+1);
-    for(ll x=max(K-Y, 0LL); x<=R; ++x) r[x] = comb(R, x);
-    for(ll x=max(K-Z, 0LL); x<=G; ++x) g[x] = comb(G, x);
-    vm v = convolution(r, g);
-    ll M = v.size();
-    mint ans;
-    for(ll x=max(K-X,0LL); x<=B; ++x) {
-        if(K-x<0 || K-x>=M) continue;
-        ans += v[K-x] * comb(B, x);
+    LONG(N);
+    vvl A(N, vl(N));
+    vt3 edges;
+    rep(i, N-1) {
+        repk(j, i+1, N) {
+            cin >> A[i][j];
+            A[j][i] = A[i][j];
+            edges.emplace_back(A[i][j], i, j);
+        }
     }
-    Out(ans);
+    sort(all(edges));
+    WeightedUnionFind uf(N);
+    vvl from(N);
+    for(auto [w,i,j]: edges) {
+        if(uf.same(i,j)) continue;
+        uf.merge(i,j);
+        from[i].push_back(j);
+        from[j].push_back(i);
+    }
+
+    auto is_ng=[&](ll rv) -> bool {
+        auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> bool {
+            if(A[rv][v]!=d) return true;
+            bool ret = false;
+            for(auto nv: from[v]) if(nv!=p) {
+                ret |= f(f, nv, d+A[v][nv], v);
+            }
+            return ret;
+        };
+        return dfs(dfs, rv);
+    };
+
+    rep(i, N) {
+        if(is_ng(i)) PNo
+    }
+    PYes
+
 }
 
 int main () {

@@ -228,56 +228,111 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
 void solve() {
-    STRING(X, Y);
-    ll nx = X.size(), ny = Y.size();
-    vp info;
-    info.emplace_back(nx, 0);
-    info.emplace_back(0, ny);
-    while(true){ 
-        auto [a1, b1] = info.end()[-2];
-        auto [a2, b2] = info.end()[-1];
-        if(a2+b2>=ll(2e18)) break;
-        info.emplace_back(a1+a2, b1+b2);
-    }
-    ll K = 26;
-    auto calsum=[&](string &X) -> vvl {
-        ll n = X.size();
-        vvl ret(K, vl(n+1));
-        rep(i, n) ret[X[i]-'a'][i+1]++;
-        rep(k, K) rep(i, n) ret[k][i+1] += ret[k][i];
-        return ret;
+    LONG(N, Q);
+    ll black = 0;
+    bool error = false;
+    vvl from(N);
+    vl root(N);
+    rep(i, N) root[i] = i;
+    vb white(N, true);
+    vp num(N, {1,0});
+    auto gmin=[&](ll v) -> ll {
+        return min(num[v].first, num[v].second);
     };
-    vvl cx = calsum(X), cy = calsum(Y);
-    auto calc=[&](ll x, char c) -> ll {
-        if(x<0) { return 0; }
-        Pr stck;
-        for(ll i=info.size()-1; i>1; --i) {
-            auto [a,b] = info[i];
-            if(x<a+b) continue;
-            x -= a+b;
-            stck.first += a/nx, stck.second += b/ny;
-        }
-        ll ret = 0;
-        ret += stck.first * cx[c-'a'][nx];
-        ret += stck.second * cy[c-'a'][ny];
-        if(x<ny) {
-            ret += cy[c-'a'][x+1];
-        } else {
-            x -= ny;
-            ret += cy[c-'a'][ny];
-            ret += cx[c-'a'][x+1];
-        }
-        return ret;
+    auto gs=[&](ll v) -> ll {
+        v = root[v];
+        return num[v].first + num[v].second;
     };
-    LONG(Q);
     rep(i, Q) {
-        LONGM(l, r); CHAR(c);
-        ll ans = 0;
-        ans += calc(r, c);
-        ans -= calc(l-1, c);
-        Out(ans);
+        LONGM(a, b);
+        if(error) {
+            Out(-1); continue;
+        }
+        if(root[a]==root[b] && white[a]==white[b]) {
+            error = true;
+            Out(-1);
+            continue;
+        }
+        if(root[a]==root[b]) {
+            Out(black); continue;
+        }
+        ll la = root[a];
+        ll lb = root[b];
+        black -= gmin(la)+gmin(lb);
+        ll rv = la;
+        ll sv = b;
+        ll cv = a;
+        if(gs(a)<gs(b)) {
+            rv = lb;
+            sv = a;
+            cv = b;
+        }
+
+        auto dfs=[&](auto f, ll v, bool w, ll p) -> void {
+            white[v] = w;
+            root[v] = rv;
+            if(w) num[rv].first++;
+            else num[rv].second++;
+            for(auto nv: from[v]) if(nv!=p) {
+                f(f, nv, !w, v);
+            }
+        };
+        dfs(dfs, sv, !white[cv], cv);
+        from[a].push_back(b);
+        from[b].push_back(a);
+
+        black += gmin(rv);
+
+        // de4("============",a,b,rv)
+        // de(white)
+        // de(from)
+        Out(black);
+
     }
+
 }
 
 int main () {
