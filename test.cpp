@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <semaphore>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -228,110 +229,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
+    return ok;
+}
 
 void solve() {
-    LONG(N, Q);
-    ll black = 0;
-    bool error = false;
-    vvl from(N);
-    vl root(N);
-    rep(i, N) root[i] = i;
-    vb white(N, true);
-    vp num(N, {1,0});
-    auto gmin=[&](ll v) -> ll {
-        return min(num[v].first, num[v].second);
+    LONG(N, X);
+    vl A(N), P(N), B(N), Q(N);
+    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
+
+    auto calc=[&](ll i, ll w) -> ll {
+        ll ret = INF;
+        ll a = A[i], b = B[i], p = P[i], q = Q[i];
+        if(a*q > b*p) swap(a,b), swap(p,q);
+        // if(i==2) de4(a,p,b,q)
+        for(ll x=0; x<b; ++x) {
+            ll y = Divceil(w-a*x, b);
+            chmax(y, 0LL);
+            // if(i==2) de3(x, y, x*p+y*q)
+            chmin(ret, x*p + y*q);
+        }
+        // de2(i, ret)
+        return ret;
     };
-    auto gs=[&](ll v) -> ll {
-        v = root[v];
-        return num[v].first + num[v].second;
+
+    auto f=[&](ll w) -> bool {
+        ll cost = 0;
+        rep(i, N) {
+            cost += calc(i, w);
+            if(cost>X) return false;
+        }
+        return true;
     };
-    rep(i, Q) {
-        LONGM(a, b);
-        if(error) {
-            Out(-1); continue;
-        }
-        if(root[a]==root[b] && white[a]==white[b]) {
-            error = true;
-            Out(-1);
-            continue;
-        }
-        if(root[a]==root[b]) {
-            Out(black); continue;
-        }
-        ll la = root[a];
-        ll lb = root[b];
-        black -= gmin(la)+gmin(lb);
-        ll rv = la;
-        ll sv = b;
-        ll cv = a;
-        if(gs(a)<gs(b)) {
-            rv = lb;
-            sv = a;
-            cv = b;
-        }
-
-        auto dfs=[&](auto f, ll v, bool w, ll p) -> void {
-            white[v] = w;
-            root[v] = rv;
-            if(w) num[rv].first++;
-            else num[rv].second++;
-            for(auto nv: from[v]) if(nv!=p) {
-                f(f, nv, !w, v);
-            }
-        };
-        dfs(dfs, sv, !white[cv], cv);
-        from[a].push_back(b);
-        from[b].push_back(a);
-
-        black += gmin(rv);
-
-        // de4("============",a,b,rv)
-        // de(white)
-        // de(from)
-        Out(black);
-
-    }
+    // de(f(4))
+    ll ans = binary_search(0, (ll)1e9+10, f);
+    Out(ans);
 
 }
 

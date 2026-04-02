@@ -271,42 +271,67 @@ struct WeightedUnionFind {
 };
 
 void solve() {
-    LONG(N);
-    vvl A(N, vl(N));
-    vt3 edges;
-    rep(i, N-1) {
-        repk(j, i+1, N) {
-            cin >> A[i][j];
-            A[j][i] = A[i][j];
-            edges.emplace_back(A[i][j], i, j);
-        }
-    }
-    sort(all(edges));
-    WeightedUnionFind uf(N);
+    LONG(N, Q);
+    ll black = 0;
+    bool error = false;
     vvl from(N);
-    for(auto [w,i,j]: edges) {
-        if(uf.same(i,j)) continue;
-        uf.merge(i,j);
-        from[i].push_back(j);
-        from[j].push_back(i);
-    }
-
-    auto is_ng=[&](ll rv) -> bool {
-        auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> bool {
-            if(A[rv][v]!=d) return true;
-            bool ret = false;
-            for(auto nv: from[v]) if(nv!=p) {
-                ret |= f(f, nv, d+A[v][nv], v);
-            }
-            return ret;
-        };
-        return dfs(dfs, rv);
+    vl root(N);
+    rep(i, N) root[i] = i;
+    vb white(N, true);
+    vp num(N, {1,0});
+    auto gmin=[&](ll v) -> ll {
+        return min(num[v].first, num[v].second);
     };
+    auto gs=[&](ll v) -> ll {
+        v = root[v];
+        return num[v].first + num[v].second;
+    };
+    rep(i, Q) {
+        LONGM(a, b);
+        if(error) {
+            Out(-1); continue;
+        }
+        if(root[a]==root[b] && white[a]==white[b]) {
+            error = true;
+            Out(-1);
+            continue;
+        }
+        if(root[a]==root[b]) {
+            Out(black); continue;
+        }
+        ll la = root[a];
+        ll lb = root[b];
+        black -= gmin(la)+gmin(lb);
+        ll rv = la;
+        ll sv = b;
+        ll cv = a;
+        if(gs(a)<gs(b)) {
+            rv = lb;
+            sv = a;
+            cv = b;
+        }
 
-    rep(i, N) {
-        if(is_ng(i)) PNo
+        auto dfs=[&](auto f, ll v, bool w, ll p) -> void {
+            white[v] = w;
+            root[v] = rv;
+            if(w) num[rv].first++;
+            else num[rv].second++;
+            for(auto nv: from[v]) if(nv!=p) {
+                f(f, nv, !w, v);
+            }
+        };
+        dfs(dfs, sv, !white[cv], cv);
+        from[a].push_back(b);
+        from[b].push_back(a);
+
+        black += gmin(rv);
+
+        // de4("============",a,b,rv)
+        // de(white)
+        // de(from)
+        Out(black);
+
     }
-    PYes
 
 }
 
