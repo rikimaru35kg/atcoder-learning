@@ -1,6 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <semaphore>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,57 +228,113 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
     }
-    return ok;
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+} comb(1e6, M998);
+
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
 }
 
 void solve() {
-    LONG(N, X);
-    vl A(N), P(N), B(N), Q(N);
-    rep(i, N) cin>>A[i]>>P[i]>>B[i]>>Q[i];
-
-    auto calc=[&](ll i, ll w) -> ll {
-        ll ret = INF;
-        ll a = A[i], b = B[i], p = P[i], q = Q[i];
-        if(a*q > b*p) swap(a,b), swap(p,q);
-        // if(i==2) de4(a,p,b,q)
-        for(ll x=0; x<b; ++x) {
-            ll y = Divceil(w-a*x, b);
-            chmax(y, 0LL);
-            // if(i==2) de3(x, y, x*p+y*q)
-            chmin(ret, x*p + y*q);
+    LONG(N);
+    VP(span, N);
+    vvl ls(N+1), rs(N+1);
+    rep(i, N) {
+        auto [l,r] = span[i];
+        ls[l].push_back(i);
+        rs[r].push_back(i);
+    }
+    ll na=0, nb=0, nab=0;
+    vb ina(N), inb(N);
+    mint ans;
+    for(ll a=1; a<N; ++a) {
+        ll b = N - a;
+        vl is;
+        for(auto i: ls[a]) is.push_back(i);
+        for(auto i: rs[b]) is.push_back(i);
+        for(auto i: rs[a-1]) is.push_back(i);
+        for(auto i: ls[b+1]) is.push_back(i);
+        unique(is);
+        for(auto i: is) {
+            if(ina[i]&&inb[i]) --nab;
+            if(ina[i]&&!inb[i]) --na;
+            if(!ina[i]&&inb[i]) --nb;
         }
-        // de2(i, ret)
-        return ret;
-    };
-
-    auto f=[&](ll w) -> bool {
-        ll cost = 0;
-        rep(i, N) {
-            cost += calc(i, w);
-            if(cost>X) return false;
+        for(auto i: ls[a]) ina[i] = true;
+        for(auto i: rs[b]) inb[i] = true;
+        for(auto i: rs[a-1]) ina[i] = false;
+        for(auto i: ls[b+1]) inb[i] = false;
+        for(auto i: is) {
+            if(ina[i]&&inb[i]) ++nab;
+            if(ina[i]&&!inb[i]) ++na;
+            if(!ina[i]&&inb[i]) ++nb;
         }
-        return true;
-    };
-    // de(f(4))
-    ll ans = binary_search(0, (ll)1e9+10, f);
+        ll naorb = na+nb+nab;
+        // de5(a,b,na,nb,nab)
+        // de(ina)de(inb)
+        if(naorb!=N) continue;
+        if(na>a) continue;
+        if(nb>b) continue;
+        ll nt = a-na+b-nb;
+        ans += comb(nt, a-na);
+    }
     Out(ans);
 
 }

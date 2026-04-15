@@ -228,110 +228,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
 void solve() {
-    LONG(N, Q);
-    ll black = 0;
-    bool error = false;
-    vvl from(N);
-    vl root(N);
-    rep(i, N) root[i] = i;
-    vb white(N, true);
-    vp num(N, {1,0});
-    auto gmin=[&](ll v) -> ll {
-        return min(num[v].first, num[v].second);
-    };
-    auto gs=[&](ll v) -> ll {
-        v = root[v];
-        return num[v].first + num[v].second;
-    };
-    rep(i, Q) {
-        LONGM(a, b);
-        if(error) {
-            Out(-1); continue;
-        }
-        if(root[a]==root[b] && white[a]==white[b]) {
-            error = true;
-            Out(-1);
-            continue;
-        }
-        if(root[a]==root[b]) {
-            Out(black); continue;
-        }
-        ll la = root[a];
-        ll lb = root[b];
-        black -= gmin(la)+gmin(lb);
-        ll rv = la;
-        ll sv = b;
-        ll cv = a;
-        if(gs(a)<gs(b)) {
-            rv = lb;
-            sv = a;
-            cv = b;
-        }
-
-        auto dfs=[&](auto f, ll v, bool w, ll p) -> void {
-            white[v] = w;
-            root[v] = rv;
-            if(w) num[rv].first++;
-            else num[rv].second++;
-            for(auto nv: from[v]) if(nv!=p) {
-                f(f, nv, !w, v);
-            }
-        };
-        dfs(dfs, sv, !white[cv], cv);
-        from[a].push_back(b);
-        from[b].push_back(a);
-
-        black += gmin(rv);
-
-        // de4("============",a,b,rv)
-        // de(white)
-        // de(from)
-        Out(black);
-
+    LONG(H, W);
+    VS(S, H);
+    ll si=0,sj=0,gi=0,gj=0;
+    rep(i, H) rep(j, W) {
+        if(S[i][j]=='S') si=i,sj=j;
+        if(S[i][j]=='G') gi=i,gj=j;
     }
+    vvvl dist(H, vvl(W, vl(4, INF)));
+    using vvt3 = vector<vt3>;
+    using vvvt3 = vector<vvt3>;
+    vvvt3 pre(H, vvt3(W, vt3(4, {-1,-1,-1})));
+    queue<t3> que;
+    auto push=[&](ll i, ll j, ll k, ll d, ll pi, ll pj, ll pk) {
+        if(dist[i][j][k]!=INF) return;
+        dist[i][j][k] = d;
+        pre[i][j][k] = {pi,pj,pk};
+        que.emplace(i,j,k);
+    };
+    rep(k, 4) push(si,sj,k,0,-1,-1,-1);
+    while(que.size()) {
+        auto [i,j,k] = que.front(); que.pop();
+        ll d = dist[i][j][k];
+        if(S[i][j]=='o') {
+            auto [di,dj] = dij[k];
+            ll ni = i+di, nj = j+dj;
+            if(!isin(ni,nj,H,W)) continue;
+            if(S[ni][nj]=='#') continue;
+            push(ni,nj,k,d+1,i,j,k);
+        } else {
+            rep(nk, 4) {
+                if(S[i][j]=='x' && k==nk) continue;
+                auto [di,dj] = dij[nk];
+                ll ni = i+di, nj = j+dj;
+                if(!isin(ni,nj,H,W)) continue;
+                if(S[ni][nj]=='#') continue;
+                push(ni,nj,nk,d+1,i,j,k);
+            }
+        }
+    }
+    bool ok = false;
+    ll gk = -1;
+    rep(k, 4) {
+        if(dist[gi][gj][k]!=INF) {
+            ok = true;
+            gk = k;
+        }
+    }
+    if(!ok) PNo
+    puts("Yes");
+    string ans;
+    ll i=gi, j=gj, k = gk;
+    while(get<0>(pre[i][j][k])!=-1) {
+        auto [pi,pj,pk] = pre[i][j][k];
+        if(k==0) ans += 'R';
+        if(k==1) ans += 'D';
+        if(k==2) ans += 'L';
+        if(k==3) ans += 'U';
+        i = pi, j = pj, k = pk;
+    }
+    reverse(all(ans));
+    Out(ans);
+// const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
 
 }
 
@@ -342,3 +301,4 @@ int main () {
 }
 
 // ### test.cpp ###
+
