@@ -606,6 +606,7 @@
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 - 基本 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
+!!! where i am now for rank A (last submission 2026/3/31)
 - !復習価値高 [F - Make Bipartite 3](https://atcoder.jp/contests/abc451/tasks/abc451_f)
 
 ## 超頂点を設ける
@@ -1482,8 +1483,7 @@
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
 - !復習価値中 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
-!!! where i am now for rank A (last submission 2026/3/12)
-- !復習価値高 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
+- !復習価値低 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
 
 ## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
