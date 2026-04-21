@@ -844,7 +844,6 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
-!!! where i am now for rank S (last submission 2026/3/20)
 - !要復習 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
@@ -1949,6 +1948,7 @@
 - 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
+!!! where i am now for rank S (last submission 20**/*/**)
 - !要復習（だがしなくても良い、本当に！） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 ## 読解が難しい問題（問題自体は簡単すぎるのでNote非掲載）

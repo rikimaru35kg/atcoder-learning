@@ -230,43 +230,33 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N, M);
-    VL2(P, V, N);
+    VL2(A, B, M);
+    ll K = 300, K2=299*299;
+    vl b(K+1);
+    rep(i, M) { chmax(b[A[i]], B[i]); }
 
-    auto update=[&](vl dp, ll l, ll r) -> vl {
-        repk(i, l, r) {
-            repr(m, M+1) {
-                de(i)
-                de3(m, P[i], V[i])
-                if(m+P[i]<=M) chmax(dp[m+P[i]], dp[m]+V[i]);
-            }
-        }
-        return dp;
-    };
+    ll mi = 1;
+    rep1(i, K) {
+        if(b[i]*(mi-b[mi])>b[mi]*(i-b[i])) mi = i;
+    }
 
-    string ans(N, '.');
-    auto dfs=[&](auto f, ll l, ll r, vl dp) -> void {
-        if(r-l==1) {
-            ll i = l;
-            ll x = dp[M];
-            ll y = V[i] + dp[M-P[i]];
-            if(x==y) ans[i] = 'B';
-            if(x<y) ans[i] = 'A';
-            if(x>y) ans[i] = 'C';
-            return;
+    vl dp(K2);
+    rep(i, K2) {
+        rep1(m, K) {
+            if(m>i) continue;
+            chmax(dp[i], dp[i-m+b[m]]+b[m]);
         }
-        ll m = (r+l)/2;
-        {//left
-            vl ndp = update(dp, m, r);
-            f(f, l, m, ndp);
-        }
-        {//right
-            vl ndp = update(dp, l, m);
-            f(f, m, r, ndp);
-        }
-    };
-    dfs(dfs, 0, N, vl(M+1));
-
+    }
+    ll ans = N;
+    if(N>=K2) {
+        ll k = Divceil(N-K2, mi-b[mi])+1;
+        ans += k*b[mi];
+        N -= k*(mi-b[mi]);
+    }
+    ans += dp[N];
     Out(ans);
+
+
 
 }
 
