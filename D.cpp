@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### D.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,15 +229,40 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    Out(S);
+    STRING(A, B);
+
+    auto make=[&](string &s) -> string {
+        ll N = s.size();
+        vb del(N);
+        rep(i, N-3) {
+            if(s.substr(i,4)=="(xx)") {
+                ll i1=i, i2=i+3;
+                while(i1>=0 && i2<N && s[i1]=='(' && s[i2]==')') {
+                    del[i1]=true, del[i2]=true;
+                    i1--, i2++;
+                }
+            }
+        }
+        string ret;
+        rep(i, N) {
+            if(del[i]) continue;
+            ret += s[i];
+        }
+        return ret;
+    };
+    auto a = make(A);
+    auto b = make(B);
+    if(a==b) puts("Yes");
+    else puts("No");
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
-// ### test.cpp ###
+// ### D.cpp ###

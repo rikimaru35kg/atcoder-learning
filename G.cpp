@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### G.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,8 +229,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    Out(S);
 
 }
 
@@ -240,4 +238,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### G.cpp ###

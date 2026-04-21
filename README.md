@@ -97,6 +97,7 @@
 ## 二分探索による最大ペアリング探索
 ### 例題
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
+!!! where i am now for rank B (last submission 2025/12/23)
 - !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
@@ -2094,10 +2095,9 @@
 - 基本 トーナメント [F - A Certain Game](https://atcoder.jp/contests/abc314/tasks/abc314_f)
 - 基本 N個からK個とった時の積の最大値 [E - Multiplication 4](https://atcoder.jp/contests/abc173/tasks/abc173_e)
 - 基本 [aplusb - 足し算 (a + b problem)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_aplusb)
-!!! where i am now for rank B (last submission 2025/12/23)
-- !復習価値中 [E - シャッフル](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_e)
+- !復習価値低 [E - シャッフル](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_e)
 - !復習価値低 実際は考察も必要なのでNote非掲載 [F - Hands on Ring (Hard)](https://atcoder.jp/contests/abc376/tasks/abc376_f)
-- !復習価値中 実際は考察も必要なのでNote非掲載 [C - JOIOI 王国 (Kingdom of JOIOI)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_c)
+- !復習価値低 実際は考察も必要なのでNote非掲載 [C - JOIOI 王国 (Kingdom of JOIOI)](https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_c)
 
 # パズル問
 - 競プロ知らない人にこういう問題もあると教えられそうな問題
@@ -2221,6 +2221,7 @@
 !!! where i am now for rank D (last submission 2026/3/19)
 - [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
 - [E - Fibonacci String](https://atcoder.jp/contests/abc450/tasks/abc450_e)
+- [E - LRUD Moving](https://atcoder.jp/contests/abc454/tasks/abc454_e)
 
 ## ACできたがグダった問題
 !!! where i am now for rank E (last submission 2025/3/12)

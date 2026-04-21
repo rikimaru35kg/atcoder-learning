@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### E.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,15 +229,102 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    Out(S);
+    LONG(N, A, B); --A, --B;
+    if(N%2==1) {
+        puts("No"); return;
+    }
+    if((A+B)%2==0) {
+        puts("No"); return;
+    }
+    puts("Yes");
+
+    vvb visited(N, vb(N));
+
+    auto hori=[&](ll i, ll j, ll d) -> tuple<char,ll,ll,ll> {
+        char c;
+        ll ni, nj;
+        if(d==0) {
+            if(j<N-1) {
+                c = 'R';
+                ni = i, nj = j+1;
+            } else{
+                c += 'D';
+                ni = i+1, nj = j;
+                d ^= 1;
+            }
+        } else {
+            if(j>0) {
+                c = 'L';
+                ni = i, nj = j-1;
+            } else{
+                c += 'D';
+                ni = i+1, nj = j;
+                d ^= 1;
+            }
+        }
+        return {c,ni,nj,d};
+    };
+    auto ver=[&](ll i, ll j, ll d) -> tuple<char,ll,ll,ll> {
+        char c;
+        ll ni, nj;
+        if(d==0) {
+            if(j<N-1) {
+                c = 'R';
+                ni = i, nj = j+1;
+            } else{
+                c += 'D';
+                ni = i+1, nj = j;
+                d ^= 1;
+            }
+        } else {
+            if(j>0) {
+                c = 'L';
+                ni = i, nj = j-1;
+            } else{
+                c += 'D';
+                ni = i+1, nj = j;
+                d ^= 1;
+            }
+        }
+        return {c,ni,nj,d};
+    };
+
+    string ans;
+    auto dfs=[&](auto f, ll i, ll j, ll d) -> void {
+        visited[i][j] = true;
+        if(i==A-1) {
+            if(!visited[i+1][j] && j!=B) {
+                ans += 'D';
+                f(f, i+1, j, d);
+            } else {
+                auto [nc,ni,nj,nd] = hori(i, j, d);
+                ans += nc;
+                f(f, ni, nj, nd);
+            }
+        } else if(i==A) {
+            if(!visited[i+1][j] && j!=B) {
+                ans += 'D';
+                f(f, i+1, j, d);
+            } else {
+                auto [nc,ni,nj,nd] = hori(i, j, d);
+                ans += nc;
+                f(f, ni, nj, nd);
+            }
+        } else {
+            auto [nc,ni,nj,nd] = hori(i, j, d);
+            ans += nc;
+            f(f, ni, nj, nd);
+        }
+    };
+
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
-// ### test.cpp ###
+// ### E.cpp ###

@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### B.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,8 +229,21 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    Out(S);
+    LONG(N, M);
+    VLM(F, N);
+    set<ll> st;
+    rep(i, N) st.insert(F[i]);
+    if(SIZE(st)==N) puts("Yes");
+    else puts("No");
+
+    vl cnt(M);
+    rep(i, N) {
+        cnt[F[i]]++;
+    }
+    rep(i, M) {
+        if(cnt[i]==0) PNo
+    }
+    PYes
 
 }
 
@@ -240,4 +253,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### B.cpp ###

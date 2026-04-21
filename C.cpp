@@ -1,4 +1,4 @@
-// ### test.cpp ###
+// ### C.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,8 +229,28 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    Out(S);
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+    }
+
+    ll ans = 0;
+    queue<ll> que;
+    vb pushed(N);
+    auto push=[&](ll v) {
+        if(pushed[v]) return;
+        ++ans;
+        que.push(v);
+        pushed[v]=true;
+    };
+    push(0);
+    while(que.size()) {
+        auto v = que.front(); que.pop();
+        for(auto nv:from[v]) push(nv);
+    }
+    Out(ans);
 
 }
 
@@ -240,4 +260,4 @@ int main () {
     solve();
 }
 
-// ### test.cpp ###
+// ### C.cpp ###

@@ -287,53 +287,24 @@ public:
     }
 } comb(1e6, M998);
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
-
 void solve() {
-    LONG(N);
-    VP(span, N);
-    vvl ls(N+1), rs(N+1);
-    rep(i, N) {
-        auto [l,r] = span[i];
-        ls[l].push_back(i);
-        rs[r].push_back(i);
-    }
-    ll na=0, nb=0, nab=0;
-    vb ina(N), inb(N);
+    STRING(S);
+    ll N = S.size();
+    ll M = 10;
+    vl cnt(M), tot(M);
+    for(auto c: S) tot[c-'0']++;
+
+    auto calc=[&](ll a, ll b) -> mint {
+        return comb(a+b-1, b);
+    };
+
     mint ans;
-    for(ll a=1; a<N; ++a) {
-        ll b = N - a;
-        vl is;
-        for(auto i: ls[a]) is.push_back(i);
-        for(auto i: rs[b]) is.push_back(i);
-        for(auto i: rs[a-1]) is.push_back(i);
-        for(auto i: ls[b+1]) is.push_back(i);
-        unique(is);
-        for(auto i: is) {
-            if(ina[i]&&inb[i]) --nab;
-            if(ina[i]&&!inb[i]) --na;
-            if(!ina[i]&&inb[i]) --nb;
-        }
-        for(auto i: ls[a]) ina[i] = true;
-        for(auto i: rs[b]) inb[i] = true;
-        for(auto i: rs[a-1]) ina[i] = false;
-        for(auto i: ls[b+1]) inb[i] = false;
-        for(auto i: is) {
-            if(ina[i]&&inb[i]) ++nab;
-            if(ina[i]&&!inb[i]) ++na;
-            if(!ina[i]&&inb[i]) ++nb;
-        }
-        ll naorb = na+nb+nab;
-        // de5(a,b,na,nb,nab)
-        // de(ina)de(inb)
-        if(naorb!=N) continue;
-        if(na>a) continue;
-        if(nb>b) continue;
-        ll nt = a-na+b-nb;
-        ans += comb(nt, a-na);
+    rep(i, N-1) {
+        cnt[S[i]-'0']++;
+        ll x = S[i+1]-'0';
+        if(x==0) continue;
+        mint now = calc(cnt[x-1], tot[x]-cnt[x]);
+        ans += now;
     }
     Out(ans);
 
