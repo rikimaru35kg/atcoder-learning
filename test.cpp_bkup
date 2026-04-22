@@ -229,44 +229,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VL2(P, V, N);
-
-    auto update=[&](vl dp, ll l, ll r) -> vl {
-        repk(i, l, r) {
-            repr(m, M+1) {
-                de(i)
-                de3(m, P[i], V[i])
-                if(m+P[i]<=M) chmax(dp[m+P[i]], dp[m]+V[i]);
-            }
-        }
-        return dp;
-    };
-
-    string ans(N, '.');
-    auto dfs=[&](auto f, ll l, ll r, vl dp) -> void {
-        if(r-l==1) {
-            ll i = l;
-            ll x = dp[M];
-            ll y = V[i] + dp[M-P[i]];
-            if(x==y) ans[i] = 'B';
-            if(x<y) ans[i] = 'A';
-            if(x>y) ans[i] = 'C';
-            return;
-        }
-        ll m = (r+l)/2;
-        {//left
-            vl ndp = update(dp, m, r);
-            f(f, l, m, ndp);
-        }
-        {//right
-            vl ndp = update(dp, l, m);
-            f(f, m, r, ndp);
-        }
-    };
-    dfs(dfs, 0, N, vl(M+1));
-
-    Out(ans);
 
 }
 

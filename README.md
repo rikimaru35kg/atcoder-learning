@@ -2218,8 +2218,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2026/3/19)
-- [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
+!!! where i am now for rank D (last submission 2026/3/24)
 - [E - Fibonacci String](https://atcoder.jp/contests/abc450/tasks/abc450_e)
 - [E - LRUD Moving](https://atcoder.jp/contests/abc454/tasks/abc454_e)
 
@@ -2338,4 +2337,5 @@
 - [F - Non-Increasing Number](https://atcoder.jp/contests/abc443/tasks/abc443_f)
 - [E - Tree Distance](https://atcoder.jp/contests/abc451/tasks/abc451_e)
 - [E - Team Division](https://atcoder.jp/contests/abc453/tasks/abc453_e)
+- [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
 
