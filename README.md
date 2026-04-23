@@ -97,8 +97,7 @@
 ## 二分探索による最大ペアリング探索
 ### 例題
 - 基本 [E - Simultaneous Kagamimochi](https://atcoder.jp/contests/abc388/tasks/abc388_e)
-!!! where i am now for rank B (last submission 2025/12/23)
-- !復習価値中 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
+- 基本 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
 - !復習価値低 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
@@ -174,7 +173,7 @@
 - 上記をクロスがなくなるまで操作すれば最適な組み合わせとなり、すなわちそれは最初に述べた組み合わせである
 ### 例題
 - 基本 [E - Gluttony](https://atcoder.jp/contests/abc144/tasks/abc144_e)
-- !復習価値中 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
+- !復習価値低 [D - Worst Case](https://atcoder.jp/contests/abc093/tasks/arc094_b)
 
 ## ペアつなぎ
 - 個別の区間に注目すると、最低何本は線があるかどうか分かる（下界）
@@ -666,6 +665,7 @@
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
 - 基本 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
+!!! where i am now for rank B (last submission 2025/12/24)
 - !復習価値中 [G - Minimum Reachable City](https://atcoder.jp/contests/abc295/tasks/abc295_g)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
@@ -2223,8 +2223,6 @@
 - [E - LRUD Moving](https://atcoder.jp/contests/abc454/tasks/abc454_e)
 
 ## ACできたがグダった問題
-!!! where i am now for rank E (last submission 2025/3/12)
-- [C - Zero XOR](https://atcoder.jp/contests/arc131/tasks/arc131_c)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
 - [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)

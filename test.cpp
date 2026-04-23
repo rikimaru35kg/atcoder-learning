@@ -228,113 +228,90 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
     }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-struct S {
-    ll mn, n;
-    S(ll mn=INF, ll n=0): mn(mn), n(n) {}
-};
-S op(S a, S b) {
-    if(a.mn<b.mn) return a;
-    if(a.mn>b.mn) return b;
-    a.n += b.n;
-    return a;
+    return ok;
 }
-S e() { return S(); }
-using F = ll;
-S mapping(F f, S x) {
-    x.mn += f;
-    return x;
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
 }
-F composition(F f, F g) { return f+g; }
-F id() { return 0; }
 
 void solve() {
-    LONG(H, W, h, w, N);
-    H -= h-1, W -= w-1;
-    VL2M(R, C, N);
-    CoordinateCompression<ll> cc;
-    rep(i, N) {
-        ll r1 = clamp(R[i]-h+1, 0LL, H);
-        ll r2 = clamp(R[i]+1, 0LL, H);
-        cc.add(r1), cc.add(r2);
-    }
-    cc.add(0), cc.add(H);
-    ll K = cc.size();
-    vector<S> init(K-1, S());
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    LONG(A, B);
 
-    rep(i, K-1) {
-        ll h1 = cc[i], h2 = cc[i+1];
-        seg.set(i, S(0, h2-h1));
-    }
-
-    map<ll,vt3> mp;
-    rep(i, N) {
-        ll c1 = clamp(C[i]-w+1, 0LL, W);
-        ll c2 = clamp(C[i]+1, 0LL, W);
-        ll r1 = clamp(R[i]-h+1, 0LL, H);
-        ll r2 = clamp(R[i]+1, 0LL, H);
-        mp[c1].emplace_back(cc(r1), cc(r2), 1);
-        mp[c2].emplace_back(cc(r1), cc(r2), -1);
-    }
-    mp[W].emplace_back(0,0,0);
-    de(mp)
-
-    ll ans = 0;
-    ll pc = 0;
-    for(auto [c,v]: mp) {
-        ll dc = c-pc;
-        auto [mn,n] = seg.all_prod();
-        if(mn==0) {
-            ans += n*dc;
+    auto init=[&](ll x, ll a) -> vp {
+        vp ret;
+        if(a>x) ret.emplace_back(1, x);
+        else {
+            if(a!=1) ret.emplace_back(1, a-1);
+            ret.emplace_back(a+1, x+1);
         }
-        de4(c, dc, mn, n)
-        for(auto [r1,r2,k]: v) {
-            seg.apply(r1, r2, k);
+        return ret;
+    };
+    auto sz=[&](Pr x) -> ll {
+        return x.second-x.first+1;
+    };
+    auto make=[&](Pr a, Pr b) -> pair<Pr,Pr> {
+        auto [a1,a2] = a;
+        auto [b1,b2] = b;
+        ll n = min(sz(a), sz(b));
+        return {{a1,a1+n-1}, {b2-n+1,b2}};
+    };
+
+    auto calc=[&](Pr st1, Pr st2) -> ll {
+        auto f=[&](ll m) -> ll {
+            return (st1.first+m) * (st2.second-m);
+        };
+        ll l = 0, r = sz(st1)-1;
+        while(r-l>2) {
+            ll m1 = (2*l+r)/3;
+            ll m2 = (l+2*r)/3;
+            if(f(m1)<f(m2)) l = m1;
+            else r = m2;
         }
-        pc = c;
-    }
+        ll ret = 0;
+        for(ll i=l; i<=r; ++i) {
+            chmax(ret, f(i));
+        }
+        return ret;
+    };
+
+    auto f=[&](ll x) -> bool {
+        auto sta = init(x, A);
+        auto stb = init(x, B);
+        ll mx = 0;
+        while(sta.size()) {
+            auto [st1, st2] = make(sta[0], stb.back());
+            // de(st1)
+            // de(st2)
+            ll now = calc(st1, st2);
+            chmax(mx, now);
+            ll n = sz(st1);
+            if(sz(sta[0])==n) sta.erase(sta.begin());
+            else sta[0].first = sta[0].first+n;
+            if(sz(stb.back())==n) stb.pop_back();
+            else stb.back().second = stb.back().second-n;
+            // de(sta)de(stb)
+        }
+        return mx < A*B;
+    };
+
+    // de(f(1))
+
+    ll ans = binary_search(0, ll(3e9), f);
     Out(ans);
 
 }
@@ -342,7 +319,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(Q);
+    rep(i, Q) solve();
 }
 
 // ### test.cpp ###
