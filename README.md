@@ -2219,7 +2219,6 @@
 
 ## ACできなかった問題
 !!! where i am now for rank D (last submission 2026/3/24)
-- [E - Fibonacci String](https://atcoder.jp/contests/abc450/tasks/abc450_e)
 - [E - LRUD Moving](https://atcoder.jp/contests/abc454/tasks/abc454_e)
 
 ## ACできたがグダった問題
@@ -2338,4 +2337,5 @@
 - [F - Grid Clipping](https://atcoder.jp/contests/abc449/tasks/abc449_f)
 - [E - Unbalanced ABC Substrings](https://atcoder.jp/contests/abc455/tasks/abc455_e)
 - [F - Merge Slimes 2](https://atcoder.jp/contests/abc455/tasks/abc455_f)
+- [E - Fibonacci String](https://atcoder.jp/contests/abc450/tasks/abc450_e)
 
