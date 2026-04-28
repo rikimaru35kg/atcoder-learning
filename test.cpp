@@ -228,54 +228,60 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    STRING(X, Y);
-    ll nx = X.size(), ny = Y.size();
-    ll M = 26;
-    auto makecumsum=[&](string s) -> vvl {
-        ll n = s.size();
-        vvl ret(M, vl(n+1));
-        rep(i, n) ret[s[i]-'a'][i+1] = 1;
-        rep(m, M) rep(i, n) ret[m][i+1] += ret[m][i];
-        return ret;
-    };
-    vvl Sx = makecumsum(X), Sy = makecumsum(Y);
-    vvl Syx = makecumsum(Y+X);
-    ll K = 100;
-    vl len(K);
-    vvl cnt(K, vl(M));
-    len[0] = nx, len[1] = ny;
-    rep(i, M) cnt[0][i] = Sx[i].back();
-    rep(i, M) cnt[1][i] = Sy[i].back();
-    repk(k, 2, K) {
-        len[k] = len[k-1] + len[k-2];
-        rep(i, M) cnt[k][i] = cnt[k-1][i] + cnt[k-2][i];
-        if(len[k]>ll(1e18)) {
-            K = k+1;
-            break;
-        }
+template<typename T> class RangeBIT {
+    long long size;
+    vector<vector<T>> bit;
+    T sum0(int i) {  // [0,i] closed interval
+        return sum_sub(0,i) + sum_sub(1,i)*i;
     }
-    auto count=[&](ll r, ll c) -> ll {
-        ll ret = 0;
-        for(ll k=K-1; k>=1; --k) {
-            if(k==1) {
-                ret += Syx[c][r+1];
-                break;
-            }
-            if(r<len[k]) continue;
-            ret += cnt[k][c];
-            r -= len[k];
-        }
-        return ret;
-    };
-    LONG(Q);
-    rep(_, Q) {
-        LONGM(l, r); --l;
-        CHAR(c);
-        ll ans = count(r, c-'a') - count(l, c-'a');
-        Out(ans);
+    void add_sub(int p, int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
+        for(; i<size; i+=i&-i) bit[p][i] += x;
     }
+    T sum_sub(int p, int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[p][i];
+        return ret;
+    }
+public:
+    RangeBIT (int _n): size(_n+1), bit(2, vector<T>(_n+1)) {}
+    void add(int l, int r, T x) {  // [l,r) half-open interval
+        add_sub(0, l, -x*(l-1)); add_sub(0, r, x*(r-1));
+        add_sub(1, l, x); add_sub(1, r, -x);
+    }
+    T sum(int l, int r) { // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T get(int i) { return sum(i, i+1); }
+    void dump() {  // for debug
+        #ifdef __DEBUG
+        for(ll i=0; i<size-1; ++i) { cerr << get(i) << ' '; }
+        cerr << endl;
+        #endif
+    }
+};
 
+void solve() {
+    LONG(N, M);
+    VVL(A, N, M);
+    ll K = 1000;
+    vector<RangeBIT<ll>> bs(N);
+    rep(j, M) {
+        vvl is(K);
+        rep(i, N) is[A[i][j]].push_back(i);
+        bitset<2000> b;
+        rep(k, K) {
+            for(auto i: is[k]) b[i] = 1;
+            for(auto i: is[k]) bs[i] ^= b;
+            for(auto i: is[k]) b[i] = 0;
+        }
+    }
+    ll ans = 0;
+    rep(i, N) rep(j, i) ans += bs[i][j];
+    Out(ans);
 
 }
 

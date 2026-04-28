@@ -228,99 +228,61 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    LONG(A, B);
-
-    auto init=[&](ll x, ll a) -> vp {
-        vp ret;
-        if(a>x) ret.emplace_back(1, x);
-        else {
-            if(a!=1) ret.emplace_back(1, a-1);
-            ret.emplace_back(a+1, x+1);
-        }
+    STRING(X, Y);
+    ll nx = X.size(), ny = Y.size();
+    ll M = 26;
+    auto makecumsum=[&](string s) -> vvl {
+        ll n = s.size();
+        vvl ret(M, vl(n+1));
+        rep(i, n) ret[s[i]-'a'][i+1] = 1;
+        rep(m, M) rep(i, n) ret[m][i+1] += ret[m][i];
         return ret;
     };
-    auto sz=[&](Pr x) -> ll {
-        return x.second-x.first+1;
-    };
-    auto make=[&](Pr a, Pr b) -> pair<Pr,Pr> {
-        auto [a1,a2] = a;
-        auto [b1,b2] = b;
-        ll n = min(sz(a), sz(b));
-        return {{a1,a1+n-1}, {b2-n+1,b2}};
-    };
-
-    auto calc=[&](Pr st1, Pr st2) -> ll {
-        auto f=[&](ll m) -> ll {
-            return (st1.first+m) * (st2.second-m);
-        };
-        ll l = 0, r = sz(st1)-1;
-        while(r-l>2) {
-            ll m1 = (2*l+r)/3;
-            ll m2 = (l+2*r)/3;
-            if(f(m1)<f(m2)) l = m1;
-            else r = m2;
+    vvl Sx = makecumsum(X), Sy = makecumsum(Y);
+    vvl Syx = makecumsum(Y+X);
+    ll K = 100;
+    vl len(K);
+    vvl cnt(K, vl(M));
+    len[0] = nx, len[1] = ny;
+    rep(i, M) cnt[0][i] = Sx[i].back();
+    rep(i, M) cnt[1][i] = Sy[i].back();
+    repk(k, 2, K) {
+        len[k] = len[k-1] + len[k-2];
+        rep(i, M) cnt[k][i] = cnt[k-1][i] + cnt[k-2][i];
+        if(len[k]>ll(1e18)) {
+            K = k+1;
+            break;
         }
+    }
+    auto count=[&](ll r, ll c) -> ll {
         ll ret = 0;
-        for(ll i=l; i<=r; ++i) {
-            chmax(ret, f(i));
+        for(ll k=K-1; k>=1; --k) {
+            if(k==1) {
+                ret += Syx[c][r+1];
+                break;
+            }
+            if(r<len[k]) continue;
+            ret += cnt[k][c];
+            r -= len[k];
         }
         return ret;
     };
+    LONG(Q);
+    rep(_, Q) {
+        LONGM(l, r); --l;
+        CHAR(c);
+        ll ans = count(r, c-'a') - count(l, c-'a');
+        Out(ans);
+    }
 
-    auto f=[&](ll x) -> bool {
-        auto sta = init(x, A);
-        auto stb = init(x, B);
-        ll mx = 0;
-        while(sta.size()) {
-            auto [st1, st2] = make(sta[0], stb.back());
-            // de(st1)
-            // de(st2)
-            ll now = calc(st1, st2);
-            chmax(mx, now);
-            ll n = sz(st1);
-            if(sz(sta[0])==n) sta.erase(sta.begin());
-            else sta[0].first = sta[0].first+n;
-            if(sz(stb.back())==n) stb.pop_back();
-            else stb.back().second = stb.back().second-n;
-            // de(sta)de(stb)
-        }
-        return mx < A*B;
-    };
-
-    // de(f(1))
-
-    ll ans = binary_search(0, ll(3e9), f);
-    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(Q);
-    rep(i, Q) solve();
+    solve();
 }
 
 // ### test.cpp ###

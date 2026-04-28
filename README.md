@@ -665,7 +665,6 @@
 - 基本 [E - 運河 (Canal)](https://atcoder.jp/contests/joig2023-open/tasks/joig2023_e)
 - 基本 座標の連結 [A - Reachable Towns](https://atcoder.jp/contests/acl1/tasks/acl1_a)
 - 基本 重み付きUnion Findの練習にどうぞ（オーバーキルの為Note非掲載） [D - People on a Line](https://atcoder.jp/contests/abc087/tasks/arc090_b)
-!!! where i am now for rank B (last submission 2025/12/24)
 - !復習価値中 [G - Minimum Reachable City](https://atcoder.jp/contests/abc295/tasks/abc295_g)
 
 ## 集合（set）・連想配列（map/dict）・優先度付きキュー（priority que/heap）
@@ -694,7 +693,7 @@
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
 - 基本 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
-- !復習価値中 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
+- !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
@@ -768,6 +767,7 @@
 - 基本 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
+!!! where i am now for rank B (last submission 2025/12/25)
 - !復習価値中 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
@@ -2218,7 +2218,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2026/3/24)
+!!! where i am now for rank D (last submission 2026/4/20)
 - [E - LRUD Moving](https://atcoder.jp/contests/abc454/tasks/abc454_e)
 
 ## ACできたがグダった問題
