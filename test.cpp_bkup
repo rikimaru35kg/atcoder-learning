@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <queue>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -228,80 +229,41 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, P);
-    mint::set_mod(P);
-
-    vvm dp(N, vm(N+1));
-    vvm ds(N, vm(N+2));
-
-    ll K = 5;
-    vp span(K+1);
-    ll ten = 1;
-    repk(i, 2, K+1) {
-        span[i] = {ten, 10*ten-1};
-        ten *= 10;
-    }
-
-    auto keta=[&](ll x) -> ll {
-        ll ret = 0;
-        while(x) {
-            ++ret;
-            x /= 10;
+    LONG(N);
+    vs expr(N+1), term(N+1), factor(N+1);
+    auto cmin=[&](string &s, string t) {
+        if(t=="" || t[0]=='+' || t[0]=='*' || t.back()=='+' || t.back()=='*') return;
+        if(s=="") {
+            s = t; return;
         }
-        return ret+1;
+        if(s.size()<=t.size()) return;
+        s = t;
     };
-
-    rep1(i, N) {
-        ll j = keta(i);
-        if(j<N) dp[j][i] = 26;
+    {
+        string s = "1";
+        while(true) {
+            ll n = stoll(s);
+            if(n>N) break;
+            cmin(factor[n], s);
+            s += '1';
+        }
     }
-
-    auto sum=[&](ll j, ll i1, ll i2) -> mint {
-        if(i2==0) return 0;
-        mint ret = 25*(ds[j][i2]-ds[j][i1]);
-        return ret;
-    };
-
-    rep1(i, N) {
-        rep(j, N) {
-            repk(k, 2, K+1) {
-                if(j-k<0) break;
-                auto [a,b] = span[k];
-                ll i1 = i-b;
-                ll i2 = i-a+1;
-                // for(ll m=i1; m<=i2; ++m) {
-                //     if(m<0) continue;
-                //     mint now = dp[m][j-k];
-                //     if(m==0) dp[i][j] += now*26;
-                //     else dp[i][j] += now*25;
-                // }
-                chmax(i1, 0LL), chmax(i2, 0LL);
-                mint now = sum(j-k, i1, i2);
-                dp[j][i] += now;
+    rep1(n, N) {
+        rep(ri, 3) {
+            cmin(expr[n], term[n]);
+            for(ll k=1; k<n; ++k) {
+                cmin(expr[n], term[k]+'+'+expr[n-k]);
             }
-            ds[j][i+1] = ds[j][i] + dp[j][i];
+            cmin(term[n], factor[n]);
+            for(ll k=1; k<=n; ++k) {
+                if(n%k!=0) continue;
+                cmin(term[n], factor[k]+'*'+term[n/k]);
+            }
+            if(expr[n]!="") cmin(factor[n], '('+expr[n]+')');
         }
     }
-
-    mint ans = 0;
-    rep(j, N) ans += dp[j][N];
-    Out(ans);
-
+    Out(expr[N]);
 
 }
 

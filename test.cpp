@@ -228,14 +228,83 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    ll ans = 0;
-    while(N) {
-        ++ans;
-        N /= 10;
+struct Trie {
+    struct Node {
+        using MP = map<char,int>;
+        MP to;
+        int x, y;
+        Node(MP to=MP(), int x=0, int y=0): to(to),x(x),y(y) {}
+    };
+    int n, ans;  // # of nodes
+    vector<Node> node;
+    Trie(): n(1),ans(0),node(1) {}  // only root node
+    void add(string &s) {
+        int v = 0;
+        for(auto c: s) {
+            if(!node[v].to.count(c)) {
+                node.push_back(Node());
+                node[v].to[c] = n;
+                ++n;
+            }
+            v = node[v].to[c];
+        }
     }
-    Out(ans);
+    void addx(string &s) {
+        ll v = 0;
+        for(auto c: s) {
+            ll nv = node[v].to[c];
+            v = nv;
+        }
+        if(node[v].x>0) return;
+        node[v].x = 1;
+        queue<ll> que;
+        que.push(v);
+        while(que.size()) {
+            ll v = que.front(); que.pop();
+            ans -= node[v].y;
+            for(auto [c,nv]: node[v].to) {
+                if(node[nv].x>0) continue;
+                node[nv].x = 1;
+                que.push(nv);
+            }
+        }
+    }
+    void addy(string &s) {
+        ll v = 0;
+        for(auto c: s) {
+            ll nv = node[v].to[c];
+            v = nv;
+        }
+        node[v].y++;
+        if(node[v].x==0) ++ans;
+    }
+    ll getans() {
+        return ans;
+    }
+};
+
+void solve() {
+    LONG(Q);
+    vl T(Q);
+    vs S(Q);
+    Trie trie;
+    rep(i, Q) {
+        LONG(t); STRING(s);
+        T[i] = t, S[i] = s;
+        trie.add(s);
+    }
+
+    rep(i, Q) {
+        ll t = T[i];
+        string s = S[i];
+        if(t==1) {
+            trie.addx(s);
+        } else {
+            trie.addy(s);
+        }
+        ll ans = trie.getans();
+        Out(ans);
+    }
 
 }
 
