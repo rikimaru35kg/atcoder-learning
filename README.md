@@ -767,8 +767,7 @@
 - 基本 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
-!!! where i am now for rank B (last submission 2025/12/25)
-- !復習価値中 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
+- !復習価値高 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 双対セグメントツリー（Dual Segment Tree）
@@ -1020,6 +1019,7 @@
 - 基本 区間DPについて考えさせられる良問 [Daruma Otoshi](https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1611&lang=jp)
 - 基本 [I - イウィ](https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi)
 - 基本 ペア選び [F - Make Pair](https://atcoder.jp/contests/abc217/tasks/abc217_f) [解説コメント付き提出](https://atcoder.jp/contests/abc217/submissions/54243348)
+!!! where i am now for rank B (last submission 2025/12/25)
 - !復習価値中 [F - Happy Birthday! 3](https://atcoder.jp/contests/abc400/tasks/abc400_f)
 - !復習価値低 [G - Pre-Order](https://atcoder.jp/contests/abc252/tasks/abc252_g)
 
