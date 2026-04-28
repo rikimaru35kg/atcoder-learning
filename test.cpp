@@ -228,63 +228,40 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct S {
-    ll mn, n;
-    S(ll mn=INF, ll n=0):mn(mn),n(n) {}
-};
-S op(S a, S b) {
-    if(a.mn<b.mn) return a;
-    if(a.mn>b.mn) return b;
-    a.n += b.n;
-    return a;
-}
-S e() { return S(); }
-using F = ll;
-S mapping (F f, S x) {
-    x.mn += f;
-    return x;
-}
-F composition (F f, F g) {return f+g;}
-F id() {return 0;}
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
 void solve() {
     LONG(N);
-    VLM(A, N);
-    vvl is(N, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N) is[i].push_back(N);
-    vvt3 events(N+1);
-    rep(i, N) {
-        vl &cis = is[i];
-        ll m = cis.size();
-        if(m<=2) continue;
-        rep(j, m-2) {
-            ll i1 = cis[j], i2 = cis[j+1], i3 = cis[j+2];
-            events[i1+1].emplace_back(i2+1, i3+1, 1);
-            events[i2+1].emplace_back(i2+1, i3+1, -1);
+    VLM(C, N);
+    VL(X, N);
+    rep(i, N) C.push_back(C[i]);
+
+    ll N2 = N + N;
+    vvl dp1(N2+1, vl(N2+1, INF));
+    vvl dp2(N2+1, vl(N2+1, INF));
+    rep(i, N2) {
+        dp1[i][i+1] = X[C[i]];
+        dp2[i][i+1] = X[C[i]] + 1;
+    }
+
+    for(ll w=2; w<=N; ++w) {
+        rep(l, N2) {
+            ll r = l + w;
+            if(r>N2) break;
+            if(C[l]==C[r-1]) chmin(dp1[l][r], dp1[l][r-1]);
+            repk(m, l+1, r) {
+                chmin(dp1[l][r], dp1[l][m] + dp2[m][r]);
+            }
+            chmin(dp2[l][r], dp1[l][r]+r-l);
+            repk(m, l+1, r) {
+                chmin(dp2[l][r], dp2[l][m] + dp2[m][r]);
+            }
         }
     }
-    de(events)
-    vector<S> init(N+1, S(0, 1));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-
-    ll ans = 0;
-    rep(i, N+1) {
-        de(i)
-        for(auto [l,r,x]: events[i]) {
-            de3(l,r,x)
-            seg.apply(l, r, x);
-        }
-        auto sm = seg.all_prod();
-        if(sm.mn>=1) continue;
-        ll now = N+1 - sm.n;
-        ans += now;
+    ll ans = INF;
+    rep(l, N) {
+        ll r = l + N;
+        chmin(ans, dp2[l][r]);
     }
     Out(ans);
-
 
 }
 
