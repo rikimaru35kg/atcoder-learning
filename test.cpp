@@ -230,36 +230,10 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    VLM(C, N);
-    VL(X, N);
-    rep(i, N) C.push_back(C[i]);
-
-    ll N2 = N + N;
-    vvl dp1(N2+1, vl(N2+1, INF));
-    vvl dp2(N2+1, vl(N2+1, INF));
-    rep(i, N2) {
-        dp1[i][i+1] = X[C[i]];
-        dp2[i][i+1] = X[C[i]] + 1;
-    }
-
-    for(ll w=2; w<=N; ++w) {
-        rep(l, N2) {
-            ll r = l + w;
-            if(r>N2) break;
-            if(C[l]==C[r-1]) chmin(dp1[l][r], dp1[l][r-1]);
-            repk(m, l+1, r) {
-                chmin(dp1[l][r], dp1[l][m] + dp2[m][r]);
-            }
-            chmin(dp2[l][r], dp1[l][r]+r-l);
-            repk(m, l+1, r) {
-                chmin(dp2[l][r], dp2[l][m] + dp2[m][r]);
-            }
-        }
-    }
-    ll ans = INF;
-    rep(l, N) {
-        ll r = l + N;
-        chmin(ans, dp2[l][r]);
+    ll ans = 0;
+    while(N) {
+        ++ans;
+        N /= 10;
     }
     Out(ans);
 

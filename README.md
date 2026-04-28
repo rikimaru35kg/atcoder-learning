@@ -1048,7 +1048,6 @@
 - 基本 [F - 白色光 (White Light)](https://atcoder.jp/contests/joigsp2023/tasks/joigsp2023_f) （自己流でも解けたので[提出メモ](https://atcoder.jp/contests/joigsp2023/submissions/60668036)自己流のが汎用性低いが計算量は良し）
 - !復習価値低 [E - Mod i](https://atcoder.jp/contests/abc207/tasks/abc207_e) なお、snuke氏の解説だけでは理解が難しいので、[コメントを付きでコードを提出](https://atcoder.jp/contests/abc207/submissions/49805079)
 - !復習価値低 サイコロゲーム [F - Black Jack](https://atcoder.jp/contests/abc342/tasks/abc342_f)
-!!! where i am now for rank B (last submission 2025/12/25)
 - !復習価値中 [E - RLE](https://atcoder.jp/contests/abc249/tasks/abc249_e)
 
 ## 長さを持つDP
@@ -1144,6 +1143,7 @@
 - <expr>,<term>,<factor>,<number>の構造を定義
 - <expr>,<term>,<factor>が循環参照する形になる
 ### 例題
+!!! where i am now for rank B (last submission 2025/12/26)
 - !復習価値中 [F - Shortest One Formula](https://atcoder.jp/contests/abc403/tasks/abc403_f)
 
 ## DP苦手問題（典型というわけではないのでNoteには非掲載）

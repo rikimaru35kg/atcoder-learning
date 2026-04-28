@@ -228,61 +228,78 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct S {
-    ll mn, n;
-    S(ll mn=INF, ll n=0):mn(mn),n(n) {}
-};
-S op(S a, S b) {
-    if(a.mn<b.mn) return a;
-    if(a.mn>b.mn) return b;
-    a.n += b.n;
-    return a;
-}
-S e() { return S(); }
-using F = ll;
-S mapping (F f, S x) {
-    x.mn += f;
-    return x;
-}
-F composition (F f, F g) {return f+g;}
-F id() {return 0;}
-
-#include <atcoder/lazysegtree>
+#include <atcoder/modint>
 using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N);
-    VLM(A, N);
-    vvl is(N, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N) is[i].push_back(N);
-    vvt3 events(N+1);
-    rep(i, N) {
-        vl &cis = is[i];
-        ll m = cis.size();
-        if(m<=2) continue;
-        rep(j, m-2) {
-            ll i1 = cis[j], i2 = cis[j+1], i3 = cis[j+2];
-            events[i1+1].emplace_back(i2+1, i3+1, 1);
-            events[i2+1].emplace_back(i2+1, i3+1, -1);
-        }
-    }
-    de(events)
-    vector<S> init(N+1, S(0, 1));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+    LONG(N, P);
+    mint::set_mod(P);
 
-    ll ans = 0;
-    rep(i, N+1) {
-        de(i)
-        for(auto [l,r,x]: events[i]) {
-            de3(l,r,x)
-            seg.apply(l, r, x);
-        }
-        auto sm = seg.all_prod();
-        if(sm.mn>=1) continue;
-        ll now = N+1 - sm.n;
-        ans += now;
+    vvm dp(N, vm(N+1));
+    vvm ds(N, vm(N+2));
+
+    ll K = 5;
+    vp span(K+1);
+    ll ten = 1;
+    repk(i, 2, K+1) {
+        span[i] = {ten, 10*ten-1};
+        ten *= 10;
     }
+
+    auto keta=[&](ll x) -> ll {
+        ll ret = 0;
+        while(x) {
+            ++ret;
+            x /= 10;
+        }
+        return ret+1;
+    };
+
+    rep1(i, N) {
+        ll j = keta(i);
+        if(j<N) dp[j][i] = 26;
+    }
+
+    auto sum=[&](ll j, ll i1, ll i2) -> mint {
+        if(i2==0) return 0;
+        mint ret = 25*(ds[j][i2]-ds[j][i1]);
+        return ret;
+    };
+
+    rep1(i, N) {
+        rep(j, N) {
+            repk(k, 2, K+1) {
+                if(j-k<0) break;
+                auto [a,b] = span[k];
+                ll i1 = i-b;
+                ll i2 = i-a+1;
+                // for(ll m=i1; m<=i2; ++m) {
+                //     if(m<0) continue;
+                //     mint now = dp[m][j-k];
+                //     if(m==0) dp[i][j] += now*26;
+                //     else dp[i][j] += now*25;
+                // }
+                chmax(i1, 0LL), chmax(i2, 0LL);
+                mint now = sum(j-k, i1, i2);
+                dp[j][i] += now;
+            }
+            ds[j][i+1] = ds[j][i] + dp[j][i];
+        }
+    }
+
+    mint ans = 0;
+    rep(j, N) ans += dp[j][N];
     Out(ans);
 
 
