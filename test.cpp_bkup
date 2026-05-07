@@ -1,6 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <queue>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,48 +228,58 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    vs expr(N+1), term(N+1), factor(N+1);
-    auto cmin=[&](string &s, string t) {
-        if(t=="" || t[0]=='+' || t[0]=='*' || t.back()=='+' || t.back()=='*') return;
-        if(s=="") {
-            s = t; return;
-        }
-        if(s.size()<=t.size()) return;
-        s = t;
-    };
-    {
-        string s = "1";
-        while(true) {
-            ll n = stoll(s);
-            if(n>N) break;
-            cmin(factor[n], s);
-            s += '1';
-        }
+bool solve() {
+    LONG(N, M);
+    vvl from(N);
+    rep(i, M) {
+        LONGM(a, b);
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
     }
-    rep1(n, N) {
-        rep(ri, 3) {
-            cmin(expr[n], term[n]);
-            for(ll k=1; k<n; ++k) {
-                cmin(expr[n], term[k]+'+'+expr[n-k]);
-            }
-            cmin(term[n], factor[n]);
-            for(ll k=1; k<=n; ++k) {
-                if(n%k!=0) continue;
-                cmin(term[n], factor[k]+'*'+term[n/k]);
-            }
-            if(expr[n]!="") cmin(factor[n], '('+expr[n]+')');
-        }
-    }
-    Out(expr[N]);
+    LONG(W);
+    VS(S, N);
+    vvb seen(N, vb(W)), finished(N, vb(W));
 
+    auto dfs=[&](auto f, ll v, ll j) -> bool {
+        seen[v][j] = true;
+        ll nj = (j+1)%W;
+        
+        if(S[v][nj]=='o' && !finished[v][nj]) {
+            if(seen[v][nj]) return true;
+            bool b = f(f, v, nj);
+            if(b) return true;
+        }
+
+        for(auto nv:from[v]) {
+            if(S[nv][nj]=='x') continue;
+            if(finished[nv][nj]) {
+                continue;
+            }
+            if(seen[nv][nj]) return true;
+            bool b = f(f, nv, nj);
+            if(b) return true;
+        }
+        finished[v][j] = true;
+        return false;
+    };
+
+    rep(i, N) rep(j, W) {
+        if(S[i][j]=='x') continue;
+        if(finished[i][j]) continue;
+        bool b = dfs(dfs, i, j);
+        if(b) return true;
+    }
+    return false;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) {
+        if(solve()) puts("Yes");
+        else puts("No");
+    }
 }
 
 // ### test.cpp ###

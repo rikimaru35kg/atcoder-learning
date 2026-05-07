@@ -228,83 +228,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
-    struct Node {
-        using MP = map<char,int>;
-        MP to;
-        int x, y;
-        Node(MP to=MP(), int x=0, int y=0): to(to),x(x),y(y) {}
-    };
-    int n, ans;  // # of nodes
-    vector<Node> node;
-    Trie(): n(1),ans(0),node(1) {}  // only root node
-    void add(string &s) {
-        int v = 0;
-        for(auto c: s) {
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
-            }
-            v = node[v].to[c];
-        }
-    }
-    void addx(string &s) {
-        ll v = 0;
-        for(auto c: s) {
-            ll nv = node[v].to[c];
-            v = nv;
-        }
-        if(node[v].x>0) return;
-        node[v].x = 1;
-        queue<ll> que;
-        que.push(v);
-        while(que.size()) {
-            ll v = que.front(); que.pop();
-            ans -= node[v].y;
-            for(auto [c,nv]: node[v].to) {
-                if(node[nv].x>0) continue;
-                node[nv].x = 1;
-                que.push(nv);
-            }
-        }
-    }
-    void addy(string &s) {
-        ll v = 0;
-        for(auto c: s) {
-            ll nv = node[v].to[c];
-            v = nv;
-        }
-        node[v].y++;
-        if(node[v].x==0) ++ans;
-    }
-    ll getans() {
-        return ans;
-    }
-};
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(Q);
-    vl T(Q);
-    vs S(Q);
-    Trie trie;
-    rep(i, Q) {
-        LONG(t); STRING(s);
-        T[i] = t, S[i] = s;
-        trie.add(s);
-    }
+    STRING(S);
+    ll N = S.size();
+    vl A(N);
+    rep(i,N) A[i] = S[i]-'a';
 
-    rep(i, Q) {
-        ll t = T[i];
-        string s = S[i];
-        if(t==1) {
-            trie.addx(s);
-        } else {
-            trie.addy(s);
+    vm dp(3);
+    rep(i, N) {
+        vm pdp(3); swap(pdp, dp);
+        rep(j, 3) {
+            dp[j] += pdp[j];
+            if(j!=A[i]) dp[A[i]] += pdp[j];
         }
-        ll ans = trie.getans();
-        Out(ans);
+        dp[A[i]]++;
     }
+    mint ans;
+    rep(i, 3) ans += dp[i];
+    Out(ans);
 
 }
 
