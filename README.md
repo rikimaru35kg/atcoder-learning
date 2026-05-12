@@ -1948,7 +1948,6 @@
 - 女性の任意の部分集合に対し、結婚先が女性の人数以上あれば完全マッチング可能
 - 必要性は鳩ノ巣原理から、十分性は帰納法で証明可能（証明はややこしいので覚える必要なし）
 ### 例題
-!!! where i am now for rank S (last submission 20**/*/**)
 - !要復習（だがしなくても良い、本当に！） 数列マッチング（実装が難しい） [F - Contrast](https://atcoder.jp/contests/abc178/tasks/abc178_f)
 
 ## 読解が難しい問題（問題自体は簡単すぎるのでNote非掲載）
@@ -2033,12 +2032,17 @@
 ### 例題
 - !復習価値低 [F - Must Buy](https://atcoder.jp/contests/abc441/tasks/abc441_f)
 
+## Dilworthの定理
+- DAGにおいて最小パス被覆と反鎖の最大要素数が等しい (双対問題)
+- !要復習 [G - Catch All Apples](https://atcoder.jp/contests/abc457/tasks/abc457_g)
+
 ## オイラー路
 - 一筆書き
 - 奇点が0個か2個なら可能
 - 構築する場合は、dfsの帰りがけ順で。一度通った辺は破壊しながらdfsすると良い
 ### 例題
-- [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
+!!! where i am now for rank S (last submission 20**/*/**)
+- !要復習 [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）
@@ -2340,4 +2344,5 @@
 - [E - Fibonacci String](https://atcoder.jp/contests/abc450/tasks/abc450_e)
 - [C - Not Adjacent](https://atcoder.jp/contests/abc456/tasks/abc456_c)
 - [D - Not Adjacent 2](https://atcoder.jp/contests/abc456/tasks/abc456_d)
+- [E - Crossing Table Cloth](https://atcoder.jp/contests/abc457/tasks/abc457_e)
 
