@@ -843,7 +843,7 @@
 ### 例題
 - 基本 [H - 履修登録](https://atcoder.jp/contests/past17-open/tasks/past17_h)
 - 基本 [E - Crested Ibis vs Monster](https://atcoder.jp/contests/abc153/tasks/abc153_e)
-- !要復習 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
+- !復習価値中 G - Get Many Cola](https://atcoder.jp/contests/abc415/tasks/abc415_g)
 
 ## 経路数問題
 - 単純にDPで足し合わせていけば経路数が求める
@@ -1182,6 +1182,7 @@
 ### 例題
 - 基本 [E - Karuta](https://atcoder.jp/contests/abc287/tasks/abc287_e)
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
+!!! where i am now for rank S (last submission 2026/4/28)
 - !要復習 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 !!! where i am now for rank B (last submission 2025/12/26)
@@ -2041,8 +2042,7 @@
 - 奇点が0個か2個なら可能
 - 構築する場合は、dfsの帰りがけ順で。一度通った辺は破壊しながらdfsすると良い
 ### 例題
-!!! where i am now for rank S (last submission 20**/*/**)
-- !要復習 [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
+- !復習価値中 [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）

@@ -228,37 +228,96 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    vl A(N);
-    rep(i,N) A[i] = S[i]-'a';
-
-    vm dp(3);
+    LONG(N);
+    vp P;
     rep(i, N) {
-        vm pdp(3); swap(pdp, dp);
-        rep(j, 3) {
-            dp[j] += pdp[j];
-            if(j!=A[i]) dp[A[i]] += pdp[j];
-        }
-        dp[A[i]]++;
+        LONG(t, x);
+        ll u = t-x;
+        ll v = t+x;
+        P.emplace_back(u, v);
     }
-    mint ans;
-    rep(i, 3) ans += dp[i];
+    sort(all(P));
+
+    vl lis(N, INF);
+    ll ans = 0;
+    for(auto [u,v]: P) {
+        v = -v;
+        auto [n,x] = lowbou(lis, v);
+        lis[n] = v;
+        chmax(ans, n+1);
+    }
     Out(ans);
 
 }
