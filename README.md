@@ -606,7 +606,6 @@
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 - 基本 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
-!!! where i am now for rank A (last submission 2026/3/31)
 - !復習価値高 [F - Make Bipartite 3](https://atcoder.jp/contests/abc451/tasks/abc451_f)
 
 ## 超頂点を設ける
@@ -693,6 +692,7 @@
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
 - 基本 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
+!!! where i am now for rank A (last submission 2026/4/28)
 - !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
@@ -1269,7 +1269,7 @@
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
-- !復習価値高 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
+- !復習価値低 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
 ## 整数とMOD
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
