@@ -1207,6 +1207,13 @@
 - !復習価値中（構文木で解く場合） 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
 - !復習価値低 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 
+## Aho-Corasick
+- Trie木上でオートマトンを構成する
+- BFSしながらfailure linkを作るとO(|S|)
+### 例題
+- !要復習 [Ex - Taboo](https://atcoder.jp/contests/abc268/tasks/abc268_h)
+- !要復習 [F - Critical Misread](https://atcoder.jp/contests/abc458/tasks/abc458_f)
+
 ## Suffix Array
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
 - O(N)で求まるらしい（ACLにある）
@@ -2345,4 +2352,5 @@
 - [C - Not Adjacent](https://atcoder.jp/contests/abc456/tasks/abc456_c)
 - [D - Not Adjacent 2](https://atcoder.jp/contests/abc456/tasks/abc456_d)
 - [E - Crossing Table Cloth](https://atcoder.jp/contests/abc457/tasks/abc457_e)
+- [E - Count 123](https://atcoder.jp/contests/abc458/tasks/abc458_e)
 

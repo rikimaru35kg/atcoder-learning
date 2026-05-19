@@ -228,67 +228,156 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vl p(N);
-
-    vl sz(N);
-    auto dfs=[&](auto f, ll v, ll pa=-1) -> void {
-        p[v] = pa;
-        sz[v]++;
-        for(auto nv: from[v]) if(nv!=pa) {
-            f(f, nv, v);
-            sz[v] += sz[nv];
-        }
+class AhoCorasick {
+    struct Node {
+        map<char,int> to;
+        int cnt, fail;
+        Node (): cnt(0), fail(-1) {}
     };
-    dfs(dfs, 0);
-
-    ll one = 1;
-    while(p[one]!=0) one = p[one];
-
-    auto gs=[&](ll v) -> ll {
-        if(v!=0) return sz[v];
-        return N-sz[one];
-    };
-
-    auto nc2=[&](ll n) -> ll {
-        return n*(n-1)/2;
-    };
-
-    ll ans = 1;
-
-    ans += nc2(N);
-    for(auto v: from[0]) {
-        ans -= nc2(sz[v]);
-    }
-
-    ll a = 0, b = 0;
-    vb onp(N);
-    onp[0] = true;
-    repk(i, 1, N) {
-        if(!onp[i]) {
-            ll v = i;
-            while(!onp[v]) {
-                onp[v] = true;
-                v = p[v];
+    vector<Node> d;
+public:
+    AhoCorasick (): d(1) {}
+    int add(string &s) {
+        int v = 0;
+        for(auto c: s) {
+            if (!d[v].to.count(c)) {
+                d[v].to[c] = d.size();
+                d.push_back(Node());
             }
-            if(v!=a && v!=b) break;
-            if(v==a) a = i;
-            else b = i;
+            v = d[v].to[c];
         }
-        ans += gs(a) * gs(b);
-        de2(i, ans);
-        de4(a, b, gs(a), gs(b))
+        d[v].cnt++;
+
+        return v;
+    }
+    void init() {
+        queue<int> que;
+        que.push(0);
+        while(que.size()) {
+            int v = que.front(); que.pop();
+            for(auto [c,nv]: d[v].to) {
+                d[nv].fail = (*this)(d[v].fail, c);
+                d[nv].cnt += d[d[nv].fail].cnt;
+                que.push(nv);
+            }
+        }
+    }
+    int operator()(int v, char c) const {
+        while(v != -1) {
+            auto it = d[v].to.find(c);
+            if(it != d[v].to.end()) return it->second;
+            v = d[v].fail;
+        }
+        return 0;
+    }
+    int operator[](int v) const { return d[v].cnt; }
+};
+
+void solve() {
+    STRING(S);
+    LONG(N);
+    VS(T, N);
+    AhoCorasick aho;
+    rep(i, N) aho.add(T[i]);
+    aho.init();
+
+    ll v = 0;
+    ll ans = 0;
+    for(auto c: S) {
+        v = aho(v, c);
+        if(aho[v]) {
+            ++ans;
+            v = 0;
+        }
     }
     Out(ans);
+    
 
 }
+
+aho
+
+//! n*n matrix
+constexpr int MX = 105;  // DEFINE PROPERLY!!
+template <typename T> class Mat {
+    int n;
+    T a[MX][MX];
+    Mat pow_recursive(Mat b, long long k) {
+        Mat ret(b.n);
+        if (k == 0) return ret;
+        if (k%2 == 1) ret = b;
+        Mat tmp = pow_recursive(b, k/2);
+        return ret * tmp * tmp;
+    }
+public:
+    // Initialize n*n matrix as unit matrix
+    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
+        if(!src) {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                if(i==j) a[i][j] = 1;
+                else a[i][j] = 0;
+            }
+        } else {
+            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+                a[i][j] = src[i*n+j];
+            }
+        }
+    }
+    // Define operator*
+    Mat operator* (const Mat &rhs) {  // Mat * Mat
+        Mat ret(n);
+        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            for (int k=0; k<n; ++k) {
+                ret.a[i][j] += a[i][k] * rhs.a[k][j];
+            }
+        }
+        return ret;
+    }
+    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
+        vector<T> ret(n, 0);
+        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
+            ret[j] += a[j][k] * rhs[k];
+        }
+        return ret;
+    }
+    Mat operator* (const T &x) {  // Mat * scaler
+        Mat ret(n);
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            ret.a[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        assert(abs(det)>=EPS);
+        Mat ret(n);
+        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
+        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    void transpose() {
+        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
+            swap(a[i][j], a[j][i]);
+        }
+    }
+    // power k (A^k)
+    Mat pow(long long k) { return pow_recursive(*this, k); }
+    void set(int i, int j, T x) { a[i][j] = x; }
+    void add(int i, int j, T x) { a[i][j] += x; }
+    T operator()(int i, int j) { return a[i][j]; }
+    void print(string debugname="------") {  // for debug
+        #ifdef __DEBUG
+        cerr << n << '\n';
+        cerr << debugname << ":\n";
+        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+        #endif
+    }
+};
 
 int main () {
     // ios::sync_with_stdio(false);
