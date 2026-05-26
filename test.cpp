@@ -228,189 +228,71 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class AhoCorasick {
-    struct Node {
-        map<char,int> to;
-        int cnt, fail;
-        Node (): cnt(0), fail(-1) {}
-    };
-    vector<Node> d;
+template <size_t n> class TropicalMat {
+    using ar2 = array<array<long long,n>,n>;
+    ar2 a;
+    long long inf = 3e18;
 public:
-    AhoCorasick (): d(1) {}
-    int add(string &s) {
-        int v = 0;
-        for(auto c: s) {
-            if (!d[v].to.count(c)) {
-                d[v].to[c] = d.size();
-                d.push_back(Node());
-            }
-            v = d[v].to[c];
+    TropicalMat (bool unit=true) {
+        if(!unit) return;  // zero-matrix
+        // unit matrix
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            if(i==j) a[i][j] = 0;
+            else a[i][j] = inf;
         }
-        d[v].cnt++;
-
-        return v;
     }
-    void init() {
-        queue<int> que;
-        que.push(0);
-        while(que.size()) {
-            int v = que.front(); que.pop();
-            for(auto [c,nv]: d[v].to) {
-                d[nv].fail = (*this)(d[v].fail, c);
-                d[nv].cnt += d[d[nv].fail].cnt;
-                que.push(nv);
+    TropicalMat operator*(const TropicalMat &o) const {
+        TropicalMat ret;
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            ret.a[i][j] = inf;
+            for (size_t k=0; k<n; ++k) {
+                ret.a[i][j] = min(ret.a[i][j], a[i][k]+o.a[k][j]);
             }
         }
+        return ret;
     }
-    int operator()(int v, char c) const {
-        while(v != -1) {
-            auto it = d[v].to.find(c);
-            if(it != d[v].to.end()) return it->second;
-            v = d[v].fail;
-        }
-        return 0;
-    }
-    int operator[](int v) const { return d[v].cnt; }
+    void set(const ar2 &_a) { a = _a; }
+    void set(int i, int j, long long x) { a[i][j] = x; }
+    long long get(int i, int j) const { return a[i][j]; }
 };
+
+using S = TropicalMat<2>;
+S op(S a, S b) {return b*a;}
+S e() {return S();}
+
+#include <atcoder/segtree>
+using namespace atcoder;
 
 void solve() {
-    STRING(S);
-    LONG(N);
-    VS(T, N);
-    AhoCorasick aho;
-    rep(i, N) aho.add(T[i]);
-    aho.init();
+    LONG(N, K);
+    VL(A, N);
 
-    ll v = 0;
-    ll ans = 0;
-    for(auto c: S) {
-        v = aho(v, c);
-        if(aho[v]) {
-            ++ans;
-            v = 0;
+    auto calc=[&](ll k) -> ll {
+        segtree<S,op,e> seg(N);
+        rep(i, N) {
+            TropicalMat<2> a;
+            a.set({{ {INF,0},{A[i],A[i]} }});
+            seg.set(i, a);
         }
-    }
+        ll ret = INF;
+        rep(l, N+1-k) {
+            auto a = seg.prod(l,l+k);
+            chmin(ret, a.get(1,0));
+        }
+        return ret;
+    };
+    ll ans = calc(K);
+    chmin(ans, calc(K+1));
     Out(ans);
-    
-
 }
 
-aho
-
-//! n*n matrix
-constexpr int MX = 105;  // DEFINE PROPERLY!!
-template <typename T> class Mat {
-    int n;
-    T a[MX][MX];
-    Mat pow_recursive(Mat b, long long k) {
-        Mat ret(b.n);
-        if (k == 0) return ret;
-        if (k%2 == 1) ret = b;
-        Mat tmp = pow_recursive(b, k/2);
-        return ret * tmp * tmp;
-    }
-public:
-    // Initialize n*n matrix as unit matrix
-    Mat (int n=MX, T *src=nullptr): n(n) {  // src must be a pointer (e.g. Mat(n,*src))
-        if(!src) {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                if(i==j) a[i][j] = 1;
-                else a[i][j] = 0;
-            }
-        } else {
-            for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-                a[i][j] = src[i*n+j];
-            }
-        }
-    }
-    // Define operator*
-    Mat operator* (const Mat &rhs) {  // Mat * Mat
-        Mat ret(n);
-        for (int i=0; i<n; ++i) ret.a[i][i] = 0;  // zero matrix
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            for (int k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * rhs.a[k][j];
-            }
-        }
-        return ret;
-    }
-    vector<T> operator* (const vector<T> &rhs) {  // Mat * vector
-        vector<T> ret(n, 0);
-        for (int j=0; j<n; ++j) for (int k=0; k<n; ++k) {
-            ret[j] += a[j][k] * rhs[k];
-        }
-        return ret;
-    }
-    Mat operator* (const T &x) {  // Mat * scaler
-        Mat ret(n);
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
-        assert(abs(det)>=EPS);
-        Mat ret(n);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    void transpose() {
-        for(int i=0; i<n; ++i) for(int j=0; j<i; ++j) {
-            swap(a[i][j], a[j][i]);
-        }
-    }
-    // power k (A^k)
-    Mat pow(long long k) { return pow_recursive(*this, k); }
-    void set(int i, int j, T x) { a[i][j] = x; }
-    void add(int i, int j, T x) { a[i][j] += x; }
-    T operator()(int i, int j) { return a[i][j]; }
-    void print(string debugname="------") {  // for debug
-        #ifdef __DEBUG
-        cerr << n << '\n';
-        cerr << debugname << ":\n";
-        for (int i=0; i<n; ++i) for (int j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-        #endif
-    }
-};
-
-//! Use this class if n >= 1e7 && r <= 1e6
-//! mod must be a prime number!
-class Combination2 {
-    long long mod;
-public:
-    Combination2 (long long mod): mod(mod) {}
-    long long operator()(long long n, long long r) {
-        if(n < 0 || r < 0 || r > n) return 0;
-        r = min(n-r , r);
-        long long r_fact = 1;
-        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
-        long long ret = inv(r_fact);
-        for (long long i=0; i<r; ++i) (ret *= (n-i)%mod ) %= mod;
-        return ret;
-    }
-    long long modpow(long long a, long long b) {
-        long long ret = 1;
-        a %= mod;
-        while (b > 0) {
-            if ((b & 1) == 1) (ret *= a) %= mod;
-            (a *= a) %= mod;
-            b >>= 1;
-        }
-        return ret;
-    }
-    long long inv(long long a) { return modpow(a, mod-2); }
-};
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
+

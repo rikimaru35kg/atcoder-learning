@@ -3629,5 +3629,37 @@
       "\tlong long inv(long long a) { return modpow(a, mod-2); }",
       "};"
     ]
+  },
+  "Snippet(TropicalMat)": {
+    "prefix": "tropical_matrix",
+    "body": [
+      "template <size_t n> class TropicalMat {",
+      "\tusing ar2 = array<array<long long,n>,n>;",
+      "\tar2 a;",
+      "\tlong long inf = 3e18;",
+      "public:",
+      "\tTropicalMat (bool unit=true) {",
+      "\t\tif(!unit) return;  // zero-matrix",
+      "\t\t// unit matrix",
+      "\t\tfor (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {",
+      "\t\t\tif(i==j) a[i][j] = 0;",
+      "\t\t\telse a[i][j] = inf;",
+      "\t\t}",
+      "\t}",
+      "\tTropicalMat operator*(const TropicalMat &o) const {",
+      "\t\tTropicalMat ret;",
+      "\t\tfor (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {",
+      "\t\t\tret.a[i][j] = inf;",
+      "\t\t\tfor (size_t k=0; k<n; ++k) {",
+      "\t\t\t\tret.a[i][j] = min(ret.a[i][j], a[i][k]+o.a[k][j]);",
+      "\t\t\t}",
+      "\t\t}",
+      "\t\treturn ret;",
+      "\t}",
+      "\tvoid set(const ar2 &_a) { a = _a; }",
+      "\tvoid set(int i, int j, long long x) { a[i][j] = x; }",
+      "\tlong long get(int i, int j) const { return a[i][j]; }",
+      "};"
+    ]
   }
 }
