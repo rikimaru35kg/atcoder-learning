@@ -379,6 +379,34 @@ public:
     }
 };
 
+//! Use this class if n >= 1e7 && r <= 1e6
+//! mod must be a prime number!
+class Combination2 {
+    long long mod;
+public:
+    Combination2 (long long mod): mod(mod) {}
+    long long operator()(long long n, long long r) {
+        if(n < 0 || r < 0 || r > n) return 0;
+        r = min(n-r , r);
+        long long r_fact = 1;
+        for (long long i=1; i<=r; ++i) (r_fact *= i) %= mod;
+        long long ret = inv(r_fact);
+        for (long long i=0; i<r; ++i) (ret *= (n-i)%mod ) %= mod;
+        return ret;
+    }
+    long long modpow(long long a, long long b) {
+        long long ret = 1;
+        a %= mod;
+        while (b > 0) {
+            if ((b & 1) == 1) (ret *= a) %= mod;
+            (a *= a) %= mod;
+            b >>= 1;
+        }
+        return ret;
+    }
+    long long inv(long long a) { return modpow(a, mod-2); }
+};
+
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
