@@ -1681,8 +1681,7 @@
 - !復習価値低 [E - Sum of Subarrays](https://atcoder.jp/contests/abc423/tasks/abc423_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - 基本 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
-!!! where i am now for rank B (last submission 2025/12/26)
-- !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
+- !復習価値低 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
 
 ## 投票方式で考える
 ### 例題
@@ -1758,6 +1757,7 @@
 ## 区間をsetで管理するテク
 - 名前通りのテク
 ### 例題
+!!! where i am now for rank B (last submission 2025/12/26)
 - !復習価値中 [E - Cover query](https://atcoder.jp/contests/abc435/tasks/abc435_e)
 
 ## 標準形を考える

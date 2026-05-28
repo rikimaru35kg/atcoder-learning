@@ -228,36 +228,57 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, M);
+    LONG(N);
+    VL(A, N);
+    vvl is(N+1, vl(1, -1));
+    rep(i, N) is[A[i]].push_back(i);
+    rep(i, N+1) is[i].push_back(N);
 
-    vm dp(N+1);
-    dp[0] = 1;
+    auto nc2=[&](ll n) -> ll { return n*(n-1)/2; };
 
-    rep(i, N) {
-        vm pdp(N+1); swap(pdp, dp);
-        rep(j, N+1) {
-            dp[j] += pdp[j]*max(j-i/M,0LL);
-            if(j<N) dp[j+1] += pdp[j];
+    auto num=[&](vl &cis) -> ll {
+        ll n = cis.size();
+        ll ret = nc2(N);
+        rep(i, n-1) {
+            ret -= nc2(cis[i+1]-cis[i]);
         }
+        return ret;
+    };
+
+    auto one=[&](ll x) -> ll {
+        vl &cis = is[x];
+        return num(cis);
+    };
+    auto both=[&](ll x) -> ll {
+        vl cis;
+        ll i1 = 0, i2 = 0;
+        ll n1 = is[x-1].size(), n2 = is[x].size();
+        while(i1<n1 || i2<n2) {
+            if(i1==n1) cis.push_back(is[x][i2++]);
+            else if(i2==n2) cis.push_back(is[x-1][i1++]);
+            else {
+                ll a = is[x-1][i1], b = is[x][i2];
+                if(a==b) {
+                    cis.push_back(a);
+                    i1++, i2++;
+                } else if(a<b) {
+                    cis.push_back(a);
+                    i1++;
+                } else {
+                    cis.push_back(b);
+                    i2++;
+                }
+            }
+        }
+        return num(cis);
+    };
+    ll ans = 0;
+    rep1(x, N) {
+        ans += both(x) - one(x-1);
     }
-    rep1(i, N) {
-        Out(dp[i]);
-    }
+    Out(ans);
+
 
 }
 
