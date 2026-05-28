@@ -1,6 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <numeric>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -230,41 +229,31 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(L, R);
-    ++R;
-    ++L;
-    ll M = 1e7+5;
-    vb isp(M, true);
-    isp[0] = isp[1] = false;
-    for(ll p=2; p*p<M; ++p) {
-        if(!isp[p]) continue;
-        for(ll x=p*p; x<M; x+=p) isp[x] = false;
-    }
+    LONG(N); VL(A, N);
 
-    vb isp2(R-L, true);
-    for(ll p=2; p<M; ++p) {
-        if(!isp[p]) continue;
-        ll k = Divceil(L, p);
-        for(ll x=k*p; x<R; x+=p) {
-            if(x==p) continue;
-            isp2[x-L] = false;
+    auto calcsum=[&](ll k) -> ll {
+        ll mod = 1LL<<k;
+        ll ret = 0;
+        umap<ll,ll> presum;
+        umap<ll,ll> precnt;
+        rep(i, N) {
+            ll r = A[i]%mod;
+            presum[r] += A[i];
+            precnt[r]++;
+            ll pr = (-r+mod)%mod;
+            ret += presum[pr];
+            ret += precnt[pr]*A[i];
         }
-    }
+        return ret;
+    };
+    ll D = 26;
+    vl sum(D);
+    rep(i, D) sum[i] = calcsum(i);
 
     ll ans = 0;
-    vb nc(R-L);
-    for(ll p=2; p<M; ++p) {
-        if(!isp[p]) continue;
-        ll x = p;
-        sll y = x;
-        while(y<R) {
-            if(y>=L) nc[y-L] = true;
-            y *= x;
-        }
+    rep(i, D-1) {
+        ans += (sum[i]-sum[i+1])  / (1LL<<i);
     }
-    rep(i, R-L) if(isp2[i]) nc[i] = true;
-    rep(i, R-L) if(nc[i]) ++ans;
-    ++ans;
     Out(ans);
 
 }
