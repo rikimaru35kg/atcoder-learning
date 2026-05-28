@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <numeric>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,38 +230,49 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    auto zerocnt=[&](ll x) -> ll {
-        ll ret = 0;
-        while(x) {
-            if(!(x&1)) ++ret;
-            x >>= 1;
-        }
-        return ret;
-    };
-    ll z = zerocnt(N);
-    if((1LL<<z) < K) {
-        Out(-1); return;
+    LONG(L, R);
+    ++R;
+    ++L;
+    ll M = 1e7+5;
+    vb isp(M, true);
+    isp[0] = isp[1] = false;
+    for(ll p=2; p*p<M; ++p) {
+        if(!isp[p]) continue;
+        for(ll x=p*p; x<M; x+=p) isp[x] = false;
     }
-    --K;
-    ll r = N;
-    ll b = 0;
-    rep(i, z) {
-        while(N>>b&1) ++b;
-        if(K>>i&1) {
-            r += 1LL<<b;
+
+    vb isp2(R-L, true);
+    for(ll p=2; p<M; ++p) {
+        if(!isp[p]) continue;
+        ll k = Divceil(L, p);
+        for(ll x=k*p; x<R; x+=p) {
+            if(x==p) continue;
+            isp2[x-L] = false;
         }
-        ++b;
     }
-    Out(r);
+
+    ll ans = 0;
+    vb nc(R-L);
+    for(ll p=2; p<M; ++p) {
+        if(!isp[p]) continue;
+        ll x = p;
+        sll y = x;
+        while(y<R) {
+            if(y>=L) nc[y-L] = true;
+            y *= x;
+        }
+    }
+    rep(i, R-L) if(isp2[i]) nc[i] = true;
+    rep(i, R-L) if(nc[i]) ++ans;
+    ++ans;
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

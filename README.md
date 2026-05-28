@@ -1409,8 +1409,7 @@
 - !復習価値低 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
-!!! where i am now for rank B (last submission 2025/12/26)
-- !復習価値中 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
+- !復習価値低 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
 - !復習価値中（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
@@ -1491,6 +1490,7 @@
 - !復習価値低 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
+!!! where i am now for rank B (last submission 2025/12/26)
 - !復習価値中 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
 - !復習価値低 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
 
