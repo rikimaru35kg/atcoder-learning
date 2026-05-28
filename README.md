@@ -1666,6 +1666,10 @@
 - !復習価値低 [D - 数列 XOR](https://atcoder.jp/contests/bitflyer2018-final/tasks/bitflyer2018_final_d)
 - 基本 [057 - Flip Flap（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_be)
 
+## トロピカル半環 (Tropical Semiring, min-plus algebra)
+- !要復習 [F - Plan Holidays](https://atcoder.jp/contests/abc456/tasks/abc456_f)
+
+
 # その他典型
 
 ## 主客転倒

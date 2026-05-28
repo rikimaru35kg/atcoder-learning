@@ -3544,36 +3544,6 @@
       "};"
     ]
   },
-  "Snippet(TropicalMat)": {
-    "prefix": "tropical_matrix",
-    "body": [
-      "template <size_t n> class TropicalMat {",
-      "\tusing ar2 = array<array<long long,n>,n>;",
-      "\tar2 a;",
-      "\tstatic constexpr long long inf = 3e18;",
-      "public:",
-      "\tTropicalMat (bool identity=true) {",
-      "\t\tfor (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {",
-      "\t\t\tif(i==j) a[i][j] = (identity?0:inf);",
-      "\t\t\telse a[i][j] = inf;",
-      "\t\t}",
-      "\t}",
-      "\tTropicalMat (const ar2 &a): a(a) {}",
-      "\tTropicalMat operator*(const TropicalMat &o) const {",
-      "\t\tTropicalMat ret(false);",
-      "\t\tfor (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {",
-      "\t\t\tfor (size_t k=0; k<n; ++k) {",
-      "\t\t\t\tif(a[i][k]==inf || o.a[k][j]==inf) continue;",
-      "\t\t\t\tret.a[i][j] = min(ret.a[i][j], a[i][k]+o.a[k][j]);",
-      "\t\t\t}",
-      "\t\t}",
-      "\t\treturn ret;",
-      "\t}",
-      "\tauto& operator[](int i) { return a[i]; }",
-      "\tconst auto& operator[](int i) const { return a[i]; }",
-      "};"
-    ]
-  },
   "Snippet(Matrix)": {
     "prefix": "matrix",
     "body": [
@@ -3651,6 +3621,44 @@
       "\t\tcerr << \"---------\" << '\\\\n';",
       "\t\t#endif",
       "\t}",
+      "};"
+    ]
+  },
+  "Snippet(TropicalMat)": {
+    "prefix": "tropical_matrix",
+    "body": [
+      "template <size_t n> class TropicalMat {",
+      "\tusing ar2 = array<array<long long,n>,n>;",
+      "\tar2 a;",
+      "\tstatic constexpr long long inf = 3e18;",
+      "public:",
+      "\tTropicalMat (bool identity=true) {",
+      "\t\tfor (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {",
+      "\t\t\tif(i==j) a[i][j] = (identity?0:inf);",
+      "\t\t\telse a[i][j] = inf;",
+      "\t\t}",
+      "\t}",
+      "\tTropicalMat (const ar2 &a): a(a) {}",
+      "\tTropicalMat operator*(const TropicalMat &o) const {",
+      "\t\tTropicalMat ret(false);",
+      "\t\tfor (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {",
+      "\t\t\tfor (size_t k=0; k<n; ++k) {",
+      "\t\t\t\tif(a[i][k]==inf || o[k][j]==inf) continue;",
+      "\t\t\t\tret[i][j] = min(ret[i][j], a[i][k]+o[k][j]);",
+      "\t\t\t}",
+      "\t\t}",
+      "\t\treturn ret;",
+      "\t}",
+      "\tvector<long long> operator*(const vector<long long> &o) const {",
+      "\t\tvector<long long> vec(n, inf);",
+      "\t\tfor(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {",
+      "\t\t\tif(a[i][j]==inf || o[j]==inf) continue;",
+      "\t\t\tvec[i] = min(vec[i], a[i][j] + o[j]);",
+      "\t\t}",
+      "\t\treturn vec;",
+      "\t}",
+      "\tauto& operator[](int i) { return a[i]; }",
+      "\tconst auto& operator[](int i) const { return a[i]; }",
       "};"
     ]
   }

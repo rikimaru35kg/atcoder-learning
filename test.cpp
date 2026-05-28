@@ -1,4 +1,5 @@
-﻿#include <bits/stdc++.h>
+﻿// ### test.cpp ###
+#include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -227,120 +228,79 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-//! n*n matrix
-template <size_t n, typename T> class Mat {
-    using ar2 = array<array<T,n>,n>;
+template <size_t n> class TropicalMat {
+    using ar2 = array<array<long long,n>,n>;
     ar2 a;
+    static constexpr long long inf = 3e18;
 public:
-    Mat (bool identity=true) {
+    TropicalMat (bool identity=true) {
         for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            if(i==j) a[i][j] = (identity?1:0);
-            else a[i][j] = 0;
+            if(i==j) a[i][j] = (identity?0:inf);
+            else a[i][j] = inf;
         }
     }
-    Mat (const ar2 &a): a(a) {}
-    Mat operator* (const Mat &o) const {  // Mat * Mat
-        Mat ret(false);
+    TropicalMat (const ar2 &a): a(a) {}
+    TropicalMat operator*(const TropicalMat &o) const {
+        TropicalMat ret(false);
         for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
             for (size_t k=0; k<n; ++k) {
-                ret[i][j] += a[i][k] * o[k][j];
+                if(a[i][k]==inf || o[k][j]==inf) continue;
+                ret[i][j] = min(ret[i][j], a[i][k]+o[k][j]);
             }
         }
         return ret;
     }
-    vector<T> operator* (const vector<T> &o) const {  // Mat * vector
-        vector<T> vec(n);
-        for (size_t j=0; j<n; ++j) for (size_t k=0; k<n; ++k) {
-            vec[j] += a[j][k] * o[k];
+    vector<long long> operator*(const vector<long long> &o) const {
+        vector<long long> vec(n, inf);
+        for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
+            if(a[i][j]==inf || o[j]==inf) continue;
+            vec[i] = min(vec[i], a[i][j] + o[j]);
         }
         return vec;
     }
-    Mat operator* (const T &x) const {  // Mat * scaler
-        Mat ret(false);
-        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            ret[i][j] = a[i][j]*x;
-        }
-        return ret;
-    }
-    Mat inv() const {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        static_assert(n == 2, "Mat.inv() only supports for 2x2 matrices");
-        T det = a[0][0]*a[1][1] - a[0][1]*a[1][0];
-        Mat ret(false);
-        ret[0][0] = a[1][1], ret[0][1] = -a[0][1];
-        ret[1][0] = -a[1][0], ret[1][1] = a[0][0];
-        ret = ret * (1/det);
-        return ret;
-    }
-    Mat transpose() const {
-        Mat ret(false);
-        for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
-            ret[i][j] = a[j][i];
-        }
-        return ret;
-    }
-    // power k (A^k)
-    Mat pow(long long k) const {
-        assert(k >= 0);
-        Mat ret(true);
-        Mat b = *this;
-        while(k) {
-            if(k&1) ret = ret * b;
-            b = b * b;
-            k >>= 1;
-        }
-        return ret;
-    }
     auto& operator[](int i) { return a[i]; }
     const auto& operator[](int i) const { return a[i]; }
-    void print(string debugname="------") const {  // for debug
-        #ifdef __DEBUG
-        cerr << debugname << ":\n";
-        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
-        }
-        cerr << "---------" << '\n';
-        #endif
-    }
 };
 
+using S = TropicalMat<2>;
+S op(S a, S b) {return b*a;}
+S e() {return S();}
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
 void solve() {
-    LONG(K, M);
-    mint::set_mod(M);
+    LONG(N, K);
+    VL(A, N);
 
-    Mat<3,mint> mat({{ {10,1}, {0,1} }});
-
-    auto repunit=[&](ll d) -> mint {
-        Mat<3,mint> ret = mat.pow(d);
-        return ret[0][1];
+    auto calc=[&](ll k) -> ll {
+        segtree<S,op,e> seg(N);
+        rep(i, N) {
+            TropicalMat<2> a({{ {INF,0},{A[i],A[i]} }});
+            seg.set(i, a);
+        }
+        ll ret = INF;
+        rep(l, N+1-k) {
+            auto a = seg.prod(l,l+k);
+            vector<ll> v = {0,INF};
+            vl b = a*v;
+            chmin(ret, b[1]);
+        }
+        return ret;
     };
-    mint ans = 0;
-    rep(i, K) {
-        LONG(c, d);
-        ans *= mint(10).pow(d);
-        ans += c*repunit(d);
-    }
+    ll ans = calc(K);
+    chmin(ans, calc(K+1));
     Out(ans);
 }
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
+
 
