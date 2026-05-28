@@ -1513,8 +1513,7 @@
 - 基本 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4) （[解説は自分の提出参照](https://atcoder.jp/contests/abc003/submissions/58846679)）
 - !復習価値低 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
-!!! where i am now for rank B (last submission 2025/12/26)
-- !復習価値中 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
+- !復習価値低 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
 - !復習価値低 最小公倍数=Mとなる場合の数 [F - Subsequence LCM](https://atcoder.jp/contests/abc349/tasks/abc349_f)
 - !復習価値低 [G - Yet Another RGB Sequence](https://atcoder.jp/contests/abc266/tasks/abc266_g)
 
@@ -1682,6 +1681,7 @@
 - !復習価値低 [E - Sum of Subarrays](https://atcoder.jp/contests/abc423/tasks/abc423_e)
 - !復習価値低 全演算方法の総和 [F - Problem where +s Separate Digits](https://atcoder.jp/contests/abc224/tasks/abc224_f)
 - 基本 全連続部分列についての回文コストの和 [E - Make it Palindrome](https://atcoder.jp/contests/abc290/tasks/abc290_e)
+!!! where i am now for rank B (last submission 2025/12/26)
 - !復習価値中 [F - Double Sum 3](https://atcoder.jp/contests/abc390/tasks/abc390_f)
 
 ## 投票方式で考える
