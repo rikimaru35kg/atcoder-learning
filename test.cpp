@@ -1,4 +1,4 @@
-﻿// ### test.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,79 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <size_t n> class TropicalMat {
-    using ar2 = array<array<long long,n>,n>;
-    ar2 a;
-    static constexpr long long inf = 3e18;
-public:
-    TropicalMat (bool identity=true) {
-        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            if(i==j) a[i][j] = (identity?0:inf);
-            else a[i][j] = inf;
-        }
-    }
-    TropicalMat (const ar2 &a): a(a) {}
-    TropicalMat operator*(const TropicalMat &o) const {
-        TropicalMat ret(false);
-        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            for (size_t k=0; k<n; ++k) {
-                if(a[i][k]==inf || o[k][j]==inf) continue;
-                ret[i][j] = min(ret[i][j], a[i][k]+o[k][j]);
-            }
-        }
-        return ret;
-    }
-    vector<long long> operator*(const vector<long long> &o) const {
-        vector<long long> vec(n, inf);
-        for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
-            if(a[i][j]==inf || o[j]==inf) continue;
-            vec[i] = min(vec[i], a[i][j] + o[j]);
-        }
-        return vec;
-    }
-    auto& operator[](int i) { return a[i]; }
-    const auto& operator[](int i) const { return a[i]; }
-};
-
-using S = TropicalMat<2>;
-S op(S a, S b) {return b*a;}
-S e() {return S();}
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
 void solve() {
-    LONG(N, K);
-    VL(A, N);
+    STRING(S);
+    S = '(' + S + ')';
+    ll N = S.size();
 
-    auto calc=[&](ll k) -> ll {
-        segtree<S,op,e> seg(N);
-        rep(i, N) {
-            TropicalMat<2> a({{ {INF,0},{A[i],A[i]} }});
-            seg.set(i, a);
+    vvl from(N);
+    {
+        ll i = 1;
+        auto dfs=[&](auto f, ll p=0) -> void {
+            while(i<N) {
+                if(S[i]==')') {
+                    i++; break;
+                }
+                from[p].push_back(i);
+                if(S[i]=='(') {
+                    f(f, i++);
+                } else {
+                    ++i;
+                }
+            }
+        };
+        dfs(dfs);
+    }
+    de(S);
+    de(from)
+
+    auto dfs=[&](auto f, ll v, int d) -> string {
+        if(S[v]!='(' && S[v]!=')') {
+            if(d==0) S[v] ^= 32;
+            return string(1, S[v]);
         }
-        ll ret = INF;
-        rep(l, N+1-k) {
-            auto a = seg.prod(l,l+k);
-            vector<ll> v = {0,INF};
-            vl b = a*v;
-            chmin(ret, b[1]);
+        string ret;
+        if(d) reverse(all(from[v]));
+        for(auto nv: from[v]) {
+            ret += f(f, nv, d^1);
         }
         return ret;
     };
-    ll ans = calc(K);
-    chmin(ans, calc(K+1));
+    string ans = dfs(dfs, 0, 0);
     Out(ans);
-}
 
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
-
-

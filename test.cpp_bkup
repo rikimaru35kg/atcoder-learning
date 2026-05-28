@@ -1,4 +1,4 @@
-// ### test.cpp ###
+﻿// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,88 +228,80 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-//! Binary Trie (template only)
-template<class T=long long, int k=62> class BinaryTrie {
-    struct Node {
-        int to[2];
-        int cnt;
-        ll dp;
-        Node(): cnt(0),dp(-1) { to[0] = to[1] = -1; }
-    };
-    vector<Node> nodes;
+
+template <size_t n> class TropicalMat {
+    using ar2 = array<array<long long,n>,n>;
+    ar2 a;
+    static constexpr long long inf = 3e18;
 public:
-    BinaryTrie(): nodes(1,Node()) {}
-    void add(T x, int c) {
-        int v = 0;
-        nodes[v].cnt += c;
-        vl vs;
-        vs.push_back(0);
-        for(int i=k; i>=0; --i) {
-            int b = x>>i&1;
-            if(nodes[v].to[b]==-1) {
-                nodes[v].to[b] = nodes.size();
-                nodes.push_back(Node());
-            }
-            v = nodes[v].to[b];
-            nodes[v].cnt += c;
-            vs.push_back(v);
-        }
-        vs.pop_back();
-        reverse(all(vs));
-
-        if(nodes[v].cnt==0) nodes[v].dp = -1;
-        else if(nodes[v].cnt==1) nodes[v].dp = x;
-        else nodes[v].dp = 0;
-
-        for(auto v: vs) {
-            ll &cdp = nodes[v].dp;
-            ll c1 = nodes[v].to[0];
-            ll c2 = nodes[v].to[1];
-
-            if(nodes[v].cnt==0) {
-                cdp = -1; continue;
-            }
-            if(nodes[v].cnt==1) {
-                if(c1!=-1 && nodes[c1].cnt==1) cdp = nodes[c1].dp;
-                else cdp = nodes[c2].dp;
-                continue;
-            }
-            if(c1!=-1 && c2!=-1 && nodes[c1].cnt==1 && nodes[c2].cnt==1) {
-                cdp = nodes[c1].dp ^ nodes[c2].dp;
-                continue;
-            }
-            cdp = INF;
-            if(c1!=-1 && nodes[c1].cnt>=2) chmin(cdp, nodes[c1].dp);
-            if(c2!=-1 && nodes[c2].cnt>=2) chmin(cdp, nodes[c2].dp);
+    TropicalMat (bool identity=true) {
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            if(i==j) a[i][j] = (identity?0:inf);
+            else a[i][j] = inf;
         }
     }
-    ll get() {
-        return nodes[0].dp;
+    TropicalMat (const ar2 &a): a(a) {}
+    TropicalMat operator*(const TropicalMat &o) const {
+        TropicalMat ret(false);
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            for (size_t k=0; k<n; ++k) {
+                if(a[i][k]==inf || o[k][j]==inf) continue;
+                ret[i][j] = min(ret[i][j], a[i][k]+o[k][j]);
+            }
+        }
+        return ret;
     }
+    vector<long long> operator*(const vector<long long> &o) const {
+        vector<long long> vec(n, inf);
+        for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
+            if(a[i][j]==inf || o[j]==inf) continue;
+            vec[i] = min(vec[i], a[i][j] + o[j]);
+        }
+        return vec;
+    }
+    auto& operator[](int i) { return a[i]; }
+    const auto& operator[](int i) const { return a[i]; }
 };
 
-void solve() {
-    LONG(Q);
-    BinaryTrie trie;
-    rep(i, Q) {
-        LONG(t);
-        if(t==1) {
-            LONG(x);
-            trie.add(x, 1);
-        } else if(t==2) {
-            LONG(x);
-            trie.add(x, -1);
-        } else {
-            Out(trie.get());
-        }
-    }
+using S = TropicalMat<2>;
+S op(S a, S b) {return b*a;}
+S e() {return S();}
 
+#include <atcoder/segtree>
+using namespace atcoder;
+
+void solve() {
+    LONG(N, K);
+    VL(A, N);
+
+    auto calc=[&](ll k) -> ll {
+        segtree<S,op,e> seg(N);
+        rep(i, N) {
+            TropicalMat<2> a({{ {INF,0},{A[i],A[i]} }});
+            seg.set(i, a);
+        }
+        ll ret = INF;
+        rep(l, N+1-k) {
+            auto a = seg.prod(l,l+k);
+            vector<ll> v = {0,INF};
+            vl b = a*v;
+            chmin(ret, b[1]);
+        }
+        return ret;
+    };
+    ll ans = calc(K);
+    chmin(ans, calc(K+1));
+    Out(ans);
 }
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
+
+
