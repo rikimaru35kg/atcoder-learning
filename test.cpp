@@ -228,6 +228,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template <typename T> class MergeSortedVec {
+    vector<T> a;
+    bool erase_dup;
+public:
+    MergeSortedVec(bool erase_dup=false): erase_dup(erase_dup) {}
+    void merge(const vector<T> &b) {
+        vector<T> c;
+        size_t i1 = 0, i2 = 0;
+        while(i1<a.size() || i2<b.size()) {
+            if(i1 == a.size()) c.push_back(b[i2++]);
+            else if(i2 == b.size()) c.push_back(a[i1++]);
+            else {
+                if(a[i1] == b[i2]) c.push_back(a[i1++]);
+                else if(a[i1] < b[i2]) c.push_back(a[i1++]);
+                else c.push_back(b[i2++]);
+            }
+        }
+        if(erase_dup) c.erase(unique(c.begin(), c.end()), c.end());
+        swap(a, c);
+    }
+    const vector<T>& get() const { return a; }
+};
+
 void solve() {
     LONG(N);
     VL(A, N);
@@ -251,26 +274,10 @@ void solve() {
         return num(cis);
     };
     auto both=[&](ll x) -> ll {
-        vl cis;
-        ll i1 = 0, i2 = 0;
-        ll n1 = is[x-1].size(), n2 = is[x].size();
-        while(i1<n1 || i2<n2) {
-            if(i1==n1) cis.push_back(is[x][i2++]);
-            else if(i2==n2) cis.push_back(is[x-1][i1++]);
-            else {
-                ll a = is[x-1][i1], b = is[x][i2];
-                if(a==b) {
-                    cis.push_back(a);
-                    i1++, i2++;
-                } else if(a<b) {
-                    cis.push_back(a);
-                    i1++;
-                } else {
-                    cis.push_back(b);
-                    i2++;
-                }
-            }
-        }
+        MergeSortedVec<ll> ms(true);
+        ms.merge(is[x]);
+        ms.merge(is[x-1]);
+        vl cis = ms.get();
         return num(cis);
     };
     ll ans = 0;

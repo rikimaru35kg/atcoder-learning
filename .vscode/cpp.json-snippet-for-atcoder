@@ -3661,5 +3661,32 @@
       "\tconst auto& operator[](int i) const { return a[i]; }",
       "};"
     ]
+  },
+  "Snippet(MergeSortedVec)": {
+    "prefix": "merge_sorted_vec",
+    "body": [
+      "template <typename T> class MergeSortedVec {",
+      "\tvector<T> a;",
+      "\tbool erase_dup;",
+      "public:",
+      "\tMergeSortedVec(bool erase_dup=false): erase_dup(erase_dup) {}",
+      "\tvoid merge(const vector<T> &b) {",
+      "\t\tvector<T> c;",
+      "\t\tsize_t i1 = 0, i2 = 0;",
+      "\t\twhile(i1<a.size() || i2<b.size()) {",
+      "\t\t\tif(i1 == a.size()) c.push_back(b[i2++]);",
+      "\t\t\telse if(i2 == b.size()) c.push_back(a[i1++]);",
+      "\t\t\telse {",
+      "\t\t\t\tif(a[i1] == b[i2]) c.push_back(a[i1++]);",
+      "\t\t\t\telse if(a[i1] < b[i2]) c.push_back(a[i1++]);",
+      "\t\t\t\telse c.push_back(b[i2++]);",
+      "\t\t\t}",
+      "\t\t}",
+      "\t\tif(erase_dup) c.erase(unique(c.begin(), c.end()), c.end());",
+      "\t\tswap(a, c);",
+      "\t}",
+      "\tconst vector<T>& get() const { return a; }",
+      "};"
+    ]
   }
 }
