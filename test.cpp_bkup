@@ -1,4 +1,4 @@
-﻿// ### test.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,72 +228,33 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
-template <size_t n> class TropicalMat {
-    using ar2 = array<array<long long,n>,n>;
-    ar2 a;
-    static constexpr long long inf = 3e18;
-public:
-    TropicalMat (bool identity=true) {
-        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            if(i==j) a[i][j] = (identity?0:inf);
-            else a[i][j] = inf;
-        }
-    }
-    TropicalMat (const ar2 &a): a(a) {}
-    TropicalMat operator*(const TropicalMat &o) const {
-        TropicalMat ret(false);
-        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            for (size_t k=0; k<n; ++k) {
-                if(a[i][k]==inf || o[k][j]==inf) continue;
-                ret[i][j] = min(ret[i][j], a[i][k]+o[k][j]);
-            }
-        }
-        return ret;
-    }
-    vector<long long> operator*(const vector<long long> &o) const {
-        vector<long long> vec(n, inf);
-        for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
-            if(a[i][j]==inf || o[j]==inf) continue;
-            vec[i] = min(vec[i], a[i][j] + o[j]);
-        }
-        return vec;
-    }
-    auto& operator[](int i) { return a[i]; }
-    const auto& operator[](int i) const { return a[i]; }
-};
-
-using S = TropicalMat<2>;
-S op(S a, S b) {return b*a;}
-S e() {return S();}
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
 void solve() {
     LONG(N, K);
-    VL(A, N);
-
-    auto calc=[&](ll k) -> ll {
-        segtree<S,op,e> seg(N);
-        rep(i, N) {
-            TropicalMat<2> a({{ {INF,0},{A[i],A[i]} }});
-            seg.set(i, a);
-        }
-        ll ret = INF;
-        rep(l, N+1-k) {
-            auto a = seg.prod(l,l+k);
-            vector<ll> v = {0,INF};
-            vl b = a*v;
-            chmin(ret, b[1]);
+    auto zerocnt=[&](ll x) -> ll {
+        ll ret = 0;
+        while(x) {
+            if(!(x&1)) ++ret;
+            x >>= 1;
         }
         return ret;
     };
-    ll ans = calc(K);
-    chmin(ans, calc(K+1));
-    Out(ans);
-}
+    ll z = zerocnt(N);
+    if((1LL<<z) < K) {
+        Out(-1); return;
+    }
+    --K;
+    ll r = N;
+    ll b = 0;
+    rep(i, z) {
+        while(N>>b&1) ++b;
+        if(K>>i&1) {
+            r += 1LL<<b;
+        }
+        ++b;
+    }
+    Out(r);
 
+}
 
 int main () {
     // ios::sync_with_stdio(false);
@@ -303,5 +264,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
-

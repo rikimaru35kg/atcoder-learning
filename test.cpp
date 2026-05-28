@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <numeric>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,44 +230,41 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    STRING(S);
-    S = '(' + S + ')';
-    ll N = S.size();
-
-    vvl from(N);
-    {
-        ll i = 1;
-        auto dfs=[&](auto f, ll p=0) -> void {
-            while(i<N) {
-                if(S[i]==')') {
-                    i++; break;
-                }
-                from[p].push_back(i);
-                if(S[i]=='(') {
-                    f(f, i++);
-                } else {
-                    ++i;
-                }
-            }
-        };
-        dfs(dfs);
+    LONG(L, R);
+    ++R;
+    ++L;
+    ll M = 1e7+5;
+    vb isp(M, true);
+    isp[0] = isp[1] = false;
+    for(ll p=2; p*p<M; ++p) {
+        if(!isp[p]) continue;
+        for(ll x=p*p; x<M; x+=p) isp[x] = false;
     }
-    de(S);
-    de(from)
 
-    auto dfs=[&](auto f, ll v, int d) -> string {
-        if(S[v]!='(' && S[v]!=')') {
-            if(d==0) S[v] ^= 32;
-            return string(1, S[v]);
+    vb isp2(R-L, true);
+    for(ll p=2; p<M; ++p) {
+        if(!isp[p]) continue;
+        ll k = Divceil(L, p);
+        for(ll x=k*p; x<R; x+=p) {
+            if(x==p) continue;
+            isp2[x-L] = false;
         }
-        string ret;
-        if(d) reverse(all(from[v]));
-        for(auto nv: from[v]) {
-            ret += f(f, nv, d^1);
+    }
+
+    ll ans = 0;
+    vb nc(R-L);
+    for(ll p=2; p<M; ++p) {
+        if(!isp[p]) continue;
+        ll x = p;
+        sll y = x;
+        while(y<R) {
+            if(y>=L) nc[y-L] = true;
+            y *= x;
         }
-        return ret;
-    };
-    string ans = dfs(dfs, 0, 0);
+    }
+    rep(i, R-L) if(isp2[i]) nc[i] = true;
+    rep(i, R-L) if(nc[i]) ++ans;
+    ++ans;
     Out(ans);
 
 }
