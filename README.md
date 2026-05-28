@@ -1757,7 +1757,6 @@
 ## 区間をsetで管理するテク
 - 名前通りのテク
 ### 例題
-!!! where i am now for rank B (last submission 2025/12/26)
 - !復習価値中 [E - Cover query](https://atcoder.jp/contests/abc435/tasks/abc435_e)
 
 ## 標準形を考える
@@ -1910,6 +1909,7 @@
 - !復習価値低 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
 - 基本 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
 - !復習価値低 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
+!!! where i am now for rank B (last submission 2026/2/23)
 - !復習価値中 [G - Sort from 1 to 4](https://atcoder.jp/contests/abc302/tasks/abc302_g)
 
 ## まとめ買いを個別買いに変換

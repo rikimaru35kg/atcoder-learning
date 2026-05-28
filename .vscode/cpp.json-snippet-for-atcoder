@@ -3688,5 +3688,39 @@
       "\tconst vector<T>& get() const { return a; }",
       "};"
     ]
+  },
+  "Snippet(SpanSets)": {
+    "prefix": "span_sets",
+    "body": [
+      "class SpanSets {",
+      "\tlong long length = 0;",
+      "\tset<pair<long long,long long>> st;",
+      "public:",
+      "\tSpanSets () {}",
+      "\tvoid add(long long l, long long r) {  // [l,r)",
+      "\t\tassert(l <= r);",
+      "\t\tif(l == r) return;",
+      "\t\tauto it = st.lower_bound({l+1,l});",
+      "\t\tif(it != st.begin()) --it;",
+      "\t\tlong long nl = l, nr = r;",
+      "\t\twhile(it != st.end()) {",
+      "\t\t\tauto [cl,cr] = *it;",
+      "\t\t\tif(cr < l) {",
+      "\t\t\t\t++it; continue;",
+      "\t\t\t}",
+      "\t\t\tif(cl > r) break;",
+      "\t\t\tnl = min(nl, cl), nr = max(nr, cr);",
+      "\t\t\tit = st.erase(it);",
+      "\t\t\tlength -= cr - cl;",
+      "\t\t}",
+      "\t\tst.emplace(nl, nr);",
+      "\t\tlength += nr - nl;",
+      "\t}",
+      "\tlong long get_total_length() const { return length; }",
+      "\tconst set<pair<long long,long long>>& get_spans() const {",
+      "\t\treturn st;",
+      "\t}",
+      "};"
+    ]
   }
 }

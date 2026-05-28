@@ -228,63 +228,44 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> class MergeSortedVec {
-    vector<T> a;
-    bool erase_dup;
+class SpanSets {
+    long long length = 0;
+    set<pair<long long,long long>> st;
 public:
-    MergeSortedVec(bool erase_dup=false): erase_dup(erase_dup) {}
-    void merge(const vector<T> &b) {
-        vector<T> c;
-        size_t i1 = 0, i2 = 0;
-        while(i1<a.size() || i2<b.size()) {
-            if(i1 == a.size()) c.push_back(b[i2++]);
-            else if(i2 == b.size()) c.push_back(a[i1++]);
-            else {
-                if(a[i1] == b[i2]) c.push_back(a[i1++]);
-                else if(a[i1] < b[i2]) c.push_back(a[i1++]);
-                else c.push_back(b[i2++]);
+    SpanSets () {}
+    void add(long long l, long long r) {  // [l,r)
+        assert(l <= r);
+        if(l == r) return;
+        auto it = st.lower_bound({l+1,l});
+        if(it != st.begin()) --it;
+        long long nl = l, nr = r;
+        while(it != st.end()) {
+            auto [cl,cr] = *it;
+            if(cr < l) {
+                ++it; continue;
             }
+            if(cl > r) break;
+            nl = min(nl, cl), nr = max(nr, cr);
+            it = st.erase(it);
+            length -= cr - cl;
         }
-        if(erase_dup) c.erase(unique(c.begin(), c.end()), c.end());
-        swap(a, c);
+        st.emplace(nl, nr);
+        length += nr - nl;
     }
-    const vector<T>& get() const { return a; }
+    long long get_total_length() const { return length; }
+    const set<pair<long long,long long>>& get_spans() const {
+        return st;
+    }
 };
 
 void solve() {
-    LONG(N);
-    VL(A, N);
-    vvl is(N+1, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N+1) is[i].push_back(N);
-
-    auto nc2=[&](ll n) -> ll { return n*(n-1)/2; };
-
-    auto num=[&](vl &cis) -> ll {
-        ll n = cis.size();
-        ll ret = nc2(N);
-        rep(i, n-1) {
-            ret -= nc2(cis[i+1]-cis[i]);
-        }
-        return ret;
-    };
-
-    auto one=[&](ll x) -> ll {
-        vl &cis = is[x];
-        return num(cis);
-    };
-    auto both=[&](ll x) -> ll {
-        MergeSortedVec<ll> ms(true);
-        ms.merge(is[x]);
-        ms.merge(is[x-1]);
-        vl cis = ms.get();
-        return num(cis);
-    };
-    ll ans = 0;
-    rep1(x, N) {
-        ans += both(x) - one(x-1);
+    LONG(N, Q);
+    SpanSets ss;
+    rep(i, Q) {
+        LONG(l,r); ++r;
+        ss.add(l, r);
+        Out(N-ss.get_total_length());
     }
-    Out(ans);
 
 
 }
