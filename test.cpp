@@ -1,5 +1,4 @@
-﻿// ### test.cpp ###
-#include <bits/stdc++.h>
+﻿#include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -64,8 +63,12 @@ using vvvl = vector<vector<vector<ll>>>;
 using vvvb = vector<vector<vector<bool>>>;
 using vvvd = vector<vector<vector<double>>>;
 using t3 = tuple<ll,ll,ll>;
+istream& operator>>(istream &is, t3 &t) { is>>get<0>(t)>>get<1>(t)>>get<2>(t); return is; }
+ostream& operator<<(ostream& os, const t3& t) { os<<"("<<get<0>(t)<<','<<get<1>(t)<<','<<get<2>(t)<<")"; return os; }
 using t3d = tuple<db,db,db>;
 using t4 = tuple<ll,ll,ll,ll>;
+istream& operator>>(istream &is, t4 &t) { is>>get<0>(t)>>get<1>(t)>>get<2>(t)>>get<3>(t); return is; }
+ostream& operator<<(ostream& os, const t4& t) { os<<"("<<get<0>(t)<<','<<get<1>(t)<<','<<get<2>(t)<<','<<get<3>(t)<<")"; return os; }
 using vt3 = vector<t3>;
 using vt3d = vector<t3d>;
 using vt4 = vector<t4>;
@@ -85,6 +88,8 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
+#define PFi {puts("First"); exit(0);}
+#define PSe {puts("Second"); exit(0);}
 #define Pm0 {puts("0"); exit(0);}
 #define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
@@ -110,10 +115,16 @@ using cd = complex<double>;
 #define VVL(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2(lvec2, h, w)
 #define VVLM(lvec2, h, w) vvl lvec2(h, vl(w)); input_lvec2m(lvec2, h, w)
 #define VVC(cvec2, h, w) vvc cvec2(h, vc(w)); input_cvec2(cvec2, h, w)
-#define pcnt(x) (ll)__builtin_popcountll(x)
-#define parity(x) (ll)__builtin_parityll(x)
 #define uset unordered_set
 #define umap unordered_map
+inline int pcnt(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_popcountll(s);
+    return n-__builtin_popcountll(s);
+}
+inline int parity(ll s, ll n=-1) { // n!=-1 for # of 0
+    if(n==-1) return __builtin_parityll(s);
+    return (n-__builtin_popcountll(s))%2;
+}
 inline void Out(double x) {printf("%.15f",x);cout<<'\n';}
 template<typename T> inline void Out(pair<T,T> x) {cout<<x.first<<' '<<x.second<<'\n';}
 template<typename T> inline void Out(T x) {cout<<x<<'\n';}
@@ -147,20 +158,24 @@ inline void input_lvec2(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2
 inline void input_lvec2m(vvl &lvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>lvec2[i][j];--lvec2[i][j];}}
 inline void input_cvec2(vvc &cvec2, ll h, ll w) {rep(i, h) rep(j, w) {cin>>cvec2[i][j];}}
 inline bool isin(ll i, ll j, ll h, ll w) {if(i<0||i>=h||j<0||j>=w) return false; else return true;}
-inline ll TmpPercent(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
-inline ll Percent(ll a, ll b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
-inline ll Div(ll a, ll b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
-inline ll Divceil(ll a, ll b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
+template<typename T> inline T TmpPercent(T a, T b) {if(b<0){a=-a,b=-b;} return (a%b+b)%b;}
+template<typename T> inline T Percent(T a, T b) {if(b<0) return -TmpPercent(a,b); return TmpPercent(a,b);}
+template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPercent(a,b))/b; }
+template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
+template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
+template<typename T> inline void sort3(T &a,T &b,T &c) {if(a>b)swap(a,b);if(b>c)swap(b,c);if(a>b)swap(a,b);}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
 #define de3(var1,var2,var3) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<": "; debug_view(var1,var2,var3);}
 #define de4(var1,var2,var3,var4) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<": "; debug_view(var1,var2,var3,var4);}
+#define de5(var1,var2,var3,var4,var5) {cerr<<#var1<<' '<<#var2<<' '<<#var3<<' '<<#var4<<' '<<#var5<<": "; debug_view(var1,var2,var3,var4,var5);}
 template<typename T> inline void debug_view(T e){cerr << e << endl;}
 template<typename T1, typename T2> inline void debug_view(T1 e1, T2 e2){cerr<<e1<<' '<<e2<<endl;}
 template<typename T1, typename T2, typename T3> inline void debug_view(T1 e1, T2 e2, T3 e3){cerr<<e1<<' '<<e2<<' '<<e3<<endl;}
 template<typename T1, typename T2, typename T3, typename T4> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<endl;}
+template<typename T1, typename T2, typename T3, typename T4, typename T5> inline void debug_view(T1 e1, T2 e2, T3 e3, T4 e4, T5 e5){cerr<<e1<<' '<<e2<<' '<<e3<<' '<<e4<<' '<<e5<<endl;}
 template<typename T1, typename T2> inline void debug_view(pair<T1,T2> &p){cerr<<"{"<<p.first<<" "<<p.second<<"}\n";}
 template<typename T1, typename T2> inline void debug_view(vector<pair<T1,T2>> &v){for(auto [a,b]: v){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
 template<typename T1, typename T2> inline void debug_view(set<pair<T1,T2>> &s){for(auto [a,b]: s){cerr<<"{"<<a<<" "<<b<<"} ";} cerr << endl;}
@@ -189,23 +204,42 @@ template<typename T> inline void debugb_view(vector<T> &v){cerr<<"----"<<endl;fo
 #define de2(var1,var2) {}
 #define de3(var1,var2,var3) {}
 #define de4(var1,var2,var3,var4) {}
+#define de5(var1,var2,var3,var4,var5) {}
 #define deb(var) {}
 #endif
+int IINF = 1001001001;
 ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
 template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
-const double EPS = 1e-8;  //eg) if x=1e9, EPS >= 1e9/1e15(=1e-6)
+const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
 const vi dj = {1, 0, -1, 0};
 const vp dij = {{0,1},{1,0},{0,-1},{-1,0}};
+const vp hex0 = {{-1,-1},{-1,0},{0,-1},{0,1},{1,-1},{1,0}}; // tobide
+const vp hex1 = {{-1,0},{-1,1},{0,-1},{0,1},{1,0},{1,1}};  // hekomi
 const vi di8 = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vi dj8 = {-1, 0, 1, -1, 1, -1, 0, 1};
+const vp dij8 = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
 Pr operator+ (Pr a, Pr b) {return {a.first+b.first, a.second+b.second};}
 Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 //! n*n matrix
 template <size_t n, typename T> class Mat {
@@ -219,49 +253,50 @@ public:
         }
     }
     Mat (const ar2 &a): a(a) {}
-    // Define operator*
     Mat operator* (const Mat &o) const {  // Mat * Mat
         Mat ret(false);
         for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
             for (size_t k=0; k<n; ++k) {
-                ret.a[i][j] += a[i][k] * o.a[k][j];
+                ret[i][j] += a[i][k] * o[k][j];
             }
         }
         return ret;
     }
     vector<T> operator* (const vector<T> &o) const {  // Mat * vector
-        vector<T> ret(n);
+        vector<T> vec(n);
         for (size_t j=0; j<n; ++j) for (size_t k=0; k<n; ++k) {
-            ret[j] += a[j][k] * o[k];
+            vec[j] += a[j][k] * o[k];
         }
-        return ret;
+        return vec;
     }
     Mat operator* (const T &x) const {  // Mat * scaler
         Mat ret(false);
         for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
-            ret.a[i][j] = a[i][j]*x;
+            ret[i][j] = a[i][j]*x;
         }
         return ret;
     }
     Mat inv() const {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
-        T det = a[0][0]*a[1][1]-a[0][1]*a[1][0];
+        static_assert(n == 2, "Mat.inv() only supports for 2x2 matrices");
+        T det = a[0][0]*a[1][1] - a[0][1]*a[1][0];
         Mat ret(false);
-        ret.a[0][0] = a[1][1], ret.a[0][1] = -a[0][1];
-        ret.a[1][0] = -a[1][0], ret.a[1][1] = a[0][0];
+        ret[0][0] = a[1][1], ret[0][1] = -a[0][1];
+        ret[1][0] = -a[1][0], ret[1][1] = a[0][0];
         ret = ret * (1/det);
         return ret;
     }
     Mat transpose() const {
         Mat ret(false);
         for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
-            ret.a[i][j] = a[j][i];
+            ret[i][j] = a[j][i];
         }
         return ret;
     }
     // power k (A^k)
     Mat pow(long long k) const {
+        assert(k >= 0);
         Mat ret(true);
-        Mat b = a;
+        Mat b = *this;
         while(k) {
             if(k&1) ret = ret * b;
             b = b * b;
@@ -273,7 +308,6 @@ public:
     const auto& operator[](int i) const { return a[i]; }
     void print(string debugname="------") const {  // for debug
         #ifdef __DEBUG
-        cerr << n << '\n';
         cerr << debugname << ":\n";
         for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
             cerr << a[i][j].val() << (j==n-1? '\n': ' ');
@@ -283,40 +317,29 @@ public:
     }
 };
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+void solve() {
+    LONG(K, M);
+    mint::set_mod(M);
 
+    Mat<3,mint> mat({{ {10,1}, {0,1} }});
+
+    auto repunit=[&](ll d) -> mint {
+        Mat<3,mint> ret = mat.pow(d);
+        return ret[0][1];
+    };
+    mint ans = 0;
+    rep(i, K) {
+        LONG(c, d);
+        ans *= mint(10).pow(d);
+        ans += c*repunit(d);
+    }
+    Out(ans);
+}
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N, K);
-    Mat<50,mint> mat(false);
-    rep(i, N) rep(j, N) {
-        LONG(a);
-        mat[i][j] = a;
-    }
-    mat = mat.transpose();
-
-    vm x(50);
-    rep(i, N) x[i] = 1;
-    mat = mat.pow(K);
-    vm y = mat*x;
-    mint ans = 0;
-    rep(i, N) ans += y[i];
-    Out(ans);
-    
+    solve();
 }
 
 // ### test.cpp ###
