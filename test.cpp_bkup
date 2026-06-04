@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <string>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -228,71 +229,105 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> class MergeSortedVec {
-    vector<T> a;
-    bool erase_dup;
-public:
-    MergeSortedVec(bool erase_dup=false): erase_dup(erase_dup) {}
-    void merge(const vector<T> &b) {
-        vector<T> c;
-        size_t i1 = 0, i2 = 0;
-        while(i1<a.size() || i2<b.size()) {
-            if(i1 == a.size()) c.push_back(b[i2++]);
-            else if(i2 == b.size()) c.push_back(a[i1++]);
-            else {
-                if(a[i1] == b[i2]) c.push_back(a[i1++]);
-                else if(a[i1] < b[i2]) c.push_back(a[i1++]);
-                else c.push_back(b[i2++]);
-            }
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+//! eg) 360 = 2^3 * 3^2 * 5^1;
+//! primes = {(2,3), (3,2), (5,1)}
+vector<pair<long long, long long>> prime_factorization (long long n) {
+    vector<pair<long long, long long>> primes;
+    if (n <= 1) return primes;
+    for (long long k=2; k*k<=n; ++k) {
+        if (n % k != 0) continue;
+        primes.emplace_back(k, 0);
+        while(n % k == 0) {
+            n /= k;
+            primes.back().second++;
         }
-        if(erase_dup) c.erase(unique(c.begin(), c.end()), c.end());
-        swap(a, c);
     }
-    const vector<T>& get() const { return a; }
-};
+    if (n != 1) primes.emplace_back(n, 1);
+    return primes;
+}
 
-void solve() {
-    LONG(N);
-    VL(A, N);
-    vvl is(N+1, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N+1) is[i].push_back(N);
+mint solve(ull N, ll M) {
+    mint ans;
 
-    auto nc2=[&](ll n) -> ll { return n*(n-1)/2; };
+    auto ps = prime_factorization(M);
 
-    auto num=[&](vl &cis) -> ll {
-        ll n = cis.size();
-        ll ret = nc2(N);
-        rep(i, n-1) {
-            ret -= nc2(cis[i+1]-cis[i]);
+    auto calc=[&](ull x) -> ll {
+        ull ret = 1;
+        for(auto [p,n]: ps) {
+            ull cnt = 0;
+            while(x%p == 0) {
+                ++cnt;
+                x /= p;
+                if((ll)cnt==n) break;
+            }
+            rep(i, n-cnt) ret *= p;
         }
         return ret;
     };
 
-    auto one=[&](ll x) -> ll {
-        vl &cis = is[x];
-        return num(cis);
-    };
-    auto both=[&](ll x) -> ll {
-        MergeSortedVec<ll> ms(true);
-        ms.merge(is[x]);
-        ms.merge(is[x-1]);
-        vl cis = ms.get();
-        return num(cis);
-    };
-    ll ans = 0;
-    rep1(x, N) {
-        ans += both(x) - one(x-1);
+    ull upp = 9, low = 1;
+    ull ten = 10;
+    rep1(d, 19) {
+        if(low>N) break;
+
+        ull bnum = min(upp, N) - low + 1;
+
+        ull afactor = calc(ten-1);
+        ull anum = N/afactor;
+
+        ans += mint(anum) * bnum;
+
+        ten *= 10;
+        low *= 10;
+        upp = upp*10 + 9;
     }
-    Out(ans);
-
-
+    return ans;
 }
+
+mint solve2(ll N, ll M) {
+    mint ans;
+    rep1(a, N) rep1(b, N) {
+        ll c = stoll(to_string(a) + to_string(b));
+        if(c%M == (a+b)%M) ++ans;
+    }
+    return ans;
+}
+
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
-}
+    LONG(T);
+    rep(i, T) {
+        LONG(N, M);
+        mint ans = solve(N, M);;
+        Out(ans);
+    }
 
+    // while(true) {
+    //     ll mod = 1000;
+    //     ll N = rand()%mod+1, M = rand()%mod+2;
+    //     N = 1;
+    //     mint ans = solve(N, M);
+    //     mint ans2 = solve2(N, M);
+    //     if(ans!=ans2) {
+    //         de4(N, M, ans.val(), ans2.val());
+    //     }
+    // }
+}
 // ### test.cpp ###
+
