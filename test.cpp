@@ -228,129 +228,30 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// LCA using doubling
-class LCA_DBL {
-    using IL = pair<int,long long>;
-    bool done = false;
-    int n, k = 0;
-    vector<vector<int>> p;
-    vector<vector<IL>> from;
-    vector<int> depth;
-    vector<long long> dist;
-    int climb(int v, int x) {
-        for(int i=0; i<=k; ++i) if(x>>i&1) v = p[i][v];
-        return v;
-    }
-public:
-    LCA_DBL(int n=1): n(n), from(n), depth(n), dist(n) {
-        while((1LL<<k)<n) ++k;
-        p.resize(k+1, vector<int>(n));
-    }
-    void add_edge(int a, int b, long long w=1) {
-        from[a].emplace_back(b, w);
-        from[b].emplace_back(a, w);
-    }
-    void build(int rv=0) {
-        if(done) return;
-        done = true;
-        auto dfs=[&](auto f, int v, int dep=0, long long d=0, int pv=-1) -> void {
-            if(pv==-1) p[0][v] = v;
-            else p[0][v] = pv;
-            dist[v] = d;
-            depth[v] = dep;
-            for(auto [nv,w]: from[v]) if(nv!=pv) f(f, nv, dep+1, d+w, v);
-        };
-        dfs(dfs, rv);
-        for(int j=0; j<k; ++j) for(int i=0; i<n; ++i) p[j+1][i] = p[j][p[j][i]];
-    }
-    int lca(int a, int b) {
-        build();
-        if(depth[a]>depth[b]) swap(a,b);
-        b = climb(b, depth[b]-depth[a]);
-        if(a==b) return a;
-        for(int i=k; i>=0; --i) {
-            if(p[i][a]==p[i][b]) continue;
-            a = p[i][a], b = p[i][b];
-        }
-        return p[0][a];
-    }
-    long long get_dist(int a, int b) {
-        int c = lca(a, b);
-        return dist[a]+dist[b]-2*dist[c];
-    }
-} lca;
-
-void update(ll &a, ll &b, ll na, ll nb, ll &d) {
-    ll nd = lca.get_dist(a, nb);
-    if(d < nd) {
-        d = nd;
-        b = nb;
-    }
-}
-
-struct S {
-    ll a, b;
-    S(ll a=-1, ll b=-1): a(a), b(b) {}
-};
-S op(S x, S y) {
-    if(x.a==-1) return y;
-    if(y.a==-1) return x;
-    ll d = 0;
-    chmax(d, lca.get_dist(x.a, x.a));
-    chmax(d, lca.get_dist(x.a, x.b));
-    chmax(d, lca.get_dist(x.a, y.a));
-    chmax(d, lca.get_dist(x.a, y.b));
-
-    chmax(d, lca.get_dist(x.b, x.b));
-    chmax(d, lca.get_dist(x.b, y.a));
-    chmax(d, lca.get_dist(x.b, y.b));
-
-    chmax(d, lca.get_dist(y.a, y.a));
-    chmax(d, lca.get_dist(y.a, y.b));
-
-    chmax(d, lca.get_dist(y.b, y.b));
-
-    if(d == lca.get_dist(x.a,x.a)) return S(x.a, x.a);
-    if(d == lca.get_dist(x.a,x.b)) return S(x.a, x.b);
-    if(d == lca.get_dist(x.a,y.a)) return S(x.a, y.a);
-    if(d == lca.get_dist(x.a,y.b)) return S(x.a, y.b);
-
-    if(d == lca.get_dist(x.b,x.b)) return S(x.b, x.b);
-    if(d == lca.get_dist(x.b,y.a)) return S(x.b, y.a);
-    if(d == lca.get_dist(x.b,y.b)) return S(x.b, y.b);
-
-    if(d == lca.get_dist(y.a,y.a)) return S(y.a, y.a);
-    if(d == lca.get_dist(y.a,y.b)) return S(y.a, y.b);
-
-    if(d == lca.get_dist(y.b,y.b)) return S(y.b, y.b);
-    assert(false);
-    return S(x.a, x.a);
-}
-S e() {return S(); }
-
-#include <atcoder/segtree>
-using namespace atcoder;
-
 void solve() {
     LONG(N);
-    lca = LCA_DBL(N);
-    rep(i, N-1) {
-        LONGM(u, v);
-        lca.add_edge(u, v);
+    VP(X, N);
+    sort(all(X), [&](Pr x1, Pr x2){
+        auto [h1,p1] = x1;
+        auto [h2,p2] = x2;
+        return h1+p1 < h2+p2;
+    });
+
+    vl dp(N+1, INF);
+    dp[0] = 0;
+    for(auto [h,p]: X) {
+        repr(i, N+1) {
+            if(dp[i]==INF) continue;
+            if(dp[i]>h) continue;
+            chmin(dp[i+1], dp[i]+p);
+        }
     }
-    segtree<S,op,e> seg(N);
-    vb on(N, true);
-    rep(i, N) seg.set(i, S(i,i));
-    LONG(Q);
-    rep(i, Q) {
-        LONGM(v);
-        on[v] = !on[v];
-        if(on[v]) seg.set(v, S(v,v));
-        else seg.set(v, S());
-        auto [a,b] = seg.all_prod();
-        ll ans = lca.get_dist(a, b);
-        Out(ans);
+    ll ans = 0;
+    rep(i, N+1) {
+        if(dp[i]==INF) continue;
+        chmax(ans, i);
     }
+    Out(ans);
 
 }
 

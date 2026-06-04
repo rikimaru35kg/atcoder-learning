@@ -1,6 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <string>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,105 +228,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+void solve() {
+    LONG(N, H);
+    VP(X, N);
+    sort(all(X), [&](Pr x1, Pr x2){
+        auto [a1, b1] = x1;
+        auto [a2, b2] = x2;
+        return a2*b1 < a1*b2;
+    });
 
-//! eg) 360 = 2^3 * 3^2 * 5^1;
-//! primes = {(2,3), (3,2), (5,1)}
-vector<pair<long long, long long>> prime_factorization (long long n) {
-    vector<pair<long long, long long>> primes;
-    if (n <= 1) return primes;
-    for (long long k=2; k*k<=n; ++k) {
-        if (n % k != 0) continue;
-        primes.emplace_back(k, 0);
-        while(n % k == 0) {
-            n /= k;
-            primes.back().second++;
+    vl dp(H+1, -1);
+    dp[H] = 0;
+    ll ans = 0;
+    for(auto [a,b]: X) {
+        vl pdp = dp;
+        rep(i, H+1) {
+            if(pdp[i]==-1) continue;
+            if(i-b>=0) chmax(dp[i-b], pdp[i]+a*i);
+            else chmax(ans, pdp[i]+a*i);
         }
+        de2(a,b)
+        de(dp)
     }
-    if (n != 1) primes.emplace_back(n, 1);
-    return primes;
+    rep(i, H+1) chmax(ans, dp[i]);
+    Out(ans);
+
 }
-
-mint solve(ull N, ll M) {
-    mint ans;
-
-    auto ps = prime_factorization(M);
-
-    auto calc=[&](ull x) -> ll {
-        ull ret = 1;
-        for(auto [p,n]: ps) {
-            ull cnt = 0;
-            while(x%p == 0) {
-                ++cnt;
-                x /= p;
-                if((ll)cnt==n) break;
-            }
-            rep(i, n-cnt) ret *= p;
-        }
-        return ret;
-    };
-
-    ull upp = 9, low = 1;
-    ull ten = 10;
-    rep1(d, 19) {
-        if(low>N) break;
-
-        ull bnum = min(upp, N) - low + 1;
-
-        ull afactor = calc(ten-1);
-        ull anum = N/afactor;
-
-        ans += mint(anum) * bnum;
-
-        ten *= 10;
-        low *= 10;
-        upp = upp*10 + 9;
-    }
-    return ans;
-}
-
-mint solve2(ll N, ll M) {
-    mint ans;
-    rep1(a, N) rep1(b, N) {
-        ll c = stoll(to_string(a) + to_string(b));
-        if(c%M == (a+b)%M) ++ans;
-    }
-    return ans;
-}
-
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) {
-        LONG(N, M);
-        mint ans = solve(N, M);;
-        Out(ans);
-    }
-
-    // while(true) {
-    //     ll mod = 1000;
-    //     ll N = rand()%mod+1, M = rand()%mod+2;
-    //     N = 1;
-    //     mint ans = solve(N, M);
-    //     mint ans2 = solve2(N, M);
-    //     if(ans!=ans2) {
-    //         de4(N, M, ans.val(), ans2.val());
-    //     }
-    // }
+    solve();
 }
-// ### test.cpp ###
 
+// ### test.cpp ###

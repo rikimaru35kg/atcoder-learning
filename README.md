@@ -1070,10 +1070,8 @@
 - 基本 [F - Diversity](https://atcoder.jp/contests/abc383/tasks/abc383_f)
 - 基本 [F - |LIS| = 3](https://atcoder.jp/contests/abc237/tasks/abc237_f)
 - 基本 区間センター最適配置問題 [F - Sensor Optimization Dilemma](https://atcoder.jp/contests/abc325/tasks/abc325_f)
-
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
-!!! where i am now for rank C (last submission 2026/1/21)
 - !復習価値低 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
 
 ## 前処理DP
@@ -1084,9 +1082,9 @@
 - 基本 制限時間付き寿司のおいしさ最大化 [E - All-you-can-eat](https://atcoder.jp/contests/abc145/tasks/abc145_e)
 - 基本 おやつ [C - おやつ ](https://atcoder.jp/contests/arc042/tasks/arc042_c)
 - 基本　仕事報酬最大化 [011 - Gravy Jobs（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_k)
-- !復習価値低 [N - 活動](https://atcoder.jp/contests/past202104-open/tasks/past202104_n)
+- 基本 [N - 活動](https://atcoder.jp/contests/past202104-open/tasks/past202104_n)
 - 基本 重さ制限付きタワー [X - Tower](https://atcoder.jp/contests/dp/tasks/dp_x)
-- !復習価値低 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
+- 基本 ざぶとん積み [D - Zabuton](https://atcoder.jp/contests/cf17-final-open/tasks/cf17_final_d)
 - 基本 アフィン変換最大化 [F - Maximum Composition](https://atcoder.jp/contests/abc366/tasks/abc366_f)
 
 ## DP in DP
@@ -1094,6 +1092,7 @@
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
+!!! where i am now for rank C (last submission 2026/1/21)
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
 - !復習価値低 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
@@ -1910,8 +1909,7 @@
 - !復習価値低 [E - Permute K times 2](https://atcoder.jp/contests/abc377/tasks/abc377_e)
 - 基本 [C - あみだくじ](https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_c)
 - !復習価値低 スワップだけで一致するか [F - Simultaneous Swap](https://atcoder.jp/contests/abc296/tasks/abc296_f)
-!!! where i am now for rank B (last submission 2026/2/23)
-- !復習価値中 [G - Sort from 1 to 4](https://atcoder.jp/contests/abc302/tasks/abc302_g)
+- !復習価値低 [G - Sort from 1 to 4](https://atcoder.jp/contests/abc302/tasks/abc302_g)
 
 ## まとめ買いを個別買いに変換
 ### 例題
@@ -1952,6 +1950,7 @@
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
 - !復習価値低 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
+!!! where i am now for rank B (last submission 2026/3/20)
 - !復習価値中 [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
