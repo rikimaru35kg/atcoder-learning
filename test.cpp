@@ -228,30 +228,85 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VP(X, N);
-    sort(all(X), [&](Pr x1, Pr x2){
-        auto [h1,p1] = x1;
-        auto [h2,p2] = x2;
-        return h1+p1 < h2+p2;
-    });
-
-    vl dp(N+1, INF);
-    dp[0] = 0;
-    for(auto [h,p]: X) {
-        repr(i, N+1) {
-            if(dp[i]==INF) continue;
-            if(dp[i]>h) continue;
-            chmin(dp[i+1], dp[i]+p);
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
         }
+        return t;
     }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+
+void solve() {
+    LONG(N, Q);
+    vl prow(N, -1), pcol(N, -1);
+    vp query;
+    rep(i, Q) {
+        LONG(t, x); --x;
+        query.emplace_back(t, x);
+    }
+
+    BIT<int> rbit(Q), cbit(Q);
+
     ll ans = 0;
-    rep(i, N+1) {
-        if(dp[i]==INF) continue;
-        chmax(ans, i);
+    rep(i, Q) {
+        auto [t,x] = query[i];
+        if(t==1) {
+            if(prow[x]==-1) {
+                ans += N;
+            } else {
+                ll now = cbit.sum(prow[x], i);
+                ans += now;
+                rbit.add(prow[x], -1);
+            }
+            rbit.add(i, 1);
+            prow[x] = i;
+        } else {
+            if(pcol[x]==-1) {
+                ll now = rbit.sum(0, i);
+                ans -= now;
+            } else {
+                ll now = rbit.sum(pcol[x], i);
+                ans -= now;
+                cbit.add(pcol[x], -1);
+            }
+            cbit.add(i, 1);
+            pcol[x] = i;
+        }
+        Out(ans);
     }
-    Out(ans);
 
 }
 

@@ -228,29 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, H);
-    VP(X, N);
-    sort(all(X), [&](Pr x1, Pr x2){
-        auto [a1, b1] = x1;
-        auto [a2, b2] = x2;
-        return a2*b1 < a1*b2;
-    });
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    vl dp(H+1, -1);
-    dp[H] = 0;
-    ll ans = 0;
-    for(auto [a,b]: X) {
-        vl pdp = dp;
-        rep(i, H+1) {
-            if(pdp[i]==-1) continue;
-            if(i-b>=0) chmax(dp[i-b], pdp[i]+a*i);
-            else chmax(ans, pdp[i]+a*i);
+void solve() {
+    LONG(N);
+    VL(A, N);
+    ll M = 10;
+    ll S = 1LL<<(M+1);
+    vm dp(S);
+    dp[1] = 1;
+
+    mint den = 1;
+    rep(i, N) {
+        den *= A[i];
+        vm pdp(S); swap(pdp, dp);
+        rep(s, S) {
+            for(ll a=1; a<=A[i] && a<=M; ++a) {
+                ll ns = (s<<a) & (S-1);
+                ns |= s;
+                dp[ns] += pdp[s];
+            }
+            if(A[i]>M) dp[s] += pdp[s] * (A[i]-M);
         }
-        de2(a,b)
-        de(dp)
     }
-    rep(i, H+1) chmax(ans, dp[i]);
+    mint ans;
+    rep(s, S) {
+        if(s>>M&1) ans += dp[s];
+    }
+    ans /= den;
     Out(ans);
 
 }
