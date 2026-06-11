@@ -1092,12 +1092,12 @@
 - 例えば部分和の結果を状態として持つ（部分和の結果が10までで良いなら2^(10+1)でOK）
 - 部分和の結果をDPのキーとして持つ意味を良く考えよ（選ぶ選ばないは最後に自由に決められる訳なので、それを異なる場合の数としてカウントしていかない事）
 ### 例題
-!!! where i am now for rank C (last submission 2026/1/21)
 - !復習価値低 [F - Make 10 Again](https://atcoder.jp/contests/abc310/tasks/abc310_f)
-- !復習価値低 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
+- !要復習 [G - Many LCS](https://atcoder.jp/contests/abc391/tasks/abc391_g)
 
 ## インラインDP
 ### 例題
+!!! where i am now for rank C (last submission 2025/2/26)
 - !復習価値低 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
 
 ## DP配列のマージ
