@@ -1097,11 +1097,11 @@
 
 ## インラインDP
 ### 例題
-!!! where i am now for rank C (last submission 2025/2/26)
 - !復習価値低 [F - Teleporting Takahashi 2](https://atcoder.jp/contests/abc372/tasks/abc372_f)
 
 ## DP配列のマージ
 ### 例題
+!!! where i am now for rank C (last submission 2025/5/2)
 - !復習価値低 [005 - Restricted Digits（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_e)
 
 ## 戻すDP

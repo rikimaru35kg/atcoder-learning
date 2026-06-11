@@ -228,85 +228,43 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
-    }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N, Q);
-    vl prow(N, -1), pcol(N, -1);
-    vp query;
-    rep(i, Q) {
-        LONG(t, x); --x;
-        query.emplace_back(t, x);
-    }
+    LONG(N, M);
+    STRING(S);
+    map<vl,mint> dp;
+    dp[vl(N+1)] = 1;
 
-    BIT<int> rbit(Q), cbit(Q);
-
-    ll ans = 0;
-    rep(i, Q) {
-        auto [t,x] = query[i];
-        if(t==1) {
-            if(prow[x]==-1) {
-                ans += N;
-            } else {
-                ll now = cbit.sum(prow[x], i);
-                ans += now;
-                rbit.add(prow[x], -1);
+    rep(i, M) {
+        map<vl,mint> pdp; swap(pdp, dp);
+        for(auto [v,n]: pdp) {
+            for(auto c='a'; c<='z'; ++c) {
+                vl nv(N+1);
+                rep(j, N+1) {
+                    chmax(nv[j], v[j]);
+                    if(j<N) chmax(nv[j+1], nv[j]);
+                    if(j<N) if(c==S[j]) chmax(nv[j+1], v[j]+1);
+                }
+                dp[nv] += n;
             }
-            rbit.add(i, 1);
-            prow[x] = i;
-        } else {
-            if(pcol[x]==-1) {
-                ll now = rbit.sum(0, i);
-                ans -= now;
-            } else {
-                ll now = rbit.sum(pcol[x], i);
-                ans -= now;
-                cbit.add(pcol[x], -1);
-            }
-            cbit.add(i, 1);
-            pcol[x] = i;
         }
-        Out(ans);
     }
+    vm ans(N+1);
+    for(auto [v,n]: dp) ans[v.back()] += n;
+    Out(ans);
 
 }
 

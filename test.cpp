@@ -243,28 +243,31 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N, M);
-    STRING(S);
-    map<vl,mint> dp;
-    dp[vl(N+1)] = 1;
+    LONG(N, M, K);
+    VPM(E, M);
 
-    rep(i, M) {
-        map<vl,mint> pdp; swap(pdp, dp);
-        for(auto [v,n]: pdp) {
-            for(auto c='a'; c<='z'; ++c) {
-                vl nv(N+1);
-                rep(j, N+1) {
-                    chmax(nv[j], v[j]);
-                    if(j<N) chmax(nv[j+1], nv[j]);
-                    if(j<N) if(c==S[j]) chmax(nv[j+1], v[j]+1);
-                }
-                dp[nv] += n;
-            }
+    deque<mint> dp(N);
+    dp[0] = 1;
+
+    auto dump=[&]() {
+        rep(i, N) cout<<dp[i].val()<< ' ';
+        cout<<endl;
+    };
+
+    rep(_, K) {
+        vector<pair<ll,mint>> stck;
+        for(auto [x,y]: E) {
+            stck.emplace_back(y, dp[x]);
         }
+        dp.push_front(dp[N-1]);
+        dp.pop_back();
+        for(auto [y,n]: stck) dp[y] += n;
     }
-    vm ans(N+1);
-    for(auto [v,n]: dp) ans[v.back()] += n;
+    mint ans;
+    rep(i, N) ans += dp[i];
     Out(ans);
+
+
 
 }
 
