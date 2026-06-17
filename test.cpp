@@ -230,7 +230,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint998244353;
+using mint = modint1000000007;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -243,31 +243,23 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 #endif
 
 void solve() {
-    LONG(N, M, K);
-    VPM(E, M);
+    LONG(N);
+    STRING(S);
 
-    deque<mint> dp(N);
+    vm dp(N+1);
     dp[0] = 1;
-
-    auto dump=[&]() {
-        rep(i, N) cout<<dp[i].val()<< ' ';
-        cout<<endl;
-    };
-
-    rep(_, K) {
-        vector<pair<ll,mint>> stck;
-        for(auto [x,y]: E) {
-            stck.emplace_back(y, dp[x]);
+    rep(i, N-1) {
+        vm pdp(N+1); swap(pdp, dp);
+        vm Sc(N+2);
+        rep(j, N+1) Sc[j+1] = Sc[j] + pdp[j];
+        rep(j, i+2) {
+            if(S[i]=='<') dp[j] += Sc[j];
+            else dp[j] += Sc[N+1] - Sc[j];
         }
-        dp.push_front(dp[N-1]);
-        dp.pop_back();
-        for(auto [y,n]: stck) dp[y] += n;
     }
     mint ans;
-    rep(i, N) ans += dp[i];
+    rep(i, N+1) ans += dp[i];
     Out(ans);
-
-
 
 }
 

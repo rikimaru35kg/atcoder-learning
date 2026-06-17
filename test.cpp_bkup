@@ -228,42 +228,16 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N, M);
-    STRING(S);
-    map<vl,mint> dp;
-    dp[vl(N+1)] = 1;
+    LONG(A,B,X,Y);
+    X = abs(X), Y = abs(Y);
+    ll ans = 2*min(X,Y)*min(A,B);
+    if (X<Y) swap(X, Y), swap(A,B);
 
-    rep(i, M) {
-        map<vl,mint> pdp; swap(pdp, dp);
-        for(auto [v,n]: pdp) {
-            for(auto c='a'; c<='z'; ++c) {
-                vl nv(N+1);
-                rep(j, N+1) {
-                    chmax(nv[j], v[j]);
-                    if(j<N) chmax(nv[j+1], nv[j]);
-                    if(j<N) if(c==S[j]) chmax(nv[j+1], v[j]+1);
-                }
-                dp[nv] += n;
-            }
-        }
-    }
-    vm ans(N+1);
-    for(auto [v,n]: dp) ans[v.back()] += n;
+    ll r = X-Y;
+    ll n = (r+1)/2, m = r-n;
+    ll extra = min(A,3*B)*n + min(B,3*A)*m;
+    ans += extra;
     Out(ans);
 
 }
@@ -271,7 +245,8 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

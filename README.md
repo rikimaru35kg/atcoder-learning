@@ -1101,8 +1101,7 @@
 
 ## DP配列のマージ
 ### 例題
-!!! where i am now for rank C (last submission 2025/5/2)
-- !復習価値低 [005 - Restricted Digits（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_e)
+- 基本 [005 - Restricted Digits（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_e)
 
 ## 戻すDP
 - 可換な操作であればDPテーブルを戻すことが可能
@@ -1119,6 +1118,7 @@
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
 - !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+!!! where i am now for rank C (last submission 2026/1/22)
 - !復習価値低 [F - Almost Sorted 2](https://atcoder.jp/contests/abc431/tasks/abc431_f)
 
 ## 決め打ちDP
