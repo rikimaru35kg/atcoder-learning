@@ -1118,7 +1118,6 @@
 - dp[i][j]=i番目まで決めて最後の数字がjの時の場合の数
 ### 例題
 - !復習価値低 [T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
-!!! where i am now for rank C (last submission 2026/1/22)
 - !復習価値低 [F - Almost Sorted 2](https://atcoder.jp/contests/abc431/tasks/abc431_f)
 
 ## 決め打ちDP
@@ -1171,6 +1170,7 @@
 ### 例題
 - 基本 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
 - 基本 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
+!!! where i am now for rank C (last submission 2025/3/25)
 - !復習価値低 [047 - Monochromatic Diagonal（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_au)
 
 ## LCP（Longest Common Prefix）最長共通接頭辞

@@ -228,9 +228,49 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -242,24 +282,80 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-void solve() {
-    LONG(N);
-    STRING(S);
-
-    vm dp(N+1);
-    dp[0] = 1;
-    rep(i, N-1) {
-        vm pdp(N+1); swap(pdp, dp);
-        vm Sc(N+2);
-        rep(j, N+1) Sc[j+1] = Sc[j] + pdp[j];
-        rep(j, i+2) {
-            if(S[i]=='<') dp[j] += Sc[j];
-            else dp[j] += Sc[N+1] - Sc[j];
-        }
+class Combination {
+    long long mx, mod;
+    vector<long long> facts, ifacts;
+public:
+    // argument mod must be a prime number!!
+    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
+        facts[0] = 1;
+        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
+        ifacts[mx] = modpow(facts[mx], mod-2);
+        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
     }
-    mint ans;
-    rep(i, N+1) ans += dp[i];
+    long long operator()(int n, int r) { return nCr(n, r); }
+    long long nCr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
+    }
+    long long nPr(int n, int r) {
+        assert(n<=mx);
+        if (r < 0 || r > n || n < 0) return 0;
+        return facts[n] * ifacts[n-r] % mod;
+    }
+    long long nHr(int n, int r, bool one=false) {
+        if(!one) return nCr(n+r-1, r);
+        else return nCr(r-1, n-1);
+    }
+    long long get_fact(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return facts[n];
+    }
+    long long get_factinv(int n) {
+        assert(n<=mx);
+        if(n<0) return 0;
+        return ifacts[n];
+    }
+    long long modpow(long long a, long long b) {
+        if (b == 0) return 1;
+        a %= mod;
+        long long child = modpow(a, b/2);
+        if (b % 2 == 0) return child * child % mod;
+        else return a * child % mod * child % mod;
+    }
+} comb(1e6+5, M998);
+
+
+void solve() {
+    LONG(N, D);
+    VL(A, N);
+    sort(all(A));
+
+    ll M = A.back()+5;
+
+    vi cnt(M);
+    rep(i, N) cnt[A[i]]++;
+
+    BIT<int> tree(M);
+
+    mint ans = 1;
+    rep(i, M) {
+        ll n = 1 + tree.sum(max(i-D, 0LL), M);
+        ll r = cnt[i];
+
+        ans *= comb.nHr(n, r);
+
+        tree.add(i, cnt[i]);
+
+        // de4(i, r, n, ans.val())
+    }
     Out(ans);
+
+
+
+    
 
 }
 

@@ -228,16 +228,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(A,B,X,Y);
-    X = abs(X), Y = abs(Y);
-    ll ans = 2*min(X,Y)*min(A,B);
-    if (X<Y) swap(X, Y), swap(A,B);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    ll r = X-Y;
-    ll n = (r+1)/2, m = r-n;
-    ll extra = min(A,3*B)*n + min(B,3*A)*m;
-    ans += extra;
+void solve() {
+    LONG(N);
+    STRING(S);
+
+    vm dp(N+1);
+    dp[0] = 1;
+    rep(i, N-1) {
+        vm pdp(N+1); swap(pdp, dp);
+        vm Sc(N+2);
+        rep(j, N+1) Sc[j+1] = Sc[j] + pdp[j];
+        rep(j, i+2) {
+            if(S[i]=='<') dp[j] += Sc[j];
+            else dp[j] += Sc[N+1] - Sc[j];
+        }
+    }
+    mint ans;
+    rep(i, N+1) ans += dp[i];
     Out(ans);
 
 }
@@ -245,8 +266,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
