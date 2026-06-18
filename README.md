@@ -1170,7 +1170,6 @@
 ### 例題
 - 基本 変更クエリ付き回文判定 [F - Palindrome Query](https://atcoder.jp/contests/abc331/tasks/abc331_f)
 - 基本 文字列挿入反転一致判定 [F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f)
-!!! where i am now for rank C (last submission 2025/3/25)
 - !復習価値低 [047 - Monochromatic Diagonal（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_au)
 
 ## LCP（Longest Common Prefix）最長共通接頭辞
@@ -1184,6 +1183,7 @@
 - 基本 [E - Yet Another Sigma Problem](https://atcoder.jp/contests/abc353/tasks/abc353_e)
 !!! where i am now for rank S (last submission 2026/4/28)
 - !要復習 [E - Forbidden Prefix](https://atcoder.jp/contests/abc403/tasks/abc403_e)
+!!! where i am now for rank C (last submission 2025/3/6)
 - !復習価値低 [G - Edit to Match](https://atcoder.jp/contests/abc377/tasks/abc377_g)
 - !復習価値低 [G - Minimum Xor Pair Query](https://atcoder.jp/contests/abc308/tasks/abc308_g)
 
