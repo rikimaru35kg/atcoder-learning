@@ -228,46 +228,179 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
-    struct Node {
-        using MP = map<char,int>;
-        MP to;
-        ll dp;
-        Node(MP to=MP()): to(to), dp(INF) {}
-    };
-    int n;  // # of nodes
-    vector<Node> node;
-    Trie(): n(1), node(1) { node[0].dp = 0; }  // only root node
-    ll add(string &s) {
-        int v = 0;
-        vl vs(1);
-        for(auto c: s) {
-            if(!node[v].to.count(c)) {
-                node.push_back(Node());
-                node[v].to[c] = n;
-                ++n;
+class HLD2 {
+    int n;
+    bool done = false;
+    vector<int> idx, top, p, sz, depth, pei, eidx;
+    vector<vector<pair<int,int>>> from;
+    void cal_size() {  // calculate subtree size for each vertex
+        auto dfs=[&](auto f, int v, int d=0, int par=-1) -> void {
+            depth[v] = d; // depth
+            sz[v] = 1;  // subtree size
+            p[v] = par;  // parent
+            for(auto [nv,ei]: from[v]) if(nv!=par) {
+                f(f, nv, d+1, v);
+                pei[nv] = ei;  // edge id for the parent
+                sz[v] += sz[nv];
             }
-            v = node[v].to[c];
-            vs.push_back(v);
+        };
+        dfs(dfs, 0);
+    }
+    void hld() {  // Heavy Light Decompsition
+        if(done) return;
+        done = true;
+        cal_size();
+        int ord = 0;
+        auto dfs=[&](auto f, int v, int t, int par=-1) -> void {
+            idx[v] = ord++;
+            top[v] = t;
+            tuple<int,int,int> maxsize(-1,-1,-1);
+            for(auto [nv,ei]: from[v]) if(nv!=par) {
+                maxsize = max(maxsize, {sz[nv],nv,ei});
+            }
+            auto [msz, mv, mei] = maxsize;
+            if(msz==-1) return;
+            // heavy edge
+            eidx[mei] = idx[v];
+            f(f, mv, t, v);
+            // light edges
+            for(auto [nv,ei]: from[v]) if(nv!=par && nv!=mv) {
+                f(f, nv, nv, v);
+            }
+        };
+        dfs(dfs, 0, 0);
+    }
+public:
+    HLD2(int n): n(n), idx(n), top(n), p(n), sz(n), depth(n),
+                pei(n,-1), eidx(n-1,-1), from(n) {}
+    void add_edge(int a, int b, int ei) {
+        from[a].emplace_back(b,ei); from[b].emplace_back(a,ei);
+    }
+    pair<vector<pair<int,int>>,vector<int>> prod(int a, int b) {
+        vector<pair<int,int>> spans;  // heavy paths
+        vector<int> eis;  // light edges on a path a-b
+        while(top[a]!=top[b]) {
+            if(depth[top[a]]<depth[top[b]]) swap(a,b);
+            spans.emplace_back(idx[top[a]],idx[a]);
+            eis.push_back(pei[top[a]]);
+            a = p[top[a]];
         }
-        reverse(all(vs));
-        ll m = vs.size();
-        ll ret = INF;
-        rep(i, m) chmin(ret, i+node[vs[i]].dp);
+        if(idx[a]>idx[b]) swap(a,b);
+        spans.emplace_back(idx[a],idx[b]);
+        return {spans, eis};
+    }
+    // get the index of the HLD sequence for each v
+    vector<int> get_index()  { hld(); return idx; }
+    // get the index of the HLD sequence for each ei
+    // if ei==-1, then ei is a light edge (not on a path)
+    vector<int> get_eindex() { hld(); return eidx; }
+};
 
-        rep(i, m) chmin(node[vs[i]].dp, i);
-
+class HLD {
+    int n;
+    vector<vector<int>> from;
+    vector<int> sz, depth, ord, top, par, vs;
+    bool cal_size_done, hld_done;
+    void cal_size(int root=0) {
+        if(cal_size_done) return;
+        cal_size_done = true;
+        auto dfs=[&](auto f, int v, int d=0, int p=-1) -> int {
+            sz[v] = 1;
+            depth[v] = d;
+            par[v] = p;
+            int mx = -1;
+            for(size_t i=0; i<from[v].size(); ++i) {
+                int nv = from[v][i];
+                if(nv == p) continue;
+                int nsz = f(f, nv, d+1, v);
+                if(nsz>mx) {
+                    swap(from[v][i], from[v][0]);
+                    mx = nsz;
+                }
+                sz[v] += nsz;
+            }
+            return sz[v];
+        };
+        dfs(dfs, root);
+    }
+public:
+    HLD(int n): n(n), from(n), sz(n), depth(n), ord(n), top(n), par(n), vs(n),
+                cal_size_done(false), hld_done(false) {}
+    void add_edge(int a, int b) {
+        from[a].emplace_back(b);
+        from[b].emplace_back(a);
+    }
+    void hld(int root=0) {
+        if(hld_done) return;
+        hld_done = true;
+        cal_size(root);
+        int idx = 0;
+        auto dfs=[&](auto f, int v, int t, int p=-1) -> void {
+            vs[idx] = v;
+            ord[v] = idx++;
+            top[v] = t;
+            bool init = true;
+            for(auto nv: from[v]) if(nv!=p) {
+                if(init) {
+                    f(f, nv, t, v);
+                    init = false;
+                }
+                else {
+                    f(f, nv, nv, v);
+                }
+            }
+        };
+        dfs(dfs, root, root);
+    }
+    vector<int> get_ord() {
+        hld();
+        return ord;
+    }
+    vector<pair<int,int>> get_spans(int a, int b, bool exclude_lca=false) {
+        vector<pair<int,int>> ret;
+        while(top[a] != top[b]) {
+            if(depth[top[a]] > depth[top[b]]) swap(a, b);
+            ret.emplace_back(ord[top[b]], ord[b]);
+            b = par[top[b]];
+        }
+        if(a!=b) {
+            if(ord[a] > ord[b]) swap(a, b);
+            if(!exclude_lca) ret.emplace_back(ord[a], ord[b]);
+            else if(ord[a]+1<ord[b]) ret.emplace_back(ord[a]+1, ord[b]);
+        }
         return ret;
     }
+    int get_lca(int a, int b) {
+        while(top[a] != top[b]) {
+            if(depth[top[a]] > depth[top[b]]) swap(a, b);
+            b = par[top[b]];
+        }
+        de4(a,b, ord[a], ord[b])
+        if(ord[a] > ord[b]) swap(a, b);
+        return a;
+    }
+    vector<int> get_top() { return top; }
+    vector<int> get_vs() { return vs; }
 };
 
 void solve() {
     LONG(N);
-    Trie trie;
-    rep(i, N) {
-        STRING(s);
-        ll ans = trie.add(s);
-        Out(ans);
+    HLD tree(N);
+    rep(i, N-1) {
+        LONG(a, b);
+        tree.add_edge(a, b);
+    }
+    auto ord = tree.get_ord();
+    auto top = tree.get_top();
+    auto vs = tree.get_vs();
+    de(ord)
+    de(top)
+    de(vs)
+    rep(_, 100) {
+        LONG(a,b);
+        // ll lca = tree.get_lca(a,b);
+        auto spans = tree.get_spans(a,b);
+        Out(spans);
     }
 
 }
