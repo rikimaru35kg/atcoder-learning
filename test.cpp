@@ -296,12 +296,53 @@ public:
     vector<int> get_eindex() { hld(); return eidx; }
 };
 
+
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
 class HLD {
     int n;
     vector<vector<int>> from;
     vector<int> sz, depth, ord, top, par, vs;
     bool cal_size_done, hld_done;
-    void cal_size(int root=0) {
+    void cal_size() {
         if(cal_size_done) return;
         cal_size_done = true;
         auto dfs=[&](auto f, int v, int d=0, int p=-1) -> int {
@@ -321,86 +362,209 @@ class HLD {
             }
             return sz[v];
         };
-        dfs(dfs, root);
+        dfs(dfs, 0);
+    }
+    void hld() {
+        if(hld_done) return;
+        hld_done = true;
+        cal_size();
+        int idx = 0;
+        auto dfs=[&](auto f, int v, int p=-1) -> void {
+            vs[idx] = v;
+            ord[v] = idx++;
+            for(auto nv: from[v]) if(nv!=p) {
+                top[nv] = (nv==from[v][0] ? top[v] : nv);
+                f(f, nv,  v);
+            }
+        };
+        dfs(dfs, 0, 0);
+    }
+    int jump_up(int v, int d) {
+        assert(v<n && d>=0);
+        hld();
+        assert(depth[v] >= d);
+        while(d) {
+            int t = top[v], l = depth[v] - depth[t];
+            if(l >= d) {
+                v = vs[ord[t]+l-d], d = 0;
+            } else {
+                v = par[t];
+                d -= l + 1;
+            }
+        }
+        return v;
     }
 public:
     HLD(int n): n(n), from(n), sz(n), depth(n), ord(n), top(n), par(n), vs(n),
                 cal_size_done(false), hld_done(false) {}
     void add_edge(int a, int b) {
+        assert(a<n && b<n);
         from[a].emplace_back(b);
         from[b].emplace_back(a);
     }
-    void hld(int root=0) {
-        if(hld_done) return;
-        hld_done = true;
-        cal_size(root);
-        int idx = 0;
-        auto dfs=[&](auto f, int v, int t, int p=-1) -> void {
-            vs[idx] = v;
-            ord[v] = idx++;
-            top[v] = t;
-            bool init = true;
-            for(auto nv: from[v]) if(nv!=p) {
-                if(init) {
-                    f(f, nv, t, v);
-                    init = false;
-                }
-                else {
-                    f(f, nv, nv, v);
-                }
-            }
-        };
-        dfs(dfs, root, root);
-    }
+    /*
+     * @brief get order of each vertex
+     * @return vector<int> order of each vertex
+     */
     vector<int> get_ord() {
         hld();
         return ord;
     }
+    /*
+     * @brief get order spans between two vertices
+     * @param[in] a vertex1
+     * @param[in] b vertex2
+     * @param[in] exclude_lca to exclude lca
+     * @return vector<pair<int,int>> order spans
+     */
     vector<pair<int,int>> get_spans(int a, int b, bool exclude_lca=false) {
+        assert(a<n && b<n);
+        hld();
         vector<pair<int,int>> ret;
         while(top[a] != top[b]) {
-            if(depth[top[a]] > depth[top[b]]) swap(a, b);
-            ret.emplace_back(ord[top[b]], ord[b]);
+            if(ord[a] > ord[b]) swap(a, b);
+            ret.emplace_back(ord[top[b]], ord[b]+1);
             b = par[top[b]];
         }
-        if(a!=b) {
-            if(ord[a] > ord[b]) swap(a, b);
-            if(!exclude_lca) ret.emplace_back(ord[a], ord[b]);
-            else if(ord[a]+1<ord[b]) ret.emplace_back(ord[a]+1, ord[b]);
-        }
+        if(ord[a] > ord[b]) swap(a, b);
+        ret.emplace_back(ord[a] + (exclude_lca ? 1 : 0), ord[b]+1);
         return ret;
     }
+    /*
+     * @brief get order spans between two vertices excluding lca
+     * @param[in] a vertex1
+     * @param[in] b vertex2
+     * @return vector<pair<int,int>> order spans
+     */
+    vector<pair<int,int>> get_spans_wo_lca(int a, int b) { return get_spans(a, b, true); }
     int get_lca(int a, int b) {
+        assert(a<n && b<n);
+        hld();
         while(top[a] != top[b]) {
-            if(depth[top[a]] > depth[top[b]]) swap(a, b);
+            if(ord[a] > ord[b]) swap(a, b);
             b = par[top[b]];
         }
-        de4(a,b, ord[a], ord[b])
-        if(ord[a] > ord[b]) swap(a, b);
-        return a;
+        return (ord[a] < ord[b] ? a : b);
     }
-    vector<int> get_top() { return top; }
-    vector<int> get_vs() { return vs; }
+    /*
+     * @brief get heavy path top of each vertex
+     * @return vector<pair<int,int>> heavy path top of each vertex
+     */
+    vector<int> get_top() { hld(); return top; }
+    /*
+     * @brief vertex in the pre-order
+     * @return vector<pair<int,int>> vertex in the pre-order
+     */
+    vector<int> get_vs() { hld(); return vs; }
+    /*
+     * @brief get distance between two vertices
+     * @param[in] a vertex1
+     * @param[in] b vertex2
+     * @return int distance between two vertices
+     */
+    int get_dist(int a, int b) {
+        assert(a<n && b<n);
+        hld();
+        int lca = get_lca(a, b);
+        return depth[a] + depth[b] - 2*depth[lca];
+    }
+    /*
+     * @brief jump specified distance from a toward b
+     * @param[in] a start vertex
+     * @param[in] b goal vertex
+     * @param[in] d jump distance
+     * @return int vertex after jump
+     */
+    int jump(int a, int b, int d) {
+        assert(a<n && b<n && d>=0);
+        hld();
+        int lca = get_lca(a, b);
+        int l1 = get_dist(a, lca), l2 = get_dist(b, lca);
+        if(d > l1 + l2) return -1;
+        return (l1 >= d ? jump_up(a, d) : jump_up(b, l1+l2-d));
+    }
+    /*
+     * @brief get the order of the edge between a and b
+     * @details edge order = order of the child vertex
+     *
+     * For edge weight query, instead of get edges themselves,
+     * you can regard edge weight as child vertex weight.
+     * Any edge corresponds one child vertex.
+     *
+     * Use get_spans_wo_lca() in this case.
+     *
+     * @param[in] a vertex1
+     * @param[in] b vertex2
+     * @return edge order
+     */
+    int get_edge_ord(int a, int b) {
+        hld();
+        assert(par[a]==b || par[b]==a);
+        if(depth[a] > depth[b]) swap(a, b);
+        return ord[b];
+    }
 };
 
 void solve() {
+    // LONG(N);
+    // HLD tree(N);
+    // rep(i, N-1) {
+    //     LONG(a, b);
+    //     tree.add_edge(a, b);
+    // }
+    // auto ord = tree.get_ord();
+    // auto top = tree.get_top();
+    // auto vs = tree.get_vs();
+    // de(ord)
+    // de(top)
+    // de(vs)
+    // rep(_, 100) {
+    //     // LONG(a,b);
+    //     // ll lca = tree.get_lca(a,b);
+    //     // auto spans = tree.get_spans(a,b,true);
+    //     // ll d = tree.get_dist(a,b);
+    //     // ll v = tree.jump_up(a, b);
+    //     LONG(a,b,d);
+    //     ll v = tree.jump(a,b,d);
+    //     Out(v);
+    // }
+
     LONG(N);
+    vt3 edge;
     HLD tree(N);
+    BIT<ll> bit(N);
     rep(i, N-1) {
-        LONG(a, b);
-        tree.add_edge(a, b);
+        LONG(a,b,w); a--, b--;
+        edge.emplace_back(a,b,w);
+        tree.add_edge(a,b);
     }
-    auto ord = tree.get_ord();
-    auto top = tree.get_top();
-    auto vs = tree.get_vs();
-    de(ord)
-    de(top)
-    de(vs)
-    rep(_, 100) {
-        LONG(a,b);
-        // ll lca = tree.get_lca(a,b);
-        auto spans = tree.get_spans(a,b);
-        Out(spans);
+
+    for(auto [a,b,w]: edge) {
+        ll ei = tree.get_edge_ord(a, b);
+        bit.add(ei, w);
+    }
+    vi ord = tree.get_ord(), vs = tree.get_vs();
+    de(ord); de(vs);
+
+    LONG(Q);
+    rep(_, Q) {
+        LONG(t);
+        if(t==1) {
+            LONG(i, w); --i;
+            auto [a,b,c] = edge[i];
+            ll ei = tree.get_edge_ord(a, b);
+            bit.add(ei, -c+w);
+            edge[i] = {a,b,w};
+        } else {
+            LONGM(a,b);
+            auto spans = tree.get_spans_wo_lca(a,b);
+            de(spans);
+            ll ans = 0;
+            for(auto [l,r]: spans) {
+                ans += bit.sum(l,r);
+            }
+            Out(ans);
+        }
     }
 
 }
