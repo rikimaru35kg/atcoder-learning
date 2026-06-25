@@ -231,56 +231,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 void solve() {
     LONG(N);
     VLM(P, N);
-    vl idx(N);
+    vi idx(N);
     rep(i, N) idx[P[i]] = i;
 
-    vector<pair<char,int>> ans;
-    auto swp=[&](ll i, ll j) {
-        if(i>j) swap(i, j);
-        swap(idx[P[i]], idx[P[j]]);
-        swap(P[i], P[j]);
-        ans.emplace_back('A'-1+j-i, i+1);
+    vp ans;
+    auto insert=[&](int i, int j) {
+        ll a = P[i], b = P[i+1];
+        P.erase(P.begin()+i);
+        P.erase(P.begin()+i);
+        P.insert(P.begin()+j, b);
+        P.insert(P.begin()+j, a);
+        for(ll k=j; k<N; ++k) idx[P[k]] = k;
+        ans.emplace_back(i+1, j);
     };
 
-    vl os, es;
-    rep(i, N) {
-        if(P[i]%2==i%2) continue;
-        if(i&1) os.push_back(i);
-        else es.push_back(i);
-    }
-    assert(os.size()==es.size());
-
-    auto to_left=[&](vl &is) {
-        ll left = 0;
-        for(auto i: is) {
-            ll p = i;
-            while(p>left+1) {
-                swp(p, p-2);
-                p -= 2;
-            }
-            left += 2;
+    rep(x, N-2) {
+        int p = idx[x];
+        if(p==x) continue;
+        if(p==N-1) {
+            insert(p-1, p-2);
+            p--;
         }
-    };
-    to_left(es);
-    to_left(os);
-
-    for(ll i=0; i<SIZE(os); ++i) {
-        swp(2*i, 2*i+1);
+        insert(p, x);
     }
+    if(P[N-2]!=N-2 || P[N-1]!=N-1) Outend("No");
 
-    rep(x, N) {
-        ll p = idx[x];
-        while(p>x) {
-            swp(p, p-2);
-            p -= 2;
-        }
-    }
+    Out("Yes");
     Out(ans.size());
-    for(auto [c,x]: ans) {
-        cout<<c<<' '<<x<<'\n';
-    }
-    de(P);
-    
+    Out(ans);
+    de(P)
+
+
 }
 
 int main () {

@@ -2239,7 +2239,6 @@
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 
 ## ACできたがグダった問題
-- [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
 - [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
 - [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)
 - パズル問として紹介できるかも [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
