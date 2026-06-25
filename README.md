@@ -1256,8 +1256,7 @@
 - ORは各ビットの和集合
 - ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
 ### 例題
-!!! where i am now for rank C (last submission 2025/2/27)
-- !復習価値低 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
+- !要復習 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
 - 基本 [E - Minimum OR Path](https://atcoder.jp/contests/abc408/tasks/abc408_e)
 
 ## 2進数
@@ -1274,6 +1273,7 @@
 - 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+!!! where i am now for rank C (last submission 2025/2/27)
 - !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
 - !復習価値低 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
