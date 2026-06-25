@@ -228,36 +228,113 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    VL(A, N);
-    ll K = 2e5+5;
-    vl cnt(K);
-
-    ll r = 0;
-    set<ll> st;
-    rep(i, K) st.insert(i);
-    auto mex=[&]() {return *st.begin(); };
-    auto add=[&](ll a) {
-        if(cnt[a]==0) st.erase(a);
-        cnt[a]++;
-    };
-    auto del=[&](ll a) {
-        cnt[a]--;
-        if(cnt[a]==0) st.insert(a);
-    };
-    vl imos(K);
-    rep(l, N) {
-        while(r<N && mex()<M) add(A[r++]);
-        if(mex()>=M) {
-            imos[r-l]++;
-            imos[N-l+1]--;
-        }
-        if(l==r) ++r;
-        else del(A[l]);
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
     }
-    rep(i, K-1) imos[i+1] += imos[i];
-    rep1(i, N) Out(imos[i]);
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
+
+#include <atcoder/segtree>
+using namespace atcoder;
+
+struct S {
+    int cnt[27];
+    S() {rep(i, 27) cnt[i] = 0;};
+    S(char c) {
+        rep(i, 27) cnt[i] = 0;
+        cnt[c-'a']++;
+    }
+};
+S op(S a, S b) {
+    rep(i, 27) a.cnt[i] += b.cnt[i];
+    return a;
+}
+S e() {return S(); }
+
+
+void solve() {
+    char fc = 'z'+1;
+    LONG(N);
+    STRING(Str);
+    Str = fc + Str + fc;
+    N = Str.size();
+    ll K = 27;
+
+    BIT<ll> bit(N-1);
+    vl cnt(K);
+    rep(i, N) cnt[Str[i]-'a']++;
+
+    segtree<S,op,e> seg(N);
+    rep(i, N) seg.set(i, S(Str[i]));
+
+    auto update=[&](ll i) {
+        if(Str[i]>Str[i+1]) {
+            bit.set(i, 0);
+        } else {
+            bit.set(i, 1);
+        }
+    };
+    rep(i, N-1) update(i);
+
+    LONG(Q);
+    rep(i, Q){ 
+        LONG(t);
+        if(t==1) {
+            LONG(x); CHAR(c);
+            cnt[Str[x]-'a']--;
+            Str[x] = c;
+            cnt[Str[x]-'a']++;
+            update(x-1);
+            update(x);
+            seg.set(x, S(c));
+        } else {
+            LONG(l, r);
+            if(bit.sum(l, r)!=r-l) {
+                puts("No"); continue;
+            }
+            ++r;
+            auto m = seg.prod(l, r);
+            bool ng = false;
+            for(char c=Str[l]+1; c<Str[r-1]; ++c) {
+                if(m.cnt[c-'a']!=cnt[c-'a']) ng = true;
+            }
+            puts(ng ? "No" : "Yes");
+        }
+    }
 
 }
 
