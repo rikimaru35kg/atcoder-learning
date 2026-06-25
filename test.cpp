@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <numeric>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -228,50 +229,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
 void solve() {
-    STRING(S); ll N = S.size();
-    LONG(K);
-    vl A;
-    rep(i, N) {
-        if(S[i]=='.') continue;
-        A.push_back(i-A.size());
-    }
-    ll M = A.size();
-    vl Sc(M+1);
-    rep(i, M) Sc[i+1] = Sc[i] + A[i];
+    LONG(N);
+    VL(A, N);
 
-    auto f =[&](ll x) -> bool {
-        rep(i, M+1-x) {
-            ll m = (i + i+x) / 2;
-            ll now = (m-i)*A[m] - (Sc[m] - Sc[i]);
-            now += Sc[i+x] - Sc[m] - (i+x-m)*A[m];
-            if(now<=K) return true;
+    ll K = 31;
+    vl ones(K);
+    rep(k, K) rep(i, N) if(A[i]>>k&1) ++ones[k];
+
+    auto dfs=[&](auto f, vl is, ll k, ll x) -> ll {
+        if(k==K) return x;
+
+        vl zs, os;
+        for(auto i: is) {
+            if(A[i]>>k&1) os.push_back(i);
+            else zs.push_back(i);
         }
-        return false;
+        ll plus1 = ones[k]*(1LL<<k);
+        ll plus2 = (N-ones[k])*(1LL<<k);
+        if(SIZE(zs)==0) return f(f, os, k+1, x + plus2);
+        if(SIZE(os)==0) return f(f, zs, k+1, x + plus1);
+        ll ret = max(f(f, os, k+1, x + plus2), f(f, zs, k+1, x + plus1));
+        return ret;
     };
 
-    ll ans = binary_search(0, M+1, f);
+    vl is(N);
+    iota(all(is), 0);
+    ll ans = dfs(dfs, is, 0, 0);
+
+    chmax(ans, accumulate(all(A), 0LL));
     Out(ans);
 
 }

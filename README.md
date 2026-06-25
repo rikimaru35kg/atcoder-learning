@@ -1203,8 +1203,7 @@
 - 基本 反転時交互列最大化 [1 - 電飾 (Illumination)](https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1)
 - 基本 同じ向きの人最大化 [D - Face Produces Unhappiness](https://atcoder.jp/contests/abc140/tasks/abc140_d)
 - !復習価値中（構文木で解く場合） 括弧列内文字反転（ちょっと毛色が異なるためNote非掲載） [F - Transpose](https://atcoder.jp/contests/abc350/tasks/abc350_f)
-!!! where i am now for rank C (last submission 2025/2/27)
-- !復習価値低 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
+- 基本 [A - とてもたのしい家庭菜園 (Growing Vegetables is Fun 4)](https://atcoder.jp/contests/joi2021ho/tasks/joi2021ho_a)
 
 ## Aho-Corasick
 - Trie木上でオートマトンを構成する
@@ -1257,6 +1256,7 @@
 - ORは各ビットの和集合
 - ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
 ### 例題
+!!! where i am now for rank C (last submission 2025/2/27)
 - !復習価値低 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
 - 基本 [E - Minimum OR Path](https://atcoder.jp/contests/abc408/tasks/abc408_e)
 
