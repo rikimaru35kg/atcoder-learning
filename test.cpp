@@ -1,4 +1,4 @@
-﻿// ### test.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -165,6 +165,7 @@ template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPe
 template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
+template<typename T> inline void sort3(T &a,T &b,T &c) {if(a>b)swap(a,b);if(b>c)swap(b,c);if(a>b)swap(a,b);}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -228,22 +229,35 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);  ++K;
-    VL2(A,B,N);
-    ll D = 31;
-    ll ans = 0;
-    rep(d, D) {
-        if(~K>>d&1) continue;
-        ll K2 = K;
-        K2 ^= (1LL<<d);
-        K2 |= (1LL<<d)-1;
-        ll now = 0;
-        rep(i, N) {
-            if((K2|A[i])==K2) now += B[i];
+    LONG(N, M);
+    VL(A, N);
+    ll K = 2e5+5;
+    vl cnt(K);
+
+    ll r = 0;
+    set<ll> st;
+    rep(i, K) st.insert(i);
+    auto mex=[&]() {return *st.begin(); };
+    auto add=[&](ll a) {
+        if(cnt[a]==0) st.erase(a);
+        cnt[a]++;
+    };
+    auto del=[&](ll a) {
+        cnt[a]--;
+        if(cnt[a]==0) st.insert(a);
+    };
+    vl imos(K);
+    rep(l, N) {
+        while(r<N && mex()<M) add(A[r++]);
+        if(mex()>=M) {
+            imos[r-l]++;
+            imos[N-l+1]--;
         }
-        chmax(ans, now);
+        if(l==r) ++r;
+        else del(A[l]);
     }
-    Out(ans);
+    rep(i, K-1) imos[i+1] += imos[i];
+    rep1(i, N) Out(imos[i]);
 
 }
 
@@ -254,4 +268,3 @@ int main () {
 }
 
 // ### test.cpp ###
-

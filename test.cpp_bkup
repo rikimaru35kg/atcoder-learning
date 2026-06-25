@@ -1,6 +1,5 @@
-// ### test.cpp ###
+﻿// ### test.cpp ###
 #include <bits/stdc++.h>
-#include <numeric>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -166,7 +165,6 @@ template<typename T> inline T Div(T a, T b) {if(b<0){a=-a,b=-b;} return (a-TmpPe
 template<typename T> inline T Divceil(T a, T b) {if(TmpPercent(a,b)==0) return Div(a,b); return Div(a,b)+1;}
 template<typename T> void erase(multiset<T> &st, T x) {if(st.contains(x)) st.erase(st.find(x));}
 template<typename T> T pop(vector<T> &x) {T ret=x.back(); x.pop_back(); return ret;}
-template<typename T> inline void sort3(T &a,T &b,T &c) {if(a>b)swap(a,b);if(b>c)swap(b,c);if(a>b)swap(a,b);}
 #ifdef __DEBUG
 #define de(var) {cerr << #var << ": "; debug_view(var);}
 #define de2(var1,var2) {cerr<<#var1<<' '<<#var2<<": "; debug_view(var1,var2);}
@@ -230,34 +228,21 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VL(A, N);
-
-    ll K = 31;
-    vl ones(K);
-    rep(k, K) rep(i, N) if(A[i]>>k&1) ++ones[k];
-
-    auto dfs=[&](auto f, vl is, ll k, ll x) -> ll {
-        if(k==K) return x;
-
-        vl zs, os;
-        for(auto i: is) {
-            if(A[i]>>k&1) os.push_back(i);
-            else zs.push_back(i);
+    LONG(N, K);  ++K;
+    VL2(A,B,N);
+    ll D = 31;
+    ll ans = 0;
+    rep(d, D) {
+        if(~K>>d&1) continue;
+        ll K2 = K;
+        K2 ^= (1LL<<d);
+        K2 |= (1LL<<d)-1;
+        ll now = 0;
+        rep(i, N) {
+            if((K2|A[i])==K2) now += B[i];
         }
-        ll plus1 = ones[k]*(1LL<<k);
-        ll plus2 = (N-ones[k])*(1LL<<k);
-        if(SIZE(zs)==0) return f(f, os, k+1, x + plus2);
-        if(SIZE(os)==0) return f(f, zs, k+1, x + plus1);
-        ll ret = max(f(f, os, k+1, x + plus2), f(f, zs, k+1, x + plus1));
-        return ret;
-    };
-
-    vl is(N);
-    iota(all(is), 0);
-    ll ans = dfs(dfs, is, 0, 0);
-
-    chmax(ans, accumulate(all(A), 0LL));
+        chmax(ans, now);
+    }
     Out(ans);
 
 }
@@ -269,3 +254,4 @@ int main () {
 }
 
 // ### test.cpp ###
+

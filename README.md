@@ -1273,8 +1273,8 @@
 - 基本 [C - Max MEX](https://atcoder.jp/contests/abc290/tasks/abc290_c)
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
+- 基本 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
 !!! where i am now for rank C (last submission 2025/2/27)
-- !復習価値低 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
 - !復習価値低 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
 ## 整数とMOD
