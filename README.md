@@ -1950,8 +1950,7 @@
 - 他にもかさ増しが有効な場合があるが、言語化できていない
 ### 例題
 - !復習価値低 [D - Swap to Gather](https://atcoder.jp/contests/abc393/tasks/abc393_d)
-!!! where i am now for rank B (last submission 2026/3/20)
-- !復習価値中 [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
+- 基本 [G - Longest Y](https://atcoder.jp/contests/abc229/tasks/abc229_g)
 - 基本 [L - 嘘つきな生徒たち](https://atcoder.jp/contests/past202112-open/tasks/past202112_l)
 - !復習価値低 [F - Takahashi in Narrow Road](https://atcoder.jp/contests/abc371/tasks/abc371_f)
 
@@ -2053,6 +2052,7 @@
 - 奇点が0個か2個なら可能
 - 構築する場合は、dfsの帰りがけ順で。一度通った辺は破壊しながらdfsすると良い
 ### 例題
+!!! where i am now for rank B (last submission 2026/5/13)
 - !復習価値中 [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
