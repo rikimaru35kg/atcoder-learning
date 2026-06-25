@@ -2239,7 +2239,6 @@
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 
 ## ACできたがグダった問題
-- [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
 - [B - Insertion Sort 2](https://atcoder.jp/contests/arc162/tasks/arc162_b)
 - [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
 - [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)
@@ -2358,4 +2357,5 @@
 - [D - Not Adjacent 2](https://atcoder.jp/contests/abc456/tasks/abc456_d)
 - [E - Crossing Table Cloth](https://atcoder.jp/contests/abc457/tasks/abc457_e)
 - [E - Count 123](https://atcoder.jp/contests/abc458/tasks/abc458_e)
+- [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
 
