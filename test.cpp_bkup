@@ -229,64 +229,19 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VLM(P, N);
-    vl idx(N);
-    rep(i, N) idx[P[i]] = i;
-
-    vector<pair<char,int>> ans;
-    auto swp=[&](ll i, ll j) {
-        if(i>j) swap(i, j);
-        swap(idx[P[i]], idx[P[j]]);
-        swap(P[i], P[j]);
-        ans.emplace_back('A'-1+j-i, i+1);
-    };
-
-    vl os, es;
-    rep(i, N) {
-        if(P[i]%2==i%2) continue;
-        if(i&1) os.push_back(i);
-        else es.push_back(i);
-    }
-    assert(os.size()==es.size());
-
-    auto to_left=[&](vl &is) {
-        ll left = 0;
-        for(auto i: is) {
-            ll p = i;
-            while(p>left+1) {
-                swp(p, p-2);
-                p -= 2;
-            }
-            left += 2;
-        }
-    };
-    to_left(es);
-    to_left(os);
-
-    for(ll i=0; i<SIZE(os); ++i) {
-        swp(2*i, 2*i+1);
-    }
-
-    rep(x, N) {
-        ll p = idx[x];
-        while(p>x) {
-            swp(p, p-2);
-            p -= 2;
-        }
-    }
-    Out(ans.size());
-    for(auto [c,x]: ans) {
-        cout<<c<<' '<<x<<'\n';
-    }
-    de(P);
+    LONG(N, M);
     
+    ll T = N*(N+1)%M;
+    puts(T==0 || T>N ? "Alice" : "Bob");
+
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

@@ -2239,10 +2239,6 @@
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 
 ## ACできたがグダった問題
-- [A - Spoon Taking Problem](https://atcoder.jp/contests/arc175/tasks/arc175_a)
-- [B - Parenthesis Arrangement](https://atcoder.jp/contests/arc175/tasks/arc175_b)
-- パズル問として紹介できるかも [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
-- [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
 - [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
 - [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
@@ -2357,4 +2353,6 @@
 - [E - Crossing Table Cloth](https://atcoder.jp/contests/abc457/tasks/abc457_e)
 - [E - Count 123](https://atcoder.jp/contests/abc458/tasks/abc458_e)
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
+- パズル問として紹介できるかも [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
+- [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
 

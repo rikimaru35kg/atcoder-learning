@@ -229,38 +229,74 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VLM(P, N);
-    vi idx(N);
-    rep(i, N) idx[P[i]] = i;
+    ll N = 19;
+    VS(B, N);
+    ll b = 0, w = 0;
+    rep(i, N) rep(j, N) {
+        if(B[i][j]=='o') ++b;
+        if(B[i][j]=='x') ++w;
+    }
+    if(b<w || b-w>=2) Outend("NO");
 
-    vp ans;
-    auto insert=[&](int i, int j) {
-        ll a = P[i], b = P[i+1];
-        P.erase(P.begin()+i);
-        P.erase(P.begin()+i);
-        P.insert(P.begin()+j, b);
-        P.insert(P.begin()+j, a);
-        for(ll k=j; k<N; ++k) idx[P[k]] = k;
-        ans.emplace_back(i+1, j);
+    auto yoko=[&](ll i, ll j) -> bool {
+        if(j+5>N) return false;
+        if(B[i].substr(j, 5)=="ooooo") return true;
+        if(B[i].substr(j, 5)=="xxxxx") return true;
+        return false;
+    };
+    auto tate=[&](ll i, ll j) -> bool {
+        if(i+5>N) return false;
+        bool ret = true;
+        rep(k, 5) if(B[i+k][j]!='o') ret = false;
+        if(ret) return true;
+        ret = true;
+        rep(k, 5) if(B[i+k][j]!='x') ret = false;
+        return ret;
+    };
+    auto naname1=[&](ll i, ll j) -> bool {
+        if(i+5>N || j+5>N) return false;
+        string s;
+        rep(k, 5) s += B[i+k][j+k];
+        return s=="ooooo" || s=="xxxxx";
+    };
+    auto naname2=[&](ll i, ll j) -> bool {
+        if(i+5>N || j<4) return false;
+        string s;
+        rep(k, 5) s += B[i+k][j-k];
+        return s=="ooooo" || s=="xxxxx";
     };
 
-    rep(x, N-2) {
-        int p = idx[x];
-        if(p==x) continue;
-        if(p==N-1) {
-            insert(p-1, p-2);
-            p--;
+    auto exist=[&]() -> bool {
+        rep(i, N) rep(j, N) {
+            if(yoko(i,j)) return true;
+            if(tate(i,j)) return true;
+            if(naname1(i,j)) return true;
+            if(naname2(i,j)) return true;
         }
-        insert(p, x);
-    }
-    if(P[N-2]!=N-2 || P[N-1]!=N-1) Outend("No");
+        return false;
+    };
 
-    Out("Yes");
-    Out(ans.size());
-    Out(ans);
-    de(P)
+    auto judge=[&](char c) -> bool {
+        bool allexist = true;
+        rep(i, N) rep(j, N) {
+            if(B[i][j]!=c) continue;
+            B[i][j] = '.';
+            if(!exist()) {
+                allexist = false;
+            }
+            B[i][j] = c;
+        }
+        return !allexist;
+    };
 
+    if(b==0) Outend("YES");
+
+    bool ans;
+    if(b==w+1) ans = judge('o');
+    else if(b==w) ans = judge('x');
+    else assert(0);
+
+    puts(ans ? "YES": "NO");
 
 }
 
