@@ -2239,7 +2239,6 @@
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 
 ## ACできたがグダった問題
-- [C - 掛け算](https://atcoder.jp/contests/arc051/tasks/arc051_c)
 - [D. Colored Portals](https://codeforces.com/contest/2004/problem/D)
 - [D - Various Sushi](https://atcoder.jp/contests/abc116/tasks/abc116_d)
 - [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
