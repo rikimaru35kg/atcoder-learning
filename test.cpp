@@ -229,74 +229,56 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    ll N = 19;
-    VS(B, N);
-    ll b = 0, w = 0;
-    rep(i, N) rep(j, N) {
-        if(B[i][j]=='o') ++b;
-        if(B[i][j]=='x') ++w;
+    LONG(N);
+    ll M = 6;
+    vl ten(M+1, 1);
+    rep(i, M) ten[i+1] = ten[i]*10;
+
+    vl d(ten[M]);
+    rep(i, N) {
+        LONG(s, v);
+        d[s] += v;
     }
-    if(b<w || b-w>=2) Outend("NO");
 
-    auto yoko=[&](ll i, ll j) -> bool {
-        if(j+5>N) return false;
-        if(B[i].substr(j, 5)=="ooooo") return true;
-        if(B[i].substr(j, 5)=="xxxxx") return true;
-        return false;
+    auto get=[ten](ll x, ll k) -> ll {
+        return x/ten[k]%10;
     };
-    auto tate=[&](ll i, ll j) -> bool {
-        if(i+5>N) return false;
-        bool ret = true;
-        rep(k, 5) if(B[i+k][j]!='o') ret = false;
-        if(ret) return true;
-        ret = true;
-        rep(k, 5) if(B[i+k][j]!='x') ret = false;
-        return ret;
-    };
-    auto naname1=[&](ll i, ll j) -> bool {
-        if(i+5>N || j+5>N) return false;
-        string s;
-        rep(k, 5) s += B[i+k][j+k];
-        return s=="ooooo" || s=="xxxxx";
-    };
-    auto naname2=[&](ll i, ll j) -> bool {
-        if(i+5>N || j<4) return false;
-        string s;
-        rep(k, 5) s += B[i+k][j-k];
-        return s=="ooooo" || s=="xxxxx";
-    };
-
-    auto exist=[&]() -> bool {
-        rep(i, N) rep(j, N) {
-            if(yoko(i,j)) return true;
-            if(tate(i,j)) return true;
-            if(naname1(i,j)) return true;
-            if(naname2(i,j)) return true;
+    rep(k, M) {
+        rep(x, ten[M]) {
+            ll c = get(x, k);
+            if(c==9) continue;
+            d[x+ten[k]] += d[x];
         }
-        return false;
-    };
+    }
 
-    auto judge=[&](char c) -> bool {
-        bool allexist = true;
-        rep(i, N) rep(j, N) {
-            if(B[i][j]!=c) continue;
-            B[i][j] = '.';
-            if(!exist()) {
-                allexist = false;
+    LONG(Q);
+    rep(_, Q) {
+        LONG(x,y);
+        bool ng = false;
+        rep(k, M) {
+            if(get(x,k)>get(y,k)) ng = true;
+        }
+        if(ng) {
+            Out(0); continue;
+        }
+        ll ans = 0;
+        rep(s, 1<<M) {
+            ll r = 0;
+            rep(k, M) {
+                ll c = get(y, k);
+                if(s>>k&1) {
+                    c = get(x,k)-1;
+                    if(c<0) r = -INF;
+                }
+                r += ten[k]*c;
             }
-            B[i][j] = c;
+            if(r>=0) {
+                if(parity(s)) ans -= d[r];
+                else ans += d[r];
+            }
         }
-        return !allexist;
-    };
-
-    if(b==0) Outend("YES");
-
-    bool ans;
-    if(b==w+1) ans = judge('o');
-    else if(b==w) ans = judge('x');
-    else assert(0);
-
-    puts(ans ? "YES": "NO");
+        Out(ans);
+    }
 
 }
 

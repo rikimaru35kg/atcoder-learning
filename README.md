@@ -216,6 +216,7 @@
 - 基本 [D - AtCoder Express 2](https://atcoder.jp/contests/abc106/tasks/abc106_d)
 - 基本 市松模様の最適場所 [D - Checker](https://atcoder.jp/contests/abc086/tasks/arc089_b)
 - 基本 たこ焼きおいしさmax [D - おいしいたこ焼きの焼き方](https://atcoder.jp/contests/abc005/tasks/abc005_4)
+- !要復習 [F - Sjeltzer?](https://atcoder.jp/contests/abc465/tasks/abc465_f)
 
 ## IMOS法
 - 重なり領域の累積はいもす法を用いて解決
@@ -2354,4 +2355,6 @@
 - [B - Swap to Sort](https://atcoder.jp/contests/arc147/tasks/arc147_b)
 - パズル問として紹介できるかも [A - mod M Game 2](https://atcoder.jp/contests/arc185/tasks/arc185_a)
 - [C - 五目並べチェッカー](https://atcoder.jp/contests/arc012/tasks/arc012_3)
+- [C - Reverse Permutation](https://atcoder.jp/contests/abc465/tasks/abc465_c)
+- [E - Digit Circus](https://atcoder.jp/contests/abc465/tasks/abc465_e)
 
