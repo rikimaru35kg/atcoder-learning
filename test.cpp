@@ -229,63 +229,37 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    ll M = 6;
-    vl ten(M+1, 1);
-    rep(i, M) ten[i+1] = ten[i]*10;
+    LONG(N, X);
+    VL(A, N);
+    map<ll,ll> mp;
+    mp[X+1] = 1;
+    for(auto a: A) {
+        auto it = mp.upper_bound(a);
+        vp stck;
+        ll cnt = 0;
+        for(; it!=mp.end(); ++it) {
+            auto [x,n] = *it;
+            if(x%a) stck.emplace_back(x%a, n);
+            cnt += n*(x/a);
+        }
+        it = mp.upper_bound(a);
+        while(it != mp.end()) it = mp.erase(it);
 
-    vl d(ten[M]);
-    rep(i, N) {
-        LONG(s, v);
-        d[s] += v;
+        mp[a] += cnt;
+        for(auto [x,n]: stck) mp[x] += n;
     }
-
-    auto get=[ten](ll x, ll k) -> ll {
-        return x/ten[k]%10;
-    };
-    rep(k, M) {
-        rep(x, ten[M]) {
-            ll c = get(x, k);
-            if(c==9) continue;
-            d[x+ten[k]] += d[x];
-        }
-    }
-
-    LONG(Q);
-    rep(_, Q) {
-        LONG(x,y);
-        bool ng = false;
-        rep(k, M) {
-            if(get(x,k)>get(y,k)) ng = true;
-        }
-        if(ng) {
-            Out(0); continue;
-        }
-        ll ans = 0;
-        rep(s, 1<<M) {
-            ll r = 0;
-            rep(k, M) {
-                ll c = get(y, k);
-                if(s>>k&1) {
-                    c = get(x,k)-1;
-                    if(c<0) r = -INF;
-                }
-                r += ten[k]*c;
-            }
-            if(r>=0) {
-                if(parity(s)) ans -= d[r];
-                else ans += d[r];
-            }
-        }
-        Out(ans);
-    }
+    ll ans = 0;
+    for(auto [x,n]: mp) ans += n;
+    ans--;
+    Out(ans);
 
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###
