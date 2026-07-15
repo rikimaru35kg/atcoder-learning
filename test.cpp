@@ -228,29 +228,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, X);
-    VL(A, N);
-    map<ll,ll> mp;
-    mp[X+1] = 1;
-    for(auto a: A) {
-        auto it = mp.upper_bound(a);
-        vp stck;
-        ll cnt = 0;
-        for(; it!=mp.end(); ++it) {
-            auto [x,n] = *it;
-            if(x%a) stck.emplace_back(x%a, n);
-            cnt += n*(x/a);
-        }
-        it = mp.upper_bound(a);
-        while(it != mp.end()) it = mp.erase(it);
+template <typename T> vector<T> cumsum(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1);
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
+    return ret;
+}
+template <typename T> vector<T> cummul(vector<T> &a) {
+    int n = a.size();
+    vector<T> ret(n+1, T(1));
+    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
+    return ret;
+}
+template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
+    int h = a.size(), w = a[0].size();
+    vector<vector<T>> ret(h+1, vector<T>(w+1));
+    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
+    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
+    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
+    return ret;
+}
 
-        mp[a] += cnt;
-        for(auto [x,n]: stck) mp[x] += n;
+void solve() {
+    LONG(N, K);
+    umap<ll,vl> mp;
+    rep(i, N) {
+        LONG(t,d);
+        mp[t].push_back(d);
     }
-    ll ans = 0;
-    for(auto [x,n]: mp) ans += n;
-    ans--;
+    vl tops, others;
+    for(auto &[k,v]: mp) {
+        sort(allr(v));
+        tops.push_back(v[0]);
+        repk(k, 1, SIZE(v)) others.push_back(v[k]);
+    }
+    sort(allr(tops));
+    sort(allr(others));
+    vl Sc = cumsum(others);
+    de(tops) de(others)
+    ll ans = 0, d = 0;
+    rep(i, K) {
+        if(i==SIZE(tops)) break;
+        d += tops[i];
+        ll j = K-(i+1);
+        if(j>SIZE(others)) continue;
+        ll now = (i+1)*(i+1) + d + Sc[j];
+        de3(i+1, d, now)
+        chmax(ans, now);
+    }
     Out(ans);
 
 }
@@ -258,8 +283,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
