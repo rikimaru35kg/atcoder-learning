@@ -228,53 +228,31 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T> vector<T> cumsum(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1);
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] + a[i];
-    return ret;
-}
-template <typename T> vector<T> cummul(vector<T> &a) {
-    int n = a.size();
-    vector<T> ret(n+1, T(1));
-    for(int i=0; i<n; ++i) ret[i+1] = ret[i] * a[i];
-    return ret;
-}
-template <typename T> vector<vector<T>> cumsum(vector<vector<T>> &a) {
-    int h = a.size(), w = a[0].size();
-    vector<vector<T>> ret(h+1, vector<T>(w+1));
-    for(int i=0; i<h; ++i) for(int j=0; j<w; ++j) ret[i+1][j+1] = a[i][j];
-    for(int i=0; i<h; ++i) for(int j=0; j<w+1; ++j) ret[i+1][j] += ret[i][j];
-    for(int i=0; i<h+1; ++i) for(int j=0; j<w; ++j) ret[i][j+1] += ret[i][j];
-    return ret;
-}
-
 void solve() {
-    LONG(N, K);
-    umap<ll,vl> mp;
+    LONG(K, M);
+    STRING(S);
+    LONG(N);
+    vt3 op;
     rep(i, N) {
-        LONG(t,d);
-        mp[t].push_back(d);
+        LONG(a,b,c);
+        op.emplace_back(a,b,c);
     }
-    vl tops, others;
-    for(auto &[k,v]: mp) {
-        sort(allr(v));
-        tops.push_back(v[0]);
-        repk(k, 1, SIZE(v)) others.push_back(v[k]);
-    }
-    sort(allr(tops));
-    sort(allr(others));
-    vl Sc = cumsum(others);
-    de(tops) de(others)
-    ll ans = 0, d = 0;
+    reverse(all(op));
+
+    string ans;
     rep(i, K) {
-        if(i==SIZE(tops)) break;
-        d += tops[i];
-        ll j = K-(i+1);
-        if(j>SIZE(others)) continue;
-        ll now = (i+1)*(i+1) + d + Sc[j];
-        de3(i+1, d, now)
-        chmax(ans, now);
+        ll x = i;
+        de(i)
+        for(auto [a,b,c]: op) {
+            if(x<c) {}
+            else if(x<c+b-a) {
+                x = a + x - c;
+            } else {
+                x = x - (b - a);
+            }
+            de(x)
+        }
+        ans += S[x];
     }
     Out(ans);
 

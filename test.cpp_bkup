@@ -229,28 +229,16 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, X);
-    VL(A, N);
-    map<ll,ll> mp;
-    mp[X+1] = 1;
-    for(auto a: A) {
-        auto it = mp.upper_bound(a);
-        vp stck;
-        ll cnt = 0;
-        for(; it!=mp.end(); ++it) {
-            auto [x,n] = *it;
-            if(x%a) stck.emplace_back(x%a, n);
-            cnt += n*(x/a);
-        }
-        it = mp.upper_bound(a);
-        while(it != mp.end()) it = mp.erase(it);
+    LONG(A, B);
+    VI(X, A); VI(Y, B);
+    vvi dp(A+1, vi(B+1));
 
-        mp[a] += cnt;
-        for(auto [x,n]: stck) mp[x] += n;
+    int ans = 0;
+    rep(i, A+1) rep(j, B+1) {
+        chmax(ans, dp[i][j]);
+        if(i<A) chmax(dp[i+1][j], dp[i][j]);
+        if(i<A && j<B && X[i]==Y[j]) chmax(dp[i+1][j+1], dp[i][j]+1);
     }
-    ll ans = 0;
-    for(auto [x,n]: mp) ans += n;
-    ans--;
     Out(ans);
 
 }
@@ -258,8 +246,7 @@ void solve() {
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

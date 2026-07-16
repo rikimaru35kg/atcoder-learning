@@ -2240,8 +2240,6 @@
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 
 ## ACできたがグダった問題
-- [B - たのしいカードゲーム (Card Game is Fun)](https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho2)
-- [A - コピー&ペースト 2](https://atcoder.jp/contests/joisc2015/tasks/joisc2015_a)
 - [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
