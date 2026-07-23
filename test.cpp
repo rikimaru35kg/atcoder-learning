@@ -228,33 +228,128 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(K, M);
-    STRING(S);
-    LONG(N);
-    vt3 op;
-    rep(i, N) {
-        LONG(a,b,c);
-        op.emplace_back(a,b,c);
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
     }
-    reverse(all(op));
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+    void print() {
+        #ifdef __DEBUG
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+        #endif
+    }
+};
 
-    string ans;
-    rep(i, K) {
-        ll x = i;
-        de(i)
-        for(auto [a,b,c]: op) {
-            if(x<c) {}
-            else if(x<c+b-a) {
-                x = a + x - c;
-            } else {
-                x = x - (b - a);
-            }
-            de(x)
-        }
-        ans += S[x];
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+using S = ll;
+S op(S a, S b) { return max(a,b); }
+S e() { return 0; }
+using F = ll;
+S mapping(F f, S x) { return f+x; }
+F composition(F f, F g) { return f+g; }
+F id() { return 0; }
+
+void solve() {
+    LONG(N, Q);
+    VL(A, N); VL(B, N);
+    vt3 query;
+    CoordinateCompression<Pr> cc;
+    rep(i, N) cc.add(Pr(B[i], i));
+
+    vl bidx(N);
+    rep(i, N) bidx[i] = i;
+
+    rep(qi, Q) {
+        LONG(t,i,x); --i;
+        query.emplace_back(t,i,x);
+        if(t==2) cc.add(Pr(x,N+qi));
     }
-    Out(ans);
+    ll M = cc.size();
+
+    vector<S> init(M, 0);
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+
+    rep(i, N) {
+        ll si = cc({B[i], i});
+        seg.set(si, B[i]);
+    }
+    rep(i, N) {
+        ll si = cc({B[i], i});
+        seg.apply(0, si+1, A[i]);
+    }
+
+    auto segprint=[&](){
+    #ifdef __DEBUG
+        de("-- segprint --")
+        ll sz = seg.max_right(0,[](S x)->bool{return true;});
+        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
+        cerr<<endl;
+    #endif
+    };
+
+    auto del=[&](ll i) {
+        ll si = cc({B[i], bidx[i]});
+        seg.apply(0, si+1, -A[i]);
+        ll now = seg.get(si);
+        seg.set(si, now-B[i]);
+    };
+    auto add=[&](ll i) {
+        ll si = cc({B[i], bidx[i]});
+        seg.apply(0, si+1, A[i]);
+        ll now = seg.get(si);
+        seg.set(si, now+B[i]);
+    };
+
+    // rep(i, M) {
+    //     printf("(%lld %lld), ", cc[i].first, cc[i].second);
+    //     cout<<endl;
+    // }
+
+    // segprint();
+    rep(qi, Q) {
+        auto [t,i,x] = query[qi];
+        del(i);
+        if(t==1) {
+            A[i] = x;
+        } else {
+            B[i] = x;
+            bidx[i] = N+qi;
+        }
+        add(i);
+
+        ll ans = seg.all_prod();
+        Out(ans);
+        // segprint();
+    }
 
 }
 

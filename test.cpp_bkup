@@ -229,15 +229,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(A, B);
-    VI(X, A); VI(Y, B);
-    vvi dp(A+1, vi(B+1));
+    LONG(N, M);
+    VL(A, N);
+    VL(B, N-1);
+    map<ll,vl> mp;
+    ll base = 0;
+    vl cs;
+    rep(i, N-1) {
+        ll c = ((B[i]-(A[i]+A[i+1]))%M+M)%M;
+        cs.push_back(c);
+    }
 
-    int ans = 0;
-    rep(i, A+1) rep(j, B+1) {
-        chmax(ans, dp[i][j]);
-        if(i<A) chmax(dp[i+1][j], dp[i][j]);
-        if(i<A && j<B && X[i]==Y[j]) chmax(dp[i+1][j+1], dp[i][j]+1);
+    ll s = 0;
+    rep(i, N-1) {
+        s = cs[i]-s;
+        s = (s%M + M) % M;
+        base += s;
+        de(s)
+        if(i&1) {
+            if(s!=0) mp[M-s].emplace_back(-M);
+        } else {
+            if(s!=M-1) mp[s+1].emplace_back(M);
+        }
+    }
+    mp[0].push_back(0);
+
+    ll ans = INF;
+    for(auto [x,v]: mp) {
+        for(auto m: v) base += m;
+        ll now = (N&1 ? x: 0);
+        de3(x, base, now)
+        now += base;
+        chmin(ans, now);
     }
     Out(ans);
 
