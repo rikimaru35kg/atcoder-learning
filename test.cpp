@@ -228,128 +228,53 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
-#include <atcoder/lazysegtree>
+#include <atcoder/modint>
 using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) { return max(a,b); }
-S e() { return 0; }
-using F = ll;
-S mapping(F f, S x) { return f+x; }
-F composition(F f, F g) { return f+g; }
-F id() { return 0; }
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N, Q);
-    VL(A, N); VL(B, N);
-    vt3 query;
-    CoordinateCompression<Pr> cc;
-    rep(i, N) cc.add(Pr(B[i], i));
+    LONG(N);
+    STRING(S);
 
-    vl bidx(N);
-    rep(i, N) bidx[i] = i;
-
-    rep(qi, Q) {
-        LONG(t,i,x); --i;
-        query.emplace_back(t,i,x);
-        if(t==2) cc.add(Pr(x,N+qi));
-    }
-    ll M = cc.size();
-
-    vector<S> init(M, 0);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-
+    vm dp(N+1);
+    dp[0] = 1;
     rep(i, N) {
-        ll si = cc({B[i], i});
-        seg.set(si, B[i]);
-    }
-    rep(i, N) {
-        ll si = cc({B[i], i});
-        seg.apply(0, si+1, A[i]);
-    }
-
-    auto segprint=[&](){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
-        cerr<<endl;
-    #endif
-    };
-
-    auto del=[&](ll i) {
-        ll si = cc({B[i], bidx[i]});
-        seg.apply(0, si+1, -A[i]);
-        ll now = seg.get(si);
-        seg.set(si, now-B[i]);
-    };
-    auto add=[&](ll i) {
-        ll si = cc({B[i], bidx[i]});
-        seg.apply(0, si+1, A[i]);
-        ll now = seg.get(si);
-        seg.set(si, now+B[i]);
-    };
-
-    // rep(i, M) {
-    //     printf("(%lld %lld), ", cc[i].first, cc[i].second);
-    //     cout<<endl;
-    // }
-
-    // segprint();
-    rep(qi, Q) {
-        auto [t,i,x] = query[qi];
-        del(i);
-        if(t==1) {
-            A[i] = x;
-        } else {
-            B[i] = x;
-            bidx[i] = N+qi;
+        vm pdp(N+1); swap(pdp, dp);
+        rep(j, N+1) {
+            if(S[i]=='o') {
+                if(j>=3) continue;
+                if(j==0) dp[1] += pdp[j];
+                if(j==1) dp[1] += pdp[j] * 2*j;
+                if(j==2) dp[j-1] += pdp[j] * (j-1);  // dec
+            } else {
+                if(j==0) continue;
+                // keep
+                if(j>=2) {
+                    dp[j] += pdp[j] * 2*j;
+                }
+                // inc
+                if(j<N) {
+                    dp[j+1] += pdp[j] * (j+1);
+                }
+                // dec
+                if(j>=3) {
+                    dp[j-1] += pdp[j] * (j-1);
+                }
+            }
         }
-        add(i);
-
-        ll ans = seg.all_prod();
-        Out(ans);
-        // segprint();
+        de(dp)
     }
+    Outend(dp[1].val());
 
 }
 
