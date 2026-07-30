@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <unordered_set>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,118 +230,50 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 
-template<typename T> void unique(vector<T> &v) {
-    sort(v.begin(), v.end());
-    v.erase(unique(v.begin(), v.end()), v.end());
-}
+#include <atcoder/lazysegtree>
+using namespace atcoder;
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+ll op(ll a, ll b) {return max(a,b);}
+ll e() {return 0;}
+ll mapping(ll f, ll x) {return f+x;}
+ll composition(ll f, ll g){return f+g;}
+ll id(){return 0;}
 
 void solve() {
-    LONG(L, N);
-    vl ob1s, ob2s, eb1s, eb2s;
-    rep(i, N) {
-        LONG(x, y);
-        ll b1 = y - x, b2 = y + x;
-        if(b1%2==0) {
-            eb1s.push_back(b1);
-            eb2s.push_back(b2);
-        } else {
-            ob1s.push_back(b1);
-            ob2s.push_back(b2);
+    LONG(N); VLM(A, N);
+    vvl spans(N);
+    vvl is(N);
+    rep(i, N) is[A[i]].push_back(i);
+    lazy_segtree<ll,op,e,ll,mapping,composition,id> seg(N);
+
+    vl front(N);
+    {
+        unordered_set<ll> fst;
+        rep(i, N-1) {
+            fst.insert(A[i]);
+            front[i+1] = fst.size();
         }
     }
-    auto calc=[&](vl &b1s, vl &b2s) -> ll {
-        unique(b1s); unique(b2s);
-        ll ret = 0;
-        for(auto b1: b1s) {
-            ll l = max(0LL, -b1), r = min(L, L-b1);
-            de3(b1, l, r)
-            ret += r-l;
+
+    rep(a, N) {
+        rep(j, SIZE(is[a])-1) {
+            ll i1 = is[a][j], i2 = is[a][j+1];
+            spans[i2].push_back(i1+1);
+            seg.apply(i1+1, i2+1, 1);
         }
-        de(ret)
-        for(auto b2: b2s) {
-            ll l = max(0LL, b2-L+1), r = min(L, b2+1);
-            ret += r-l;
-            auto [i1,x1] = lowbou(b1s, max(b2-2*L+1, -b2));
-            auto [i2,x2] = lowbou(b1s, min(b2+1, 2*L-b2));
-            de4(b2, r-l, i1, i2)
-            ret -= max(i2-i1,0LL);
-        }
-        return ret;
-    };
+    }
+
+    unordered_set<ll> st;
     ll ans = 0;
-    ans += calc(ob1s, ob2s);
-    ans += calc(eb1s, eb2s);
+    for(ll i=N-1; i>=2; --i) {
+        st.insert(A[i]);
+        for(auto i1: spans[i]) {
+            seg.apply(i1, i+1, -1);
+        }
+        ll now = st.size() + seg.all_prod();
+        now += front[i];
+        chmax(ans, now);
+    }
     Out(ans);
 
 }
