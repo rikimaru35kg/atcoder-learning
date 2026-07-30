@@ -2244,7 +2244,6 @@
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 
 ## ACできたがグダった問題
-- [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
 - [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
 - [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)

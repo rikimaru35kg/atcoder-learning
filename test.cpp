@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <string>
 #include <unordered_set>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,52 +230,37 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-ll op(ll a, ll b) {return max(a,b);}
-ll e() {return 0;}
-ll mapping(ll f, ll x) {return f+x;}
-ll composition(ll f, ll g){return f+g;}
-ll id(){return 0;}
-
 void solve() {
-    LONG(N); VLM(A, N);
-    vvl spans(N);
-    vvl is(N);
-    rep(i, N) is[A[i]].push_back(i);
-    lazy_segtree<ll,op,e,ll,mapping,composition,id> seg(N);
-
-    vl front(N);
-    {
-        unordered_set<ll> fst;
-        rep(i, N-1) {
-            fst.insert(A[i]);
-            front[i+1] = fst.size();
+    LONG(N);
+    unordered_set<string> cand;
+    ll M = 10000;
+    rep(i, M) {
+        string s = to_string(i);
+        while(SIZE(s)<4) s = '0'+s;
+        cand.insert(s);
+    }
+    auto count=[](string &s, string &t) -> ll {
+        ll ret = 0;
+        rep(i, 4) ret += (s[i]==t[i]);
+        return ret;
+    };
+    rep(i, N) {
+        STRING(s); LONG(t);
+        auto it = cand.begin();
+        while(it!=cand.end()) {
+            string s0 = *it;
+            ll n = count(s, s0);
+            if(  (t==1 && n!=4)
+               ||(t==2 && n!=3)
+               ||(t==3 && n>=3)) {
+                it = cand.erase(it);
+                continue;
+            }
+            ++it;
         }
     }
-
-    rep(a, N) {
-        rep(j, SIZE(is[a])-1) {
-            ll i1 = is[a][j], i2 = is[a][j+1];
-            spans[i2].push_back(i1+1);
-            seg.apply(i1+1, i2+1, 1);
-        }
-    }
-
-    unordered_set<ll> st;
-    ll ans = 0;
-    for(ll i=N-1; i>=2; --i) {
-        st.insert(A[i]);
-        for(auto i1: spans[i]) {
-            seg.apply(i1, i+1, -1);
-        }
-        ll now = st.size() + seg.all_prod();
-        now += front[i];
-        chmax(ans, now);
-    }
-    Out(ans);
+    if(SIZE(cand)!=1) Outend("Can't Solve");
+    Out(*cand.begin());
 
 }
 
