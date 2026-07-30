@@ -228,46 +228,54 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
-    struct Node {
-        map<char,int> to;
-        int p;
-        Node (int p=-1): p(p) {}
-    };
-    vector<Node> d;
-    Trie (): d(1) {};
-    int add(const string &s) {
-        int v = 0;
-        for(auto c: s) {
-            if(!d[v].to.count(c)) {
-                d[v].to[c] = d.size();
-                d.push_back(Node(v));
-            }
-            v = d[v].to[c];
-        }
-        return v;
-    }
-};
-
 void solve() {
     LONG(N);
-    vector<pair<int,string>> query;
-    Trie trie;
+    ll M = 400000;
+    vvl from(M);
+    vb used(M);
     rep(i, N) {
-        LONG(t);STRING(s);
-        query.emplace_back(t,s);
-        trie.add_string(s);
+        LONGM(a,b);
+        from[a].push_back(b);
+        from[b].push_back(a);
+        used[a] = used[b] = true;
     }
-    rep(i, N) {
-        ll ans = 0;
-        auto [t,s] = query[i];
-        if(t==1) {
-            ans = trie.addx(s);
-        } else {
-            ans = trie.addy(s);
-        }
-        Out(ans);
+
+    vb search(M), seen(M), finished(M);
+    auto count=[&](ll sv) -> ll {
+        ll ret = 0;
+        auto dfs=[&](auto f, ll v) -> void {
+            if(search[v]) return;
+            search[v] = true;
+            ++ret;
+            for(auto nv: from[v]) f(f, nv);
+        };
+        dfs(dfs, sv);
+        return ret;
+    };
+    auto is_cycle=[&](ll sv) -> bool {
+        auto dfs=[&](auto f, ll v, ll p=-1) -> bool {
+            if(finished[v]) return false;
+            if(seen[v]) return true;
+            seen[v] = true;
+            for(auto nv: from[v]) if(nv!=p){
+            // for(auto nv: from[v]) {
+                if(f(f, nv, v)) return true;
+            }
+            finished[v] = true;
+            return false;
+        };
+        return dfs(dfs, sv);
+    };
+    ll ans = 0;
+    rep(i, M) {
+        if(!used[i] || search[i]) continue;
+        ll now = count(i);
+        de2(i, now)
+        if(!is_cycle(i)) --now;
+        de(now)
+        ans += now;
     }
+    Out(ans);
 
 }
 

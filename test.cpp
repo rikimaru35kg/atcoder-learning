@@ -228,55 +228,119 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
 
-struct S {
-    ll mn, n;
-    S(ll mn=INF, ll n=0): mn(mn),n(n) {}
-};
-S op(S a, S b) {
-    if(a.mn>b.mn) swap(a,b);
-    if(a.mn!=b.mn) return a;
-    a.n += b.n;
-    return a;
+template<typename T> void unique(vector<T> &v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
 }
-S e() { return S(); }
-using F = ll;
-S mapping(F f, S x) {
-    x.mn += f;
-    return x;
-}
-F composition(F f, F g) { return f+g; }
-F id() { return 0;}
 
-void solve() {
-    LONG(N);
-    VLM(A, N);
-    vvl is(N, vl(1, -1));
-    rep(i, N) is[A[i]].push_back(i);
-    rep(i, N) is[i].push_back(N);
-    de(is)
-
-    vector<S> init(N+1, S(0, 1));
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-
-    vvt3 events(N+1);
-    rep(a, N) {
-        rep(i, SIZE(is[a])-2) {
-            int i1 = is[a][i], i2 = is[a][i+1], i3 = is[a][i+2];
-            events[i1+1].emplace_back(i2+1, i3+1, 1);
-            events[i2+1].emplace_back(i2+1, i3+1, -1);
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    de(events)
-
-    ll ans = 0;
-    rep(i, N+1) {
-        for(auto [l,r,x]: events[i]) seg.apply(l, r, x);
-        auto [mn, n] = seg.all_prod();
-        ans += N+1-n;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
     }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+void solve() {
+    LONG(L, N);
+    vl ob1s, ob2s, eb1s, eb2s;
+    rep(i, N) {
+        LONG(x, y);
+        ll b1 = y - x, b2 = y + x;
+        if(b1%2==0) {
+            eb1s.push_back(b1);
+            eb2s.push_back(b2);
+        } else {
+            ob1s.push_back(b1);
+            ob2s.push_back(b2);
+        }
+    }
+    auto calc=[&](vl &b1s, vl &b2s) -> ll {
+        unique(b1s); unique(b2s);
+        ll ret = 0;
+        for(auto b1: b1s) {
+            ll l = max(0LL, -b1), r = min(L, L-b1);
+            de3(b1, l, r)
+            ret += r-l;
+        }
+        de(ret)
+        for(auto b2: b2s) {
+            ll l = max(0LL, b2-L+1), r = min(L, b2+1);
+            ret += r-l;
+            auto [i1,x1] = lowbou(b1s, max(b2-2*L+1, -b2));
+            auto [i2,x2] = lowbou(b1s, min(b2+1, 2*L-b2));
+            de4(b2, r-l, i1, i2)
+            ret -= max(i2-i1,0LL);
+        }
+        return ret;
+    };
+    ll ans = 0;
+    ans += calc(ob1s, ob2s);
+    ans += calc(eb1s, eb2s);
     Out(ans);
 
 }

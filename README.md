@@ -2241,10 +2241,9 @@
 - [F - Email Scheduling Optimization](https://atcoder.jp/contests/abc467/tasks/abc467_f)
 - [F - Chmax](https://atcoder.jp/contests/abc468/tasks/abc468_f)
 - [G - Restricted Permutation](https://atcoder.jp/contests/abc468/tasks/abc468_g)
+- [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 
 ## ACできたがグダった問題
-- [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
-- [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
 - [C08 - ALGO4](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_ff)
 - [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
@@ -2358,4 +2357,5 @@
 - [E - Adjacent Sums (hard)](https://atcoder.jp/contests/abc467/tasks/abc467_e)
 - [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
 - [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
+- [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 
