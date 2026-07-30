@@ -1,5 +1,6 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <queue>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,42 +230,38 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    VS(S, N);
-    ll M = 26;
-    vl cnt(M);
-    auto isc=[&](string &s, string &t) -> bool {
-        if(SIZE(s)+1!=SIZE(t)) return false;
-        bool ok = true;
-        for(auto c: t) {
-            cnt[c-'a']++;
-        }
-        for(auto c: s) {
-            cnt[c-'a']--;
-            if(cnt[c-'a']<0) ok = false;
-        }
-        for(auto c: t) cnt[c-'a']--;
-        for(auto c: s) cnt[c-'a']++;
-        return ok;
-    };
-    auto getc=[&](string t) -> string {
-        ll cnt = 0;
-        for(auto s: S) {
-            if(isc(s, t)) {
-                ++cnt;
-            }
-        }
-        if(cnt==1) return t;
-        else return "";
+    LONG(N, M);
+    VL(P, N);
+    using DATA = pair<int,double>;
+    vector<vector<DATA>> from(N);
+    rep(i, M) {
+        LONGM(u,v); DOUBLE(w);
+        from[u].emplace_back(v, w);
+    }
+
+    vd mem(N, -1);
+    vb visited(N);
+    mem.back() = P.back();
+    visited.back() = true;
+    auto dfs=[&](auto f, ll v) -> db {
+        if(visited[v]) return mem[v];
+        visited[v] = true;
+        db &ret = mem[v];
+        for(auto [nv, w]: from[v]) {
+            db now = f(f, nv);
+            if(now<0) continue;
+            chmax(ret, w*now);
+        };
+        if(ret<0) return ret;
+        ret += P[v];
+        return ret;
     };
 
-    for(auto s: S) {
-        for(char c='a'; c<='z'; c++) {
-            string chi = getc(s+c);
-            if(chi!="") Outend(chi);
-        }
-    }
-    Out(-1);
+    db ans = dfs(dfs, 0);
+    de(mem)
+    if(ans<0) Outend(-1);
+    Out(ans);
+
 
 }
 
