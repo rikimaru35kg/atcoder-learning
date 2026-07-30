@@ -229,25 +229,6 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, M);
-    VVL(A, N, M);
-    using BS = bitset<2000>;
-    using vBS = vector<BS>;
-    vBS bs(N);
-
-    rep(j, M) {
-        BS now;
-        vvl as(1000);
-        rep(i, N) { as[A[i][j]].push_back(i); }
-        rep(a, 1000) {
-            for(auto i: as[a]) { now[i] = 1; }
-            for(auto i: as[a]) { bs[i] ^= now; }
-            for(auto i: as[a]) { now[i] = 0; }
-        }
-    }
-    ll ans = 0;
-    rep(i, N) rep(j, i) ans += bs[i][j];
-    Out(ans);
 
 }
 
