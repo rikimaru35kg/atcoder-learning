@@ -228,53 +228,7 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N);
-    STRING(S);
-
-    vm dp(N+1);
-    dp[0] = 1;
-    rep(i, N) {
-        vm pdp(N+1); swap(pdp, dp);
-        rep(j, N+1) {
-            if(S[i]=='o') {
-                if(j>=3) continue;
-                if(j==0) dp[1] += pdp[j];
-                if(j==1) dp[1] += pdp[j] * 2*j;
-                if(j==2) dp[j-1] += pdp[j] * (j-1);  // dec
-            } else {
-                if(j==0) continue;
-                // keep
-                if(j>=2) {
-                    dp[j] += pdp[j] * 2*j;
-                }
-                // inc
-                if(j<N) {
-                    dp[j+1] += pdp[j] * (j+1);
-                }
-                // dec
-                if(j>=3) {
-                    dp[j-1] += pdp[j] * (j-1);
-                }
-            }
-        }
-        de(dp)
-    }
-    Outend(dp[1].val());
 
 }
 

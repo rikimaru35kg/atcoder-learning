@@ -694,8 +694,7 @@
 ### 例題
 - !復習価値低 [059 - Many Graph Queries（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bg)
 - 基本 [G - Triangle](https://atcoder.jp/contests/abc258/tasks/abc258_g)
-!!! where i am now for rank A (last submission 2026/4/28)
-- !復習価値高 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
+- !復習価値低 [F - Oddly Similar](https://atcoder.jp/contests/abc348/tasks/abc348_f)
 
 ## 連結リスト（単方向・双方向）
 - 要素の前後関係だけ保持するリスト
@@ -769,6 +768,7 @@
 - 基本 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
+!!! where i am now for rank C (last submission 2026/4/28)
 - !復習価値高 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
@@ -2234,8 +2234,7 @@
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2026/4/20)
-- [E - LRUD Moving](https://atcoder.jp/contests/abc454/tasks/abc454_e)
+!!! where i am now for rank D (last submission 2026/6/10)
 - [E - E-liter](https://atcoder.jp/contests/abc461/tasks/abc461_e)
 - [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [D - Concentric Circles](https://atcoder.jp/contests/abc467/tasks/abc467_d)
@@ -2244,8 +2243,6 @@
 - [G - Restricted Permutation](https://atcoder.jp/contests/abc468/tasks/abc468_g)
 
 ## ACできたがグダった問題
-- [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
-- [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
@@ -2359,4 +2356,6 @@
 - [E - Digit Circus](https://atcoder.jp/contests/abc465/tasks/abc465_e)
 - [F - Many Mod Calculation](https://atcoder.jp/contests/abc466/tasks/abc466_f)
 - [E - Adjacent Sums (hard)](https://atcoder.jp/contests/abc467/tasks/abc467_e)
+- [F - 1122 Subsequence](https://atcoder.jp/contests/abc381/tasks/abc381_f)
+- [C19 - Gasoline Optimization Problem](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fq)
 
