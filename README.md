@@ -608,6 +608,7 @@
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 - 基本 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
+!!! where i am now for rank A (last submission 2026/5/8)
 - !復習価値高 [F - Make Bipartite 3](https://atcoder.jp/contests/abc451/tasks/abc451_f)
 
 ## 超頂点を設ける
@@ -768,8 +769,7 @@
 - 基本 [O - 区間ソートクエリ](https://atcoder.jp/contests/past202303-open/tasks/past202303_o)
 - !復習価値低 [O - シフトとシフト](https://atcoder.jp/contests/past202212-open/tasks/past202212_o)
 - 基本 [N - モノクロデザイン](https://atcoder.jp/contests/past202107-open/tasks/past202107_n)
-!!! where i am now for rank C (last submission 2026/4/28)
-- !復習価値高 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
+- !復習価値中 [G - Alone](https://atcoder.jp/contests/abc346/tasks/abc346_g)
 - !要復習 良問だが頭がついていかないので解かなくて良い（高diffで解説ACすら無理だったが、解説動画を見るぐらいは勉強になるかも）Note非掲載 [F - InterSections](https://atcoder.jp/contests/abc360/tasks/abc360_f)
 
 ## 双対セグメントツリー（Dual Segment Tree）

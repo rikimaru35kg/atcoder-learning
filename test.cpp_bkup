@@ -228,7 +228,46 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+struct Trie {
+    struct Node {
+        map<char,int> to;
+        int p;
+        Node (int p=-1): p(p) {}
+    };
+    vector<Node> d;
+    Trie (): d(1) {};
+    int add(const string &s) {
+        int v = 0;
+        for(auto c: s) {
+            if(!d[v].to.count(c)) {
+                d[v].to[c] = d.size();
+                d.push_back(Node(v));
+            }
+            v = d[v].to[c];
+        }
+        return v;
+    }
+};
+
 void solve() {
+    LONG(N);
+    vector<pair<int,string>> query;
+    Trie trie;
+    rep(i, N) {
+        LONG(t);STRING(s);
+        query.emplace_back(t,s);
+        trie.add_string(s);
+    }
+    rep(i, N) {
+        ll ans = 0;
+        auto [t,s] = query[i];
+        if(t==1) {
+            ans = trie.addx(s);
+        } else {
+            ans = trie.addy(s);
+        }
+        Out(ans);
+    }
 
 }
 

@@ -228,46 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct Trie {
-    struct Node {
-        map<char,int> to;
-        int p;
-        Node (int p=-1): p(p) {}
-    };
-    vector<Node> d;
-    Trie (): d(1) {};
-    int add(const string &s) {
-        int v = 0;
-        for(auto c: s) {
-            if(!d[v].to.count(c)) {
-                d[v].to[c] = d.size();
-                d.push_back(Node(v));
-            }
-            v = d[v].to[c];
-        }
-        return v;
-    }
+#include <atcoder/lazysegtree>
+using namespace atcoder;
+
+struct S {
+    ll mn, n;
+    S(ll mn=INF, ll n=0): mn(mn),n(n) {}
 };
+S op(S a, S b) {
+    if(a.mn>b.mn) swap(a,b);
+    if(a.mn!=b.mn) return a;
+    a.n += b.n;
+    return a;
+}
+S e() { return S(); }
+using F = ll;
+S mapping(F f, S x) {
+    x.mn += f;
+    return x;
+}
+F composition(F f, F g) { return f+g; }
+F id() { return 0;}
 
 void solve() {
     LONG(N);
-    vector<pair<int,string>> query;
-    Trie trie;
-    rep(i, N) {
-        LONG(t);STRING(s);
-        query.emplace_back(t,s);
-        trie.add_string(s);
-    }
-    rep(i, N) {
-        ll ans = 0;
-        auto [t,s] = query[i];
-        if(t==1) {
-            ans = trie.addx(s);
-        } else {
-            ans = trie.addy(s);
+    VLM(A, N);
+    vvl is(N, vl(1, -1));
+    rep(i, N) is[A[i]].push_back(i);
+    rep(i, N) is[i].push_back(N);
+    de(is)
+
+    vector<S> init(N+1, S(0, 1));
+    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
+
+    vvt3 events(N+1);
+    rep(a, N) {
+        rep(i, SIZE(is[a])-2) {
+            int i1 = is[a][i], i2 = is[a][i+1], i3 = is[a][i+2];
+            events[i1+1].emplace_back(i2+1, i3+1, 1);
+            events[i2+1].emplace_back(i2+1, i3+1, -1);
         }
-        Out(ans);
     }
+    de(events)
+
+    ll ans = 0;
+    rep(i, N+1) {
+        for(auto [l,r,x]: events[i]) seg.apply(l, r, x);
+        auto [mn, n] = seg.all_prod();
+        ans += N+1-n;
+    }
+    Out(ans);
 
 }
 
