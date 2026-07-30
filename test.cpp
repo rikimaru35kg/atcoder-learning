@@ -1,7 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <string>
-#include <unordered_set>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -232,35 +230,38 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N);
-    unordered_set<string> cand;
-    ll M = 10000;
-    rep(i, M) {
-        string s = to_string(i);
-        while(SIZE(s)<4) s = '0'+s;
-        cand.insert(s);
-    }
-    auto count=[](string &s, string &t) -> ll {
-        ll ret = 0;
-        rep(i, 4) ret += (s[i]==t[i]);
-        return ret;
-    };
-    rep(i, N) {
-        STRING(s); LONG(t);
-        auto it = cand.begin();
-        while(it!=cand.end()) {
-            string s0 = *it;
-            ll n = count(s, s0);
-            if(  (t==1 && n!=4)
-               ||(t==2 && n!=3)
-               ||(t==3 && n>=3)) {
-                it = cand.erase(it);
-                continue;
-            }
-            ++it;
+    VVLM(A, N, N);
+    ll i0=-1, j0=-1;
+    [&](){
+    rep(i, N) rep(j, N) {
+        if(A[i][j]==-1) {
+            i0=i, j0=j;
+            return;
         }
     }
-    if(SIZE(cand)!=1) Outend("Can't Solve");
-    Out(*cand.begin());
+    }();
+    de2(i0, j0);
+    vt3 skip;
+    rep(i, N) rep(j, N) rep(k, N) {
+        if(i==i0 && j==j0 || j==i0 && k==j0 ||
+           A[i][j]==i0 && k==j0 || i==i0 && A[j][k]==j0) {
+            skip.emplace_back(i,j,k);
+            continue;
+        }
+        if(A[A[i][j]][k] != A[i][A[j][k]]) {
+            Outend(0);
+        }
+    }
+    ll ans = 0;
+    rep(a, N) {
+        A[i0][j0] = a;
+        bool ok = true;
+        for(auto [i,j,k]: skip) {
+            if(A[A[i][j]][k] != A[i][A[j][k]]) ok = false;
+        }
+        if(ok) ++ans;
+    }
+    Out(ans);
 
 }
 

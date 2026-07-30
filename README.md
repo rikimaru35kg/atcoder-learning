@@ -2244,8 +2244,6 @@
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 
 ## ACできたがグダった問題
-- [No.2715 Unique Chimatagram](https://yukicoder.me/problems/no/2715)
-- [G - 結合律](https://atcoder.jp/contests/past19-open/tasks/past19_g)
 - [M - DAG ゲーム](https://atcoder.jp/contests/past19-open/tasks/past19_m)
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 - [B - ビリヤード (Billiards)](https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b)
