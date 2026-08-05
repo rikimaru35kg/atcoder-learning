@@ -228,147 +228,180 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-bool solve(ll N, vl A, vl B) {
-    vl ca(N), cb(N);
-    rep(i, N) ca[A[i]]++;
-    rep(i, N) cb[B[i]]++;
-    if(ca!=cb) return false;
-
-    vl is;
-    rep(i, N) if(A[i]!=B[i]) is.push_back(i);
-
-    ll cnt = is.size();
-    if(cnt==0) return true;
-    if(cnt>4 || cnt==1) return false;
-    
-    if(cnt==4) {
-        if(is[0]+1!=is[1] || is[2]+1!=is[3]) return false;
-        swap(A[is[0]], A[is[1]]);
-        swap(A[is[2]], A[is[3]]);
-        if(A==B) return true;
-        return false;
-    }
-    if(cnt==2) {
-        if(is[0]+1==is[1] && A[is[0]]==B[is[1]] && A[is[1]]==B[is[0]]) {
-            rep(i, N-1) {
-                if(A[i]==A[i+1]) return true;
-                if(B[i]==B[i+1]) return true;
-            }
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
-        if(is[0]+2==is[1]) {
-            vl a = {A[is[0]], A[is[0]+1], A[is[1]]};
-            vl b = {B[is[0]], B[is[0]+1], B[is[1]]};
-            swap(a[0], a[1]), swap(a[1], a[2]);
-            if(a==b) return true;
-            a = {A[is[0]], A[is[0]+1], A[is[1]]};
-            b = {B[is[0]], B[is[0]+1], B[is[1]]};
-            swap(a[1], a[2]), swap(a[0], a[1]);
-            if(a==b) return true;
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
         }
-        return false;
     }
-    if(cnt==3) {
-        if(is[0]+1!=is[1] || is[1]+1!=is[2]) return false;
-        vl a = {A[is[0]], A[is[1]], A[is[2]]};
-        vl b = {B[is[0]], B[is[1]], B[is[2]]};
-        swap(a[0], a[1]), swap(a[1], a[2]);
-        if(a==b) return true;
-        a = {A[is[0]], A[is[1]], A[is[2]]};
-        b = {B[is[0]], B[is[1]], B[is[2]]};
-        swap(a[1], a[2]), swap(a[0], a[1]);
-        if(a==b) return true;
-        return false;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
     }
-    return false;
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
 }
 
-bool solve2(ll N, vl A, vl B) {
-    auto sw=[&](ll i, ll j) { swap(A[i], A[j]); };
+ll solve(ll N, vvl A) {
+    if(SIZE(A[0])%2==0 && SIZE(A[1])%2==0) return 0;
 
-    vl is;
-    rep(i, N) {
-        if(A[i]!=B[i]) is.push_back(i);
-    }
-    bool adj=false;
-    rep(i, N-1) {
-        if(A[i]==A[i+1]) adj=true;
-    }
-    if(SIZE(is)==0) return true;
-    if(SIZE(is)==1 || SIZE(is)>4) return false;
-    if(SIZE(is)==4) {
-        ll i1=is[0], i2=is[1], i3=is[2], i4=is[3];
-        if(i1+1!=i2) return false;
-        if(i3+1!=i4) return false;
-        sw(i1,i2); sw(i3,i4);
-        if(A==B) return true;
-        return false;
-    }
-    // ここまではOKなはず
-    if(adj && SIZE(is)==2) {
-        ll i1 = is[0], i2 = is[1];
-        if(i1+1==i2) {
-            sw(i1,i2);
-            if(A==B) return true;
-            sw(i1,i2);
+    if(SIZE(A[0])%2==0) swap(A[0], A[2]);
+    if(SIZE(A[1])%2==0) swap(A[1], A[2]);
+
+    rep(i, 3) sort(all(A[i]));
+
+    auto calc=[&](vl &a, vl &b) -> vp {
+        ll n = a.size();
+        vp ret;
+        rep(i, n) {
+            auto [j,x] = lowbou(b, a[i]);
+            ll now = INF;
+            if(j!=SIZE(b)) chmin(now, abs(b[j]-a[i]));
+            if(j) chmin(now, abs(b[j-1]-a[i]));
+            ret.emplace_back(now, i);
         }
-    }
-    if(SIZE(is)==2) {
-        ll i1 = is[0], i2 = is[1];
-        if(i2+1<N && A[i1]==A[i2+1]) {
-            sw(i1,i2);
-            if(A==B) return true;
-            sw(i1,i2);
-        }
-        if(i1 && A[i1-1]==A[i2]) {
-            sw(i1,i2);
-            if(A==B) return true;
-            sw(i1,i2);
-        }
-    }
-    ll i1=is[0], i3=is.back();
-    if(i1+2!=i3) return false;
-    ll i2 = i1+1;
+        return ret;
+    };
+
+    ll ans = INF;
     {
-        sw(i1,i2); sw(i2,i3);
-        if(A==B) return true;
-        sw(i2,i3); sw(i1,i2);
+        auto vp = calc(A[0], A[1]);
+        sort(all(vp));
+        chmin(ans, vp[0].first);
+        if(SIZE(A[2])==0) return ans;
     }
     {
-        sw(i2,i3); sw(i1,i2);
-        if(A==B) return true;
-        sw(i1,i2); sw(i2,i3);
+        vp v0 = calc(A[2], A[0]);
+        vp v1 = calc(A[2], A[1]);
+        sort(all(v0));
+        sort(all(v1));
+        // if(v0[0].second!=v1[0].second) chmin(ans, v0[0].first+v1[0].first);
+        chmin(ans, v0[0].first+v1[0].first);
+        // else {
+        //     if(SIZE(v0)>=2) chmin(ans, v0[1].first+v1[0].first);
+        //     if(SIZE(v1)>=2) chmin(ans, v0[0].first+v1[1].first);
+        // }
+        return ans;
     }
-    return false;
+
+}
+
+ll solve2(ll N, vvl A) {
+    ll ret = INF;
+    vp p;
+    rep(i, 3) {
+        for(auto a: A[i]) {
+            p.emplace_back(i, a);
+        }
+    }
+
+    N = p.size();
+
+    auto f=[&](auto f, vp v, ll x) -> void {
+        if(v.empty()) {
+            chmin(ret, x); return;
+        }
+        ll n = v.size();
+        repk(i, 1, n) {
+            vp nv = v;
+            ll nx = x;
+            if(nv[0].first!=nv[i].first) nx += abs(nv[0].second-nv[i].second);
+            nv.erase(nv.begin()+i);
+            nv.erase(nv.begin());
+            f(f, nv, nx);
+        }
+    };
+    f(f, p, 0);
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N); VLM(A, N); VLM(B, N);
-    if(solve(N, A, B)) puts("Yes");
-    else puts("No");
+    LONG(N);
+    vvl A(3);
+    rep(i, 2*N) {
+        LONG(a); CHAR(c);
+        if(c=='R') A[0].push_back(a);
+        else if(c=='G') A[1].push_back(a);
+        else A[2].push_back(a);
+    }
+    ll ans = solve(N, A);
+    Out(ans);
 
     // LONG(N);
     // while(true) {
-    //     vl A(N);
-    //     rep(i, N) {
-    //         A[i] = rand()%N;
+    //     vvl A(3);
+    //     rep(i, 2*N) {
+    //         ll a = rand()%10;
+    //         ll c = rand()%3;
+    //         A[c].push_back(a);
     //     }
-    //     vl B = A;
-    //     ll j = rand()%(N-1);
-    //     swap(B[j], B[j+1]);
-    //     j = rand()%(N-1);
-    //     swap(B[j], B[j+1]);
-    //     bool b1 = solve(N, A, B);
-    //     bool b2 = solve2(N, A, B);
-    //     if(b1!=b2) {
-    //         de(A)de(B);
-    //         de2(b1,b2)
+    //     ll ans1 = solve(N, A);
+    //     ll ans2 = solve2(N, A);
+    //     if(ans1!=ans2) {
+    //         de(A)
+    //         de2(ans1, ans2);
     //         return 0;
     //     }
     // }
-
 }
 
 // ### test.cpp ###
-

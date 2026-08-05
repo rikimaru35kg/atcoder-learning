@@ -1,6 +1,5 @@
-N = 1000;
-P = [N-i for i in range(N)]
-import random
-# random.shuffle(P)
+N = 2*10**5
+A = [10**6-N+i+1 for i in range(N)]
 print(N)
-print(*P)
+print(*A)
+

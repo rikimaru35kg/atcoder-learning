@@ -1,6 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <queue>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -229,39 +228,127 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M);
-    VL(P, N);
-    using DATA = pair<int,double>;
-    vector<vector<DATA>> from(N);
-    rep(i, M) {
-        LONGM(u,v); DOUBLE(w);
-        from[u].emplace_back(v, w);
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
+        }
     }
-
-    vd mem(N, -1);
-    vb visited(N);
-    mem.back() = P.back();
-    visited.back() = true;
-    auto dfs=[&](auto f, ll v) -> db {
-        if(visited[v]) return mem[v];
-        visited[v] = true;
-        db &ret = mem[v];
-        for(auto [nv, w]: from[v]) {
-            db now = f(f, nv);
-            if(now<0) continue;
-            chmax(ret, w*now);
-        };
-        if(ret<0) return ret;
-        ret += P[v];
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
         return ret;
+    }
+    int mu(long long k) { return mobius[k]; }
+} sieve(1e6+5);
+
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
+        }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
+    }
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
+    }
+};
+
+
+void solve() {
+    LONG(N);
+    VL(A, N);
+    ll M = 1e6+5;
+    vvl is(M);
+
+    vl ds;
+    auto listup=[&](auto f, ll i, ll x, vp &vp) -> void {
+        if(i==SIZE(vp)) {
+            ds.push_back(x); return;
+        }
+        auto [p,n] = vp[i];
+        ll now = 1;
+        rep(j, n+1) {
+            f(f, i+1, x*now, vp);
+            now *= p;
+        }
     };
 
-    db ans = dfs(dfs, 0);
-    de(mem)
-    if(ans<0) Outend(-1);
-    Out(ans);
+    rep(i, N) {
+        auto vp = sieve.factorize(A[i]);
+        ds = vl();
+        listup(listup, 0, 1, vp);
+        for(auto d: ds) {
+            is[d].push_back(i);
+        }
+    }
+    ll ans = 0;
+    WeightedUnionFind uf(N);
 
+    repr(d, M) {
+        ll m = SIZE(is[d]);
+        if(m<2) continue;
+        for(ll i=0; i<m-1; i++) {
+            ll a = is[d][i], b = is[d][i+1];
+            if(uf.same(a, b)) continue;
+            uf.merge(a,b);
+            ans += d;
+        }
+    }
+
+    Out(ans);
 
 }
 
