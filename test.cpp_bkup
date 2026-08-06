@@ -228,134 +228,180 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
         }
     }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
     }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+
+ll solve(ll N, vvl A) {
+    if(SIZE(A[0])%2==0 && SIZE(A[1])%2==0) return 0;
+
+    if(SIZE(A[0])%2==0) swap(A[0], A[2]);
+    if(SIZE(A[1])%2==0) swap(A[1], A[2]);
+
+    rep(i, 3) sort(all(A[i]));
+
+    auto calc=[&](vl &a, vl &b) -> vp {
+        ll n = a.size();
+        vp ret;
+        rep(i, n) {
+            auto [j,x] = lowbou(b, a[i]);
+            ll now = INF;
+            if(j!=SIZE(b)) chmin(now, abs(b[j]-a[i]));
+            if(j) chmin(now, abs(b[j-1]-a[i]));
+            ret.emplace_back(now, i);
         }
         return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-} sieve(1e6+5);
-
-struct WeightedUnionFind {
-    vector<long long> p, num, diff; vector<bool> inf;
-    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
-    long long leader (long long x) {
-        if (p[x] == -1) return x;
-        long long y = p[x];
-        p[x] = leader(y);
-        diff[x] += diff[y];
-        return p[x];
-    }
-    bool merge (long long x, long long y, long long w=0) {   // x - y = w
-        leader(x); leader(y);  // path compression, -> diff will be based on root.
-        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
-        x = leader(x); y = leader(y);
-        if (x == y) {
-            if(w != 0) inf[x] = true;  // component x has infinite cycle
-            return w == 0;
-        }
-        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
-        diff[x] = w;
-        p[x] = y;
-        num[y] += num[x];
-        if(inf[x]) inf[y] = true;
-        return true;
-        // merge関数はポテンシャルの差として引数を指定すれば良い
-        // yに対してxのポテンシャルはw大きい
-        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
-        // diffが正であるとは、親よりもポテンシャルが低いという事
-        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
-        // 従ってvのuに対するポテンシャルを求めたいのであれば
-        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
-    }
-    bool same (long long x, long long y) { return leader(x) == leader(y); }
-    long long size (long long x) { return num[leader(x)]; }
-    bool isinf(long long x) { return inf[leader(x)]; }
-    long long potential_diff(long long x, long long y) { // y-x (base=x)
-        if(!same(x,y)) return -3e18;  // no connection
-        if(isinf(x)) return 3e18;  // infinite cycle
-        return diff[x] - diff[y];  // potential(y) - potential(x);
-    }
-};
-
-
-void solve() {
-    LONG(N);
-    VL(A, N);
-    ll M = 1e6+5;
-    vvl is(M);
-
-    vl ds;
-    auto listup=[&](auto f, ll i, ll x, vp &vp) -> void {
-        if(i==SIZE(vp)) {
-            ds.push_back(x); return;
-        }
-        auto [p,n] = vp[i];
-        ll now = 1;
-        rep(j, n+1) {
-            f(f, i+1, x*now, vp);
-            now *= p;
-        }
     };
 
-    rep(i, N) {
-        auto vp = sieve.factorize(A[i]);
-        ds = vl();
-        listup(listup, 0, 1, vp);
-        for(auto d: ds) {
-            is[d].push_back(i);
+    ll ans = INF;
+    {
+        auto vp = calc(A[0], A[1]);
+        sort(all(vp));
+        chmin(ans, vp[0].first);
+        if(SIZE(A[2])==0) return ans;
+    }
+    {
+        vp v0 = calc(A[2], A[0]);
+        vp v1 = calc(A[2], A[1]);
+        sort(all(v0));
+        sort(all(v1));
+        // if(v0[0].second!=v1[0].second) chmin(ans, v0[0].first+v1[0].first);
+        chmin(ans, v0[0].first+v1[0].first);
+        // else {
+        //     if(SIZE(v0)>=2) chmin(ans, v0[1].first+v1[0].first);
+        //     if(SIZE(v1)>=2) chmin(ans, v0[0].first+v1[1].first);
+        // }
+        return ans;
+    }
+
+}
+
+ll solve2(ll N, vvl A) {
+    ll ret = INF;
+    vp p;
+    rep(i, 3) {
+        for(auto a: A[i]) {
+            p.emplace_back(i, a);
         }
     }
-    ll ans = 0;
-    WeightedUnionFind uf(N);
 
-    repr(d, M) {
-        ll m = SIZE(is[d]);
-        if(m<2) continue;
-        for(ll i=0; i<m-1; i++) {
-            ll a = is[d][i], b = is[d][i+1];
-            if(uf.same(a, b)) continue;
-            uf.merge(a,b);
-            ans += d;
+    N = p.size();
+
+    auto f=[&](auto f, vp v, ll x) -> void {
+        if(v.empty()) {
+            chmin(ret, x); return;
         }
-    }
-
-    Out(ans);
-
+        ll n = v.size();
+        repk(i, 1, n) {
+            vp nv = v;
+            ll nx = x;
+            if(nv[0].first!=nv[i].first) nx += abs(nv[0].second-nv[i].second);
+            nv.erase(nv.begin()+i);
+            nv.erase(nv.begin());
+            f(f, nv, nx);
+        }
+    };
+    f(f, p, 0);
+    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(N);
+    vvl A(3);
+    rep(i, 2*N) {
+        LONG(a); CHAR(c);
+        if(c=='R') A[0].push_back(a);
+        else if(c=='G') A[1].push_back(a);
+        else A[2].push_back(a);
+    }
+    ll ans = solve(N, A);
+    Out(ans);
+
+    // LONG(N);
+    // while(true) {
+    //     vvl A(3);
+    //     rep(i, 2*N) {
+    //         ll a = rand()%10;
+    //         ll c = rand()%3;
+    //         A[c].push_back(a);
+    //     }
+    //     ll ans1 = solve(N, A);
+    //     ll ans2 = solve2(N, A);
+    //     if(ans1!=ans2) {
+    //         de(A)
+    //         de2(ans1, ans2);
+    //         return 0;
+    //     }
+    // }
 }
 
 // ### test.cpp ###

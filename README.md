@@ -2245,7 +2245,6 @@
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 
 ## ACできたがグダった問題
-- [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 - [E - Duplicate](https://atcoder.jp/contests/abc313/tasks/abc313_e)
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
 - [B - AB Game](https://atcoder.jp/contests/arc145/tasks/arc145_b)
@@ -2352,4 +2351,5 @@
 - [sengoku - 戦国時代 (Sengoku)](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_sengoku)
 - [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
 - [B - RGB Matching](https://atcoder.jp/contests/arc121/tasks/arc121_b)
+- [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 
