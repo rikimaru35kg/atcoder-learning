@@ -2245,7 +2245,6 @@
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 
 ## ACできたがグダった問題
-- [E - Duplicate](https://atcoder.jp/contests/abc313/tasks/abc313_e)
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
 - [B - AB Game](https://atcoder.jp/contests/arc145/tasks/arc145_b)
 - [A - Three Cards](https://atcoder.jp/contests/arc146/tasks/arc146_a)

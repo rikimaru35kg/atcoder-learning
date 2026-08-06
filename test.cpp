@@ -230,7 +230,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -244,28 +244,42 @@ inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_vi
 
 void solve() {
     LONG(N);
-    VL(A, N);
-
-    vm w(N);
-    w[0] = 1, w[1] = 2;
-    rep(i, N-2) w[i+2] = w[i] + w[i+1];
-
-    mint ans = w[N-1] * A[0];
-    de(ans)
+    STRING(S);
     rep(i, N-1) {
-        ll l = i, r = N-1-(i+1);
-        de2(l,r)
-        mint now;
-        now += w[l]*w[r]*A[i+1];
-        de(now)
-        now -= w[max(l-1,0LL)]*w[max(r-1,0LL)]*A[i+1];
-        de3(now.val(), w[max(l-1,0LL)].val(), w[max(r-1,0LL)].val());
-        ans += now;
-        de(now)
+        if(S[i]!='1' && S[i+1]!='1') Pm1
+    }
+    vector<pair<char,int>> run;
+    rep(i, N) {
+        if(run.size() && run.back().first==S[i]) run.back().second++;
+        else run.emplace_back(S[i], 1);
+    }
+
+    mint ans = 0;
+    ll pre = -1;
+    while(SIZE(run)) {
+        if(SIZE(run)==1) {
+            if(run[0].first=='1') {
+                mint x = run.back().second;
+                if(pre!=-1) {
+                    x += (pre-1)*ans;
+                }
+                ans += x-1;
+            }
+            break;
+        }
+        if(run.back().first=='1') {
+            mint x = run.back().second;
+            if(pre!=-1) {
+                x += (pre-1)*ans;
+            }
+            ans += x;
+        } else {
+            ++ans;
+            pre = run.back().first-'0';
+        }
+        run.pop_back();
     }
     Out(ans);
-
-
 
 }
 

@@ -228,180 +228,51 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N);
+    VL(A, N);
+
+    vm w(N);
+    w[0] = 1, w[1] = 2;
+    rep(i, N-2) w[i+2] = w[i] + w[i+1];
+
+    mint ans = w[N-1] * A[0];
+    de(ans)
+    rep(i, N-1) {
+        ll l = i, r = N-1-(i+1);
+        de2(l,r)
+        mint now;
+        now += w[l]*w[r]*A[i+1];
+        de(now)
+        now -= w[max(l-1,0LL)]*w[max(r-1,0LL)]*A[i+1];
+        de3(now.val(), w[max(l-1,0LL)].val(), w[max(r-1,0LL)].val());
+        ans += now;
+        de(now)
     }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
+    Out(ans);
 
-ll solve(ll N, vvl A) {
-    if(SIZE(A[0])%2==0 && SIZE(A[1])%2==0) return 0;
 
-    if(SIZE(A[0])%2==0) swap(A[0], A[2]);
-    if(SIZE(A[1])%2==0) swap(A[1], A[2]);
 
-    rep(i, 3) sort(all(A[i]));
-
-    auto calc=[&](vl &a, vl &b) -> vp {
-        ll n = a.size();
-        vp ret;
-        rep(i, n) {
-            auto [j,x] = lowbou(b, a[i]);
-            ll now = INF;
-            if(j!=SIZE(b)) chmin(now, abs(b[j]-a[i]));
-            if(j) chmin(now, abs(b[j-1]-a[i]));
-            ret.emplace_back(now, i);
-        }
-        return ret;
-    };
-
-    ll ans = INF;
-    {
-        auto vp = calc(A[0], A[1]);
-        sort(all(vp));
-        chmin(ans, vp[0].first);
-        if(SIZE(A[2])==0) return ans;
-    }
-    {
-        vp v0 = calc(A[2], A[0]);
-        vp v1 = calc(A[2], A[1]);
-        sort(all(v0));
-        sort(all(v1));
-        // if(v0[0].second!=v1[0].second) chmin(ans, v0[0].first+v1[0].first);
-        chmin(ans, v0[0].first+v1[0].first);
-        // else {
-        //     if(SIZE(v0)>=2) chmin(ans, v0[1].first+v1[0].first);
-        //     if(SIZE(v1)>=2) chmin(ans, v0[0].first+v1[1].first);
-        // }
-        return ans;
-    }
-
-}
-
-ll solve2(ll N, vvl A) {
-    ll ret = INF;
-    vp p;
-    rep(i, 3) {
-        for(auto a: A[i]) {
-            p.emplace_back(i, a);
-        }
-    }
-
-    N = p.size();
-
-    auto f=[&](auto f, vp v, ll x) -> void {
-        if(v.empty()) {
-            chmin(ret, x); return;
-        }
-        ll n = v.size();
-        repk(i, 1, n) {
-            vp nv = v;
-            ll nx = x;
-            if(nv[0].first!=nv[i].first) nx += abs(nv[0].second-nv[i].second);
-            nv.erase(nv.begin()+i);
-            nv.erase(nv.begin());
-            f(f, nv, nx);
-        }
-    };
-    f(f, p, 0);
-    return ret;
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(N);
-    vvl A(3);
-    rep(i, 2*N) {
-        LONG(a); CHAR(c);
-        if(c=='R') A[0].push_back(a);
-        else if(c=='G') A[1].push_back(a);
-        else A[2].push_back(a);
-    }
-    ll ans = solve(N, A);
-    Out(ans);
-
-    // LONG(N);
-    // while(true) {
-    //     vvl A(3);
-    //     rep(i, 2*N) {
-    //         ll a = rand()%10;
-    //         ll c = rand()%3;
-    //         A[c].push_back(a);
-    //     }
-    //     ll ans1 = solve(N, A);
-    //     ll ans2 = solve2(N, A);
-    //     if(ans1!=ans2) {
-    //         de(A)
-    //         de2(ans1, ans2);
-    //         return 0;
-    //     }
-    // }
+    solve();
 }
 
 // ### test.cpp ###
