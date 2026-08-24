@@ -228,44 +228,23 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N);
-    VL(A, N);
-
-    vm w(N);
-    w[0] = 1, w[1] = 2;
-    rep(i, N-2) w[i+2] = w[i] + w[i+1];
-
-    mint ans = w[N-1] * A[0];
-    de(ans)
-    rep(i, N-1) {
-        ll l = i, r = N-1-(i+1);
-        de2(l,r)
-        mint now;
-        now += w[l]*w[r]*A[i+1];
-        de(now)
-        now -= w[max(l-1,0LL)]*w[max(r-1,0LL)]*A[i+1];
-        de3(now.val(), w[max(l-1,0LL)].val(), w[max(r-1,0LL)].val());
-        ans += now;
-        de(now)
+    LONG(N, Q);
+    VLM(P, N);
+    vl idx(N);
+    rep(i, N) idx[P[i]] = i;
+    rep(i, Q) {
+        LONG(t);
+        if(t==1) {
+            LONGM(x,y);
+            swap(P[x], P[y]);
+            swap(idx[P[x]], idx[P[y]]);
+        } else {
+            swap(P, idx);
+        }
     }
-    Out(ans);
-
-
+    rep(i, N) P[i]++;
+    Out(P);
 
 }
 

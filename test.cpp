@@ -228,58 +228,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
-    LONG(N);
-    STRING(S);
-    rep(i, N-1) {
-        if(S[i]!='1' && S[i+1]!='1') Pm1
-    }
-    vector<pair<char,int>> run;
-    rep(i, N) {
-        if(run.size() && run.back().first==S[i]) run.back().second++;
-        else run.emplace_back(S[i], 1);
-    }
+    LONG(N, L);
+    VL(A, N);
+    db ave = 0;
+    rep(i, N) ave += A[i];
+    ave /= N;
 
-    mint ans = 0;
-    ll pre = -1;
-    while(SIZE(run)) {
-        if(SIZE(run)==1) {
-            if(run[0].first=='1') {
-                mint x = run.back().second;
-                if(pre!=-1) {
-                    x += (pre-1)*ans;
-                }
-                ans += x-1;
-            }
-            break;
-        }
-        if(run.back().first=='1') {
-            mint x = run.back().second;
-            if(pre!=-1) {
-                x += (pre-1)*ans;
-            }
-            ans += x;
-        } else {
-            ++ans;
-            pre = run.back().first-'0';
-        }
-        run.pop_back();
-    }
-    Out(ans);
+    vvvd dp(L+1, vvd(N+1, vd(N+1)));
+    vvvb done(L+1, vvb(N+1, vb(N+1)));
+
+    auto f=[&](auto f, ll l, ll o, ll y) -> db {
+        if(done[l][o][y]) return dp[l][o][y];
+        if(l==0) return 0;
+        if(o==0 && y==0) return 0;
+        done[l][o][y] = true;
+
+        db &ret = dp[l][o][y];
+
+        db p = (db)o/(o+2*y);
+        db n = o+2*y;
+
+        if(o) ret += p * (f(f, l, o-1, y)+1);
+        if(o && y) ret += (1-p)   *((db)o/(n-1))  * (f(f, l-1, o, y-1)+(l==1?0:1));
+        if(y) ret += (1-p)   *(1./(n-1))          * (f(f, l,   o, y-1)+1);
+        if(y>=2) ret += (1-p)*((db)(2*y-2)/(n-1)) * (f(f, l-1, o+2, y-2));
+
+        return ret;
+    };
+
+    Out(f(f, L, 0, N)*ave);
 
 }
 

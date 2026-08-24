@@ -2243,6 +2243,7 @@
 - [G - Restricted Permutation](https://atcoder.jp/contests/abc468/tasks/abc468_g)
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
+- [E - Concentration](https://atcoder.jp/contests/abc470/tasks/abc470_e)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
@@ -2351,4 +2352,5 @@
 - [F - Variety Split Hard](https://atcoder.jp/contests/abc397/tasks/abc397_f)
 - [B - RGB Matching](https://atcoder.jp/contests/arc121/tasks/arc121_b)
 - [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
-
+- [C - Inc, Dec, Xor](https://atcoder.jp/contests/abc470/tasks/abc470_c)
+- [D - Inverse and Swap](https://atcoder.jp/contests/abc470/tasks/abc470_d)
