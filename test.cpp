@@ -1,4 +1,5 @@
 // ### test.cpp ###
+#include <algorithm>
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,35 +230,52 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, L);
-    VL(A, N);
-    db ave = 0;
-    rep(i, N) ave += A[i];
-    ave /= N;
+    LONG(N, K);
+    VS(S, N);
+    sort(all(S), [&](string &s, string &t){
+        if(s.size()!=t.size()) return s.size() > t.size();
+        return s>t;
+    });
 
-    vvvd dp(L+1, vvd(N+1, vd(N+1)));
-    vvvb done(L+1, vvb(N+1, vb(N+1)));
-
-    auto f=[&](auto f, ll l, ll o, ll y) -> db {
-        if(done[l][o][y]) return dp[l][o][y];
-        if(l==0) return 0;
-        if(o==0 && y==0) return 0;
-        done[l][o][y] = true;
-
-        db &ret = dp[l][o][y];
-
-        db p = (db)o/(o+2*y);
-        db n = o+2*y;
-
-        if(o) ret += p * (f(f, l, o-1, y)+1);
-        if(o && y) ret += (1-p)   *((db)o/(n-1))  * (f(f, l-1, o, y-1)+(l==1?0:1));
-        if(y) ret += (1-p)   *(1./(n-1))          * (f(f, l,   o, y-1)+1);
-        if(y>=2) ret += (1-p)*((db)(2*y-2)/(n-1)) * (f(f, l-1, o+2, y-2));
-
-        return ret;
+    auto del0=[&](string &s) {
+        reverse(all(s));
+        while(s.size() && s.back()=='0') s.pop_back();
+        if(s.empty()) s += '0';
+        reverse(all(s));
+    };
+    auto large=[&](string &s, string &t) -> string {
+        if(s.size()==t.size()) return (s>t?s:t);
+        return (s.size()>t.size() ? s : t);
     };
 
-    Out(f(f, L, 0, N)*ave);
+    string ans = "0";
+    {
+        vs topk;
+        rep(i, K) topk.push_back(S[i]);
+        sort(all(topk), [&](string &s, string &t){
+            return s+t > t+s;
+        });
+        string tmp;
+        rep(i, K) tmp += topk[i];
+        del0(tmp);
+        ans = large(ans, tmp);
+    }
+    if(K<N) {
+        string head = S[K];
+        repk(i, K, N) {
+            if(stoll(head)<stoll(S[i])) head = S[i];
+        }
+        vs topk;
+        rep(i, K-1) topk.push_back(S[i]);
+        sort(all(topk), [&](string &s, string &t){
+            return s+t > t+s;
+        });
+        string tmp = head;
+        rep(i, K-1) tmp += topk[i];
+        del0(tmp);
+        ans = large(ans, tmp);
+    }
+    Out(ans);
 
 }
 

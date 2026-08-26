@@ -2084,6 +2084,10 @@
 ### 例題
 - 基本（snippet練習） [D - 一刀両断](https://atcoder.jp/contests/abc016/tasks/abc016_4)
 
+## 順序
+半順序集合、全順序集合などがある
+- [F - Concat (maximize)](https://atcoder.jp/contests/abc471/tasks/abc471_f)
+
 ## ファレイ数列
 - 0以上1以下であり分母がN以下の分数を昇順に並べた数列をファレイ数列と言う
 - ファレイ数列の重要な性質として、xi/yi->xi+1/yi+1と並んでいるとすると、yi*(xi+1)-xi*(yi+1)==1がある
