@@ -1209,9 +1209,8 @@
 - Trie木上でオートマトンを構成する
 - BFSしながらfailure linkを作るとO(|S|)
 ### 例題
-!!! where i am now for rank S (last submission 2026/5/19)
 - !要復習 [Ex - Taboo](https://atcoder.jp/contests/abc268/tasks/abc268_h)
-- !要復習 [F - Critical Misread](https://atcoder.jp/contests/abc458/tasks/abc458_f)
+- !復習価値中 [F - Critical Misread](https://atcoder.jp/contests/abc458/tasks/abc458_f)
 
 ## Suffix Array
 - ある要素からのsuffixを辞書順に並べたもの（要素番号を並び変えたものである）
@@ -1257,6 +1256,7 @@
 - ORは各ビットの和集合
 - ORがある値（10110）以下になるとは、部分集合となる値（eg. 10100⊂10110）を全てORした物か、あるいはある桁を0とし、上位桁はそのまま、下位桁は全部1とした値の部分集合をORしたものとなる（eg. 下から3桁目なら10011の部分集合をORしたもの）
 ### 例題
+!!! where i am now for rank S (last submission 2026/6/25)
 - !要復習 [D - IntegerotS](https://atcoder.jp/contests/tenka1-2017-beginner/tasks/tenka1_2017_d)
 - 基本 [E - Minimum OR Path](https://atcoder.jp/contests/abc408/tasks/abc408_e)
 

@@ -1,5 +1,4 @@
 // ### test.cpp ###
-#include <algorithm>
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,52 +228,168 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+//! n*n matrix
+template <size_t n, typename T> class Mat {
+    using ar2 = array<array<T,n>,n>;
+    ar2 a;
+public:
+    Mat (bool identity=true) {
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            if(i==j) a[i][j] = (identity?1:0);
+            else a[i][j] = 0;
+        }
+    }
+    Mat (const ar2 &a): a(a) {}
+    Mat operator* (const Mat &o) const {  // Mat * Mat
+        Mat ret(false);
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            for (size_t k=0; k<n; ++k) {
+                ret[i][j] += a[i][k] * o[k][j];
+            }
+        }
+        return ret;
+    }
+    vector<T> operator* (const vector<T> &o) const {  // Mat * vector
+        vector<T> vec(n);
+        for (size_t j=0; j<n; ++j) for (size_t k=0; k<n; ++k) {
+            vec[j] += a[j][k] * o[k];
+        }
+        return vec;
+    }
+    Mat operator* (const T &x) const {  // Mat * scaler
+        Mat ret(false);
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            ret[i][j] = a[i][j]*x;
+        }
+        return ret;
+    }
+    Mat inv() const {  // only for 2*2 matrix & NOT USE IF det(Mat)==0!!!
+        static_assert(n == 2, "Mat.inv() only supports for 2x2 matrices");
+        T det = a[0][0]*a[1][1] - a[0][1]*a[1][0];
+        Mat ret(false);
+        ret[0][0] = a[1][1], ret[0][1] = -a[0][1];
+        ret[1][0] = -a[1][0], ret[1][1] = a[0][0];
+        ret = ret * (1/det);
+        return ret;
+    }
+    Mat transpose() const {
+        Mat ret(false);
+        for(size_t i=0; i<n; ++i) for(size_t j=0; j<n; ++j) {
+            ret[i][j] = a[j][i];
+        }
+        return ret;
+    }
+    // power k (A^k)
+    Mat pow(long long k) const {
+        assert(k >= 0);
+        Mat ret(true);
+        Mat b = *this;
+        while(k) {
+            if(k&1) ret = ret * b;
+            b = b * b;
+            k >>= 1;
+        }
+        return ret;
+    }
+    auto& operator[](int i) { return a[i]; }
+    const auto& operator[](int i) const { return a[i]; }
+    void print(string debugname="------") const {  // for debug
+        #ifdef __DEBUG
+        cerr << debugname << ":\n";
+        for (size_t i=0; i<n; ++i) for (size_t j=0; j<n; ++j) {
+            cerr << a[i][j].val() << (j==n-1? '\n': ' ');
+        }
+        cerr << "---------" << '\n';
+        #endif
+    }
+};
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+class AhoCorasick {
+public:
+    struct Node {
+        map<char,int> to;
+        int cnt, fail;
+        Node (): cnt(0), fail(-1) {}
+    };
+    vector<Node> d;
+    AhoCorasick (): d(1) {}
+    int add(string &s) {
+        int v = 0;
+        for(auto c: s) {
+            if (!d[v].to.count(c)) {
+                d[v].to[c] = d.size();
+                d.push_back(Node());
+            }
+            v = d[v].to[c];
+        }
+        d[v].cnt++;
+
+        return v;
+    }
+    void init() {
+        queue<int> que;
+        que.push(0);
+        while(que.size()) {
+            int v = que.front(); que.pop();
+            for(auto [c,nv]: d[v].to) {
+                d[nv].fail = (*this)(d[v].fail, c);
+                d[nv].cnt += d[d[nv].fail].cnt;
+                que.push(nv);
+            }
+        }
+    }
+    int operator()(int v, char c) const {
+        while(v != -1) {
+            auto it = d[v].to.find(c);
+            if(it != d[v].to.end()) return it->second;
+            v = d[v].fail;
+        }
+        return 0;
+    }
+    int operator[](int v) const { return d[v].cnt; }
+    int size() const { return int(d.size()); }
+};
+
 void solve() {
     LONG(N, K);
-    VS(S, N);
-    sort(all(S), [&](string &s, string &t){
-        if(s.size()!=t.size()) return s.size() > t.size();
-        return s>t;
-    });
-
-    auto del0=[&](string &s) {
-        reverse(all(s));
-        while(s.size() && s.back()=='0') s.pop_back();
-        if(s.empty()) s += '0';
-        reverse(all(s));
-    };
-    auto large=[&](string &s, string &t) -> string {
-        if(s.size()==t.size()) return (s>t?s:t);
-        return (s.size()>t.size() ? s : t);
-    };
-
-    string ans = "0";
-    {
-        vs topk;
-        rep(i, K) topk.push_back(S[i]);
-        sort(all(topk), [&](string &s, string &t){
-            return s+t > t+s;
-        });
-        string tmp;
-        rep(i, K) tmp += topk[i];
-        del0(tmp);
-        ans = large(ans, tmp);
+    constexpr ll Z = 101;
+    Mat<Z,mint> A(false);
+    AhoCorasick aho;
+    rep(i, K) {
+        STRING(s);
+        aho.add(s);
     }
-    if(K<N) {
-        string head = S[K];
-        repk(i, K, N) {
-            if(stoll(head)<stoll(S[i])) head = S[i];
+    aho.init();
+    ll M = aho.size();
+    assert(M<=Z);
+    rep(v, M) {
+        for(char c='a'; c<='z'; ++c) {
+            ll nv = aho(v, c);
+            A[nv][v]++;
         }
-        vs topk;
-        rep(i, K-1) topk.push_back(S[i]);
-        sort(all(topk), [&](string &s, string &t){
-            return s+t > t+s;
-        });
-        string tmp = head;
-        rep(i, K-1) tmp += topk[i];
-        del0(tmp);
-        ans = large(ans, tmp);
     }
+    rep(v, M) {
+        if(aho[v]) {
+            rep(j, Z) A[v][j] = 0;
+        }
+    }
+    auto An = A.pow(N);
+    mint ans;
+    rep(i, Z) ans += An[i][0];
     Out(ans);
 
 }
