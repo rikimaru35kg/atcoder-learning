@@ -2028,6 +2028,7 @@
 - !復習価値低 [G - Fine Triplets](https://atcoder.jp/contests/abc392/tasks/abc392_g)
 - !復習価値低 [065 - RGB Balls 2（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_bm)
 - !復習価値低 [G - Sum of Binom(A, B)](https://atcoder.jp/contests/abc432/tasks/abc432_g)
+- !要復習 [G - Wipeout](https://atcoder.jp/contests/abc473/tasks/abc473_g)
 
 ## 凸包・Convex Hull Trick
 - 凸な多角形を作る事で上手くいく問題
@@ -2358,3 +2359,4 @@
 - [A - Many Formulae](https://atcoder.jp/contests/arc122/tasks/arc122_a)
 - [C - Inc, Dec, Xor](https://atcoder.jp/contests/abc470/tasks/abc470_c)
 - [D - Inverse and Swap](https://atcoder.jp/contests/abc470/tasks/abc470_d)
+- [D - Coefficient Stair](https://atcoder.jp/contests/abc473/tasks/abc473_d)
