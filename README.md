@@ -1412,6 +1412,7 @@
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
 - !復習価値低 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
 - !復習価値中（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
+- !要復習 [F - Increment All Divisors](https://atcoder.jp/contests/abc474/tasks/abc474_f)
 
 ## 中国剰余定理（CRT: Chinese Remainder Theorem）
 - t≡a (mod C)かつt≡b (mod D)となる最小のtを求める問題（ 最小というのは、t%LCM(C, D)という事）
@@ -2360,3 +2361,4 @@
 - [C - Inc, Dec, Xor](https://atcoder.jp/contests/abc470/tasks/abc470_c)
 - [D - Inverse and Swap](https://atcoder.jp/contests/abc470/tasks/abc470_d)
 - [D - Coefficient Stair](https://atcoder.jp/contests/abc473/tasks/abc473_d)
+- [E - One Time Coupon](https://atcoder.jp/contests/abc474/tasks/abc474_e)

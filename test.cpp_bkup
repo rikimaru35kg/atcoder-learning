@@ -228,39 +228,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VP(P, N);
-    sort(P.begin(), P.end(), [&](Pr p1, Pr p2){
-        auto [a1,b1] = p1;
-        auto [a2,b2] = p2;
-        return a1-b1<a2-b2;
-    });
-    de(P)
-    vl Sa(N+1), Sb(N+1);
-    vl mn(N+1, INF);
-    rep(i, N) Sa[i+1] = Sa[i] + P[i].first;
-    rep(i, N) Sb[i+1] = Sb[i] + P[i].second;
-    rep(i, N) mn[i+1] = min(mn[i], P[i].first);
-    ll ans = INF;
-    for(ll t=1; t<=N; ++t) {
-        ll now = Sa[t] + Sb[N] - Sb[t];
-        ll l = t, r = N-t;
-        ll e = r-l;
-        if(e>0) {
-            now += e*mn[t];
-        }
-        chmin(ans, now);
-    }
-    Out(ans);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
+#include<atcoder/convolution>
+using namespace atcoder;
+
+void solve() {
+    LONG(N, K);
+    vvm q;
+    rep(i, N) {
+        mint p = mint(1)/(i+1);
+        q.emplace_back(vm({1-p, p}));
+    }
+    while(q.size()>1) {
+        vvm nq;
+        for(ll i=0; i<SIZE(q); i+=2) {
+            if(i==SIZE(q)-1) nq.push_back(q[i]);
+            else nq.push_back(convolution(q[i], q[i+1]));
+        }
+        swap(q, nq);
+    }
+    if(K>2*N) Outend(0);
+    mint ans = q[0][2*N-K];
+    Out(ans);
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###
