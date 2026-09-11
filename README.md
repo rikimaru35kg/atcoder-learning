@@ -608,8 +608,10 @@
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 - 基本 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
-!!! where i am now for rank A (last submission 2026/5/8)
-- !復習価値高 [F - Make Bipartite 3](https://atcoder.jp/contests/abc451/tasks/abc451_f)
+- !復習価値中 [F - Make Bipartite 3](https://atcoder.jp/contests/abc451/tasks/abc451_f)
+
+!!! where i am now for rank A (last submission 2026/9/12)
+rank A: なし
 
 ## 超頂点を設ける
 - 仮想頂点を設ける事で、見通しが良くなる場合あり
