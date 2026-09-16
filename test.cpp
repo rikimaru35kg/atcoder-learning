@@ -228,84 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Sieve {
-    long long n;
-    vector<long long> sieve;
-    vector<int> mobius;
-public:
-    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
-        for (long long i=2; i<=n; ++i) {
-            if (sieve[i] != 0) continue;
-            sieve[i] = i;
-            mobius[i] = -1;
-            for (long long k=2*i; k<=n; k+=i) {
-                if (sieve[k] == 0) sieve[k] = i;
-                if ((k/i)%i==0) mobius[k] = 0;
-                else mobius[k] *= -1;
-            }
+struct WeightedUnionFind {
+    vector<long long> p, num, diff; vector<bool> inf;
+    WeightedUnionFind(long long n) : p(n,-1), num(n,1), diff(n), inf(n) {}
+    long long leader (long long x) {
+        if (p[x] == -1) return x;
+        long long y = p[x];
+        p[x] = leader(y);
+        diff[x] += diff[y];
+        return p[x];
+    }
+    bool merge (long long x, long long y, long long w=0) {   // x - y = w
+        leader(x); leader(y);  // path compression, -> diff will be based on root.
+        w = diff[y] - diff[x] - w;  // p[x]->x->y->p[y]
+        x = leader(x); y = leader(y);
+        if (x == y) {
+            if(w != 0) inf[x] = true;  // component x has infinite cycle
+            return w == 0;
         }
+        if (size(x) > size(y)) swap(x, y), w = -w; // new parent = y
+        diff[x] = w;
+        p[x] = y;
+        num[y] += num[x];
+        if(inf[x]) inf[y] = true;
+        return true;
+        // merge関数はポテンシャルの差として引数を指定すれば良い
+        // yに対してxのポテンシャルはw大きい
+        // なお、diffは自分の親に移動した時のポテンシャル増加分を表すので
+        // diffが正であるとは、親よりもポテンシャルが低いという事
+        // （親ベースの増加分ではなく、それにマイナスをかけたもの）
+        // 従ってvのuに対するポテンシャルを求めたいのであれば
+        // diff[u]-diff[v]となる事に注意（感覚的には逆と思えてしまう）
     }
-    bool is_prime(long long k) {
-        if (k <= 1 || k > n) return false;
-        if (sieve[k] == k) return true;
-        return false;
-    }
-    vector<pair<long long,long long>> factorize(long long k) {
-        vector<pair<long long,long long>> ret;
-        if (k <= 1 || k > n) return ret;
-        ret.emplace_back(sieve[k], 0);
-        while (k != 1) {
-            if (ret.back().first == sieve[k]) ++ret.back().second;
-            else ret.emplace_back(sieve[k], 1);
-            k /= sieve[k];
-        }
-        return ret;
-    }
-    int mu(long long k) { return mobius[k]; }
-} sieve(1e6);
-
-struct X {
-    ll a, b;
-    X(ll a, ll b): a(a),b(b) {}
-    void operator-=(const X &o) {
-        a -= o.a, b -= o.b;
+    bool same (long long x, long long y) { return leader(x) == leader(y); }
+    long long size (long long x) { return num[leader(x)]; }
+    bool isinf(long long x) { return inf[leader(x)]; }
+    long long potential_diff(long long x, long long y) { // y-x (base=x)
+        if(!same(x,y)) return -3e18;  // no connection
+        if(isinf(x)) return 3e18;  // infinite cycle
+        return diff[x] - diff[y];  // potential(y) - potential(x);
     }
 };
 
 void solve() {
-    LONG(N);
-    vl A(N+1);
-    rep(i, N) cin>>A[i+1];
-
-
-    vl ps;
-    rep1(i, N) if(sieve.is_prime(i)) ps.push_back(i);
-
-    vector<X> d(N+1, X(0,0));
-    rep1(i, N) d[i] = X(1, -A[i]);
-
-    for(auto p: ps) {
-        for(ll i=p; i<=N; i+=p) {
-            d[i/p] -= d[i];
-        }
+    LONG(N, M);
+    vp edges;
+    rep(i, M) {
+        LONGM(a,b);
+        edges.emplace_back(a,b);
     }
-    ll l = -INF, r = INF;
-    rep1(i, N) {
-        auto [a,b] = d[i];
-        if(a==0) {
-            if (b<0) Outend(-1);
-        } else if (a>0) {
-            ll now = Divceil(-b, a);
-            chmax(l, now);
-        } else {
-            ll now = Div(-b, a);
-            chmin(r, now);
-        }
+    vb walk(M);
+    LONG(K);
+    rep(i, K) {
+        LONGM(x);
+        walk[x] = true;
     }
-    if(r<0 || l>r) Outend(-1);
-    ll x = max(l, 0LL);
-    ll ans = x-A[1];
-    Out(ans);
+    WeightedUnionFind uf(N);
+    rep(i, M) {
+        if(walk[i]) continue;
+        uf.merge(edges[i].first, edges[i].second);
+    }
+    vl deg(N);
+    rep(i, M) {
+        if(!walk[i]) continue;
+        auto [a,b] = edges[i];
+        a = uf.leader(a), b = uf.leader(b);
+        deg[a]++, deg[b]++;
+    }
+    ll no=0, ne=0;
+    rep(i, N) {
+        if(i!=uf.leader(i)) continue;
+        assert(deg[i]!=0);
+        if(deg[i]%2==1) no++;
+        else ne++;
+    }
+    bool ok = false;
+    if(no==0 || no==2) ok = true;
+    puts(ok ? "Yes" : "No");
+
 }
 
 int main () {

@@ -228,41 +228,94 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+struct Trie {
+    struct Node {
+        map<char,int> to;
+        int p;
+        int cnt;
+        int status;
+        Node (int p=-1): p(p), cnt(0), status(-1) {}
+    };
+    vector<Node> d;
+    Trie (): d(1) {};
+    int add(const string &s, int coef) {
+        int v = 0;
+        d[v].cnt += coef;
+        for(auto c: s) {
+            if(!d[v].to.count(c)) {
+                d[v].to[c] = d.size();
+                d.push_back(Node(v));
+            }
+            v = d[v].to[c];
+            d[v].cnt += coef;
+        }
+        return v;
+    }
+    bool solve(int sv, int m) {
+        vl vs;
+        ll v = 0;
+        while(!d[v].to.empty()) {
+            ll nv0 = -1, nv1 = -1;
+            if(d[v].to.count('x')) nv0 = d[v].to['x'];
+            if(d[v].to.count('o')) nv1= d[v].to['o'];
+            if(nv1!=-1 && d[nv1].cnt<=m) {
+                m -= d[nv1].cnt;
+                change(nv1, 1, vs);
 
-#include<atcoder/convolution>
-using namespace atcoder;
+                if(nv0==-1) break;
+                v = nv0;
+            } else if(nv1!=-1 && d[nv1].cnt>m) {
+                if(nv0!=-1) change(nv0, 0, vs);
+                v = nv1;
+            }
+            else if(nv0==-1) break;
+            else v = nv0;
+        }
+        bool ret = false;
+        v = sv;
+        while(v!=-1) {
+            if(d[v].status==1) {
+                ret = true; break;
+            }
+            v = d[v].p;
+        }
+        for(auto cv: vs) d[cv].status = -1;
+        return ret;
+    }
+    void change(int v, int status, vl &vs) {
+        d[v].status = status;
+        vs.push_back(v);
+    }
+};
 
 void solve() {
-    LONG(N, K);
-    vvm q;
-    rep(i, N) {
-        mint p = mint(1)/(i+1);
-        q.emplace_back(vm({1-p, p}));
+    LONG(N, M, K);
+    STRING(T);
+    VS(S, N);
+
+    auto flip=[&](char &c) {
+        if(c=='o') c = 'x';
+        else c = 'o';
+    };
+    rep(k, K) {
+        if(T[k]=='o') continue;
+        rep(j, N) flip(S[j][k]);
     }
-    while(q.size()>1) {
-        vvm nq;
-        for(ll i=0; i<SIZE(q); i+=2) {
-            if(i==SIZE(q)-1) nq.push_back(q[i]);
-            else nq.push_back(convolution(q[i], q[i+1]));
-        }
-        swap(q, nq);
+
+    Trie trie;
+    rep(i, N) trie.add(S[i], 1);
+
+    LONG(Q);
+
+    rep(q, Q) {
+        LONGM(i, j);
+        trie.add(S[i], -1);
+        flip(S[i][j]);
+        ll v = trie.add(S[i], 1);
+        if(trie.solve(v, M)) puts("Yes");
+        else puts("No");
     }
-    if(K>2*N) Outend(0);
-    mint ans = q[0][2*N-K];
-    Out(ans);
+
 }
 
 int main () {

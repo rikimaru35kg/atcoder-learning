@@ -608,6 +608,7 @@
 - 基本 平面に長方形 [F - Must Be rectangular!](https://atcoder.jp/contests/abc131/tasks/abc131_f)
 - 基本 長さ3パスつなぐ [C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c)
 - 基本 距離3の頂点は和か積が3の倍数 [C - ThREE](https://atcoder.jp/contests/hitachi2020/tasks/hitachi2020_c)
+!!! where i am now for rank B (last submission 2026/9/11)
 - !復習価値中 [F - Make Bipartite 3](https://atcoder.jp/contests/abc451/tasks/abc451_f)
 
 !!! where i am now for rank A (last submission 2026/9/12)
@@ -2057,8 +2058,7 @@ rank A: なし
 - 奇点が0個か2個なら可能
 - 構築する場合は、dfsの帰りがけ順で。一度通った辺は破壊しながらdfsすると良い
 ### 例題
-!!! where i am now for rank B (last submission 2026/5/13)
-- !復習価値中 [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
+- 基本 [G - Unique Walk](https://atcoder.jp/contests/abc286/tasks/abc286_g)
 
 ## 整数計画問題（線形計画問題）を工夫して解く
 - 一般に整数計画問題はNP困難（ナップサック問題など）

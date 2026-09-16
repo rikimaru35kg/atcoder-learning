@@ -28,11 +28,10 @@ def de(*args, **kwargs):
 INF = int(3e18)
 
 
-
-
-
 def main():
-    print("two")
+    S = input().rstrip();
+    ans = 'o'.join(S)
+    print(ans)
 
 
 if __name__ == '__main__':
