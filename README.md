@@ -1278,8 +1278,7 @@ rank A: なし
 - 基本 [E - Mex and Update](https://atcoder.jp/contests/abc330/tasks/abc330_e)
 - 基本 [E - Add and Mex](https://atcoder.jp/contests/abc272/tasks/abc272_e)
 - 基本 [No.2930 Larger Mex](https://yukicoder.me/problems/no/2930)
-!!! where i am now for rank C (last submission 2026/5/14)
-- !復習価値低 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
+- 基本 [F - Sum of Mex](https://atcoder.jp/contests/abc438/tasks/abc438_f)
 
 ## 整数とMOD
 - 約数と素因数分解は似て非なるもの。約数を列挙したいのか、素因数を列挙したいのか、よく考える
@@ -1296,6 +1295,7 @@ rank A: なし
 - xとMODが互いに素でないと逆元は存在しないので注意！（最大公約数でお互いに割ってから考察する事が多い）
 ### 例題
 - 基本 [C - ±1 Operation 1](https://atcoder.jp/contests/abc255/tasks/abc255_c)
+!!! where i am now for rank C (last submission 2025/2/27)
 - !復習価値低 [C - Triangular Relationship](https://atcoder.jp/contests/abc108/tasks/arc102_a)
 - 基本 a^(b^c) mod p [E - Integer Sequence Fair](https://atcoder.jp/contests/abc228/tasks/abc228_e)
 - 基本 [B - A^B^C](https://atcoder.jp/contests/arc113/tasks/arc113_B)
