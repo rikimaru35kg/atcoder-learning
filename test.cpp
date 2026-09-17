@@ -229,16 +229,15 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N, K);
-    ll ans = 0;
-    for(ll a=1; a<=N; ++a) {
-        if(2*a%K != 0) continue;
-        ll q = ((-a)%K + K)% K;
-        ll n = N/K, r = N%K;
-        ll num = n + (r>=q);
-        if(q==0) --num;
-        ans += num*num;
+    LONG(N, M);
+    ll ans = INF;
+    for(ll a=1; a*a-a<M; ++a) {
+        ll b = Divceil(M, a);
+        if(b<a) continue;
+        if(b>N) continue;
+        chmin(ans, a*b);
     }
+    if(ans==INF) ans = -1;
     Out(ans);
 
 }

@@ -229,55 +229,15 @@ Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
-    LONG(N);
-    vvl from(N);
-    rep(i, N-1) {
-        LONG(a, b);
-        from[a].emplace_back(b);
-        from[b].emplace_back(a);
-    }
-    vl sz(N), par(N, -1);
-    auto dfs=[&](auto f, ll v, ll d=0, ll p=-1) -> void {
-        sz[v] = 1;
-        par[v] = p;
-        for(auto nv: from[v]) if(nv!=p) {
-            f(f, nv, d+1, v);
-            sz[v] += sz[nv];
-        }
-    };
-    dfs(dfs, 0);
-    ll sz0 = 0;
-    {
-        ll v = 1;
-        while(par[v]!=0) v = par[v];
-        sz0 = N - sz[v];
-    }
-    auto gets=[&](ll v) -> ll {
-        if(v==0) return sz0;
-        return sz[v];
-    };
-
-    auto nc2=[&](ll n) { return n*(n+1)/2; };
-
-    ll ans=nc2(N), l=0, r=0;
-
-    for(auto v: from[0]) ans -= nc2(sz[v]);
-
-    vb onp(N);
-    onp[0] = true;
-    for(ll sv=1; sv<N; sv++) {
-        if(onp[sv]) {
-            ans += gets(l) * gets(r); continue;
-        }
-        ll v = sv;
-        while(!onp[v]) {
-            onp[v] = true;
-            v = par[v];
-        }
-        if(v!=l && v!=r) break;
-        if(v==r) r = sv;
-        else l = sv;
-        ans += gets(l) * gets(r);
+    LONG(N, K);
+    ll ans = 0;
+    for(ll a=1; a<=N; ++a) {
+        if(2*a%K != 0) continue;
+        ll q = ((-a)%K + K)% K;
+        ll n = N/K, r = N%K;
+        ll num = n + (r>=q);
+        if(q==0) --num;
+        ans += num*num;
     }
     Out(ans);
 
