@@ -230,16 +230,37 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 void solve() {
     LONG(N, M);
-    ll ans = INF;
-    for(ll a=1; a*a-a<M; ++a) {
-        ll b = Divceil(M, a);
-        if(b<a) continue;
-        if(b>N) continue;
-        chmin(ans, a*b);
-    }
-    if(ans==INF) ans = -1;
-    Out(ans);
+    VL(A, N);
+    VL(B, N);
 
+    vvl C(N, vl(N));
+    rep(i, N) rep(j, N) C[i][j] = A[i]*B[j]%M;
+
+    vvl d(N, vl(N));
+
+    auto calc=[&](vvl &c) {
+        ll N2 = 2*N-1;
+        vl s(N2);
+        rep(i, N) rep(j, N) s[i+j] += c[i][j];
+        vl t(N2);
+        rep(i, N2) rep(j, N2) t[i] += s[j]*abs(i-j);
+        rep(i, N) rep(j, N) d[i][j] += t[i+j];
+    };
+
+    calc(C);
+    reverse(all(C));
+    reverse(all(d));
+    calc(C);
+    reverse(all(C));
+    reverse(all(d));
+
+    rep(i, N) rep(j, N) d[i][j] /= 2;
+
+    ll ans = 0;
+    rep(i, N) rep(j, N) {
+        ans ^= d[i][j] + i*N + j;
+    }
+    Out(ans);
 }
 
 int main () {

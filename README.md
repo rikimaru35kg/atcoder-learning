@@ -1738,6 +1738,7 @@ rank A: なし
 - 基本 [E - Jump Distance Sum](https://atcoder.jp/contests/abc351/tasks/abc351_e)
 - !復習価値低 [B - 宣伝 2 (Advertisement 2)](https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_b)
 - 基本 [D - 歩くサンタクロース (Walking Santa)](https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho4)
+- !要復習 [F - Chebyshev Cafe](https://atcoder.jp/contests/abc476/tasks/abc476_f)
 
 ## 調和級数やsqrt(N)で計算量を落とす
 - ΣN/iはNlog(N)なので、二重ループに見えて実は計算がかなり早い問題がある
@@ -2252,6 +2253,7 @@ rank A: なし
 - [B - Reversible Cards](https://atcoder.jp/contests/arc111/tasks/arc111_b)
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 - [E - Concentration](https://atcoder.jp/contests/abc470/tasks/abc470_e)
+- [D - Automat](https://atcoder.jp/contests/abc476/tasks/abc476_d)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
