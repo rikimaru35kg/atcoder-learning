@@ -2243,8 +2243,7 @@ rank A: なし
 # 上記以外でもう一度解くべき問題（＝ACできなかった問題）
 
 ## ACできなかった問題
-!!! where i am now for rank D (last submission 2026/6/10)
-- [D - Concentric Circles](https://atcoder.jp/contests/abc467/tasks/abc467_d)
+!!! where i am now for rank D (last submission 2026/7/23)
 - [F - Email Scheduling Optimization](https://atcoder.jp/contests/abc467/tasks/abc467_f)
 - [F - Chmax](https://atcoder.jp/contests/abc468/tasks/abc468_f)
 - [G - Restricted Permutation](https://atcoder.jp/contests/abc468/tasks/abc468_g)

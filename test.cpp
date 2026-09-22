@@ -228,102 +228,36 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T>
-struct BIT {
-    long long size;
-    vector<T> bit;
-    BIT (int _n): size(_n+1), bit(_n+1) {}
-    void add(int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<size);
-        for(; i<size; i+=i&-i) bit[i] += x;
+tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
+    auto [x1,y1] = p1; auto [x2,y2] = p2;
+    ll a = 2*(x2-x1), b = 2*(y2-y1);
+    ll c = -(x2-x1)*(x2+x1) - (y2-y1)*(y2+y1);
+    ll g = gcd(gcd(a,b),c);
+    a /= g, b /= g, c /= g;
+    if(a==0) {
+        if(b<0) b = -b, c = -c;
+     } else {
+        if(a<0) a = -a, b = -b, c = -c;
     }
-    void set(int i, T x) {
-        assert(i>=0 && i<size-1);
-        T pre = sum(i,i+1);
-        add(i, x-pre);
-    }
-    T sum(int l, int r) {  // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T sum0(int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[i];
-        return ret;
-    }
-    int lower_bound(T x) {
-        int t=0, w=1;
-        while(w<size) w<<=1;
-        for(; w>0; w>>=1) {
-            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
-        }
-        return t;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
-        #endif
-    }
-};
-
+    return {a,b,c};
+}
 
 void solve() {
-    LONG(N);
-    STRING(S);
-    using B = BIT<int>;
-    ll M = 26;
-    vector<B> cnt(M, B(N));
-
-    B asc(N-1);
-    auto set_asc=[&](ll i) {
-        if(i && S[i-1]<=S[i]) asc.set(i-1, 1);
-        if(i && S[i-1]>S[i]) asc.set(i-1, 0);
-        if(i<N-1 && S[i]<=S[i+1]) asc.set(i, 1);
-        if(i<N-1 && S[i]>S[i+1]) asc.set(i, 0);
-    };
-    rep(i, N) set_asc(i);
-
-    auto set_cnt=[&](ll i) { cnt[S[i]-'a'].set(i, 1); };
-    auto reset_cnt=[&](ll i) { cnt[S[i]-'a'].set(i, 0); };
-    rep(i, N) set_cnt(i);
-
-    LONG(Q);
-    rep(qi, Q) {
-        LONG(t);
-        if(t==1) {
-            LONGM(x); CHAR(c);
-            reset_cnt(x);
-            S[x] = c;
-            set_cnt(x);
-            set_asc(x);
-        } else {
-            LONGM(l, r);
-            vi ccnt(M);
-            if(asc.sum(l,r) != r-l) {
-                puts("No"); continue;
-            }
-            rep(mi, M) ccnt[mi] = cnt[mi].sum(l, r+1);
-            ll i1 = M, i2 = -1;
-            rep(mi, M) {
-                if(ccnt[mi]==0) continue;
-                chmin(i1, mi), chmax(i2, mi);
-            }
-            bool ok = true;
-            for(int mi=i1+1; mi<i2; mi++) {
-                if(ccnt[mi] != cnt[mi].sum(0,N)) ok = false;
-            }
-            puts(ok ? "Yes": "No");
-        }
+    VP(P, 4);
+    auto [a1,b1,c1] = get_line(P[0], P[1]);
+    auto [a2,b2,c2] = get_line(P[2], P[3]);
+    if(a1*b2!=b1*a2) {
+        puts("Yes"); return;
     }
-
+    if(a1==a2 && b1==b2 && c1==c2) puts("Yes");
+    else puts("No");
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+    LONG(T);
+    rep(i, T) solve();
 }
 
 // ### test.cpp ###

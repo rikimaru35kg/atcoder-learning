@@ -270,24 +270,54 @@ struct BIT {
 
 
 void solve() {
-    LONG(N, Q);
-    vector<BIT<int>> stck(2, BIT<int>(Q+2));
-    stck[0].add(0, N), stck[1].add(1, N);
+    LONG(N);
+    STRING(S);
+    using B = BIT<int>;
+    ll M = 26;
+    vector<B> cnt(M, B(N));
 
-    vvl pre(2, vl(N));
-    rep(i, N) pre[1][i] = 1;
+    B asc(N-1);
+    auto set_asc=[&](ll i) {
+        if(i && S[i-1]<=S[i]) asc.set(i-1, 1);
+        if(i && S[i-1]>S[i]) asc.set(i-1, 0);
+        if(i<N-1 && S[i]<=S[i+1]) asc.set(i, 1);
+        if(i<N-1 && S[i]>S[i+1]) asc.set(i, 0);
+    };
+    rep(i, N) set_asc(i);
 
-    ll now = 0;
+    auto set_cnt=[&](ll i) { cnt[S[i]-'a'].set(i, 1); };
+    auto reset_cnt=[&](ll i) { cnt[S[i]-'a'].set(i, 0); };
+    rep(i, N) set_cnt(i);
+
+    LONG(Q);
     rep(qi, Q) {
-        LONGM(t, x);
-        ll cqi = qi+2;
-        ll preqi = pre[t][x];
-        stck[t].add(preqi, -1);
-        stck[t].add(cqi, 1);
-        pre[t][x] = cqi;
-        now += (t==0?1:-1) * stck[t^1].sum(preqi, cqi);
-        Out(now);
+        LONG(t);
+        if(t==1) {
+            LONGM(x); CHAR(c);
+            reset_cnt(x);
+            S[x] = c;
+            set_cnt(x);
+            set_asc(x);
+        } else {
+            LONGM(l, r);
+            vi ccnt(M);
+            if(asc.sum(l,r) != r-l) {
+                puts("No"); continue;
+            }
+            rep(mi, M) ccnt[mi] = cnt[mi].sum(l, r+1);
+            ll i1 = M, i2 = -1;
+            rep(mi, M) {
+                if(ccnt[mi]==0) continue;
+                chmin(i1, mi), chmax(i2, mi);
+            }
+            bool ok = true;
+            for(int mi=i1+1; mi<i2; mi++) {
+                if(ccnt[mi] != cnt[mi].sum(0,N)) ok = false;
+            }
+            puts(ok ? "Yes": "No");
+        }
     }
+
 }
 
 int main () {
