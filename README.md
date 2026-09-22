@@ -2244,7 +2244,6 @@ rank A: なし
 
 ## ACできなかった問題
 !!! where i am now for rank D (last submission 2026/6/10)
-- [F - Substring of Sorted String](https://atcoder.jp/contests/abc285/tasks/abc285_f)
 - [D - Concentric Circles](https://atcoder.jp/contests/abc467/tasks/abc467_d)
 - [F - Email Scheduling Optimization](https://atcoder.jp/contests/abc467/tasks/abc467_f)
 - [F - Chmax](https://atcoder.jp/contests/abc468/tasks/abc468_f)
