@@ -228,25 +228,35 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 void solve() {
     LONG(N);
-    VL(A, N);
-    ll D = 24;
-    ll pre = 0, ans = 0;
-    for(ll d=D; d>=0; --d) {
-        umap<ll,ll> cnt, sum;
-        ll two = 1LL<<d;
-        auto mod=[&](ll y) -> ll { return (y%two+two)%two; };
-
-        ll now = 0;
-        rep(i, N) {
-            cnt[mod(A[i])]++;
-            sum[mod(A[i])] += A[i];
-            now += cnt[mod(-A[i])]*A[i] + sum[mod(-A[i])];
-        }
-        ans += (now-pre)/two;
-        pre = now;
+    VL(C, N);
+    sort(allr(C));
+    mint ans = 0;
+    vm two(N+1, 1);
+    rep(i, N) two[i+1] = two[i] * 2;
+    rep(i, N) {
+        mint now = C[i];
+        now *= two[i] + (i ? i*two[i-1] : 0);
+        now *= two[N-1-i];
+        ans += now;
     }
+    de(ans);
+    ans *= two[N];
     Out(ans);
 
 }
