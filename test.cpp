@@ -230,7 +230,7 @@ Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
 #include <atcoder/modint>
 using namespace atcoder;
-using mint = modint1000000007;
+using mint = modint998244353;
 using vm = vector<mint>;
 using vvm = vector<vector<mint>>;
 using vvvm = vector<vector<vector<mint>>>;
@@ -285,37 +285,23 @@ public:
         if (b % 2 == 0) return child * child % mod;
         else return a * child % mod * child % mod;
     }
-} comb(3000, M107);
+} comb(1e6, M998);
 
 void solve() {
-    LONG(H, W, N);
-    ll minr=H+1, maxr=0, minc=W+1, maxc=0;
+    STRING(S);
+    ll N = S.size();
+    ll T = 10;
+    vvl Sc(T, vl(N+1));
+    rep(i, N) rep(j, T) Sc[j][i+1] = Sc[j][i] + (S[i]-'0'==j ? 1: 0);
+
+    mint ans;
     rep(i, N) {
-        LONG(r,c);
-        chmin(minr, r), chmax(maxr, r);
-        chmin(minc, c), chmax(maxc, c);
+        if(S[i]=='9') continue;
+        ll j = S[i]-'0';
+        ll l = Sc[j][i], r = Sc[j+1][N] - Sc[j+1][i+1];
+        ans += comb(l+r, r-1);
     }
-    ll R = maxr-minr+1;
-    ll C = maxc-minc+1;
-    ll lr = minr-1, rr = R-maxr;
-    ll lc = minc-1, rc = H-maxc;
-    ll K = 1e7;
-    vm fact(K+1, 1);
-    rep(i, K) fact[i+1] = (i+1) * fact[i];
-
-    vvm dp(H+1, vm(W+1));
-    dp[R][C] = 1;
-    rep1(r, H) rep1(c, W) {
-        mint now = dp[r][c];
-        if(r<H) dp[r+1][c] += now * fact[c];
-        if(c<W) dp[r][c+1] += now * fact[r];
-    }
-    mint ans = dp[H][W];
-    ans *= comb(H-R, lr);
-    ans *= comb(W-C, lc);
-    ans *= fact[R*C-N];
     Out(ans);
-
 
 }
 

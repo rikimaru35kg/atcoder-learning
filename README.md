@@ -1494,9 +1494,8 @@ rank A: なし
 - 基本 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - 基本 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
-!!! where i am now for rank C (last submission 2025/4/30)
 - !復習価値低 [F - Range Power Sum](https://atcoder.jp/contests/abc399/tasks/abc399_f)
-- !復習価値低 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
+- 基本 [F - 1122 Subsequence 2](https://atcoder.jp/contests/abc433/tasks/abc433_f)
 
 ## Lucasの定理
 - mod mでnCrを求めたい時、mが小さいと困るが、nとrをm進数に変換し、各桁をni,riとおくと、∏niCriで求まる
@@ -1516,6 +1515,7 @@ rank A: なし
 - 基本 [F - Minimum Bounding Box 2](https://atcoder.jp/contests/abc297/tasks/abc297_f)
 - 基本 木で穴あき度の期待値計算 [F - Surrounded Nodes](https://atcoder.jp/contests/abc149/tasks/abc149_f)
 - 基本 [D - AtCoder社の冬](https://atcoder.jp/contests/abc003/tasks/abc003_4) （[解説は自分の提出参照](https://atcoder.jp/contests/abc003/submissions/58846679)）
+!!! where i am now for rank C (last submission 2025/4/30)
 - !復習価値低 完全（攪乱）順列の亜種 [E - NEQ](https://atcoder.jp/contests/abc172/tasks/abc172_e)
 - !復習価値低 重複組合せの包除原理（実装力も鍛えられる） [E - Patisserie ABC 2](https://atcoder.jp/contests/abc200/tasks/abc200_e)
 - !復習価値低 [G - Groups](https://atcoder.jp/contests/abc217/tasks/abc217_g)
