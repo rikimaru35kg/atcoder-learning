@@ -228,36 +228,19 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-tuple<long long,long long,long long> get_line(pair<long long,long long> p1, pair<long long,long long> p2) {
-    auto [x1,y1] = p1; auto [x2,y2] = p2;
-    ll a = 2*(x2-x1), b = 2*(y2-y1);
-    ll c = -(x2-x1)*(x2+x1) - (y2-y1)*(y2+y1);
-    ll g = gcd(gcd(a,b),c);
-    a /= g, b /= g, c /= g;
-    if(a==0) {
-        if(b<0) b = -b, c = -c;
-     } else {
-        if(a<0) a = -a, b = -b, c = -c;
-    }
-    return {a,b,c};
-}
-
 void solve() {
-    VP(P, 4);
-    auto [a1,b1,c1] = get_line(P[0], P[1]);
-    auto [a2,b2,c2] = get_line(P[2], P[3]);
-    if(a1*b2!=b1*a2) {
-        puts("Yes"); return;
-    }
-    if(a1==a2 && b1==b2 && c1==c2) puts("Yes");
-    else puts("No");
+    LONG(N);
+    ll x = 2.999999;
+    ll y = 3.0000001;
+    ll z = 3.99999999999;
+    de3(x,y,z)
+
 }
 
 int main () {
     // ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    LONG(T);
-    rep(i, T) solve();
+    solve();
 }
 
 // ### test.cpp ###

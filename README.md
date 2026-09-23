@@ -1366,8 +1366,7 @@ rank A: なし
 ### 例題
 - 基本（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
-!!! where i am now for rank C (last submission 2025/4/30)
-- !復習価値低 約数の個数が75の数 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
+- 基本 約数の個数が75の数 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 
 ## エラトステネスの篩と高速素因数分解
 - エラトステネスの篩を用いると計算量はO(Nlog(logN))
@@ -1410,6 +1409,7 @@ rank A: なし
 - よって、最小周期が小さい順に求めていき、Tの約数の時の場合の数を全て引けば重複を排除できる
 ### 例題
 - 基本 "GCD of 全数列"の総和 [E - Sum of gcd of Tuples (Hard)](https://atcoder.jp/contests/abc162/tasks/abc162_e)
+!!! where i am now for rank C (last submission 2025/4/30)
 - !復習価値低 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - !復習価値低 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
