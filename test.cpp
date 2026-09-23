@@ -228,20 +228,6 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 class Combination {
     long long mx, mod;
     vector<long long> facts, ifacts;
@@ -285,22 +271,31 @@ public:
         if (b % 2 == 0) return child * child % mod;
         else return a * child % mod * child % mod;
     }
-} comb(1e6, M998);
+} comb(1e6, M107);
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    STRING(S);
-    ll N = S.size();
-    ll T = 10;
-    vvl Sc(T, vl(N+1));
-    rep(i, N) rep(j, T) Sc[j][i+1] = Sc[j][i] + (S[i]-'0'==j ? 1: 0);
-
+    LONG(N, M);
     mint ans;
-    rep(i, N) {
-        if(S[i]=='9') continue;
-        ll j = S[i]-'0';
-        ll l = Sc[j][i], r = Sc[j+1][N] - Sc[j+1][i+1];
-        ans += comb(l+r, r-1);
+    rep(k, N+1) {
+        mint now = comb(N, k);
+        now *= comb.nPr(M-k, N-k);
+        ans += (k%2 ? -1: 1) * now;
     }
+    ans *= comb.nPr(M, N);
     Out(ans);
 
 }
