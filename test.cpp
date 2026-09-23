@@ -228,6 +228,20 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint1000000007;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
 class Combination {
     long long mx, mod;
     vector<long long> facts, ifacts;
@@ -271,31 +285,37 @@ public:
         if (b % 2 == 0) return child * child % mod;
         else return a * child % mod * child % mod;
     }
-} comb(1e5, M107);
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+} comb(3000, M107);
 
 void solve() {
-    LONG(N);
-    rep1(k, N) {
-        mint ans = 0;
-        for(ll i=1; i+(k-1)*(i-1)<=N; ++i) {
-            ans += comb(N-(i-1)*(k-1), i);
-        }
-        Out(ans);
+    LONG(H, W, N);
+    ll minr=H+1, maxr=0, minc=W+1, maxc=0;
+    rep(i, N) {
+        LONG(r,c);
+        chmin(minr, r), chmax(maxr, r);
+        chmin(minc, c), chmax(maxc, c);
     }
+    ll R = maxr-minr+1;
+    ll C = maxc-minc+1;
+    ll lr = minr-1, rr = R-maxr;
+    ll lc = minc-1, rc = H-maxc;
+    ll K = 1e7;
+    vm fact(K+1, 1);
+    rep(i, K) fact[i+1] = (i+1) * fact[i];
+
+    vvm dp(H+1, vm(W+1));
+    dp[R][C] = 1;
+    rep1(r, H) rep1(c, W) {
+        mint now = dp[r][c];
+        if(r<H) dp[r+1][c] += now * fact[c];
+        if(c<W) dp[r][c+1] += now * fact[r];
+    }
+    mint ans = dp[H][W];
+    ans *= comb(H-R, lr);
+    ans *= comb(W-C, lc);
+    ans *= fact[R*C-N];
+    Out(ans);
+
 
 }
 
