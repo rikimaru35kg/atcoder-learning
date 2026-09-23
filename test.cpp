@@ -228,75 +228,56 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-class Combination {
-    long long mx, mod;
-    vector<long long> facts, ifacts;
-public:
-    // argument mod must be a prime number!!
-    Combination(long long mx, long long mod): mx(mx), mod(mod), facts(mx+1), ifacts(mx+1) {
-        facts[0] = 1;
-        for (int i=1; i<=mx; ++i) facts[i] = facts[i-1] * i % mod;
-        ifacts[mx] = modpow(facts[mx], mod-2);
-        for (int i=mx-1; i>=0; --i) ifacts[i] = ifacts[i+1] * (i+1) % mod;
+ll comb(ll n, ll r) {
+    if(n<0 || r<0 || r>n) return 0;
+    ll ret = 1;
+    rep1(k, r) {
+        ret *= (n-k+1);
+        ret /= k;
     }
-    long long operator()(int n, int r) { return nCr(n, r); }
-    long long nCr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[r] % mod * ifacts[n-r] % mod;
-    }
-    long long nPr(int n, int r) {
-        assert(n<=mx);
-        if (r < 0 || r > n || n < 0) return 0;
-        return facts[n] * ifacts[n-r] % mod;
-    }
-    long long nHr(int n, int r, bool one=false) {
-        if(!one) return nCr(n+r-1, r);
-        else return nCr(r-1, n-1);
-    }
-    long long get_fact(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return facts[n];
-    }
-    long long get_factinv(int n) {
-        assert(n<=mx);
-        if(n<0) return 0;
-        return ifacts[n];
-    }
-    long long modpow(long long a, long long b) {
-        if (b == 0) return 1;
-        a %= mod;
-        long long child = modpow(a, b/2);
-        if (b % 2 == 0) return child * child % mod;
-        else return a * child % mod * child % mod;
-    }
-} comb(1e6, M107);
-
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint1000000007;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+    return ret;
+}
 
 void solve() {
-    LONG(N, M);
-    mint ans;
-    rep(k, N+1) {
-        mint now = comb(N, k);
-        now *= comb.nPr(M-k, N-k);
-        ans += (k%2 ? -1: 1) * now;
+    LONG(N, K);
+
+    auto calc3=[&](ll s) -> ll {
+        ll ret = 0;
+        rep(k, 4) {
+            ll n = s-3-k*N;
+            ll now = comb(n+3-1, 2) * comb(3, k);
+            ret += (k%2 ? -1 : 1) * now;
+        }
+        return ret;
+    };
+    auto calc2=[&](ll s) -> ll {
+        ll ymin = max(1LL, s-N);
+        ll ymax = min(N, s-1);
+        return max(ymax-ymin+1, 0LL);
+    };
+
+    for(ll s3=3; s3<=3*N; s3++) {
+        ll sum3 = calc3(s3);
+        if(sum3<K) {
+            K -= sum3; continue;
+        }
+        for(ll x=1; x<=N; ++x) {
+            ll sum2 = calc2(s3-x);
+            if(sum2<K) {
+                K -= sum2; continue;
+            }
+            for(ll y=1; y<=N; ++y) {
+                ll z = s3-x-y;
+                if(z<=0 || z>N) continue;
+                if(K==1) {
+                    printf("%lld %lld %lld\n", x, y, z);
+                    return;
+                }
+                --K;
+            }
+        }
     }
-    ans *= comb.nPr(M, N);
-    Out(ans);
+    assert(false);
 
 }
 
