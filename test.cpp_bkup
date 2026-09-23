@@ -228,36 +228,88 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
+        }
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+    int mu(long long k) { return mobius[k]; }
+} sieve(1e5);
+
+
 void solve() {
     LONG(N);
-    ll ans = 1;
-    ll M = 60;
-    vl f(M+1);
+    STRING(S);
+    vl ds = listup_divisor(N, true);
 
-    auto calc=[&](ll b) -> ll {
-        ll l = 1, r = INF;
-        auto judge=[&](ll a) -> bool {
-            ll x = 1;
-            rep(i, b) {
-                if(x>N/a) return false;
-                x *= a;
-            }
-            return true;
-        };
-        while(r-l>1) {
-            ll m = (r+l) / 2;
-            if(judge(m)) l = m;
-            else r = m;
+    mint ans = 1, now = 0;
+    for(auto d: ds) {
+        vb work(d);
+        rep(i, N) {
+            if(S[i]=='.') work[i%d] = true;
         }
-        return l-1;
-    };
-
-    for(ll b=M; b>=2; --b) {
-        f[b] = calc(b);
-        for(ll x=2*b; x<=M; x+=b) f[b] -= f[x];
-        ans += f[b];
+        mint cnt = 1;
+        rep(i, d) if(!work[i]) cnt *= 2;
+        now += sieve.mu(N/d) * cnt;
     }
+    rep(i, N) if(S[i]=='#') ans *= 2;
+    ans -= now;
     Out(ans);
+
 
 }
 

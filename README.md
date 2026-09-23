@@ -1412,8 +1412,7 @@ rank A: なし
 - !復習価値中 互いに素となる組合せ数え上げ（動画解説にメビウス関数の気持ちあり） [E - Divide Both](https://atcoder.jp/contests/abc206/tasks/abc206_e)
 - 基本 a^bと表せる数の個数 [F - x = a^b](https://atcoder.jp/contests/abc361/tasks/abc361_f)
 - !復習価値低 バイトシフトテーブル数え上げ（動画解説にメビウス関数の触りあり） [F - Shift Table](https://atcoder.jp/contests/abc304/tasks/abc304_f)
-!!! where i am now for rank C (last submission 2025/4/30)
-- !復習価値低 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
+- 基本 [F - Double Sum 2](https://atcoder.jp/contests/abc384/tasks/abc384_f)
 - !復習価値中（若干ジャンルが違うのでNote非掲載） [E - GCD of Subset](https://atcoder.jp/contests/abc393/tasks/abc393_e)
 - !要復習 [F - Increment All Divisors](https://atcoder.jp/contests/abc474/tasks/abc474_f)
 
@@ -1492,6 +1491,7 @@ rank A: なし
 - 基本 [E - Colorful Blocks](https://atcoder.jp/contests/abc167/tasks/abc167_e)
 - 基本 [E - Roaming](https://atcoder.jp/contests/abc156/tasks/abc156_e)
 - 基本 2つの正方形を配置する場合の数 [D - Squares](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_d)
+!!! where i am now for rank C (last submission 2025/4/30)
 - !復習価値低 [E - Change a Little Bit](https://atcoder.jp/contests/abc150/tasks/abc150_e)
 - !復習価値低 差がk以上の玉を選ぶ [015 - Don't be too close（★6）](https://atcoder.jp/contests/typical90/tasks/typical90_o)
 - !復習価値低 [2 - マスコットの片付け (Mascots)](https://atcoder.jp/contests/joisc2013-day2/tasks/joisc2013_mascots)
