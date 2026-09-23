@@ -1311,8 +1311,7 @@ rank A: なし
 - a<=bを仮定すると、a <= roundup(M/a) < M/a + 1よりa^2-a < Mの範囲でaを試せばよい（O(sqrt(M))）
 ### 例題
 - !復習価値低 （分類が難しいのでNoteには整数のところに入れた）[D - M<=ab](https://atcoder.jp/contests/abc296/tasks/abc296_d)
-!!! where i am now for rank C (last submission 2025/4/30)
-- !復習価値低 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
+- !要復習 [D - Cubes](https://atcoder.jp/contests/abc397/tasks/abc397_d)
 
 ## 約数
 - 約数を全列挙するのは、2から順番に割り切れるか確かめ、割り切れたらその数と割られた数を保存していく
@@ -1367,6 +1366,7 @@ rank A: なし
 ### 例題
 - 基本（ルジャンドルの定理） [D - Factorial and Multiple](https://atcoder.jp/contests/abc280/tasks/abc280_d)
 - 基本 全要素の積がMとなる場合の数 [D - Factorization](https://atcoder.jp/contests/abc110/tasks/abc110_d)
+!!! where i am now for rank C (last submission 2025/4/30)
 - !復習価値低 約数の個数が75の数 [D - 756](https://atcoder.jp/contests/abc114/tasks/abc114_d)
 
 ## エラトステネスの篩と高速素因数分解
