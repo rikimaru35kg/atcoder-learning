@@ -228,12 +228,73 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+class Sieve {
+    long long n;
+    vector<long long> sieve;
+    vector<int> mobius;
+public:
+    Sieve (long long n): n(n), sieve(n+1), mobius(n+1,1) {
+        for (long long i=2; i<=n; ++i) {
+            if (sieve[i] != 0) continue;
+            sieve[i] = i;
+            mobius[i] = -1;
+            for (long long k=2*i; k<=n; k+=i) {
+                if (sieve[k] == 0) sieve[k] = i;
+                if ((k/i)%i==0) mobius[k] = 0;
+                else mobius[k] *= -1;
+            }
+        }
+    }
+    bool is_prime(long long k) {
+        if (k <= 1 || k > n) return false;
+        if (sieve[k] == k) return true;
+        return false;
+    }
+    vector<pair<long long,long long>> factorize(long long k) {
+        vector<pair<long long,long long>> ret;
+        if (k <= 1 || k > n) return ret;
+        ret.emplace_back(sieve[k], 0);
+        while (k != 1) {
+            if (ret.back().first == sieve[k]) ++ret.back().second;
+            else ret.emplace_back(sieve[k], 1);
+            k /= sieve[k];
+        }
+        return ret;
+    }
+    int mu(long long k) { return mobius[k]; }
+} sieve(100);
+
+
 void solve() {
     LONG(N);
-    ll x = 2.999999;
-    ll y = 3.0000001;
-    ll z = 3.99999999999;
-    de3(x,y,z)
+    vl ps;
+    for(ll i=2; i<=N; ++i) {
+        if(!sieve.is_prime(i)) continue;
+        ps.push_back(i);
+    }
+    vl cnt(ps.size());
+    for(ll i=1; i<=N; ++i) {
+        ll x = i;
+        rep(j, ps.size()) {
+            while(x%ps[j]==0) {
+                x /= ps[j];
+                cnt[j]++;
+            }
+        }
+    }
+
+    ll M = 75;
+    vl dp(M+1);
+    dp[1] = 1;
+    rep(i, cnt.size()) {
+        vl pdp(M+1); swap(pdp, dp);
+        rep(j, M+1) {
+            for(ll x=0; x<=cnt[i]; ++x) {
+                if((x+1)*j<=M) dp[(x+1)*j] += pdp[j];
+            }
+        }
+    }
+    Out(dp[M]);
 
 }
 

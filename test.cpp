@@ -262,39 +262,24 @@ public:
         return ret;
     }
     int mu(long long k) { return mobius[k]; }
-} sieve(100);
+} sieve(1e6);
 
 
 void solve() {
-    LONG(N);
-    vl ps;
-    for(ll i=2; i<=N; ++i) {
-        if(!sieve.is_prime(i)) continue;
-        ps.push_back(i);
-    }
-    vl cnt(ps.size());
-    for(ll i=1; i<=N; ++i) {
-        ll x = i;
-        rep(j, ps.size()) {
-            while(x%ps[j]==0) {
-                x /= ps[j];
-                cnt[j]++;
-            }
-        }
-    }
+    auto p2=[](ll x) {return x*x;};
 
-    ll M = 75;
-    vl dp(M+1);
-    dp[1] = 1;
-    rep(i, cnt.size()) {
-        vl pdp(M+1); swap(pdp, dp);
-        rep(j, M+1) {
-            for(ll x=0; x<=cnt[i]; ++x) {
-                if((x+1)*j<=M) dp[(x+1)*j] += pdp[j];
-            }
-        }
+    LONG(L, R);
+    vl f(R+1);
+    ll sum = 0;
+    for(ll g=R; g>=1; --g) {
+        sum += sieve.mu(g) * p2(R/g-(L-1)/g);
     }
-    Out(dp[M]);
+    ll ans = p2(R-L+1) - sum;
+    for(ll x=max(2LL, L); x<=R; ++x) {
+        ans -= 2*((R/x)-1);
+        ans--;
+    }
+    Out(ans);
 
 }
 
