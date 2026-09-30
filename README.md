@@ -2251,6 +2251,7 @@ rank A: なし
 - [G - 二回の交換](https://atcoder.jp/contests/past18-open/tasks/past18_g)
 - [E - Concentration](https://atcoder.jp/contests/abc470/tasks/abc470_e)
 - [D - Automat](https://atcoder.jp/contests/abc476/tasks/abc476_d)
+- [F - Count Cells in a Window](https://atcoder.jp/contests/abc477/tasks/abc477_f)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
