@@ -228,85 +228,24 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template<typename T> class RangeBIT {
-    long long size;
-    vector<vector<T>> bit;
-    T sum0(int i) {  // [0,i] closed interval
-        return sum_sub(0,i) + sum_sub(1,i)*i;
-    }
-    void add_sub(int p, int i, T x) {
-        ++i;  // 0-index -> 1_index
-        assert(i>=1 && i<=size); // i<=size is not necessarily needed (ignored afterwards anyway)
-        for(; i<size; i+=i&-i) bit[p][i] += x;
-    }
-    T sum_sub(int p, int i) {  // [0,i] closed interval
-        ++i;  // 0-index -> 1_index
-        assert(i>=0 && i<size); // i==0 -> return 0
-        T ret(0);
-        for(; i>0; i-=i&-i) ret += bit[p][i];
-        return ret;
-    }
-public:
-    RangeBIT (int _n): size(_n+1), bit(2, vector<T>(_n+1)) {}
-    void add(int l, int r, T x) {  // [l,r) half-open interval
-        add_sub(0, l, -x*(l-1)); add_sub(0, r, x*(r-1));
-        add_sub(1, l, x); add_sub(1, r, -x);
-    }
-    T sum(int l, int r) { // [l,r) half-open interval
-        return sum0(r-1) - sum0(l-1);
-    }
-    T get(int i) { return sum(i, i+1); }
-    void dump() {  // for debug
-        #ifdef __DEBUG
-        for(ll i=0; i<size-1; ++i) { cerr << get(i) << ' '; }
-        cerr << endl;
-        #endif
-    }
-};
-
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-struct S {
-    ll s, n;
-    S(ll s=0, ll n=0): s(s),n(n) {}
-};
-S op(S a, S b) { return S(a.s+b.s, a.n+b.n); }
-S e() { return S(); }
-using F = int;
-S mapping(F f, S x) {
-    return S(x.s + f*x.n, x.n);
-}
-F composition(F f, F g) { return f+g; }
-F id() { return 0; }
-
 void solve() {
-    LONG(N, M, Q);
-    vp span;
-    rep(i, N) {
-        LONG(l,r); --l;
-        span.emplace_back(l, r);
+    LONG(N, K); ++K;
+    VL2(A,B,N);
+    ll ans = 0;
+
+    rep(k, 31) {
+        if(~K>>k&1) continue;
+        ll now = 0;
+        ll x = K>>(k+1);
+        rep(i, N) {
+            if(A[i]>>k&1) continue;
+            ll a = A[i]>>(k+1);
+            if(a != (a&x)) continue;
+            now += B[i];
+        }
+        chmax(ans, now);
     }
-    vvt3 minus(N), plus(N);
-    rep(qi, Q) {
-        LONGM(a,b,c,d); ++d;
-        minus[a].emplace_back(c,d,qi);
-        plus[b].emplace_back(c,d,qi);
-    }
-    vl ans(Q);
-    RangeBIT<ll> bit(M);
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(M);
-    rep(i, M) seg.set(i, S(0,1));
-    rep(i, N) {
-        for(auto [c,d,qi]: minus[i]) ans[qi] -= bit.sum(c,d);
-        // for(auto [c,d,qi]: minus[i]) ans[qi] -= seg.prod(c,d).s;
-        auto [l,r] = span[i];
-        bit.add(l, r, 1);
-        // seg.apply(l,r,1);
-        for(auto [c,d,qi]: plus[i]) ans[qi] += bit.sum(c,d);
-        // for(auto [c,d,qi]: plus[i]) ans[qi] += seg.prod(c,d).s;
-    }
-    rep(i, Q) Out(ans[i]);
+    Out(ans);
 
 }
 
