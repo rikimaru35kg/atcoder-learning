@@ -228,25 +228,91 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K); ++K;
-    VL2(A,B,N);
-    ll ans = 0;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
-    rep(k, 31) {
-        if(~K>>k&1) continue;
-        ll now = 0;
-        ll x = K>>(k+1);
-        rep(i, N) {
-            if(A[i]>>k&1) continue;
-            ll a = A[i]>>(k+1);
-            if(a != (a&x)) continue;
-            now += B[i];
+vector<long long> listup_divisor(long long x, bool issort=false) {
+    vector<long long> ret;
+    for(long long i=1; i*i<=x; ++i) {
+        if (x % i == 0) {
+            ret.push_back(i);
+            if (i*i != x) ret.push_back(x / i);
         }
-        chmax(ans, now);
+    }
+    if (issort) sort(ret.begin(), ret.end());
+    return ret;
+}
+
+void solve() {
+    LONG(N, M);
+    VL(A, N);
+    if(M==1) {
+        ll cnt = 0;
+        rep(i, N) if(A[i]==1) cnt++;
+        mint ans = mint(2).pow(cnt)-1;
+        Out(ans);
+        return;
+    }
+    {
+        vl a;
+        rep(i, N) if(M%A[i]==0) a.push_back(A[i]);
+        swap(a, A);
+        N = A.size();
+    }
+
+    auto calcps=[&](ll n) -> vl {
+        vl ps;
+        for(ll p=2; p*p<=M; p++) {
+            if(n%p!=0) continue;
+            ll x = 1;
+            while(n%p==0) {
+                x *= p;
+                n /= p;
+            }
+            ps.push_back(x);
+        }
+        if(n!=1) ps.push_back(n);
+        return ps;
+    };
+    vl ps = calcps(M);
+    de(ps)
+
+    ll P = ps.size();
+    ll Z = 1LL<<P;
+    vl d(Z);
+    rep(i, N) {
+        ll x = 0;
+        rep(j, P) {
+            if(A[i]%ps[j]==0) x ^= (1LL<<j);
+        }
+        d[x]++;
+    }
+
+    rep(k, P) {
+        rep(i, Z) {
+            if(i>>k&1) continue;
+            d[i^(1LL<<k)] += d[i];
+        }
+    }
+
+    mint ans;
+    rep(i, Z) {
+        ll n = P - pcnt(i);
+        if(n%2==0) ans += mint(2).pow(d[i]);
+        else ans -= mint(2).pow(d[i]);
     }
     Out(ans);
-
 }
 
 int main () {
