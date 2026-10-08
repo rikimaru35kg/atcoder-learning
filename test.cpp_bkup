@@ -228,23 +228,98 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, K); ++K;
-    VL2(A,B,N);
-    ll ans = 0;
-
-    rep(k, 31) {
-        if(~K>>k&1) continue;
-        ll now = 0;
-        ll x = K>>(k+1);
-        rep(i, N) {
-            if(A[i]>>k&1) continue;
-            ll a = A[i]>>(k+1);
-            if(a != (a&x)) continue;
-            now += B[i];
-        }
-        chmax(ans, now);
+struct SCC {
+    SCC (int n): n(n), from(n), ifrom(n) {}
+    void add_edge (int a, int b) {
+        from[a].push_back(b); ifrom[b].push_back(a);
     }
+    vector<vector<int>> scc () {
+        vector<vector<int>> groups;
+        postorder = vector<int>();
+        visited.assign(n, false);
+        for (int i=0; i<n; ++i) if(!visited[i]) dfs1(i);
+        visited.assign(n, false);
+        reverse(all(postorder));
+        for(auto v: postorder) if(!visited[v]) {
+            vector<int> group;
+            dfs2(v, group);
+            groups.push_back(group);
+        }
+        return groups;
+    }
+private:
+    int n;
+    vector<vector<int>> from, ifrom;
+    vector<int> postorder;
+    vector<bool> visited;
+    void dfs1 (int v) {
+        visited[v] = true;
+        for (auto nv: from[v]) if(!visited[nv]) dfs1(nv);
+        postorder.push_back(v);
+    }
+    void dfs2 (int v, vector<int> &group) {
+        visited[v] = true;
+        group.push_back(v);
+        for (auto nv: ifrom[v]) if(!visited[nv]) dfs2(nv, group);
+    }
+};
+
+void solve() {
+    LONG(N, Q);
+    vvl from0(N), from1(N);
+    rep(i, Q) {
+        LONG(t, a, b); --a, --b;
+        if(t==0) from0[a].push_back(b);
+        else {
+            if(a==b) Outend("No");
+            from1[a].push_back(b);
+        }
+    }
+    auto shrink=[&](vvl &from) -> vl {
+        vl ret(N);
+        SCC scc(N);
+        rep(i, N) { for(auto ni: from[i]) scc.add_edge(i, ni); }
+        for(auto vs: scc.scc()) { for(auto v: vs) ret[v] = vs[0]; }
+        return ret;
+    };
+    auto id = shrink(from0);
+
+    vvl from(N);
+    SCC scc(N);
+    rep(i, N) {
+        for(auto ni: from0[i]) {
+            from[id[i]].push_back(id[ni]);
+            scc.add_edge(id[i], id[ni]);
+        }
+        for(auto ni: from1[i]) {
+            from[id[i]].push_back(id[ni]);
+            scc.add_edge(id[i], id[ni]);
+        }
+    }
+    for(auto vs: scc.scc()) { if(SIZE(vs)>1) Outend("No"); }
+
+    Out("Yes");
+    vb visited(N);
+    vl vs;
+    auto dfs=[&](auto f, ll v) -> void {
+        if(visited[v]) return;
+        visited[v] = true;
+        for(auto nv: from[v]) { f(f, nv); }
+        vs.push_back(v);
+    };
+    rep(i, N) {
+        if(id[i]!=i) continue;
+        dfs(dfs, i);
+    }
+    reverse(all(vs));
+
+    vl ord(N);
+    rep(i, vs.size()) {
+        ord[vs[i]] = i+1;
+    }
+
+    vl ans(N);
+    rep(i, N) { ans[i] = ord[id[i]]; }
     Out(ans);
 
 }

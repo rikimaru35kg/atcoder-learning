@@ -2365,4 +2365,6 @@ rank A: なし
 - [D - Coefficient Stair](https://atcoder.jp/contests/abc473/tasks/abc473_d)
 - [E - One Time Coupon](https://atcoder.jp/contests/abc474/tasks/abc474_e)
 - [E - E-liter](https://atcoder.jp/contests/abc461/tasks/abc461_e)
+- [D - Range Set Insertion Query](https://atcoder.jp/contests/abc478/tasks/abc478_d)
+- [F - Min-First Search](https://atcoder.jp/contests/abc478/tasks/abc478_f)
 

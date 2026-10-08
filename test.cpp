@@ -242,77 +242,20 @@ inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << en
 inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
 #endif
 
-vector<long long> listup_divisor(long long x, bool issort=false) {
-    vector<long long> ret;
-    for(long long i=1; i*i<=x; ++i) {
-        if (x % i == 0) {
-            ret.push_back(i);
-            if (i*i != x) ret.push_back(x / i);
-        }
-    }
-    if (issort) sort(ret.begin(), ret.end());
-    return ret;
-}
-
 void solve() {
-    LONG(N, M);
-    VL(A, N);
-    if(M==1) {
-        ll cnt = 0;
-        rep(i, N) if(A[i]==1) cnt++;
-        mint ans = mint(2).pow(cnt)-1;
-        Out(ans);
-        return;
-    }
-    {
-        vl a;
-        rep(i, N) if(M%A[i]==0) a.push_back(A[i]);
-        swap(a, A);
-        N = A.size();
-    }
-
-    auto calcps=[&](ll n) -> vl {
-        vl ps;
-        for(ll p=2; p*p<=M; p++) {
-            if(n%p!=0) continue;
-            ll x = 1;
-            while(n%p==0) {
-                x *= p;
-                n /= p;
-            }
-            ps.push_back(x);
-        }
-        if(n!=1) ps.push_back(n);
-        return ps;
-    };
-    vl ps = calcps(M);
-    de(ps)
-
-    ll P = ps.size();
-    ll Z = 1LL<<P;
-    vl d(Z);
+    LONG(N);
+    VLM(Q, N);
+    vp stck;
+    stck.emplace_back(INF, 0);
+    mint ans = 1;
     rep(i, N) {
-        ll x = 0;
-        rep(j, P) {
-            if(A[i]%ps[j]==0) x ^= (1LL<<j);
-        }
-        d[x]++;
-    }
-
-    rep(k, P) {
-        rep(i, Z) {
-            if(i>>k&1) continue;
-            d[i^(1LL<<k)] += d[i];
-        }
-    }
-
-    mint ans;
-    rep(i, Z) {
-        ll n = P - pcnt(i);
-        if(n%2==0) ans += mint(2).pow(d[i]);
-        else ans -= mint(2).pow(d[i]);
+        if(i==0) continue;
+        while(stck.back().first<Q[i]) stck.pop_back();
+        ans *= i-stck.back().second;
+        stck.emplace_back(Q[i], i);
     }
     Out(ans);
+
 }
 
 int main () {
