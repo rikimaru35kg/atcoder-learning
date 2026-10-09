@@ -14,16 +14,13 @@
         {"before": ["t"], "after": ["5","<c-y>"]},
         {"before": ["<space>", "g"], "commands": ["workbench.view.search"]},
         {"before": ["<space>", "f"], "commands": ["workbench.action.quickOpen"]},
+        {"before": ["<space>", "e"], "commands": ["workbench.action.toggleSidebarVisibility"]},   
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {"before": ["<C-d>"], "after": ["g","b"]},
     ],
     "vim.hlsearch": true,
     "terminal.integrated.enableMultiLinePasteWarning": false,
-    "remote.SSH.remotePlatform": {
-        "raspi": "linux"
-    },
-    "remote.autoForwardPortsSource": "hybrid",
     "update.mode": "manual",
     "extensions.autoUpdate": false,
     "editor.tokenColorCustomizations": {
@@ -41,40 +38,11 @@
         }
     },
     "files.autoSave": "afterDelay",
-    "editor.fontFamily": "'Anonymous Pro', monospace",
+    "editor.fontFamily": "'PlemolJP Console NF', Consolas, 'Courier New', monospace",
     "files.autoSaveDelay": 200,
-    "highlight.decorations": { "rangeBehavior": 3 },
-    "highlight.regexFlags": "gi",
-    "highlight.minDelay": 50,
-    "highlight.maxMatches": 250,
-    "highlight.regexes": {
-        "(// =+)": [
-            {
-                "backgroundColor":"#02aab0",
-                "color":"#ebeab6",
-                "fontWeight": "bold"
-            },
-        ],
-        "([+])": [
-            {
-                "color":"#ff00ee",
-                // "fontWeight": "bold"
-            },
-        ],
-        "(//  DO NOT.+)": [
-            {
-                "backgroundColor":"#02aab0",
-                "color":"#ffffff",
-                "fontWeight": "bold"
-            },
-        ],
-        "(pdp)": [
-            {
-                "color":"#1eddff",
-                "fontWeight": "bold"
-            },
-        ],
-    },
+    "workbench.colorTheme": "Visual Studio 2017 Dark - C++",
+    "markdown-preview-enhanced.previewTheme": "github-dark.css",
+    "markdown-preview-enhanced.codeBlockTheme": "github-dark.css",
     "terminal.integrated.defaultProfile.windows": "Git Bash",
     "github.copilot.enable": {
         "*": false,
@@ -82,6 +50,8 @@
         "markdown": false,
         "scminput": false
     },
-    "codeium.disableSupercomplete": false,
-    "codeium.enableCodeLens": false,
+    "remote.SSH.remotePlatform": {
+        "raspi": "linux"
+    },
+    "remote.autoForwardPortsSource": "hybrid",
 }

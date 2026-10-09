@@ -2,15 +2,27 @@
 [
     {
         "key": "ctrl+l",
-        "command": "workbench.action.focusFirstEditorGroup"
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "filesExplorerFocus"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.chat.open",
+        "when": "editorTextFocus"
     },
     {
         "key": "ctrl+h",
-        "command": "workbench.files.action.focusFilesExplorer"
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "chatCursorInput || inChat"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "workbench.files.action.focusFilesExplorer",
+        "when": "editorTextFocus"
     },
     {
         "key": "alt+j",
-        "command": "terminal.focus"
+        "command": "terminal.focus",
     },
     {
         "key": "alt+k",
@@ -31,6 +43,16 @@
     },
     {
         "key": "ctrl+f",
+        "command": "",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+k",
         "command": "",
         "when": "terminalFocus"
     },
