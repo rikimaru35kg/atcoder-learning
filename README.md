@@ -1546,9 +1546,9 @@ rank A: なし
 - 基本 ルーレット（良問） [E - Roulettes](https://atcoder.jp/contests/abc314/tasks/abc314_e)
 - 基本 [E - Expansion Packs](https://atcoder.jp/contests/abc382/tasks/abc382_e)
 - 基本 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
+- 基本 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
+- 基本 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 !!! where i am now for rank C (last submission 2025/5/28)
-- !復習価値低 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
-- !復習価値低 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
 - !復習価値低 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
