@@ -228,31 +228,17 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
 void solve() {
     LONG(N);
-    VLM(Q, N);
-    vp stck;
-    stck.emplace_back(INF, 0);
-    mint ans = 1;
+    VL(C, N);
+    db ans = 0;
     rep(i, N) {
-        if(i==0) continue;
-        while(stck.back().first<Q[i]) stck.pop_back();
-        ans *= i-stck.back().second;
-        stck.emplace_back(Q[i], i);
+        ll cnt = 0;
+        rep(j, N) if(j!=i) {
+            if(C[i]%C[j]==0) ++cnt;
+        }
+        de2(i, cnt)
+        ans += db(Div(cnt+2, 2LL)) / (cnt+1);
     }
     Out(ans);
 
