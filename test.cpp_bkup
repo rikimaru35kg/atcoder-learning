@@ -228,59 +228,34 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
-
-struct Pro {
-    mint a, b;
-    Pro(mint a=0, mint b=0): a(a),b(b) {}
-    Pro operator*(const mint &x) const {
-        return Pro(x*a, x*b);
-    }
-    Pro operator+(const Pro &o) const {
-        return Pro(a+o.a, b+o.b);
-    }
-};
-
 void solve() {
-    LONG(N);
-    using vp = vector<Pro>;
-    using vvp = vector<vp>;
-    vvp dp(N+1, vp(N+1));
-    dp[1][1] = Pro(0,1);
+    LONG(N,T,M,K);
+    vd dp(K+1);
+    dp[K] = 1;
 
-    mint twoinv = mint(2).inv();
-    for(ll n=2; n<=N; ++n) {
-        dp[n][1] = Pro(1,0);
-        for(ll i=2; i<=n; ++i) {
-            dp[n][i] = dp[n-1][i-1]*twoinv + dp[n][i-1]*twoinv;
+    auto calc=[&](ll k, vd base) -> db {
+        vd dp(M+1);
+        db ret = 0;
+        rep(i, M) {
+            if(i==N) break;
+            vd pdp(M+1); swap(dp, pdp);
+            rep(j, M+1) {
+                for(ll c=0; c+j<=M; ++c) {
+                    chmax(dp[j+c], pdp[j] + base[min(k+c,K)]/N);
+                }
+            }
+            chmax(ret, dp[M] + base[k]*(N-1-i)/N);
         }
-        auto [a,b] = dp[n][1];
-        auto [c,d] = dp[n][n]*twoinv;
-        mint p = (d-b) / (a-c);
-        for(ll i=1; i<=n; ++i) {
-            auto [a,b] = dp[n][i];
-            dp[n][i] = Pro(0, a*p+b);
+        return ret;
+    };
+
+    rep(ti, T) {
+        vd pdp(K+1); swap(pdp, dp);
+        rep(k, K+1) { // calc dp[k]
+            dp[k] = calc(k, pdp);
         }
     }
-    // rep1(n, N) {
-    //     de(n)
-    //     rep1(i, n) cout << dp[n][i].b.val() << ' ';
-    //     cout<<endl;
-    // }
-    rep1(i, N) cout << dp[N][i].b.val() << ' ';
-    cout<<endl;
+    Out(dp[0]);
 
 }
 

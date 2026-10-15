@@ -228,35 +228,95 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N,T,M,K);
-    vd dp(K+1);
-    dp[K] = 1;
+template<typename T>
+struct BIT {
+    long long size;
+    vector<T> bit;
+    BIT (int _n): size(_n+1), bit(_n+1) {}
+    void add(int i, T x) {
+        ++i;  // 0-index -> 1_index
+        assert(i>=1 && i<size);
+        for(; i<size; i+=i&-i) bit[i] += x;
+    }
+    void set(int i, T x) {
+        assert(i>=0 && i<size-1);
+        T pre = sum(i,i+1);
+        add(i, x-pre);
+    }
+    T sum(int l, int r) {  // [l,r) half-open interval
+        return sum0(r-1) - sum0(l-1);
+    }
+    T sum0(int i) {  // [0,i] closed interval
+        ++i;  // 0-index -> 1_index
+        assert(i>=0 && i<size); // i==0 -> return 0
+        T ret(0);
+        for(; i>0; i-=i&-i) ret += bit[i];
+        return ret;
+    }
+    int lower_bound(T x) {
+        int t=0, w=1;
+        while(w<size) w<<=1;
+        for(; w>0; w>>=1) {
+            if(t+w<size && bit[t+w]<x) { x -= bit[t+w]; t += w; }
+        }
+        return t;
+    }
+    void dump() {
+        #ifdef __DEBUG
+        for(int i=0; i<size-1; ++i) { cerr<<sum(i,i+1)<<' '; } cerr<<'\n';
+        #endif
+    }
+};
 
-    auto calc=[&](ll k, vd base) -> db {
-        vd dp(M+1);
-        db ret = 0;
-        rep(i, M) {
-            if(i==N) break;
-            vd pdp(M+1); swap(dp, pdp);
-            rep(j, M+1) {
-                for(ll c=0; c+j<=M; ++c) {
-                    chmax(dp[j+c], pdp[j] + base[min(k+c,K)]/N);
-                }
-            }
-            chmax(ret, dp[M] + base[k]*(N-1-i)/N);
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+void solve() {
+    LONG(N, K);
+    VLM(P, N);
+    BIT<int> bit(N);
+    ll tn = 0;
+    auto total_tn=[&]() -> mint {
+        mint ret;
+        BIT<int> bit(N);
+        rep(i, N) {
+            ret += bit.sum(P[i], N);
+            bit.add(P[i], 1);
         }
         return ret;
     };
+    mint tot = total_tn();
+    de(tot)
 
-    rep(ti, T) {
-        vd pdp(K+1); swap(pdp, dp);
-        rep(k, K+1) { // calc dp[k]
-            dp[k] = calc(k, pdp);
+    queue<int> que;
+    mint ans;
+    rep(i, N) {
+        que.push(P[i]);
+        tn += bit.sum(P[i], N);
+        bit.add(P[i], 1);
+        if(SIZE(que)<K) continue;
+        if(SIZE(que)>K) {
+            int p = que.front(); que.pop();
+            tn -= bit.sum(0, p);
+            bit.add(p, -1);
         }
+        de2(i, tn)
+        ans += tot-tn;
     }
-    Out(dp[0]);
-
+    ans /= N-K+1;
+    ans += mint(K)*(K-1)/4;
+    Out(ans);
 }
 
 int main () {

@@ -1557,11 +1557,11 @@ rank A: なし
 - 基本 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - 基本 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - 基本 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
-!!! where i am now for rank C (last submission 2025/5/28)
-- !復習価値低 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
+- !復習価値中 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
 
 ## 対称性を利用する
 ### 例題
+!!! where i am now for rank C (last submission 2025/3/3)
 - !復習価値低 黒いボール位置の期待値 [E - Random Swaps of Balls](https://atcoder.jp/contests/abc360/tasks/abc360_e)
 - 基本 ルーク移動方法の数え上げ [E - Rook Path](https://atcoder.jp/contests/abc232/tasks/abc232_e)
 
