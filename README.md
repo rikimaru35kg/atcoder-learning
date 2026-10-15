@@ -1548,8 +1548,7 @@ rank A: なし
 - 基本 [C - コイン](https://atcoder.jp/contests/abc008/tasks/abc008_3) [自分の解説に考え方コメント](https://atcoder.jp/contests/abc008/submissions/58870119)
 - 基本 スライム移動距離の期待値 [B - Fusing Slimes](https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b)
 - 基本 [F - Bomb Game 2](https://atcoder.jp/contests/abc333/tasks/abc333_f)
-!!! where i am now for rank C (last submission 2025/5/28)
-- !復習価値低 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
+- !復習価値高 [F - Lost and Pound](https://atcoder.jp/contests/abc404/tasks/abc404_f)
 
 ## 期待値の線形性
 - E[X+Y] = E[X] + E[Y]
@@ -1558,6 +1557,7 @@ rank A: なし
 - 基本 転倒数の期待値 [066 - Various Arrays（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bn)
 - 基本 [J - 区間の期待値](https://atcoder.jp/contests/past202203-open/tasks/past202203_j)
 - 基本 [M - 逆転](https://atcoder.jp/contests/past202206-open/tasks/past202206_m)
+!!! where i am now for rank C (last submission 2025/5/28)
 - !復習価値低 [G - Another Shuffle Window](https://atcoder.jp/contests/abc380/tasks/abc380_g)
 
 ## 対称性を利用する
