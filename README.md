@@ -878,6 +878,7 @@ rank A: なし
 - 基本 ネガティブTSP [F - Negative Traveling Salesman](https://atcoder.jp/contests/abc338/tasks/abc338_f)
 - 基本 出来なくなるよねchokudai（Note非掲載） [E - Product Development](https://atcoder.jp/contests/abc322/tasks/abc322_e)
 - !復習価値低 [023 - Avoid War（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_w)
+- !要復習 [F - Cake Cutting](https://atcoder.jp/contests/abc480/tasks/abc480_f)
 
 ## 部分集合の部分集合DP
 - 全ての部分集合に対して部分和の場合の数を数える問題は、各要素に着目すると、部分集合に選ばれない、部分集合に選ばれるが和には選ばれない、部分集合に選べれ和に選ばれるの3通りがあるので、dp[i][j]（iまで見て和がj）の普通のDPを実施すれば良い（計算量がO(3^N)に関連）
@@ -2252,6 +2253,7 @@ rank A: なし
 - [E - Concentration](https://atcoder.jp/contests/abc470/tasks/abc470_e)
 - [D - Automat](https://atcoder.jp/contests/abc476/tasks/abc476_d)
 - [F - Count Cells in a Window](https://atcoder.jp/contests/abc477/tasks/abc477_f)
+- [E - Product-Bounded Arithmetic Sequences](https://atcoder.jp/contests/abc480/tasks/abc480_e)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)

@@ -1,4 +1,5 @@
 // ### test.cpp ###
+#include <algorithm>
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -228,34 +229,47 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+
 void solve() {
-    LONG(N,T,M,K);
-    vd dp(K+1);
-    dp[K] = 1;
-
-    auto calc=[&](ll k, vd base) -> db {
-        vd dp(M+1);
-        db ret = 0;
-        rep(i, M) {
-            if(i==N) break;
-            vd pdp(M+1); swap(dp, pdp);
-            rep(j, M+1) {
-                for(ll c=0; c+j<=M; ++c) {
-                    chmax(dp[j+c], pdp[j] + base[min(k+c,K)]/N);
+    LONG(N);
+    ll ans = 0;
+    for(ll w=3; w<=20; ++w) {
+        for(ll a=1; a*a*a<=N; ++a) {
+            auto f=[&](ll d) -> bool {
+                ll mul = 1;
+                rep(i, w) {
+                    if(a+i*d>N) return false;
+                    if(a+i*d > N/mul) return false;
+                    mul *= a+i*d;
                 }
-            }
-            chmax(ret, dp[M] + base[k]*(N-1-i)/N);
-        }
-        return ret;
-    };
-
-    rep(ti, T) {
-        vd pdp(K+1); swap(pdp, dp);
-        rep(k, K+1) { // calc dp[k]
-            dp[k] = calc(k, pdp);
+                return true;
+            };
+            ll d = binary_search(0, (ll)1e9, f);
+            ans += d;
+            if(d==0) break;
         }
     }
-    Out(dp[0]);
+    Out(ans);
 
 }
 
