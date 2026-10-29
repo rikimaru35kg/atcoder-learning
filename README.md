@@ -2254,6 +2254,7 @@ rank A: なし
 - [D - Automat](https://atcoder.jp/contests/abc476/tasks/abc476_d)
 - [F - Count Cells in a Window](https://atcoder.jp/contests/abc477/tasks/abc477_f)
 - [E - Product-Bounded Arithmetic Sequences](https://atcoder.jp/contests/abc480/tasks/abc480_e)
+- [F - Evil Shortest Path](https://atcoder.jp/contests/abc481/tasks/abc481_f)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)

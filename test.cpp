@@ -228,27 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
+
+
 void solve() {
     LONG(N, M);
-    VL(A, N);
-    ll N2 = 1<<N;
-    vl sum(N2);
-    rep(s, N2) {
-        rep(i, N) { if(s>>i&1) sum[s] += A[i]; }
+    vvp from(N), ifrom(N);
+    rep(i, M) {
+        LONGM(a, b, c); ++c;
+        from[a].emplace_back(b, c);
+        ifrom[b].emplace_back(a, c);
     }
-    ll T = sum.back()/M;
-    de(sum)
-    de(T)
 
-    vl dp(N2);
-    rep(s, N2) {
-        rep(i, N) if(~s>>i&1) {
-            ll ns = s|1<<i;
-            de3(ns, sum[ns], sum[ns]%T)
-            chmax(dp[ns], dp[s] + (sum[ns]%T==0));
+    auto caldist=[&]() -> vl {
+        vl dist(N, INF);
+        queue<ll> que;
+        auto push=[&](ll v, ll d) {
+            if(dist[v]!=INF) return;
+            dist[v] = d;
+            que.push(v);
+        };
+        push(0, 0);
+        while(que.size()) {
+            auto v = que.front(); que.pop();
+            for(auto [nv,c]: from[v]) push(nv, dist[v]+1);
+        }
+        return dist;
+    };
+
+    vl dist = caldist();
+    vvl vs(N);
+    rep(i, N) vs[dist[i]].push_back(i);
+
+    vl ord(N);
+    vm ans(N);
+    vp pord_c(N);
+    repk(d, 1, N) {
+        for(auto v: vs[d]) {
+            ll pbest = -1;
+            Pr oc = {N, 10};
+            for(auto [p, c]: ifrom[v]) {
+                if(dist[p]+1!=dist[v]) continue;
+                Pr now = {ord[p], c};
+                if(now<oc) {
+                    pbest = p;
+                    oc = now;
+                }
+            }
+            ans[v] = ans[pbest]*10 + oc.second;
+            pord_c[v] = oc;
+        }
+        // calc order
+        sort(all(vs[d]), [&](ll a, ll b){
+            return pord_c[a] < pord_c[b];
+        });
+        ll x = 0;
+        Pr pre = {-1,-1};
+        for(auto v: vs[d]) {
+            if(pre.first==-1 || pre==pord_c[v]) ord[v] = x;
+            else ord[v] = ++x;
+            pre = pord_c[v];
         }
     }
-    Out(M-dp.back());
+    repk(i, 1, N) Out(ans[i]);
+    de(dist)
+    de(ord)
+
 }
 
 int main () {
@@ -258,3 +315,4 @@ int main () {
 }
 
 // ### test.cpp ###
+
