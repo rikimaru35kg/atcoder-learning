@@ -100,6 +100,7 @@
 - 基本 [C. Action Figures](https://codeforces.com/contest/2026/problem/C)
 
 ## 並列二分探索
+- 基本 [O - 超過クエリ](https://atcoder.jp/contests/past20-open/tasks/past20_o)
 - !復習価値低 [G - Dense Buildings](https://atcoder.jp/contests/abc394/tasks/abc394_g)
 
 ## 三分探索法
@@ -1078,6 +1079,10 @@ rank A: なし
 - !復習価値低 最短稼ぎ回数 [F - Earn to Advance](https://atcoder.jp/contests/abc344/tasks/abc344_f)
 - !復習価値低 [C - イベント巡り (Event Hopping)](https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_c)
 - !復習価値低 [C - スタンプラリー 3 (Collecting Stamps 3)](https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_c)
+
+## グリッドDP
+### 例題
+- !要復習 [K - 良いグリッド](https://atcoder.jp/contests/past20-open/tasks/past20_k)
 
 ## 前処理DP
 - DPできる形に前処理してからDPする問題
@@ -2255,6 +2260,7 @@ rank A: なし
 - [F - Count Cells in a Window](https://atcoder.jp/contests/abc477/tasks/abc477_f)
 - [E - Product-Bounded Arithmetic Sequences](https://atcoder.jp/contests/abc480/tasks/abc480_e)
 - [F - Evil Shortest Path](https://atcoder.jp/contests/abc481/tasks/abc481_f)
+- [M - 結合の中央値](https://atcoder.jp/contests/past20-open/tasks/past20_m)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
@@ -2370,4 +2376,6 @@ rank A: なし
 - [E - E-liter](https://atcoder.jp/contests/abc461/tasks/abc461_e)
 - [D - Range Set Insertion Query](https://atcoder.jp/contests/abc478/tasks/abc478_d)
 - [F - Min-First Search](https://atcoder.jp/contests/abc478/tasks/abc478_f)
+- [H - 温度管理](https://atcoder.jp/contests/past20-open/tasks/past20_h)
+- [L - 直径のペア](https://atcoder.jp/contests/past20-open/tasks/past20_l)
 

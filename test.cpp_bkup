@@ -1,5 +1,4 @@
 // ### test.cpp ###
-#include <algorithm>
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -229,46 +228,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
+using vm = vector<mint>;
+using vvm = vector<vector<mint>>;
+using vvvm = vector<vector<vector<mint>>>;
+inline void Out(mint e) {cout << e.val() << '\n';}
+inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
+#ifdef __DEBUG
+inline void debug_view(mint e){cerr << e.val() << endl;}
+inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
+inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
+#endif
 
 void solve() {
-    LONG(N);
-    ll ans = 0;
-    for(ll w=3; w<=20; ++w) {
-        for(ll a=1; a*a*a<=N; ++a) {
-            auto f=[&](ll d) -> bool {
-                ll mul = 1;
-                rep(i, w) {
-                    if(a+i*d>N) return false;
-                    if(a+i*d > N/mul) return false;
-                    mul *= a+i*d;
-                }
-                return true;
-            };
-            ll d = binary_search(0, (ll)1e9, f);
-            ans += d;
-            if(d==0) break;
+    LONG(M);
+    ll N = 4;
+    vvl A(N+1, vl(N+1));
+    rep1(i, N) rep1(j, N) cin>>A[i][j];
+    vvl B = A;
+    rep1(i, N) rep1(j, N) B[i][j] -= i+j-2;
+    M -= 6;
+    if(M<0) Outend(0);
+
+    vvvm dp(N+1, vvm(N+1, vm(M+1)));
+    rep(i, N) dp[i][0][0] = dp[0][i][0] = 1;
+    rep1(i, N) rep1(j, N) {
+        rep(m, M+1) {
+            if(A[i][j]!=-1 && B[i][j]!=m) continue;
+            mint now;
+            rep(a, m+1) now += dp[i-1][j][a];
+            rep(a, m+1) now += dp[i][j-1][a];
+            rep(a, m+1) now -= dp[i][j-1][a];
+            dp[i][j][m] = now;
         }
+        de(dp[i][j])
     }
+    mint ans;
+    rep(m, M+1) ans += dp[N][N][m];
     Out(ans);
 
 }

@@ -1,5 +1,7 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
+#include <semaphore>
+#include <string>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -228,83 +230,147 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+long long binary_search (long long ok, long long ng, auto f) {
+    while (llabs(ok-ng) > 1) {
+        ll l = min(ok, ng), r = max(ok, ng);
+        long long m = l + (r-l)/2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
+//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
+//! TO CORRECTLY INFER THE PROPER FUNCTION!!
+double binary_search (double ok, double ng, auto f) {
+    const int REPEAT = 100;
+    for(int i=0; i<=REPEAT; ++i) {
+        double m = (ok + ng) / 2;
+        if (f(m)) ok = m;
+        else ng = m;
+    }
+    return ok;
+}
 
+// return minimum index i where a[i] >= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] >= x) r = m;
+            else l = m;
+        } else {
+            if (a[m] <= x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return minimum index i where a[i] > x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
+    long long n = a.size();
+    long long l = -1, r = n;
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] > x) r = m;
+            else l = m;
+        } else {
+            if (a[m] < x) r = m;
+            else l = m;
+        }
+    }
+    if (r != n) return make_pair(r, a[r]);
+    else return make_pair(n, T());
+}
+// return maximum index i where a[i] <= x, and its value a[i]
+template<typename T>
+pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] <= x) l = m;
+            else r = m;
+        } else {
+            if (a[m] >= x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
+// return maximum index i where a[i] < x, and its value a[i]
+template<typename T>
+pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
+    long long l = -1, r = a.size();
+    while (r - l > 1) {
+        long long m = (l + r) / 2;
+        if(ascending) {
+            if (a[m] < x) l = m;
+            else r = m;
+        } else {
+            if (a[m] > x) l = m;
+            else r = m;
+        }
+    }
+    if (l != -1) return make_pair(l, a[l]);
+    else return make_pair(-1, T());
+}
 
 void solve() {
-    LONG(N, M);
-    vvp from(N), ifrom(N);
-    rep(i, M) {
-        LONGM(a, b, c); ++c;
-        from[a].emplace_back(b, c);
-        ifrom[b].emplace_back(a, c);
+    LONG(N);
+    ll K = N*(N-1)/2;
+    VL(A, N);
+    ll M = 9;
+    vvl ds(M+1);
+    rep(i, N) {
+        string s = to_string(A[i]);
+        ds[s.size()].push_back(A[i]);
     }
+    rep(i, M+1) sort(all(ds[i]));
 
-    auto caldist=[&]() -> vl {
-        vl dist(N, INF);
-        queue<ll> que;
-        auto push=[&](ll v, ll d) {
-            if(dist[v]!=INF) return;
-            dist[v] = d;
-            que.push(v);
-        };
-        push(0, 0);
-        while(que.size()) {
-            auto v = que.front(); que.pop();
-            for(auto [nv,c]: from[v]) push(nv, dist[v]+1);
+    auto f=[&](ll x) -> bool {
+        ll D = 0;
+        {
+            ll y = x;
+            while(y) {
+                ++D;
+                y /= 10;
+            }
         }
-        return dist;
+        ll cnt = 0;
+        rep(i, M+1) rep(j, M+1) {
+            if(i!=j && i+j<D) cnt += ds[i].size() * ds[j].size();
+        }
+        rep(i, M+1) if(2*i<D) cnt += ds[i].size()*(ds[i].size()-1);
+        rep1(d, D-1) {
+            if(d>M || D-d>M) continue;
+            string s = to_string(x);
+            ll fi = stoll(s.substr(0, d));
+            ll ls = stoll(s.substr(d));
+            auto [n1,y1] = lowbou(ds[d], fi);
+            auto [n2,y2] = uppbou(ds[d], fi);
+            cnt += n1 * ds[D-d].size();
+            if(d==D-d) cnt -= n1;
+            {
+                ll n = n2-n1;
+                // auto [m1,z1] = lowbou(ds[D-d], ls);
+                auto [m2,z2] = uppbou(ds[D-d], ls);
+                ll now = m2;
+                if(d==D-d && fi<=ls) now--;
+                cnt += n*now;
+            }
+        }
+        return cnt>=K;
     };
 
-    vl dist = caldist();
-    vvl vs(N);
-    rep(i, N) vs[dist[i]].push_back(i);
-
-    vl ord(N);
-    vm ans(N);
-    vp pord_c(N);
-    repk(d, 1, N) {
-        for(auto v: vs[d]) {
-            ll pbest = -1;
-            Pr oc = {N, 10};
-            for(auto [p, c]: ifrom[v]) {
-                if(dist[p]+1!=dist[v]) continue;
-                Pr now = {ord[p], c};
-                if(now<oc) {
-                    pbest = p;
-                    oc = now;
-                }
-            }
-            ans[v] = ans[pbest]*10 + oc.second;
-            pord_c[v] = oc;
-        }
-        // calc order
-        sort(all(vs[d]), [&](ll a, ll b){
-            return pord_c[a] < pord_c[b];
-        });
-        ll x = 0;
-        Pr pre = {-1,-1};
-        for(auto v: vs[d]) {
-            if(pre.first==-1 || pre==pord_c[v]) ord[v] = x;
-            else ord[v] = ++x;
-            pre = pord_c[v];
-        }
-    }
-    repk(i, 1, N) Out(ans[i]);
-    de(dist)
-    de(ord)
+    ll ans = binary_search(INF, 0, f);
+    Out(ans);
 
 }
 
@@ -315,4 +381,3 @@ int main () {
 }
 
 // ### test.cpp ###
-
