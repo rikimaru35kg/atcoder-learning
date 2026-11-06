@@ -228,46 +228,84 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-using vm = vector<mint>;
-using vvm = vector<vector<mint>>;
-using vvvm = vector<vector<vector<mint>>>;
-inline void Out(mint e) {cout << e.val() << '\n';}
-inline void Out(vm v) {rep(i,SIZE(v)) cout << v[i].val() << (i==SIZE(v)-1?'\n':' ');}
-#ifdef __DEBUG
-inline void debug_view(mint e){cerr << e.val() << endl;}
-inline void debug_view(vm &v){for(auto e: v){cerr << e.val() << " ";} cerr << endl;}
-inline void debug_view(vvm &vv){cerr << "----" << endl;for(auto &v: vv){debug_view(v);} cerr << "--------" << endl;}
-#endif
+template <typename T>
+class CoordinateCompression {
+    bool oneindexed, init = false;
+    vector<T> vec;
+public:
+    CoordinateCompression(bool one=false): oneindexed(one) {}
+    void add (T x) {vec.push_back(x);}
+    void compress () {
+        sort(vec.begin(), vec.end());
+        vec.erase(unique(vec.begin(), vec.end()), vec.end());
+        init = true;
+    }
+    long long operator() (T x) {
+        if (!init) compress();
+        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
+        if (oneindexed) ++ret;
+        return ret;
+    }
+    T operator[] (long long i) {
+        if (!init) compress();
+        if (oneindexed) --i;
+        if (i < 0 || i >= (long long)vec.size()) return T();
+        return vec[i];
+    }
+    long long size () {
+        if (!init) compress();
+        return (long long)vec.size();
+    }
+    void print() {
+        #ifdef __DEBUG
+        printf("---- cc print ----\ni: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
+        printf("\nx: ");
+        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
+        printf("\n-----------------\n");
+        #endif
+    }
+};
 
 void solve() {
-    LONG(M);
-    ll N = 4;
-    vvl A(N+1, vl(N+1));
-    rep1(i, N) rep1(j, N) cin>>A[i][j];
-    vvl B = A;
-    rep1(i, N) rep1(j, N) B[i][j] -= i+j-2;
-    M -= 6;
-    if(M<0) Outend(0);
-
-    vvvm dp(N+1, vvm(N+1, vm(M+1)));
-    rep(i, N) dp[i][0][0] = dp[0][i][0] = 1;
-    rep1(i, N) rep1(j, N) {
-        rep(m, M+1) {
-            if(A[i][j]!=-1 && B[i][j]!=m) continue;
-            mint now;
-            rep(a, m+1) now += dp[i-1][j][a];
-            rep(a, m+1) now += dp[i][j-1][a];
-            rep(a, m+1) now -= dp[i][j-1][a];
-            dp[i][j][m] = now;
-        }
-        de(dp[i][j])
+    LONG(H,W,N,Q);
+    vp koma;
+    CoordinateCompression<ll> ccr, ccc;
+    rep(i, N) {
+        LONG(r,c);
+        koma.emplace_back(r, c);
+        ccr.add(r), ccc.add(c);
     }
-    mint ans;
-    rep(m, M+1) ans += dp[N][N][m];
-    Out(ans);
+    vt3 query;
+    rep(i, Q) {
+        LONG(t,l,r); ++r;
+        query.emplace_back(t,l,r);
+        if(t==1) { ccr.add(l), ccr.add(r); }
+        else ccc.add(l), ccc.add(r);
+    }
+    ll h = ccr.size(), w = ccc.size();
+    vl sr(h+1), sc(w+1);
+
+    for(auto [r,c]: koma) {
+        r = ccr(r), c = ccc(c);
+        sr[r+1]++, sc[c+1]++;
+    }
+    rep(i, h) sr[i+1] += sr[i];
+    rep(i, w) sc[i+1] += sc[i];
+
+    for(auto [t,l,r]: query) {
+        ll ans;
+        if(t==1) {
+            l = ccr(l), r = ccr(r);
+            ans = sr[r] - sr[l];
+        } else {
+            l = ccc(l), r = ccc(r);
+            ans = sc[r] - sc[l];
+        }
+        Out(ans);
+    }
+
+
 
 }
 

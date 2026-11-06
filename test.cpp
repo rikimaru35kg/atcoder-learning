@@ -1,7 +1,5 @@
 // ### test.cpp ###
 #include <bits/stdc++.h>
-#include <semaphore>
-#include <string>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
     struct subscript_and_location{
@@ -230,147 +228,29 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-long long binary_search (long long ok, long long ng, auto f) {
-    while (llabs(ok-ng) > 1) {
-        ll l = min(ok, ng), r = max(ok, ng);
-        long long m = l + (r-l)/2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-//! For DOUBLE TYPE, PLEASE CAST THE TYPE OF INPUTS TO DOUBLE
-//! TO CORRECTLY INFER THE PROPER FUNCTION!!
-double binary_search (double ok, double ng, auto f) {
-    const int REPEAT = 100;
-    for(int i=0; i<=REPEAT; ++i) {
-        double m = (ok + ng) / 2;
-        if (f(m)) ok = m;
-        else ng = m;
-    }
-    return ok;
-}
-
-// return minimum index i where a[i] >= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] >= x) r = m;
-            else l = m;
-        } else {
-            if (a[m] <= x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return minimum index i where a[i] > x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou(vector<T> &a, T x, bool ascending=true) {
-    long long n = a.size();
-    long long l = -1, r = n;
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] > x) r = m;
-            else l = m;
-        } else {
-            if (a[m] < x) r = m;
-            else l = m;
-        }
-    }
-    if (r != n) return make_pair(r, a[r]);
-    else return make_pair(n, T());
-}
-// return maximum index i where a[i] <= x, and its value a[i]
-template<typename T>
-pair<long long,T> lowbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] <= x) l = m;
-            else r = m;
-        } else {
-            if (a[m] >= x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-// return maximum index i where a[i] < x, and its value a[i]
-template<typename T>
-pair<long long,T> uppbou_r(vector<T> &a, T x, bool ascending=true) {
-    long long l = -1, r = a.size();
-    while (r - l > 1) {
-        long long m = (l + r) / 2;
-        if(ascending) {
-            if (a[m] < x) l = m;
-            else r = m;
-        } else {
-            if (a[m] > x) l = m;
-            else r = m;
-        }
-    }
-    if (l != -1) return make_pair(l, a[l]);
-    else return make_pair(-1, T());
-}
-
 void solve() {
     LONG(N);
-    ll K = N*(N-1)/2;
-    VL(A, N);
-    ll M = 9;
-    vvl ds(M+1);
-    rep(i, N) {
-        string s = to_string(A[i]);
-        ds[s.size()].push_back(A[i]);
-    }
-    rep(i, M+1) sort(all(ds[i]));
+    VL(X, N);
+    X.insert(X.begin(), X[0]);
+    X.push_back(X.back());
 
-    auto f=[&](ll x) -> bool {
-        ll D = 0;
-        {
-            ll y = x;
-            while(y) {
-                ++D;
-                y /= 10;
-            }
-        }
-        ll cnt = 0;
-        rep(i, M+1) rep(j, M+1) {
-            if(i!=j && i+j<D) cnt += ds[i].size() * ds[j].size();
-        }
-        rep(i, M+1) if(2*i<D) cnt += ds[i].size()*(ds[i].size()-1);
-        rep1(d, D-1) {
-            if(d>M || D-d>M) continue;
-            string s = to_string(x);
-            ll fi = stoll(s.substr(0, d));
-            ll ls = stoll(s.substr(d));
-            auto [n1,y1] = lowbou(ds[d], fi);
-            auto [n2,y2] = uppbou(ds[d], fi);
-            cnt += n1 * ds[D-d].size();
-            if(d==D-d) cnt -= n1;
-            {
-                ll n = n2-n1;
-                // auto [m1,z1] = lowbou(ds[D-d], ls);
-                auto [m2,z2] = uppbou(ds[D-d], ls);
-                ll now = m2;
-                if(d==D-d && fi<=ls) now--;
-                cnt += n*now;
-            }
-        }
-        return cnt>=K;
+    auto calc=[&](ll i) -> ll {
+        ll ret = 0;
+        ret += X[i]-X[i-1];
+        ret += max(X[i-1]-X[0], X.back()-X[i]);
+        ret /= 2;
+        return ret;
     };
-
-    ll ans = binary_search(INF, 0, f);
-    Out(ans);
+    rep1(i, N) {
+        if(i==1 || i==N) {
+            Out((X.back()-X[0])/2);
+            continue;
+        }
+        ll ans = INF;
+        chmin(ans, calc(i));
+        chmin(ans, calc(i+1));
+        Out(ans);
+    }
 
 }
 

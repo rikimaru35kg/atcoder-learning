@@ -2261,6 +2261,7 @@ rank A: なし
 - [E - Product-Bounded Arithmetic Sequences](https://atcoder.jp/contests/abc480/tasks/abc480_e)
 - [F - Evil Shortest Path](https://atcoder.jp/contests/abc481/tasks/abc481_f)
 - [M - 結合の中央値](https://atcoder.jp/contests/past20-open/tasks/past20_m)
+- [F - Mod M Divisor](https://atcoder.jp/contests/abc482/tasks/abc482_f)
 
 ## ACできたがグダった問題
 - [E - Don't Isolate Elements](https://atcoder.jp/contests/abc283/tasks/abc283_e)
@@ -2378,4 +2379,5 @@ rank A: なし
 - [F - Min-First Search](https://atcoder.jp/contests/abc478/tasks/abc478_f)
 - [H - 温度管理](https://atcoder.jp/contests/past20-open/tasks/past20_h)
 - [L - 直径のペア](https://atcoder.jp/contests/past20-open/tasks/past20_l)
+- [E - Diameter Endpoint Colors](https://atcoder.jp/contests/abc482/tasks/abc482_e)
 
