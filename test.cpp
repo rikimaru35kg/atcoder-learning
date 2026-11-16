@@ -228,28 +228,68 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N);
-    VL(X, N);
-    X.insert(X.begin(), X[0]);
-    X.push_back(X.back());
+struct Trie {
+    struct Node {
+        map<char,int> to;
+        int p;
+        int cnt;
+        Node (int p=-1): p(p), cnt(0) {}
+    };
+    vector<Node> d;
+    Trie (): d(1) {};
+    int add(const string &s) {
+        int v = 0;
+        for(auto c: s) {
+            if(!d[v].to.count(c)) {
+                d[v].to[c] = d.size();
+                d.push_back(Node(v));
+            }
+            v = d[v].to[c];
+        }
+        return v;
+    }
+    int count(string &s, vb &b) {
+        int v = 0;
+        for(auto c: s) {
+            if(!d[v].to.count(c)) {
+                d[v].to[c] = d.size();
+                d.push_back(Node(v));
+            }
+            v = d[v].to[c];
+        }
+    }
+};
 
-    auto calc=[&](ll i) -> ll {
-        ll ret = 0;
-        ret += X[i]-X[i-1];
-        ret += max(X[i-1]-X[0], X.back()-X[i]);
-        ret /= 2;
+void solve() {
+    LONG(N, M);
+    VS(S, N);
+
+    auto listup=[&]() -> vvb {
+        vvb ret;
+        auto dfs=[&](auto f, ll i, vb v) -> void {
+            if(i==M) {
+                ll cnt = 0;
+                rep(j, M) if(v[j]) ++cnt;
+                if(cnt>2) return;
+                ret.push_back(v);
+                return;
+            }
+            v[i] = true;
+            f(f, i+1, v);
+            v[i] = false;
+            f(f, i+1, v);
+        };
+        dfs(dfs, 0, vb(M));
         return ret;
     };
-    rep1(i, N) {
-        if(i==1 || i==N) {
-            Out((X.back()-X[0])/2);
-            continue;
+    vvb sel = listup();
+
+    Trie trie;
+    ll ans = 0;
+    rep(i, N) {
+        for(auto b: sel) {
+
         }
-        ll ans = INF;
-        chmin(ans, calc(i));
-        chmin(ans, calc(i+1));
-        Out(ans);
     }
 
 }

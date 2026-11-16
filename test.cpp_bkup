@@ -228,83 +228,45 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-template <typename T>
-class CoordinateCompression {
-    bool oneindexed, init = false;
-    vector<T> vec;
-public:
-    CoordinateCompression(bool one=false): oneindexed(one) {}
-    void add (T x) {vec.push_back(x);}
-    void compress () {
-        sort(vec.begin(), vec.end());
-        vec.erase(unique(vec.begin(), vec.end()), vec.end());
-        init = true;
-    }
-    long long operator() (T x) {
-        if (!init) compress();
-        long long ret = lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-        if (oneindexed) ++ret;
-        return ret;
-    }
-    T operator[] (long long i) {
-        if (!init) compress();
-        if (oneindexed) --i;
-        if (i < 0 || i >= (long long)vec.size()) return T();
-        return vec[i];
-    }
-    long long size () {
-        if (!init) compress();
-        return (long long)vec.size();
-    }
-    void print() {
-        #ifdef __DEBUG
-        printf("---- cc print ----\ni: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", i);
-        printf("\nx: ");
-        for (long long i=0; i<(long long)vec.size(); ++i) printf("%2lld ", vec[i]);
-        printf("\n-----------------\n");
-        #endif
-    }
-};
-
 void solve() {
-    LONG(H,W,N,Q);
-    vp koma;
-    CoordinateCompression<ll> ccr, ccc;
-    rep(i, N) {
-        LONG(r,c);
-        koma.emplace_back(r, c);
-        ccr.add(r), ccc.add(c);
-    }
-    vt3 query;
-    rep(i, Q) {
-        LONG(t,l,r); ++r;
-        query.emplace_back(t,l,r);
-        if(t==1) { ccr.add(l), ccr.add(r); }
-        else ccc.add(l), ccc.add(r);
-    }
-    ll h = ccr.size(), w = ccc.size();
-    vl sr(h+1), sc(w+1);
-
-    for(auto [r,c]: koma) {
-        r = ccr(r), c = ccc(c);
-        sr[r+1]++, sc[c+1]++;
-    }
-    rep(i, h) sr[i+1] += sr[i];
-    rep(i, w) sc[i+1] += sc[i];
-
-    for(auto [t,l,r]: query) {
-        ll ans;
-        if(t==1) {
-            l = ccr(l), r = ccr(r);
-            ans = sr[r] - sr[l];
-        } else {
-            l = ccc(l), r = ccc(r);
-            ans = sc[r] - sc[l];
+    LONG(N);
+    VL(A, N);
+    vl p(N), m(N);
+    {
+        ll x = 0, mn = 0, mx = 0;
+        repr(i, N) {
+            p[i] = mx - x;
+            m[i] = mn - x;
+            x -= A[i];
+            chmin(mn, x);
+            chmax(mx, x);
         }
-        Out(ans);
+    }
+    ll ans = 0;
+    {
+        ll x = 0, mn = 0, mx = 0;
+        rep(i, N) {
+            x += A[i];
+            chmin(mn, x);
+            chmax(mx, x);
+        }
+        chmax(ans, mx-mn+1);
     }
 
+    {
+        ll x = 0, mn = 0, mx = 0;
+        rep(i, N) {
+            ll cx = x - A[i];
+            ll cmx = max(cx + p[i], mx);
+            ll cmn = min(cx + m[i], mn);
+            chmax(ans, cmx-cmn+1);
+            x += A[i];
+            chmax(mx, x);
+            chmin(mn, x);
+        }
+    }
+
+    Out(ans);
 
 
 }

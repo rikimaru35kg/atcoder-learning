@@ -2380,4 +2380,5 @@ rank A: なし
 - [H - 温度管理](https://atcoder.jp/contests/past20-open/tasks/past20_h)
 - [L - 直径のペア](https://atcoder.jp/contests/past20-open/tasks/past20_l)
 - [E - Diameter Endpoint Colors](https://atcoder.jp/contests/abc482/tasks/abc482_e)
+- [E - Typo Pairs](https://atcoder.jp/contests/abc483/tasks/abc483_e)
 
