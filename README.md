@@ -2381,4 +2381,5 @@ rank A: なし
 - [L - 直径のペア](https://atcoder.jp/contests/past20-open/tasks/past20_l)
 - [E - Diameter Endpoint Colors](https://atcoder.jp/contests/abc482/tasks/abc482_e)
 - [E - Typo Pairs](https://atcoder.jp/contests/abc483/tasks/abc483_e)
+- [D - Move One Card Left](https://atcoder.jp/contests/abc484/tasks/abc484_d)
 
