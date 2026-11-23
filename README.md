@@ -2015,6 +2015,7 @@ rank A: なし
 - 詳しくは理解できていないが、数直線上に牛の絵を描いてみるとその心がなんとなく分かる
 ### 例題
 - 基本 区間クエリで01列生成 [G - 01Sequence](https://atcoder.jp/contests/abc216/tasks/abc216_g)
+- !要復習 [O - マンハッタンロープ](https://atcoder.jp/contests/past21-open/tasks/past21_o)
 - !復習価値低 [G - Specified Range Sums](https://atcoder.jp/contests/abc404/tasks/abc404_g)
 
 ## 最大フロー・最小カット

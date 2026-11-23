@@ -1,4 +1,4 @@
-﻿// ### test.cpp ###
+// ### test.cpp ###
 #include <bits/stdc++.h>
 #ifdef __DEBUG_VECTOR
 namespace for_debugging{
@@ -89,10 +89,6 @@ using cd = complex<double>;
 #define SIZE(v) (ll)((v).size())
 #define PYes {puts("Yes"); exit(0);}
 #define PNo {puts("No"); exit(0);}
-#define PFi {puts("First"); exit(0);}
-#define PSe {puts("Second"); exit(0);}
-#define Pm0 {puts("0"); exit(0);}
-#define Pm1 {puts("-1"); exit(0);}
 #define INT(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define INTM(...) int __VA_ARGS__; inm(__VA_ARGS__)
 #define LONG(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -212,7 +208,6 @@ int IINF = 1001001001;
 ll INF = 3e18;
 const ll M998 = 998244353;
 const ll M107 = 1000000007;
-template<typename T> inline void ch1(T &x){if(x==INF)x=-1;}
 const double PI = acos(-1);
 const double EPS = 1e-8;  //eg) if x=1e6, EPS >= 1e6/1e14(=1e-8)
 const vi di = {0, 1, 0, -1};
@@ -228,138 +223,69 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-struct S {
-    ll n, x;
-    S(ll n=0, ll x=-1): n(n),x(x) {}
-};
-S op(S a, S b) {
-    if(a.n==0) return b;
-    if(b.n==0) return a;
-    if(a.n>=2 || b.n>=2) return S(2,-1);
-    if(a.x==b.x) return a;
-    return S(2,-1);
-}
-S e() { return S(); }
-
-template <class S, S(*op)(S, S), S(*e)()> class SegTree {
-    int n, mx;
-    vector<S> a;
-    void climb(int i) {  while(i){ update(i); i>>=1; } }
-    void update(int i) {  a[i] = op(a[i<<1], a[i<<1|1]); }
-public:
-    SegTree(int mx): mx(mx) {
-        n = 1;
-        while(n<mx) n<<=1;
-        a.resize(n*2, e());
-    }
-    void set_only(int i, S x, bool do_op=false) { // build() is needed afterwards
-        assert(i>=0 && i<mx);
-        i += n;  // i is node id
-        if(do_op) a[i] = op(a[i], x);
-        else a[i] = x;
-    }
-    void set(int i, S x, bool do_op=false) {
-        assert(i>=0 && i<mx);
-        set_only(i, x, do_op);
-        climb((i+n)>>1);
-    }
-    void build() { for(int i=n-1; i>=1; --i) { update(i); } }
-    S get(int i) {
-        assert(i>=0 && i<mx);
-        return a[i+n];
-    }
-    S prod(int l, int r) {
-        assert(l>=0 && r<=mx && l<=r);
-        S lft = e(), rgt = e();
-        l += n, r += n;
-        while(l<r) {
-            if(l&1) lft = op(lft, a[l++]);
-            if(r&1) rgt = op(a[--r], rgt);
-            l>>=1, r>>=1;
-        }
-        return op(lft, rgt);
-    }
-    S all_prod() { return a[1]; }
-    int max_right(int l, auto f) {
-        assert(l>=0 && l<=mx);
-        assert(f(e()));
-        if(l==mx) return mx;
-        l += n;  // l is node id
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            while(~l&1) l>>=1; // go to parent if left node
-            if(!f(op(cum, a[l]))) {  // search descendants
-                while(l<n) {  // while l is not leaf
-                    l<<=1;
-                    if(f(op(cum, a[l]))) {
-                        cum = op(cum, a[l]);
-                        ++l;
-                    }
-                }
-                return l-n;
-            }
-            cum = op(cum, a[l]); ++l;
-            if((l&-l)==l) break;  // right most node -> return n
-        }
-        return mx;
-    }
-    int min_left(int r, auto f) {
-        assert(r>=0 && r<=mx);
-        assert(f(e()));
-        if(r==0) return 0;
-        r += n;  // r is node id(+1)
-        S cum = e();  // cumulation of fixed span
-        while(true) {
-            --r; // r is node id
-            while(r>1 && r&1) r>>=1; // go to parent if right node
-            if(!f(op(a[r], cum))) {  // search descendants
-                while(r<n) {  // while r is not leaf
-                    r = r<<1|1;
-                    if(f(op(a[r], cum))) {
-                        cum = op(a[r], cum);
-                        --r;
-                    }
-                }
-                return r+1-n;
-            }
-            cum = op(a[r], cum);
-            if((r&-r)==r) break;  // left most node -> return 0
-        }
-        return 0;
-    }
-    void dump() {
-        #ifdef __DEBUG
-        for(int i=0; i<mx; ++i) { fprintf(stderr, "%lld ", get(i)); }
-        cerr<<endl;
-        #endif
-    }
-};
-
-
 void solve() {
-    LONG(N, Q);
-    VL(A, N);
-    SegTree<S,op,e> seg(N);
-    rep(i, N) {
-        if(A[i]==-1) continue;
-        seg.set_only(i, S(1, A[i]));
-    }
-    seg.build();
-
-    rep(qi, Q) {
-        INT(t);
-        if(t==1) {
-            LONG(i, x); --i;
-            if(x==-1) seg.set(i, S());
-            else seg.set(i, S(1, x));
-        } else {
-            LONG(l,r); --l;
-            auto m = seg.prod(l,r);
-            if(m.n<=1) puts("Yes");
-            else puts("No");
+    LONG(N, M, P); --P;
+    auto dijk=[&](vl &a, vl &d, vt3 &edge) -> ll {
+        vl dist(2*N, INF);
+        vvp from(2*N);
+        rep(i, N) {
+            from[i].emplace_back(i+N, d[i]);
+            from[i+N].emplace_back(i, d[i]);
         }
+        for(auto [a,b,c]: edge) {
+            from[a].emplace_back(b, c);
+            from[b].emplace_back(a, c);
+        }
+        pq que;
+        auto push=[&](ll v, ll d) -> bool {
+            if(dist[v]<=d) return true;
+            dist[v] = d;
+            que.emplace(d, v);
+            return true;
+        };
+        rep(i, N) push(i+N, a[i]);
+        while(que.size()) {
+            auto [d,v] = que.top(); que.pop();
+            if(dist[v]!=d) continue;
+            for(auto [nv,c]: from[v]) {
+                if(!push(nv, d+c)) return INF;
+            }
+        }
+        rep(i, N) {
+            if(dist[i]<a[i]-d[i]) return INF;
+        }
+        return dist[P];
+    };
+    vl A(N), B(N), D(N);
+    rep(i, N) cin>>A[i]>>B[i]>>D[i];
+    vt3 edge;
+    rep(i, M) {
+        LONG(a,b,c); --a,--b;
+        edge.emplace_back(a, b, c);
     }
+    rep(i, N) {
+        ll u = A[i]-B[i];
+        ll v = A[i]+B[i];
+        A[i] = u;
+        B[i] = v;
+    }
+    ll ans = 0;
 
+    bool ok = true;
+    rep(ri, 2) {
+        ll now = dijk(A, D, edge);
+        if(now==INF) ok = false;
+        chmax(ans, now);
+        rep(i, N) A[i] = -A[i];
+    }
+    rep(ri, 2) {
+        ll now = dijk(B, D, edge);
+        if(now==INF) ok = false;
+        chmax(ans, now);
+        rep(i, N) B[i] = -B[i];
+    }
+    if(!ok) Out(-1);
+    else Out(ans);
 }
 
 int main () {
