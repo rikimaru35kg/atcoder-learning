@@ -2030,6 +2030,9 @@ rank A: なし
 - !復習価値低 [G - Push Simultaneously](https://atcoder.jp/contests/abc401/tasks/abc401_g)
 - 復習価値低 [B68 - ALGO Express](https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_eo)
 
+## 最小費用流
+- !要復習 [K - ニワトリのお見合い](https://atcoder.jp/contests/past202109-open/tasks/past202109_k)
+
 ## 畳み込み（FFT/NTT）
 - ACLで求める
 - 分布同士の掛け算的なものが高速に求まる（多項式の積）

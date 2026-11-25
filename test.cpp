@@ -223,69 +223,38 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-void solve() {
-    LONG(N, M, P); --P;
-    auto dijk=[&](vl &a, vl &d, vt3 &edge) -> ll {
-        vl dist(2*N, INF);
-        vvp from(2*N);
-        rep(i, N) {
-            from[i].emplace_back(i+N, d[i]);
-            from[i+N].emplace_back(i, d[i]);
-        }
-        for(auto [a,b,c]: edge) {
-            from[a].emplace_back(b, c);
-            from[b].emplace_back(a, c);
-        }
-        pq que;
-        auto push=[&](ll v, ll d) -> bool {
-            if(dist[v]<=d) return true;
-            dist[v] = d;
-            que.emplace(d, v);
-            return true;
-        };
-        rep(i, N) push(i+N, a[i]);
-        while(que.size()) {
-            auto [d,v] = que.top(); que.pop();
-            if(dist[v]!=d) continue;
-            for(auto [nv,c]: from[v]) {
-                if(!push(nv, d+c)) return INF;
-            }
-        }
-        rep(i, N) {
-            if(dist[i]<a[i]-d[i]) return INF;
-        }
-        return dist[P];
-    };
-    vl A(N), B(N), D(N);
-    rep(i, N) cin>>A[i]>>B[i]>>D[i];
-    vt3 edge;
-    rep(i, M) {
-        LONG(a,b,c); --a,--b;
-        edge.emplace_back(a, b, c);
-    }
-    rep(i, N) {
-        ll u = A[i]-B[i];
-        ll v = A[i]+B[i];
-        A[i] = u;
-        B[i] = v;
-    }
-    ll ans = 0;
+#include <atcoder/mincostflow>
+using namespace atcoder;
 
-    bool ok = true;
-    rep(ri, 2) {
-        ll now = dijk(A, D, edge);
-        if(now==INF) ok = false;
-        chmax(ans, now);
-        rep(i, N) A[i] = -A[i];
+void solve() {
+    LONG(P, Q);
+    VS(S, P);
+    VL2(A, B, P);
+    VL2(C, D, Q);
+
+    mcf_graph<ll,ll> g(P+Q+2);
+    ll s = P+Q, t = P+Q+1;
+    rep(i, P) g.add_edge(s, i, 1, 0);
+    rep(j, Q) g.add_edge(P+j, t, 1, 0);
+
+    ll MAX = 2e9+10;
+    rep(i, P) rep(j, Q) {
+        if(S[i][j]=='0') continue;
+        ll gain = A[i]-B[i]+C[j]-D[j];
+        if(gain<=0) continue;
+        g.add_edge(i, P+j, 1, MAX-gain);
     }
-    rep(ri, 2) {
-        ll now = dijk(B, D, edge);
-        if(now==INF) ok = false;
-        chmax(ans, now);
-        rep(i, N) B[i] = -B[i];
+
+    ll base = 0;
+    rep(i, P) base += B[i];
+    rep(j, Q) base += D[j];
+
+    ll ans = 0;
+    for(auto [n,c]: g.slope(s,t)) {
+        ll now = n*MAX - c;
+        chmax(ans, base+now);
     }
-    if(!ok) Out(-1);
-    else Out(ans);
+    Out(ans);
 }
 
 int main () {

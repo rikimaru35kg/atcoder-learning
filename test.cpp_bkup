@@ -223,47 +223,10 @@ Pr operator- (Pr a, Pr b) {return {a.first-b.first, a.second-b.second};}
 Pr operator* (Pr a, Pr b) {return {a.first*b.first, a.second*b.second};}
 Pr operator/ (Pr a, Pr b) {return {a.first/b.first, a.second/b.second};}
 
-#include <atcoder/lazysegtree>
-using namespace atcoder;
-
-using S = ll;
-S op(S a, S b) { return max(a,b); }
-S e() { return -INF; }
-using F = ll;
-S mapping(F f, S x) { return f+x; }
-F composition(F f, F g) { return f+g; }
-F id() { return 0; }
-
 void solve() {
-    LONG(N, K);
-    VL(A, N);
-    vector<S> init(N-K+1);
-    ll sum = 0;
-    rep(i, N) {
-        sum += A[i];
-        if(i-K>=0) sum -= A[i-K];
-        if(i>=K-1) init[i-K+1] = sum;
-    }
-    lazy_segtree<S,op,e,F,mapping,composition,id> seg(init);
-    auto segprint=[&](){
-    #ifdef __DEBUG
-        de("-- segprint --")
-        ll sz = seg.max_right(0,[](S x)->bool{return true;});
-        rep(i, sz) fprintf(stderr, "%lld ", seg.get(i));
-        cerr<<endl;
-    #endif
-    };
-    LONG(Q);
-    rep(qi, Q) {
-        LONG(i, x);
-        ll l = max(i-K, 0LL), r = min(i, N-K+1);
-        --i;
-        seg.apply(l, r, -A[i]);
-        A[i] = x;
-        seg.apply(l, r, A[i]);
-        ll ans = seg.all_prod();
-        Out(ans);
-    }
+    VL(A, 3);
+    sort(all(A));
+    if(A[0]==A[2]) PYes PNo
 
 }
 

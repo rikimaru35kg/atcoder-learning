@@ -3780,5 +3780,12 @@
       "\t}",
       "};"
     ]
+  },
+  "Snippet(mincostflow)": {
+    "prefix": "at_mincostflow",
+    "body": [
+      "#include <atcoder/mincostflow>",
+      "using namespace atcoder;"
+    ]
   }
 }
